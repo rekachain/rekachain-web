@@ -1,0 +1,92 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Composer:Install",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "composer install"
+        },
+        {
+            "label": "NPM:Install",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm i"
+        },
+        {
+            "label": "App:Install",
+            "problemMatcher": [],
+            "type": "shell",
+            "dependsOn": ["Composer:Install", "NPM:Install"]
+        },
+        {
+            "label": "Laravel Optimize",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan optimize"
+        },
+        {
+            "label": "Laravel Optimize - Clear",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan optimize:clear"
+        },
+        {
+            "label": "Laravel Migrate - Fresh then Seed",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan migrate:fresh --seed"
+        },
+        {
+            "label": "Ide Helper - Generate",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan ide-helper:generate"
+        },
+        {
+            "label": "Telescope - Clear Entries",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan telescope:clear"
+        },
+        {
+            "label": "Laravel Serve",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan serve"
+        },
+        {
+            "label": "Laravel NPM Run Dev",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm run dev"
+        },
+        {
+            "label": "Laravel Websocket",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan websocket:start"
+        },
+        {
+            "label": "App",
+            "problemMatcher": [],
+            "type": "shell",
+            "dependsOn": [
+                "Laravel Serve",
+                "Laravel NPM Run Dev"
+                // "Laravel Websocket"
+            ]
+        },
+
+        // ----------------------------------------------------------------
+
+        {
+            "label": "Pint: Fix",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "./vendor/bin/pint"
+        }
+
+        // ----------------------------------------------------------------
+    ]
+}
