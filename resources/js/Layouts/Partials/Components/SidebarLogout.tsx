@@ -1,0 +1,15 @@
+import { Link } from "@inertiajs/react";
+import { RiLogoutBoxRLine } from "@remixicon/react";
+import { buttonVariants } from "@/Components/ui/button";
+
+export default function () {
+    const linkClass = `${buttonVariants({ variant: "sidebar" })} w-full`;
+    return (
+        <div className="px-4">
+            <Link method="post" href={route("logout")} className={linkClass}>
+                <RiLogoutBoxRLine size="20" />
+                <span className="ml-2">Logout</span>
+            </Link>
+        </div>
+    );
+}
