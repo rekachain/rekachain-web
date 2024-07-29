@@ -34,7 +34,7 @@ export default function Login({
     return (
         <>
             <Head title="Log in" />
-            <section className="login min-h-screen flex flex-col md:flex-row gap-32 px-32 items-center">
+            <section className="login min-h-screen flex flex-col md:flex-row md:gap-32 px-24 md:px-32 items-center">
                 <img
                     id="login-top-left"
                     src="/assets/images/login-top-left.png"
@@ -53,17 +53,17 @@ export default function Login({
 
                 <div className="hero flex-1">
                     <img
-                        className="h-full"
+                        className="h-full hidden md:block"
                         id="login-hero"
                         src="/assets/images/login-hero.png"
                         alt="login-hero.png"
                     />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 z-10">
                     <img
                         src="/assets/images/login-form-header.png"
                         alt="login-form-header"
-                        className="h-32 mx-auto mb-5"
+                        className="h-32 mx-auto mb-5 object-contain"
                     />
                     {status && (
                         <div className="mb-4 font-medium text-sm text-green-600">
@@ -109,7 +109,7 @@ export default function Login({
                             />
                         </div>
 
-                        <div className="flex mt-4 justify-between">
+                        <div className="flex mt-4 justify-between flex-col md:flex-row gap-4">
                             <label className="flex items-center">
                                 <Checkbox
                                     name="remember"
