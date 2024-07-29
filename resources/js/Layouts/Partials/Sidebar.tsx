@@ -8,7 +8,7 @@ import {
     RiSettings3Line,
     RiUserLine,
 } from "@remixicon/react";
-import { Button } from "../../Components/ui/button";
+import { Button } from "@/Components/ui/button";
 import SidebarLink from "./Components/SidebarLink";
 import SidebarMenu from "./Components/SidebarMenu";
 import { ListOrdered } from "lucide-react";
@@ -47,19 +47,19 @@ export default function Sidebar() {
     return (
         <aside
             ref={sidebarRef}
-            className="sidebar w-72 h-screen border-muted border-r-2 transition-all"
+            className="sidebar w-72 h-screen border-border border-r-2 transition-all"
         >
             <nav className="flex flex-col space-y-1">
-                <div className="sidebar-header flex px-4 py-3 border-b-2">
+                <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
                     <img
                         src="/assets/images/sidebar-header.png"
                         alt="logo"
-                        className="sidebar-header-logo w-36 object-contain"
+                        className="sidebar-header-logo h-full object-contain"
                     />
                     <Button
                         variant="outline"
                         size="icon"
-                        className="sidebar-collapse-toggle"
+                        className="sidebar-collapse-toggle h-10 w-10"
                         onClick={handleSidebarCollapse}
                     >
                         {sidebarCollapse ? (

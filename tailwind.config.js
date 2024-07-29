@@ -60,7 +60,10 @@ module.exports = {
                 "sidebar-link-active": "hsl(var(--sidebar-link-active))",
                 "sidebar-link-active-foreground":
                     "hsl(var(--sidebar-link-active-foreground))",
-                "sidebar-header": "hsl(var(--sidebar-header))",
+                "sidebar-header-foreground":
+                    "hsl(var(--sidebar-header-foreground))",
+                "navbar-secondary-foreground":
+                    "hsl(var(--navbar-secondary-foreground))",
             },
             borderRadius: {
                 lg: "var(--radius)",
