@@ -7,7 +7,7 @@ export default function (props: {
     return (
         <div className={`sidebar-menu w-full py-4 space-y-2 ${borderClass}`}>
             <p
-                className="sidebar-item-header px-4 truncate"
+                className="sidebar-item-header text-sidebar-header-foreground px-4 truncate"
                 title={props.title}
             >
                 {props.title}
