@@ -5,10 +5,10 @@ import { buttonVariants } from "@/Components/ui/button";
 export default function () {
     const linkClass = `${buttonVariants({ variant: "sidebar" })} w-full`;
     return (
-        <div className="px-4">
+        <div className="sidebar-item px-4">
             <Link method="post" href={route("logout")} className={linkClass}>
                 <RiLogoutBoxRLine size="20" />
-                <span className="ml-2">Logout</span>
+                <span className="sidebar-item-text ml-2">Logout</span>
             </Link>
         </div>
     );

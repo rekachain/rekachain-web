@@ -1,15 +1,14 @@
 import {
     RiBox3Line,
     RiContractLeftLine,
+    RiContractRightLine,
     RiFlickrLine,
-    RiHome2Line,
     RiHome8Line,
-    RiLogoutBoxRLine,
     RiQuestionLine,
     RiSettings3Line,
     RiUserLine,
 } from "@remixicon/react";
-import { Button, buttonVariants } from "../../Components/ui/button";
+import { Button } from "../../Components/ui/button";
 import SidebarLink from "./Components/SidebarLink";
 import SidebarMenu from "./Components/SidebarMenu";
 import { ListOrdered } from "lucide-react";
@@ -17,25 +16,57 @@ import {
     SidebarLinkCollapsible,
     SidebarLinkCollapsibleItem,
 } from "./Components/SidebarLinkCollapsible";
-import { Link } from "@inertiajs/react";
 import SidebarLogout from "./Components/SidebarLogout";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { useEffect, useRef } from "react";
 
 export default function Sidebar() {
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage(
+        "sidebarCollapse",
+        false
+    );
+
+    const handleSidebarCollapse = () => {
+        setSidebarCollapse(!sidebarCollapse);
+    };
+
+    const sidebarRef = useRef<HTMLDivElement>(null);
+
+    const applySidebarCollapse = () => {
+        if (sidebarCollapse) {
+            sidebarRef.current?.classList.add("sidebar-collapse");
+        } else {
+            sidebarRef.current?.classList.remove("sidebar-collapse");
+        }
+    };
+
+    useEffect(() => {
+        applySidebarCollapse();
+    }, [sidebarCollapse]);
+
     return (
-        <aside className="w-72 h-screen border-muted border-r-2">
+        <aside
+            ref={sidebarRef}
+            className="sidebar w-72 h-screen border-muted border-r-2 transition-all"
+        >
             <nav className="flex flex-col space-y-1">
-                <div className="flex px-4 py-3 justify-between border-b-2">
+                <div className="sidebar-header flex px-4 py-3 border-b-2">
                     <img
-                        src="/assets/images/logo.png"
+                        src="/assets/images/sidebar-header.png"
                         alt="logo"
-                        className="w-36 object-contain"
+                        className="sidebar-header-logo w-36 object-contain"
                     />
                     <Button
                         variant="outline"
                         size="icon"
-                        className="text-zinc-400"
+                        className="sidebar-collapse-toggle"
+                        onClick={handleSidebarCollapse}
                     >
-                        <RiContractLeftLine />
+                        {sidebarCollapse ? (
+                            <RiContractRightLine />
+                        ) : (
+                            <RiContractLeftLine />
+                        )}
                     </Button>
                 </div>
                 <SidebarMenu title="GENERAL">
@@ -62,12 +93,12 @@ export default function Sidebar() {
                     >
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
-                            title="Order Batch"
+                            title="Order"
                             icon={<RiBox3Line size="20" />}
                         />
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
-                            title="Track Batch"
+                            title="Track"
                             icon={<RiFlickrLine size="20" />}
                         />
                     </SidebarLinkCollapsible>

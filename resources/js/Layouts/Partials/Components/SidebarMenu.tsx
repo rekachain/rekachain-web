@@ -3,9 +3,15 @@ export default function (props: {
     children?: React.ReactNode;
     bordered?: boolean;
 }) {
+    const borderClass = props.bordered ? "border-t-2" : "";
     return (
-        <div className={`py-4 space-y-2 ${props.bordered ? "border-t-2" : ""}`}>
-            <p className="text-gray-400 px-4">{props.title}</p>
+        <div className={`sidebar-menu w-full py-4 space-y-2 ${borderClass}`}>
+            <p
+                className="sidebar-item-header px-4 truncate"
+                title={props.title}
+            >
+                {props.title}
+            </p>
             {props.children}
         </div>
     );
