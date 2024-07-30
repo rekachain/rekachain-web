@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="App" type="CompoundRunConfigurationType">
+    <toRun name="Laravel NPM Run Dev" type="ShConfigurationType" />
+    <toRun name="Laravel Serve" type="ShConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
