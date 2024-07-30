@@ -26,10 +26,21 @@ class HandleInertiaRequests extends Middleware {
      * @return array<string, mixed>
      */
     public function share(Request $request): array {
+
+        $userInitials = null;
+
+        if ($user = $request->user()) {
+            $nameParts = explode(' ', $user->name);
+            $userInitials = strtoupper($nameParts[0][0] . $nameParts[1][0]);
+        }
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => array_merge(
+                    optional($request->user())->toArray() ?? [],
+                    ['initials' => $userInitials]
+                ),
             ],
         ];
     }

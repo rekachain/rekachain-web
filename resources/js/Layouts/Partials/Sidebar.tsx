@@ -40,9 +40,7 @@ export default function Sidebar() {
         }
     };
 
-    useEffect(() => {
-        applySidebarCollapse();
-    }, [sidebarCollapse]);
+    useEffect(applySidebarCollapse, [sidebarCollapse]);
 
     return (
         <aside
