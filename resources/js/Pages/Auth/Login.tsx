@@ -4,7 +4,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import { Head, Link, useForm } from "@inertiajs/react";
 import { Input } from "@/Components/ui/input";
-import { Button } from "../../Components/ui/button";
+import { Button } from "@/Components/ui/button";
 
 export default function Login({
     status,
