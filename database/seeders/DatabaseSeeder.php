@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder {
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'nip' => '1234567890',
+            'nip' =>  '123456789012345673',
         ]);
     }
 }
