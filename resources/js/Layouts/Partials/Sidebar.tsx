@@ -8,17 +8,17 @@ import {
     RiSettings3Line,
     RiUserLine,
 } from "@remixicon/react";
-import { Button } from "@/Components/ui/button";
+import {Button} from "@/Components/ui/button";
 import SidebarLink from "./Components/SidebarLink";
 import SidebarMenu from "./Components/SidebarMenu";
-import { ListOrdered } from "lucide-react";
+import {ListOrdered} from "lucide-react";
 import {
     SidebarLinkCollapsible,
     SidebarLinkCollapsibleItem,
 } from "./Components/SidebarLinkCollapsible";
 import SidebarLogout from "./Components/SidebarLogout";
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { useEffect, useRef } from "react";
+import {useLocalStorage} from "@uidotdev/usehooks";
+import {useEffect, useRef} from "react";
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage(
@@ -61,43 +61,43 @@ export default function Sidebar() {
                         onClick={handleSidebarCollapse}
                     >
                         {sidebarCollapse ? (
-                            <RiContractRightLine />
+                            <RiContractRightLine/>
                         ) : (
-                            <RiContractLeftLine />
+                            <RiContractLeftLine/>
                         )}
                     </Button>
                 </div>
                 <SidebarMenu title="GENERAL">
                     <SidebarLink
-                        routeName="profile.edit"
-                        title="Staff"
-                        icon={<RiUserLine size="20" />}
-                    />
-                    <SidebarLink
                         routeName="dashboard"
                         title="Dashboard"
-                        icon={<RiHome8Line size="20" />}
+                        icon={<RiHome8Line size="20"/>}
+                    />
+                    <SidebarLink
+                        routeName="users.index"
+                        title="Staff"
+                        icon={<RiUserLine size="20"/>}
                     />
                 </SidebarMenu>
                 <SidebarMenu title="MANUFAKTUR" bordered>
                     <SidebarLink
                         routeName="profile.edit"
                         title="Track Lot"
-                        icon={<ListOrdered size="20" />}
+                        icon={<ListOrdered size="20"/>}
                     />
                     <SidebarLinkCollapsible
                         title="Batch"
-                        icon={<RiBox3Line size="20" />}
+                        icon={<RiBox3Line size="20"/>}
                     >
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
                             title="Order"
-                            icon={<RiBox3Line size="20" />}
+                            icon={<RiBox3Line size="20"/>}
                         />
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
                             title="Track"
-                            icon={<RiFlickrLine size="20" />}
+                            icon={<RiFlickrLine size="20"/>}
                         />
                     </SidebarLinkCollapsible>
                     {/* <SidebarLink
@@ -115,14 +115,14 @@ export default function Sidebar() {
                     <SidebarLink
                         routeName="profile.edit"
                         title="Pengaturan"
-                        icon={<RiSettings3Line size="20" />}
+                        icon={<RiSettings3Line size="20"/>}
                     />
                     <SidebarLink
                         routeName="profile.edit"
                         title="Helpdesk"
-                        icon={<RiQuestionLine size="20" />}
+                        icon={<RiQuestionLine size="20"/>}
                     />
-                    <SidebarLogout />
+                    <SidebarLogout/>
                 </SidebarMenu>
             </nav>
         </aside>

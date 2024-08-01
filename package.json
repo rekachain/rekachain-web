@@ -25,14 +25,19 @@
     },
     "dependencies": {
         "@radix-ui/react-accordion": "^1.2.0",
+        "@radix-ui/react-alert-dialog": "^1.1.1",
         "@radix-ui/react-avatar": "^1.1.0",
         "@radix-ui/react-separator": "^1.1.0",
         "@radix-ui/react-slot": "^1.1.0",
+        "@radix-ui/react-toast": "^1.2.1",
         "@remixicon/react": "^4.2.0",
         "@uidotdev/usehooks": "^2.4.1",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "lucide-react": "^0.414.0",
+        "spinkit": "^2.0.1",
+        "sweetalert2": "^11.12.3",
+        "sweetalert2-react-content": "^5.0.7",
         "tailwind-merge": "^2.4.0",
         "tailwindcss-animate": "^1.0.7"
     }

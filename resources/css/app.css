@@ -77,6 +77,10 @@
 }
 
 @layer components {
+    .text-page-header {
+        @apply text-2xl font-semibold;
+    }
+
     .sidebar-collapsible-link {
         @apply w-full !rounded-none !rounded-l-md;
     }

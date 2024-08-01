@@ -26,6 +26,7 @@ class UserFactory extends Factory {
             'nip' => fake()->unique()->numerify('##############'),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'phone_number' => fake()->optional()->numerify('###########'),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
