@@ -1,3 +1,4 @@
 export const ROUTES = {
-    USERS: 'users'
+    USERS: 'users',
+    PROFILE: 'profile'
 }
