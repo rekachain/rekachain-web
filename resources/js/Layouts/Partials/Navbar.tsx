@@ -107,6 +107,11 @@ export default function Navbar() {
                         <DropdownMenuItem>
                             <Link href={route(`${ROUTES.PROFILE}.edit`)}>Profile</Link>
                         </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link method="post" href={route(ROUTES.LOGOUT)} as="button">
+                                Logout
+                            </Link>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
