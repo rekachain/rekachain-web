@@ -16,7 +16,7 @@ const Dropdown = ({ children }: PropsWithChildren) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
-        setOpen((previousState) => !previousState);
+        setOpen(previousState => !previousState);
     };
 
     return (
@@ -38,7 +38,12 @@ const Trigger = ({ children }: PropsWithChildren) => {
     );
 };
 
-const Content = ({ align = 'right', width = '48', contentClasses = 'py-1 bg-white dark:bg-gray-700', children }: PropsWithChildren<{ align?: 'left'|'right', width?: '48', contentClasses?: string }>) => {
+const Content = ({
+    align = 'right',
+    width = '48',
+    contentClasses = 'py-1 bg-white dark:bg-gray-700',
+    children,
+}: PropsWithChildren<{ align?: 'left' | 'right'; width?: '48'; contentClasses?: string }>) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';

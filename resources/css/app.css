@@ -71,6 +71,7 @@
     * {
         @apply border-border;
     }
+
     body {
         @apply bg-background text-foreground;
     }
@@ -149,9 +150,11 @@ section.login > img {
 section.login img#login-top-left {
     @apply top-0 left-0;
 }
+
 section.login img#login-bottom-left {
     @apply bottom-0 left-0;
 }
+
 section.login img#login-bottom-right {
     @apply bottom-0 right-0;
 }

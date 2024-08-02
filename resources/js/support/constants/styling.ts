@@ -10,5 +10,5 @@ export const STYLING = {
             SECONDARY: 'secondary',
             DEFAULT: 'default',
         },
-    }
-}
+    },
+};

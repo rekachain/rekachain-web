@@ -11,7 +11,10 @@
             "strings_containing_single_quote_chars": false
         },
         "visibility_required": {
-            "elements": ["property", "method"]
+            "elements": [
+                "property",
+                "method"
+            ]
         },
         "class_attributes_separation": {
             "elements": {

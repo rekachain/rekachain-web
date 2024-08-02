@@ -1,6 +1,6 @@
-import {Resource} from "@/support/interfaces/resources";
-import {PaginateResponse} from "@/support/interfaces/others";
-import {ServiceFilterOptions} from "@/support/interfaces/others/ServiceFilterOptions";
+import { Resource } from '@/support/interfaces/resources';
+import { PaginateResponse } from '@/support/interfaces/others';
+import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 
 export function serviceFactory<T extends Resource>(baseRoute: string) {
     return {
@@ -8,7 +8,7 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             const url = route(`${baseRoute}.index`);
 
             try {
-                return (await window.axios.get(url, {params: filters})).data;
+                return (await window.axios.get(url, { params: filters })).data;
             } catch (error) {
                 console.error(`Error fetching resources: ${error}`);
                 throw error;
@@ -29,11 +29,13 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
         update: async (id: number, data: Partial<T> | FormData): Promise<T> => {
             const url = route(`${baseRoute}.update`, id);
             try {
-                return (await window.axios.post(url, data, {
-                    params: {
-                        _method: 'PUT'
-                    }
-                })).data;
+                return (
+                    await window.axios.post(url, data, {
+                        params: {
+                            _method: 'PUT',
+                        },
+                    })
+                ).data;
             } catch (error) {
                 console.error(`Error updating resource with ID ${id}: ${error}`);
                 throw error;
@@ -41,13 +43,13 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
         },
 
         delete: async (id: number): Promise<void> => {
-            const url = route(`${baseRoute}.destroy`, id)
+            const url = route(`${baseRoute}.destroy`, id);
             try {
                 await window.axios.delete(url);
             } catch (error) {
                 console.error(`Error deleting resource with ID ${id}: ${error}`);
                 throw error;
             }
-        }
+        },
     };
 }

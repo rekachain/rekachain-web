@@ -7,25 +7,19 @@ import {
     RiQuestionLine,
     RiSettings3Line,
     RiUserLine,
-} from "@remixicon/react";
-import {Button} from "@/Components/ui/button";
-import SidebarLink from "./Components/SidebarLink";
-import SidebarMenu from "./Components/SidebarMenu";
-import {ListOrdered} from "lucide-react";
-import {
-    SidebarLinkCollapsible,
-    SidebarLinkCollapsibleItem,
-} from "./Components/SidebarLinkCollapsible";
-import SidebarLogout from "./Components/SidebarLogout";
-import {useLocalStorage} from "@uidotdev/usehooks";
-import {useEffect, useRef} from "react";
-import {STYLING} from "@/support/constants/styling";
+} from '@remixicon/react';
+import { Button } from '@/Components/ui/button';
+import SidebarLink from './Components/SidebarLink';
+import SidebarMenu from './Components/SidebarMenu';
+import { ListOrdered } from 'lucide-react';
+import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components/SidebarLinkCollapsible';
+import SidebarLogout from './Components/SidebarLogout';
+import { useLocalStorage } from '@uidotdev/usehooks';
+import { useEffect, useRef } from 'react';
+import { STYLING } from '@/support/constants/styling';
 
 export default function Sidebar() {
-    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage(
-        "sidebarCollapse",
-        false
-    );
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
 
     const handleSidebarCollapse = () => {
         setSidebarCollapse(!sidebarCollapse);
@@ -35,19 +29,16 @@ export default function Sidebar() {
 
     const applySidebarCollapse = () => {
         if (sidebarCollapse) {
-            sidebarRef.current?.classList.add("sidebar-collapse");
+            sidebarRef.current?.classList.add('sidebar-collapse');
         } else {
-            sidebarRef.current?.classList.remove("sidebar-collapse");
+            sidebarRef.current?.classList.remove('sidebar-collapse');
         }
     };
 
     useEffect(applySidebarCollapse, [sidebarCollapse]);
 
     return (
-        <aside
-            ref={sidebarRef}
-            className="sidebar w-72 h-screen border-border border-r-2 transition-all"
-        >
+        <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
             <nav className="flex flex-col space-y-1">
                 <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
                     <img
@@ -62,9 +53,9 @@ export default function Sidebar() {
                         onClick={handleSidebarCollapse}
                     >
                         {sidebarCollapse ? (
-                            <RiContractRightLine size={STYLING.ICON.SIZE.SMALL}/>
+                            <RiContractRightLine size={STYLING.ICON.SIZE.SMALL} />
                         ) : (
-                            <RiContractLeftLine size={STYLING.ICON.SIZE.SMALL}/>
+                            <RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />
                         )}
                     </Button>
                 </div>
@@ -72,33 +63,30 @@ export default function Sidebar() {
                     <SidebarLink
                         routeName="dashboard"
                         title="Dashboard"
-                        icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL}/>}
+                        icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                     />
                     <SidebarLink
                         routeName="users.index"
                         title="Staff"
-                        icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL}/>}
+                        icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
                     />
                 </SidebarMenu>
                 <SidebarMenu title="MANUFAKTUR" bordered>
                     <SidebarLink
                         routeName="profile.edit"
                         title="Track Lot"
-                        icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL}/>}
+                        icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     />
-                    <SidebarLinkCollapsible
-                        title="Batch"
-                        icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL}/>}
-                    >
+                    <SidebarLinkCollapsible title="Batch" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
                             title="Order"
-                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL}/>}
+                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
                             title="Track"
-                            icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL}/>}
+                            icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                     </SidebarLinkCollapsible>
                     {/* <SidebarLink
@@ -116,14 +104,14 @@ export default function Sidebar() {
                     <SidebarLink
                         routeName="profile.edit"
                         title="Pengaturan"
-                        icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL}/>}
+                        icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
                     />
                     <SidebarLink
                         routeName="profile.edit"
                         title="Helpdesk"
-                        icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL}/>}
+                        icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
                     />
-                    <SidebarLogout/>
+                    <SidebarLogout />
                 </SidebarMenu>
             </nav>
         </aside>

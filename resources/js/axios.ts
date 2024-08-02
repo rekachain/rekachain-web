@@ -5,8 +5,8 @@
  */
 
 import axios from 'axios';
-import withReactContent from "sweetalert2-react-content";
-import Swal, {SweetAlertOptions} from "sweetalert2";
+import withReactContent from 'sweetalert2-react-content';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 window.axios = axios;
 
@@ -15,7 +15,7 @@ function formatErrorMessages(error: any) {
 
     let errorHtml = '';
     if (error.response.data.errors) {
-        Object.keys(error.response.data.errors).forEach((key) => {
+        Object.keys(error.response.data.errors).forEach(key => {
             errorHtml += `<p>${error.response.data.errors[key][0]}</p>`;
         });
     }
@@ -35,7 +35,6 @@ function handleAxiosError(error: any) {
 
     console.error('Hol up:', error);
     if (error.response.status >= 500) {
-
         const ErrorSwal = withReactContent(Swal);
 
         const defaultAlertOptions: SweetAlertOptions = {
@@ -49,7 +48,7 @@ function handleAxiosError(error: any) {
             defaultAlertOptions.html = formatErrorMessages(error);
         }
 
-        ErrorSwal.fire(defaultAlertOptions)
+        ErrorSwal.fire(defaultAlertOptions);
     } else if (error.response.status >= 402) {
         const ErrorSwal = withReactContent(Swal);
 
@@ -62,7 +61,7 @@ function handleAxiosError(error: any) {
             icon: 'error',
             title: 'Whoops...',
             text: error.response.data.message,
-            didOpen: (toast) => {
+            didOpen: toast => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
             },
@@ -77,6 +76,6 @@ function handleAxiosError(error: any) {
     return Promise.reject(error);
 }
 
-window.axios.interceptors.response.use((res) => res, handleAxiosError);
+window.axios.interceptors.response.use(res => res, handleAxiosError);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

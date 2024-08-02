@@ -1,4 +1,4 @@
-import { useRef, useState, FormEventHandler } from 'react';
+import { FormEventHandler, useRef, useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -26,7 +26,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
         setConfirmingUserDeletion(true);
     };
 
-    const deleteUser: FormEventHandler = (e) => {
+    const deleteUser: FormEventHandler = e => {
         e.preventDefault();
 
         destroy(route('profile.destroy'), {
@@ -76,7 +76,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
                             name="password"
                             ref={passwordInput}
                             value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
+                            onChange={e => setData('password', e.target.value)}
                             className="mt-1 block w-3/4"
                             isFocused
                             placeholder="Password"
