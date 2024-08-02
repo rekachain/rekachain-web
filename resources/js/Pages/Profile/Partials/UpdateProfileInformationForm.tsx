@@ -7,7 +7,15 @@ import { Transition } from '@headlessui/react';
 import { FormEventHandler } from 'react';
 import { PageProps } from '@/types';
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }: { mustVerifyEmail: boolean, status?: string, className?: string }) {
+export default function UpdateProfileInformation({
+    mustVerifyEmail,
+    status,
+    className = '',
+}: {
+    mustVerifyEmail: boolean;
+    status?: string;
+    className?: string;
+}) {
     const user = usePage<PageProps>().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -15,7 +23,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         email: user.email,
     });
 
-    const submit: FormEventHandler = (e) => {
+    const submit: FormEventHandler = e => {
         e.preventDefault();
 
         patch(route('profile.update'));
@@ -39,7 +47,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={e => setData('name', e.target.value)}
                         required
                         isFocused
                         autoComplete="name"
@@ -56,7 +64,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
+                        onChange={e => setData('email', e.target.value)}
                         required
                         autoComplete="username"
                     />

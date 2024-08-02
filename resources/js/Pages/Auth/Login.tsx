@@ -1,55 +1,37 @@
-import { useEffect, FormEventHandler } from "react";
-import Checkbox from "@/Components/Checkbox";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import { Head, Link, useForm } from "@inertiajs/react";
-import { Input } from "@/Components/ui/input";
-import { Button } from "@/Components/ui/button";
+import { FormEventHandler, useEffect } from 'react';
+import Checkbox from '@/Components/Checkbox';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { Input } from '@/Components/ui/input';
+import { Button } from '@/Components/ui/button';
 
-export default function Login({
-    status,
-    canResetPassword,
-}: {
-    status?: string;
-    canResetPassword: boolean;
-}) {
+export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        nip: "",
-        password: "",
+        nip: '',
+        password: '',
         remember: false,
     });
 
     useEffect(() => {
         return () => {
-            reset("password");
+            reset('password');
         };
     }, []);
 
-    const submit: FormEventHandler = (e) => {
+    const submit: FormEventHandler = e => {
         e.preventDefault();
 
-        post(route("login"));
+        post(route('login'));
     };
 
     return (
         <>
             <Head title="Log in" />
             <section className="login min-h-screen flex flex-col md:flex-row md:gap-32 px-24 md:px-32 items-center">
-                <img
-                    id="login-top-left"
-                    src="/assets/images/login-top-left.png"
-                    alt="login-top-left.png"
-                />
-                <img
-                    id="login-bottom-left"
-                    src="/assets/images/login-bottom-left.png"
-                    alt="login-bottom-left.png"
-                />
-                <img
-                    id="login-bottom-right"
-                    src="/assets/images/login-bottom-right.png"
-                    alt="login-bottom-right.png"
-                />
+                <img id="login-top-left" src="/assets/images/login-top-left.png" alt="login-top-left.png" />
+                <img id="login-bottom-left" src="/assets/images/login-bottom-left.png" alt="login-bottom-left.png" />
+                <img id="login-bottom-right" src="/assets/images/login-bottom-right.png" alt="login-bottom-right.png" />
 
                 <div className="hero flex-1">
                     <img
@@ -65,11 +47,7 @@ export default function Login({
                         alt="login-form-header"
                         className="h-32 mx-auto mb-5 object-contain"
                     />
-                    {status && (
-                        <div className="mb-4 font-medium text-sm text-green-600">
-                            {status}
-                        </div>
-                    )}
+                    {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                     <form onSubmit={submit}>
                         <div>
                             <InputLabel htmlFor="nip" value="NIP" />
@@ -82,7 +60,7 @@ export default function Login({
                                 className="mt-1"
                                 autoComplete="nip"
                                 autoFocus
-                                onChange={(e) => setData("nip", e.target.value)}
+                                onChange={e => setData('nip', e.target.value)}
                             />
 
                             <InputError message={errors.nip} className="mt-2" />
@@ -98,15 +76,10 @@ export default function Login({
                                 value={data.password}
                                 className="mt-1"
                                 autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
+                                onChange={e => setData('password', e.target.value)}
                             />
 
-                            <InputError
-                                message={errors.password}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.password} className="mt-2" />
                         </div>
 
                         <div className="flex mt-4 justify-between flex-col md:flex-row gap-4">
@@ -114,18 +87,14 @@ export default function Login({
                                 <Checkbox
                                     name="remember"
                                     checked={data.remember}
-                                    onChange={(e) =>
-                                        setData("remember", e.target.checked)
-                                    }
+                                    onChange={e => setData('remember', e.target.checked)}
                                 />
-                                <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                    Remember me
-                                </span>
+                                <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                             </label>
 
                             {canResetPassword && (
                                 <Link
-                                    href={route("password.request")}
+                                    href={route('password.request')}
                                     className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                                 >
                                     Forgot your password?

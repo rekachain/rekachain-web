@@ -1,39 +1,36 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, useForm} from "@inertiajs/react";
-import {ROUTES} from "@/support/constants/routes";
-import {Input} from "@/Components/ui/input";
-import {FormEventHandler, useState} from "react";
-import InputLabel from "@/Components/InputLabel";
-import InputError from "@/Components/InputError";
-import {userService} from "@/services/userService";
-import {Button} from "@/Components/ui/button";
-import {parseFormData} from "@/lib/utils";
+import { Head, useForm } from '@inertiajs/react';
+import { ROUTES } from '@/support/constants/routes';
+import { Input } from '@/Components/ui/input';
+import { FormEventHandler, useState } from 'react';
+import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/InputError';
+import { userService } from '@/services/userService';
+import { Button } from '@/Components/ui/button';
 
 export default function () {
-
-    const {data, setData, post, processing, errors, reset, progress} = useForm({
-        nip: "",
-        name: "",
-        email: "",
-        password: "",
+    const { data, setData, post, processing, errors, reset, progress } = useForm({
+        nip: '',
+        name: '',
+        email: '',
+        password: '',
         remember: false,
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
 
-    const submit: FormEventHandler = async (e) => {
+    const submit: FormEventHandler = async e => {
         e.preventDefault();
         const redirectToIndex = () => location.assign(route(`${ROUTES.USERS}.index`));
 
         const formData = new FormData();
-        formData.append("nip", data.nip);
-        formData.append("name", data.name);
-        formData.append("email", data.email);
-        formData.append("password", data.password);
-        if (photo)
-            formData.append("photo", photo);
-        await userService.create(formData)
-        redirectToIndex()
+        formData.append('nip', data.nip);
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('password', data.password);
+        if (photo) formData.append('photo', photo);
+        await userService.create(formData);
+        redirectToIndex();
 
         // post(route(`${ROUTES.USERS}.store`), {
         //     onFinish: redirectToIndex, onError: console.log});
@@ -41,7 +38,7 @@ export default function () {
 
     return (
         <>
-            <Head title="Tambah Staff"/>
+            <Head title="Tambah Staff" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
@@ -50,7 +47,7 @@ export default function () {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nip" value="NIP"/>
+                            <InputLabel htmlFor="nip" value="NIP" />
                             <Input
                                 id="nip"
                                 type="number"
@@ -59,16 +56,13 @@ export default function () {
                                 className="mt-1"
                                 autoComplete="nip"
                                 maxLength={18}
-                                onChange={(e) => setData("nip", e.target.value)}
+                                onChange={e => setData('nip', e.target.value)}
                                 required
                             />
-                            <InputError
-                                message={errors.nip}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.nip} className="mt-2" />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama"/>
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
                                 id="nama"
                                 type="text"
@@ -76,12 +70,12 @@ export default function () {
                                 value={data.name}
                                 className="mt-1"
                                 autoComplete="nama"
-                                onChange={(e) => setData("name", e.target.value)}
+                                onChange={e => setData('name', e.target.value)}
                                 required
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="email" value="Email"/>
+                            <InputLabel htmlFor="email" value="Email" />
                             <Input
                                 id="email"
                                 type="email"
@@ -89,12 +83,12 @@ export default function () {
                                 value={data.email}
                                 className="mt-1"
                                 autoComplete="email"
-                                onChange={(e) => setData("email", e.target.value)}
+                                onChange={e => setData('email', e.target.value)}
                                 required
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="password" value="Password"/>
+                            <InputLabel htmlFor="password" value="Password" />
                             <Input
                                 id="password"
                                 type="password"
@@ -102,12 +96,12 @@ export default function () {
                                 value={data.password}
                                 className="mt-1"
                                 autoComplete="password"
-                                onChange={(e) => setData("password", e.target.value)}
+                                onChange={e => setData('password', e.target.value)}
                                 required
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="avatar" value="Foto staff"/>
+                            <InputLabel htmlFor="avatar" value="Foto staff" />
                             <Input
                                 id="avatar"
                                 type="file"
@@ -115,7 +109,7 @@ export default function () {
                                 name="avatar"
                                 className="mt-1"
                                 autoComplete="avatar"
-                                onChange={(e) => e.target.files != null && setPhoto(e.target.files?.[0])}
+                                onChange={e => e.target.files != null && setPhoto(e.target.files?.[0])}
                             />
                             {progress && (
                                 <progress value={progress.percentage} max="100">
@@ -129,8 +123,7 @@ export default function () {
                         </Button>
                     </form>
                 </div>
-
             </AuthenticatedLayout>
         </>
-    )
+    );
 }

@@ -1,47 +1,41 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, useForm} from "@inertiajs/react";
-import {ROUTES} from "@/support/constants/routes";
-import {Input} from "@/Components/ui/input";
-import {FormEventHandler, useState} from "react";
-import InputLabel from "@/Components/InputLabel";
-import InputError from "@/Components/InputError";
-import {userService} from "@/services/userService";
-import {Button} from "@/Components/ui/button";
-import {UserResource} from "@/support/interfaces/resources";
-import {parseFormData} from "@/lib/utils";
+import { Head, useForm } from '@inertiajs/react';
+import { ROUTES } from '@/support/constants/routes';
+import { Input } from '@/Components/ui/input';
+import { FormEventHandler, useState } from 'react';
+import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/InputError';
+import { userService } from '@/services/userService';
+import { Button } from '@/Components/ui/button';
+import { UserResource } from '@/support/interfaces/resources';
+import { parseFormData } from '@/lib/utils';
 
-export default function ({user}: { user: UserResource }) {
-    const {data, setData, post, processing, errors, reset, progress} = useForm({
+export default function ({ user }: { user: UserResource }) {
+    const { data, setData, post, processing, errors, reset, progress } = useForm({
         nip: user.nip,
         name: user.name,
         email: user.email,
-        phone_number: user.phone_number ?? "",
-        password: "",
+        phone_number: user.phone_number ?? '',
+        password: '',
         remember: false,
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
 
-    const submit: FormEventHandler = async (e) => {
+    const submit: FormEventHandler = async e => {
         e.preventDefault();
         const redirectToIndex = () => location.assign(route(`${ROUTES.USERS}.index`));
 
         const formData = new FormData();
-        if (data.nip)
-        formData.append("nip", data.nip);
-        if (data.name)
-        formData.append("name", data.name);
-        if (data.phone_number)
-            formData.append("phone_number", data.phone_number);
-        if (data.email)
-        formData.append("email", data.email);
-        if (data.password)
-        formData.append("password", data.password);
-        if (photo)
-            formData.append("photo", photo);
+        if (data.nip) formData.append('nip', data.nip);
+        if (data.name) formData.append('name', data.name);
+        if (data.phone_number) formData.append('phone_number', data.phone_number);
+        if (data.email) formData.append('email', data.email);
+        if (data.password) formData.append('password', data.password);
+        if (photo) formData.append('photo', photo);
         console.log(parseFormData(formData));
-        await userService.update(user.id, formData)
-        redirectToIndex()
+        await userService.update(user.id, formData);
+        redirectToIndex();
 
         // post(route(`${ROUTES.USERS}.store`), {
         //     onFinish: redirectToIndex, onError: console.log});
@@ -49,7 +43,7 @@ export default function ({user}: { user: UserResource }) {
 
     return (
         <>
-            <Head title="Tambah Staff"/>
+            <Head title="Tambah Staff" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
@@ -58,7 +52,7 @@ export default function ({user}: { user: UserResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nip" value="NIP"/>
+                            <InputLabel htmlFor="nip" value="NIP" />
                             <Input
                                 id="nip"
                                 type="number"
@@ -68,15 +62,12 @@ export default function ({user}: { user: UserResource }) {
                                 autoComplete="nip"
                                 placeholder={user.nip}
                                 maxLength={18}
-                                onChange={(e) => setData("nip", e.target.value)}
+                                onChange={e => setData('nip', e.target.value)}
                             />
-                            <InputError
-                                message={errors.nip}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.nip} className="mt-2" />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama"/>
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
                                 id="nama"
                                 type="text"
@@ -84,15 +75,12 @@ export default function ({user}: { user: UserResource }) {
                                 value={data.name}
                                 className="mt-1"
                                 autoComplete="nama"
-                                onChange={(e) => setData("name", e.target.value)}
+                                onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError
-                                message={errors.name}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.name} className="mt-2" />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="email" value="Email"/>
+                            <InputLabel htmlFor="email" value="Email" />
                             <Input
                                 id="email"
                                 type="email"
@@ -101,15 +89,12 @@ export default function ({user}: { user: UserResource }) {
                                 placeholder={user.email}
                                 className="mt-1"
                                 autoComplete="email"
-                                onChange={(e) => setData("email", e.target.value)}
+                                onChange={e => setData('email', e.target.value)}
                             />
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.email} className="mt-2" />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="phone" value="Phone"/>
+                            <InputLabel htmlFor="phone" value="Phone" />
                             <Input
                                 id="phone"
                                 type="tel"
@@ -117,15 +102,12 @@ export default function ({user}: { user: UserResource }) {
                                 value={data.phone_number}
                                 className="mt-1"
                                 autoComplete="phone"
-                                onChange={(e) => setData("phone_number", e.target.value)}
+                                onChange={e => setData('phone_number', e.target.value)}
                             />
-                            <InputError
-                                message={errors.phone_number}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.phone_number} className="mt-2" />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="password" value="Password"/>
+                            <InputLabel htmlFor="password" value="Password" />
                             <Input
                                 id="password"
                                 type="password"
@@ -133,15 +115,12 @@ export default function ({user}: { user: UserResource }) {
                                 value={data.password}
                                 className="mt-1"
                                 autoComplete="password"
-                                onChange={(e) => setData("password", e.target.value)}
+                                onChange={e => setData('password', e.target.value)}
                             />
-                            <InputError
-                                message={errors.password}
-                                className="mt-2"
-                            />
+                            <InputError message={errors.password} className="mt-2" />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="avatar" value="Foto staff"/>
+                            <InputLabel htmlFor="avatar" value="Foto staff" />
                             <Input
                                 id="avatar"
                                 type="file"
@@ -149,7 +128,7 @@ export default function ({user}: { user: UserResource }) {
                                 name="avatar"
                                 className="mt-1"
                                 autoComplete="avatar"
-                                onChange={(e) => e.target.files != null && setPhoto(e.target.files?.[0])}
+                                onChange={e => e.target.files != null && setPhoto(e.target.files?.[0])}
                             />
                             {progress && (
                                 <progress value={progress.percentage} max="100">
@@ -163,8 +142,7 @@ export default function ({user}: { user: UserResource }) {
                         </Button>
                     </form>
                 </div>
-
             </AuthenticatedLayout>
         </>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import { useEffect, FormEventHandler } from 'react';
+import { FormEventHandler, useEffect } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -17,7 +17,7 @@ export default function ConfirmPassword() {
         };
     }, []);
 
-    const submit: FormEventHandler = (e) => {
+    const submit: FormEventHandler = e => {
         e.preventDefault();
 
         post(route('password.confirm'));
@@ -42,7 +42,7 @@ export default function ConfirmPassword() {
                         value={data.password}
                         className="mt-1 block w-full"
                         isFocused={true}
-                        onChange={(e) => setData('password', e.target.value)}
+                        onChange={e => setData('password', e.target.value)}
                     />
 
                     <InputError message={errors.password} className="mt-2" />

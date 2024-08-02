@@ -10,7 +10,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
         email: '',
     });
 
-    const submit: FormEventHandler = (e) => {
+    const submit: FormEventHandler = e => {
         e.preventDefault();
 
         post(route('password.email'));
@@ -35,7 +35,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     value={data.email}
                     className="mt-1 block w-full"
                     isFocused={true}
-                    onChange={(e) => setData('email', e.target.value)}
+                    onChange={e => setData('email', e.target.value)}
                 />
 
                 <InputError message={errors.email} className="mt-2" />
