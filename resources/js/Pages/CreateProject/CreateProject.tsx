@@ -28,8 +28,21 @@ export default function CreateProject() {
                             <h1 className="text-2xl font-bold">Buat Proyek</h1>
                             <h3 className="text-lg mt-2">Nomor Projek :</h3>
 
+                            {/* <InputLabel htmlFor="name" value="Name" /> */}
+
+                            {/* <TextInput
+                        id="name"
+                        className="mt-1 block w-full"
+                        value={data.name}
+                        onChange={e => setData('name', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="name"
+                    /> */}
                             <div className="w-64 flex items-center rounded border-2 px-2 mt-3 ">
                                 <Input
+                                    value={data.nomorProyek}
+                                    onChange={e => setData('nomorProyek', Number(e.target.value))}
                                     className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                                     placeholder="Buat Proyek"
                                     type="number"
@@ -39,6 +52,8 @@ export default function CreateProject() {
 
                             <div className="w-64 flex items-center rounded border-2 px-2 mt-3 ">
                                 <Input
+                                    value={data.jumlahTrainset}
+                                    onChange={e => setData('jumlahTrainset', Number(e.target.value))}
                                     className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                                     placeholder="Jumlah Trainset"
                                     type="number"
