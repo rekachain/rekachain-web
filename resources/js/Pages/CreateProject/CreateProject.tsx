@@ -27,6 +27,9 @@ export default function CreateProject() {
                             />
                         </div>
                     </div>
+                    <div className="flex justify-end">
+                        <button className="p-2 bg-blue-600 rounded-md text-white">Buat Proyek</button>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>
