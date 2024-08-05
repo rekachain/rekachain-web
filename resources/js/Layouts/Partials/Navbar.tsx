@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
-import { Button } from '@/Components/ui/button';
+import { Button, buttonVariants } from '@/Components/ui/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { Sun } from 'lucide-react';
 import {
@@ -75,10 +75,8 @@ export default function Navbar() {
                     )}
                 </Button>
                 <Sheet>
-                    <SheetTrigger>
-                        <Button variant="ghost" size="icon">
-                            <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
-                        </Button>
+                    <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                        <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
                     </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>
