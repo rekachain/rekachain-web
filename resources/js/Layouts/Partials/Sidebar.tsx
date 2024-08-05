@@ -77,6 +77,11 @@ export default function Sidebar() {
                         title="Track Lot"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     />
+                    <SidebarLink
+                        routeName="project"
+                        title="Buat Proyek"
+                        icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
+                    />
                     <SidebarLinkCollapsible title="Batch" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"

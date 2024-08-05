@@ -38,4 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
 });
 
+
+Route::get('/project', function () {
+    return Inertia::render('CreateProject/CreateProject');
+})->middleware(['auth', 'verified'])->name('project');
+
 require __DIR__ . '/auth.php';
