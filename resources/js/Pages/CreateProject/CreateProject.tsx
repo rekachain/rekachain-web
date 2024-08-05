@@ -2,12 +2,14 @@ import { Input } from '@/Components/ui/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { useToast } from '@/Components/ui/use-toast';
 
 type Project = {
     nomorProyek: number;
     jumlahTrainset: number;
 };
 export default function CreateProject() {
+    const { toast } = useToast();
     const project = {} as Project;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
@@ -16,7 +18,11 @@ export default function CreateProject() {
     });
     const submit: FormEventHandler = e => {
         e.preventDefault();
-        alert('halo');
+        // alert('halo');
+        toast({
+            title: 'Proyek Berhasil Dibuat !',
+            description: 'Jumat, 10 February , 2023 saat 5:57 PM',
+        });
     };
     return (
         <AuthenticatedLayout>
