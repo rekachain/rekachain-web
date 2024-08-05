@@ -77,20 +77,20 @@ export default function Sidebar() {
                         title="Track Lot"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     />
-                    <SidebarLink
+                    {/* <SidebarLink
                         routeName="project"
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLinkCollapsible title="Batch" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
+                    /> */}
+                    <SidebarLinkCollapsible title="Proyek" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
                         <SidebarLinkCollapsibleItem
                             routeName="profile.edit"
-                            title="Order"
+                            title="List Proyek"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLinkCollapsibleItem
-                            routeName="profile.edit"
-                            title="Track"
+                            routeName="buat-proyek"
+                            title="Buat Proyek"
                             icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                     </SidebarLinkCollapsible>

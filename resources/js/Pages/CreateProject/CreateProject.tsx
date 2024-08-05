@@ -35,7 +35,6 @@ export default function CreateProject() {
                         to="opacity-100 translate-y-0 translate-x-0"
                         duration={300}
                     >
-                        Animate In!
                         <form onSubmit={submit}>
                             <div className="p-4 sm:p-8 bg-white h-[20rem] dark:bg-gray-800 shadow sm:rounded-lg">
                                 <h1 className="text-2xl font-bold">Buat Proyek</h1>

@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/project', function () {
+Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
-})->middleware(['auth', 'verified'])->name('project');
+})->middleware(['auth', 'verified'])->name('buat-proyek');
 
 require __DIR__ . '/auth.php';
