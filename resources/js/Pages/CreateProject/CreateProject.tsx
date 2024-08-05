@@ -1,9 +1,11 @@
 import { Input } from '@/Components/ui/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head } from '@inertiajs/react';
 
 export default function CreateProject() {
     return (
         <AuthenticatedLayout>
+            <Head title="Buat Proyek" />
             <div className="py-12">
                 <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
                     <div className="p-4 sm:p-8 bg-white h-[20rem] dark:bg-gray-800 shadow sm:rounded-lg">
