@@ -95,7 +95,7 @@ export default function Navbar() {
                             </Avatar>
                             <div className="flex flex-col items-start">
                                 <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
-                                <span className="text-navbar-secondary-foreground text-sm">Supervisor</span>
+                                <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
                             </div>
                         </div>
                     </DropdownMenuTrigger>

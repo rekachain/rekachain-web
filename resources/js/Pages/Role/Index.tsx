@@ -6,20 +6,20 @@ import { buttonVariants } from '@/Components/ui/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 
 export default function () {
-    const Users = lazy(() => import('./Partials/Users'));
+    const Roles = lazy(() => import('./Partials/Roles'));
     return (
         <>
-            <Head title="Users" />
+            <Head title="Roles" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Staff</h1>
-                        <Link className={buttonVariants({ variant: 'default' })} href={route(`${ROUTES.USERS}.create`)}>
-                            Tambah Staff
+                        <h1 className="text-page-header my-4">Role</h1>
+                        <Link className={buttonVariants({ variant: 'default' })} href={route(`${ROUTES.ROLES}.create`)}>
+                            Tambah Role
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Users />
+                        <Roles />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

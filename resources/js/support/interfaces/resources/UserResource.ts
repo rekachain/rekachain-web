@@ -3,4 +3,5 @@ import { User } from '@/support/models';
 
 export interface UserResource extends Resource, User {
     photo_path: string;
+    role: string;
 }

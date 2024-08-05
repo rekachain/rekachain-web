@@ -59,8 +59,7 @@ export default function () {
                         <TableHead>Nama</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>No. Hp</TableHead>
-                        <TableHead>Divisi</TableHead>
-                        <TableHead>Level</TableHead>
+                        <TableHead>Role</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -78,8 +77,7 @@ export default function () {
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.phone_number}</TableCell>
-                            <TableCell className="text-destructive">Pay 25$ to unlock this dlc</TableCell>
-                            <TableCell className="text-destructive">Pay 50$ to unlock this feature</TableCell>
+                            <TableCell>{user.role}</TableCell>
 
                             {user.id !== auth.user.id && (
                                 <TableCell>

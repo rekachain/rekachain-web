@@ -6,6 +6,7 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\UserServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -18,6 +19,9 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+
+        $request->checkPermissionEnum(PermissionEnum::USER_READ);
+
         if ($this->ajax()) {
             try {
                 $perPage = request()->get('perPage', 5);
