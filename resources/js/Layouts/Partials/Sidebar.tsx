@@ -84,7 +84,7 @@ export default function Sidebar() {
                     /> */}
                     <SidebarLinkCollapsible title="Proyek" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
                         <SidebarLinkCollapsibleItem
-                            routeName="profile.edit"
+                            routeName="proyek"
                             title="List Proyek"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
