@@ -17,6 +17,7 @@ import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
 import { STYLING } from '@/support/constants/styling';
+import { Link } from '@inertiajs/react';
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
@@ -59,6 +60,7 @@ export default function Sidebar() {
                         )}
                     </Button>
                 </div>
+                <Link href={''}>a</Link>
                 <SidebarMenu title="GENERAL">
                     <SidebarLink
                         routeName="dashboard"
