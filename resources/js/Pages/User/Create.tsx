@@ -7,13 +7,17 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { userService } from '@/services/userService';
 import { Button } from '@/Components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
+import { Label } from '@/Components/ui/label';
+import { RoleResource } from '@/support/interfaces/resources';
 
-export default function () {
+export default function (props: { roles: RoleResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
         nip: '',
         name: '',
         email: '',
         password: '',
+        role_id: '',
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
@@ -27,6 +31,7 @@ export default function () {
         formData.append('name', data.name);
         formData.append('email', data.email);
         formData.append('password', data.password);
+        formData.append('role_id', data.role_id);
         if (photo) formData.append('photo', photo);
         await userService.create(formData);
         redirectToIndex();
@@ -115,6 +120,18 @@ export default function () {
                                     {progress.percentage}%
                                 </progress>
                             )}
+                        </div>
+
+                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
+                            <h2 className="text-lg font-semibold">Role</h2>
+                            <RadioGroup onValueChange={v => setData('role_id', v)}>
+                                {props.roles?.map(role => (
+                                    <div key={role.id} className="flex items-center space-x-2">
+                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
+                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
+                                    </div>
+                                ))}
+                            </RadioGroup>
                         </div>
 
                         <Button className="mt-4" disabled={processing}>

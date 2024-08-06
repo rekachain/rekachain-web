@@ -9,14 +9,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface {
     public function create(array $data): ?Model {
+
         if (request()->hasFile('photo')) {
             $data['photo'] = request()->file('photo')->store('users/photos', 'public');
         }
 
-        return parent::create($data);
+        $user = parent::create($data);
+
+        if (isset($data['role_id'])) {
+            $user->roles()->sync($data['role_id']);
+        }
+
+        return $user;
     }
 
     public function update($keyOrModel, array $data): ?Model {
+
+        if (isset($data['role_id'])) {
+            $keyOrModel->roles()->sync($data['role_id']);
+        }
+
         if (request()->hasFile('photo')) {
             if ($keyOrModel->photo) {
                 unlink(storage_path('app/public/' . $keyOrModel->photo));
