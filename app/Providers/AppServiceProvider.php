@@ -2,15 +2,29 @@
 
 namespace App\Providers;
 
+use App\Repositories\DivisionRepository;
+use App\Repositories\PermissionRepository;
+use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WorkshopRepository;
 use App\Services\UserService;
 use App\Services\WorkshopService;
+use App\Services\DivisionService;
+use App\Services\PermissionService;
+use App\Services\RoleService;
+use App\Services\UserService;
+use App\Support\Interfaces\DivisionRepositoryInterface;
+use App\Support\Interfaces\DivisionServiceInterface;
+use App\Support\Interfaces\PermissionRepositoryInterface;
+use App\Support\Interfaces\PermissionServiceInterface;
+use App\Support\Interfaces\RoleRepositoryInterface;
+use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\UserRepositoryInterface;
 use App\Support\Interfaces\UserServiceInterface;
 use App\Support\Interfaces\WorkshopRepositoryInterface;
 use App\Support\Interfaces\WorkshopServiceInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -23,6 +37,15 @@ class AppServiceProvider extends ServiceProvider {
         
         $this->app->singleton(WorkshopRepositoryInterface::class, WorkshopRepository::class);
         $this->app->singleton(WorkshopServiceInterface::class, WorkshopService::class);
+
+        $this->app->singleton(DivisionRepositoryInterface::class, DivisionRepository::class);
+        $this->app->singleton(DivisionServiceInterface::class, DivisionService::class);
+
+        $this->app->singleton(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->singleton(RoleServiceInterface::class, RoleService::class);
+
+        $this->app->singleton(PermissionRepositoryInterface::class, PermissionRepository::class);
+        $this->app->singleton(PermissionServiceInterface::class, PermissionService::class);
     }
 
     /**
@@ -30,5 +53,9 @@ class AppServiceProvider extends ServiceProvider {
      */
     public function boot(): void {
         JsonResource::withoutWrapping();
+
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('Super Admin') ? true : null;
+        });
     }
 }

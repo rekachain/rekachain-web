@@ -6,5 +6,4 @@ export interface User {
     email: string;
     phone_number: string;
     email_verified_at: string;
-    initials: string;
 }
