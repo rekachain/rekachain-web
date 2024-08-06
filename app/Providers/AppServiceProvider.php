@@ -7,7 +7,6 @@ use App\Repositories\PermissionRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WorkshopRepository;
-use App\Services\UserService;
 use App\Services\WorkshopService;
 use App\Services\DivisionService;
 use App\Services\PermissionService;
@@ -34,7 +33,7 @@ class AppServiceProvider extends ServiceProvider {
     public function register(): void {
         $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
         $this->app->singleton(UserServiceInterface::class, UserService::class);
-        
+
         $this->app->singleton(WorkshopRepositoryInterface::class, WorkshopRepository::class);
         $this->app->singleton(WorkshopServiceInterface::class, WorkshopService::class);
 
