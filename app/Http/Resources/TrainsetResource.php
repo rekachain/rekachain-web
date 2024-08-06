@@ -16,7 +16,7 @@ class TrainsetResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id_trainset' => $this->id_trainset,
+            'id' => $this->id,
             'id_project' => $this->id_project,
             'name' => $this->name,
         ];

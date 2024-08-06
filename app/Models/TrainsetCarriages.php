@@ -15,13 +15,14 @@ class TrainsetCarriages extends Model
         'qty',
     ];
 
-    public function ts_car(): BelongsTo
+    public function carriage(): BelongsTo
     {
-        return $this->belongsTo(Trainset::class, 'id_trainset', 'id_trainset');
+        return $this->belongsTo(Trainset::class, 'id_trainset', 'id');
     }
 
-    public function car_ts(): BelongsTo
+    public function trainset(): BelongsTo
     {
-        return $this->belongsTo(Carriage::class, 'id_carriage', 'id_carriage');
+        return $this->belongsTo(Carriage::class, 'id_carriage', 'id');
     }
+
 }

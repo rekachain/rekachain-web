@@ -14,13 +14,13 @@ class Project extends Model
         'date'
     ];
 
-    public function project_trainset(): HasMany
+    public function trainsets(): HasMany
     {
-        return $this->hasMany(Trainset::class, 'id_project', 'id_project');
+        return $this->hasMany(Trainset::class, 'id_project', 'id');
     }
 
-    public function project_attachment(): HasMany
+    public function projectAttachments(): HasMany
     {
-        return $this->hasMany(ProjectAttachment::class, 'id_project', 'id_project');
+        return $this->hasMany(ProjectAttachment::class, 'id_project', 'id');
     }
 }

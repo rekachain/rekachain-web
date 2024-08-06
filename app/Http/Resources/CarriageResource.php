@@ -16,10 +16,9 @@ class CarriageResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id_carriage' => $this->id_carriage,
+            'id' => $this->id,
             'type' => $this->type,
             'description' => $this->description,
-
         ];
     }
 }

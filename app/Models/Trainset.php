@@ -16,18 +16,18 @@ class Trainset extends Model
         'name',
     ];
 
-    public function ts_car(): HasMany
+    public function carriages(): HasMany
     {
-        return $this->hasMany(TrainsetCarriages::class, 'id_trainset', 'id_trainset');
+        return $this->hasMany(TrainsetCarriages::class, 'id_trainset', 'id');
     }
 
-    public function project_attachment(): HasMany
+    public function projectAttachments(): HasMany
     {
-        return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id_trainset');
+        return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id');
     }
 
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class, 'id_project', 'id_project');
+        return $this->belongsTo(Project::class, 'id_project', 'id');
     }
 }

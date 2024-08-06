@@ -16,7 +16,7 @@ class ProjectResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id_project' => $this->id,
+            'id' => $this->id,
             'date' => $this->date,
         ];
     }

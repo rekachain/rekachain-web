@@ -15,13 +15,13 @@ class Carriage extends Model
         'description',
     ];
 
-    public function car_ts(): HasMany
+    public function trainsets(): HasMany
     {
-        return $this->hasMany(TrainsetCarriages::class);
+        return $this->hasMany(TrainsetCarriages::class, 'id_carriage', 'id');
     }
 
-    public function car_pan(): HasMany
+    public function panels(): HasMany
     {
-        return $this->hasMany(CarriagePanels::class);
+        return $this->hasMany(CarriagePanels::class, 'id_carriage', 'id');
     }
 }
