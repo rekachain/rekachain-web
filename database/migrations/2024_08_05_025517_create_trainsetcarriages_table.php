@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('trainsetcarriages', function (Blueprint $table) {
             $table->id();
-            $table->integer();
-            $table->timestamps();
+            $table->integer('id_trainset');
+            $table->integer('id_carriage');
+            $table->integer('qty');
         });
     }
 
