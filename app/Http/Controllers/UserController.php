@@ -25,16 +25,18 @@ class UserController extends Controller {
 
         $request->checkPermissionEnum(PermissionEnum::USER_READ);
 
-        if ($this->ajax()) {
-            try {
-                $perPage = request()->get('perPage', 5);
+        if ($request->user()->can('user-read')) {
+            if ($this->ajax()) {
+                try {
+                    $perPage = request()->get('perPage', 5);
 
-                return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
-            } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+                    return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
+                } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+                }
             }
-        }
 
-        return inertia('User/Index');
+            return inertia('User/Index');
+        }
 
     }
 

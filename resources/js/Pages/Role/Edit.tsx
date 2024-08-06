@@ -109,7 +109,6 @@ export default function (props: {
                                 className="mt-1"
                                 autoComplete="level"
                                 onChange={e => setData('level', e.target.value)}
-                                required
                             />
                         </div>
 

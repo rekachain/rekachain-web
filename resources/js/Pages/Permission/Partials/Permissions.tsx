@@ -64,12 +64,13 @@ export default function () {
                             <TableCell>{permission.group}</TableCell>
                             <TableCell>{permission.name}</TableCell>
                             <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.ROLES}.edit`, permission.id)}
-                                >
-                                    Edit
-                                </Link>
+                                {/*<Link*/}
+                                {/*    className={buttonVariants({ variant: 'link' })}*/}
+                                {/*    href={route(`${ROUTES.ROLES}.edit`, permission.id)}*/}
+                                {/*>*/}
+                                {/*    Edit*/}
+                                {/*</Link>*/}
+
                                 {/*<Button*/}
                                 {/*    variant="link"*/}
                                 {/*    onClick={() => handlePermissionResourceDeletion(permission.id)}*/}
