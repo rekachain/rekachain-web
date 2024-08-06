@@ -22,6 +22,8 @@ class UserResource extends JsonResource {
             'photo_path' => $this->photo ? asset('storage/' . $this->photo) : null,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'role' => $this->roles()->first()?->name,
+            'role_id' => $this->roles()->first()?->id,
         ];
     }
 }

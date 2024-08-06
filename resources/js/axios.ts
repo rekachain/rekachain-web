@@ -49,6 +49,29 @@ function handleAxiosError(error: any) {
         }
 
         ErrorSwal.fire(defaultAlertOptions);
+    } else if (error.response.status === 403) {
+        const ErrorSwal = withReactContent(Swal);
+
+        const defaultSwalOptions: SweetAlertOptions = {
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            icon: 'error',
+            title: 'Unauthorized',
+            text: error.response.data.message,
+            didOpen: toast => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+        };
+
+        if (error.response.data.errors && Object.keys(error.response.data.errors).length > 0) {
+            defaultSwalOptions.html = formatErrorMessages(error);
+        }
+
+        ErrorSwal.fire(defaultSwalOptions);
     } else if (error.response.status >= 402) {
         const ErrorSwal = withReactContent(Swal);
 
