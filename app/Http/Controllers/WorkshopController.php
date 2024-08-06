@@ -8,7 +8,7 @@ use App\Support\Interfaces\WorkshopServiceInterface;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller {
-    public function __construct(protected WorkshopServiceInterface $WorkshopService) {}
+    public function __construct(protected WorkshopServiceInterface $workshopService) {}
 
     /**
      * Display a listing of the resource.
@@ -34,28 +34,28 @@ class WorkshopController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(Workshop $Workshop) {
+    public function show(Workshop $workshop) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Workshop $Workshop) {
+    public function edit(Workshop $workshop) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Workshop $Workshop) {
+    public function update(Request $request, Workshop $workshop) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Workshop $Workshop) {
+    public function destroy(Workshop $workshop) {
         //
     }
 }
