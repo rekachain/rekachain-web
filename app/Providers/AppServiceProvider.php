@@ -11,6 +11,11 @@ use App\Repositories\ProjectRepository;
 use App\Services\ProjectService;
 use App\Support\Interfaces\ProjectRepositoryInterface;
 use App\Support\Interfaces\ProjectServiceInterface;
+// Carriage
+use App\Repositories\CarriageRepository;
+use App\Services\CarriageService;
+use App\Support\Interfaces\CarriageRepositoryInterface;
+use App\Support\Interfaces\CarriageServiceInterface;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
@@ -24,6 +29,8 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->singleton(UserServiceInterface::class, UserService::class);
         $this->app->singleton(ProjectRepositoryInterface::class, ProjectRepository::class);
         $this->app->singleton(ProjectServiceInterface::class, ProjectService::class);
+        $this->app->singleton(CarriageRepositoryInterface::class, CarriageRepository::class);
+        $this->app->singleton(CarriageServiceInterface::class, CarriageService::class);
     }
 
     /**
