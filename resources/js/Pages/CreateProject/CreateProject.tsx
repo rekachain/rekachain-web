@@ -1,9 +1,11 @@
 import { Input } from '@/Components/ui/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { useToast } from '@/Components/ui/use-toast';
 import AnimateIn from '@/lib/AnimateIn';
+import { buttonVariants } from '@/Components/ui/button';
+import { ROUTES } from '@/support/constants/routes';
 
 type Project = {
     nomorProyek: number;
@@ -24,6 +26,8 @@ export default function CreateProject() {
             title: 'Proyek Berhasil Dibuat !',
             description: 'Jumat, 10 February , 2023 saat 5:57 PM',
         });
+
+        location.href = route('buat-trainset');
     };
     return (
         <AuthenticatedLayout>
@@ -73,9 +77,11 @@ export default function CreateProject() {
                                 </div>
                             </div>
                             <div className="flex justify-end">
+                                {/* <Link href={route(`buat-trainset`)}> */}
                                 <button type="submit" className="p-2 mt-5 bg-blue-600 rounded-md text-white">
                                     Buat Proyek
                                 </button>
+                                {/* </Link> */}
                             </div>
                         </form>
                     </AnimateIn>

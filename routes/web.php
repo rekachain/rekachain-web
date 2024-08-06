@@ -42,6 +42,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
 })->middleware(['auth', 'verified'])->name('buat-proyek');
+Route::get('/buat-trainset', function () {
+    return Inertia::render('CreateProject/CreateTrainset');
+})->middleware(['auth', 'verified'])->name('buat-trainset');
 
 Route::get('/proyek', function () {
     return Inertia::render('ProjectList');
