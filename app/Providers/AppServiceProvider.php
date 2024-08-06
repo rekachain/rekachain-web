@@ -16,6 +16,11 @@ use App\Repositories\CarriageRepository;
 use App\Services\CarriageService;
 use App\Support\Interfaces\CarriageRepositoryInterface;
 use App\Support\Interfaces\CarriageServiceInterface;
+// Trainset
+use App\Repositories\TrainsetRepository;
+use App\Services\TrainsetService;
+use App\Support\Interfaces\TrainsetRepositoryInterface;
+use App\Support\Interfaces\TrainsetServiceInterface;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +36,8 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->singleton(ProjectServiceInterface::class, ProjectService::class);
         $this->app->singleton(CarriageRepositoryInterface::class, CarriageRepository::class);
         $this->app->singleton(CarriageServiceInterface::class, CarriageService::class);
+        $this->app->singleton(TrainsetRepositoryInterface::class, TrainsetRepository::class);
+        $this->app->singleton(TrainsetServiceInterface::class, TrainsetService::class);
     }
 
     /**
