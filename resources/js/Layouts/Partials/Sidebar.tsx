@@ -5,8 +5,10 @@ import {
     RiFlickrLine,
     RiHome8Line,
     RiLockLine,
+    RiLockUnlockFill,
     RiQuestionLine,
     RiSettings3Line,
+    RiShieldLine,
     RiUserLine,
 } from '@remixicon/react';
 import { Button } from '@/Components/ui/button';
@@ -72,11 +74,19 @@ export default function Sidebar() {
                         title="Staff"
                         icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
                     />
-                    <SidebarLink
-                        routeName={`${ROUTES.ROLES}.index`}
-                        title="Roles"
-                        icon={<RiLockLine size={STYLING.ICON.SIZE.SMALL} />}
-                    />
+
+                    <SidebarLinkCollapsible title="Hak Akses" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.PERMISSIONS}.index`}
+                            title="Permissions"
+                            icon={<RiLockUnlockFill size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.ROLES}.index`}
+                            title="Roles"
+                            icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                    </SidebarLinkCollapsible>
                 </SidebarMenu>
                 <SidebarMenu title="MANUFAKTUR" bordered>
                     <SidebarLink

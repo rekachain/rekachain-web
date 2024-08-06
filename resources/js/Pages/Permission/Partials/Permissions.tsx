@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import { Link, usePage } from '@inertiajs/react';
-import { roleService } from '@/services/roleService';
+import { permissionService } from '@/services/permissionService';
 import { useEffect, useState } from 'react';
 import { PaginateResponse } from '@/support/interfaces/others';
 import { Button, buttonVariants } from '@/Components/ui/button';
@@ -8,10 +8,10 @@ import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
-import { RoleResource } from '@/support/interfaces/resources/RoleResource';
+import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
 
 export default function () {
-    const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();
+    const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
@@ -19,27 +19,27 @@ export default function () {
 
     const { auth } = usePage().props;
 
-    const syncRoleResources = async () => {
-        roleService.getAll(filters).then(res => {
+    const syncPermissionResources = async () => {
+        permissionService.getAll(filters).then(res => {
             console.log(res);
-            setRoleResponse(res);
+            setPermissionResponse(res);
         });
     };
 
     useEffect(() => {
         console.log('first render, or filters changed');
-        syncRoleResources();
+        syncPermissionResources();
     }, [filters]);
 
-    const handleRoleResourceDeletion = (id: number) => {
+    const handlePermissionResourceDeletion = (id: number) => {
         const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
                 window.Swal.fire({
                     icon: 'success',
-                    title: 'RoleResource deleted successfully',
+                    title: 'PermissionResource deleted successfully',
                 });
-                await roleService.delete(id);
-                await syncRoleResources();
+                await permissionService.delete(id);
+                await syncPermissionResources();
             }
         });
     };
@@ -53,41 +53,36 @@ export default function () {
             <Table>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>Group</TableHead>
                         <TableHead>Nama</TableHead>
-                        <TableHead>Divisi</TableHead>
-                        <TableHead>Level</TableHead>
-                        <TableHead>Jumlah User</TableHead>
-                        <TableHead>Jumlah Izin</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {roleResponse?.data.map(role => (
-                        <TableRow key={role.id}>
-                            <TableCell>{role.name}</TableCell>
-                            <TableCell>{role.division}</TableCell>
-                            <TableCell>{role.level}</TableCell>
-                            <TableCell>{role.users_count}</TableCell>
-                            <TableCell>{role.permissions_count}</TableCell>
+                    {permissionResponse?.data.map(permission => (
+                        <TableRow key={permission.id}>
+                            <TableCell>{permission.group}</TableCell>
+                            <TableCell>{permission.name}</TableCell>
                             <TableCell>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.ROLES}.edit`, role.id)}
+                                    href={route(`${ROUTES.ROLES}.edit`, permission.id)}
                                 >
                                     Edit
                                 </Link>
-                                {role.users_count <= 0 && (
-                                    <Button variant="link" onClick={() => handleRoleResourceDeletion(role.id)}>
-                                        Delete
-                                    </Button>
-                                )}
+                                {/*<Button*/}
+                                {/*    variant="link"*/}
+                                {/*    onClick={() => handlePermissionResourceDeletion(permission.id)}*/}
+                                {/*>*/}
+                                {/*    Delete*/}
+                                {/*</Button>*/}
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
 
-            <GenericPagination meta={roleResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }

@@ -14,7 +14,6 @@ export default function () {
         name: '',
         email: '',
         password: '',
-        remember: false,
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);

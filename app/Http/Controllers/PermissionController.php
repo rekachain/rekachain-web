@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Resources\PermissionResource;
+use App\Models\Permission;
+use App\Support\Interfaces\PermissionServiceInterface;
+use Illuminate\Http\Request;
+
+class PermissionController extends Controller {
+    public function __construct(protected PermissionServiceInterface $permissionService) {}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request) {
+        if ($this->ajax()) {
+            $perPage = $request->get('perPage', 5);
+
+            return PermissionResource::collection($this->permissionService->getAllPaginated($request->query(), $perPage));
+        }
+
+        return inertia('Permission/Index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create() {
+        return inertia('Permission/Create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request) {
+        if ($this->ajax()) {
+            return $this->permissionService->store($request->all());
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Permission $permission) {
+        if ($this->ajax()) {
+            return new PermissionResource($permission);
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Permission $permission) {
+        if ($this->ajax()) {
+            return new PermissionResource($permission);
+        }
+
+        return inertia('Permission/Edit', compact('permission'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Permission $permission) {
+        return 'This feature is not yet implemented.';
+        if ($this->ajax()) {
+            return $this->permissionService->update($permission, $request->all());
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Permission $permission) {
+        return 'This feature is not yet implemented.';
+        if ($this->ajax()) {
+            return $this->permissionService->delete($permission);
+        }
+    }
+}

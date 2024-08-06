@@ -15,7 +15,7 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        create: async (data: Partial<T> | FormData): Promise<T> => {
+        create: async (data: Partial<any> | FormData): Promise<T> => {
             const url = route(`${baseRoute}.store`);
 
             try {
@@ -26,7 +26,7 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        update: async (id: number, data: Partial<T> | FormData): Promise<T> => {
+        update: async (id: number, data: Partial<any> | FormData): Promise<T> => {
             const url = route(`${baseRoute}.update`, id);
             try {
                 return (

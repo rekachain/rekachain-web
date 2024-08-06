@@ -17,7 +17,6 @@ export default function ({ user }: { user: UserResource }) {
         email: user.email,
         phone_number: user.phone_number ?? '',
         password: '',
-        remember: false,
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
