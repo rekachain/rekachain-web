@@ -45,14 +45,14 @@ export default function CreateTrainset() {
                                     ></Input>
                                     <Button
                                         onClick={() => {
-                                            let tempList: Trainset[] = listTrainset;
-                                            for (let i = 0; i < input + 1; i++) {
+                                            let tempList: Trainset[] = [];
+                                            for (let i = 0; i < input; i++) {
                                                 tempList.push({
                                                     namaTrainset: i.toString(),
                                                     jumlahGerbong: 0,
                                                 });
                                             }
-                                            setListTrainset(tempList);
+                                            setListTrainset(prevListTrainset => [...prevListTrainset, ...tempList]);
                                         }}
                                     >
                                         Tambah Trainset
