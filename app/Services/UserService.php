@@ -55,19 +55,23 @@ class UserService extends BaseCrudService implements UserServiceInterface {
     }
 
     private function handlePhotoUpload(array $data, $keyOrModel = null): array {
-        if (request()->hasFile('photo')) {
+        if (request()->hasFile('photo_path')) {
             if ($keyOrModel && $keyOrModel->photo) {
                 $this->deletePhoto($keyOrModel);
             }
-            $data['photo'] = request()->file('photo')->store($this->photoPath, 'public');
+            $data['photo_path'] = request()->file('photo_path')->store($this->photoPath, 'public');
         }
 
         return $data;
     }
 
     private function deletePhoto($keyOrModel): void {
-        if ($keyOrModel->photo) {
-            unlink(storage_path('app/public/' . $keyOrModel->photo));
+        if ($keyOrModel->photo_path) {
+            $path = storage_path('app/public/' . $keyOrModel->photo_path);
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
         }
     }
 

@@ -18,7 +18,7 @@ class User extends Authenticatable {
      * @var array<int, string>
      */
     protected $fillable = [
-        'photo',
+        'photo_path',
         'name',
         'nip',
         'email',
@@ -45,4 +45,8 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function getPhotoAttribute() {
+        return $this->photo_path ? asset('storage/' . $this->photo_path) : null;
+    }
 }
