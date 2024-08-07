@@ -1,12 +1,26 @@
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AnimateIn from '@/lib/AnimateIn';
 import { Head } from '@inertiajs/react';
+import { FileSearch } from 'lucide-react';
+import { useState } from 'react';
 // import { Table } from 'lucide-react';
 
+type Trainset = {
+    namaTrainset: string;
+    jumlahGerbong: number;
+};
+
+const listTrainsetConst: Trainset[] = [
+    { namaTrainset: 'TSA 1', jumlahGerbong: 45 },
+    { namaTrainset: 'TSA 2', jumlahGerbong: 32 },
+    { namaTrainset: 'TSB 1', jumlahGerbong: 25 },
+];
 export default function CreateTrainset() {
+    const [listTrainset, setListTrainset] = useState<Trainset[]>(listTrainsetConst);
+    const [input, setInput] = useState(0);
     return (
         <div className="">
             <AuthenticatedLayout>
@@ -19,11 +33,30 @@ export default function CreateTrainset() {
                             to="opacity-100 translate-y-0 translate-x-0"
                             duration={300}
                         >
-                            <div className="p-4 sm:p-8 bg-white h-[10rem] dark:bg-gray-800 shadow sm:rounded-lg">
+                            <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg">
                                 <h1 className="text-xl font-bold ">Tambah Trainset</h1>
                                 <div className="flex gap-2 mt-2">
-                                    <Input className="w-1/4 " placeholder="Jumlah Trainset"></Input>
-                                    <Button>Tambah Trainset</Button>
+                                    <Input
+                                        onChange={e => {
+                                            setInput(Number(e.target.value));
+                                        }}
+                                        className="w-1/4 "
+                                        placeholder="Jumlah Trainset"
+                                    ></Input>
+                                    <Button
+                                        onClick={() => {
+                                            let tempList: Trainset[] = listTrainset;
+                                            for (let i = 0; i < input + 1; i++) {
+                                                tempList.push({
+                                                    namaTrainset: i.toString(),
+                                                    jumlahGerbong: 0,
+                                                });
+                                            }
+                                            setListTrainset(tempList);
+                                        }}
+                                    >
+                                        Tambah Trainset
+                                    </Button>
                                 </div>
                             </div>
                         </AnimateIn>
@@ -32,7 +65,7 @@ export default function CreateTrainset() {
                             to="opacity-100 translate-y-0 translate-x-0"
                             duration={300}
                         >
-                            <div className="p-4 sm:p-8 bg-white h-[20rem] dark:bg-gray-800 shadow sm:rounded-lg">
+                            <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg">
                                 <Table className="mt-2">
                                     {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                                     <TableHeader>
@@ -43,15 +76,15 @@ export default function CreateTrainset() {
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {/* {listProyek.map(proyek => (
-                                            <TableRow key={proyek.noProyek}>
-                                                <TableCell className="font-medium">{proyek.noProyek}</TableCell>
-                                                <TableCell className="text-center">{proyek.jumlahTS}</TableCell>
+                                        {listTrainset.map(trainset => (
+                                            <TableRow key={trainset.namaTrainset}>
+                                                <TableCell className="font-medium">{trainset.namaTrainset}</TableCell>
+                                                <TableCell className="text-center">{trainset.jumlahGerbong}</TableCell>
                                                 <TableCell className="flex justify-center ">
                                                     <FileSearch className="hover:cursor-pointer"></FileSearch>
                                                 </TableCell>
                                             </TableRow>
-                                        ))} */}
+                                        ))}
                                     </TableBody>
                                     {/* <TableFooter>
                             <TableRow>
