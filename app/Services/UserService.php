@@ -6,6 +6,8 @@ use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\UserRepositoryInterface;
 use App\Support\Interfaces\UserServiceInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserService extends BaseCrudService implements UserServiceInterface {
     private $photoPath = 'users/photos';
@@ -32,6 +34,20 @@ class UserService extends BaseCrudService implements UserServiceInterface {
         return parent::update($keyOrModel, $data);
     }
 
+    public function apiUpdatePassword($user, array $data): ?Model {
+        // Validate the old password
+        if (!Hash::check($data['old_password'], $user->password)) {
+
+            throw ValidationException::withMessages([
+                'old_password' => [trans('validation.old_password.mismatch')],
+            ]);
+        }
+
+        return $this->update($user, [
+            'password' => $data['new_password'],
+        ]);
+    }
+
     public function delete($keyOrModel): bool {
         $this->deletePhoto($keyOrModel);
 
@@ -39,19 +55,23 @@ class UserService extends BaseCrudService implements UserServiceInterface {
     }
 
     private function handlePhotoUpload(array $data, $keyOrModel = null): array {
-        if (request()->hasFile('photo')) {
+        if (request()->hasFile('photo_path')) {
             if ($keyOrModel && $keyOrModel->photo) {
                 $this->deletePhoto($keyOrModel);
             }
-            $data['photo'] = request()->file('photo')->store($this->photoPath, 'public');
+            $data['photo_path'] = request()->file('photo_path')->store($this->photoPath, 'public');
         }
 
         return $data;
     }
 
     private function deletePhoto($keyOrModel): void {
-        if ($keyOrModel->photo) {
-            unlink(storage_path('app/public/' . $keyOrModel->photo));
+        if ($keyOrModel->photo_path) {
+            $path = storage_path('app/public/' . $keyOrModel->photo_path);
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
         }
     }
 

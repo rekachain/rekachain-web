@@ -35,7 +35,7 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
         if (data.phone_number) formData.append('phone_number', data.phone_number);
         if (data.email) formData.append('email', data.email);
         if (data.password) formData.append('password', data.password);
-        if (photo) formData.append('photo', photo);
+        if (photo) formData.append('photo_path', photo);
         if (data.role_id) formData.append('role_id', data.role_id);
         console.log(parseFormData(formData));
         await userService.update(user.id, formData);

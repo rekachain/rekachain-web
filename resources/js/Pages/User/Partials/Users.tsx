@@ -69,7 +69,7 @@ export default function () {
                             <TableCell>
                                 {user.photo_path && (
                                     <Avatar>
-                                        <AvatarImage src={user.photo_path} alt={user.name} />
+                                        <AvatarImage src={user.photo} alt={user.name} />
                                     </Avatar>
                                 )}
                             </TableCell>
@@ -79,7 +79,7 @@ export default function () {
                             <TableCell>{user.phone_number}</TableCell>
                             <TableCell>{user.role}</TableCell>
 
-                            {user.id !== auth.user.id && (
+                            {user.id !== auth.user.id && (auth.user.role === 'Super Admin' || user.role !== 'Super Admin') && (
                                 <TableCell>
                                     <Link
                                         className={buttonVariants({ variant: 'link' })}

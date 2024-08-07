@@ -21,7 +21,6 @@ import { ROUTES } from '@/support/constants/routes';
 
 export default function Navbar() {
     const { auth } = usePage().props;
-
     useEffect(() => {
         document.addEventListener('keydown', e => {
             if (e.ctrlKey && e.key === 'k') {
@@ -90,7 +89,7 @@ export default function Navbar() {
                     <DropdownMenuTrigger>
                         <div className="flex justify-start gap-2">
                             <Avatar>
-                                <AvatarImage />
+                                <AvatarImage src={auth?.user.photo} />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col items-start">
