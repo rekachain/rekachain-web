@@ -46,6 +46,11 @@ class ApiUserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateUserRequest $request, User $user) {
+        $intent = request()->get('intent');
+        if($intent === 'api.user.update.password') {
+            return $this->userService->apiUpdatePassword($user, $request->validated());
+        }
+
         return $this->userService->update($user, $request->validated());
     }
 

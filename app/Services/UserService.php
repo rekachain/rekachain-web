@@ -6,6 +6,8 @@ use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\UserRepositoryInterface;
 use App\Support\Interfaces\UserServiceInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class UserService extends BaseCrudService implements UserServiceInterface {
     private $photoPath = 'users/photos';
@@ -30,6 +32,20 @@ class UserService extends BaseCrudService implements UserServiceInterface {
         }
 
         return parent::update($keyOrModel, $data);
+    }
+
+    public function apiUpdatePassword($user, array $data): ?Model {
+        // Validate the old password
+        if (!Hash::check($data['old_password'], $user->password)) {
+
+            throw ValidationException::withMessages([
+                'old_password' => [trans('validation.old_password.mismatch')],
+            ]);
+        }
+
+        return $this->update($user, [
+            'password' => $data['new_password'],
+        ]);
     }
 
     public function delete($keyOrModel): bool {

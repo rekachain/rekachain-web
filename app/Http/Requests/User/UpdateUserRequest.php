@@ -19,6 +19,16 @@ class UpdateUserRequest extends FormRequest {
      */
     public function rules(): array {
 
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case 'api.user.update.password':
+                return [
+                    'old_password' => 'required|string|min:8',
+                    'new_password' => 'required|string|min:8|confirmed',
+                ];
+        }
+
         $user = $this->route('user')->id;
 
         return [
