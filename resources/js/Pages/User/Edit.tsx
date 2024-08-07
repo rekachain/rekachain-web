@@ -7,17 +7,20 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { userService } from '@/services/userService';
 import { Button } from '@/Components/ui/button';
-import { UserResource } from '@/support/interfaces/resources';
+import { RoleResource, UserResource } from '@/support/interfaces/resources';
 import { parseFormData } from '@/lib/utils';
+import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
+import { Label } from '@/Components/ui/label';
 
-export default function ({ user }: { user: UserResource }) {
+export default function ({ user, roles }: { user: UserResource; roles: RoleResource[] }) {
+    console.log(user, roles);
     const { data, setData, post, processing, errors, reset, progress } = useForm({
         nip: user.nip,
         name: user.name,
         email: user.email,
         phone_number: user.phone_number ?? '',
         password: '',
-        remember: false,
+        role_id: user.role_id.toString(),
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
@@ -33,6 +36,7 @@ export default function ({ user }: { user: UserResource }) {
         if (data.email) formData.append('email', data.email);
         if (data.password) formData.append('password', data.password);
         if (photo) formData.append('photo', photo);
+        if (data.role_id) formData.append('role_id', data.role_id);
         console.log(parseFormData(formData));
         await userService.update(user.id, formData);
         redirectToIndex();
@@ -135,6 +139,21 @@ export default function ({ user }: { user: UserResource }) {
                                     {progress.percentage}%
                                 </progress>
                             )}
+                        </div>
+
+                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
+                            <h2 className="text-lg font-semibold">Role</h2>
+                            <RadioGroup
+                                defaultValue={user.role_id.toString()}
+                                onValueChange={v => setData('role_id', v)}
+                            >
+                                {roles?.map(role => (
+                                    <div key={role.id} className="flex items-center space-x-2">
+                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
+                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
+                                    </div>
+                                ))}
+                            </RadioGroup>
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
