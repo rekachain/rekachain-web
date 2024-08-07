@@ -31,7 +31,11 @@ class HandleInertiaRequests extends Middleware {
 
         if ($user = $request->user()) {
             $nameParts = explode(' ', $user->name);
-            $userInitials = strtoupper($nameParts[0][0] . $nameParts[1][0]);
+            if (count($nameParts) == 1) {
+                $userInitials = strtoupper($nameParts[0][0]);
+            } else {
+                $userInitials = strtoupper($nameParts[0][0] . $nameParts[1][0]);
+            }
         }
 
         return [
