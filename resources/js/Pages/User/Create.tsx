@@ -32,7 +32,7 @@ export default function (props: { roles: RoleResource[] }) {
         formData.append('email', data.email);
         formData.append('password', data.password);
         formData.append('role_id', data.role_id);
-        if (photo) formData.append('photo_path', photo);
+        if (photo) formData.append('image_path', photo);
         await userService.create(formData);
         redirectToIndex();
 
