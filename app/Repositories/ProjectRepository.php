@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectRepository extends BaseRepository implements ProjectRepositoryInterface {
 
+    public function getModelClass(): string {
+        return Project::class;
+    }
     // Berjaga jaga apabila ada upload dokumen
 
     // public function create(array $data): ?Model {
