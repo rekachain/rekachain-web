@@ -5,15 +5,18 @@ namespace App\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\UserRepositoryInterface;
 use App\Support\Interfaces\UserServiceInterface;
+use App\Traits\Services\HandlesImages;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UserService extends BaseCrudService implements UserServiceInterface {
-    private $photoPath = 'users/photos';
+    use HandlesImages;
+
+    protected $imagePath = 'users/images';
 
     public function create(array $data): ?Model {
-        $data = $this->handlePhotoUpload($data);
+        $data = $this->handleImageUpload($data);
 
         $user = parent::create($data);
 
@@ -25,7 +28,7 @@ class UserService extends BaseCrudService implements UserServiceInterface {
     }
 
     public function update($keyOrModel, array $data): ?Model {
-        $data = $this->handlePhotoUpload($data, $keyOrModel);
+        $data = $this->handleImageUpload($data, $keyOrModel);
 
         if (isset($data['role_id'])) {
             $keyOrModel->roles()->sync($data['role_id']);
@@ -49,30 +52,9 @@ class UserService extends BaseCrudService implements UserServiceInterface {
     }
 
     public function delete($keyOrModel): bool {
-        $this->deletePhoto($keyOrModel);
+        $this->deleteImage($keyOrModel->image_path);
 
         return parent::delete($keyOrModel);
-    }
-
-    private function handlePhotoUpload(array $data, $keyOrModel = null): array {
-        if (request()->hasFile('photo_path')) {
-            if ($keyOrModel && $keyOrModel->photo) {
-                $this->deletePhoto($keyOrModel);
-            }
-            $data['photo_path'] = request()->file('photo_path')->store($this->photoPath, 'public');
-        }
-
-        return $data;
-    }
-
-    private function deletePhoto($keyOrModel): void {
-        if ($keyOrModel->photo_path) {
-            $path = storage_path('app/public/' . $keyOrModel->photo_path);
-
-            if (file_exists($path)) {
-                unlink($path);
-            }
-        }
     }
 
     protected function getRepositoryClass(): string {

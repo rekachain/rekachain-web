@@ -67,9 +67,9 @@ export default function () {
                     {userResponse?.data.map(user => (
                         <TableRow key={user.id}>
                             <TableCell>
-                                {user.photo_path && (
+                                {user.image_path && (
                                     <Avatar>
-                                        <AvatarImage src={user.photo} alt={user.name} />
+                                        <AvatarImage className="object-cover" src={user.image} alt={user.name} />
                                     </Avatar>
                                 )}
                             </TableCell>
