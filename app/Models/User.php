@@ -9,6 +9,39 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+/**
+ * @OA\Schema(
+ *     schema="User",
+ *     type="object",
+ *     title="User",
+ *     description="User details",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         example=1
+ *     ),
+ *     @OA\Property(
+ *         property="name",
+ *         type="string",
+ *         example="John Doe"
+ *     ),
+ *     @OA\Property(
+ *         property="nip",
+ *         type="string",
+ *         example="123456"
+ *     ),
+ *     @OA\Property(
+ *         property="email",
+ *         type="string",
+ *         example="okokok@example.com"
+ *     ),
+ *     @OA\Property(
+ *         property="phone_number",
+ *         type="string",
+ *         example="081234567890"
+ *     )
+ * )
+ */
 class User extends Authenticatable {
     use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
