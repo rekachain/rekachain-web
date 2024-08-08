@@ -27,7 +27,7 @@ export default function CreateProject() {
             description: 'Jumat, 10 February , 2023 saat 5:57 PM',
         });
 
-        location.href = route('buat-trainset');
+        location.href = route('list-trainset');
     };
     return (
         <AuthenticatedLayout>

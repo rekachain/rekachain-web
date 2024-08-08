@@ -3,7 +3,7 @@ import { Input } from '@/Components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AnimateIn from '@/lib/AnimateIn';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { FileSearch } from 'lucide-react';
 import { useState } from 'react';
 // import { Table } from 'lucide-react';
@@ -81,7 +81,10 @@ export default function CreateTrainset() {
                                                 <TableCell className="font-medium">{trainset.namaTrainset}</TableCell>
                                                 <TableCell className="text-center">{trainset.jumlahGerbong}</TableCell>
                                                 <TableCell className="flex justify-center ">
-                                                    <FileSearch className="hover:cursor-pointer"></FileSearch>
+                                                    <Link href="buat-trainset">
+                                                        <FileSearch className="hover:cursor-pointer"></FileSearch>
+                                                    </Link>
+                                                    {/* <FileSearch className="hover:cursor-pointer"></FileSearch> */}
                                                 </TableCell>
                                             </TableRow>
                                         ))}
