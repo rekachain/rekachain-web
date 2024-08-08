@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
@@ -12,7 +11,7 @@ use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\UserServiceInterface;
 use Illuminate\Http\Request;
 
-class ApiUserController extends Controller {
+class ApiUserController extends ApiController {
     public function __construct(
         protected UserServiceInterface $userService,
         protected RoleServiceInterface $roleService) {}
@@ -47,7 +46,7 @@ class ApiUserController extends Controller {
      */
     public function update(UpdateUserRequest $request, User $user) {
         $intent = request()->get('intent');
-        if($intent === 'api.user.update.password') {
+        if ($intent === 'api.user.update.password') {
             return $this->userService->apiUpdatePassword($user, $request->validated());
         }
 

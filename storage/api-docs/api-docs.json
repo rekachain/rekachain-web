@@ -1,0 +1,224 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "APIs For Rekachain",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user",
+                "description": "Authenticate user and return user details, token, role, and permissions",
+                "operationId": "574f1cc956a51e68ed53865ca6d520da",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nip",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "nip": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "102ej1209dj21doljdlaskjd1902odj"
+                                        },
+                                        "role": {
+                                            "$ref": "#/components/schemas/RoleResource"
+                                        },
+                                        "permissions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid login details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid login details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout user",
+                "description": "Revoke all tokens for the authenticated user",
+                "operationId": "23fb87edc96c7847705c82ef00883341",
+                "responses": {
+                    "200": {
+                        "description": "Successful logout",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RoleResource": {
+                "description": "Role resource",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Role"
+                    }
+                ]
+            },
+            "UserResource": {
+                "description": "User resource",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/User"
+                    }
+                ]
+            },
+            "Role": {
+                "title": "Role",
+                "description": "Role details",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Admin"
+                    },
+                    "guard_name": {
+                        "type": "string",
+                        "example": "web"
+                    },
+                    "division_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "level": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User details",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "nip": {
+                        "type": "string",
+                        "example": "123456"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "okokok@example.com"
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "example": "081234567890"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        }
+    ]
+}

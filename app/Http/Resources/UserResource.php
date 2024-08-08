@@ -7,6 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource {
     /**
+     * @OA\Schema(
+     *      schema="UserResource",
+     *      type="object",
+     *      description="User resource",
+     *      allOf={
+     *          @OA\Schema(ref="#/components/schemas/User")
+     *      }
+     * )
+     *
      * Transform the resource into an array.
      *
      * @return array<string, mixed>

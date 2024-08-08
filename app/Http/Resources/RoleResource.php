@@ -7,6 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class RoleResource extends JsonResource {
     /**
+     * @OA\Schema(
+     *     schema="RoleResource",
+     *     type="object",
+     *     description="Role resource",
+     *     allOf={
+     *      @OA\Schema(ref="#/components/schemas/Role")
+     *     }
+     * )
+     *
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
