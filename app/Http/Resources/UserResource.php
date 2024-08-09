@@ -7,6 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource {
     /**
+     * @OA\Schema(
+     *      schema="UserResource",
+     *      type="object",
+     *      description="User resource",
+     *      allOf={
+     *          @OA\Schema(ref="#/components/schemas/User")
+     *      }
+     * )
+     *
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
@@ -18,10 +27,12 @@ class UserResource extends JsonResource {
             'nip' => $this->nip,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
-            'photo' => $this->photo,
-            'photo_path' => $this->photo ? asset('storage/' . $this->photo) : null,
+            'image_path' => $this->image_path,
+            'image' => $this->image,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'role' => $this->roles()->first()?->name,
+            'role_id' => $this->roles()->first()?->id,
         ];
     }
 }

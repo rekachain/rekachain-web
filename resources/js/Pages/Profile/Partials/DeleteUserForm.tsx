@@ -1,11 +1,12 @@
 import { FormEventHandler, useRef, useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
+import { Button } from '@/Components/ui/button';
 
 export default function DeleteUserForm({ className = '' }: { className?: string }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -68,17 +69,18 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
                     </p>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="password" value="Password" className="sr-only" />
+                        <Label htmlFor="password" className="sr-only">
+                            Password
+                        </Label>
 
-                        <TextInput
+                        <Input
                             id="password"
                             type="password"
                             name="password"
                             ref={passwordInput}
                             value={data.password}
                             onChange={e => setData('password', e.target.value)}
-                            className="mt-1 block w-3/4"
-                            isFocused
+                            autoFocus
                             placeholder="Password"
                         />
 
@@ -86,11 +88,11 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
                     </div>
 
                     <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
+                        <Button onClick={closeModal}>Cancel</Button>
 
-                        <DangerButton className="ms-3" disabled={processing}>
+                        <Button variant="destructive" className="ms-3" disabled={processing}>
                             Delete Account
-                        </DangerButton>
+                        </Button>
                     </div>
                 </form>
             </Modal>

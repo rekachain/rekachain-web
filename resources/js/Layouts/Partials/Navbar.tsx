@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
-import { Button } from '@/Components/ui/button';
+import { Button, buttonVariants } from '@/Components/ui/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { Sun } from 'lucide-react';
 import {
@@ -21,7 +21,6 @@ import { ROUTES } from '@/support/constants/routes';
 
 export default function Navbar() {
     const { auth } = usePage().props;
-
     useEffect(() => {
         document.addEventListener('keydown', e => {
             if (e.ctrlKey && e.key === 'k') {
@@ -75,10 +74,8 @@ export default function Navbar() {
                     )}
                 </Button>
                 <Sheet>
-                    <SheetTrigger>
-                        <Button variant="ghost" size="icon">
-                            <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
-                        </Button>
+                    <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                        <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
                     </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>
@@ -92,23 +89,34 @@ export default function Navbar() {
                     <DropdownMenuTrigger>
                         <div className="flex justify-start gap-2">
                             <Avatar>
-                                <AvatarImage />
+                                <AvatarImage src={auth?.user.image} />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
                             <div className="flex flex-col items-start">
                                 <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
-                                <span className="text-navbar-secondary-foreground text-sm">Supervisor</span>
+                                <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
                             </div>
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                            <Link href={route(`${ROUTES.PROFILE}.edit`)}>Profile</Link>
+                        <DropdownMenuItem className="p-0">
+                            <Link
+                                className="h-full w-full text-left px-2 py-1.5"
+                                href={route(`${ROUTES.PROFILE}.edit`)}
+                                as="button"
+                            >
+                                Profile
+                            </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Link method="post" href={route(ROUTES.LOGOUT)} as="button">
+                        <DropdownMenuItem className="p-0">
+                            <Link
+                                className="h-full w-full text-left px-2 py-1.5"
+                                method="post"
+                                href={route(ROUTES.LOGOUT)}
+                                as="button"
+                            >
                                 Logout
                             </Link>
                         </DropdownMenuItem>
