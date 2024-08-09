@@ -4,8 +4,49 @@ import { Head } from '@inertiajs/react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
+import { useState } from 'react';
+
+type Gerbong = {
+    namaGerbong: string;
+    panel: Panel[];
+};
+
+type Panel = {
+    namaPanel: string;
+    jumlahPanel: number;
+};
+
+const listGerbongConst: Gerbong[] = [
+    {
+        namaGerbong: 'K1',
+        panel: [
+            {
+                namaPanel: 'AC',
+                jumlahPanel: 20,
+            },
+            {
+                namaPanel: 'Mainboard',
+                jumlahPanel: 11,
+            },
+        ],
+    },
+    {
+        namaGerbong: 'M',
+        panel: [
+            {
+                namaPanel: 'AC',
+                jumlahPanel: 20,
+            },
+            {
+                namaPanel: 'Mainboard',
+                jumlahPanel: 11,
+            },
+        ],
+    },
+];
 
 export default function DetailTrainset() {
+    const [listGerbong, setListGerbong] = useState<Gerbong[]>(listGerbongConst);
     return (
         <div className="">
             <AuthenticatedLayout>
@@ -19,27 +60,39 @@ export default function DetailTrainset() {
                             duration={300}
                         >
                             {/* <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg"> */}
-                            <Accordion type="single" collapsible>
-                                <AccordionItem value="item-1">
-                                    <AccordionTrigger>Gerbong 1</AccordionTrigger>
-                                    <AccordionContent>
-                                        <div className="p-2">
-                                            <Input placeholder="Gerbong 1"></Input>
-                                            <div className="flex mt-2 gap-4">
-                                                <Input placeholder="Nama Panel"></Input>
-                                                <Input placeholder="Jumlah"></Input>
-                                                <Button>Tambah Panel</Button>
+                            {listGerbong.map(gerbong => (
+                                <Accordion type="single" collapsible>
+                                    <AccordionItem value="item-1">
+                                        <AccordionTrigger>{gerbong.namaGerbong}</AccordionTrigger>
+                                        <AccordionContent>
+                                            <div className="p-2">
+                                                <Input placeholder={gerbong.namaGerbong}></Input>
+                                                <div className="flex mt-2 gap-4">
+                                                    <Input placeholder="Nama Panel"></Input>
+                                                    <Input placeholder="Jumlah"></Input>
+                                                    <Button>Tambah Panel</Button>
+                                                </div>
+                                                <hr className="mt-4 border-black" />
+                                                <div className="">
+                                                    {gerbong.panel.map(panel => (
+                                                        <div
+                                                            className="
+                                                        flex mt-4 gap-4 justify-between items-center grid grid-cols-3
+                                                        "
+                                                        >
+                                                            <p className="pl-2">{panel.namaPanel}</p>
+                                                            <p className="text-center">x{panel.jumlahPanel}</p>
+                                                            <div className="flex justify-end">
+                                                                <Button>Detail KPM</Button>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
-                                            <hr className="mt-4 border-black" />
-                                            <div className="flex mt-4 gap-4 justify-between items-center ">
-                                                <p className="pl-2">Panel 1</p>
-                                                <p>x 12</p>
-                                                <Button>Detail KPM</Button>
-                                            </div>
-                                        </div>
-                                    </AccordionContent>
-                                </AccordionItem>
-                            </Accordion>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </Accordion>
+                            ))}
                             <Button className="mt-5 w-full">Tambah Gerbong</Button>
                             {/* </div> */}
                         </AnimateIn>
