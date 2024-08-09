@@ -7,11 +7,17 @@ use App\Repositories\PermissionRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WorkshopRepository;
+use App\Repositories\ProjectRepository;
+use App\Repositories\CarriageRepository;
+use App\Repositories\TrainsetRepository;
 use App\Services\WorkshopService;
 use App\Services\DivisionService;
 use App\Services\PermissionService;
 use App\Services\RoleService;
 use App\Services\UserService;
+use App\Services\ProjectService;
+use App\Services\CarriageService;
+use App\Services\TrainsetService;
 use App\Support\Interfaces\DivisionRepositoryInterface;
 use App\Support\Interfaces\DivisionServiceInterface;
 use App\Support\Interfaces\PermissionRepositoryInterface;
@@ -20,6 +26,12 @@ use App\Support\Interfaces\RoleRepositoryInterface;
 use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\UserRepositoryInterface;
 use App\Support\Interfaces\UserServiceInterface;
+use App\Support\Interfaces\ProjectRepositoryInterface;
+use App\Support\Interfaces\ProjectServiceInterface;
+use App\Support\Interfaces\CarriageRepositoryInterface;
+use App\Support\Interfaces\CarriageServiceInterface;
+use App\Support\Interfaces\TrainsetRepositoryInterface;
+use App\Support\Interfaces\TrainsetServiceInterface;
 use App\Support\Interfaces\WorkshopRepositoryInterface;
 use App\Support\Interfaces\WorkshopServiceInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -34,6 +46,15 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
         $this->app->singleton(UserServiceInterface::class, UserService::class);
 
+        $this->app->singleton(ProjectRepositoryInterface::class, ProjectRepository::class);
+        $this->app->singleton(ProjectServiceInterface::class, ProjectService::class);
+      
+        $this->app->singleton(CarriageRepositoryInterface::class, CarriageRepository::class);
+        $this->app->singleton(CarriageServiceInterface::class, CarriageService::class);
+      
+        $this->app->singleton(TrainsetRepositoryInterface::class, TrainsetRepository::class);
+        $this->app->singleton(TrainsetServiceInterface::class, TrainsetService::class);
+      
         $this->app->singleton(WorkshopRepositoryInterface::class, WorkshopRepository::class);
         $this->app->singleton(WorkshopServiceInterface::class, WorkshopService::class);
 
