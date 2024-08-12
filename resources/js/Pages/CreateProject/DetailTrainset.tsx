@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AnimateIn from '@/lib/AnimateIn';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
@@ -77,13 +77,15 @@ export default function DetailTrainset() {
                                                     {gerbong.panel.map(panel => (
                                                         <div
                                                             className="
-                                                        flex mt-4 gap-4 justify-between items-center grid grid-cols-3
+                                                         mt-4 gap-4 justify-between items-center grid grid-cols-3
                                                         "
                                                         >
                                                             <p className="pl-2">{panel.namaPanel}</p>
                                                             <p className="text-center">x{panel.jumlahPanel}</p>
                                                             <div className="flex justify-end">
-                                                                <Button>Detail KPM</Button>
+                                                                <Link href="buat-kpm">
+                                                                    <Button>Detail KPM</Button>
+                                                                </Link>
                                                             </div>
                                                         </div>
                                                     ))}

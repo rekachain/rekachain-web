@@ -52,4 +52,7 @@ Route::get('/proyek', function () {
 Route::get('/list-trainset', function () {
     return Inertia::render('CreateProject/CreateTrainset');
 })->middleware(['auth', 'verified'])->name('list-trainset');
+Route::get('/buat-kpm', function () {
+    return Inertia::render('CreateProject/CreateKPM');
+})->middleware(['auth', 'verified'])->name('buat-kpm');
 require __DIR__ . '/auth.php';

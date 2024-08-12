@@ -26,7 +26,6 @@ export default function CreateProject() {
             title: 'Proyek Berhasil Dibuat !',
             description: 'Jumat, 10 February , 2023 saat 5:57 PM',
         });
-
         location.href = route('list-trainset');
     };
     return (
