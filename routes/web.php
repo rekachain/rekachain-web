@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Input;
 use Inertia\Inertia;
 
 /*
@@ -53,3 +54,8 @@ Route::get('/list-trainset', function () {
     return Inertia::render('CreateProject/CreateTrainset');
 })->middleware(['auth', 'verified'])->name('list-trainset');
 require __DIR__ . '/auth.php';
+Route::get('/detail-proyek/{id}', function ($detail) {
+
+    // $nama = Input::get("color");
+    return Inertia::render('Detail/DetailProject',['detail'=>$detail]);
+})->middleware(['auth', 'verified'])->name('detail-proyek');

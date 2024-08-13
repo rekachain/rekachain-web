@@ -183,6 +183,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
     ])->toArray(),
 
 ];
