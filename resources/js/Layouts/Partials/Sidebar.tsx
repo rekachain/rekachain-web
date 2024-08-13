@@ -113,8 +113,8 @@ export default function Sidebar() {
                         <SidebarLinkCollapsibleItem
                             routeName="buat-proyek"
                             title="Buat Proyek"
-                            routeName={`${ROUTES.PROFILE}.edit`}
-                            title="Order"
+                            // routeName={`${ROUTES.PROFILE}.edit`}
+                            // title="Order"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLinkCollapsibleItem
