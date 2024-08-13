@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Traits\Services\HandlesImages;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProfileController extends Controller {
+    use HandlesImages;
+
     /**
      * Display the user's profile form.
      */
@@ -26,10 +30,28 @@ class ProfileController extends Controller {
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse {
+        $path = null;
+        if ($request->hasFile('image_path')) {
+
+            if ($request->user()->image_path) {
+                // delete the old image
+                Storage::disk('public')->delete(auth()->user()->image_path);
+            }
+
+            // store the new image
+            $storedFilePath = $request->file('image_path')->store('users/images', 'public');
+
+            $path = $storedFilePath;
+        }
+
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        if ($path) {
+            $request->user()->image_path = $path;
         }
 
         $request->user()->save();

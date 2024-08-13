@@ -4,8 +4,11 @@ import {
     RiContractRightLine,
     RiFlickrLine,
     RiHome8Line,
+    RiLockLine,
+    RiLockUnlockFill,
     RiQuestionLine,
     RiSettings3Line,
+    RiShieldLine,
     RiUserLine,
 } from '@remixicon/react';
 import { Button } from '@/Components/ui/button';
@@ -18,6 +21,7 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
 import { STYLING } from '@/support/constants/styling';
 import { Link } from '@inertiajs/react';
+import { ROUTES } from '@/support/constants/routes';
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
@@ -71,14 +75,27 @@ export default function Sidebar() {
                         icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                     />
                     <SidebarLink
-                        routeName="users.index"
+                        routeName={`${ROUTES.USERS}.index`}
                         title="Staff"
                         icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
                     />
+
+                    <SidebarLinkCollapsible title="Hak Akses" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.PERMISSIONS}.index`}
+                            title="Permissions"
+                            icon={<RiLockUnlockFill size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.ROLES}.index`}
+                            title="Roles"
+                            icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                    </SidebarLinkCollapsible>
                 </SidebarMenu>
                 <SidebarMenu title="MANUFAKTUR" bordered>
                     <SidebarLink
-                        routeName="profile.edit"
+                        routeName={`${ROUTES.PROFILE}.edit`}
                         title="Track Lot"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     />
@@ -96,28 +113,35 @@ export default function Sidebar() {
                         <SidebarLinkCollapsibleItem
                             routeName="buat-proyek"
                             title="Buat Proyek"
+                            routeName={`${ROUTES.PROFILE}.edit`}
+                            title="Order"
+                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.PROFILE}.edit`}
+                            title="Track"
                             icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                     </SidebarLinkCollapsible>
                     {/* <SidebarLink
-                        route="profile.edit"
+                        route={`${ROUTES.PROFILE}.edit"
                         children="Order Batch"
                         icon={<RiBox3Line  size={STYLING.ICON.SIZE.SMALL} />}
                     />
                     <SidebarLink
-                        route="profile.edit"
+                        route={`${ROUTES.PROFILE}.edit"
                         children="Input Dokumen Pendukung"
                         icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
                 </SidebarMenu>
                 <SidebarMenu title="SUPPORT" bordered>
                     <SidebarLink
-                        routeName="profile.edit"
+                        routeName={`${ROUTES.PROFILE}.edit`}
                         title="Pengaturan"
                         icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
                     />
                     <SidebarLink
-                        routeName="profile.edit"
+                        routeName={`${ROUTES.PROFILE}.edit`}
                         title="Helpdesk"
                         icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
                     />

@@ -6,7 +6,7 @@ import { buttonVariants } from '@/Components/ui/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 
 export default function () {
-    const UserTable = lazy(() => import('./Partials/Users'));
+    const Users = lazy(() => import('./Partials/Users'));
     return (
         <>
             <Head title="Users" />
@@ -19,7 +19,7 @@ export default function () {
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <UserTable />
+                        <Users />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>
