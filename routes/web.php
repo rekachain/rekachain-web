@@ -54,8 +54,9 @@ Route::get('/list-trainset', function () {
     return Inertia::render('CreateProject/CreateTrainset');
 })->middleware(['auth', 'verified'])->name('list-trainset');
 require __DIR__ . '/auth.php';
-Route::get('/detail-proyek/{id}', function ($detail) {
-
-    // $nama = Input::get("color");
-    return Inertia::render('Detail/DetailProject',['detail'=>$detail]);
+Route::get('/detail-proyek/{id}', function ($detail_proyek) {
+    return Inertia::render('Detail/DetailProject',['detail'=>$detail_proyek]);
 })->middleware(['auth', 'verified'])->name('detail-proyek');
+Route::get('/{detail}/detail-ts/{id}', function ($detail_proyek,$detail_ts) {
+    return Inertia::render('Detail/DetailTS',['detailTS'=>$detail_ts,'noProyek'=>$detail_proyek]);
+})->middleware(['auth', 'verified'])->name('detail-ts');

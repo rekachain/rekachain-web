@@ -12,27 +12,28 @@ import {
 } from '@/Components/ui/table';
 //   No Proyek jumlah TS Detail
 
-type Trainset = {
-    kodeTrainset: string;
+type SusunanKereta = {
     susunanKereta: string;
+    panel: string;
 };
 
-type DetailProject = {
-    detail: string;
+type DetailTS = {
+    detailTS: string;
+    noProyek: string;
 };
 
-const listTrainset: Trainset[] = [
-    { kodeTrainset: 'TS1', susunanKereta: 'TSA 8 (9 K1 + 1 M + 1P)' },
-    { kodeTrainset: 'TS2', susunanKereta: 'TSB 2 (4 K1 + 5 K3 + 1 M + 1 P)' },
-    { kodeTrainset: 'TS3', susunanKereta: 'TSC 3 (8 K3 + 1 M + 1 P)' },
+const listTrainset: SusunanKereta[] = [
+    { susunanKereta: 'K1', panel: 'AC Panel K1, Distribusi K1, Genset P ' },
+    { susunanKereta: 'M', panel: 'Main Panel & LDK M, Underfrme B M' },
+    { susunanKereta: 'P', panel: 'AC Dist P, Distribusi M, Pids M' },
 ];
 import { Calculator, FileSearch } from 'lucide-react';
 import AnimateIn from '@/lib/AnimateIn';
 
-export default function DetailProject({ detail }: DetailProject) {
+export default function DetailTS({ noProyek, detailTS }: DetailTS) {
     return (
         <AuthenticatedLayout>
-            <Head title={`Proyek ${detail}`} />
+            <Head title="Proyek " />
             <div className="py-12">
                 <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
                     <AnimateIn
@@ -41,28 +42,30 @@ export default function DetailProject({ detail }: DetailProject) {
                         duration={300}
                     >
                         <div className="p-4 sm:p-8 bg-white  dark:bg-gray-800 shadow sm:rounded-lg h-fit">
-                            <h1 className="text-2xl font-bold">Proyek {detail}</h1>
+                            <h1 className="text-2xl font-bold"> {detailTS}</h1>
                             <h4 className="mb-3 mt-1">
-                                <Link href="/proyek">Proyek</Link> / <Link href={detail}>{detail}</Link>
+                                <Link href="/proyek">Proyek </Link>/
+                                <Link href={`/detail-proyek/${noProyek}`}> {noProyek} </Link>/
+                                <Link href={detailTS}> {detailTS} </Link>
                             </h4>
                             <Table>
                                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="lg:w-[400px] md:w-[100px] sm:w-[50px]">Kode TS</TableHead>
-                                        <TableHead className="text-left">Susunan Kereta</TableHead>
+                                        <TableHead className="lg:w-[400px] md:w-[100px] sm:w-[50px]">
+                                            Susunan Kereta
+                                        </TableHead>
+                                        <TableHead className="text-left">Panel dalam susunan kereta</TableHead>
                                         <TableHead className="text-center">Detail</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {listTrainset.map(trainset => (
-                                        <TableRow key={trainset.kodeTrainset}>
-                                            <TableCell className="font-medium">{trainset.kodeTrainset}</TableCell>
-                                            <TableCell className="text-left">{trainset.susunanKereta}</TableCell>
+                                    {listTrainset.map(SusunanKereta => (
+                                        <TableRow key={SusunanKereta.panel}>
+                                            <TableCell className="font-medium">{SusunanKereta.susunanKereta}</TableCell>
+                                            <TableCell className="text-left">{SusunanKereta.panel}</TableCell>
                                             <TableCell className="flex justify-center ">
-                                                <Link href={`/${detail}/detail-ts/${trainset.kodeTrainset}`}>
-                                                    <FileSearch className="hover:cursor-pointer"></FileSearch>
-                                                </Link>
+                                                <FileSearch className="hover:cursor-pointer"></FileSearch>
                                                 {/* <FileSearch className="hover:cursor-pointer"></FileSearch> */}
                                             </TableCell>
                                         </TableRow>
