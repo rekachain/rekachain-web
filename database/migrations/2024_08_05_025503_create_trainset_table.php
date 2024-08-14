@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('trainset', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_project');
+            $table->unsignedBigInteger('project_id');
             $table->string('name')->nullable();
+            $table->foreign('project_id')->references('id')->on('project');
+            $table->timestamps();
         });
     }
 
