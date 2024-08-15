@@ -27,12 +27,13 @@ class RoleResource extends JsonResource {
             'division_id' => $this->division_id,
             'guard_name' => $this->guard_name,
             'division' => new DivisionResource($this->whenLoaded('division')),
+            'users' => UserResource::collection($this->whenLoaded('users')),
             'level' => $this->level,
             'users_count' => $this->users()->count(),
             'permissions_count' => $this->permissions()->count(),
             'permissions' => $request->routeIs('roles.edit')
                 ? PermissionResource::collection($this->permissions)->pluck('id')
-                : null,
+                : PermissionResource::collection($this->whenLoaded('permissions')), // default null
         ];
     }
 }
