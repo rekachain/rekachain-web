@@ -1,8 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
-import { workstationService } from '@/services/workstationService';
+import { Link } from '@inertiajs/react';
+import { workshopService } from '@/services/workshopService';
 import { useEffect, useState } from 'react';
-import { WorkstationResource } from '@/support/interfaces/resources';
+import { WorkshopResource } from '@/support/interfaces/resources';
 import { PaginateResponse } from '@/support/interfaces/others';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { ROUTES } from '@/support/constants/routes';
@@ -11,32 +11,31 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 
 export default function () {
-    const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
+    const [workshopResponse, setWorkshopResponse] = useState<PaginateResponse<WorkshopResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
-        relations: 'workshop,division',
     });
 
-    const syncWorkstations = async () => {
-        workstationService.getAll(filters).then(res => {
-            setWorkstationResponse(res);
+    const syncWorkshops = async () => {
+        workshopService.getAll(filters).then(res => {
+            setWorkshopResponse(res);
         });
     };
 
     useEffect(() => {
-        syncWorkstations();
+        syncWorkshops();
     }, [filters]);
 
-    const handleWorkstationDeletion = (id: number) => {
+    const handleWorkshopDeletion = (id: number) => {
         const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
                 window.Swal.fire({
                     icon: 'success',
-                    title: 'Workstation deleted successfully',
+                    title: 'Workshop deleted successfully',
                 });
-                await workstationService.delete(id);
-                await syncWorkstations();
+                await workshopService.delete(id);
+                await syncWorkshops();
             }
         });
     };
@@ -51,28 +50,23 @@ export default function () {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Nama</TableHead>
-                        <TableHead>Lokasi</TableHead>
-                        <TableHead>Workshop</TableHead>
-                        <TableHead>Divisi</TableHead>
+                        <TableHead>Alamat</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {workstationResponse?.data.map(workstation => (
-                        <TableRow key={workstation.id}>
-                            <TableCell>{workstation.name}</TableCell>
-                            <TableCell>{workstation.location}</TableCell>
-                            <TableCell>{workstation.workshop.name}</TableCell>
-                            <TableCell>{workstation.division.name}</TableCell>
-
+                    {workshopResponse?.data.map(workshop => (
+                        <TableRow key={workshop.id}>
+                            <TableCell>{workshop.name}</TableCell>
+                            <TableCell>{workshop.address}</TableCell>
                             <TableCell>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
+                                    href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
                                 >
                                     Edit
                                 </Link>
-                                <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
+                                <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                                     Delete
                                 </Button>
                             </TableCell>
@@ -81,7 +75,7 @@ export default function () {
                 </TableBody>
             </Table>
 
-            <GenericPagination meta={workstationResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination meta={workshopResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }

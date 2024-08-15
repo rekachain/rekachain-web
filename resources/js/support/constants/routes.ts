@@ -5,6 +5,6 @@ export const ROUTES = {
     PERMISSIONS: 'permissions',
     ROLES: 'roles',
     DIVISIONS: 'divisions',
-    WORKSHOP: 'workshop',
+    WORKSHOPS: 'workshops',
     WORKSTATIONS: 'workstations',
 };

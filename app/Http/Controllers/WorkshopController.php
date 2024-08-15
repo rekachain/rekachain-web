@@ -74,6 +74,8 @@ class WorkshopController extends Controller {
 
         $request->checkPermissionEnum(PermissionEnum::WORKSHOP_UPDATE);
 
+        $workshop = new WorkshopResource($workshop);
+
         return inertia('Workshop/Edit', compact('workshop'));
     }
 
