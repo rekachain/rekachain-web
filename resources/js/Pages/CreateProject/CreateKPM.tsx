@@ -45,6 +45,17 @@ export default function CreateKPM() {
             jumlah: 5,
         },
     ]);
+
+    function tambahMaterial() {
+        setMaterial([
+            ...materials!,
+            {
+                nama: 'Kayu',
+                jumlah: 3,
+            },
+        ]);
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="Buat KPM" />
@@ -129,7 +140,7 @@ export default function CreateKPM() {
                             <div className="flex gap-3">
                                 <Input placeholder="Nama Material"></Input>
                                 <Input placeholder="Jumlah Material"></Input>
-                                <Button>Tambah Material</Button>
+                                <Button onClick={() => tambahMaterial()}>Tambah Material</Button>
                             </div>
                         </div>
                     </AnimateIn>
