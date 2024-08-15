@@ -22,7 +22,8 @@ class UpdateProjectRequest extends FormRequest {
         $project = $this->route('project')->id;
 
         return [
-            'date' => 'required|date',
+            'name' => 'nullable',
+            'initial_date' => 'nullable|date',
         ];
     }
 }
