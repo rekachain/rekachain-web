@@ -2,6 +2,7 @@ import {
     RiBox3Line,
     RiContractLeftLine,
     RiContractRightLine,
+    RiDivideLine,
     RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
@@ -80,6 +81,12 @@ export default function Sidebar() {
                         title="Staff Management"
                         icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
                     >
+                        {/*division*/}
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.DIVISIONS}.index`}
+                            title="Divisions"
+                            icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
+                        />
                         <SidebarLinkCollapsibleItem
                             routeName={`${ROUTES.WORKSHOPS}.index`}
                             title="Workshops"
