@@ -7,8 +7,6 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { WorkshopResource } from '@/support/interfaces/resources';
-import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
-import { Label } from '@/Components/ui/label';
 import { workshopService } from '@/services/workshopService';
 
 export default function ({ workshop }: { workshop: WorkshopResource }) {

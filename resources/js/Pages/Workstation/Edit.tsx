@@ -36,7 +36,7 @@ export default function ({
 
     return (
         <>
-            <Head title="Tambah Workstation" />
+            <Head title="Ubah Workstation" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
