@@ -99,7 +99,7 @@ export default function CreateKPM() {
                                                     </div>
                                                 </div>
                                                 <DialogFooter>
-                                                    <Button type="submit">Save changes</Button>
+                                                    <Button type="submit">Simpan Perubahan</Button>
                                                 </DialogFooter>
                                             </DialogContent>
                                         </Dialog>
