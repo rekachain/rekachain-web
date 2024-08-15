@@ -19,7 +19,8 @@ class StoreProjectRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'date' => 'required|date',
+            'name' => 'required',
+            'initial_date' => 'required|date',
         ];
     }
 }
