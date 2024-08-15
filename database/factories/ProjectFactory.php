@@ -18,8 +18,8 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'data' => $this->faker->date()
-            //
+            'name' => $this->faker->name(),
+            'initial_date' => $this->faker->date()
         ];
     }
 }
