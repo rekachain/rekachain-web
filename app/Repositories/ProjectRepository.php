@@ -31,15 +31,15 @@ class ProjectRepository extends BaseRepository implements ProjectRepositoryInter
     //     return parent::delete($keyOrModel);
     // }
 
-     protected function applyFilters(array $searchParams = []): Builder
-     {
+    protected function applyFilters(array $searchParams = []): Builder
+    {
         $query = $this->getQuery();
 
         if (isset($searchParams['orderBy'])) {
             $query->orderBy($searchParams['orderBy'],$searchParams['sortBy'] ?? 'desc');
-        }
+        }   
 
         return $query;
-     }
+    }
 
 }
