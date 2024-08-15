@@ -26,7 +26,7 @@ class RoleResource extends JsonResource {
             'name' => $this->name,
             'division_id' => $this->division_id,
             'guard_name' => $this->guard_name,
-            'division' => $this->division?->name,
+            'division' => new DivisionResource($this->whenLoaded('division')),
             'level' => $this->level,
             'users_count' => $this->users()->count(),
             'permissions_count' => $this->permissions()->count(),
