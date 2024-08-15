@@ -15,6 +15,7 @@ export default function () {
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
+        relations: 'division',
     });
 
     const { auth } = usePage().props;
@@ -65,7 +66,7 @@ export default function () {
                     {roleResponse?.data.map(role => (
                         <TableRow key={role.id}>
                             <TableCell>{role.name}</TableCell>
-                            <TableCell>{role.division}</TableCell>
+                            <TableCell>{role.division?.name}</TableCell>
                             <TableCell>{role.level}</TableCell>
                             <TableCell>{role.users_count}</TableCell>
                             <TableCell>{role.permissions_count}</TableCell>

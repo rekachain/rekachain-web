@@ -15,8 +15,7 @@ class WorkshopResource extends JsonResource {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'location' => $this->location,    
-            'address' => $this->address, 
+            'address' => $this->address,
         ];
     }
 }

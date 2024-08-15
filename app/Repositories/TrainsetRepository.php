@@ -3,12 +3,11 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\Trainset;
+use App\Models\User;
 use App\Support\Interfaces\TrainsetRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class TrainsetRepository extends BaseRepository implements TrainsetRepositoryInterface {
-
     // Berjaga jaga apabila ada upload dokumen
 
     // public function create(array $data): ?Model {
@@ -38,7 +37,7 @@ class TrainsetRepository extends BaseRepository implements TrainsetRepositoryInt
     //     return parent::delete($keyOrModel);
     // }
 
-    // protected function getModelClass(): string {
-    //     return User::class;
-    // }
+    protected function getModelClass(): string {
+        return User::class;
+    }
 }

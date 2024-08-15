@@ -47,7 +47,7 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
 
     return (
         <>
-            <Head title="Tambah Staff" />
+            <Head title="Ubah Staff" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">

@@ -3,15 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Model;
 
-class Trainset extends Model
-{
+class Trainset extends Model {
     use HasFactory;
-
-    protected $table = 'trainset';
 
     protected $fillable = [
         'id_project',
@@ -28,8 +25,7 @@ class Trainset extends Model
     //     return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id');
     // }
 
-    public function project(): BelongsTo
-    {
+    public function project(): BelongsTo {
         return $this->belongsTo(Project::class);
     }
 }

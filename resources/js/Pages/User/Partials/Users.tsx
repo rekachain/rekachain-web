@@ -16,6 +16,7 @@ export default function () {
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
+        relations: 'roles',
     });
 
     const { auth } = usePage().props;
@@ -77,21 +78,22 @@ export default function () {
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.phone_number}</TableCell>
-                            <TableCell>{user.role}</TableCell>
+                            <TableCell>{user.role?.name}</TableCell>
 
-                            {user.id !== auth.user.id && (auth.user.role === 'Super Admin' || user.role !== 'Super Admin') && (
-                                <TableCell>
-                                    <Link
-                                        className={buttonVariants({ variant: 'link' })}
-                                        href={route(`${ROUTES.USERS}.edit`, user.id)}
-                                    >
-                                        Edit
-                                    </Link>
-                                    <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            )}
+                            {user.id !== auth.user.id &&
+                                (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
+                                    <TableCell>
+                                        <Link
+                                            className={buttonVariants({ variant: 'link' })}
+                                            href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                        >
+                                            Edit
+                                        </Link>
+                                        <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                            Delete
+                                        </Button>
+                                    </TableCell>
+                                )}
                         </TableRow>
                     ))}
                 </TableBody>

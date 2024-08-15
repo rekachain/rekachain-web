@@ -46,6 +46,7 @@ class ApiAuthController extends ApiController {
                 'user' => new UserResource(auth()->user()),
                 'token' => auth()->user()->createToken('token')->plainTextToken,
                 'role' => new RoleResource(auth()->user()->roles()->first()),
+                'division' => auth()->user()->roles()->first()->division,
                 'permissions' => auth()->user()->roles()->first()->permissions->pluck('name'),
             ]);
         }
