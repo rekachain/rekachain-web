@@ -3,8 +3,9 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\User;
+use App\Models\Carriage;
 use App\Support\Interfaces\CarriageRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class CarriageRepository extends BaseRepository implements CarriageRepositoryInterface {
@@ -38,6 +39,16 @@ class CarriageRepository extends BaseRepository implements CarriageRepositoryInt
     // }
 
     protected function getModelClass(): string {
-        return User::class;
+        return Carriage::class;
+    }
+
+    protected function applyFilters(array $searchParams = []): Builder {
+        $query = $this->getQuery();
+
+        if (isset($searchParams['orderBy'])) {
+            $query->orderBy($searchParams['orderBy'], $searchParams['sortBy'] ?? 'desc');
+        }
+
+        return $query;
     }
 }

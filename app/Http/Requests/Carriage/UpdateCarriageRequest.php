@@ -18,12 +18,9 @@ class UpdateCarriageRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-
-        $carriage = $this->route('carriage')->id;
-
         return [
-            'type' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:255',
         ];
     }
 }
