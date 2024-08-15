@@ -3,12 +3,11 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\Carriage;
+use App\Models\User;
 use App\Support\Interfaces\CarriageRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class CarriageRepository extends BaseRepository implements CarriageRepositoryInterface {
-
     // Berjaga jaga apabila ada upload dokumen
 
     // public function create(array $data): ?Model {
@@ -38,7 +37,7 @@ class CarriageRepository extends BaseRepository implements CarriageRepositoryInt
     //     return parent::delete($keyOrModel);
     // }
 
-    // protected function getModelClass(): string {
-    //     return User::class;
-    // }
+    protected function getModelClass(): string {
+        return User::class;
+    }
 }

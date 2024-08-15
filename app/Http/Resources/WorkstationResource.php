@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class WorkshopResource extends JsonResource {
+class WorkstationResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
@@ -15,7 +15,9 @@ class WorkshopResource extends JsonResource {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address,
+            'location' => $this->location,
+            'workshop' => new WorkshopResource($this->whenLoaded('workshop')),
+            'division' => new DivisionResource($this->whenLoaded('division')),
         ];
     }
 }

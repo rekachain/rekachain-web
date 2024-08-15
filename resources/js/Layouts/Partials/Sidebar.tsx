@@ -4,11 +4,13 @@ import {
     RiContractRightLine,
     RiFlickrLine,
     RiHome8Line,
-    RiLockLine,
     RiLockUnlockFill,
+    RiLockUnlockLine,
     RiQuestionLine,
     RiSettings3Line,
     RiShieldLine,
+    RiToolsFill,
+    RiUser2Line,
     RiUserLine,
 } from '@remixicon/react';
 import { Button } from '@/Components/ui/button';
@@ -20,7 +22,6 @@ import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
 import { STYLING } from '@/support/constants/styling';
-import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 
 export default function Sidebar() {
@@ -74,17 +75,28 @@ export default function Sidebar() {
                         title="Dashboard"
                         icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                     />
-                    <SidebarLink
-                        routeName={`${ROUTES.USERS}.index`}
-                        title="Staff"
-                        icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                    />
+
+                    <SidebarLinkCollapsible
+                        title="Staff Management"
+                        icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
+                    >
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.WORKSTATIONS}.index`}
+                            title="Workstations"
+                            icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLinkCollapsibleItem
+                            routeName={`${ROUTES.USERS}.index`}
+                            title="Staff"
+                            icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                    </SidebarLinkCollapsible>
 
                     <SidebarLinkCollapsible title="Hak Akses" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
                         <SidebarLinkCollapsibleItem
                             routeName={`${ROUTES.PERMISSIONS}.index`}
                             title="Permissions"
-                            icon={<RiLockUnlockFill size={STYLING.ICON.SIZE.SMALL} />}
+                            icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLinkCollapsibleItem
                             routeName={`${ROUTES.ROLES}.index`}

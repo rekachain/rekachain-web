@@ -4,4 +4,7 @@ export const ROUTES = {
     LOGOUT: 'logout',
     PERMISSIONS: 'permissions',
     ROLES: 'roles',
+    DIVISIONS: 'divisions',
+    WORKSHOP: 'workshop',
+    WORKSTATIONS: 'workstations',
 };
