@@ -31,7 +31,8 @@ class UserResource extends JsonResource {
             'image' => $this->image,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'role' => $this->roles()->first()?->name,
+            // only return the first, and only role
+            'role' => new RoleResource($this->whenLoaded('roles')[0]),
             'role_id' => $this->roles()->first()?->id,
         ];
     }
