@@ -57,12 +57,12 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                                 id="location"
                                 type="text"
                                 name="location"
-                                value={data.name}
+                                value={data.location}
                                 className="mt-1"
                                 autoComplete="location"
                                 onChange={e => setData('location', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
+                            <InputError message={errors.location} className="mt-2" />
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
