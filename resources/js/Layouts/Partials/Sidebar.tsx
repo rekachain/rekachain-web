@@ -82,26 +82,26 @@ export default function Sidebar() {
 
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
-                            title="Staff Management"
+                            title="Manajemen Staff"
                             icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
                             {/*division*/}
                             <SidebarLinkCollapsibleItem
                                 group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
                                 routeName={`${ROUTES.DIVISIONS}.index`}
-                                title="Divisions"
+                                title="Divisi"
                                 icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                             <SidebarLinkCollapsibleItem
                                 group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
                                 routeName={`${ROUTES.WORKSHOPS}.index`}
-                                title="Workshops"
+                                title="Workshop"
                                 icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                             <SidebarLinkCollapsibleItem
                                 group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
                                 routeName={`${ROUTES.WORKSTATIONS}.index`}
-                                title="Workstations"
+                                title="Workstation"
                                 icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
                             />
                             <SidebarLinkCollapsibleItem
