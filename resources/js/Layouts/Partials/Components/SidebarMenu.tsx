@@ -2,7 +2,10 @@ export default function (props: { title: string; children?: React.ReactNode; bor
     const borderClass = props.bordered ? 'border-t-2' : '';
     return (
         <div className={`sidebar-menu w-full py-4 space-y-2 ${borderClass}`}>
-            <p className="sidebar-item-header text-sidebar-header-foreground px-4 truncate" title={props.title}>
+            <p
+                className="sidebar-item-header text-sidebar-header-foreground px-4 truncate sidebar-item-text"
+                title={props.title}
+            >
                 {props.title}
             </p>
             {props.children}
