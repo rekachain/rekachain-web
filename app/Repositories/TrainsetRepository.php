@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class TrainsetRepository extends BaseRepository implements TrainsetRepositoryInterface {
 
+    protected function getModelClass(): string {
+        return Trainset::class;
+    }
     // Berjaga jaga apabila ada upload dokumen
 
     // public function create(array $data): ?Model {

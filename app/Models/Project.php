@@ -10,17 +10,20 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $table = 'project';
+
     protected $fillable = [
-        'date'
+        'name',
+        'initial_date'
     ];
 
     public function trainsets(): HasMany
     {
-        return $this->hasMany(Trainset::class, 'id_project', 'id');
+        return $this->hasMany(Trainset::class);
     }
 
-    public function projectAttachments(): HasMany
-    {
-        return $this->hasMany(ProjectAttachment::class, 'id_project', 'id');
-    }
+    // public function projectAttachments(): HasMany
+    // {
+    //     return $this->hasMany(ProjectAttachment::class, 'id_project', 'id');
+    // }
 }

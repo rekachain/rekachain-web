@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Trainset;
 
@@ -19,7 +20,7 @@ class TrainsetFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
-            'id_project' => Trainset::inRandomOrder()->first()->id_project,
+            'project_id' => Project::inRandomOrder()->first()->id,
         ];
     }
 }

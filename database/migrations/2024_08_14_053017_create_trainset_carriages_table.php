@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainsetcarriages', function (Blueprint $table) {
+        Schema::create('trainset_carriages', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_trainset');
-            $table->integer('id_carriage');
+            $table->unsignedBigInteger('trainset_id');
+            $table->unsignedBigInteger('carriage_id');
             $table->integer('qty');
+            $table->foreign('trainset_id')->references('id')->on('trainset');
+            $table->foreign('carriage_id')->references('id')->on('carriage');
+            $table->timestamps();
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trainsetcarriages');
+        Schema::dropIfExists('trainset_carriages');
     }
 };

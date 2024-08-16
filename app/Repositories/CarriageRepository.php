@@ -8,7 +8,9 @@ use App\Support\Interfaces\CarriageRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class CarriageRepository extends BaseRepository implements CarriageRepositoryInterface {
-
+    protected function getModelClass(): string {
+        return Carriage::class;
+    }
     // Berjaga jaga apabila ada upload dokumen
 
     // public function create(array $data): ?Model {

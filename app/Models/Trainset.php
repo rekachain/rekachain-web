@@ -11,23 +11,25 @@ class Trainset extends Model
 {
     use HasFactory;
 
+    protected $table = 'trainset';
+
     protected $fillable = [
         'id_project',
         'name',
     ];
 
-    public function carriages(): HasMany
-    {
-        return $this->hasMany(TrainsetCarriages::class, 'id_trainset', 'id');
-    }
+    // public function carriages(): HasMany
+    // {
+    //     return $this->hasMany(TrainsetCarriages::class, 'id_trainset', 'id');
+    // }
 
-    public function projectAttachments(): HasMany
-    {
-        return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id');
-    }
+    // public function projectAttachments(): HasMany
+    // {
+    //     return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id');
+    // }
 
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class, 'id_project', 'id');
+        return $this->belongsTo(Project::class);
     }
 }

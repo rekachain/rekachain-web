@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Carriage;
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\TrainsetCarriages;
+use App\Models\Trainset;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TrainsetCarriages>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Trainset>
  */
 class TrainsetCarriagesFactory extends Factory
 {
@@ -18,8 +20,8 @@ class TrainsetCarriagesFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_trainset' => TrainsetCarriages::inRandomOrder()->first()->id_trainset,
-            'id_carriage' => TrainsetCarriages::inRandomOrder()->first()->id_carriage,
+            'trainset_id' => Trainset::inRandomOrder()->first()->id,
+            'carriage_id' => Carriage::inRandomOrder()->first()->id,
             'qty' => $this->faker->numberBetween(1, 10),
         ];
     }
