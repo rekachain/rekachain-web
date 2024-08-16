@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('project', function (Blueprint $table) {
             $table->id();
-            $table->date('date')->nullable();
+            $table->string('name');
+            // $table->integer('trainset_qty'); // antara manual atau count ts dalam 1 proyek
+            $table->date('initial_date')->nullable();
+            $table->timestamps();
         });
     }
 

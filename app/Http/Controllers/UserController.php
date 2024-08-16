@@ -43,7 +43,10 @@ class UserController extends Controller {
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
+    public function create(Request $request) {
+
+        $request->checkPermissionEnum(PermissionEnum::USER_CREATE);
+        
         $roles = $this->roleService->getAll();
 
         return inertia('User/Create', compact('roles'));

@@ -8,6 +8,9 @@ use App\Support\Interfaces\ProjectRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectRepository extends BaseRepository implements ProjectRepositoryInterface {
+    protected function getModelClass(): string {
+        return Project::class;
+    }
 
     public function getModelClass(): string {
         return Project::class;

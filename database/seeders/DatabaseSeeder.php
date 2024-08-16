@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Project;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder {
@@ -12,9 +14,13 @@ class DatabaseSeeder extends Seeder {
     public function run(): void {
         $this->call([
             DivisionSeeder::class,
-            RoleSeeder::class,
             PermissionSeeder::class,
+            RoleSeeder::class,
             UserSeeder::class,
+            ProjectSeeder::class,
+            CarriageSeeder::class,
+            TrainsetSeeder::class,
+            TrainsetCarriagesSeeder::class
         ]);
     }
 }

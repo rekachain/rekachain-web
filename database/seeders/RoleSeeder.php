@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Support\Enums\PermissionEnum;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder {
@@ -28,5 +29,12 @@ class RoleSeeder extends Seeder {
         foreach ($roles as $role) {
             Role::create($role);
         }
+
+        Role::findById(2)->givePermissionTo([
+            PermissionEnum::USER_CREATE->value,
+            PermissionEnum::USER_READ->value,
+            PermissionEnum::USER_UPDATE->value,
+            PermissionEnum::USER_DELETE->value,
+        ]);
     }
 }

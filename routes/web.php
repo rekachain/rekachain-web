@@ -43,4 +43,21 @@ Route::middleware('auth')->group(function () {
 
 });
 
+
+Route::get('/buat-proyek', function () {
+    return Inertia::render('CreateProject/CreateProject');
+})->middleware(['auth', 'verified'])->name('buat-proyek');
+Route::get('/buat-trainset', function () {
+    return Inertia::render('CreateProject/DetailTrainset');
+})->middleware(['auth', 'verified'])->name('buat-trainset');
+
+Route::get('/proyek', function () {
+    return Inertia::render('ProjectList');
+})->middleware(['auth', 'verified'])->name('proyek');
+Route::get('/list-trainset', function () {
+    return Inertia::render('CreateProject/CreateTrainset');
+})->middleware(['auth', 'verified'])->name('list-trainset');
+Route::get('/buat-kpm', function () {
+    return Inertia::render('CreateProject/CreateKPM');
+})->middleware(['auth', 'verified'])->name('buat-kpm');
 require __DIR__ . '/auth.php';

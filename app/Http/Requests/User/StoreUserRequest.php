@@ -19,7 +19,7 @@ class StoreUserRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string|max:255',
             'nip' => 'required|string|max:18|unique:users',
             'email' => 'required|string|email|max:255|unique:users',

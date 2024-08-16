@@ -10,18 +10,20 @@ class Carriage extends Model
 {
     use HasFactory;
 
+    protected $table = 'carriage';
+
     protected $fillable = [
         'type',
         'description',
     ];
 
-    public function trainsets(): HasMany
-    {
-        return $this->hasMany(TrainsetCarriages::class, 'id_carriage', 'id');
-    }
+    // public function trainsets(): HasMany
+    // {
+    //     return $this->hasMany(TrainsetCarriages::class, 'id_carriage', 'id');
+    // }
 
-    public function panels(): HasMany
-    {
-        return $this->hasMany(CarriagePanels::class, 'id_carriage', 'id');
-    }
+    // public function panels(): HasMany
+    // {
+    //     return $this->hasMany(CarriagePanels::class, 'id_carriage', 'id');
+    // }
 }

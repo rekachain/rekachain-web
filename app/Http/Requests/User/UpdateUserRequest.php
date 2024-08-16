@@ -19,10 +19,20 @@ class UpdateUserRequest extends FormRequest {
      */
     public function rules(): array {
 
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case 'api.user.update.password':
+                return [
+                    'old_password' => 'required|string|min:8',
+                    'new_password' => 'required|string|min:8|confirmed',
+                ];
+        }
+
         $user = $this->route('user')->id;
 
         return [
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string|max:255',
             'nip' => 'nullable|string|max:18|unique:users,nip,' . $user,
             'email' => 'nullable|string|email|max:255|unique:users,email,' . $user,
