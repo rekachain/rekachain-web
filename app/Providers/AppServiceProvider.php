@@ -28,18 +28,12 @@ use App\Support\Interfaces\RoleRepositoryInterface;
 use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\UserRepositoryInterface;
 use App\Support\Interfaces\UserServiceInterface;
-// Project
-use App\Repositories\ProjectRepository;
-use App\Services\ProjectService;
 use App\Support\Interfaces\ProjectRepositoryInterface;
 use App\Support\Interfaces\ProjectServiceInterface;
 use App\Support\Interfaces\CarriageRepositoryInterface;
 use App\Support\Interfaces\CarriageServiceInterface;
 use App\Support\Interfaces\TrainsetRepositoryInterface;
 use App\Support\Interfaces\TrainsetServiceInterface;
-
-use App\Support\Interfaces\WorkshopRepositoryInterface;
-use App\Support\Interfaces\WorkshopServiceInterface;
 use App\Support\Interfaces\WorkshopRepositoryInterface;
 use App\Support\Interfaces\WorkshopServiceInterface;
 use App\Support\Interfaces\PanelRepositoryInterface;
