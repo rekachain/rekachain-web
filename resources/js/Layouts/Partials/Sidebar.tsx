@@ -47,12 +47,12 @@ export default function Sidebar() {
             <nav className="flex flex-col space-y-1">
                 <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
                     <img
-                        src="/assets/images/outline putih.png"
+                        src="/assets/images/Logo REKA.svg"
                         alt="logo"
                         // className=" "
                         // className="sidebar-header-logo h-full object-contain"
-                        className="sidebar-header-logo h-full "
-                        width={170}
+                        className="sidebar-header-logo h-12"
+                        width={200}
                         // height={500}
                     />
                     <Button
