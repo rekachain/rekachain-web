@@ -45,7 +45,8 @@ class HandleInertiaRequests extends Middleware {
                     optional($request->user())->toArray() ?? [],
                     ['image' => optional($request->user())->image ?? null],
                     ['role' => optional($request->user())->roles?->first()->name ?? null],
-                    ['initials' => $userInitials]
+                    ['initials' => $userInitials],
+                    ['permissions' => optional($request->user())->getAllPermissions()?->pluck('name')->toArray() ?? []],
                 ),
             ],
         ];

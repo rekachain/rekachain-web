@@ -1,9 +1,11 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
-import { buttonVariants } from '@/Components/ui/button';
-import { Link } from '@inertiajs/react';
-import React, { useContext } from 'react';
-import { SIDEBAR_GROUP } from '@/support/enums/sidebarGroup';
-import { SidebarContext } from '@/contexts/SidebarContext';
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/Components/ui/accordion';
+import {buttonVariants} from '@/Components/ui/button';
+import {Link} from '@inertiajs/react';
+import React, {useContext} from 'react';
+import {SIDEBAR_GROUP_ENUM} from '@/support/enums/sidebarGroupEnum';
+import {SidebarContext} from '@/contexts/SidebarContext';
+import {PERMISSION_ENUM} from '@/support/enums/permissionEnum';
+import {checkPermission} from '@/helpers/sidebarHelper';
 
 /**
  * SidebarLinkCollapsible
@@ -17,7 +19,7 @@ import { SidebarContext } from '@/contexts/SidebarContext';
  */
 const SidebarLinkCollapsible = (props: {
     title: string;
-    group: SIDEBAR_GROUP;
+    group: SIDEBAR_GROUP_ENUM;
     children?: React.ReactNode;
     icon?: React.ReactNode;
 }) => {
@@ -27,26 +29,39 @@ const SidebarLinkCollapsible = (props: {
     })}  hover:no-underline`;
     const accordionItemClass = 'sidebar-collapsible-accordion border-0 hover:no-underline space-y-2 ml-4';
     const titleClass = props.icon ? 'sidebar-item-text ml-2' : 'sidebar-item-text';
+    // Filter children to only those that are rendered
+    const validChildren = React.Children.toArray(props.children).filter(child => {
+        // Check if the child is a SidebarLinkCollapsibleItem and has permission to render
+        return React.isValidElement(child) && child.props.requirePermission
+            ? checkPermission(child.props.requirePermission)
+            : true;
+    });
+
+    // Check if there are any valid children to render
+    const hasValidChildren = validChildren.length > 0;
     return (
-        <Accordion type="single" collapsible defaultValue={sidebarContext?.selectedMenu}>
-            <AccordionItem value={props.group} className={accordionItemClass}>
-                <AccordionTrigger className={accordionClass}>
-                    <div className="sidebar-collapsible-menu">
-                        {props.icon}
-                        <span className={titleClass}>{props.title}</span>
-                    </div>
-                </AccordionTrigger>
-                {props.children}
-            </AccordionItem>
-        </Accordion>
+        hasValidChildren && (
+            <Accordion type="single" collapsible defaultValue={sidebarContext?.selectedMenu}>
+                <AccordionItem value={props.group} className={accordionItemClass}>
+                    <AccordionTrigger className={accordionClass}>
+                        <div className="sidebar-collapsible-menu">
+                            {props.icon}
+                            <span className={titleClass}>{props.title}</span>
+                        </div>
+                    </AccordionTrigger>
+                    {props.children}
+                </AccordionItem>
+            </Accordion>
+        )
     );
 };
 
 const SidebarLinkCollapsibleItem = (props: {
-    group: SIDEBAR_GROUP;
+    group: SIDEBAR_GROUP_ENUM;
     routeName: string;
     title: string;
     icon?: React.ReactNode;
+    requirePermission?: PERMISSION_ENUM;
 }) => {
     const sidebarContext = useContext(SidebarContext);
     const handleSetSelectedMenu = () => sidebarContext?.setSelectedMenu(props.group);
@@ -58,7 +73,7 @@ const SidebarLinkCollapsibleItem = (props: {
         variant: active ? 'sidebar-active' : 'sidebar',
     })} sidebar-collapsible-link`;
     const titleClass = props.icon ? 'truncate ml-2' : 'truncate';
-    return (
+    return props.requirePermission && checkPermission(props.requirePermission) ? (
         <div className="sidebar-collapsible-item pl-11" title={props.title}>
             <AccordionContent className={accordionClass}>
                 <Link href={route(props.routeName)} className={linkClass} onClick={handleSetSelectedMenu}>
@@ -67,7 +82,7 @@ const SidebarLinkCollapsibleItem = (props: {
                 </Link>
             </AccordionContent>
         </div>
-    );
+    ) : null;
 };
 
 export { SidebarLinkCollapsible, SidebarLinkCollapsibleItem };
