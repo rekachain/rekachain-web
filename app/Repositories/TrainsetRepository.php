@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\User;
+use App\Models\Trainset;
 use App\Support\Interfaces\TrainsetRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,6 +38,6 @@ class TrainsetRepository extends BaseRepository implements TrainsetRepositoryInt
     // }
 
     protected function getModelClass(): string {
-        return User::class;
+        return Trainset::class;
     }
 }
