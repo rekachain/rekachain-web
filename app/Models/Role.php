@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Permission\Models\Role as SpatieRole;
+
 /**
  * @OA\Schema(
  *    schema="Role",
  *    type="object",
  *    title="Role",
  *    description="Role details",
+ *
  *    @OA\Property(
  *      property="id",
  *      type="integer",

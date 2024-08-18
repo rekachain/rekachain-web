@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TrainsetCarriages extends Model
-{
+class TrainsetCarriages extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -16,13 +15,11 @@ class TrainsetCarriages extends Model
         'qty',
     ];
 
-    public function carriage(): BelongsTo
-    {
+    public function carriage(): BelongsTo {
         return $this->belongsTo(Trainset::class);
     }
 
-    public function trainset(): BelongsTo
-    {
+    public function trainset(): BelongsTo {
         return $this->belongsTo(Carriage::class);
     }
 }

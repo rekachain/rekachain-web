@@ -1,7 +1,9 @@
 import { Link } from '@inertiajs/react';
 import { buttonVariants } from '@/Components/ui/button';
+import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
+import { checkPermission } from '@/helpers/sidebarHelper';
 
-export default function (props: { routeName: string; title?: string; icon?: React.ReactNode }) {
+const SidebarLink = (props: { title?: string; routeName: string; icon?: React.ReactNode }) => {
     const active = route().current(props.routeName);
     const linkClass = `${buttonVariants({
         variant: active ? 'sidebar-active' : 'sidebar',
@@ -14,5 +16,18 @@ export default function (props: { routeName: string; title?: string; icon?: Reac
                 <div className={titleClass}>{props.title}</div>
             </Link>
         </div>
+    );
+};
+
+export default function (props: {
+    routeName: string;
+    title?: string;
+    icon?: React.ReactNode;
+    requirePermission?: PERMISSION_ENUM;
+}) {
+    return props.requirePermission ? (
+        checkPermission(props.requirePermission) && <SidebarLink {...props} />
+    ) : (
+        <SidebarLink {...props} />
     );
 }

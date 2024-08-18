@@ -15,4 +15,3 @@ test('view all projects', function () {
 
     $response->assertStatus(200);
 });
-

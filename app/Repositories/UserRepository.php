@@ -15,8 +15,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
         return User::class;
     }
 
-    protected function applyFilters(array $searchParams = []): Builder
-    {
+    protected function applyFilters(array $searchParams = []): Builder {
         $query = parent::getQuery($searchParams);
 
         return $this->applyResolvedRelations($query, $searchParams);
