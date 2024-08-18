@@ -46,7 +46,7 @@ class UserController extends Controller {
     public function create(Request $request) {
 
         $request->checkPermissionEnum(PermissionEnum::USER_CREATE);
-        
+
         $roles = $this->roleService->getAll();
 
         return inertia('User/Create', compact('roles'));
