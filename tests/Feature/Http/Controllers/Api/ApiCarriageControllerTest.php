@@ -3,9 +3,9 @@
 use App\Models\User;
 
 test('view all Carriage', function () {
-    $superAdmin = User::find(1);
-    $this->actingAs($superAdmin);
-    $response = $this->get('/api/carriages');
+    $superAdmin = User::factory()->superAdmin()->create([
+        'email_verified_at' => null,
+    ]);
 
-    $response->assertStatus(200);
+    $this->actingAs($superAdmin)->get('/api/carriages')->assertStatus(200);
 });
