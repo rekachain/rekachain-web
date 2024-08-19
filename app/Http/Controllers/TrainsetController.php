@@ -38,10 +38,8 @@ class TrainsetController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-
-    public function store(StoreTrainsetRequest $request)
-    {
-        if($this->ajax()) {
+    public function store(StoreTrainsetRequest $request) {
+        if ($this->ajax()) {
             return $this->trainsetService->create($request->validated());
         }
     }

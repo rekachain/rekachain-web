@@ -29,5 +29,4 @@ Route::group(['as' => 'api.'], function () {
         Route::get('logout', [ApiAuthController::class, 'logout'])->name('logout');
     });
 
-
 });

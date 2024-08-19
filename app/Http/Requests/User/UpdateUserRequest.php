@@ -33,7 +33,7 @@ class UpdateUserRequest extends FormRequest {
 
         return [
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'nip' => 'nullable|string|max:18|unique:users,nip,' . $user,
             'email' => 'nullable|string|email|max:255|unique:users,email,' . $user,
             'phone_number' => 'nullable|string|max:15',

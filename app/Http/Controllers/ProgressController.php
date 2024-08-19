@@ -11,17 +11,17 @@ use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class ProgressController extends Controller
-{
-    public function __construct(protected ProgressServiceInterface $progressService){}
+class ProgressController extends Controller {
+    public function __construct(protected ProgressServiceInterface $progressService) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         if ($this->ajax()) {
             try {
                 $perPage = request()->get('perPage', 5);
+
                 return ProgressResource::collection($this->progressService->getAllPaginated($request->query(), $perPage));
             } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
@@ -31,17 +31,15 @@ class ProgressController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         return inertia('Progress/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProgressRequest $request)
-    {
-        if($this->ajax()){
+    public function store(StoreProgressRequest $request) {
+        if ($this->ajax()) {
             return $this->progressService->create($request->validated());
         }
     }
@@ -49,9 +47,8 @@ class ProgressController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Progress $progress)
-    {
-        if($this->ajax()){
+    public function show(Progress $progress) {
+        if ($this->ajax()) {
             return new ProgressResource($progress);
         }
     }
@@ -59,17 +56,15 @@ class ProgressController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Progress $progress)
-    {
+    public function edit(Progress $progress) {
         return inertia('Progress/Edit', ['progress' => new ProgressResource($progress)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProgressRequest $request, Progress $progress)
-    {
-        if($this->ajax()){
+    public function update(UpdateProgressRequest $request, Progress $progress) {
+        if ($this->ajax()) {
             return $this->progressService->update($progress, $request->validated());
 
         }
@@ -78,9 +73,8 @@ class ProgressController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request ,Progress $progress)
-    {
-        if($this->ajax()){
+    public function destroy(Request $request, Progress $progress) {
+        if ($this->ajax()) {
             return $this->progressService->delete($progress);
         }
     }

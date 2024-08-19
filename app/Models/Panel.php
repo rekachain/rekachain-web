@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Panel extends Model
-{
+class Panel extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -14,8 +13,7 @@ class Panel extends Model
         'name',
     ];
 
-    public function progress(): BelongsTo
-    {
+    public function progress(): BelongsTo {
         return $this->belongsTo(Progress::class);
     }
 }

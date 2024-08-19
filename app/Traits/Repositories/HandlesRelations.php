@@ -7,17 +7,35 @@ use Illuminate\Database\Eloquent\Builder;
 trait HandlesRelations {
     /**
      * Automatically apply relations to the query based on request parameters.
-     *
-     * @param \\Illuminate\\Database\\Eloquent\\Builder $query
-     * @return \\Illuminate\\Database\\Eloquent\\Builder
      */
-    protected function applyResolvedRelations($query, array $params = []): Builder {
+    protected function applyResolvedRelations(Builder $query, array $params = []): Builder {
         $relations = $params['relations'] ?? '';
 
         if ($relations) {
-            $query->with(explode(',', $relations));
+            // Split the relations string into individual relations
+            $relationsArray = explode(',', $relations);
+
+            // Apply each relation to the query
+            foreach ($relationsArray as $relation) {
+                $query->with($this->parseRelation($relation));
+            }
         }
 
         return $query;
+    }
+
+    /**
+     * Parse relation string to support nested relations.
+     */
+    protected function parseRelation(string $relation): array|string {
+        $relationParts = explode('.', $relation);
+        $nestedRelation = array_shift($relationParts);
+
+        if (count($relationParts) > 0) {
+            // Recurse to handle nested relations
+            return [$nestedRelation => $this->parseRelation(implode('.', $relationParts))];
+        }
+
+        return $nestedRelation;
     }
 }

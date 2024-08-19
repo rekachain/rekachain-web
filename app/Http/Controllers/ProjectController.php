@@ -39,8 +39,7 @@ class ProjectController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProjectRequest $request)
-    {
+    public function store(StoreProjectRequest $request) {
         if ($this->ajax()) {
             return $this->projectService->create($request->validated());
         }
