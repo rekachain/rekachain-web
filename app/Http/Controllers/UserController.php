@@ -6,36 +6,50 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\Enums\PermissionEnum;
+use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\UserServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class UserController extends Controller {
-    public function __construct(protected UserServiceInterface $userService) {}
+    public function __construct(
+        protected UserServiceInterface $userService,
+        protected RoleServiceInterface $roleService) {}
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        if ($this->ajax()) {
-            try {
-                $perPage = request()->get('perPage', 5);
 
-                return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
-            } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+        $request->checkPermissionEnum(PermissionEnum::USER_READ);
+
+        if ($request->user()->can('user-read')) {
+            if ($this->ajax()) {
+                try {
+                    $perPage = request()->get('perPage', 5);
+
+                    return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
+                } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+                }
             }
-        }
 
-        return inertia('User/Index');
+            return inertia('User/Index');
+        }
 
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
-        return inertia('User/Create');
+    public function create(Request $request) {
+
+        $request->checkPermissionEnum(PermissionEnum::USER_CREATE);
+
+        $roles = $this->roleService->getAll();
+
+        return inertia('User/Create', compact('roles'));
     }
 
     /**
@@ -62,7 +76,10 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
-        return inertia('User/Edit', ['user' => new UserResource($user)]);
+        $user = new UserResource($user);
+        $roles = $this->roleService->getAll();
+
+        return inertia('User/Edit', compact('user', 'roles'));
     }
 
     /**

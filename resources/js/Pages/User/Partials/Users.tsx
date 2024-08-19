@@ -16,6 +16,7 @@ export default function () {
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
+        relations: 'roles',
     });
 
     const { auth } = usePage().props;
@@ -59,8 +60,7 @@ export default function () {
                         <TableHead>Nama</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>No. Hp</TableHead>
-                        <TableHead>Divisi</TableHead>
-                        <TableHead>Level</TableHead>
+                        <TableHead>Role</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -68,9 +68,9 @@ export default function () {
                     {userResponse?.data.map(user => (
                         <TableRow key={user.id}>
                             <TableCell>
-                                {user.photo_path && (
+                                {user.image_path && (
                                     <Avatar>
-                                        <AvatarImage src={user.photo_path} alt={user.name} />
+                                        <AvatarImage className="object-cover" src={user.image} alt={user.name} />
                                     </Avatar>
                                 )}
                             </TableCell>
@@ -78,22 +78,22 @@ export default function () {
                             <TableCell>{user.name}</TableCell>
                             <TableCell>{user.email}</TableCell>
                             <TableCell>{user.phone_number}</TableCell>
-                            <TableCell className="text-destructive">Pay 25$ to unlock this dlc</TableCell>
-                            <TableCell className="text-destructive">Pay 50$ to unlock this feature</TableCell>
+                            <TableCell>{user.role?.name}</TableCell>
 
-                            {user.id !== auth.user.id && (
-                                <TableCell>
-                                    <Link
-                                        className={buttonVariants({ variant: 'link' })}
-                                        href={route(`${ROUTES.USERS}.edit`, user.id)}
-                                    >
-                                        Edit
-                                    </Link>
-                                    <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            )}
+                            {user.id !== auth.user.id &&
+                                (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
+                                    <TableCell>
+                                        <Link
+                                            className={buttonVariants({ variant: 'link' })}
+                                            href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                        >
+                                            Edit
+                                        </Link>
+                                        <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                            Delete
+                                        </Button>
+                                    </TableCell>
+                                )}
                         </TableRow>
                     ))}
                 </TableBody>

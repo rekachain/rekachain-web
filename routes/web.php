@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\WorkstationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Input;
@@ -36,9 +41,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::resource('divisions', DivisionController::class);
+    Route::resource('workshops', WorkshopController::class);
+    Route::resource('workstations', WorkstationController::class);
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
 });
-
 
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
@@ -53,6 +62,9 @@ Route::get('/proyek', function () {
 Route::get('/list-trainset', function () {
     return Inertia::render('CreateProject/CreateTrainset');
 })->middleware(['auth', 'verified'])->name('list-trainset');
+Route::get('/buat-kpm', function () {
+    return Inertia::render('CreateProject/CreateKPM');
+})->middleware(['auth', 'verified'])->name('buat-kpm');
 require __DIR__ . '/auth.php';
 Route::get('/detail-proyek/{id}', function ($detail_proyek) {
     return Inertia::render('Detail/DetailProject',['detail'=>$detail_proyek]);

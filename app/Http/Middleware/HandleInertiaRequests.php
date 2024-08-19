@@ -31,7 +31,11 @@ class HandleInertiaRequests extends Middleware {
 
         if ($user = $request->user()) {
             $nameParts = explode(' ', $user->name);
-            $userInitials = strtoupper($nameParts[0][0] . $nameParts[1][0]);
+            if (count($nameParts) == 1) {
+                $userInitials = strtoupper($nameParts[0][0]);
+            } else {
+                $userInitials = strtoupper($nameParts[0][0] . $nameParts[1][0]);
+            }
         }
 
         return [
@@ -39,7 +43,10 @@ class HandleInertiaRequests extends Middleware {
             'auth' => [
                 'user' => array_merge(
                     optional($request->user())->toArray() ?? [],
-                    ['initials' => $userInitials]
+                    ['image' => optional($request->user())->image ?? null],
+                    ['role' => optional($request->user())->roles?->first()->name ?? null],
+                    ['initials' => $userInitials],
+                    ['permissions' => optional($request->user())->getAllPermissions()?->pluck('name')->toArray() ?? []],
                 ),
             ],
         ];

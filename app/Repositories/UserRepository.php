@@ -5,37 +5,19 @@ namespace App\Repositories;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\User;
 use App\Support\Interfaces\UserRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\Repositories\HandlesRelations;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface {
-    public function create(array $data): ?Model {
-        if (request()->hasFile('photo')) {
-            $data['photo'] = request()->file('photo')->store('users/photos', 'public');
-        }
-
-        return parent::create($data);
-    }
-
-    public function update($keyOrModel, array $data): ?Model {
-        if (request()->hasFile('photo')) {
-            if ($keyOrModel->photo) {
-                unlink(storage_path('app/public/' . $keyOrModel->photo));
-            }
-            $data['photo'] = request()->file('photo')->store('users/photos', 'public');
-        }
-
-        return parent::update($keyOrModel, $data);
-    }
-
-    public function delete($keyOrModel): bool {
-        if ($keyOrModel->photo) {
-            unlink(storage_path('app/public/' . $keyOrModel->photo));
-        }
-
-        return parent::delete($keyOrModel);
-    }
+    use HandlesRelations;
 
     protected function getModelClass(): string {
         return User::class;
+    }
+
+    protected function applyFilters(array $searchParams = []): Builder {
+        $query = parent::getQuery($searchParams);
+
+        return $this->applyResolvedRelations($query, $searchParams);
     }
 }
