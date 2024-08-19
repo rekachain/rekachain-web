@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Carriage extends Model
-{
+class Carriage extends Model {
     use HasFactory;
-
-    protected $table = 'carriage';
 
     protected $fillable = [
         'type',

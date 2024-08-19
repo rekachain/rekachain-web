@@ -56,13 +56,19 @@
             "label": "Laravel Serve",
             "problemMatcher": [],
             "type": "shell",
-            "command": "php artisan serve"
+            "command": "php artisan serve",
+            "presentation": {
+                "group": "RUNAPP"
+            }
         },
         {
             "label": "Laravel NPM Run Dev",
             "problemMatcher": [],
             "type": "shell",
-            "command": "npm run dev"
+            "command": "npm run dev",
+            "presentation": {
+                "group": "RUNAPP"
+            }
         },
         {
             "label": "Laravel Websocket",

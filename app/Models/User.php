@@ -15,6 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
  *     type="object",
  *     title="User",
  *     description="User details",
+ *
  *     @OA\Property(
  *         property="id",
  *         type="integer",

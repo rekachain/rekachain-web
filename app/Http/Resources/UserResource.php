@@ -21,6 +21,11 @@ class UserResource extends JsonResource {
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array {
+
+        $role = $this->whenLoaded('roles', function () {
+            return $this->roles->first();  // Accessing the first role if loaded
+        }, null);  // Return null if roles are not loaded
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -31,7 +36,8 @@ class UserResource extends JsonResource {
             'image' => $this->image,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'role' => $this->roles()->first()?->name,
+            // only return the first, and only role
+            'role' => $role,
             'role_id' => $this->roles()->first()?->id,
         ];
     }
