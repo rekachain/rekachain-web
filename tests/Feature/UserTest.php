@@ -24,9 +24,9 @@ test('only Super Admin and authorized user can view create user form', function 
     $ppcPerencanaan = User::find(2);
     $ppcPengendalian = User::find(3);
 
-    expect($superAdmin)->not->toBeNull();
-    expect($ppcPerencanaan)->not->toBeNull();
-    expect($ppcPengendalian)->not->toBeNull();
+    expect($superAdmin)->not->toBeNull()
+        ->and($ppcPerencanaan)->not->toBeNull()
+        ->and($ppcPengendalian)->not->toBeNull();
 
     testAuthorization($this, $superAdmin);
 
