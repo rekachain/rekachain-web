@@ -27,6 +27,7 @@ import { ROUTES } from '@/support/constants/routes';
 import { SidebarContext } from '@/contexts/SidebarContext';
 import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
 import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
+import { checkPermission } from '@/helpers/sidebarHelper';
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
@@ -86,35 +87,41 @@ export default function Sidebar() {
                             title="Manajemen Staff"
                             icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
-                            {/*division*/}
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.DIVISIONS}.index`}
-                                title="Divisi"
-                                requirePermission={PERMISSION_ENUM.DIVISION_READ}
-                                icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.WORKSHOPS}.index`}
-                                title="Workshop"
-                                requirePermission={PERMISSION_ENUM.WORKSHOP_READ}
-                                icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.WORKSTATIONS}.index`}
-                                title="Workstation"
-                                requirePermission={PERMISSION_ENUM.WORKSTATION_READ}
-                                icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.USERS}.index`}
-                                title="Staff"
-                                requirePermission={PERMISSION_ENUM.USER_READ}
-                                icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
+                            {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.DIVISIONS}.index`}
+                                    title="Divisi"
+                                    icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.WORKSHOPS}.index`}
+                                    title="Workshop"
+                                    icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.WORKSTATIONS}.index`}
+                                    title="Workstation"
+                                    icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.USER_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.USERS}.index`}
+                                    title="Staff"
+                                    icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
                         </SidebarLinkCollapsible>
 
                         <SidebarLinkCollapsible
@@ -122,20 +129,23 @@ export default function Sidebar() {
                             title="Hak Akses"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
-                                routeName={`${ROUTES.PERMISSIONS}.index`}
-                                title="Permissions"
-                                requirePermission={PERMISSION_ENUM.PERMISSION_READ}
-                                icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
-                                routeName={`${ROUTES.ROLES}.index`}
-                                title="Roles"
-                                requirePermission={PERMISSION_ENUM.ROLE_READ}
-                                icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
+                            {checkPermission(PERMISSION_ENUM.PERMISSION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    routeName={`${ROUTES.PERMISSIONS}.index`}
+                                    title="Permissions"
+                                    icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.ROLE_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    routeName={`${ROUTES.ROLES}.index`}
+                                    title="Roles"
+                                    icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
