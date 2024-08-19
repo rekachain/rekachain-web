@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('panels', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_progress');
+            $table->unsignedBigInteger('progress_id');
             $table->string('name')->nullable();
             $table->timestamps();
         });

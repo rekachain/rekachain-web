@@ -84,6 +84,12 @@ class AppServiceProvider extends ServiceProvider {
 
         $this->app->singleton(WorkstationRepositoryInterface::class, WorkstationRepository::class);
         $this->app->singleton(WorkstationServiceInterface::class, WorkstationService::class);
+
+        $this->app->singleton(PanelRepositoryInterface::class, PanelRepository::class);
+        $this->app->singleton(PanelServiceInterface::class, PanelService::class);
+
+        $this->app->singleton(ProgressRepositoryInterface::class, ProgressRepository::class);
+        $this->app->singleton(ProgressServiceInterface::class, ProgressService::class);
     }
 
     /**

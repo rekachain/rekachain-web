@@ -9,8 +9,10 @@ class Panel extends Model
 {
     use HasFactory;
 
+
+
     protected $fillable = [
-        'id_progress',
+        'progress_id',
         'name',
     ];
 
