@@ -15,8 +15,10 @@ class PanelResource extends JsonResource {
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'id_progress' => $this->id_progress,
+            'progress_id' => $this->progress_id,
             'name' => $this->name,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -19,7 +19,7 @@ class StoreTrainsetRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'id_project' => 'required|integer',
+            'project_id' => 'required|integer',
             'name' => 'required|string|max:255',
         ];
     }
