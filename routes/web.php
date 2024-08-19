@@ -57,6 +57,9 @@ require __DIR__ . '/auth.php';
 Route::get('/detail-proyek/{id}', function ($detail_proyek) {
     return Inertia::render('Detail/DetailProject',['detail'=>$detail_proyek]);
 })->middleware(['auth', 'verified'])->name('detail-proyek');
-Route::get('/{detail}/detail-ts/{id}', function ($detail_proyek,$detail_ts) {
+Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek,$detail_ts) {
     return Inertia::render('Detail/DetailTS',['detailTS'=>$detail_ts,'noProyek'=>$detail_proyek]);
 })->middleware(['auth', 'verified'])->name('detail-ts');
+Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek,$detail_ts,$detail_kereta) {
+    return Inertia::render('Detail/DetailKereta',['detailTS'=>$detail_ts,'noProyek'=>$detail_proyek,'susunanKereta'=>$detail_kereta]);
+})->middleware(['auth', 'verified'])->name('detail-kereta');
