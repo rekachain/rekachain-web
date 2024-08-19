@@ -18,8 +18,15 @@ import {
 } from '@/Components/ui/dropdown-menu';
 import { STYLING } from '@/support/constants/styling';
 import { ROUTES } from '@/support/constants/routes';
+import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-width: 900px)',
+    });
+    const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' });
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
+
     const { auth } = usePage().props;
     useEffect(() => {
         document.addEventListener('keydown', e => {
@@ -54,17 +61,20 @@ export default function Navbar() {
     };
     return (
         <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
-            <div className="w-64 h-full flex items-center rounded border-2 px-2">
-                <label htmlFor="search" children={<RiSearchLine className="w-5 h-5" />} />
-                <Input
-                    id="search"
-                    className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                    placeholder="Search"
-                />
-                <label htmlFor="search">
-                    <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
-                </label>
-            </div>
+            {isTabletOrMobile && <div className=""></div>}
+            {isDesktopOrLaptop && (
+                <div className="w-64 h-full flex items-center rounded border-2 px-2">
+                    <label htmlFor="search" children={<RiSearchLine className="w-5 h-5" />} />
+                    <Input
+                        id="search"
+                        className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                        placeholder="Search"
+                    />
+                    <label htmlFor="search">
+                        <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
+                    </label>
+                </div>
+            )}
             <div className="w-fit flex h-full items-center gap-2">
                 <Button variant="ghost" size="icon" onClick={handleDarkMode}>
                     {darkMode ? (
@@ -92,10 +102,13 @@ export default function Navbar() {
                                 <AvatarImage src={auth?.user.image} />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
-                            <div className="flex flex-col items-start">
-                                <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
-                                <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
-                            </div>
+                            {isTabletOrMobile && <div className=""></div>}
+                            {isDesktopOrLaptop && (
+                                <div className="flex flex-col items-startlex">
+                                    <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
+                                    <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
+                                </div>
+                            )}
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
