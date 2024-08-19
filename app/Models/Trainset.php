@@ -11,7 +11,7 @@ class Trainset extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'id_project',
+        'project_id',
         'name',
     ];
 
