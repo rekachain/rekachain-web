@@ -46,7 +46,7 @@ export default function SidebarMobile() {
     useEffect(applySidebarCollapse, [sidebarCollapse]);
 
     return (
-        <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
+        <aside ref={sidebarRef} className="sidebar w-20 border-border border-r-2 transition-all">
             <nav className="flex flex-col space-y-1">
                 <div className="header flex px-4 py-3 border-b-2 h-16 ">
                     <Sheet>
@@ -105,7 +105,7 @@ export default function SidebarMobile() {
                                         </AccordionItem>
                                     </Accordion>
 
-                                    <hr className="border-gray-200 border-2 w-full" />
+                                    <hr className="border-gray-700 border-2 w-full" />
 
                                     <ListOrdered size={STYLING.ICON.SIZE.MEDIUM} />
 
@@ -130,86 +130,6 @@ export default function SidebarMobile() {
                         </SheetContent>
                     </Sheet>
                 </div>
-                <SidebarMenu title="GENERAL">
-                    {/* <p className="sidebar-collapsible-accordion">kadal</p> */}
-                    <SidebarLink
-                        routeName="dashboard"
-                        title="Dashboard"
-                        icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLink
-                        routeName={`${ROUTES.USERS}.index`}
-                        title="Staff"
-                        icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-
-                    <SidebarLinkCollapsible title="Hak Akses" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
-                        <SidebarLinkCollapsibleItem
-                            routeName={`${ROUTES.PERMISSIONS}.index`}
-                            title="Permissions"
-                            icon={<RiLockUnlockFill size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                        <SidebarLinkCollapsibleItem
-                            routeName={`${ROUTES.ROLES}.index`}
-                            title="Roles"
-                            icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                    </SidebarLinkCollapsible>
-                </SidebarMenu>
-                <SidebarMenu title="MANUFAKTUR" bordered>
-                    <SidebarLink
-                        routeName={`${ROUTES.PROFILE}.edit`}
-                        title="Track Lot"
-                        icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    {/* <SidebarLink
-                        routeName="project"
-                        title="Buat Proyek"
-                        icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                    /> */}
-                    <SidebarLinkCollapsible title="Proyek" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
-                        <SidebarLinkCollapsibleItem
-                            routeName="proyek"
-                            title="List Proyek"
-                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                        <SidebarLinkCollapsibleItem
-                            routeName="buat-proyek"
-                            title="Buat Proyek"
-                            // routeName={`${ROUTES.PROFILE}.edit`}
-                            // title="Order"
-                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                        <SidebarLinkCollapsibleItem
-                            routeName={`${ROUTES.PROFILE}.edit`}
-                            title="Track"
-                            icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                    </SidebarLinkCollapsible>
-                    {/* <SidebarLink
-                        route={`${ROUTES.PROFILE}.edit"
-                        children="Order Batch"
-                        icon={<RiBox3Line  size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLink
-                        route={`${ROUTES.PROFILE}.edit"
-                        children="Input Dokumen Pendukung"
-                        icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
-                    /> */}
-                </SidebarMenu>
-                <SidebarMenu title="SUPPORT" bordered>
-                    <SidebarLink
-                        routeName={`${ROUTES.PROFILE}.edit`}
-                        title="Pengaturan"
-                        icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLink
-                        routeName={`${ROUTES.PROFILE}.edit`}
-                        title="Helpdesk"
-                        icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLogout />
-                </SidebarMenu>
             </nav>
         </aside>
     );

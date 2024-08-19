@@ -17,9 +17,9 @@ export default function Authenticated({ children }: PropsWithChildren) {
         <div className="min-h-screen bg-background">
             <div className="flex">
                 {isTabletOrMobile && (
-                    // <div className="flex">
-                    <SidebarMobile></SidebarMobile>
-                    // </div>
+                    <div className="">
+                        <SidebarMobile></SidebarMobile>
+                    </div>
                 )}
                 {isDesktopOrLaptop && <Sidebar />}
                 <div className="flex-1 flex-col">
