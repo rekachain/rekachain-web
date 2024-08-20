@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\ProjectServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -48,10 +49,22 @@ class ProjectController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(Project $project) {
+    public function show(Request $request, Project $project) {
         if ($this->ajax()) {
             return new ProjectResource($project);
         }
+
+        $intent = IntentEnum::WEB_PROJECT_SHOW_PROJECT->value;
+
+        $request->merge(['intent' => $intent]);
+
+        return inertia('Project/Show', ['project' => new ProjectResource($project->load([
+            'trainsets' => [
+                'carriages' => [
+                    //                    'carriage',
+                ],
+            ],
+        ]))]);
     }
 
     /**

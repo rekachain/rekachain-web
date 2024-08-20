@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Trainset extends Model {
     use HasFactory;
@@ -15,10 +15,9 @@ class Trainset extends Model {
         'name',
     ];
 
-    // public function carriages(): HasMany
-    // {
-    //     return $this->hasMany(TrainsetCarriages::class, 'id_trainset', 'id');
-    // }
+    public function carriages(): BelongsToMany {
+        return $this->belongsToMany(Carriage::class)->withPivot('qty');
+    }
 
     // public function projectAttachments(): HasMany
     // {
