@@ -87,10 +87,12 @@ export default function SidebarMobile() {
                                     />
                                 </SheetTitle>
                                 <SheetDescription className="items-center w-full  flex flex-col gap-7 text-black">
-                                    <Link href={''} className="mt-5">
+                                    <Link href={'dashboard'} className="mt-5">
                                         <RiHome8Line size={STYLING.ICON.SIZE.MEDIUM} />
                                     </Link>
-                                    <RiUserLine size={STYLING.ICON.SIZE.MEDIUM} />
+                                    <Link href={route(`${ROUTES.USERS}.index`)}>
+                                        <RiUserLine size={STYLING.ICON.SIZE.MEDIUM} />
+                                    </Link>
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
@@ -99,8 +101,12 @@ export default function SidebarMobile() {
                                                 </div>
                                             </AccordionTrigger>
                                             <AccordionContent className="items-center flex flex-col gap-7">
-                                                <RiShieldLine className="mt-2" size={30} />
-                                                <RiLockUnlockFill size={30} />
+                                                <Link href={route(`${ROUTES.PERMISSIONS}.index`)}>
+                                                    <RiLockUnlockFill size={30} />
+                                                </Link>
+                                                <Link href={route(`${ROUTES.ROLES}.index`)}>
+                                                    <RiShieldLine className="mt-2" size={30} />
+                                                </Link>
                                             </AccordionContent>
                                         </AccordionItem>
                                     </Accordion>
@@ -117,14 +123,24 @@ export default function SidebarMobile() {
                                                 </div>
                                             </AccordionTrigger>
                                             <AccordionContent className="items-center flex flex-col gap-7">
-                                                <RiBox3Line size={30} />
-                                                <RiBox3Line size={30} />
-                                                <RiBox3Line size={30} />
+                                                <Link href={'proyek'}>
+                                                    <RiBox3Line size={30} />
+                                                </Link>
+                                                <Link href={'buat-proyek'}>
+                                                    <RiBox3Line size={30} />
+                                                </Link>
+                                                <Link href={route(`${ROUTES.PROFILE}.edit`)}>
+                                                    <RiBox3Line size={30} />
+                                                </Link>
                                             </AccordionContent>
                                         </AccordionItem>
                                     </Accordion>
-                                    <RiQuestionLine size={STYLING.ICON.SIZE.MEDIUM} />
-                                    <RiSettings3Line size={STYLING.ICON.SIZE.MEDIUM} />
+                                    <Link href={route(`${ROUTES.PROFILE}.edit`)}>
+                                        <RiQuestionLine size={STYLING.ICON.SIZE.MEDIUM} />
+                                    </Link>
+                                    <Link href={route(`${ROUTES.PROFILE}.edit`)}>
+                                        <RiSettings3Line size={STYLING.ICON.SIZE.MEDIUM} />
+                                    </Link>
                                 </SheetDescription>
                             </SheetHeader>
                         </SheetContent>
