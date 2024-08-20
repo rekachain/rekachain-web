@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import {
     Table,
     TableBody,
@@ -53,7 +53,10 @@ export default function ProjectList() {
                                             <TableCell className="font-medium">{proyek.noProyek}</TableCell>
                                             <TableCell className="text-center">{proyek.jumlahTS}</TableCell>
                                             <TableCell className="flex justify-center ">
-                                                <FileSearch className="hover:cursor-pointer"></FileSearch>
+                                                <Link href={`/detail-proyek/${proyek.noProyek}`}>
+                                                    <FileSearch className="hover:cursor-pointer" />
+                                                </Link>
+                                                {/* <FileSearch className="hover:cursor-pointer"></FileSearch> */}
                                             </TableCell>
                                         </TableRow>
                                     ))}

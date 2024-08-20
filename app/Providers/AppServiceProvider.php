@@ -6,7 +6,9 @@ use App\Models\Permission;
 use App\Observers\PermissionObserver;
 use App\Repositories\CarriageRepository;
 use App\Repositories\DivisionRepository;
+use App\Repositories\PanelRepository;
 use App\Repositories\PermissionRepository;
+use App\Repositories\ProgressRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\TrainsetRepository;
@@ -15,7 +17,9 @@ use App\Repositories\WorkshopRepository;
 use App\Repositories\WorkstationRepository;
 use App\Services\CarriageService;
 use App\Services\DivisionService;
+use App\Services\PanelService;
 use App\Services\PermissionService;
+use App\Services\ProgressService;
 use App\Services\ProjectService;
 use App\Services\RoleService;
 use App\Services\TrainsetService;
@@ -26,8 +30,12 @@ use App\Support\Interfaces\CarriageRepositoryInterface;
 use App\Support\Interfaces\CarriageServiceInterface;
 use App\Support\Interfaces\DivisionRepositoryInterface;
 use App\Support\Interfaces\DivisionServiceInterface;
+use App\Support\Interfaces\PanelRepositoryInterface;
+use App\Support\Interfaces\PanelServiceInterface;
 use App\Support\Interfaces\PermissionRepositoryInterface;
 use App\Support\Interfaces\PermissionServiceInterface;
+use App\Support\Interfaces\ProgressRepositoryInterface;
+use App\Support\Interfaces\ProgressServiceInterface;
 use App\Support\Interfaces\ProjectRepositoryInterface;
 use App\Support\Interfaces\ProjectServiceInterface;
 use App\Support\Interfaces\RoleRepositoryInterface;
@@ -78,6 +86,12 @@ class AppServiceProvider extends ServiceProvider {
 
         $this->app->singleton(WorkstationRepositoryInterface::class, WorkstationRepository::class);
         $this->app->singleton(WorkstationServiceInterface::class, WorkstationService::class);
+
+        $this->app->singleton(PanelRepositoryInterface::class, PanelRepository::class);
+        $this->app->singleton(PanelServiceInterface::class, PanelService::class);
+
+        $this->app->singleton(ProgressRepositoryInterface::class, ProgressRepository::class);
+        $this->app->singleton(ProgressServiceInterface::class, ProgressService::class);
     }
 
     /**
