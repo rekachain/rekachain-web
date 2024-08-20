@@ -17,6 +17,7 @@ class TrainsetResource extends JsonResource {
             'id' => $this->id,
             'project_id' => $this->project_id,
             'name' => $this->name,
+            'carriages' => CarriageResource::collection($this->whenLoaded('carriages')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

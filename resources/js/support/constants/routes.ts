@@ -7,4 +7,7 @@ export const ROUTES = {
     DIVISIONS: 'divisions',
     WORKSHOPS: 'workshops',
     WORKSTATIONS: 'workstations',
+    TRAINSETS: 'trainsets',
+    PROJECTS: 'projects',
+    PROJECTS_TRAINSETS: 'projects.trainsets',
 };

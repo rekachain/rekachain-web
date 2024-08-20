@@ -159,6 +159,13 @@ export default function Sidebar() {
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
+                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PROJECTS}.index`}
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"
