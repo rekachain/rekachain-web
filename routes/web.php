@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
+use App\Http\Controllers\TrainsetCarriagesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 });
+Route::resource('trainsetCarriages', TrainsetCarriagesController::class);
 
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
