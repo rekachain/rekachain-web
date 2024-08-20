@@ -9,11 +9,11 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('trainsets', function (Blueprint $table) {
+        Schema::create('preset_trainsets', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('preset_trainset_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->foreignId('project_id')->constrained();
+            $table->unique(['name', 'project_id']);
             $table->timestamps();
         });
     }
@@ -22,6 +22,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('trainset');
+        Schema::dropIfExists('preset_trainsets');
     }
 };

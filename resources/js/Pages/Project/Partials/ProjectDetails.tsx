@@ -18,6 +18,8 @@ export default function ({ project }: { project: ProjectResource }) {
                         <TableRow key={trainset.id}>
                             <TableCell>{trainset.name}</TableCell>
                             <TableCell>
+                                {trainset.preset_name && `(${trainset.preset_name}) `}
+
                                 {trainset.carriages &&
                                     trainset.carriages.length > 0 &&
                                     trainset.carriages.map((carriage, index) => (
