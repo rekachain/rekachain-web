@@ -14,16 +14,12 @@ class TrainsetCarriagesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return [
-        //     'anjing'
-        // ];
         // return parent::toArray($request);
-
         return [
-            'id' => $request->id,
-            'trainset_id' => $request->trainset_id,
-            'carriage_id' => $request->carriage_id,
-            'qty' => $request->qty,
+            'id' => $this->id,
+            'qty' => $this->qty,
+            'trainset_id' => $this->trainset_id,
+            'carriage_id' => $this->carriage_id,
         ];
     }
 }

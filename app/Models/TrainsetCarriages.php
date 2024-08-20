@@ -16,13 +16,13 @@ class TrainsetCarriages extends Model
         'qty',
     ];
 
-    // public function carriage(): BelongsTo
-    // {
-    //     return $this->belongsTo(Trainset::class);
-    // }
+    public function carriage(): BelongsTo
+    {
+        return $this->belongsTo(Trainset::class);
+    }
 
-    // public function trainset(): BelongsTo
-    // {
-    //     return $this->belongsTo(Carriage::class);
-    // }
+    public function trainset(): BelongsTo
+    {
+        return $this->belongsTo(Carriage::class);
+    }
 }

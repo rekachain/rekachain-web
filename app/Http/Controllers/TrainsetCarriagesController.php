@@ -2,38 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\TrainsetCarriages;
-use Illuminate\Support\Facades\DB;
-use Psr\Container\NotFoundExceptionInterface;
-use Psr\Container\ContainerExceptionInterface;
-use App\Http\Resources\TrainsetCarriagesResource;
-use App\Support\Interfaces\TrainsetCarriagesServiceInterface;
 use App\Http\Requests\TrainsetCarriages\StoreTrainsetCarriagesRequest;
 use App\Http\Requests\TrainsetCarriages\UpdateTrainsetCarriagesRequest;
+use App\Http\Resources\TrainsetCarriagesResource;
+use App\Models\TrainsetCarriages;
+use App\Support\Interfaces\TrainsetCarriagesServiceInterface;
+use Illuminate\Http\Request;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class TrainsetCarriagesController extends Controller
 {
-    public function __construct(
-        protected TrainsetCarriagesServiceInterface $trainsetCarriagesService
-    ) {}
+    public function __construct(protected TrainsetCarriagesServiceInterface $trainsetCarriagesService) {}
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        // if ($this->ajax()) {
-        //     try {
-        //         $perPage = request()->get('perPage', 5);
-        //         return TrainsetCarriagesResource::collection($this->trainsetCarriagesService->getAllPaginated($request->query(), $perPage));
-        //     } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-        //     }
-        // }
+        if ($this->ajax()) {
+            try {
+                $perPage = request()->get('perPage', 5);
+                return TrainsetCarriagesResource::collection($this->trainsetCarriagesService->getAllPaginated($request->query(), $perPage));
+            } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            }
+        }
 
-        $perPage = request()->get('perPage', 5);
-        return TrainsetCarriagesResource::collection(
-            $this->trainsetCarriagesService->getAllPaginated($request->query(), $perPage)
-        );
+        //  $perPage = request()->get('perPage', 5);
+        //  return TrainsetCarriagesResource::collection($this->trainsetCarriagesService->getAllPaginated($request->query(), $perPage));
         // testing web
     }
 
@@ -61,19 +56,10 @@ class TrainsetCarriagesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(String $id)
+    public function show(TrainsetCarriages $trainset)
     {
         // $request->checkPermissionEnum(PermissionEnum::Trainset_READ);
-        // return new TrainsetCarriagesResource($trainsetCarriages);
-
-        // return [
-        //     'id' => $trainsetCarriages->id,
-        //     'trainset_id' => $trainsetCarriages->trainset_id,
-        //     'carriage_id' => $trainsetCarriages->carriage_id,
-        //     'qty' => $trainsetCarriages->qty
-        // ];
-
-        return DB::select('select * from trainset_carriages where id = ?', [$id]);
+        return new TrainsetCarriagesResource($trainset);
     }
 
     /**
@@ -88,7 +74,7 @@ class TrainsetCarriagesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTrainsetCarriageRequest $request, TrainsetCarriages $trainsetCarriages)
+    public function update(Request $request, TrainsetCarriages $trainsetCarriages)
     {
         return 'update';
         // if ($this->ajax()) {

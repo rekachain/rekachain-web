@@ -24,7 +24,7 @@ class UpdateTrainsetCarriagesRequest extends FormRequest {
         return [
             'trainset_id' => 'required|integer',
             'carriage_id' => 'required|integer',
-            'qty' => 'required|integer',
+            'name' => 'required|integer',
         ];
     }
 }
