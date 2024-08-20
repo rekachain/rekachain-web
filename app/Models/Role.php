@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Permission\Models\Role as SpatieRole;
@@ -41,6 +42,8 @@ use Spatie\Permission\Models\Role as SpatieRole;
  * )
  */
 class Role extends SpatieRole {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'guard_name',

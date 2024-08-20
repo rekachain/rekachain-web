@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
+use App\Observers\PermissionObserver;
 use App\Repositories\CarriageRepository;
 use App\Repositories\DivisionRepository;
 use App\Repositories\PermissionRepository;
@@ -82,6 +84,8 @@ class AppServiceProvider extends ServiceProvider {
      * Bootstrap any application services.
      */
     public function boot(): void {
+        Permission::observe(PermissionObserver::class);
+
         JsonResource::withoutWrapping();
 
         Gate::before(function ($user, $ability) {
