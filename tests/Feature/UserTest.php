@@ -1,17 +1,9 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-
-beforeEach(function () {
-    Artisan::call('migrate:fresh');
-    Artisan::call('db:seed', ['--class' => 'DivisionSeeder']);
-    Artisan::call('db:seed', ['--class' => 'PermissionSeeder']);
-    Artisan::call('db:seed', ['--class' => 'RoleSeeder']);
-    Artisan::call('db:seed', ['--class' => 'UserSeeder']);
-});
 
 function testAuthorization($context, User $user, $expectedStatus = 200) {
     $response = $context->actingAs($user)->get('/users/create');
@@ -20,9 +12,9 @@ function testAuthorization($context, User $user, $expectedStatus = 200) {
 }
 
 test('only Super Admin and authorized user can view create user form', function () {
-    $superAdmin = User::find(1);
-    $ppcPerencanaan = User::find(2);
-    $ppcPengendalian = User::find(3);
+    $superAdmin = User::factory()->superAdmin()->create();
+    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
+    $ppcPengendalian = User::factory()->ppcPengendalian()->create();
 
     expect($superAdmin)->not->toBeNull()
         ->and($ppcPerencanaan)->not->toBeNull()
@@ -36,16 +28,16 @@ test('only Super Admin and authorized user can view create user form', function 
 });
 
 test('user can be created', function () {
-    $ppcPerencanaan = \App\Models\User::find(2);
-
-    $this->actingAs($ppcPerencanaan);
+    // Role automatically created by UserFactory
+    $superAdmin = User::factory()->superAdmin()->create();
+    $this->actingAs($superAdmin);
 
     $userData = [
         'nip' => '123456789012345680',
         'name' => 'New User',
         'email' => 'apiuser@example.com',
         'password' => 'password',
-        'role_id' => 3, // Role ID for PPC Pengendalian
+        'role_id' => Role::whereName('Super Admin')->first()->id, // Role ID for Super Admin
     ];
 
     $response = $this->postJson('/api/users', $userData);
@@ -61,11 +53,11 @@ test('user can be created', function () {
 });
 
 test('user can be viewed', function () {
-    $ppcPerencanaan = \App\Models\User::find(2);
+    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
 
     $this->actingAs($ppcPerencanaan);
 
-    $user = User::find(3);
+    $user = User::factory()->create();
 
     $response = $this->getJson('/api/users/' . $user->id);
 
@@ -76,11 +68,11 @@ test('user can be viewed', function () {
 });
 
 test('user can be updated', function () {
-    $ppcPerencanaan = User::find(2);
+    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
 
     $this->actingAs($ppcPerencanaan);
 
-    $user = User::find(3);
+    $user = User::factory()->create();
 
     $userData = [
         'name' => 'Updated User',
@@ -101,11 +93,11 @@ test('user can be updated', function () {
 
 test('user can be updated with providing image', function () {
 
-    $ppcPerencanaan = User::find(2);
+    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
 
     $this->actingAs($ppcPerencanaan);
 
-    $user = User::find(3);
+    $user = User::factory()->create();
 
     $userData = [
         'name' => 'Updated User',
@@ -128,11 +120,11 @@ test('user can be updated with providing image', function () {
 });
 
 test('user can be deleted', function () {
-    $ppcPerencanaan = \App\Models\User::find(2);
+    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
 
     $this->actingAs($ppcPerencanaan);
 
-    $user = User::find(3);
+    $user = User::factory()->create();
 
     $response = $this->deleteJson('/api/users/' . $user->id);
 
