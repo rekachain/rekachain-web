@@ -25,7 +25,7 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);
-        Route::apiResource('trainsets', ApiTrainsetController::class);
+        Route::apiResource('trainsets', ApiTrainsetController::class)->only(['index','show']);
 
         Route::get('logout', [ApiAuthController::class, 'logout'])->name('logout');
     });

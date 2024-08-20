@@ -7,7 +7,6 @@ use App\Http\Requests\Trainset\StoreTrainsetRequest;
 use App\Http\Requests\Trainset\UpdateTrainsetRequest;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Trainset;
-use App\Models\TrainsetCarriages;
 use App\Support\Interfaces\TrainsetServiceInterface;
 use Illuminate\Http\Request;
 use Log;
@@ -63,10 +62,4 @@ class ApiTrainsetController extends Controller
     {
         //
     }
-
-    // public function createOrder(){
-    //     $orderCarriages = new TrainsetCarriages;
-
-        
-    // }
 }
