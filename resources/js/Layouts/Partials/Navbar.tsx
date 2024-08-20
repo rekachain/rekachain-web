@@ -61,21 +61,20 @@ export default function Navbar() {
     };
     return (
         <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
-            {isTabletOrMobile && <div className=""></div>}
-            {isDesktopOrLaptop && (
-                <div className="w-64 h-full flex items-center rounded border-2 px-2">
-                    <label htmlFor="search" children={<RiSearchLine className="w-5 h-5" />} />
-                    <Input
-                        id="search"
-                        className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                        placeholder="Search"
-                    />
-                    <label htmlFor="search">
+            <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
+                <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
+                <Input
+                    id="search"
+                    className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    placeholder="Search"
+                />
+                <label htmlFor="search">
+                    {isDesktopOrLaptop && (
                         <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
-                    </label>
-                </div>
-            )}
-            <div className="w-fit flex h-full items-center gap-2">
+                    )}
+                </label>
+            </div>
+            <div className="w-fit flex h-full items-center gap-1 md:gap-2">
                 <Button variant="ghost" size="icon" onClick={handleDarkMode}>
                     {darkMode ? (
                         <Sun size={STYLING.ICON.SIZE.SMALL} />
@@ -97,12 +96,12 @@ export default function Navbar() {
                 <Separator orientation="vertical" className="w-[2px]" />
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <div className="flex justify-start gap-2">
+                        <div className="flex justify-start gap-1 md:gap-2">
                             <Avatar>
                                 <AvatarImage src={auth?.user.image} />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
-                            {isTabletOrMobile && <div className=""></div>}
+                            {isTabletOrMobile && <span></span>}
                             {isDesktopOrLaptop && (
                                 <div className="flex flex-col items-startlex">
                                     <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
