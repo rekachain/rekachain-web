@@ -16,7 +16,7 @@ export default function () {
                         <h1 className="text-page-header my-4">Project</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
-                            href={route(`${ROUTES.DIVISIONS}.create`)}
+                            href={route(`${ROUTES.PROJECTS}.create`)}
                         >
                             Tambah Project
                         </Link>
