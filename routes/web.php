@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
 });
 Route::resource('trainsetCarriages', TrainsetCarriagesController::class);
+// Route::get('/trainsetCarriages', [TrainsetCarriagesController::class, 'index'])->name('index');
+// Route::get('/trainsetCarriages/{id}', [TrainsetCarriagesController::class, 'show'])->name('show');
 
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
