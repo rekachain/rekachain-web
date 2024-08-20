@@ -26,35 +26,40 @@ class TrainsetCarriagesController extends Controller
             } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
         }
-        return inertia('TrainsetCarriages/Index');
+
+        //  $perPage = request()->get('perPage', 5);
+        //  return TrainsetCarriagesResource::collection($this->trainsetCarriagesService->getAllPaginated($request->query(), $perPage));
+        // testing web
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        return 'create';
         // return inertia('Project/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTrainsetCarriagesRequest $request)
     {
         if($this->ajax()) {
             return $this->trainsetCarriagesService->create($request->validated());
         }
+        //return $this->trainsetCarriagesService->create($request->validated());
+        //tes web
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(TrainsetCarriages $trainsetCarriages)
+    public function show(TrainsetCarriages $trainset)
     {
-        if ($this->ajax()) {
-            return new TrainsetCarriagesResource($trainsetCarriages);
-        }
+        // $request->checkPermissionEnum(PermissionEnum::Trainset_READ);
+        return new TrainsetCarriagesResource($trainset);
     }
 
     /**
@@ -62,6 +67,7 @@ class TrainsetCarriagesController extends Controller
      */
     public function edit(TrainsetCarriages $trainsetCarriages)
     {
+        return 'edit';
         // return inertia('TrainsetCarriages/Edit', ['trainsetCarriages' => new TrainsetCarriagesResource($trainsetCarriages)]);
     }
 
@@ -70,9 +76,12 @@ class TrainsetCarriagesController extends Controller
      */
     public function update(Request $request, TrainsetCarriages $trainsetCarriages)
     {
-        if ($this->ajax()) {
-            return $this->trainsetCarriagesService->update($trainsetCarriages, $request->validated());
-        }
+        return 'update';
+        // if ($this->ajax()) {
+        //     return $this->trainsetCarriagesService->update($trainsetCarriages, $request->validated());
+        // }
+
+        return $this->trainsetCarriagesService->update($trainsetCarriages, $request);
     }
 
     /**
@@ -80,6 +89,7 @@ class TrainsetCarriagesController extends Controller
      */
     public function destroy(Request $request, TrainsetCarriages $trainsetCarriages)
     {
+        return 'destroy';
         if ($this->ajax()) {
             return $this->trainsetCarriagesService->delete($trainsetCarriages);
         }

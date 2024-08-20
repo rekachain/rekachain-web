@@ -17,9 +17,9 @@ class TrainsetCarriagesResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
+            'qty' => $this->qty,
             'trainset_id' => $this->trainset_id,
             'carriage_id' => $this->carriage_id,
-            'qty' => $this->qty,
         ];
     }
 }
