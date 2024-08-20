@@ -6,6 +6,7 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\UserServiceInterface;
@@ -46,7 +47,7 @@ class ApiUserController extends ApiController {
      */
     public function update(UpdateUserRequest $request, User $user) {
         $intent = request()->get('intent');
-        if ($intent === 'api.user.update.password') {
+        if ($intent === IntentEnum::API_USER_UPDATE_PASSWORD->value) {
             return $this->userService->apiUpdatePassword($user, $request->validated());
         }
 
