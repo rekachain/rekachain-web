@@ -9,7 +9,7 @@ import { Input } from '@/Components/ui/input';
 import { projectService } from '@/services/projectService';
 import { Loader2 } from 'lucide-react';
 
-const ProjectDetails = memo(lazy(() => import('./Partials/ProjectDetails')));
+const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));
 
 export default function ({ project: initialProject }: { project: ProjectResource }) {
     const [project, setProject] = useState<ProjectResource>(initialProject);
@@ -66,7 +66,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <ProjectDetails project={project} handleSyncProject={handleSyncProject} />
+                        <Trainsets project={project} handleSyncProject={handleSyncProject} />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

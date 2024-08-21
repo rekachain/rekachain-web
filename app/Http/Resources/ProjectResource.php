@@ -18,7 +18,7 @@ class ProjectResource extends JsonResource {
 
         switch ($intent) {
 
-            case IntentEnum::WEB_PROJECT_SHOW_PROJECT->value:
+            case IntentEnum::WEB_PROJECT_GET_TRAINSETS->value:
                 return [
                     'id' => $this->id,
                     'name' => $this->name,
