@@ -19,13 +19,17 @@ class TrainsetSeeder extends Seeder {
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                Trainset::factory()->create([
-                    'project_id' => Project::where('name', $data['project_name'])->first()->id, 'name' => $data['trainset_name'],
-                ]);
+                if (Project::whereName($data['project_name'])->exists()) {
+                    Trainset::create([
+                        'project_id' => Project::whereName($data['project_name'])->first()->id, 
+                        'name' => $data['trainset_name'],
+                        'preset_trainset_id' => PresetTrainset::whereName($data['preset'])->first()->id ?? null, // jika ada
+                    ]);
+                }
+                else {
+                    // TODO: create new project
+                }
             }
-
-            // sementara
-            Trainset::whereName('TS27')->update(['preset_trainset_id' => PresetTrainset::whereName('TSA')->first()->id]);
         } else {
             Trainset::factory(1)->create();
         }
