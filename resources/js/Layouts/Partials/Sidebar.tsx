@@ -49,63 +49,111 @@ export default function Sidebar() {
     useEffect(applySidebarCollapse, [sidebarCollapse]);
 
     return (
-        <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
-            <nav className="flex flex-col space-y-1">
-                <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
-                    <img
-                        src="/assets/images/outline putih.png"
-                        alt="logo"
-                        // className=" "
-                        // className="sidebar-header-logo h-full object-contain"
-                        className="sidebar-header-logo h-full "
-                        width={170}
-                        // height={500}
-                    />
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        className="sidebar-collapse-toggle h-10 w-10"
-                        onClick={handleSidebarCollapse}
-                    >
-                        {sidebarCollapse ? (
-                            <RiContractRightLine size={STYLING.ICON.SIZE.SMALL} />
-                        ) : (
-                            <RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />
-                        )}
-                    </Button>
-                </div>
-                <SidebarMenu title="GENERAL">
-                    <SidebarLink
-                        routeName="dashboard"
-                        title="Dashboard"
-                        icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLink
-                        routeName={`${ROUTES.USERS}.index`}
-                        title="Staff"
-                        icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                    />
+        <SidebarContext.Provider value={{ selectedMenu, setSelectedMenu }}>
+            <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
+                <nav className="flex flex-col space-y-1">
+                    <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
+                        <img
+                            src="/assets/images/outline putih.png"
+                            alt="logo"
+                            // className=" "
+                            // className="sidebar-header-logo h-full object-contain"
+                            className="sidebar-header-logo h-full "
+                            width={170}
+                            // height={500}
+                        />
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="sidebar-collapse-toggle h-10 w-10"
+                            onClick={handleSidebarCollapse}
+                        >
+                            {sidebarCollapse ? (
+                                <RiContractRightLine size={STYLING.ICON.SIZE.SMALL} />
+                            ) : (
+                                <RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />
+                            )}
+                        </Button>
+                    </div>
+                    <SidebarMenu title="GENERAL">
+                        <SidebarLink
+                            routeName="dashboard"
+                            title="Dashboard"
+                            icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLinkCollapsible
+                            group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                            title="Manajemen Staff"
+                            icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
+                        >
+                            {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.DIVISIONS}.index`}
+                                    title="Divisi"
+                                    icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
 
-                    <SidebarLinkCollapsible title="Hak Akses" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
-                        <SidebarLinkCollapsibleItem
-                            routeName={`${ROUTES.PERMISSIONS}.index`}
-                            title="Permissions"
-                            icon={<RiLockUnlockFill size={STYLING.ICON.SIZE.SMALL} />}
+                            {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.WORKSHOPS}.index`}
+                                    title="Workshop"
+                                    icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.WORKSTATIONS}.index`}
+                                    title="Workstation"
+                                    icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.USER_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.USERS}.index`}
+                                    title="Staff"
+                                    icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+                        </SidebarLinkCollapsible>
+
+                        <SidebarLinkCollapsible
+                            group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                            title="Hak Akses"
+                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                        >
+                            {checkPermission(PERMISSION_ENUM.PERMISSION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    routeName={`${ROUTES.PERMISSIONS}.index`}
+                                    title="Permissions"
+                                    icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.ROLE_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    routeName={`${ROUTES.ROLES}.index`}
+                                    title="Roles"
+                                    icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+                        </SidebarLinkCollapsible>
+                    </SidebarMenu>
+                    <SidebarMenu title="MANUFAKTUR" bordered>
+                        <SidebarLink
+                            routeName={`${ROUTES.PROFILE}.edit`}
+                            title="Track Lot"
+                            icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                         />
-                        <SidebarLinkCollapsibleItem
-                            routeName={`${ROUTES.ROLES}.index`}
-                            title="Roles"
-                            icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                    </SidebarLinkCollapsible>
-                </SidebarMenu>
-                <SidebarMenu title="MANUFAKTUR" bordered>
-                    <SidebarLink
-                        routeName={`${ROUTES.PROFILE}.edit`}
-                        title="Track Lot"
-                        icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    {/* <SidebarLink
+                        {/* <SidebarLink
                         routeName="project"
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
