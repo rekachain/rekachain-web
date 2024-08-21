@@ -7,6 +7,7 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { carriageService } from '@/services/carriageService';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
+    console.log(trainset);
     const handleCarriageDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
@@ -26,6 +27,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Susunan Kereta</TableHead>
+                        <TableHead>Panel dalam susunan kereta</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

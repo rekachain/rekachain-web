@@ -121,7 +121,7 @@ class ProjectController extends Controller {
     }
 
     public function carriages(Request $request, Project $project, Trainset $trainset) {
-        $trainset = new TrainsetResource($trainset->load(['carriages']));
+        $trainset = new TrainsetResource($trainset->load(['carriages' => ['panels']]));
 
         return inertia('Project/Trainset/Carriage/Index', ['trainset' => $trainset]);
     }
