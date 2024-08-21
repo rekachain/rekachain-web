@@ -176,6 +176,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'permission_name' => [
+            'regex' => 'The :attribute must be in the format of \'group-action\'.',
+        ],
     ],
 
     /*
