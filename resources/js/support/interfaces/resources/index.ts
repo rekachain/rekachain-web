@@ -3,3 +3,8 @@ export * from './UserResource';
 export * from './PermissionResource';
 export * from './RoleResource';
 export * from './DivisionResource';
+export * from './WorkstationResource';
+export * from './WorkshopResource';
+export * from './CarriageResource';
+export * from './TrainsetResource';
+export * from './ProjectResource';

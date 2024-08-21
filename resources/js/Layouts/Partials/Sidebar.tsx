@@ -2,13 +2,16 @@ import {
     RiBox3Line,
     RiContractLeftLine,
     RiContractRightLine,
+    RiDivideLine,
     RiFlickrLine,
+    RiHome2Line,
     RiHome8Line,
-    RiLockLine,
-    RiLockUnlockFill,
+    RiLockUnlockLine,
     RiQuestionLine,
     RiSettings3Line,
     RiShieldLine,
+    RiToolsFill,
+    RiUser2Line,
     RiUserLine,
 } from '@remixicon/react';
 import { Button } from '@/Components/ui/button';
@@ -20,12 +23,15 @@ import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
 import { STYLING } from '@/support/constants/styling';
-import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
+import { SidebarContext } from '@/contexts/SidebarContext';
+import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
+import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
+import { checkPermission } from '@/helpers/sidebarHelper';
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
-
+    const [selectedMenu, setSelectedMenu] = useLocalStorage('selectedMenu', '');
     const handleSidebarCollapse = () => {
         setSidebarCollapse(!sidebarCollapse);
     };
@@ -47,12 +53,12 @@ export default function Sidebar() {
             <nav className="flex flex-col space-y-1">
                 <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
                     <img
-                        src="/assets/images/Logo REKA.svg"
+                        src="/assets/images/outline putih.png"
                         alt="logo"
                         // className=" "
                         // className="sidebar-header-logo h-full object-contain"
-                        className="sidebar-header-logo h-12"
-                        width={200}
+                        className="sidebar-header-logo h-full "
+                        width={170}
                         // height={500}
                     />
                     <Button
@@ -104,26 +110,40 @@ export default function Sidebar() {
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
-                    <SidebarLinkCollapsible title="Proyek" icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}>
-                        <SidebarLinkCollapsibleItem
-                            routeName="proyek"
-                            title="List Proyek"
+                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PROJECTS}.index`}
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        <SidebarLinkCollapsible
+                            group={SIDEBAR_GROUP_ENUM.PROJECT}
+                            title="Proyek"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                        <SidebarLinkCollapsibleItem
-                            routeName="buat-proyek"
-                            title="Buat Proyek"
-                            // routeName={`${ROUTES.PROFILE}.edit`}
-                            // title="Order"
-                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                        <SidebarLinkCollapsibleItem
-                            routeName={`${ROUTES.PROFILE}.edit`}
-                            title="Track"
-                            icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                    </SidebarLinkCollapsible>
-                    {/* <SidebarLink
+                        >
+                            <SidebarLinkCollapsibleItem
+                                group={SIDEBAR_GROUP_ENUM.PROJECT}
+                                routeName="proyek"
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                            <SidebarLinkCollapsibleItem
+                                group={SIDEBAR_GROUP_ENUM.PROJECT}
+                                routeName="buat-proyek"
+                                title="Buat Proyek"
+                                // routeName={`${ROUTES.PROFILE}.edit`}
+                                // title="Order"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                            <SidebarLinkCollapsibleItem
+                                group={SIDEBAR_GROUP_ENUM.PROJECT}
+                                routeName={`${ROUTES.PROFILE}.edit`}
+                                title="Track"
+                                icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        </SidebarLinkCollapsible>
+                        {/* <SidebarLink
                         route={`${ROUTES.PROFILE}.edit"
                         children="Order Batch"
                         icon={<RiBox3Line  size={STYLING.ICON.SIZE.SMALL} />}
@@ -133,21 +153,22 @@ export default function Sidebar() {
                         children="Input Dokumen Pendukung"
                         icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
-                </SidebarMenu>
-                <SidebarMenu title="SUPPORT" bordered>
-                    <SidebarLink
-                        routeName={`${ROUTES.PROFILE}.edit`}
-                        title="Pengaturan"
-                        icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLink
-                        routeName={`${ROUTES.PROFILE}.edit`}
-                        title="Helpdesk"
-                        icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
-                    />
-                    <SidebarLogout />
-                </SidebarMenu>
-            </nav>
-        </aside>
+                    </SidebarMenu>
+                    <SidebarMenu title="SUPPORT" bordered>
+                        <SidebarLink
+                            routeName={`${ROUTES.PROFILE}.edit`}
+                            title="Pengaturan"
+                            icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLink
+                            routeName={`${ROUTES.PROFILE}.edit`}
+                            title="Helpdesk"
+                            icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLogout />
+                    </SidebarMenu>
+                </nav>
+            </aside>
+        </SidebarContext.Provider>
     );
 }

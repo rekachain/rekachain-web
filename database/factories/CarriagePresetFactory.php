@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\workshop>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CarriagePreset>
  */
-class WorkshopFactory extends Factory
+class CarriagePresetFactory extends Factory
 {
     /**
      * Define the model's default state.

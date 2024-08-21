@@ -2,16 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Workshop extends Model
-{
-    use HasFactory;
-
+class Workshop extends Model {
     protected $fillable = [
         'name',
-        'location',
         'address',
-     ];
+    ];
 }

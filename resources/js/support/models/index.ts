@@ -2,3 +2,8 @@ export * from './User';
 export * from './Permission';
 export * from './Role';
 export * from './Division';
+export * from './Workstation';
+export * from './Workshop';
+export * from './Carriage';
+export * from './Trainset';
+export * from './Project';

@@ -5,10 +5,12 @@ namespace App\Repositories;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\Project;
 use App\Support\Interfaces\ProjectRepositoryInterface;
+use App\Traits\Repositories\HandlesSorting;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectRepository extends BaseRepository implements ProjectRepositoryInterface {
-
+    use HandlesSorting;
     // Berjaga jaga apabila ada upload dokumen
 
     // public function create(array $data): ?Model {
@@ -38,7 +40,15 @@ class ProjectRepository extends BaseRepository implements ProjectRepositoryInter
     //     return parent::delete($keyOrModel);
     // }
 
-    // protected function getModelClass(): string {
-    //     return User::class;
-    // }
+    protected function getModelClass(): string {
+        return Project::class;
+    }
+
+    protected function applyFilters(array $searchParams = []): Builder {
+        $query = $this->getQuery();
+
+        $query = $this->applySorting($query, $searchParams);
+
+        return $query;
+    }
 }

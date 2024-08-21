@@ -2,22 +2,39 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProjectResource extends JsonResource
-{
+class ProjectResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
-    {
-        // return parent::toArray($request);
+    public function toArray(Request $request): array {
+
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+
+            case IntentEnum::WEB_PROJECT_SHOW_PROJECT->value:
+                return [
+                    'name' => $this->name,
+                    'initial_date' => $this->initial_date,
+                    'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
+                ];
+        }
+
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'name' => $this->name,
+            'initial_date' => $this->initial_date,
+            'trainset_count' => $this->trainsets?->count(),
+            //            'trainsets' => $this->whenLoaded('trainsets', fn() => TrainsetResource::collection($this->trainsets)),
+            'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

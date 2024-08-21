@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Carriage extends Model
-{
+class Carriage extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -15,13 +14,12 @@ class Carriage extends Model
         'description',
     ];
 
-    public function trainsets(): HasMany
-    {
-        return $this->hasMany(TrainsetCarriages::class, 'id_carriage', 'id');
+    public function trainsets(): BelongsToMany {
+        return $this->belongsToMany(CarriageTrainset::class)->withPivot('qty');
     }
 
-    public function panels(): HasMany
-    {
-        return $this->hasMany(CarriagePanels::class, 'id_carriage', 'id');
-    }
+    // public function panels(): HasMany
+    // {
+    //     return $this->hasMany(CarriagePanels::class, 'id_carriage', 'id');
+    // }
 }

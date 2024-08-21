@@ -19,7 +19,9 @@ class StoreProjectRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'date' => 'required|date',
+            'name' => 'required',
+            'trainset_needed' => 'required|numeric', // used only to create needed trainsets
+            'initial_date' => 'required|date',
         ];
     }
 }
