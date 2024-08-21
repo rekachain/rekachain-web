@@ -4,8 +4,8 @@ import { Head, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import { PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
 import { Button } from '@/Components/ui/button';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Label } from '@/Components/ui/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -24,6 +24,13 @@ export default function ({
 
     console.log(presetTrainset);
 
+    const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setData('isLoading', true);
+        await post(route('trainsets.update', trainset.id));
+        reset();
+    };
+
     return (
         <>
             <Head title={`Project ${trainset.name}`} />
@@ -32,38 +39,44 @@ export default function ({
                     <div className="flex flex-col gap-2">
                         <div>
                             <h1 className="text-page-header my-4">Trainset {trainset.name}</h1>
-                            {trainset.preset_name ? (
-                                <p className="text-page-subheader">Preset: {trainset.preset_name}</p>
-                            ) : (
-                                <>
+                            <div className="flex flex-col gap-2 bg-background-2 p-5 rounded">
+                                {trainset.preset_name && (
+                                    <p className="text-page-subheader">Preset: {trainset.preset_name}</p>
+                                )}
+
+                                <form onSubmit={handleChangePreset} className="flex gap-2">
                                     <SelectGroup className="space-y-2 w-fit">
                                         <Label htmlFor="preset-trainset">Preset</Label>
-                                        <Select>
-                                            <SelectTrigger id="preset-trainset">
-                                                <SelectValue placeholder="Preset Trainset" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {presetTrainset.map(preset => (
-                                                    <SelectItem
-                                                        key={preset.id}
-                                                        value={preset.id.toString()}
-                                                        onClick={() => setData('preset_trainset_id', preset.id)}
-                                                    >
-                                                        {preset.name} (
-                                                        {preset.carriage_presets.map((c, i) => (
-                                                            <span key={c.id}>
-                                                                {c.qty} {c.carriage.type}
-                                                                {i < trainset.carriages!.length - 1 && ' + '}
-                                                            </span>
-                                                        ))}
-                                                        )
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                        <div className="flex gap-2">
+                                            <Select>
+                                                <SelectTrigger id="preset-trainset">
+                                                    <SelectValue placeholder="Preset Trainset" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {presetTrainset.map(preset => (
+                                                        <SelectItem
+                                                            key={preset.id}
+                                                            value={preset.id.toString()}
+                                                            onClick={() => setData('preset_trainset_id', preset.id)}
+                                                        >
+                                                            {preset.name} (
+                                                            {preset.carriage_presets.map((c, i) => (
+                                                                <span key={c.id}>
+                                                                    {c.qty} {c.carriage.type}
+                                                                    {i < trainset.carriages!.length - 1 && ' + '}
+                                                                </span>
+                                                            ))}
+                                                            )
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+
+                                            <Button>Ubah Preset</Button>
+                                        </div>
                                     </SelectGroup>
-                                </>
-                            )}
+                                </form>
+                            </div>
                         </div>
 
                         {/*<div className="rounded p-5 bg-background-2">*/}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Trainset;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTrainsetRequest extends FormRequest {
@@ -18,6 +19,15 @@ class UpdateTrainsetRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PROJECT_UPDATE_TRAINSET_PRESET->value:
+                return [
+                    'preset_trainset_id' => 'required|integer',
+                ];
+        }
 
         $trainset = $this->route('trainset')->id;
 

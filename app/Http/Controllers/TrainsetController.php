@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Trainset\StoreTrainsetRequest;
+use App\Http\Requests\Trainset\UpdateTrainsetRequest;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Trainset;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\TrainsetServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -63,7 +66,13 @@ class TrainsetController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Trainset $trainset) {
+    public function update(UpdateTrainsetRequest $request, Trainset $trainset) {
+
+        $intent = $request->get('intent');
+
+        if($intent === IntentEnum::WEB_PROJECT_UPDATE_TRAINSET_PRESET->value) {
+            return $this->trainsetService->updatePreset($trainset, $request->validated());
+        }
         if ($this->ajax()) {
             return $this->trainsetService->update($trainset, $request->validated());
         }
