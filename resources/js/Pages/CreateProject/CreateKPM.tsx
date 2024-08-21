@@ -4,8 +4,58 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AnimateIn from '@/lib/AnimateIn';
 import { Head } from '@inertiajs/react';
 import { Pencil, Trash } from 'lucide-react';
+import { useState } from 'react';
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/Components/ui/dialog';
+import { Label } from '@/Components/ui/label';
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/Components/ui/alert-dialog';
+
+type material = {
+    nama: string;
+    jumlah: number;
+};
 
 export default function CreateKPM() {
+    const [materials, setMaterial] = useState<material[] | undefined>([
+        {
+            nama: 'Besi',
+            jumlah: 10,
+        },
+        {
+            nama: 'Hypalon',
+            jumlah: 5,
+        },
+    ]);
+
+    function tambahMaterial() {
+        setMaterial([
+            ...materials!,
+            {
+                nama: 'Kayu',
+                jumlah: 3,
+            },
+        ]);
+    }
+
     return (
         <AuthenticatedLayout>
             <Head title="Buat KPM" />
@@ -21,17 +71,76 @@ export default function CreateKPM() {
                             <Input placeholder="Serial Number"></Input>
                             <hr className="border-black" />
                             <h2 className="text-md">List Material</h2>
-                            <div className="border-2 flex justify-between border-black rounded-md p-3">
-                                <p>Material 1 x 12</p>
-                                <div className="flex w-16 justify-between">
-                                    <Pencil></Pencil>
-                                    <Trash></Trash>
+                            {materials?.map(material => (
+                                <div className="border-2 flex justify-between border-black rounded-md p-3">
+                                    <p>
+                                        {material.nama} x {material.jumlah}
+                                    </p>
+                                    <div className="flex w-16 justify-between">
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Pencil className="hover:cursor-pointer"></Pencil>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[425px]">
+                                                <DialogHeader>
+                                                    <DialogTitle>Edit Material {material.nama}</DialogTitle>
+                                                    <DialogDescription>Ubah material .</DialogDescription>
+                                                </DialogHeader>
+                                                <div className="grid gap-4 py-4">
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="name" className="">
+                                                            Nama Material
+                                                        </Label>
+                                                        {/* <h4 className="text-lg">ma</h4> */}
+                                                        <Input
+                                                            id="name"
+                                                            defaultValue={material.nama}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="username" className="">
+                                                            Jumlah Material
+                                                        </Label>
+                                                        <Input
+                                                            id="username"
+                                                            defaultValue={material.jumlah}
+                                                            className="col-span-3"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <DialogFooter>
+                                                    <Button type="submit">Simpan Perubahan</Button>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger>
+                                                <Trash></Trash>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>
+                                                        Apakah anda yakin akan menghapus material {material.nama}?
+                                                    </AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        Material yang sudah dihapus tidak akan bisa dikembalikan
+                                                        kembali, pastikan material yang dipilih sudah benar.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Kembali</AlertDialogCancel>
+                                                    <AlertDialogAction>Hapus</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
                             <div className="flex gap-3">
                                 <Input placeholder="Nama Material"></Input>
                                 <Input placeholder="Jumlah Material"></Input>
-                                <Button>Tambah Material</Button>
+                                <Button onClick={() => tambahMaterial()}>Tambah Material</Button>
                             </div>
                         </div>
                     </AnimateIn>

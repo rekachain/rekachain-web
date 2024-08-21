@@ -32,7 +32,7 @@ export default function CreateProject() {
         <AuthenticatedLayout>
             <Head title="Buat Proyek" />
             <div className="py-12">
-                <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
+                <div className="w-1/2 sm:min-w-full max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
                     <AnimateIn
                         from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
