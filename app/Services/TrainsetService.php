@@ -8,9 +8,7 @@ use App\Support\Interfaces\TrainsetRepositoryInterface;
 use App\Support\Interfaces\TrainsetServiceInterface;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
-
-    public function updatePreset(Trainset $trainset, $preset_trainset_id): bool
-    {
+    public function updatePreset(Trainset $trainset, $preset_trainset_id): bool {
         /*
          * 1. remove all trainset carriages
          * 2. add all carriages from preset_trainset_id
@@ -22,6 +20,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             'preset_trainset_id' => $preset_trainset_id,
         ]);
         $trainset->carriages()->createMany($presetTrainset->carriages->toArray());
+
         return true;
     }
 
