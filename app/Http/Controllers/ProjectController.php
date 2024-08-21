@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\CarriageResource;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\TrainsetResource;
 use App\Models\Project;
+use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\ProjectServiceInterface;
 use Illuminate\Http\Request;
@@ -51,21 +54,18 @@ class ProjectController extends Controller {
      * Display the specified resource.
      */
     public function show(Request $request, Project $project) {
+
+        $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
+
         if ($this->ajax()) {
-            return new ProjectResource($project);
+            return $project;
         }
 
-        $intent = IntentEnum::WEB_PROJECT_SHOW_PROJECT->value;
+        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
 
         $request->merge(['intent' => $intent]);
 
-        return inertia('Project/Show', ['project' => new ProjectResource($project->load([
-            'trainsets' => [
-                'carriages' => [
-                    //                    'carriage',
-                ],
-            ],
-        ]))]);
+        return inertia('Project/Show', ['project' => $project]);
     }
 
     /**
@@ -79,6 +79,13 @@ class ProjectController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateProjectRequest $request, Project $project) {
+
+        $intent = $request->get('intent');
+
+        if ($intent == IntentEnum::WEB_PROJECT_ADD_TRAINSET->value) {
+            return $this->projectService->addTrainsets($project, $request->get('trainset_needed'));
+        }
+
         if ($this->ajax()) {
             return $this->projectService->update($request->validated());
         }
@@ -91,5 +98,37 @@ class ProjectController extends Controller {
         if ($this->ajax()) {
             return $this->projectService->delete($project);
         }
+    }
+
+    public function trainsets(Request $request, Project $project) {
+        $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
+
+        if ($this->ajax()) {
+            return $project;
+        }
+
+        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
+
+        $request->merge(['intent' => $intent]);
+
+        return inertia('Project/Trainset/Index', ['project' => $project]);
+    }
+
+    public function trainset(Request $request, Project $project, Trainset $trainset) {
+        $trainset = new TrainsetResource($trainset->load(['carriages']));
+
+        return inertia('Project/Trainset/Show', ['trainset' => $trainset]);
+    }
+
+    public function carriages(Request $request, Project $project, Trainset $trainset) {
+        $trainset = new TrainsetResource($trainset->load(['carriages']));
+
+        return inertia('Project/Trainset/Carriage/Index', ['trainset' => $trainset]);
+    }
+
+    public function carriage(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {
+        $carriage = new CarriageResource($carriage);
+
+        return inertia('Project/Trainset/Carriage/Show', ['carriage' => $carriage]);
     }
 }

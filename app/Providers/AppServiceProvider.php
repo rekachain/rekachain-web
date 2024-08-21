@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Permission;
+use App\Models\Trainset;
 use App\Observers\PermissionObserver;
+use App\Observers\TrainsetObserver;
 use App\Repositories\CarriageRepository;
 use App\Repositories\DivisionRepository;
 use App\Repositories\PanelRepository;
@@ -99,6 +101,7 @@ class AppServiceProvider extends ServiceProvider {
      */
     public function boot(): void {
         Permission::observe(PermissionObserver::class);
+        Trainset::observe(TrainsetObserver::class);
 
         JsonResource::withoutWrapping();
 

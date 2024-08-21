@@ -10,4 +10,6 @@ export const ROUTES = {
     TRAINSETS: 'trainsets',
     PROJECTS: 'projects',
     PROJECTS_TRAINSETS: 'projects.trainsets',
+    PROJECTS_TRAINSETS_CARRIAGES: 'projects.trainsets.carriages',
+    CARRIAGES: 'carriages',
 };

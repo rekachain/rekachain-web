@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Models\Project;
 use App\Support\Interfaces\ProjectRepositoryInterface;
 use App\Support\Interfaces\ProjectServiceInterface;
 use App\Support\Interfaces\TrainsetServiceInterface;
@@ -13,20 +14,28 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         parent::__construct();
     }
 
-    public function create(array $data): ?Model {
-        $prefixTrainsetName = 'TS ';
-        $project = parent::create($data);
-
-        $trainsets = [];
-        if ($data['trainset_needed'] > 0) {
-            $trainsets = collect(range(1, $data['trainset_needed']))
-                ->map(fn ($i) => ['project_id' => $project->id, 'name' => $prefixTrainsetName . $i])
-                ->toArray();
-
-            $this->trainsetService->createMany($trainsets);
+    private function createTrainsets(Project $project, $trainsetNeeded): void {
+        if ($trainsetNeeded <= 0) {
+            return;
         }
 
+        $trainsets = collect(range(1, $trainsetNeeded))
+            ->map(fn ($i) => ['project_id' => $project->id])
+            ->toArray();
+
+        $this->trainsetService->createMany($trainsets);
+    }
+
+    public function create(array $data): ?Model {
+        $project = parent::create($data);
+
+        $this->createTrainsets($project, $data['trainset_needed']);
+
         return $project;
+    }
+
+    public function addTrainsets(Project $project, $trainsetNeeded): void {
+        $this->createTrainsets($project, $trainsetNeeded);
     }
 
     protected function getRepositoryClass(): string {
