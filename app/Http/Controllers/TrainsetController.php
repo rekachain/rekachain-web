@@ -52,7 +52,7 @@ class TrainsetController extends Controller {
      */
     public function show(Trainset $trainset) {
         if ($this->ajax()) {
-            return new TrainsetResource($trainset);
+            return new TrainsetResource($trainset->load(['carriages' => ['panels']]));
         }
     }
 
@@ -70,7 +70,7 @@ class TrainsetController extends Controller {
 
         $intent = $request->get('intent');
 
-        if ($intent === IntentEnum::WEB_PROJECT_UPDATE_TRAINSET_PRESET->value) {
+        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {
             return $this->trainsetService->updatePreset($trainset, $request->validated());
         }
         if ($this->ajax()) {

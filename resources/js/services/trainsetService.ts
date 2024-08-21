@@ -5,7 +5,7 @@ import { IntentEnum } from '@/support/enums/intentEnum';
 
 export const trainsetService = {
     ...serviceFactory<TrainsetResource>(ROUTES.TRAINSETS),
-    updatePreset: async (trainsetId: number, presetTrainsetId: number) => {
+    changePreset: async (trainsetId: number, presetTrainsetId: number) => {
         return window.axios.post(
             route(`${ROUTES.TRAINSETS}.update`, trainsetId),
             {
@@ -13,7 +13,8 @@ export const trainsetService = {
             },
             {
                 params: {
-                    intent: IntentEnum.WEB_PROJECT_UPDATE_TRAINSET_PRESET,
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_PROJECT_CHANGE_TRAINSET_PRESET,
                 },
             },
         );

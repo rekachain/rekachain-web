@@ -9,5 +9,5 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
     /*
      * Update trainset preset
      */
-    public function updatePreset(Trainset $trainset, $preset_trainset_id): bool;
+    public function updatePreset(Trainset $trainset, array $data): bool;
 }

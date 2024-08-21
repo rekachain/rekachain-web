@@ -23,9 +23,9 @@ class UpdateTrainsetRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
-            case IntentEnum::WEB_PROJECT_UPDATE_TRAINSET_PRESET->value:
+            case IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value:
                 return [
-                    'preset_trainset_id' => 'required|integer',
+                    'preset_trainset_id' => 'required|integer|exists:preset_trainsets,id',
                 ];
         }
 

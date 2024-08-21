@@ -12,6 +12,7 @@ class Trainset extends Model {
 
     protected $fillable = [
         'project_id',
+        'preset_trainset_id',
         'name',
     ];
 
@@ -21,6 +22,10 @@ class Trainset extends Model {
 
     public function presetTrainset(): BelongsTo {
         return $this->belongsTo(PresetTrainset::class);
+    }
+
+    public function carriageTrainset(): BelongsToMany {
+        return $this->belongsToMany(Carriage::class, 'carriage_trainset')->withPivot('qty')->withTimestamps();
     }
 
     // public function projectAttachments(): HasMany

@@ -6,6 +6,8 @@ import { PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/r
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
+import { trainsetService } from '@/services/trainsetService';
+import { Loader2 } from 'lucide-react';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -19,16 +21,24 @@ export default function ({
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const { data, setData, post, processing, errors, reset } = useForm({
         isLoading: false,
-        preset_trainset_id: 0,
+        preset_trainset_id: trainset.preset_trainset_id ?? 0,
     });
-
-    console.log(presetTrainset);
 
     const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData('isLoading', true);
-        await post(route('trainsets.update', trainset.id));
-        reset();
+        try {
+            setData('isLoading', true);
+            await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
+        } catch (error) {
+        } finally {
+            await handleSyncTrainset();
+            reset('isLoading');
+        }
+    };
+
+    const handleSyncTrainset = async () => {
+        const updatedTrainset = await trainsetService.get(initialTrainset.id);
+        setTrainset(updatedTrainset);
     };
 
     return (
@@ -48,22 +58,21 @@ export default function ({
                                     <SelectGroup className="space-y-2 w-fit">
                                         <Label htmlFor="preset-trainset">Preset</Label>
                                         <div className="flex gap-2">
-                                            <Select>
+                                            <Select
+                                                onValueChange={v => setData('preset_trainset_id', +v)}
+                                                defaultValue={trainset.preset_trainset_id.toString()}
+                                            >
                                                 <SelectTrigger id="preset-trainset">
                                                     <SelectValue placeholder="Preset Trainset" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {presetTrainset.map(preset => (
-                                                        <SelectItem
-                                                            key={preset.id}
-                                                            value={preset.id.toString()}
-                                                            onClick={() => setData('preset_trainset_id', preset.id)}
-                                                        >
+                                                        <SelectItem key={preset.id} value={preset.id.toString()}>
                                                             {preset.name} (
                                                             {preset.carriage_presets.map((c, i) => (
                                                                 <span key={c.id}>
                                                                     {c.qty} {c.carriage.type}
-                                                                    {i < trainset.carriages!.length - 1 && ' + '}
+                                                                    {i < preset.carriage_presets!.length - 1 && ' + '}
                                                                 </span>
                                                             ))}
                                                             )
@@ -72,7 +81,22 @@ export default function ({
                                                 </SelectContent>
                                             </Select>
 
-                                            <Button>Ubah Preset</Button>
+                                            <Button
+                                                type="submit"
+                                                disabled={
+                                                    data.isLoading ||
+                                                    data.preset_trainset_id === trainset.preset_trainset_id
+                                                }
+                                            >
+                                                {data.isLoading ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        Loading
+                                                    </>
+                                                ) : (
+                                                    'Ubah Preset'
+                                                )}
+                                            </Button>
                                         </div>
                                     </SelectGroup>
                                 </form>

@@ -7,7 +7,6 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { carriageService } from '@/services/carriageService';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
-    console.log(trainset);
     const handleCarriageDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {

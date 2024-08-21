@@ -9,5 +9,5 @@ enum IntentEnum: string {
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
 
-    case WEB_PROJECT_UPDATE_TRAINSET_PRESET = 'web.project.update.trainset.preset';
+    case WEB_PROJECT_CHANGE_TRAINSET_PRESET = 'web.project.update.trainset.preset';
 }

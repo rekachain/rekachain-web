@@ -4,22 +4,34 @@ namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\Trainset;
+use App\Support\Interfaces\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\TrainsetRepositoryInterface;
 use App\Support\Interfaces\TrainsetServiceInterface;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
-    public function updatePreset(Trainset $trainset, $preset_trainset_id): bool {
-        /*
-         * 1. remove all trainset carriages
-         * 2. add all carriages from preset_trainset_id
-         * 3. update trainset preset_trainset_id
-         */
-        $trainset->carriages()->delete();
-        $presetTrainset = $this->repository->find($preset_trainset_id);
-        $trainset->update([
-            'preset_trainset_id' => $preset_trainset_id,
-        ]);
-        $trainset->carriages()->createMany($presetTrainset->carriages->toArray());
+    public function __construct(protected PresetTrainsetServiceInterface $presetTrainsetService) {
+        parent::__construct();
+    }
+
+    public function updatePreset(Trainset $trainset, array $data): bool {
+        // Step 1: Retrieve the preset trainset ID from the input data
+        $preset_trainset_id = $data['preset_trainset_id'];
+
+        // Step 2: Find the preset trainset using the preset trainset service
+        $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
+
+        // Step 3: Update the trainset's preset_trainset_id
+        $trainset->update(['preset_trainset_id' => $preset_trainset_id]);
+
+        // Step 4: Map the carriages from the preset trainset to include carriage_id and qty
+        $carriages = $presetTrainset->carriagePresets->mapWithKeys(function ($carriagePreset) {
+            return [
+                $carriagePreset['carriage_id'] => ['qty' => $carriagePreset['qty']],
+            ];
+        })->toArray();
+
+        // Step 5: Sync the carriages with their respective quantities to the trainset
+        $trainset->carriageTrainset()->sync($carriages);
 
         return true;
     }
