@@ -74,9 +74,9 @@ export default function () {
                                 </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS}.show`, project.id)}
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                                 >
-                                    Detail
+                                    Trainset
                                 </Link>
                             </TableCell>
                         </TableRow>

@@ -17,7 +17,7 @@ class CarriageResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
-            case IntentEnum::WEB_PROJECT_SHOW_PROJECT->value:
+            case IntentEnum::WEB_PROJECT_GET_TRAINSETS->value:
                 return [
                     'id' => $this->id,
                     'type' => $this->type,

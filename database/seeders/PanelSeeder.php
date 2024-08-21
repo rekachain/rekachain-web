@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\Carriage;
 use App\Models\Panel;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class PanelSeeder extends Seeder
-{
+class PanelSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         // Get CSV file
         if (file_exists(base_path('database/data/panel.csv'))) {
             $csvData = array_map('str_getcsv', file(base_path('database/data/panel.csv')));
@@ -23,7 +22,9 @@ class PanelSeeder extends Seeder
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                Panel::factory()->create($data);
+                Panel::factory()->create(array_replace($data, [
+                    'carriage_id' => Carriage::whereType($data['carriage_id'])->first()->id,
+                ]));
             }
         } else {
             Panel::factory(1)->create();
