@@ -86,7 +86,7 @@ export default function SidebarMobile() {
                                         // height={500}
                                     />
                                 </SheetTitle>
-                                <SheetDescription className="items-center w-full  flex flex-col gap-7 text-black">
+                                <SheetDescription className="items-center w-full  flex flex-col gap-7 dark:text-white text-black">
                                     <Link href={'dashboard'} className="mt-5">
                                         <RiHome8Line size={STYLING.ICON.SIZE.MEDIUM} />
                                     </Link>
