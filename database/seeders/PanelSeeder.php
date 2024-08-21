@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PanelMaterial;
+use App\Models\Panel;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,10 +23,10 @@ class PanelSeeder extends Seeder
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                PanelMaterial::factory()->create($data);
+                Panel::factory()->create($data);
             }
         } else {
-            PanelMaterial::factory(1)->create();
+            Panel::factory(1)->create();
         }
     }
 }

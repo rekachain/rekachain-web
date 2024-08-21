@@ -23,10 +23,10 @@ class ProgressSeeder extends Seeder
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                ProgressMaterial::factory()->create($data);
+                Progress::factory()->create($data);
             }
         } else {
-            PanelMaterial::factory(1)->create();
+            Progress::factory(1)->create();
         }
     }
 }
