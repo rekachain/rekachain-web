@@ -9,7 +9,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
 use App\Http\Controllers\RawMaterialController;
-use App\Models\RawMaterial;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
