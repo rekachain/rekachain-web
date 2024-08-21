@@ -5,18 +5,27 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\CarriageResource;
+use App\Http\Resources\PresetTrainsetResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TrainsetResource;
+use App\Models\Carriage;
 use App\Models\Project;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
+use App\Support\Interfaces\CarriagePresetServiceInterface;
+use App\Support\Interfaces\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\ProjectServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class ProjectController extends Controller {
-    public function __construct(protected ProjectServiceInterface $projectService) {}
+    public function __construct(
+        protected ProjectServiceInterface $projectService,
+        protected CarriagePresetServiceInterface $carriagePresetService,
+        protected PresetTrainsetServiceInterface $presetTrainsetService) {
+        //
+    }
 
     /**
      * Display a listing of the resource.
@@ -123,7 +132,14 @@ class ProjectController extends Controller {
     public function carriages(Request $request, Project $project, Trainset $trainset) {
         $trainset = new TrainsetResource($trainset->load(['carriages' => ['panels']]));
 
-        return inertia('Project/Trainset/Carriage/Index', ['trainset' => $trainset]);
+        // sementara
+        $presetTrainset = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriagePresets' => [
+            'carriage',
+        ]])->getAll([
+            'project_id' => $project->id,
+        ]));
+
+        return inertia('Project/Trainset/Carriage/Index', compact('trainset', 'presetTrainset'));
     }
 
     public function carriage(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {

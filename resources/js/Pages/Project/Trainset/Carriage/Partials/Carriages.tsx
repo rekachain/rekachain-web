@@ -36,6 +36,13 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                         <TableRow key={carriage.id}>
                             <TableCell>{carriage.type}</TableCell>
                             <TableCell>
+                                {carriage.panels?.map(panel => (
+                                    <div key={panel.id}>
+                                        <span>{panel.name}</span>
+                                    </div>
+                                ))}
+                            </TableCell>
+                            <TableCell>
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}
                                 {/*    href={route(`${ROUTES.PROJECTS_TRAINSETS}.edit`, carriage.id)}*/}
