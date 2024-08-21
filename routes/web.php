@@ -5,6 +5,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('projects', ProjectController::class);
+    Route::resource('trainsets', TrainsetController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

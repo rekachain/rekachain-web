@@ -20,9 +20,13 @@ export default function ({ project: initialProject }: { project: ProjectResource
     const handleAddTrainset = async () => {
         setData('isLoading', true);
         await projectService.addTrainset(project.id, data.trainsetNeeded);
+        await handleSyncProject();
+        reset();
+    };
+
+    const handleSyncProject = async () => {
         const updatedProject = await projectService.get(initialProject.id);
         setProject(updatedProject);
-        reset();
     };
     return (
         <>
@@ -62,7 +66,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <ProjectDetails project={project} />
+                        <ProjectDetails project={project} handleSyncProject={handleSyncProject} />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>
