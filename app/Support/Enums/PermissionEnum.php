@@ -27,12 +27,17 @@ enum PermissionEnum: string {
     case USER_READ = 'user-read';
     case USER_UPDATE = 'user-update';
     case USER_DELETE = 'user-delete';
-    
+
     case PROJECT_CREATE = 'project-create';
     case PROJECT_READ = 'project-read';
     case PROJECT_UPDATE = 'project-update';
     case PROJECT_DELETE = 'project-delete';
 
+    /**
+     * [Deprecated] Group permissions by first word.
+     *
+     * This process is now handled by the PermissionObserver.
+     */
     public static function groupByFirstWord(): array {
         $grouped = [];
 

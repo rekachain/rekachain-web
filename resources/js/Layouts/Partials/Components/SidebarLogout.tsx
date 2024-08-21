@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { RiLogoutBoxRLine } from '@remixicon/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
+import { buttonVariants } from '@/Components/ui/button';
 import { ROUTES } from '@/support/constants/routes';
 
 import {
@@ -21,7 +21,7 @@ export default function () {
         <div className="sidebar-item px-4">
             {/* <Dialog>
                 <DialogTrigger>
-                    
+
                 </DialogTrigger>
 
                 <DialogContent>

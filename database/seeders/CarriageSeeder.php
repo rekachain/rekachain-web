@@ -5,8 +5,7 @@ namespace Database\Seeders;
 use App\Models\Carriage;
 use Illuminate\Database\Seeder;
 
-class CarriageSeeder extends Seeder
-{
+class CarriageSeeder extends Seeder {
     public function run(): void {
         // Get the CSV file
         if (file_exists(base_path('database/data/carriage.csv'))) {
@@ -20,7 +19,7 @@ class CarriageSeeder extends Seeder
             foreach ($csvData as $data) {
                 Carriage::factory()->create($data);
             }
-        }else{
+        } else {
             Carriage::factory(1)->create();
         }
     }

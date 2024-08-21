@@ -25,7 +25,9 @@ import { useEffect, useRef } from 'react';
 import { STYLING } from '@/support/constants/styling';
 import { ROUTES } from '@/support/constants/routes';
 import { SidebarContext } from '@/contexts/SidebarContext';
-import { SIDEBAR_GROUP } from '@/support/enums/sidebarGroup';
+import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
+import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
+import { checkPermission } from '@/helpers/sidebarHelper';
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
@@ -52,12 +54,12 @@ export default function Sidebar() {
                 <nav className="flex flex-col space-y-1">
                     <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
                         <img
-                            src="/assets/images/outline putih.png"
+                            src="/assets/images/Logo REKA.svg"
                             alt="logo"
                             // className=" "
                             // className="sidebar-header-logo h-full object-contain"
-                            className="sidebar-header-logo h-full "
-                            width={170}
+                            className="sidebar-header-logo h-12 "
+                            width={200}
                             // height={500}
                         />
                         <Button
@@ -79,56 +81,70 @@ export default function Sidebar() {
                             title="Dashboard"
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
-
                         <SidebarLinkCollapsible
-                            group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
-                            title="Staff Management"
+                            group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                            title="Manajemen Staff"
                             icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
-                            {/*division*/}
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.DIVISIONS}.index`}
-                                title="Divisions"
-                                icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.WORKSHOPS}.index`}
-                                title="Workshops"
-                                icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.WORKSTATIONS}.index`}
-                                title="Workstations"
-                                icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.STAFF_MANAGEMENT}
-                                routeName={`${ROUTES.USERS}.index`}
-                                title="Staff"
-                                icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
+                            {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.DIVISIONS}.index`}
+                                    title="Divisi"
+                                    icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.WORKSHOPS}.index`}
+                                    title="Workshop"
+                                    icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.WORKSTATIONS}.index`}
+                                    title="Workstation"
+                                    icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.USER_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    routeName={`${ROUTES.USERS}.index`}
+                                    title="Staff"
+                                    icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
                         </SidebarLinkCollapsible>
 
                         <SidebarLinkCollapsible
-                            group={SIDEBAR_GROUP.ACCESS_CONTROL}
+                            group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
                             title="Hak Akses"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.ACCESS_CONTROL}
-                                routeName={`${ROUTES.PERMISSIONS}.index`}
-                                title="Permissions"
-                                icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                            <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.ACCESS_CONTROL}
-                                routeName={`${ROUTES.ROLES}.index`}
-                                title="Roles"
-                                icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
-                            />
+                            {checkPermission(PERMISSION_ENUM.PERMISSION_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    routeName={`${ROUTES.PERMISSIONS}.index`}
+                                    title="Permissions"
+                                    icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
+
+                            {checkPermission(PERMISSION_ENUM.ROLE_READ) && (
+                                <SidebarLinkCollapsibleItem
+                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    routeName={`${ROUTES.ROLES}.index`}
+                                    title="Roles"
+                                    icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
+                                />
+                            )}
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
@@ -142,19 +158,26 @@ export default function Sidebar() {
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
+                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PROJECTS}.index`}
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLinkCollapsible
-                            group={SIDEBAR_GROUP.PROJECT}
+                            group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
                             <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.PROJECT}
+                                group={SIDEBAR_GROUP_ENUM.PROJECT}
                                 routeName="proyek"
                                 title="List Proyek"
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                             <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.PROJECT}
+                                group={SIDEBAR_GROUP_ENUM.PROJECT}
                                 routeName="buat-proyek"
                                 title="Buat Proyek"
                                 // routeName={`${ROUTES.PROFILE}.edit`}
@@ -162,7 +185,7 @@ export default function Sidebar() {
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                             <SidebarLinkCollapsibleItem
-                                group={SIDEBAR_GROUP.PROJECT}
+                                group={SIDEBAR_GROUP_ENUM.PROJECT}
                                 routeName={`${ROUTES.PROFILE}.edit`}
                                 title="Track"
                                 icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}

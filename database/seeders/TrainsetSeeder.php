@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\PresetTrainset;
 use App\Models\Project;
 use App\Models\Trainset;
 use Illuminate\Database\Seeder;
 
-class TrainsetSeeder extends Seeder
-{
+class TrainsetSeeder extends Seeder {
     public function run(): void {
         // Get the CSV file
         if (file_exists(base_path('database/data/trainset.csv'))) {
@@ -19,10 +19,16 @@ class TrainsetSeeder extends Seeder
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                Trainset::factory()->create(['project_id' => Project::where('name', $data['project_name'])->first()->id, 'name' => $data['trainset_name']]);
+                Trainset::factory()->create([
+                    'project_id' => Project::where('name', $data['project_name'])->first()->id, 'name' => $data['trainset_name'],
+                ]);
             }
-        }else{
+
+            // sementara
+            Trainset::whereName('TS27')->update(['preset_trainset_id' => PresetTrainset::whereName('TSA')->first()->id]);
+        } else {
             Trainset::factory(1)->create();
         }
+
     }
 }

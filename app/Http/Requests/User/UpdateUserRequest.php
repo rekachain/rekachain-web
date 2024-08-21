@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\User;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest {
@@ -22,7 +23,7 @@ class UpdateUserRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
-            case 'api.user.update.password':
+            case IntentEnum::API_USER_UPDATE_PASSWORD->value:
                 return [
                     'old_password' => 'required|string|min:8',
                     'new_password' => 'required|string|min:8|confirmed',
@@ -33,7 +34,7 @@ class UpdateUserRequest extends FormRequest {
 
         return [
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'nip' => 'nullable|string|max:18|unique:users,nip,' . $user,
             'email' => 'nullable|string|email|max:255|unique:users,email,' . $user,
             'phone_number' => 'nullable|string|max:15',

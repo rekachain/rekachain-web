@@ -5,8 +5,7 @@ namespace Database\Seeders;
 use App\Models\Project;
 use Illuminate\Database\Seeder;
 
-class ProjectSeeder extends Seeder
-{
+class ProjectSeeder extends Seeder {
     public function run(): void {
         // Get the CSV file
         if (file_exists(base_path('database/data/project.csv'))) {
@@ -20,7 +19,7 @@ class ProjectSeeder extends Seeder
             foreach ($csvData as $data) {
                 Project::factory()->create($data);
             }
-        }else{
+        } else {
             Project::factory(1)->create();
         }
     }

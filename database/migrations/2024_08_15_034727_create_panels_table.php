@@ -9,11 +9,10 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('trainset_carriages', function (Blueprint $table) {
+        Schema::create('panels', function (Blueprint $table) {
             $table->id();
-            $table->integer('qty');
-            $table->foreignId('trainset_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('carriage_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('progress_id');
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }
@@ -22,6 +21,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('trainset_carriages');
+        Schema::dropIfExists('panels');
     }
 };

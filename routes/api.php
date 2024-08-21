@@ -5,6 +5,10 @@ use App\Http\Controllers\Api\ApiCarriageController;
 use App\Http\Controllers\Api\ApiProjectController;
 use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiTrainsetController;
+use App\Http\Controllers\Api\ApiPanelController;
+use App\Http\Controllers\Api\ApiProgressController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Api\ApiTrainsetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +29,10 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);
+        Route::apiResource('projects', ProjectController::class);
+        Route::apiResource('trainsets', ApiTrainsetController::class);
+        Route::apiResource('panels', ApiPanelController::class)->only(['index', 'show']);
+        Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
         Route::apiResource('trainsets', ApiTrainsetController::class)->only(['index','show']);
 
         Route::get('logout', [ApiAuthController::class, 'logout'])->name('logout');

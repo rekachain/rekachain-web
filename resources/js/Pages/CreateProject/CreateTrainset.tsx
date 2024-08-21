@@ -21,6 +21,7 @@ const listTrainsetConst: Trainset[] = [
 export default function CreateTrainset() {
     const [listTrainset, setListTrainset] = useState<Trainset[]>(listTrainsetConst);
     const [input, setInput] = useState(0);
+
     return (
         <div className="">
             <AuthenticatedLayout>

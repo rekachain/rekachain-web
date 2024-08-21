@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->nullable();
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('preset_trainset_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
