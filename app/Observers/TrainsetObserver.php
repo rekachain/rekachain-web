@@ -9,7 +9,9 @@ class TrainsetObserver {
      * Handle the Trainset "created" event.
      */
     public function created(Trainset $trainset): void {
-        $trainset->update(['name' => 'TS ' . $trainset->id]);
+        if ($trainset->name === null) {
+            $trainset->update(['name' => 'TS ' . $trainset->id]);
+        }
     }
 
     /**
