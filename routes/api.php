@@ -28,7 +28,6 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);
-        Route::apiResource('projects', ProjectController::class);
         Route::apiResource('trainsets', ApiTrainsetController::class);
         Route::apiResource('panels', ApiPanelController::class)->only(['index', 'show']);
         Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
