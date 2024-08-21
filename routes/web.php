@@ -9,6 +9,7 @@ use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
+use App\Http\Controllers\RawMaterialController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -59,6 +60,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}', 'carriage')->name('projects.trainsets.carriages.show');
     });
 });
+Route::resource('rawMaterial', RawMaterialController::class);
 
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
