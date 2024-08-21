@@ -51,21 +51,18 @@ class ProjectController extends Controller {
      * Display the specified resource.
      */
     public function show(Request $request, Project $project) {
+
+        $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
+
         if ($this->ajax()) {
-            return new ProjectResource($project);
+            return $project;
         }
 
         $intent = IntentEnum::WEB_PROJECT_SHOW_PROJECT->value;
 
         $request->merge(['intent' => $intent]);
 
-        return inertia('Project/Show', ['project' => new ProjectResource($project->load([
-            'trainsets' => [
-                'carriages' => [
-                    //                    'carriage',
-                ],
-            ],
-        ]))]);
+        return inertia('Project/Show', ['project' => $project]);
     }
 
     /**
@@ -79,6 +76,13 @@ class ProjectController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateProjectRequest $request, Project $project) {
+
+        $intent = $request->get('intent');
+
+        if ($intent == IntentEnum::WEB_PROJECT_ADD_TRAINSET->value) {
+            return $this->projectService->addTrainsets($project, $request->get('trainset_needed'));
+        }
+
         if ($this->ajax()) {
             return $this->projectService->update($request->validated());
         }

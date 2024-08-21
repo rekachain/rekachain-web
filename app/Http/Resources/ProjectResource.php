@@ -20,6 +20,7 @@ class ProjectResource extends JsonResource {
 
             case IntentEnum::WEB_PROJECT_SHOW_PROJECT->value:
                 return [
+                    'id' => $this->id,
                     'name' => $this->name,
                     'initial_date' => $this->initial_date,
                     'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
