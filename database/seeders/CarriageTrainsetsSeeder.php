@@ -21,13 +21,13 @@ class CarriageTrainsetsSeeder extends Seeder {
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                \Log::info($data);
-                CarriageTrainset::factory()->create([
-                    'trainset_id' => Trainset::where('name', $data['trainset_name'])->first()->id,
-                    'carriage_id' => Carriage::where('type', $data['carriage_type'])->first()->id,
-                    'qty' => $data['qty'],
-                ]);
-                \Log::info('ss');
+                if (Carriage::whereType($data['carriage_type'])->exists() && Trainset::whereName($data['trainset_name'])->exists()) {
+                    CarriageTrainset::create([
+                        'trainset_id' => Trainset::whereName($data['trainset_name'])->first()->id,
+                        'carriage_id' => Carriage::whereType($data['carriage_type'])->first()->id,
+                        'qty' => $data['qty'],
+                    ]);
+                }
             }
         } else {
             CarriageTrainset::factory(1)->create();
