@@ -16,6 +16,7 @@ use App\Repositories\TrainsetCarriagesRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\WorkshopRepository;
 use App\Repositories\WorkstationRepository;
+use App\Repositories\RawMaterialRepository;
 use App\Services\CarriageService;
 use App\Services\DivisionService;
 use App\Services\PanelService;
@@ -28,6 +29,7 @@ use App\Services\TrainsetCarriagesService;
 use App\Services\UserService;
 use App\Services\WorkshopService;
 use App\Services\WorkstationService;
+use App\Services\RawMaterialService;
 use App\Support\Interfaces\CarriageRepositoryInterface;
 use App\Support\Interfaces\CarriageServiceInterface;
 use App\Support\Interfaces\DivisionRepositoryInterface;
@@ -52,6 +54,8 @@ use App\Support\Interfaces\WorkshopRepositoryInterface;
 use App\Support\Interfaces\WorkshopServiceInterface;
 use App\Support\Interfaces\WorkstationRepositoryInterface;
 use App\Support\Interfaces\WorkstationServiceInterface;
+use App\Support\Interfaces\RawMaterialRepositoryInterface;
+use App\Support\Interfaces\RawMaterialServiceInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -99,6 +103,9 @@ class AppServiceProvider extends ServiceProvider {
 
         $this->app->singleton(ProgressRepositoryInterface::class, ProgressRepository::class);
         $this->app->singleton(ProgressServiceInterface::class, ProgressService::class);
+
+        $this->app->singleton(RawMaterialRepositoryInterface::class, RawMaterialRepository::class);
+        $this->app->singleton(RawMaterialServiceInterface::class, RawMaterialService::class);
     }
 
     /**
