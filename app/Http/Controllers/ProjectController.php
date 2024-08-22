@@ -93,14 +93,11 @@ class ProjectController extends Controller {
 
         switch ($intent) {
             case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
-                return $this->projectService->addTrainsets($project, $request->get('trainset_needed'));
-
-            case IntentEnum::WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET->value:
-                return $this->projectService->deleteCarriageTrainset($project, $request->validated());
+                return $this->projectService->addTrainsets($project, $request->validated());
         }
 
         if ($this->ajax()) {
-            return $this->projectService->update($request->validated());
+            return $this->projectService->update($project, $request->validated());
         }
     }
 
