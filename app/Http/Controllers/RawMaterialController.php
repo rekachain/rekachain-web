@@ -24,9 +24,9 @@ class RawMaterialController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return Intertia('RawMaterial/Create');
     }
 
     /**
@@ -34,7 +34,11 @@ class RawMaterialController extends Controller
      */
     public function store(StoreRawMaterialRequest $request)
     {
+        // web
         return new RawMaterialResource($this->rawMaterialService->create($request->validated()));
+
+        // api
+        // return $this->rawMaterialService->create($request->validated());
     }
 
     /**
@@ -56,10 +60,14 @@ class RawMaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    // public function update( UpdateRawMaterialRequest $request, RawMaterial $rawMaterial)
-    // {
-    //     return new RawMaterialResource($this->rawMaterialService->update($rawMaterial, $request->validated()));
-    // }
+    public function update( UpdateRawMaterialRequest $request, RawMaterial $rawMaterial)
+    {
+        // web
+        return new RawMaterialResource($this->rawMaterialService->update($rawMaterial, $request->validated()));
+
+        // api
+        // return $this->rawMaterialService->update($rawMaterial, $request->validated());
+    }
 
     /**
      * Remove the specified resource from storage.

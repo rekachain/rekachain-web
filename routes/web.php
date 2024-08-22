@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('trainsets', TrainsetController::class);
+    Route::resource('rawMaterial', RawMaterialController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
@@ -60,7 +61,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}', 'carriage')->name('projects.trainsets.carriages.show');
     });
 });
-Route::resource('rawMaterial', RawMaterialController::class);
 
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
