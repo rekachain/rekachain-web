@@ -88,16 +88,16 @@ export default function SidebarMobile() {
                                 </SheetTitle>
                                 <SheetDescription className="items-center w-full  flex flex-col gap-7 dark:text-white text-black">
                                     <Link href={'dashboard'} className="mt-5">
-                                        <RiHome8Line size={STYLING.ICON.SIZE.MEDIUM} />
+                                        <RiHome8Line size={35} />
                                     </Link>
                                     <Link href={route(`${ROUTES.USERS}.index`)}>
-                                        <RiUserLine size={STYLING.ICON.SIZE.MEDIUM} />
+                                        <RiUserLine size={35} />
                                     </Link>
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
                                                 <div className="pl-4">
-                                                    <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} />
+                                                    <RiBox3Line size={35} />
                                                 </div>
                                             </AccordionTrigger>
                                             <AccordionContent className="items-center flex flex-col gap-7">
@@ -119,7 +119,7 @@ export default function SidebarMobile() {
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
                                                 <div className="pl-4">
-                                                    <ListOrdered size={STYLING.ICON.SIZE.MEDIUM} />
+                                                    <ListOrdered size={35} />
                                                     {/* <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} /> */}
                                                 </div>
                                             </AccordionTrigger>
@@ -137,10 +137,10 @@ export default function SidebarMobile() {
                                         </AccordionItem>
                                     </Accordion>
                                     <Link href={route(`${ROUTES.PROFILE}.edit`)}>
-                                        <RiQuestionLine size={STYLING.ICON.SIZE.MEDIUM} />
+                                        <RiQuestionLine size={35} />
                                     </Link>
                                     <Link href={route(`${ROUTES.PROFILE}.edit`)}>
-                                        <RiSettings3Line size={STYLING.ICON.SIZE.MEDIUM} />
+                                        <RiSettings3Line size={35} />
                                     </Link>
                                 </SheetDescription>
                             </SheetHeader>
