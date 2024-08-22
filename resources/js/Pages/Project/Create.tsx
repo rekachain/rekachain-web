@@ -20,7 +20,7 @@ export default function () {
 
         const res = await projectService.create(data);
 
-        const redirectToDetails = () => location.assign(route(`${ROUTES.PROJECTS}.show`, [res.id]));
+        const redirectToDetails = () => location.assign(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
 
         redirectToDetails();
     };
