@@ -44,19 +44,16 @@ export default function ({
 
     const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData('isLoading', true);
         try {
             useConfirmation().then(async result => {
                 if (result.isConfirmed) {
                     setData('isLoading', true);
                     await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
                     await handleSyncTrainset();
-                    reset('isLoading');
                 }
             });
         } catch (error) {
         } finally {
-            await handleSyncTrainset();
             // reset('isLoading');
         }
     };
