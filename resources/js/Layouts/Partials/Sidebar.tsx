@@ -148,11 +148,11 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
-                        <SidebarLink
+                        {/* <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
                             icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                        />
+                        /> */}
                         {/* <SidebarLink
                         routeName="project"
                         title="Buat Proyek"
@@ -162,7 +162,7 @@ export default function Sidebar() {
                             <SidebarLink
                                 routeName={`${ROUTES.PROJECTS}.index`}
                                 title="List Proyek"
-                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                                icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         <SidebarLinkCollapsible

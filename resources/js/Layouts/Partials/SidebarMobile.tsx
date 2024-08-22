@@ -113,13 +113,14 @@ export default function SidebarMobile() {
 
                                     <hr className="border-gray-700 border-2 w-full" />
 
-                                    <ListOrdered size={STYLING.ICON.SIZE.MEDIUM} />
+                                    {/* <ListOrdered size={STYLING.ICON.SIZE.MEDIUM} /> */}
 
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
                                                 <div className="pl-4">
-                                                    <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} />
+                                                    <ListOrdered size={STYLING.ICON.SIZE.MEDIUM} />
+                                                    {/* <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} /> */}
                                                 </div>
                                             </AccordionTrigger>
                                             <AccordionContent className="items-center flex flex-col gap-7">
