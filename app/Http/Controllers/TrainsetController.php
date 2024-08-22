@@ -76,6 +76,9 @@ class TrainsetController extends Controller {
 
             case IntentEnum::WEB_PROJECT_SAVE_TRAINSET_PRESET->value:
                 return $this->trainsetService->savePreset($trainset, $request->validated());
+
+            case IntentEnum::WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET->value:
+                return $this->trainsetService->deleteCarriageTrainset($trainset, $request->validated());
         }
 
         //        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {

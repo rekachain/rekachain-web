@@ -22,4 +22,12 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * $data['project_id'] - project ID
      */
     public function savePreset(Trainset $trainset, array $data): bool;
+
+    /*
+     * Delete carriage trainset pivot
+     *
+     * Required data:
+     * $data['carriage_trainset_id'] - ID of the carriage trainset pivot
+     */
+    public function deleteCarriageTrainset(Trainset $trainset, array $data): bool;
 }

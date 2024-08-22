@@ -12,4 +12,7 @@ enum IntentEnum: string {
     case WEB_PROJECT_CHANGE_TRAINSET_PRESET = 'web.project.update.trainset.preset';
 
     case WEB_PROJECT_SAVE_TRAINSET_PRESET = 'web.project.save.trainset.preset';
+
+    case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
+
 }

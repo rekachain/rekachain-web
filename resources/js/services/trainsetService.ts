@@ -34,4 +34,18 @@ export const trainsetService = {
             },
         );
     },
+    deleteCarriageTrainset: async (projectId: number, carriageTrainsetId: number) => {
+        await window.axios.post(
+            route(`${ROUTES.TRAINSETS}.update`, projectId),
+            {
+                carriage_trainset_id: carriageTrainsetId,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET,
+                },
+            },
+        );
+    },
 };

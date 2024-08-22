@@ -66,6 +66,21 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         return true;
     }
 
+    public function deleteCarriageTrainset(Trainset $trainset, $data): bool {
+        $carriageTrainsetId = $data['carriage_trainset_id'];
+
+        // Step 1: Find the carriage in the pivot table
+        $carriage = $trainset->carriages()->wherePivot('id', $carriageTrainsetId)->firstOrFail();
+
+        // Step 2: Detach the carriage from the pivot table
+        $trainset->carriages()->detach($carriage);
+
+        // Step 3: Optionally update the trainset's preset_trainset_id to null
+        $trainset->update(['preset_trainset_id' => null]);
+
+        return true;
+    }
+
     protected function getRepositoryClass(): string {
         return TrainsetRepositoryInterface::class;
     }

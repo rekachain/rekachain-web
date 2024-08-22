@@ -7,6 +7,7 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
 
 export default function ({ project, handleSyncProject }: { project: ProjectResource; handleSyncProject: () => void }) {
+    console.log(project);
     const handleTrainsetDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
@@ -41,7 +42,7 @@ export default function ({ project, handleSyncProject }: { project: ProjectResou
                                     trainset.carriages.length > 0 &&
                                     trainset.carriages.map((carriage, index) => (
                                         <span key={carriage.id}>
-                                            {carriage.qty} {carriage.type}
+                                            {carriage.pivot?.qty} {carriage.type}
                                             {index < trainset.carriages!.length - 1 && ' + '}
                                         </span>
                                     ))}

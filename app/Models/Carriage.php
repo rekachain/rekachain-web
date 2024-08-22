@@ -16,7 +16,7 @@ class Carriage extends Model {
     ];
 
     public function trainsets(): BelongsToMany {
-        return $this->belongsToMany(CarriageTrainset::class)->withPivot('qty')->withTimestamps();
+        return $this->belongsToMany(CarriageTrainset::class)->withPivot(['id', 'qty'])->withTimestamps();
     }
 
     public function panels(): HasMany {

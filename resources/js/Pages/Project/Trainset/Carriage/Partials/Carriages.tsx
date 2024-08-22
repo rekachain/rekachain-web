@@ -4,18 +4,24 @@ import { ROUTES } from '@/support/constants/routes';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
-import { carriageService } from '@/services/carriageService';
+import { trainsetService } from '@/services/trainsetService';
 
-export default function ({ trainset }: { trainset: TrainsetResource }) {
-    const handleCarriageDeletion = (id: number) => {
+export default function ({
+    trainset,
+    handleSyncTrainset,
+}: {
+    trainset: TrainsetResource;
+    handleSyncTrainset: () => Promise<void>;
+}) {
+    const handleCarriageDeletion = (carriageTrainsetId: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
                 window.Swal.fire({
                     icon: 'success',
                     title: 'Trainset deleted successfully',
                 });
-                await carriageService.delete(id);
-                // await handleSyncProject();
+                await trainsetService.deleteCarriageTrainset(trainset.id, carriageTrainsetId);
+                await handleSyncTrainset();
             }
         });
     };
@@ -35,7 +41,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                     {trainset?.carriages?.map(carriage => (
                         <TableRow key={carriage.id}>
                             <TableCell>{carriage.type}</TableCell>
-                            <TableCell>{carriage.qty}</TableCell>
+                            <TableCell>{carriage.pivot?.qty}</TableCell>
                             <TableCell>
                                 {carriage.panels?.map(panel => (
                                     <div key={panel.id}>
@@ -50,7 +56,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                <Button variant="link" onClick={() => handleCarriageDeletion(carriage.id)}>
+                                <Button variant="link" onClick={() => handleCarriageDeletion(carriage.pivot!.id)}>
                                     Delete
                                 </Button>
                                 <Link

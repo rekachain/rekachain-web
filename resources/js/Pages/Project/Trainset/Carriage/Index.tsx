@@ -20,17 +20,19 @@ import {
 import { Textarea } from '@/Components/ui/textarea';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
+import { projectService } from '@/services/projectService';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
 export default function ({
     trainset: initialTrainset,
-    presetTrainset,
+    presetTrainsets: initialPresetTrainset,
 }: {
     trainset: TrainsetResource;
-    presetTrainset: PresetTrainsetResource[];
+    presetTrainsets: PresetTrainsetResource[];
 }) {
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
+    const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
     const [showAlert, setShowAlert] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
         isLoading: false,
@@ -56,7 +58,7 @@ export default function ({
         } catch (error) {
         } finally {
             await handleSyncTrainset();
-            reset('isLoading');
+            // reset('isLoading');
         }
     };
 
@@ -67,20 +69,23 @@ export default function ({
         } catch (error) {
         } finally {
             await handleSyncTrainset();
-            reset();
+            // reset();
         }
     };
 
     useEffect(() => {
-        console.log(trainset);
+        handleSyncTrainset();
         if (errors.preset_trainset_id) {
             setShowAlert(true);
         }
     }, []);
 
     const handleSyncTrainset = async () => {
-        const updatedTrainset = await trainsetService.get(initialTrainset.id);
-        setTrainset(updatedTrainset);
+        const response = await projectService.getTrainsetCarriages(trainset.project_id, trainset.id);
+        setTrainset(response.data.trainset);
+        setPresetTrainset(response.data.presetTrainsets);
+        console.log(response.data);
+        data.preset_trainset_id = response.data.trainset.preset_trainset_id;
     };
 
     return (
@@ -101,7 +106,9 @@ export default function ({
                                         <Label htmlFor="preset-trainset">Preset</Label>
                                         <div className="flex gap-2">
                                             <Select
+                                                key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
                                                 onValueChange={v => setData('preset_trainset_id', +v)}
+                                                value={data.preset_trainset_id?.toString()}
                                                 defaultValue={trainset.preset_trainset_id?.toString()}
                                             >
                                                 <SelectTrigger id="preset-trainset">
@@ -172,7 +179,7 @@ export default function ({
                         {/*</div>*/}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Carriages trainset={trainset} />
+                        <Carriages trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </Suspense>
 
                     <Dialog>

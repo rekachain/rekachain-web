@@ -17,7 +17,7 @@ class Trainset extends Model {
     ];
 
     public function carriages(): BelongsToMany {
-        return $this->belongsToMany(Carriage::class)->withPivot('qty');
+        return $this->belongsToMany(Carriage::class)->withPivot(['id', 'qty']);
     }
 
     public function presetTrainset(): BelongsTo {

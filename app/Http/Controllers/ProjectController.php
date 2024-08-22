@@ -91,8 +91,12 @@ class ProjectController extends Controller {
 
         $intent = $request->get('intent');
 
-        if ($intent == IntentEnum::WEB_PROJECT_ADD_TRAINSET->value) {
-            return $this->projectService->addTrainsets($project, $request->get('trainset_needed'));
+        switch ($intent) {
+            case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
+                return $this->projectService->addTrainsets($project, $request->get('trainset_needed'));
+
+            case IntentEnum::WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET->value:
+                return $this->projectService->deleteCarriageTrainset($project, $request->validated());
         }
 
         if ($this->ajax()) {
@@ -116,9 +120,9 @@ class ProjectController extends Controller {
             return $project;
         }
 
-        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
+        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
 
-        $request->merge(['intent' => $intent]);
+        //        $request->merge(['intent' => $intent]);
 
         return inertia('Project/Trainset/Index', ['project' => $project]);
     }
@@ -133,13 +137,20 @@ class ProjectController extends Controller {
         $trainset = new TrainsetResource($trainset->load(['carriages' => ['panels']]));
 
         // sementara
-        $presetTrainset = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriagePresets' => [
+        $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriagePresets' => [
             'carriage',
         ]])->getAll([
             'project_id' => $project->id,
         ]));
 
-        return inertia('Project/Trainset/Carriage/Index', compact('trainset', 'presetTrainset'));
+        if ($this->ajax()) {
+            return [
+                'trainset' => $trainset,
+                'presetTrainsets' => $presetTrainsets,
+            ];
+        }
+
+        return inertia('Project/Trainset/Carriage/Index', compact('trainset', 'presetTrainsets'));
     }
 
     public function carriage(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {

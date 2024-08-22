@@ -29,7 +29,7 @@ class CarriageResource extends JsonResource {
             'id' => $this->id,
             'type' => $this->type,
             'description' => $this->description,
-            'qty' => $this->pivot?->qty,
+            'pivot' => $this->pivot,
             'panels' => PanelResource::collection($this->whenLoaded('panels')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

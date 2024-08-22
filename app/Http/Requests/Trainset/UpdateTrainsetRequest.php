@@ -39,6 +39,11 @@ class UpdateTrainsetRequest extends FormRequest {
                     ],
                     'project_id' => 'required|integer|exists:projects,id',
                 ];
+
+            case IntentEnum::WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET->value:
+                return [
+                    'carriage_trainset_id' => 'required|numeric|exists:carriage_trainset,id',
+                ];
         }
 
         $trainset = $this->route('trainset')->id;
