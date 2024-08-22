@@ -11,6 +11,7 @@ class Panel extends Model {
 
     protected $fillable = [
         'progress_id',
+        'carriage_id',
         'name',
     ];
 
