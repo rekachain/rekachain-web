@@ -32,7 +32,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         })->toArray();
 
         // Step 5: Sync the carriages with their respective quantities to the trainset
-        $trainset->carriageTrainset()->sync($carriages);
+        $trainset->carriages()->sync($carriages);
 
         return true;
     }
