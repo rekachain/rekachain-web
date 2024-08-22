@@ -7,6 +7,7 @@ use App\Models\Trainset;
 use App\Observers\PermissionObserver;
 use App\Observers\TrainsetObserver;
 use App\Repositories\CarriageRepository;
+use App\Repositories\ComponentRepository;
 use App\Repositories\DivisionRepository;
 use App\Repositories\PanelRepository;
 use App\Repositories\PermissionRepository;
@@ -20,6 +21,7 @@ use App\Repositories\WorkshopRepository;
 use App\Repositories\WorkstationRepository;
 use App\Repositories\RawMaterialRepository;
 use App\Services\CarriageService;
+use App\Services\ComponentService;
 use App\Services\DivisionService;
 use App\Services\PanelService;
 use App\Services\PermissionService;
@@ -34,6 +36,8 @@ use App\Services\WorkstationService;
 use App\Services\RawMaterialService;
 use App\Support\Interfaces\CarriageRepositoryInterface;
 use App\Support\Interfaces\CarriageServiceInterface;
+use App\Support\Interfaces\ComponentRepositoryInterface;
+use App\Support\Interfaces\ComponentServiceInterface;
 use App\Support\Interfaces\DivisionRepositoryInterface;
 use App\Support\Interfaces\DivisionServiceInterface;
 use App\Support\Interfaces\PanelRepositoryInterface;
@@ -78,6 +82,9 @@ class AppServiceProvider extends ServiceProvider {
 
         $this->app->singleton(CarriageRepositoryInterface::class, CarriageRepository::class);
         $this->app->singleton(CarriageServiceInterface::class, CarriageService::class);
+
+        $this->app->singleton(ComponentRepositoryInterface::class, ComponentRepository::class);
+        $this->app->singleton(ComponentServiceInterface::class, ComponentService::class);
 
         $this->app->singleton(TrainsetRepositoryInterface::class, TrainsetRepository::class);
         $this->app->singleton(TrainsetServiceInterface::class, TrainsetService::class);
