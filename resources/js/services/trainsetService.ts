@@ -19,4 +19,19 @@ export const trainsetService = {
             },
         );
     },
+    savePreset: async (trainsetId: number, projectId: number, presetName: string) => {
+        return window.axios.post(
+            route(`${ROUTES.TRAINSETS}.update`, trainsetId),
+            {
+                preset_name: presetName,
+                project_id: projectId,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_PROJECT_SAVE_TRAINSET_PRESET,
+                },
+            },
+        );
+    },
 };

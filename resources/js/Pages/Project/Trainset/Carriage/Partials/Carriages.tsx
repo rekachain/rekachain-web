@@ -26,6 +26,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Susunan Kereta</TableHead>
+                        <TableHead>Jumlah</TableHead>
                         <TableHead>Panel dalam susunan kereta</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -34,6 +35,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                     {trainset?.carriages?.map(carriage => (
                         <TableRow key={carriage.id}>
                             <TableCell>{carriage.type}</TableCell>
+                            <TableCell>{carriage.qty}</TableCell>
                             <TableCell>
                                 {carriage.panels?.map(panel => (
                                     <div key={panel.id}>

@@ -36,6 +36,36 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         return true;
     }
 
+    public function savePreset(Trainset $trainset, array $data): bool {
+        $presetName = $data['preset_name'];
+        $projectId = $data['project_id'];
+
+        // Step 1: Retrieve the trainset carriages
+        $carriages = $trainset->carriageTrainset;
+
+        // Step 2: Create a new preset trainset
+        $presetTrainset = $this->presetTrainsetService->create([
+            'name' => $presetName,
+            'project_id' => $projectId,
+        ]);
+
+        // Step 3: Map the carriages to include carriage_id and qty
+        $carriagePresets = $carriages->map(function ($carriage) {
+            return [
+                'carriage_id' => $carriage['id'],
+                'qty' => $carriage['pivot']['qty'],
+            ];
+        });
+
+        // Step 4: Sync the carriages with their respective quantities to the preset trainset
+        $presetTrainset->carriagePresets()->createMany($carriagePresets);
+
+        // Step 5: Update the trainset's preset_trainset_id
+        $trainset->update(['preset_trainset_id' => $presetTrainset->id]);
+
+        return true;
+    }
+
     protected function getRepositoryClass(): string {
         return TrainsetRepositoryInterface::class;
     }

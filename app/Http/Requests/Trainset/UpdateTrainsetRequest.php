@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Trainset;
 
+use App\Rules\UniquePresetNameInProjectValidation;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,6 +27,17 @@ class UpdateTrainsetRequest extends FormRequest {
             case IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value:
                 return [
                     'preset_trainset_id' => 'required|integer|exists:preset_trainsets,id',
+                ];
+
+            case IntentEnum::WEB_PROJECT_SAVE_TRAINSET_PRESET->value:
+                return [
+                    'preset_name' => [
+                        'required',
+                        'string',
+                        'max:255',
+                        new UniquePresetNameInProjectValidation,
+                    ],
+                    'project_id' => 'required|integer|exists:projects,id',
                 ];
         }
 

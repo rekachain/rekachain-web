@@ -15,7 +15,7 @@ class PermissionNameValidation implements ValidationRule {
         $pattern = '/^[a-z]+-[a-z]+$/';
 
         if (!preg_match($pattern, $value)) {
-            $fail(trans('validation.custom.permission_name.regex', ['attribute' => $attribute]));
+            $fail(__('validation.custom.permission.permission_name.regex', ['attribute' => $attribute]));
         }
     }
 }
