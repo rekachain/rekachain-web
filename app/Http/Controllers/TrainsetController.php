@@ -78,9 +78,9 @@ class TrainsetController extends Controller {
                 return $this->trainsetService->savePreset($trainset, $request->validated());
         }
 
-//        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {
-//            return $this->trainsetService->updatePreset($trainset, $request->validated());
-//        }
+        //        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {
+        //            return $this->trainsetService->updatePreset($trainset, $request->validated());
+        //        }
         if ($this->ajax()) {
             return $this->trainsetService->update($trainset, $request->validated());
         }
