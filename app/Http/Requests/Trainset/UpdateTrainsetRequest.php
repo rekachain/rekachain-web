@@ -56,8 +56,8 @@ class UpdateTrainsetRequest extends FormRequest {
         $trainset = $this->route('trainset')->id;
 
         return [
-            'project_id' => 'required|integer',
-            'name' => 'required|string|max:255',
+            'project_id' => 'nullable|integer',
+            'name' => 'nullable|string|max:255',
         ];
     }
 }

@@ -5,9 +5,15 @@ import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
+import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/TrainsetName';
 
-export default function ({ project, handleSyncProject }: { project: ProjectResource; handleSyncProject: () => void }) {
-    console.log(project);
+export default function ({
+    project,
+    handleSyncProject,
+}: {
+    project: ProjectResource;
+    handleSyncProject: () => Promise<void>;
+}) {
     const handleTrainsetDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
@@ -34,7 +40,9 @@ export default function ({ project, handleSyncProject }: { project: ProjectResou
                 <TableBody>
                     {project?.trainsets?.map(trainset => (
                         <TableRow key={trainset.id}>
-                            <TableCell>{trainset.name}</TableCell>
+                            <TableCell>
+                                <TrainsetName trainset={trainset} handleSyncProject={handleSyncProject} />
+                            </TableCell>
                             <TableCell>
                                 {trainset.preset_name && `(${trainset.preset_name}) `}
 
