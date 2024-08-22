@@ -80,7 +80,7 @@ export default function ({
         console.log(response.data);
         data.preset_trainset_id = response.data.trainset.preset_trainset_id;
         console.log(data.preset_trainset_id, response.data.trainset.preset_trainset_id);
-        // reset();
+        reset('isLoading');
     };
 
     const handleAddCarriageTrainset = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,7 +93,6 @@ export default function ({
                 data.new_carriage_description,
                 data.new_carriage_qty,
             );
-            console.log('added');
         } catch (error) {
         } finally {
             await handleSyncTrainset();
@@ -127,6 +126,9 @@ export default function ({
                                                     <SelectValue placeholder="Preset Trainset" />
                                                 </SelectTrigger>
                                                 <SelectContent>
+                                                    <SelectItem value="0" disabled>
+                                                        Select Preset
+                                                    </SelectItem>
                                                     {presetTrainset.map(preset => (
                                                         <SelectItem key={preset.id} value={preset.id.toString()}>
                                                             {preset.name} (
@@ -233,8 +235,8 @@ export default function ({
                                             required
                                         />
 
-                                        <Button type="submit" disabled={processing}>
-                                            {processing ? (
+                                        <Button type="submit" disabled={data.isLoading}>
+                                            {data.isLoading ? (
                                                 <>
                                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                     Proses
@@ -251,7 +253,7 @@ export default function ({
                 </div>
 
                 {!trainset.preset_trainset_id && trainset.carriages && trainset.carriages.length > 0 && (
-                    <CustomPresetAlert message="You are using a custom preset. Do you want to save it?">
+                    <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
                         <Dialog>
                             <DialogTrigger
                                 className={buttonVariants({
@@ -275,8 +277,8 @@ export default function ({
                                                             setData('new_carriage_preset_name', e.target.value)
                                                         }
                                                     />
-                                                    <Button type="submit" disabled={processing} className="w-fit">
-                                                        {processing ? (
+                                                    <Button type="submit" disabled={data.isLoading} className="w-fit">
+                                                        {data.isLoading ? (
                                                             <>
                                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                                 Menambahkan preset

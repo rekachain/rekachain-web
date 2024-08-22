@@ -42,13 +42,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $projectId = $data['project_id'];
 
         // Step 1: Retrieve the trainset carriages
-        $carriages = $trainset->carriageTrainset;
-
-        // Step 2: Check if carriages are null
-        if (is_null($carriages)) {
-            // Handle the null case, e.g., return false or throw an exception
-            return false;
-        }
+        $carriages = $trainset->carriages;
 
         // Step 3: Create a new preset trainset
         $presetTrainset = $this->presetTrainsetService->create([
