@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('carriage_trainset', function (Blueprint $table) {
             $table->id();
-            $table->integer('qty');
+            $table->integer('qty')->default(1);
             $table->foreignId('trainset_id')->constrained()->cascadeOnDelete();
             $table->foreignId('carriage_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

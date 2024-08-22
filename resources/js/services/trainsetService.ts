@@ -48,4 +48,25 @@ export const trainsetService = {
             },
         );
     },
+    addCarriageTrainset: async (
+        trainsetId: number,
+        carriageType: string,
+        carriageDescription: string,
+        carriageQty: number,
+    ) => {
+        await window.axios.post(
+            route(`${ROUTES.TRAINSETS}.update`, trainsetId),
+            {
+                carriage_type: carriageType,
+                carriage_description: carriageDescription,
+                carriage_qty: carriageQty,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_TRAINSET_ADD_CARRIAGE_TRAINSET,
+                },
+            },
+        );
+    },
 };

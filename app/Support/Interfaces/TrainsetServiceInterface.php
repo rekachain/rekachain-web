@@ -30,4 +30,14 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * $data['carriage_trainset_id'] - ID of the carriage trainset pivot
      */
     public function deleteCarriageTrainset(Trainset $trainset, array $data): bool;
+
+    /*
+     * Add carriage to trainset
+     *
+     * Required data:
+     * $data['carriage_type'] - type of the carriage
+     * $data['carriage_description'] - description of the carriage
+     * $data['carriage_qty'] - quantity of the carriage
+     */
+    public function addCarriageTrainset(Trainset $trainset, array $data): bool;
 }

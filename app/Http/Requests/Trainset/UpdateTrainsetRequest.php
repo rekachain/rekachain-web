@@ -44,6 +44,13 @@ class UpdateTrainsetRequest extends FormRequest {
                 return [
                     'carriage_trainset_id' => 'required|numeric|exists:carriage_trainset,id',
                 ];
+
+            case IntentEnum::WEB_TRAINSET_ADD_CARRIAGE_TRAINSET->value:
+                return [
+                    'carriage_type' => 'required|string|max:255',
+                    'carriage_description' => 'nullable|string|max:255',
+                    'carriage_qty' => 'required|integer|min:1',
+                ];
         }
 
         $trainset = $this->route('trainset')->id;

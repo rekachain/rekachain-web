@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
+import { lazy, memo, Suspense, useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import { PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
@@ -33,21 +33,20 @@ export default function ({
 }) {
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
-    const [showAlert, setShowAlert] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
         isLoading: false,
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
         new_carriage_preset_name: '',
         new_carriage_type: 'Gerbong',
         new_carriage_description: '',
+        new_carriage_qty: 1,
     });
 
     const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setData('isLoading', true);
         try {
             useConfirmation().then(async result => {
-                if (!result) return;
-
                 if (result.isConfirmed) {
                     setData('isLoading', true);
                     await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
@@ -64,28 +63,41 @@ export default function ({
 
     const handleSaveTrainsetPreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setData('isLoading', true);
         try {
             await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
         } catch (error) {
         } finally {
             await handleSyncTrainset();
-            // reset();
         }
     };
 
-    useEffect(() => {
-        handleSyncTrainset();
-        if (errors.preset_trainset_id) {
-            setShowAlert(true);
-        }
-    }, []);
-
     const handleSyncTrainset = async () => {
+        setData('isLoading', true);
         const response = await projectService.getTrainsetCarriages(trainset.project_id, trainset.id);
         setTrainset(response.data.trainset);
         setPresetTrainset(response.data.presetTrainsets);
         console.log(response.data);
         data.preset_trainset_id = response.data.trainset.preset_trainset_id;
+        console.log(data.preset_trainset_id, response.data.trainset.preset_trainset_id);
+        // reset();
+    };
+
+    const handleAddCarriageTrainset = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setData('isLoading', true);
+        try {
+            await trainsetService.addCarriageTrainset(
+                trainset.id,
+                data.new_carriage_type,
+                data.new_carriage_description,
+                data.new_carriage_qty,
+            );
+            console.log('added');
+        } catch (error) {
+        } finally {
+            await handleSyncTrainset();
+        }
     };
 
     return (
@@ -194,22 +206,14 @@ export default function ({
                             <DialogHeader>
                                 <DialogTitle>{data.new_carriage_type}</DialogTitle>
                                 <DialogDescription>
-                                    <form
-                                        onSubmit={async e => {
-                                            e.preventDefault();
-                                            try {
-                                                await post(route('carriages.store', trainset.id));
-                                                await handleSyncTrainset();
-                                            } catch (error) {}
-                                        }}
-                                        className="flex flex-col gap-2"
-                                    >
+                                    <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-2">
                                         <div className="flex flex-col gap-2">
                                             <Label>Tipe Gerbong</Label>
                                             <Input
                                                 type="text"
                                                 value={data.new_carriage_type}
                                                 onChange={e => setData('new_carriage_type', e.target.value)}
+                                                required
                                             />
                                         </div>
                                         <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>
@@ -219,12 +223,21 @@ export default function ({
                                             value={data.new_carriage_description}
                                             onChange={e => setData('new_carriage_description', e.target.value)}
                                         />
+                                        <Label htmlFor="new-carriage-qty">Jumlah Gerbong</Label>
+                                        <Input
+                                            id="new-carriage-qty"
+                                            type="number"
+                                            min={1}
+                                            value={data.new_carriage_qty}
+                                            onChange={e => setData('new_carriage_qty', +e.target.value)}
+                                            required
+                                        />
 
                                         <Button type="submit" disabled={processing}>
                                             {processing ? (
                                                 <>
                                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                    Menambahkan gerbong
+                                                    Proses
                                                 </>
                                             ) : (
                                                 'Tambahkan gerbong'
@@ -235,63 +248,9 @@ export default function ({
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
-
-                    {/*{data.isCreatingNewCarriage && (*/}
-                    {/*    <Accordion type="single" collapsible>*/}
-                    {/*        <AccordionItem value="item-1">*/}
-                    {/*            <AccordionTrigger>{data.new_carriage_type}</AccordionTrigger>*/}
-                    {/*            <AccordionContent>*/}
-                    {/*                <form*/}
-                    {/*                    onSubmit={async e => {*/}
-                    {/*                        e.preventDefault();*/}
-                    {/*                        try {*/}
-                    {/*                            await post(route('carriages.store', trainset.id));*/}
-                    {/*                            await handleSyncTrainset();*/}
-                    {/*                            reset('isCreatingNewCarriage');*/}
-                    {/*                        } catch (error) {}*/}
-                    {/*                    }}*/}
-                    {/*                    className="flex flex-col gap-2"*/}
-                    {/*                >*/}
-                    {/*                    <div className="flex flex-col gap-2">*/}
-                    {/*                        <Label>Tipe Gerbong</Label>*/}
-                    {/*                        <Input*/}
-                    {/*                            type="text"*/}
-                    {/*                            value={data.new_carriage_type}*/}
-                    {/*                            onChange={e => setData('new_carriage_type', e.target.value)}*/}
-                    {/*                        />*/}
-                    {/*                    </div>*/}
-                    {/*                    <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>*/}
-                    {/*                    <textarea*/}
-                    {/*                        id="new-carriage-description"*/}
-                    {/*                        className="p-2 rounded"*/}
-                    {/*                        value={data.new_carriage_description}*/}
-                    {/*                        onChange={e => setData('new_carriage_description', e.target.value)}*/}
-                    {/*                    />*/}
-
-                    {/*                    <Button type="submit" disabled={processing}>*/}
-                    {/*                        {processing ? (*/}
-                    {/*                            <>*/}
-                    {/*                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />*/}
-                    {/*                                Menambahkan gerbong*/}
-                    {/*                            </>*/}
-                    {/*                        ) : (*/}
-                    {/*                            'Tambahkan gerbong'*/}
-                    {/*                        )}*/}
-                    {/*                    </Button>*/}
-                    {/*                </form>*/}
-                    {/*            </AccordionContent>*/}
-                    {/*        </AccordionItem>*/}
-                    {/*    </Accordion>*/}
-                    {/*)}*/}
-
-                    {/*{!data.isCreatingNewCarriage && (*/}
-                    {/*    <Button className="w-full" onClick={handleCreatingNewCarriage}>*/}
-                    {/*        Tambah gerbong baru*/}
-                    {/*    </Button>*/}
-                    {/*)}*/}
                 </div>
 
-                {!data.preset_trainset_id && trainset.carriages && trainset.carriages.length > 0 && (
+                {!trainset.preset_trainset_id && trainset.carriages && trainset.carriages.length > 0 && (
                     <CustomPresetAlert message="You are using a custom preset. Do you want to save it?">
                         <Dialog>
                             <DialogTrigger
