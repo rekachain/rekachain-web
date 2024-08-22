@@ -41,7 +41,7 @@ export default function ({
                     {project?.trainsets?.map(trainset => (
                         <TableRow key={trainset.id}>
                             <TableCell>
-                                <TrainsetName trainset={trainset} handleSyncProject={handleSyncProject} />
+                                <TrainsetName trainset={trainset} />
                             </TableCell>
                             <TableCell>
                                 {trainset.preset_name && `(${trainset.preset_name}) `}
