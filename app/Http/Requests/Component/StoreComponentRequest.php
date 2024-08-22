@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Component;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateComponentRequest extends FormRequest
+class StoreComponentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateComponentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required',
+            'progress_id' => 'required|integer',
+            'panel_id' => 'required|integer',
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Component\StoreComponentRequest;
+use App\Http\Requests\Component\UpdateComponentRequest;
 use App\Http\Resources\ComponentResource;
 use App\Models\Component;
 use App\Support\Enums\PermissionEnum;
@@ -27,9 +29,11 @@ class ApiComponentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreComponentRequest $request)
     {
-        //
+        // $request->checkPermissionEnum(PermissionEnum::COMPONENT_CREATE);
+        $component = $this->componentService->create($request->validated());
+        return new ComponentResource($component->load('panel', 'progress'));
     }
 
     /**
@@ -44,9 +48,12 @@ class ApiComponentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateComponentRequest $request, Component $component)
     {
-        //
+        // $request->checkPermissionEnum(PermissionEnum::COMPONENT_UPDATE);
+        $this->componentService->update($component, $request->validated());
+        return new ComponentResource($component->load('panel', 'progress'));
+        
     }
 
     /**
