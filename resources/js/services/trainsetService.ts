@@ -2,6 +2,7 @@ import { ROUTES } from '@/support/constants/routes.js';
 import { serviceFactory } from '@/services/serviceFactory';
 import { TrainsetResource } from '@/support/interfaces/resources';
 import { IntentEnum } from '@/support/enums/intentEnum';
+import { CarriageTrainsetPivotResource } from '@/support/interfaces/resources/pivots';
 
 export const trainsetService = {
     ...serviceFactory<TrainsetResource>(ROUTES.TRAINSETS),
@@ -67,6 +68,25 @@ export const trainsetService = {
                 params: {
                     _method: 'PUT',
                     intent: IntentEnum.WEB_TRAINSET_ADD_CARRIAGE_TRAINSET,
+                },
+            },
+        );
+    },
+    updateCarriageTrainset: async (
+        trainsetId: number,
+        carriageTrainsetId: number,
+        data: Partial<CarriageTrainsetPivotResource>,
+    ) => {
+        await window.axios.post(
+            route(`${ROUTES.TRAINSETS}.update`, trainsetId),
+            {
+                carriage_trainset_id: carriageTrainsetId,
+                ...data,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET,
                 },
             },
         );

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Models\Carriage;
 use App\Models\Trainset;
 use App\Support\Interfaces\CarriageServiceInterface;
 use App\Support\Interfaces\PresetTrainsetServiceInterface;
@@ -129,6 +128,27 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             }
 
             // Step 3: Optionally update the trainset's preset_trainset_id to null
+            $trainset->update(['preset_trainset_id' => null]);
+
+            return true;
+        });
+    }
+
+    public function updateCarriageTrainset(Trainset $trainset, array $data): bool {
+        return DB::transaction(function () use ($trainset, $data) {
+            $carriageTrainsetId = $data['carriage_trainset_id'];
+            $carriage = $trainset->carriages()->wherePivot('id', $carriageTrainsetId)->firstOrFail();
+
+            $updateData = [];
+            if (isset($data['qty'])) {
+                $updateData['qty'] = $data['qty'];
+            }
+            if (isset($data['carriage_id'])) {
+                $updateData['carriage_id'] = $data['carriage_id'];
+            }
+
+            $trainset->carriages()->updateExistingPivot($carriage->id, $updateData);
+
             $trainset->update(['preset_trainset_id' => null]);
 
             return true;

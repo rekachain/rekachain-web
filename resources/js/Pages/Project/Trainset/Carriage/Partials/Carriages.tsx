@@ -5,6 +5,7 @@ import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
+import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Partials/CarriageQty';
 
 export default function ({
     trainset,
@@ -41,7 +42,13 @@ export default function ({
                     {trainset?.carriages?.map(carriage => (
                         <TableRow key={carriage.id}>
                             <TableCell>{carriage.type}</TableCell>
-                            <TableCell>{carriage.pivot?.qty}</TableCell>
+                            <TableCell>
+                                <CarriageQty
+                                    trainset={trainset}
+                                    carriage={carriage}
+                                    handleSyncTrainset={handleSyncTrainset}
+                                />
+                            </TableCell>
                             <TableCell>
                                 {carriage.panels?.map(panel => (
                                     <div key={panel.id}>

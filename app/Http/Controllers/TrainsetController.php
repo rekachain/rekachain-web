@@ -81,6 +81,9 @@ class TrainsetController extends Controller {
 
             case IntentEnum::WEB_TRAINSET_ADD_CARRIAGE_TRAINSET->value:
                 return $this->trainsetService->addCarriageTrainset($trainset, $request->validated());
+
+            case IntentEnum::WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET->value:
+                return $this->trainsetService->updateCarriageTrainset($trainset, $request->validated());
         }
 
         //        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {
