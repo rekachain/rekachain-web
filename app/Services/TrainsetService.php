@@ -15,23 +15,28 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
     }
 
     public function updatePreset(Trainset $trainset, array $data): bool {
-        // Step 1: Retrieve the preset trainset ID from the input data
         $preset_trainset_id = $data['preset_trainset_id'];
-
-        // Step 2: Find the preset trainset using the preset trainset service
         $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
 
-        // Step 3: Update the trainset's preset_trainset_id
         $trainset->update(['preset_trainset_id' => $preset_trainset_id]);
 
-        // Step 4: Map the carriages from the preset trainset to include carriage_id and qty
-        $carriages = $presetTrainset->carriagePresets->mapWithKeys(function ($carriagePreset) {
-            return [
-                $carriagePreset['carriage_id'] => ['qty' => $carriagePreset['qty']],
-            ];
-        })->toArray();
+        // Step 1: Detach existing carriages from the trainset
+        $trainset->carriages()->detach();
 
-        // Step 5: Sync the carriages with their respective quantities to the trainset
+        // Step 2: Aggregate quantities for duplicate carriage IDs
+        $carriages = [];
+        foreach ($presetTrainset->carriagePresets as $carriagePreset) {
+            $carriageId = $carriagePreset['carriage_id'];
+            $qty = $carriagePreset['qty'];
+
+            if (isset($carriages[$carriageId])) {
+                $carriages[$carriageId]['qty'] += $qty;
+            } else {
+                $carriages[$carriageId] = ['qty' => $qty];
+            }
+        }
+
+        // Step 3: Sync the aggregated carriages with the trainset
         $trainset->carriages()->sync($carriages);
 
         return true;
@@ -44,24 +49,29 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         // Step 1: Retrieve the trainset carriages
         $carriages = $trainset->carriages;
 
-        // Step 3: Create a new preset trainset
+        // Step 2: Create a new preset trainset
         $presetTrainset = $this->presetTrainsetService->create([
             'name' => $presetName,
             'project_id' => $projectId,
         ]);
 
-        // Step 4: Map the carriages to include carriage_id and qty
-        $carriagePresets = $carriages->map(function ($carriage) {
-            return [
-                'carriage_id' => $carriage['id'],
-                'qty' => $carriage['pivot']['qty'],
-            ];
-        });
+        // Step 3: Aggregate quantities for duplicate carriage IDs
+        $carriagePresets = [];
+        foreach ($carriages as $carriage) {
+            $carriageId = $carriage['id'];
+            $qty = $carriage['pivot']['qty'];
 
-        // Step 5: Sync the carriages with their respective quantities to the preset trainset
-        $presetTrainset->carriagePresets()->createMany($carriagePresets);
+            if (isset($carriagePresets[$carriageId])) {
+                $carriagePresets[$carriageId]['qty'] += $qty;
+            } else {
+                $carriagePresets[$carriageId] = ['carriage_id' => $carriageId, 'qty' => $qty];
+            }
+        }
 
-        // Step 6: Update the trainset's preset_trainset_id
+        // Step 4: Sync the aggregated carriages with the preset trainset
+        $presetTrainset->carriagePresets()->createMany(array_values($carriagePresets));
+
+        // Step 5: Update the trainset's preset_trainset_id
         $trainset->update(['preset_trainset_id' => $presetTrainset->id]);
 
         return true;
@@ -99,8 +109,15 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ]);
         }
 
-        // Step 2: Save the carriage and attach it to the trainset with the specified quantity
-        $trainset->carriages()->save($carriage, ['qty' => $carriageQty]);
+        // Step 2: Attach or update the carriage with the specified quantity
+        $existingCarriage = $trainset->carriages()->where('carriage_id', $carriage->id)->first();
+        if ($existingCarriage) {
+            $trainset->carriages()->updateExistingPivot($carriage->id, [
+                'qty' => $existingCarriage->pivot->qty + $carriageQty,
+            ]);
+        } else {
+            $trainset->carriages()->attach($carriage, ['qty' => $carriageQty]);
+        }
 
         // Step 3: Optionally update the trainset's preset_trainset_id to null
         $trainset->update(['preset_trainset_id' => null]);

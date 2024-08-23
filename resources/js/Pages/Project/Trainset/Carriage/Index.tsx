@@ -28,7 +28,6 @@ import { PaginateResponse } from '@/support/interfaces/others';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { carriageService } from '@/services/carriageService';
 import { useDebounce } from '@uidotdev/usehooks';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -192,69 +191,37 @@ export default function ({
                                                 </SelectContent>
                                             </Select>
 
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger>
-                                                        <Button
-                                                            type="submit"
-                                                            disabled={
-                                                                isLoading ||
-                                                                data.preset_trainset_id === trainset.preset_trainset_id
-                                                            }
-                                                        >
-                                                            {isLoading ? (
-                                                                <>
-                                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                                    Loading
-                                                                </>
-                                                            ) : (
-                                                                'Ubah Preset'
-                                                            )}
-                                                        </Button>
-                                                    </TooltipTrigger>
-                                                    {data.preset_trainset_id === trainset.preset_trainset_id && (
-                                                        <TooltipContent>
-                                                            <p>
-                                                                Preset yang dipilih sama dengan preset yang sedang
-                                                                digunakan
-                                                            </p>
-                                                        </TooltipContent>
-                                                    )}
-                                                </Tooltip>
-                                            </TooltipProvider>
+                                            <Button
+                                                type="submit"
+                                                disabled={
+                                                    isLoading || data.preset_trainset_id === trainset.preset_trainset_id
+                                                }
+                                            >
+                                                {isLoading ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        Loading
+                                                    </>
+                                                ) : (
+                                                    'Ubah Preset'
+                                                )}
+                                            </Button>
 
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger>
-                                                        <Button
-                                                            type="button"
-                                                            variant="destructive"
-                                                            disabled={
-                                                                isLoading ||
-                                                                (selectedPreset && selectedPreset.has_trainsets)
-                                                            }
-                                                            onClick={handleDeletePresetTrainset}
-                                                        >
-                                                            {isLoading ? (
-                                                                <>
-                                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                                    Loading
-                                                                </>
-                                                            ) : (
-                                                                'Hapus Preset'
-                                                            )}
-                                                        </Button>
-                                                    </TooltipTrigger>
-                                                    {selectedPreset && selectedPreset.has_trainsets && (
-                                                        <TooltipContent>
-                                                            <p>
-                                                                Tidak bisa hapus, dikarenakan memiliki relasi dengan
-                                                                entry lainnya
-                                                            </p>
-                                                        </TooltipContent>
-                                                    )}
-                                                </Tooltip>
-                                            </TooltipProvider>
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                disabled={isLoading || (selectedPreset && selectedPreset.has_trainsets)}
+                                                onClick={handleDeletePresetTrainset}
+                                            >
+                                                {isLoading ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        Loading
+                                                    </>
+                                                ) : (
+                                                    'Hapus Preset'
+                                                )}
+                                            </Button>
                                         </div>
                                     </SelectGroup>
                                 </form>
