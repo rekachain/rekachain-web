@@ -73,7 +73,7 @@ export default function SidebarMobile() {
                         )} */}
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side={'left'} className="w-[120px] sm:w-[540px]">
+                        <SheetContent side={'left'} className="w-[250px] sm:w-[540px]">
                             <SheetHeader>
                                 <SheetTitle className="mx-auto">
                                     <img
@@ -86,26 +86,41 @@ export default function SidebarMobile() {
                                         // height={500}
                                     />
                                 </SheetTitle>
-                                <SheetDescription className="items-center w-full  flex flex-col gap-7 dark:text-white text-black">
+                                <SheetDescription className="items-start w-full  flex flex-col gap-7 dark:text-white text-black">
                                     <Link href={'dashboard'} className="mt-5">
-                                        <RiHome8Line size={35} />
+                                        <div className="flex items-center gap-2">
+                                            <RiHome8Line size={35} />
+                                            <p className="text-base">Dashboard</p>
+                                        </div>
                                     </Link>
                                     <Link href={route(`${ROUTES.USERS}.index`)}>
-                                        <RiUserLine size={35} />
+                                        <div className="flex items-center gap-2">
+                                            <RiUserLine size={35} />
+                                            <p className="text-base">Manajemen Staff</p>
+                                        </div>
                                     </Link>
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
-                                                <div className="pl-4">
+                                                <div className="flex items-center gap-2">
                                                     <RiBox3Line size={35} />
+                                                    <p className="text-base">Hak Akses</p>
                                                 </div>
                                             </AccordionTrigger>
-                                            <AccordionContent className="items-center flex flex-col gap-7">
-                                                <Link href={route(`${ROUTES.PERMISSIONS}.index`)}>
-                                                    <RiLockUnlockFill size={30} />
+                                            <AccordionContent className="items-start pl-10 flex flex-col gap-7">
+                                                <Link
+                                                    className="flex items-center gap-2"
+                                                    href={route(`${ROUTES.PERMISSIONS}.index`)}
+                                                >
+                                                    <RiLockUnlockFill size={25} />
+                                                    <p className="text-base">Permissions</p>
                                                 </Link>
-                                                <Link href={route(`${ROUTES.ROLES}.index`)}>
-                                                    <RiShieldLine className="mt-2" size={30} />
+                                                <Link
+                                                    className="flex items-center gap-2"
+                                                    href={route(`${ROUTES.ROLES}.index`)}
+                                                >
+                                                    <RiShieldLine className="mt-2" size={25} />
+                                                    <p className="text-base">Roles</p>
                                                 </Link>
                                             </AccordionContent>
                                         </AccordionItem>
@@ -118,29 +133,38 @@ export default function SidebarMobile() {
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
-                                                <div className="pl-4">
+                                                <div className="flex items-center gap-2">
                                                     <ListOrdered size={35} />
-                                                    {/* <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} /> */}
+                                                    <p className="text-base">List Proyek</p>
                                                 </div>
+                                                {/* <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} /> */}
                                             </AccordionTrigger>
-                                            <AccordionContent className="items-center flex flex-col gap-7">
-                                                <Link href={'proyek'}>
+                                            <AccordionContent className="items-start pl-10 flex flex-col gap-7">
+                                                <Link className="flex items-center gap-2" href={'proyek'}>
                                                     <RiBox3Line size={30} />
+                                                    <p className="text-base">List Proyek</p>
                                                 </Link>
-                                                <Link href={'buat-proyek'}>
+                                                <Link className="flex items-center gap-2" href={'buat-proyek'}>
                                                     <RiBox3Line size={30} />
+                                                    <p className="text-base">Buat Proyek</p>
                                                 </Link>
-                                                <Link href={route(`${ROUTES.PROFILE}.edit`)}>
+                                                <Link
+                                                    className="flex items-center gap-2"
+                                                    href={route(`${ROUTES.PROFILE}.edit`)}
+                                                >
                                                     <RiBox3Line size={30} />
+                                                    <p className="text-base">Buat Proyek</p>
                                                 </Link>
                                             </AccordionContent>
                                         </AccordionItem>
                                     </Accordion>
-                                    <Link href={route(`${ROUTES.PROFILE}.edit`)}>
-                                        <RiQuestionLine size={35} />
-                                    </Link>
-                                    <Link href={route(`${ROUTES.PROFILE}.edit`)}>
+                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PROFILE}.edit`)}>
                                         <RiSettings3Line size={35} />
+                                        <p className="text-base">Pengaturan</p>
+                                    </Link>
+                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PROFILE}.edit`)}>
+                                        <RiQuestionLine size={35} />
+                                        <p className="text-base">Help Desk</p>
                                     </Link>
                                 </SheetDescription>
                             </SheetHeader>
