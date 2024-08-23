@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Panel;
+namespace App\Http\Requests\TrainsetCarriages;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePanelRequest extends FormRequest {
+class UpdateTrainsetCarriagesRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -19,12 +19,12 @@ class UpdatePanelRequest extends FormRequest {
      */
     public function rules(): array {
 
-        $panel = $this->route('panel')->id;
+        $trainsetCarriage = $this->route('trainsetCarriage')->id;
 
         return [
-            'progress_id' => 'required|integer',
+            'trainset_id' => 'required|integer',
             'carriage_id' => 'required|integer',
-            'name' => 'string|max:255',
+            'name' => 'required|integer',
         ];
     }
 }

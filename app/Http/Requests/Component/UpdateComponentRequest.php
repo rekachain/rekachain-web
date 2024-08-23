@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Panel;
+namespace App\Http\Requests\Component;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePanelRequest extends FormRequest {
+class UpdateComponentRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -18,13 +18,10 @@ class UpdatePanelRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-
-        $panel = $this->route('panel')->id;
-
         return [
-            'progress_id' => 'required|integer',
-            'carriage_id' => 'required|integer',
-            'name' => 'string|max:255',
+            'name' => 'nullable',
+            'progress_id' => 'nullable|exists:progress,id',
+            'panel_id' => 'nullable|exists:panels,id',
         ];
     }
 }

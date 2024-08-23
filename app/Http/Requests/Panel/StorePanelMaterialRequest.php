@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Panel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateComponentRequest extends FormRequest
-{
+class StorePanelMaterialRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return false;
+    public function authorize(): bool {
+        return true;
     }
 
     /**
@@ -19,10 +17,11 @@ class UpdateComponentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
-            //
+            'panel_id' => 'integer',
+            'material_id' => 'integer',
+            'qty' => 'integer',
         ];
     }
 }

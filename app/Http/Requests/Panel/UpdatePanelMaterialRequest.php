@@ -4,7 +4,7 @@ namespace App\Http\Requests\Panel;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePanelRequest extends FormRequest {
+class UpdatePanelMaterialRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -19,12 +19,12 @@ class UpdatePanelRequest extends FormRequest {
      */
     public function rules(): array {
 
-        $panel = $this->route('panel')->id;
+        $panelMaterial = $this->route('panelMaterial')->id;
 
         return [
-            'progress_id' => 'required|integer',
-            'carriage_id' => 'required|integer',
-            'name' => 'string|max:255',
+            'panel_id' => 'integer',
+            'material_id' => 'integer',
+            'qty' => 'integer',
         ];
     }
 }

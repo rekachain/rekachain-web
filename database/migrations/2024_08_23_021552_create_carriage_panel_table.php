@@ -9,10 +9,11 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('panels', function (Blueprint $table) {
+        Schema::create('carriage_panels', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
+            $table->foreignId('progress_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('carriage_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('panel_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -21,6 +22,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('panels');
+        Schema::dropIfExists('carriage_panel');
     }
 };

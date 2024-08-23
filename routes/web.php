@@ -7,6 +7,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\UserController;
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('trainsets', TrainsetController::class);
+    Route::resource('raw-materials', RawMaterialController::class);
     Route::resource('carriages', CarriageController::class);
     Route::resource('carriage-presets', CarriagePresetController::class);
     Route::resource('preset-trainsets', PresetTrainsetController::class);

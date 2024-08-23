@@ -8,12 +8,14 @@ use App\Observers\PermissionObserver;
 use App\Observers\TrainsetObserver;
 use App\Repositories\CarriagePresetRepository;
 use App\Repositories\CarriageRepository;
+use App\Repositories\ComponentRepository;
 use App\Repositories\DivisionRepository;
 use App\Repositories\PanelRepository;
 use App\Repositories\PermissionRepository;
 use App\Repositories\PresetTrainsetRepository;
 use App\Repositories\ProgressRepository;
 use App\Repositories\ProjectRepository;
+use App\Repositories\RawMaterialRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\TrainsetRepository;
 use App\Repositories\UserRepository;
@@ -21,12 +23,14 @@ use App\Repositories\WorkshopRepository;
 use App\Repositories\WorkstationRepository;
 use App\Services\CarriagePresetService;
 use App\Services\CarriageService;
+use App\Services\ComponentService;
 use App\Services\DivisionService;
 use App\Services\PanelService;
 use App\Services\PermissionService;
 use App\Services\PresetTrainsetService;
 use App\Services\ProgressService;
 use App\Services\ProjectService;
+use App\Services\RawMaterialService;
 use App\Services\RoleService;
 use App\Services\TrainsetService;
 use App\Services\UserService;
@@ -36,6 +40,8 @@ use App\Support\Interfaces\CarriagePresetRepositoryInterface;
 use App\Support\Interfaces\CarriagePresetServiceInterface;
 use App\Support\Interfaces\CarriageRepositoryInterface;
 use App\Support\Interfaces\CarriageServiceInterface;
+use App\Support\Interfaces\ComponentRepositoryInterface;
+use App\Support\Interfaces\ComponentServiceInterface;
 use App\Support\Interfaces\DivisionRepositoryInterface;
 use App\Support\Interfaces\DivisionServiceInterface;
 use App\Support\Interfaces\PanelRepositoryInterface;
@@ -48,6 +54,8 @@ use App\Support\Interfaces\ProgressRepositoryInterface;
 use App\Support\Interfaces\ProgressServiceInterface;
 use App\Support\Interfaces\ProjectRepositoryInterface;
 use App\Support\Interfaces\ProjectServiceInterface;
+use App\Support\Interfaces\RawMaterialRepositoryInterface;
+use App\Support\Interfaces\RawMaterialServiceInterface;
 use App\Support\Interfaces\RoleRepositoryInterface;
 use App\Support\Interfaces\RoleServiceInterface;
 use App\Support\Interfaces\TrainsetRepositoryInterface;
@@ -80,6 +88,9 @@ class AppServiceProvider extends ServiceProvider {
         $this->app->singleton(CarriageRepositoryInterface::class, CarriageRepository::class);
         $this->app->singleton(CarriageServiceInterface::class, CarriageService::class);
 
+        $this->app->singleton(ComponentRepositoryInterface::class, ComponentRepository::class);
+        $this->app->singleton(ComponentServiceInterface::class, ComponentService::class);
+
         $this->app->singleton(TrainsetRepositoryInterface::class, TrainsetRepository::class);
         $this->app->singleton(TrainsetServiceInterface::class, TrainsetService::class);
 
@@ -103,6 +114,9 @@ class AppServiceProvider extends ServiceProvider {
 
         $this->app->singleton(ProgressRepositoryInterface::class, ProgressRepository::class);
         $this->app->singleton(ProgressServiceInterface::class, ProgressService::class);
+
+        $this->app->singleton(RawMaterialRepositoryInterface::class, RawMaterialRepository::class);
+        $this->app->singleton(RawMaterialServiceInterface::class, RawMaterialService::class);
 
         $this->app->singleton(CarriagePresetRepositoryInterface::class, CarriagePresetRepository::class);
         $this->app->singleton(CarriagePresetServiceInterface::class, CarriagePresetService::class);

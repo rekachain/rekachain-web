@@ -9,10 +9,12 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('panels', function (Blueprint $table) {
+        Schema::create('raw_materials', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('kode_material');
             $table->string('description')->nullable();
+            $table->string('unit')->nullable();
+            $table->string('specs')->nullable();
             $table->timestamps();
         });
     }
@@ -21,6 +23,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('panels');
+        Schema::dropIfExists('raw_materials');
     }
 };
