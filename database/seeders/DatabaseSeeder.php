@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder {
             WorkstationSeeder::class,
             ProgressSeeder::class,
             PanelSeeder::class,
+            CarriagePanelSeeder::class,
             ComponentSeeder::class,
             //            PanelProgressSeeder::class
         ]);

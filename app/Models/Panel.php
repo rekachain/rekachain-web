@@ -4,22 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Panel extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'progress_id',
-        'carriage_id',
         'name',
+        'description',
     ];
 
-    public function carriage(): BelongsTo {
-        return $this->belongsTo(Carriage::class);
-    }
-
-    public function progress(): BelongsTo {
-        return $this->belongsTo(Progress::class);
+    public function carriages(): BelongsToMany {
+        return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
     }
 }

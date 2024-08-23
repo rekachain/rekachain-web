@@ -11,9 +11,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('panels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('progress_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId('carriage_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->string('name')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

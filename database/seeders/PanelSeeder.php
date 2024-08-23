@@ -22,9 +22,7 @@ class PanelSeeder extends Seeder {
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                Panel::factory()->create(array_replace($data, [
-                    'carriage_id' => Carriage::whereType($data['carriage_id'])->first()->id,
-                ]));
+                Panel::create($data);
             }
         } else {
             Panel::factory(1)->create();
