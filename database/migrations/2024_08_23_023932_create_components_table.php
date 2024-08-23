@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('progress_id')->nullable()->constrained(); 
-            $table->foreignId('panel_id')->nullable()->constrained(); 
-            $table->timestamps();
+            $table->foreignId('carriage_panel_id')->nullable()->constrained(); 
+            $table->timestamps(); 
         });
     }
 
