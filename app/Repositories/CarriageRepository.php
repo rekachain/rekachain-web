@@ -17,11 +17,11 @@ class CarriageRepository extends BaseRepository implements CarriageRepositoryInt
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
+
         $query = $this->getQuery();
         if (isset($searchParams['type'])) {
             $query->where('type', 'like', '%' . $searchParams['type'] . '%');
         }
-
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);

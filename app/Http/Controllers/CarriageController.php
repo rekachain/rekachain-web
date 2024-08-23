@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCarriageRequest;
-use App\Http\Requests\UpdateCarriageRequest;
+use App\Http\Requests\Carriage\StoreCarriageRequest;
+use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
 use App\Support\Interfaces\CarriageServiceInterface;
@@ -27,7 +27,7 @@ class CarriageController extends Controller {
             }
         }
 
-        return intertia('Carriage/Index');
+        return inertia('Carriage/Index');
     }
 
     /**

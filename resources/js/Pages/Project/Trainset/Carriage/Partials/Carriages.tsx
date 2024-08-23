@@ -50,9 +50,9 @@ export default function ({
                                 />
                             </TableCell>
                             <TableCell>
-                                {carriage.panels?.map(panel => (
+                                {carriage.carriagePanels?.map(panel => (
                                     <div key={panel.id}>
-                                        <span>{panel.name}</span>
+                                        <span>{panel.panel.name}</span>
                                     </div>
                                 ))}
                             </TableCell>
