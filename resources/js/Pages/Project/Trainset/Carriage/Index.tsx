@@ -1,13 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useState } from 'react';
+import { lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
+import { CarriageResource, PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { trainsetService } from '@/services/trainsetService';
-import { Loader2 } from 'lucide-react';
+import { Loader2, RefreshCcw } from 'lucide-react';
 import { Input } from '@/Components/ui/input';
 import {
     Dialog,
@@ -21,9 +21,28 @@ import { Textarea } from '@/Components/ui/textarea';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
 import { projectService } from '@/services/projectService';
+import { presetTrainsetService } from '@/services/presetTrainsetService';
+import { Separator } from '@/Components/ui/separator';
+import { STYLING } from '@/support/constants/styling';
+import { PaginateResponse } from '@/support/interfaces/others';
+import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
+import { carriageService } from '@/services/carriageService';
+import { useDebounce } from '@uidotdev/usehooks';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
-
+const SearchCarriageInput = memo(
+    ({
+        value,
+        onChange,
+        disabled,
+    }: {
+        value: string;
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+        disabled?: boolean;
+    }) => {
+        return <Input type="text" value={value} onChange={onChange} disabled={disabled} required />;
+    },
+);
 export default function ({
     trainset: initialTrainset,
     presetTrainsets: initialPresetTrainset,
@@ -32,22 +51,31 @@ export default function ({
     presetTrainsets: PresetTrainsetResource[];
 }) {
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
+    const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
+    const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
+        page: 1,
+        perPage: 10,
+        relations: 'panels',
+        type: '',
+    });
+    const [isLoading, setIsLoading] = useState(false);
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
-    const { data, setData, post, processing, errors, reset } = useForm({
-        isLoading: false,
+    const { data, setData } = useForm({
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
+        new_carriage_id: 0,
         new_carriage_preset_name: '',
         new_carriage_type: 'Gerbong',
         new_carriage_description: '',
         new_carriage_qty: 1,
     });
+    const debouncedCarriageFilters = useDebounce(carriageFilters, 300);
 
     const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            useConfirmation().then(async result => {
+            await useConfirmation().then(async result => {
                 if (result.isConfirmed) {
-                    setData('isLoading', true);
+                    setIsLoading(true);
                     await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
                     await handleSyncTrainset();
                 }
@@ -60,7 +88,7 @@ export default function ({
 
     const handleSaveTrainsetPreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData('isLoading', true);
+        setIsLoading(true);
         try {
             await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
         } catch (error) {
@@ -70,22 +98,21 @@ export default function ({
     };
 
     const handleSyncTrainset = async () => {
-        setData('isLoading', true);
+        setIsLoading(true);
         const response = await projectService.getTrainsetCarriages(trainset.project_id, trainset.id);
         setTrainset(response.data.trainset);
         setPresetTrainset(response.data.presetTrainsets);
-        console.log(response.data);
         data.preset_trainset_id = response.data.trainset.preset_trainset_id;
-        console.log(data.preset_trainset_id, response.data.trainset.preset_trainset_id);
-        reset('isLoading');
+        setIsLoading(false);
     };
 
     const handleAddCarriageTrainset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData('isLoading', true);
+        setIsLoading(true);
         try {
             await trainsetService.addCarriageTrainset(
                 trainset.id,
+                data.new_carriage_id,
                 data.new_carriage_type,
                 data.new_carriage_description,
                 data.new_carriage_qty,
@@ -95,6 +122,40 @@ export default function ({
             await handleSyncTrainset();
         }
     };
+
+    const handleDeletePresetTrainset = async () => {
+        setIsLoading(true);
+        try {
+            await useConfirmation().then(async result => {
+                if (result.isConfirmed) {
+                    await presetTrainsetService.delete(data.preset_trainset_id);
+                }
+            });
+        } catch (error) {
+        } finally {
+            await handleSyncTrainset();
+        }
+    };
+
+    const handleResetAddCarriageSelection = () => {
+        setData('new_carriage_id', 0);
+    };
+
+    const handleChangeSearchCarriageType = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const type = e.target.value;
+        setCarriageFilters({ ...carriageFilters, type });
+        // await handleSyncCarriages();
+    };
+
+    const handleSyncCarriages = async () => {
+        carriageService.getAll(debouncedCarriageFilters).then(res => {
+            setCarriageResponse(res);
+        });
+    };
+
+    useEffect(() => {
+        handleSyncCarriages();
+    }, [debouncedCarriageFilters]);
 
     return (
         <>
@@ -144,11 +205,10 @@ export default function ({
                                             <Button
                                                 type="submit"
                                                 disabled={
-                                                    data.isLoading ||
-                                                    data.preset_trainset_id === trainset.preset_trainset_id
+                                                    isLoading || data.preset_trainset_id === trainset.preset_trainset_id
                                                 }
                                             >
-                                                {data.isLoading ? (
+                                                {isLoading ? (
                                                     <>
                                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                         Loading
@@ -157,37 +217,26 @@ export default function ({
                                                     'Ubah Preset'
                                                 )}
                                             </Button>
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                disabled={isLoading}
+                                                onClick={handleDeletePresetTrainset}
+                                            >
+                                                {isLoading ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        Loading
+                                                    </>
+                                                ) : (
+                                                    'Hapus Preset'
+                                                )}
+                                            </Button>
                                         </div>
                                     </SelectGroup>
                                 </form>
                             </div>
                         </div>
-
-                        {/*<div className="rounded p-5 bg-background-2">*/}
-                        {/*    <form onSubmit={handleAddTrainset} className="flex flex-col gap-2">*/}
-                        {/*        <Label htmlFor="tambah-trainset">Tambah trainset baru</Label>*/}
-                        {/*        <div className="flex gap-2">*/}
-                        {/*            <Input*/}
-                        {/*                id="tambah-trainset"*/}
-                        {/*                type="number"*/}
-                        {/*                className="w-fit"*/}
-                        {/*                placeholder="Add Trainset"*/}
-                        {/*                value={data.trainsetNeeded}*/}
-                        {/*                onChange={e => setData('trainsetNeeded', +e.target.value)}*/}
-                        {/*            />*/}
-                        {/*            <Button type="submit" disabled={data.isLoading}>*/}
-                        {/*                {data.isLoading ? (*/}
-                        {/*                    <>*/}
-                        {/*                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />*/}
-                        {/*                        Adding Trainset*/}
-                        {/*                    </>*/}
-                        {/*                ) : (*/}
-                        {/*                    'Add Trainset'*/}
-                        {/*                )}*/}
-                        {/*            </Button>*/}
-                        {/*        </div>*/}
-                        {/*    </form>*/}
-                        {/*</div>*/}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Carriages trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
@@ -205,35 +254,97 @@ export default function ({
                             <DialogHeader>
                                 <DialogTitle>{data.new_carriage_type}</DialogTitle>
                                 <DialogDescription>
-                                    <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-2">
-                                        <div className="flex flex-col gap-2">
-                                            <Label>Tipe Gerbong</Label>
+                                    <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-4">
+                                        <SelectGroup className="space-y-2">
+                                            <div className="flex flex-col bg-background-2 gap-4 p-4">
+                                                <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
+                                                <Input
+                                                    placeholder="Cari gerbong"
+                                                    value={carriageFilters.type}
+                                                    onChange={handleChangeSearchCarriageType}
+                                                    disabled={isLoading}
+                                                />
+                                                <div className="flex gap-4">
+                                                    <Select
+                                                        key={data.new_carriage_id} // Force re-render when new_carriage_id changes
+                                                        onValueChange={v => setData('new_carriage_id', +v)}
+                                                        value={data.new_carriage_id?.toString()}
+                                                    >
+                                                        <SelectTrigger id="carriage">
+                                                            <SelectValue placeholder="Carriage" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="0" defaultChecked disabled>
+                                                                Pilih gerbong
+                                                            </SelectItem>
+                                                            {carriageResponse?.data.map(carriage => (
+                                                                <SelectItem
+                                                                    key={carriage.id}
+                                                                    value={carriage.id.toString()}
+                                                                >
+                                                                    {carriage.type}:
+                                                                    <br />
+                                                                    {carriage.panels?.map((c, i) => (
+                                                                        <span key={c.id}>
+                                                                            <br />
+                                                                            {c.name}
+                                                                        </span>
+                                                                    ))}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <Button
+                                                        type="button"
+                                                        variant="ghost"
+                                                        onClick={handleResetAddCarriageSelection}
+                                                    >
+                                                        <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </SelectGroup>
+                                        <div className="flex gap-4 items-center">
+                                            <div className=" flex-1">
+                                                <Separator />
+                                            </div>
+                                            Atau
+                                            <div className=" flex-1">
+                                                <Separator />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col gap-4 bg-background-2 p-4">
+                                            <div className="flex flex-col gap-2">
+                                                <Label>Tipe Gerbong</Label>
+                                                <Input
+                                                    type="text"
+                                                    value={data.new_carriage_type}
+                                                    onChange={e => setData('new_carriage_type', e.target.value)}
+                                                    disabled={data.new_carriage_id !== 0}
+                                                    required
+                                                />
+                                            </div>
+                                            <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>
+                                            <Textarea
+                                                id="new-carriage-description"
+                                                className="p-2 rounded"
+                                                value={data.new_carriage_description}
+                                                onChange={e => setData('new_carriage_description', e.target.value)}
+                                                disabled={data.new_carriage_id !== 0}
+                                            />
+                                            <Label htmlFor="new-carriage-qty">Jumlah Gerbong</Label>
                                             <Input
-                                                type="text"
-                                                value={data.new_carriage_type}
-                                                onChange={e => setData('new_carriage_type', e.target.value)}
+                                                id="new-carriage-qty"
+                                                type="number"
+                                                min={1}
+                                                value={data.new_carriage_qty}
+                                                onChange={e => setData('new_carriage_qty', +e.target.value)}
                                                 required
                                             />
                                         </div>
-                                        <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>
-                                        <Textarea
-                                            id="new-carriage-description"
-                                            className="p-2 rounded"
-                                            value={data.new_carriage_description}
-                                            onChange={e => setData('new_carriage_description', e.target.value)}
-                                        />
-                                        <Label htmlFor="new-carriage-qty">Jumlah Gerbong</Label>
-                                        <Input
-                                            id="new-carriage-qty"
-                                            type="number"
-                                            min={1}
-                                            value={data.new_carriage_qty}
-                                            onChange={e => setData('new_carriage_qty', +e.target.value)}
-                                            required
-                                        />
 
-                                        <Button type="submit" disabled={data.isLoading}>
-                                            {data.isLoading ? (
+                                        <Button type="submit" disabled={isLoading}>
+                                            {isLoading ? (
                                                 <>
                                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                     Proses
@@ -274,8 +385,8 @@ export default function ({
                                                             setData('new_carriage_preset_name', e.target.value)
                                                         }
                                                     />
-                                                    <Button type="submit" disabled={data.isLoading} className="w-fit">
-                                                        {data.isLoading ? (
+                                                    <Button type="submit" disabled={isLoading} className="w-fit">
+                                                        {isLoading ? (
                                                             <>
                                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                                 Menambahkan preset

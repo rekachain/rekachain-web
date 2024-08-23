@@ -83,15 +83,21 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
     }
 
     public function addCarriageTrainset(Trainset $trainset, array $data): bool {
+        $carriageId = $data['carriage_id'];
         $carriageType = $data['carriage_type'];
         $carriageDescription = $data['carriage_description'];
         $carriageQty = $data['carriage_qty'];
 
-        // Step 1: Create a new carriage
-        $carriage = Carriage::create([
-            'type' => $carriageType,
-            'description' => $carriageDescription,
-        ]);
+        if($carriageId) {
+            // Step 1: Find the carriage by ID
+            $carriage = Carriage::findOrFail($carriageId);
+        } else {
+            // Step 1: Create a new carriage
+            $carriage = Carriage::create([
+                'type' => $carriageType,
+                'description' => $carriageDescription,
+            ]);
+        }
 
         // Step 2: Save the carriage and attach it to the trainset with the specified quantity
         $trainset->carriages()->save($carriage, ['qty' => $carriageQty]);

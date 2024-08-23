@@ -33,4 +33,14 @@ export enum PERMISSION_ENUM {
     PERMISSION_READ = 'permission-read',
     PERMISSION_UPDATE = 'permission-update',
     PERMISSION_DELETE = 'permission-delete',
+
+    CARRIAGE_PRESET_CREATE = 'carriage-preset-create',
+    CARRIAGE_PRESET_READ = 'carriage-preset-read',
+    CARRIAGE_PRESET_UPDATE = 'carriage-preset-update',
+    CARRIAGE_PRESET_DELETE = 'carriage-preset-delete',
+
+    PRESET_TRAINSET_CREATE = 'preset-trainset-create',
+    PRESET_TRAINSET_READ = 'preset-trainset-read',
+    PRESET_TRAINSET_UPDATE = 'preset-trainset-update',
+    PRESET_TRAINSET_DELETE = 'preset-trainset-delete',
 }

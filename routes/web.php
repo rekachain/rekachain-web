@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RoleController;
@@ -53,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::resource('trainsets', TrainsetController::class);
     Route::resource('carriages', CarriageController::class);
+    Route::resource('carriage-presets', CarriagePresetController::class);
+    Route::resource('preset-trainsets', PresetTrainsetController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

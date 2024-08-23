@@ -18,6 +18,10 @@ class Project extends Model {
         return $this->hasMany(Trainset::class);
     }
 
+    public function presetTrainsets() {
+        return $this->hasMany(PresetTrainset::class);
+    }
+
     // public function projectAttachments(): HasMany
     // {
     //     return $this->hasMany(ProjectAttachment::class, 'id_project', 'id');

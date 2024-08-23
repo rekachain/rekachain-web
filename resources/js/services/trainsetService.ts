@@ -50,6 +50,7 @@ export const trainsetService = {
     },
     addCarriageTrainset: async (
         trainsetId: number,
+        carriageId: number,
         carriageType: string,
         carriageDescription: string,
         carriageQty: number,
@@ -57,6 +58,7 @@ export const trainsetService = {
         await window.axios.post(
             route(`${ROUTES.TRAINSETS}.update`, trainsetId),
             {
+                carriage_id: carriageId || null,
                 carriage_type: carriageType,
                 carriage_description: carriageDescription,
                 carriage_qty: carriageQty,

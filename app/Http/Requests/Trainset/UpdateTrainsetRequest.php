@@ -47,7 +47,8 @@ class UpdateTrainsetRequest extends FormRequest {
 
             case IntentEnum::WEB_TRAINSET_ADD_CARRIAGE_TRAINSET->value:
                 return [
-                    'carriage_type' => 'required|string|max:255',
+                    'carriage_id' => 'nullable|numeric|exists:carriages,id',
+                    'carriage_type' => 'nullable|string|max:255',
                     'carriage_description' => 'nullable|string|max:255',
                     'carriage_qty' => 'required|integer|min:1',
                 ];
