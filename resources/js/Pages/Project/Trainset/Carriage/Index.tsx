@@ -28,21 +28,10 @@ import { PaginateResponse } from '@/support/interfaces/others';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { carriageService } from '@/services/carriageService';
 import { useDebounce } from '@uidotdev/usehooks';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
-const SearchCarriageInput = memo(
-    ({
-        value,
-        onChange,
-        disabled,
-    }: {
-        value: string;
-        onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-        disabled?: boolean;
-    }) => {
-        return <Input type="text" value={value} onChange={onChange} disabled={disabled} required />;
-    },
-);
+
 export default function ({
     trainset: initialTrainset,
     presetTrainsets: initialPresetTrainset,
@@ -69,6 +58,7 @@ export default function ({
         new_carriage_qty: 1,
     });
     const debouncedCarriageFilters = useDebounce(carriageFilters, 300);
+    const selectedPreset = presetTrainset.find(preset => preset.id === data.preset_trainset_id);
 
     const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -202,36 +192,69 @@ export default function ({
                                                 </SelectContent>
                                             </Select>
 
-                                            <Button
-                                                type="submit"
-                                                disabled={
-                                                    isLoading || data.preset_trainset_id === trainset.preset_trainset_id
-                                                }
-                                            >
-                                                {isLoading ? (
-                                                    <>
-                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                        Loading
-                                                    </>
-                                                ) : (
-                                                    'Ubah Preset'
-                                                )}
-                                            </Button>
-                                            <Button
-                                                type="button"
-                                                variant="destructive"
-                                                disabled={isLoading}
-                                                onClick={handleDeletePresetTrainset}
-                                            >
-                                                {isLoading ? (
-                                                    <>
-                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                        Loading
-                                                    </>
-                                                ) : (
-                                                    'Hapus Preset'
-                                                )}
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger>
+                                                        <Button
+                                                            type="submit"
+                                                            disabled={
+                                                                isLoading ||
+                                                                data.preset_trainset_id === trainset.preset_trainset_id
+                                                            }
+                                                        >
+                                                            {isLoading ? (
+                                                                <>
+                                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                    Loading
+                                                                </>
+                                                            ) : (
+                                                                'Ubah Preset'
+                                                            )}
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    {data.preset_trainset_id === trainset.preset_trainset_id && (
+                                                        <TooltipContent>
+                                                            <p>
+                                                                Preset yang dipilih sama dengan preset yang sedang
+                                                                digunakan
+                                                            </p>
+                                                        </TooltipContent>
+                                                    )}
+                                                </Tooltip>
+                                            </TooltipProvider>
+
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger>
+                                                        <Button
+                                                            type="button"
+                                                            variant="destructive"
+                                                            disabled={
+                                                                isLoading ||
+                                                                (selectedPreset && selectedPreset.has_trainsets)
+                                                            }
+                                                            onClick={handleDeletePresetTrainset}
+                                                        >
+                                                            {isLoading ? (
+                                                                <>
+                                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                    Loading
+                                                                </>
+                                                            ) : (
+                                                                'Hapus Preset'
+                                                            )}
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    {selectedPreset && selectedPreset.has_trainsets && (
+                                                        <TooltipContent>
+                                                            <p>
+                                                                Tidak bisa hapus, dikarenakan memiliki relasi dengan
+                                                                entry lainnya
+                                                            </p>
+                                                        </TooltipContent>
+                                                    )}
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         </div>
                                     </SelectGroup>
                                 </form>
