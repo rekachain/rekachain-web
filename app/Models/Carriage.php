@@ -19,7 +19,7 @@ class Carriage extends Model {
         return $this->belongsToMany(CarriageTrainset::class)->withPivot(['id', 'qty'])->withTimestamps();
     }
 
-    public function panels(): HasMany {
-        return $this->hasMany(Panel::class);
+    public function carriagePanels(): HasMany {
+        return $this->hasMany(CarriagePanel::class);
     }
 }
