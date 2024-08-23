@@ -8,3 +8,6 @@ export * from './WorkshopResource';
 export * from './CarriageResource';
 export * from './TrainsetResource';
 export * from './ProjectResource';
+export * from './PanelResource';
+export * from './CarriagePresetResource';
+export * from './PresetTrainsetResource';

@@ -1,7 +1,8 @@
 import { ROUTES } from '@/support/constants/routes.js';
 import { serviceFactory } from '@/services/serviceFactory';
-import { ProjectResource } from '@/support/interfaces/resources';
+import { PresetTrainsetResource, ProjectResource, TrainsetResource } from '@/support/interfaces/resources';
 import { IntentEnum } from '@/support/enums/intentEnum';
+import { AxiosResponse } from 'axios';
 
 export const projectService = {
     ...serviceFactory<ProjectResource>(ROUTES.PROJECTS),
@@ -18,5 +19,16 @@ export const projectService = {
                 },
             },
         );
+    },
+    getTrainsetCarriages: async (
+        projectId: number,
+        trainsetId: number,
+    ): Promise<
+        AxiosResponse<{
+            trainset: TrainsetResource;
+            presetTrainsets: PresetTrainsetResource[];
+        }>
+    > => {
+        return await window.axios.get(route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [projectId, trainsetId]));
     },
 };

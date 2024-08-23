@@ -3,12 +3,12 @@
 use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiCarriageController;
 use App\Http\Controllers\Api\ApiComponentController;
-use App\Http\Controllers\Api\ApiProjectController;
-use App\Http\Controllers\Api\ApiUserController;
-use App\Http\Controllers\Api\ApiTrainsetController;
 use App\Http\Controllers\Api\ApiPanelController;
-use App\Http\Controllers\Api\ApiProgressController;
 use App\Http\Controllers\Api\ApiPanelMaterialController;
+use App\Http\Controllers\Api\ApiProgressController;
+use App\Http\Controllers\Api\ApiProjectController;
+use App\Http\Controllers\Api\ApiTrainsetController;
+use App\Http\Controllers\Api\ApiUserController;
 use Illuminate\Support\Facades\Route;
 
 /*

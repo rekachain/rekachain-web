@@ -34,8 +34,11 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return $project;
     }
 
-    public function addTrainsets(Project $project, $trainsetNeeded): void {
+    public function addTrainsets(Project $project, $data): bool {
+        $trainsetNeeded = $data['trainset_needed'];
         $this->createTrainsets($project, $trainsetNeeded);
+
+        return true;
     }
 
     protected function getRepositoryClass(): string {

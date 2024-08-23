@@ -9,7 +9,6 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { projectService } from '@/services/projectService';
-import { Tab } from '@headlessui/react';
 
 export default function () {
     const [projectResponse, setProjectResponse] = useState<PaginateResponse<ProjectResource>>();
@@ -18,14 +17,14 @@ export default function () {
         perPage: 10,
     });
 
-    const syncProjects = async () => {
+    const handleSyncProjects = async () => {
         projectService.getAll(filters).then(res => {
             setProjectResponse(res);
         });
     };
 
     useEffect(() => {
-        syncProjects();
+        handleSyncProjects();
     }, [filters]);
 
     const handleProjectDeletion = (id: number) => {
@@ -36,7 +35,7 @@ export default function () {
                     title: 'Project deleted successfully',
                 });
                 await projectService.delete(id);
-                await syncProjects();
+                await handleSyncProjects();
             }
         });
     };

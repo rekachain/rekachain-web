@@ -2,70 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Panel\StorePanelMaterialRequest;
-use App\Http\Requests\Panel\UpdatePanelMaterialRequest;
-use App\Http\Resources\PanelMaterialResource;
 use App\Models\PanelMaterial;
-use App\Support\Interfaces\PanelMaterialServiceInterface;
 use Illuminate\Http\Request;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
-class PanelMaterialController extends Controller
-{
+class PanelMaterialController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PanelMaterial $panelMaterial)
-    {
+    public function show(PanelMaterial $panelMaterial) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PanelMaterial $panelMaterial)
-    {
+    public function edit(PanelMaterial $panelMaterial) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PanelMaterial $panelMaterial)
-    {
+    public function update(Request $request, PanelMaterial $panelMaterial) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PanelMaterial $panelMaterial)
-    {
+    public function destroy(PanelMaterial $panelMaterial) {
         //
     }
 }

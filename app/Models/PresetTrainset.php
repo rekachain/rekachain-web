@@ -18,6 +18,10 @@ class PresetTrainset extends Model {
         return $this->belongsTo(Project::class);
     }
 
+    public function trainsets() {
+        return $this->hasMany(Trainset::class);
+    }
+
     public function carriagePresets(): HasMany {
         return $this->hasMany(CarriagePreset::class);
     }

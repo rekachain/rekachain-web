@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PanelMaterial extends Model
-{
+class PanelMaterial extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -16,13 +15,11 @@ class PanelMaterial extends Model
         'qty',
     ];
 
-    public function material(): BelongsTo
-    {
+    public function material(): BelongsTo {
         return $this->belongsTo(Material::class);
     }
 
-    public function panel(): BelongsTo
-    {
+    public function panel(): BelongsTo {
         return $this->belongsTo(Panel::class);
     }
 }

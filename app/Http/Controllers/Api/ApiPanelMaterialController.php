@@ -11,17 +11,17 @@ use App\Models\PanelMaterial;
 use App\Support\Interfaces\PanelMaterialServiceInterface;
 use Illuminate\Http\Request;
 
-class ApiPanelMaterialController extends Controller
-{
+class ApiPanelMaterialController extends Controller {
     public function __construct(
         protected PanelMaterialServiceInterface $panelMaterialService
     ) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $perPage = request()->get('perPage', 15);
+
         return PanelMaterialResource::collection(
             $this->panelMaterialService->getAllPaginated(request()->query(), $perPage)
         )->additional(['message' => 'Success']);
@@ -30,32 +30,28 @@ class ApiPanelMaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePanelMaterialRequest $request)
-    {
+    public function store(StorePanelMaterialRequest $request) {
         return $this->panelMaterialService->create($request->validated());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PanelMaterial $panelMaterial)
-    {
+    public function show(PanelMaterial $panelMaterial) {
         return new PanelMaterialResource($panelMaterial);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePanelMaterialRequest $request, PanelMaterial $panelMaterial)
-    {
+    public function update(UpdatePanelMaterialRequest $request, PanelMaterial $panelMaterial) {
         return $this->panelMaterialService->update($panelMaterial, $request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PanelMaterial $panelMaterial)
-    {
+    public function destroy(PanelMaterial $panelMaterial) {
         //
     }
 }

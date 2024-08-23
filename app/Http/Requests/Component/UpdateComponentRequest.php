@@ -4,13 +4,11 @@ namespace App\Http\Requests\Component;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateComponentRequest extends FormRequest
-{
+class UpdateComponentRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
+    public function authorize(): bool {
         return true;
     }
 
@@ -19,8 +17,7 @@ class UpdateComponentRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
             'name' => 'nullable',
             'progress_id' => 'nullable|exists:progress,id',
