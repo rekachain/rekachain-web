@@ -99,6 +99,7 @@ export default function () {
                             </div>
                         </div>
                     ))}
+                    <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
                 </>
             )}
             {isDesktopOrLaptop && (
