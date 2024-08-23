@@ -64,7 +64,7 @@ export default function () {
                             key={user.id}
                             className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2"
                         >
-                            <div className="flex w-full justify-between items-center">
+                            <div className="flex w-full justify-between items-scenter">
                                 <h4 className="font-bold text-xl">{user.name}</h4>
                                 <div className="text-center">
                                     <h5 className="font-bold text-xs items-center "> {user.role?.name}</h5>
