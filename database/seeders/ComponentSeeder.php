@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Carriage;
+use App\Models\CarriagePanel;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Models\Progress;
@@ -25,11 +26,11 @@ class ComponentSeeder extends Seeder
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                if (Progress::where('name','LIKE', '%' . $data['panel_name']. '%')->where('name','LIKE', '%' . $data['work_aspect']. '%')->exists() && Panel::where('name','LIKE', '%' . $data['panel_name']. '%')->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->exists()) {
+                if (Progress::where('name','LIKE', '%' . $data['panel_name']. '%')->where('name','LIKE', '%' . $data['work_aspect']. '%')->exists() && CarriagePanel::wherePanelId(Panel::whereName($data['panel_name'])->first()->id)->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->exists()) {
                     Component::create([
                         'name' => $data['component'],
                         'progress_id' => Progress::where('name','LIKE', '%' . $data['panel_name']. '%')->where('name','LIKE', '%' . $data['work_aspect']. '%')->first()->id,
-                        'panel_id' => Panel::where('name','LIKE', '%' . $data['panel_name']. '%')->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->first()->id,
+                        'carriage_panel_id' => CarriagePanel::wherePanelId(Panel::whereName($data['panel_name'])->first()->id)->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->first()->id,
                     ]);
                 }
             }

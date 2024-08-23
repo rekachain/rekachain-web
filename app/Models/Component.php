@@ -13,12 +13,12 @@ class Component extends Model
     protected $fillable = [
         'name',
         'progress_id',
-        'panel_id',
+        'carriage_panel_id',
     ];
 
     public function panel(): BelongsTo
     {
-        return $this->belongsTo(Panel::class);
+        return $this->belongsTo(CarriagePanel::class);
     }
 
     public function progress(): BelongsTo

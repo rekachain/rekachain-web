@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('components', function (Blueprint $table) {
+        Schema::create('carriage_panels', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('progress_id')->nullable()->constrained(); 
-            $table->foreignId('panel_id')->nullable()->constrained(); 
+            $table->foreignId('progress_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('carriage_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('panel_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('components');
+        Schema::dropIfExists('carriage_panel');
     }
 };
