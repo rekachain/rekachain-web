@@ -88,7 +88,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $carriageDescription = $data['carriage_description'];
         $carriageQty = $data['carriage_qty'];
 
-        if($carriageId) {
+        if ($carriageId) {
             // Step 1: Find the carriage by ID
             $carriage = Carriage::findOrFail($carriageId);
         } else {

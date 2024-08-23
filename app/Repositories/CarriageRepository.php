@@ -10,7 +10,7 @@ use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
 
 class CarriageRepository extends BaseRepository implements CarriageRepositoryInterface {
-    use HandlesSorting, HandlesRelations;
+    use HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
         return Carriage::class;
