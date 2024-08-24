@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\PresetTrainset;
-use App\Support\Interfaces\PresetTrainsetRepositoryInterface;
+use App\Support\Interfaces\Repositories\PresetTrainsetRepositoryInterface;
 
 class PresetTrainsetRepository extends BaseRepository implements PresetTrainsetRepositoryInterface {
     public function delete($keyOrModel): bool {

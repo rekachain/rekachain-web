@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Panel\StorePanelMaterialRequest;
-use App\Http\Requests\Panel\UpdatePanelMaterialRequest;
+use App\Http\Requests\PanelMaterial\StorePanelMaterialRequest;
+use App\Http\Requests\PanelMaterial\UpdatePanelMaterialRequest;
 use App\Http\Resources\PanelMaterialResource;
 use App\Models\PanelMaterial;
-// use App\Support\Interfaces\PermissionEnum;
-use App\Support\Interfaces\PanelMaterialServiceInterface;
+use App\Support\Interfaces\Services\PanelMaterialServiceInterface;
 use Illuminate\Http\Request;
+
+// use App\Support\Interfaces\PermissionEnum;
 
 class ApiPanelMaterialController extends Controller {
     public function __construct(

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Panel\StoreCarriagePanelRequest;
-use App\Http\Requests\Panel\UpdateCarriagePanelRequest;
+use App\Http\Requests\CarriagePanel\StoreCarriagePanelRequest;
+use App\Http\Requests\CarriagePanel\UpdateCarriagePanelRequest;
 use App\Models\CarriagePanel;
 
 class CarriagePanelController extends Controller {

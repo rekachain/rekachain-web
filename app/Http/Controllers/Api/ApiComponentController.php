@@ -7,8 +7,7 @@ use App\Http\Requests\Component\StoreComponentRequest;
 use App\Http\Requests\Component\UpdateComponentRequest;
 use App\Http\Resources\ComponentResource;
 use App\Models\Component;
-use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\ComponentServiceInterface;
+use App\Support\Interfaces\Services\ComponentServiceInterface;
 use Illuminate\Http\Request;
 
 class ApiComponentController extends Controller {

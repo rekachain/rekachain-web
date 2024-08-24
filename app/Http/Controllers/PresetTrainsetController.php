@@ -7,7 +7,7 @@ use App\Http\Requests\PresetTrainset\UpdatePresetTrainsetRequest;
 use App\Http\Resources\PresetTrainsetResource;
 use App\Models\PresetTrainset;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\PresetTrainsetServiceInterface;
+use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use Illuminate\Http\Request;
 
 class PresetTrainsetController extends Controller {

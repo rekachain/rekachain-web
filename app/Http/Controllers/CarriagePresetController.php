@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CarriagePreset\StorePresetTrainsetRequest;
-use App\Http\Requests\CarriagePreset\UpdatePresetTrainsetRequest;
+use App\Http\Requests\PresetTrainset\StorePresetTrainsetRequest;
+use App\Http\Requests\PresetTrainset\UpdatePresetTrainsetRequest;
 use App\Http\Resources\CarriagePresetResource;
 use App\Models\CarriagePreset;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\CarriagePresetServiceInterface;
+use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
 use Illuminate\Http\Request;
 
 class CarriagePresetController extends Controller {

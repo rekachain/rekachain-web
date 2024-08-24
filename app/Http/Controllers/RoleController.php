@@ -9,9 +9,9 @@ use App\Http\Resources\PermissionResource;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\DivisionServiceInterface;
-use App\Support\Interfaces\PermissionServiceInterface;
-use App\Support\Interfaces\RoleServiceInterface;
+use App\Support\Interfaces\Services\DivisionServiceInterface;
+use App\Support\Interfaces\Services\PermissionServiceInterface;
+use App\Support\Interfaces\Services\RoleServiceInterface;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller {

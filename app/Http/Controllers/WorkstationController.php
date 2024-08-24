@@ -7,9 +7,9 @@ use App\Http\Requests\Workstation\UpdateWorkstationRequest;
 use App\Http\Resources\WorkstationResource;
 use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\DivisionServiceInterface;
-use App\Support\Interfaces\WorkshopServiceInterface;
-use App\Support\Interfaces\WorkstationServiceInterface;
+use App\Support\Interfaces\Services\DivisionServiceInterface;
+use App\Support\Interfaces\Services\WorkshopServiceInterface;
+use App\Support\Interfaces\Services\WorkstationServiceInterface;
 use Illuminate\Http\Request;
 
 class WorkstationController extends Controller {
