@@ -4,10 +4,10 @@ namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\Trainset;
-use App\Support\Interfaces\CarriageServiceInterface;
-use App\Support\Interfaces\PresetTrainsetServiceInterface;
-use App\Support\Interfaces\TrainsetRepositoryInterface;
-use App\Support\Interfaces\TrainsetServiceInterface;
+use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
+use App\Support\Interfaces\Services\CarriageServiceInterface;
+use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Support\Facades\DB;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {

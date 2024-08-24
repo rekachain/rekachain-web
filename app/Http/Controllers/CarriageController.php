@@ -6,7 +6,7 @@ use App\Http\Requests\Carriage\StoreCarriageRequest;
 use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
-use App\Support\Interfaces\CarriageServiceInterface;
+use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

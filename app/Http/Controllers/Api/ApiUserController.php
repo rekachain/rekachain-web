@@ -8,8 +8,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\RoleServiceInterface;
-use App\Support\Interfaces\UserServiceInterface;
+use App\Support\Interfaces\Services\RoleServiceInterface;
+use App\Support\Interfaces\Services\UserServiceInterface;
 use Illuminate\Http\Request;
 
 class ApiUserController extends ApiController {

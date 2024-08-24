@@ -6,7 +6,7 @@ use App\Http\Requests\RawMaterial\StoreRawMaterialRequest;
 use App\Http\Requests\RawMaterial\UpdateRawMaterialRequest;
 use App\Http\Resources\RawMaterialResource;
 use App\Models\RawMaterial;
-use App\Support\Interfaces\RawMaterialServiceInterface;
+use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use Illuminate\Http\Request;
 
 class RawMaterialController extends Controller {

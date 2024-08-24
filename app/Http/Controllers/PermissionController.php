@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Permission\StorePermissionRequest;
+use App\Http\Requests\Permission\UpdatePermissionRequest;
 use App\Http\Resources\PermissionResource;
 use App\Models\Permission;
-use App\Support\Interfaces\PermissionServiceInterface;
+use App\Support\Interfaces\Services\PermissionServiceInterface;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller {
@@ -33,9 +35,9 @@ class PermissionController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(StorePermissionRequest $request) {
         if ($this->ajax()) {
-            return $this->permissionService->store($request->all());
+            return $this->permissionService->store($request->validated());
         }
     }
 
@@ -62,10 +64,10 @@ class PermissionController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permission $permission) {
+    public function update(UpdatePermissionRequest $request, Permission $permission) {
         return 'This feature is not yet implemented.';
         if ($this->ajax()) {
-            return $this->permissionService->update($permission, $request->all());
+            return $this->permissionService->update($permission, $request->validated());
         }
     }
 

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\Permission;
-use App\Support\Interfaces\PermissionRepositoryInterface;
+use App\Support\Interfaces\Repositories\PermissionRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 
 class PermissionRepository extends BaseRepository implements PermissionRepositoryInterface {

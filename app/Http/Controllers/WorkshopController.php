@@ -7,7 +7,7 @@ use App\Http\Requests\Workshop\UpdateWorkshopRequest;
 use App\Http\Resources\WorkshopResource;
 use App\Models\Workshop;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\WorkshopServiceInterface;
+use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller {

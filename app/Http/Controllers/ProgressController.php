@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProgressRequest;
-use App\Http\Requests\UpdateProgressRequest;
+use App\Http\Requests\Progress\StoreProgressRequest;
+use App\Http\Requests\Progress\UpdateProgressRequest;
 use App\Http\Resources\ProgressResource;
 use App\Models\Progress;
-use App\Support\Interfaces\ProgressServiceInterface;
+use App\Support\Interfaces\Services\ProgressServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Trainset;
-// use App\Support\Interfaces\PermissionEnum;
-use App\Support\Interfaces\TrainsetServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Http\Request;
+
+// use App\Support\Interfaces\PermissionEnum;
 
 class ApiTrainsetController extends Controller {
     public function __construct(

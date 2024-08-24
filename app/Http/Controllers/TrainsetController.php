@@ -7,7 +7,7 @@ use App\Http\Requests\Trainset\UpdateTrainsetRequest;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
-use App\Support\Interfaces\TrainsetServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

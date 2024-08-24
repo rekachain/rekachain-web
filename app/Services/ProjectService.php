@@ -4,9 +4,9 @@ namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\Project;
-use App\Support\Interfaces\ProjectRepositoryInterface;
-use App\Support\Interfaces\ProjectServiceInterface;
-use App\Support\Interfaces\TrainsetServiceInterface;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {

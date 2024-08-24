@@ -7,7 +7,7 @@ use App\Http\Requests\Division\UpdateDivisionRequest;
 use App\Http\Resources\DivisionResource;
 use App\Models\Division;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\DivisionServiceInterface;
+use App\Support\Interfaces\Services\DivisionServiceInterface;
 use Illuminate\Http\Request;
 
 class DivisionController extends Controller {

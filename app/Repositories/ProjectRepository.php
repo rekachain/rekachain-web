@@ -4,10 +4,9 @@ namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\Project;
-use App\Support\Interfaces\ProjectRepositoryInterface;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class ProjectRepository extends BaseRepository implements ProjectRepositoryInterface {
     use HandlesSorting;

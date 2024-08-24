@@ -12,9 +12,9 @@ use App\Models\Carriage;
 use App\Models\Project;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
-use App\Support\Interfaces\CarriagePresetServiceInterface;
-use App\Support\Interfaces\PresetTrainsetServiceInterface;
-use App\Support\Interfaces\ProjectServiceInterface;
+use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
+use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -131,7 +131,7 @@ class ProjectController extends Controller {
     }
 
     public function carriages(Request $request, Project $project, Trainset $trainset) {
-        $trainset = new TrainsetResource($trainset->load(['carriages' => ['carriage_panels'=> ['panel']]]));
+        $trainset = new TrainsetResource($trainset->load(['carriages' => ['carriage_panels' => ['panel']]]));
 
         // sementara
         $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriagePresets' => [
