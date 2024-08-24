@@ -67,7 +67,7 @@ class PanelController extends Controller {
      */
     public function update(UpdatePanelRequest $request, Panel $panel) {
         if ($this->ajax()) {
-            return $this->panelService->update($request->validated());
+            return $this->panelService->update($panel, $request->validated());
         }
     }
 

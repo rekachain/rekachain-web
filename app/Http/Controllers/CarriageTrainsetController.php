@@ -7,7 +7,7 @@ use App\Http\Requests\CarriageTrainset\UpdateCarriageTrainsetRequest;
 use App\Http\Resources\CarriageTrainsetResource;
 use App\Models\CarriageTrainset;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\CarriageTrainsetServiceInterface;
+use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use Illuminate\Http\Request;
 
 class CarriageTrainsetController extends Controller {

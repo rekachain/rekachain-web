@@ -37,7 +37,7 @@ class PermissionController extends Controller {
      */
     public function store(StorePermissionRequest $request) {
         if ($this->ajax()) {
-            return $this->permissionService->store($request->validated());
+            return $this->permissionService->create($request->validated());
         }
     }
 
