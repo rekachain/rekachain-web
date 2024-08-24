@@ -184,6 +184,18 @@ test('models should have corresponding services and repositories', function () {
         ->and($modelsWithoutRepositories)->toBeEmpty();
 });
 
+test('ensure no other files in App\Support\Interfaces folder', function () {
+    $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
+
+    $excludedFiles = ['Services', 'Repositories'];
+    $fileCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces', $excludedFiles);
+
+    dump('Detected files in App\Support\Interfaces folder: ' . $fileCount);
+    dump('Please move them to the appropriate subfolder.');
+
+    expect($fileCount)->toBe(0);
+});
+
 // Test that models have corresponding controllers, form requests, resources, services, and repositories
 test('model should have controllers, form request, resource, service interface, repository interface, service, and repository', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
