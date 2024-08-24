@@ -7,7 +7,7 @@ export interface CarriageResource extends Resource, Carriage {
     // trainset_id: number;
     // qty?: number; // available only in intent: web.project.show.project
     panels?: PanelResource[]; // available only in route projects.trainsets.carriages.index
-    carriagePanels: CarriagePanelResource[];
+    carriage_panels: CarriagePanelResource[];
     pivot?: CarriageTrainsetPivotResource;
     // carriage_id: number;
 }

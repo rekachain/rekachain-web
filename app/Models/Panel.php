@@ -18,7 +18,7 @@ class Panel extends Model {
         return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
     }
 
-    public function carriagePanels(): BelongsToMany {
+    public function carriage_panels(): BelongsToMany {
         return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
     }
 }

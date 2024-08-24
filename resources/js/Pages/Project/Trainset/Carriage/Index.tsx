@@ -43,7 +43,7 @@ export default function ({
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
-        relations: 'carriagePanels.panel',
+        relations: 'carriage_panels.panel',
         type: '',
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -280,7 +280,7 @@ export default function ({
                                                             >
                                                                 {carriage.type}:
                                                                 <br />
-                                                                {carriage.carriagePanels?.map((c, i) => (
+                                                                {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
                                                                         <br />
                                                                         {c.panel.name}
