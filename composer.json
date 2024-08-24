@@ -60,9 +60,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "test-verify-standard-project-structure": [
-            "pest tests/Unit/VerifyStandardProjectStructureTest.php"
-        ]
+        "test": "pest"
     },
     "extra": {
         "laravel": {
