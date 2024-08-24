@@ -146,8 +146,8 @@ test('models should have corresponding services and repositories interface', fun
 
     dump('Models without services interface: ', $modelsWithoutServices);
     dump('Models without repositories interface: ', $modelsWithoutRepositories);
-    expect($modelsWithoutServices)->toBeEmpty();
-    expect($modelsWithoutRepositories)->toBeEmpty();
+    expect($modelsWithoutServices)->toBeEmpty()
+        ->and($modelsWithoutRepositories)->toBeEmpty();
 });
 
 test('models should have corresponding services and repositories', function () {
@@ -180,8 +180,8 @@ test('models should have corresponding services and repositories', function () {
 
     dump('Models without services: ', $modelsWithoutServices);
     dump('Models without repositories: ', $modelsWithoutRepositories);
-    expect($modelsWithoutServices)->toBeEmpty();
-    expect($modelsWithoutRepositories)->toBeEmpty();
+    expect($modelsWithoutServices)->toBeEmpty()
+        ->and($modelsWithoutRepositories)->toBeEmpty();
 });
 
 // Test that models have corresponding controllers, form requests, resources, services, and repositories
