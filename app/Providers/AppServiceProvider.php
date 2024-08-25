@@ -6,66 +6,6 @@ use App\Models\Permission;
 use App\Models\Trainset;
 use App\Observers\PermissionObserver;
 use App\Observers\TrainsetObserver;
-use App\Repositories\CarriagePresetRepository;
-use App\Repositories\CarriageRepository;
-use App\Repositories\ComponentRepository;
-use App\Repositories\DivisionRepository;
-use App\Repositories\PanelRepository;
-use App\Repositories\PermissionRepository;
-use App\Repositories\PresetTrainsetRepository;
-use App\Repositories\ProgressRepository;
-use App\Repositories\ProjectRepository;
-use App\Repositories\RawMaterialRepository;
-use App\Repositories\RoleRepository;
-use App\Repositories\TrainsetRepository;
-use App\Repositories\UserRepository;
-use App\Repositories\WorkshopRepository;
-use App\Repositories\WorkstationRepository;
-use App\Services\CarriagePresetService;
-use App\Services\CarriageService;
-use App\Services\ComponentService;
-use App\Services\DivisionService;
-use App\Services\PanelService;
-use App\Services\PermissionService;
-use App\Services\PresetTrainsetService;
-use App\Services\ProgressService;
-use App\Services\ProjectService;
-use App\Services\RawMaterialService;
-use App\Services\RoleService;
-use App\Services\TrainsetService;
-use App\Services\UserService;
-use App\Services\WorkshopService;
-use App\Services\WorkstationService;
-use App\Support\Interfaces\Repositories\CarriagePresetRepositoryInterface;
-use App\Support\Interfaces\Repositories\CarriageRepositoryInterface;
-use App\Support\Interfaces\Repositories\ComponentRepositoryInterface;
-use App\Support\Interfaces\Repositories\DivisionRepositoryInterface;
-use App\Support\Interfaces\Repositories\PanelRepositoryInterface;
-use App\Support\Interfaces\Repositories\PermissionRepositoryInterface;
-use App\Support\Interfaces\Repositories\PresetTrainsetRepositoryInterface;
-use App\Support\Interfaces\Repositories\ProgressRepositoryInterface;
-use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use App\Support\Interfaces\Repositories\RawMaterialRepositoryInterface;
-use App\Support\Interfaces\Repositories\RoleRepositoryInterface;
-use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
-use App\Support\Interfaces\Repositories\UserRepositoryInterface;
-use App\Support\Interfaces\Repositories\WorkshopRepositoryInterface;
-use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
-use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
-use App\Support\Interfaces\Services\CarriageServiceInterface;
-use App\Support\Interfaces\Services\ComponentServiceInterface;
-use App\Support\Interfaces\Services\DivisionServiceInterface;
-use App\Support\Interfaces\Services\PanelServiceInterface;
-use App\Support\Interfaces\Services\PermissionServiceInterface;
-use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
-use App\Support\Interfaces\Services\ProgressServiceInterface;
-use App\Support\Interfaces\Services\ProjectServiceInterface;
-use App\Support\Interfaces\Services\RawMaterialServiceInterface;
-use App\Support\Interfaces\Services\RoleServiceInterface;
-use App\Support\Interfaces\Services\TrainsetServiceInterface;
-use App\Support\Interfaces\Services\UserServiceInterface;
-use App\Support\Interfaces\Services\WorkshopServiceInterface;
-use App\Support\Interfaces\Services\WorkstationServiceInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -79,50 +19,8 @@ class AppServiceProvider extends ServiceProvider {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
-        $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
-        $this->app->singleton(UserServiceInterface::class, UserService::class);
 
-        $this->app->singleton(ProjectRepositoryInterface::class, ProjectRepository::class);
-        $this->app->singleton(ProjectServiceInterface::class, ProjectService::class);
-
-        $this->app->singleton(CarriageRepositoryInterface::class, CarriageRepository::class);
-        $this->app->singleton(CarriageServiceInterface::class, CarriageService::class);
-
-        $this->app->singleton(ComponentRepositoryInterface::class, ComponentRepository::class);
-        $this->app->singleton(ComponentServiceInterface::class, ComponentService::class);
-
-        $this->app->singleton(TrainsetRepositoryInterface::class, TrainsetRepository::class);
-        $this->app->singleton(TrainsetServiceInterface::class, TrainsetService::class);
-
-        $this->app->singleton(WorkshopRepositoryInterface::class, WorkshopRepository::class);
-        $this->app->singleton(WorkshopServiceInterface::class, WorkshopService::class);
-
-        $this->app->singleton(DivisionRepositoryInterface::class, DivisionRepository::class);
-        $this->app->singleton(DivisionServiceInterface::class, DivisionService::class);
-
-        $this->app->singleton(RoleRepositoryInterface::class, RoleRepository::class);
-        $this->app->singleton(RoleServiceInterface::class, RoleService::class);
-
-        $this->app->singleton(PermissionRepositoryInterface::class, PermissionRepository::class);
-        $this->app->singleton(PermissionServiceInterface::class, PermissionService::class);
-
-        $this->app->singleton(WorkstationRepositoryInterface::class, WorkstationRepository::class);
-        $this->app->singleton(WorkstationServiceInterface::class, WorkstationService::class);
-
-        $this->app->singleton(PanelRepositoryInterface::class, PanelRepository::class);
-        $this->app->singleton(PanelServiceInterface::class, PanelService::class);
-
-        $this->app->singleton(ProgressRepositoryInterface::class, ProgressRepository::class);
-        $this->app->singleton(ProgressServiceInterface::class, ProgressService::class);
-
-        $this->app->singleton(RawMaterialRepositoryInterface::class, RawMaterialRepository::class);
-        $this->app->singleton(RawMaterialServiceInterface::class, RawMaterialService::class);
-
-        $this->app->singleton(CarriagePresetRepositoryInterface::class, CarriagePresetRepository::class);
-        $this->app->singleton(CarriagePresetServiceInterface::class, CarriagePresetService::class);
-
-        $this->app->singleton(PresetTrainsetRepositoryInterface::class, PresetTrainsetRepository::class);
-        $this->app->singleton(PresetTrainsetServiceInterface::class, PresetTrainsetService::class);
+        // gaperlu manual binding karena sudah ada RepositoryServiceProvider
     }
 
     /**
