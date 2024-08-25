@@ -52,14 +52,14 @@ export default function Sidebar() {
         <SidebarContext.Provider value={{ selectedMenu, setSelectedMenu }}>
             <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
                 <nav className="flex flex-col space-y-1">
-                    <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
+                    <div className="sidebar-header flex justify-between px-4 py-3 border-b-2 h-16">
                         <img
                             src="/assets/images/Logo REKA.svg"
                             alt="logo"
                             // className=" "
                             // className="sidebar-header-logo h-full object-contain"
                             className="sidebar-header-logo h-12 "
-                            width={200}
+                            height={200}
                             // height={500}
                         />
                         <Button
