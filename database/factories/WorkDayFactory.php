@@ -17,7 +17,7 @@ class WorkDayFactory extends Factory
     public function definition(): array
     {
         return [
-            'day' => $this->faker->randomElement(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
+            'day' => $this->faker->unique()->randomElement(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']),
         ];
     }
 }
