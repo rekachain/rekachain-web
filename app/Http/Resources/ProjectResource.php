@@ -35,6 +35,7 @@ class ProjectResource extends JsonResource {
             'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

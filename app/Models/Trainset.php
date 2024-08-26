@@ -20,15 +20,15 @@ class Trainset extends Model {
         return $this->belongsToMany(Carriage::class)->withPivot(['id', 'qty'])->withTimestamps();
     }
 
-    public function presetTrainset(): BelongsTo {
+    public function preset_trainset(): BelongsTo {
         return $this->belongsTo(PresetTrainset::class);
     }
 
-    //    public function carriageTrainset(): BelongsToMany {
+    //    public function carriage_trainset(): BelongsToMany {
     //        return $this->belongsToMany(Carriage::class, 'carriage_trainset')->withPivot('qty')->withTimestamps();
     //    }
 
-    // public function projectAttachments(): HasMany
+    // public function project_attachments(): HasMany
     // {
     //     return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id');
     // }

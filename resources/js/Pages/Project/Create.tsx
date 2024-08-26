@@ -45,6 +45,7 @@ export default function () {
                                 className="mt-1"
                                 autoComplete="name"
                                 onChange={e => setData('name', e.target.value)}
+                                required
                             />
                             <InputError message={errors.name} className="mt-2" />
                         </div>
@@ -59,6 +60,7 @@ export default function () {
                                 className="mt-1"
                                 autoComplete="trainset_needed"
                                 onChange={e => setData('trainset_needed', +e.target.value)}
+                                required
                             />
                             <InputError message={errors.trainset_needed} className="mt-2" />
                         </div>
@@ -73,6 +75,7 @@ export default function () {
                                 className="mt-1"
                                 autoComplete="initial_date"
                                 onChange={e => setData('initial_date', e.target.value)}
+                                required
                             />
                             <InputError message={errors.initial_date} className="mt-2" />
                         </div>

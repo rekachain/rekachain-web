@@ -27,7 +27,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
             // Step 2: Aggregate quantities for duplicate carriage IDs
             $carriages = [];
-            foreach ($presetTrainset->carriagePresets as $carriagePreset) {
+            foreach ($presetTrainset->carriage_presets as $carriagePreset) {
                 $carriageId = $carriagePreset['carriage_id'];
                 $qty = $carriagePreset['qty'];
 
@@ -73,7 +73,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             }
 
             // Step 4: Sync the aggregated carriages with the preset trainset
-            $presetTrainset->carriagePresets()->createMany(array_values($carriagePresets));
+            $presetTrainset->carriage_presets()->createMany(array_values($carriagePresets));
 
             // Step 5: Update the trainset's preset_trainset_id
             $trainset->update(['preset_trainset_id' => $presetTrainset->id]);
