@@ -103,7 +103,7 @@ export default function Navbar() {
                             </Avatar>
                             {isTabletOrMobile && <span></span>}
                             {isDesktopOrLaptop && (
-                                <div className="flex flex-col items-startlex">
+                                <div className="flex flex-col items-start">
                                     <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
                                     <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
                                 </div>

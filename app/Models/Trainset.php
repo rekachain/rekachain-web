@@ -12,16 +12,21 @@ class Trainset extends Model {
 
     protected $fillable = [
         'project_id',
+        'preset_trainset_id',
         'name',
     ];
 
     public function carriages(): BelongsToMany {
-        return $this->belongsToMany(Carriage::class)->withPivot('qty');
+        return $this->belongsToMany(Carriage::class)->withPivot(['id', 'qty'])->withTimestamps();
     }
 
     public function presetTrainset(): BelongsTo {
         return $this->belongsTo(PresetTrainset::class);
     }
+
+    //    public function carriageTrainset(): BelongsToMany {
+    //        return $this->belongsToMany(Carriage::class, 'carriage_trainset')->withPivot('qty')->withTimestamps();
+    //    }
 
     // public function projectAttachments(): HasMany
     // {

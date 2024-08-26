@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Support\Interfaces\UserRepositoryInterface;
-use App\Support\Interfaces\UserServiceInterface;
+use App\Support\Interfaces\Repositories\UserRepositoryInterface;
+use App\Support\Interfaces\Services\UserServiceInterface;
 use App\Traits\Services\HandlesImages;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;

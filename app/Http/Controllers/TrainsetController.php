@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Trainset\StoreTrainsetRequest;
+use App\Http\Requests\Trainset\UpdateTrainsetRequest;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Trainset;
-use App\Support\Interfaces\TrainsetServiceInterface;
+use App\Support\Enums\IntentEnum;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -49,7 +52,7 @@ class TrainsetController extends Controller {
      */
     public function show(Trainset $trainset) {
         if ($this->ajax()) {
-            return new TrainsetResource($trainset);
+            return new TrainsetResource($trainset->load(['carriages' => ['panels']]));
         }
     }
 
@@ -63,7 +66,29 @@ class TrainsetController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Trainset $trainset) {
+    public function update(UpdateTrainsetRequest $request, Trainset $trainset) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value:
+                return $this->trainsetService->updatePreset($trainset, $request->validated());
+
+            case IntentEnum::WEB_PROJECT_SAVE_TRAINSET_PRESET->value:
+                return $this->trainsetService->savePreset($trainset, $request->validated());
+
+            case IntentEnum::WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET->value:
+                return $this->trainsetService->deleteCarriageTrainset($trainset, $request->validated());
+
+            case IntentEnum::WEB_TRAINSET_ADD_CARRIAGE_TRAINSET->value:
+                return $this->trainsetService->addCarriageTrainset($trainset, $request->validated());
+
+            case IntentEnum::WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET->value:
+                return $this->trainsetService->updateCarriageTrainset($trainset, $request->validated());
+        }
+
+        //        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {
+        //            return $this->trainsetService->updatePreset($trainset, $request->validated());
+        //        }
         if ($this->ajax()) {
             return $this->trainsetService->update($trainset, $request->validated());
         }

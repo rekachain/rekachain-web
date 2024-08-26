@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,13 +16,14 @@ class ProjectResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
-
-            case IntentEnum::WEB_PROJECT_SHOW_PROJECT->value:
-                return [
-                    'name' => $this->name,
-                    'initial_date' => $this->initial_date,
-                    'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
-                ];
+            //
+            //            case IntentEnum::WEB_PROJECT_GET_TRAINSETS->value:
+            //                return [
+            //                    'id' => $this->id,
+            //                    'name' => $this->name,
+            //                    'initial_date' => $this->initial_date,
+            //                    'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
+            //                ];
         }
 
         return [

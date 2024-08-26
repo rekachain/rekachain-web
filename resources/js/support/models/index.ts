@@ -7,3 +7,7 @@ export * from './Workshop';
 export * from './Carriage';
 export * from './Trainset';
 export * from './Project';
+export * from './Panel';
+export * from './CarriagePreset';
+export * from './PresetTrainset';
+export * from './CarriagePanel';

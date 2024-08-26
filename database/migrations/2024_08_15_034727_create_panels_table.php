@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('panels', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('progress_id');
-            $table->string('name')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

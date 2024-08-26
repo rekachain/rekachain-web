@@ -21,7 +21,9 @@ class PermissionObserver {
             throw new ValidationException($validator);
         }
 
-        $group = explode('-', $permission->name)[0];
+        // Split the name by hyphens and set the group to the part before the action
+        $parts = preg_split('/-(create|read|update|delete)$/', $permission->name, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $group = $parts[0];
         $permission->group = $group;
         $permission->save();
     }

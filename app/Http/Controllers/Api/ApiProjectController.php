@@ -7,8 +7,7 @@ use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
-use App\Support\Enums\PermissionEnum;
-use App\Support\Interfaces\ProjectServiceInterface;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
 use Illuminate\Http\Request;
 
 class ApiProjectController extends Controller {

@@ -33,7 +33,9 @@ trait HandlesRelations {
 
         if (count($relationParts) > 0) {
             // Recurse to handle nested relations
-            return [$nestedRelation => $this->parseRelation(implode('.', $relationParts))];
+            return [$nestedRelation => function ($query) use ($relationParts) {
+                $query->with($this->parseRelation(implode('.', $relationParts)));
+            }];
         }
 
         return $nestedRelation;

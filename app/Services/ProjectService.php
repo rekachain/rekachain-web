@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Support\Interfaces\ProjectRepositoryInterface;
-use App\Support\Interfaces\ProjectServiceInterface;
-use App\Support\Interfaces\TrainsetServiceInterface;
+use App\Models\Project;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
@@ -13,20 +14,31 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         parent::__construct();
     }
 
-    public function create(array $data): ?Model {
-        $prefixTrainsetName = 'TS ';
-        $project = parent::create($data);
-
-        $trainsets = [];
-        if ($data['trainset_needed'] > 0) {
-            $trainsets = collect(range(1, $data['trainset_needed']))
-                ->map(fn ($i) => ['project_id' => $project->id, 'name' => $prefixTrainsetName . $i])
-                ->toArray();
-
-            $this->trainsetService->createMany($trainsets);
+    private function createTrainsets(Project $project, $trainsetNeeded): void {
+        if ($trainsetNeeded <= 0) {
+            return;
         }
 
+        $trainsets = collect(range(1, $trainsetNeeded))
+            ->map(fn ($i) => ['project_id' => $project->id])
+            ->toArray();
+
+        $this->trainsetService->createMany($trainsets);
+    }
+
+    public function create(array $data): ?Model {
+        $project = parent::create($data);
+
+        $this->createTrainsets($project, $data['trainset_needed']);
+
         return $project;
+    }
+
+    public function addTrainsets(Project $project, $data): bool {
+        $trainsetNeeded = $data['trainset_needed'];
+        $this->createTrainsets($project, $trainsetNeeded);
+
+        return true;
     }
 
     protected function getRepositoryClass(): string {

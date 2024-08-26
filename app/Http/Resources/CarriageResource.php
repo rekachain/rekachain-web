@@ -17,7 +17,7 @@ class CarriageResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
-            case IntentEnum::WEB_PROJECT_SHOW_PROJECT->value:
+            case IntentEnum::WEB_PROJECT_GET_TRAINSETS->value:
                 return [
                     'id' => $this->id,
                     'type' => $this->type,
@@ -29,6 +29,8 @@ class CarriageResource extends JsonResource {
             'id' => $this->id,
             'type' => $this->type,
             'description' => $this->description,
+            'pivot' => $this->pivot,
+            'carriage_panels' => CarriagePanelResource::collection($this->whenLoaded('carriage_panels')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -1,2 +1,3 @@
 *.sqlite*
 data/*.csv
+data/*.rar

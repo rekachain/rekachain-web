@@ -177,8 +177,14 @@ return [
             'rule-name' => 'custom-message',
         ],
 
-        'permission_name' => [
-            'regex' => 'The :attribute must be in the format of \'group-action\'.',
+        'permission' => [
+            'permission_name' => [
+                'regex' => 'The :attribute must be in the format of \'group-action\'.',
+            ],
+        ],
+
+        'preset_trainset' => [
+            'unique_preset_name_in_project' => 'The combination of preset name and project ID must be unique.',
         ],
     ],
 
