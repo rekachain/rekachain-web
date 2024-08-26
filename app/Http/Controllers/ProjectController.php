@@ -162,9 +162,13 @@ class ProjectController extends Controller {
     }
 
     public function panels(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {
-        $carriage = new CarriageResource($carriage->load(['carriage_panels' => ['panel']]));
-        $project = new ProjectResource($project);
-        $trainset = new TrainsetResource($trainset);
+        $carriage = CarriageResource::make($carriage->load(['carriage_panels' => ['panel']]));
+        $project = ProjectResource::make($project);
+        $trainset = TrainsetResource::make($trainset);
+
+        if ($this->ajax()) {
+            return compact('project', 'trainset', 'carriage');
+        }
 
         return inertia('Project/Trainset/Carriage/Panel/Index', compact('project', 'trainset', 'carriage'));
     }
@@ -173,6 +177,5 @@ class ProjectController extends Controller {
         $panel = new PanelResource($panel);
 
         return inertia('Project/Trainset/Carriage/Panel/Show', ['panel' => $panel]);
-
     }
 }

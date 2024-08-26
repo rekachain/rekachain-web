@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->foreignId('progress_id')->constrained()->cascadeOnDelete();
             $table->foreignId('carriage_id')->constrained()->cascadeOnDelete();
             $table->foreignId('panel_id')->constrained()->cascadeOnDelete();
+            $table->integer('qty')->default(1);
             $table->timestamps();
         });
     }

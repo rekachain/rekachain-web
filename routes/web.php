@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
@@ -59,6 +62,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriages', CarriageController::class);
     Route::resource('carriage-presets', CarriagePresetController::class);
     Route::resource('preset-trainsets', PresetTrainsetController::class);
+    Route::resource('panels', PanelController::class);
+    Route::resource('carriage-panels', CarriagePanelController::class);
+    Route::resource('progress', ProgressController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

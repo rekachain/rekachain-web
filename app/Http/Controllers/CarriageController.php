@@ -6,6 +6,7 @@ use App\Http\Requests\Carriage\StoreCarriageRequest;
 use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -69,6 +70,14 @@ class CarriageController extends Controller {
      */
     public function update(UpdateCarriageRequest $request, Carriage $carriage) {
         if ($this->ajax()) {
+
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_CARRIAGE_ADD_CARRIAGE_PANEL->value:
+                    return $this->carriageService->addPanel($carriage, $request->validated());
+            }
+
             return $this->carriageService->update($carriage, $request->validated());
         }
     }

@@ -22,4 +22,8 @@ class Carriage extends Model {
     public function carriage_panels(): HasMany {
         return $this->hasMany(CarriagePanel::class);
     }
+
+    public function carriage_trainsets(): HasMany {
+        return $this->hasMany(CarriageTrainset::class);
+    }
 }

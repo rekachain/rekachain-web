@@ -13,4 +13,12 @@ class CarriageTrainset extends Pivot {
         'carriage_id',
         'qty',
     ];
+
+    public function trainset() {
+        return $this->belongsTo(Trainset::class);
+    }
+
+    public function carriage() {
+        return $this->belongsTo(Carriage::class);
+    }
 }

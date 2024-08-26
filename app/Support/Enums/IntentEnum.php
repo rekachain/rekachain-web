@@ -19,4 +19,6 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET = 'web.trainset.update.carriage.trainset';
 
+    case WEB_CARRIAGE_ADD_CARRIAGE_PANEL = 'web.carriage.add.carriage.panel';
+
 }

@@ -52,7 +52,9 @@ export default function ({
                             <TableCell>
                                 {carriage.carriage_panels?.map(panel => (
                                     <div key={panel.id}>
-                                        <span>{panel.panel.name}</span>
+                                        <span>
+                                            {panel.qty} x {panel.panel.name}
+                                        </span>
                                     </div>
                                 ))}
                             </TableCell>

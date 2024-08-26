@@ -12,3 +12,4 @@ export * from './PanelResource';
 export * from './CarriagePresetResource';
 export * from './PresetTrainsetResource';
 export * from './CarriagePanelResource';
+export * from './ProgressResource';

@@ -11,7 +11,12 @@ class CarriagePanel extends Model {
         'progress_id',
         'carriage_id',
         'panel_id',
+        'qty',
     ];
+
+    public function carriage(): BelongsTo {
+        return $this->belongsTo(Carriage::class);
+    }
 
     public function panel(): BelongsTo {
         return $this->belongsTo(Panel::class);

@@ -11,3 +11,4 @@ export * from './Panel';
 export * from './CarriagePreset';
 export * from './PresetTrainset';
 export * from './CarriagePanel';
+export * from './Progress';

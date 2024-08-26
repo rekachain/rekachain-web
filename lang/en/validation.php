@@ -186,6 +186,10 @@ return [
         'preset_trainset' => [
             'unique_preset_name_in_project' => 'The combination of preset name and project ID must be unique.',
         ],
+
+        'carriage' => [
+            'unique_panel' => 'The selected panel is already in the carriage.',
+        ],
     ],
 
     /*
