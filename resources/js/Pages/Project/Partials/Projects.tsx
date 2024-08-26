@@ -68,9 +68,11 @@ export default function () {
                                 >
                                     Edit
                                 </Link>
-                                <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
-                                    Delete
-                                </Button>
+                                {project.can_be_deleted && (
+                                    <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
+                                        Delete
+                                    </Button>
+                                )}
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
