@@ -14,4 +14,6 @@ export const ROUTES = {
     CARRIAGES: 'carriages',
     CARRIAGE_PRESETS: 'carriage-presets',
     PRESET_TRAINSETS: 'preset-trainsets',
+    PROJECTS_TRAINSETS_CARRIAGES_PANELS: 'projects.trainsets.carriages.panels',
+    PANELS: 'panels',
 };

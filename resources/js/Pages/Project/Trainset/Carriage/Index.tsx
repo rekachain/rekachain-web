@@ -1,8 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lazy, memo, Suspense, useEffect, useState } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { CarriageResource, PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
+import {
+    CarriageResource,
+    PresetTrainsetResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/support/interfaces/resources';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
@@ -28,16 +33,27 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { STYLING } from '@/support/constants/styling';
 import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb';
+import { ROUTES } from '@/support/constants/routes';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
 export default function ({
+    project,
     trainset: initialTrainset,
     presetTrainsets: initialPresetTrainset,
 }: {
+    project: ProjectResource;
     trainset: TrainsetResource;
     presetTrainsets: PresetTrainsetResource[];
 }) {
+    console.log(project);
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
@@ -153,6 +169,23 @@ export default function ({
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
                         <div>
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem>
+                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>Home</Link>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
+                                            Proyek {project?.name}
+                                        </Link>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>Trainset {trainset.name}</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
                             <h1 className="text-page-header my-4">Trainset {trainset.name}</h1>
                             <div className="flex flex-col gap-2 bg-background-2 p-5 rounded">
                                 {trainset.preset_name && (

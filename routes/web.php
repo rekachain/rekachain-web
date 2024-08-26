@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
         Route::get('/projects/{project}/trainsets/{trainset}/carriages', 'carriages')->name('projects.trainsets.carriages.index');
         Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}', 'carriage')->name('projects.trainsets.carriages.show');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}/panels', 'panels')->name('projects.trainsets.carriages.panels.index');
     });
 });
 
