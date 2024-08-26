@@ -17,7 +17,7 @@ class PresetTrainsetResource extends JsonResource {
             'name' => $this->name,
             'project_id' => $this->project_id,
             'project' => new ProjectResource($this->whenLoaded('project')),
-            'carriage_presets' => CarriagePresetResource::collection($this->whenLoaded('carriagePresets')),
+            'carriage_presets' => CarriagePresetResource::collection($this->whenLoaded('carriage_presets')),
             'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
             'has_trainsets' => $this->trainsets()->exists(),
         ];

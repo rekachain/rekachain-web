@@ -18,7 +18,7 @@ class Project extends Model {
         return $this->hasMany(Trainset::class);
     }
 
-    public function presetTrainsets() {
+    public function preset_trainsets() {
         return $this->hasMany(PresetTrainset::class);
     }
 

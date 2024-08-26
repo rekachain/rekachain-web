@@ -14,7 +14,7 @@ class PresetTrainsetRepository extends BaseRepository implements PresetTrainsetR
             return false;
         }
 
-        $model->carriagePresets()->delete();
+        $model->carriage_presets()->delete();
 
         return $model->delete();
     }
