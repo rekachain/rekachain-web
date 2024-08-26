@@ -133,10 +133,9 @@ export default function () {
                             ))}
                         </TableBody>
                     </Table>
-
-                    <GenericPagination meta={workshopResponse?.meta} handleChangePage={handlePageChange} />
                 </>
             )}
+            <GenericPagination meta={workshopResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }

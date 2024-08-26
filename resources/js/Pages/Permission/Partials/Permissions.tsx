@@ -141,10 +141,9 @@ export default function () {
                             ))}
                         </TableBody>
                     </Table>
-
-                    <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
                 </>
             )}
+            <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }

@@ -111,7 +111,6 @@ export default function () {
                             </AnimateIn>
                         );
                     })}
-                    <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
                 </>
             )}
             {isDesktopOrLaptop && (
@@ -166,9 +165,9 @@ export default function () {
                             ))}
                         </TableBody>
                     </Table>
-                    <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
                 </>
             )}
+            <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }
