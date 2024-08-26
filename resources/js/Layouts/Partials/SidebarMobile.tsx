@@ -242,7 +242,10 @@ export default function SidebarMobile() {
                                                 {/* <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} /> */}
                                             </AccordionTrigger>
                                             <AccordionContent className="items-center flex flex-col gap-7">
-                                                <Link className="flex items-center gap-2" href={'proyek'}>
+                                                <Link
+                                                    className="flex items-center gap-2"
+                                                    href={route(`${ROUTES.PROJECTS}.index`)}
+                                                >
                                                     <RiBox3Line size={30} />
                                                     <p className="text-base">List Proyek</p>
                                                 </Link>

@@ -19,6 +19,7 @@ export default function (props: SidebarLinkProps) {
     return (
         <div className="sidebar-item px-4" title={props.title}>
             <Link href={route(props.routeName)} className={linkClass}>
+
                 {props.icon}
                 <div className={titleClass}>{props.title}</div>
             </Link>
