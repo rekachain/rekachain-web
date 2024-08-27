@@ -7,7 +7,7 @@ use App\Http\Requests\WorkDay\StoreWorkDayRequest;
 use App\Http\Requests\WorkDay\UpdateWorkDayRequest;
 use App\Http\Resources\WorkDayResource;
 use App\Models\WorkDay;
-use App\Support\Inerfaces\Services\WorkDayServiceInterface;
+use App\Support\Interfaces\Services\WorkDayServiceInterface;
 use Illuminate\Http\Request;
 
 class ApiWorkDayController extends Controller
