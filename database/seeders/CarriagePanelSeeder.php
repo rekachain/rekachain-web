@@ -6,6 +6,7 @@ use App\Models\Carriage;
 use App\Models\CarriagePanel;
 use App\Models\Panel;
 use App\Models\Progress;
+use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
 class CarriagePanelSeeder extends Seeder {
@@ -13,15 +14,9 @@ class CarriagePanelSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-        if (file_exists(base_path('database/data/carriage_panel.csv'))) {
-            $csvData = array_map('str_getcsv', file(base_path('database/data/carriage_panel.csv')));
-            array_walk($csvData, function (&$a) use ($csvData) {
-                $a = array_map(function ($value) {
-                    return $value !== '' ? $value : null;
-                }, array_combine($csvData[0], $a));
-            });
-            array_shift($csvData); // remove column header
-            // CarriagePanel::insert($csvData);
+        $csvReader = new CsvReader('carriage_panel');
+        $csvData = $csvReader->getCsvData();
+        if ($csvData) {
             foreach ($csvData as $data) {
                 if (Carriage::whereType($data['car_type'])->exists()) {
                     if (Panel::whereName($data['panel_name'])->exists()) {
