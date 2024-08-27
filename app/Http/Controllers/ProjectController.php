@@ -72,9 +72,9 @@ class ProjectController extends Controller {
             return $project;
         }
 
-        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
-
-        $request->merge(['intent' => $intent]);
+        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
+        //
+        //        $request->merge(['intent' => $intent]);
 
         return inertia('Project/Show', ['project' => $project]);
     }
@@ -135,8 +135,7 @@ class ProjectController extends Controller {
 
     public function carriages(Request $request, Project $project, Trainset $trainset) {
         $project = new ProjectResource($project);
-        $trainset = new TrainsetResource($trainset->load(['carriages' => ['carriage_panels' => ['panel']]]));
-
+        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel'], 'carriage']]));
         // sementara
         $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriage_presets' => [
             'carriage',

@@ -42,7 +42,7 @@ class CarriageService extends BaseCrudService implements CarriageServiceInterfac
                 'qty' => $carriagePanelQty,
             ]);
 
-            $carriage->carriage_trainsets()->each(function ($carriageTrainset) {
+            $carriage->trainsets()->each(function ($carriageTrainset) {
                 $carriageTrainset->trainset()->update(['preset_trainset_id' => null]);
                 //                $carriageTrainset->update([
                 //                    'qty' => $carriageTrainset->qty + $carriagePanelQty,

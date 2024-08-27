@@ -75,6 +75,11 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+Route::get('/test', function () {
+    return \App\Models\Trainset::with('carriages')->get();
+    //    return \App\Models\Trainset::with(['carriages' => ['carriage_trainsets' => ['carriage_panels' => ['panel']]]])->get();
+});
+
 Route::get('/buat-proyek', function () {
     return Inertia::render('CreateProject/CreateProject');
 })->middleware(['auth', 'verified'])->name('buat-proyek');

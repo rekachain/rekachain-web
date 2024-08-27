@@ -21,25 +21,26 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
 
             $trainset->update(['preset_trainset_id' => $preset_trainset_id]);
-
+            // Step 1: Delete nested data related to the carriages
+            $trainset->carriages->each(function ($carriage) {});
             // Step 1: Detach existing carriages from the trainset
             $trainset->carriages()->detach();
-
-            // Step 2: Aggregate quantities for duplicate carriage IDs
-            $carriages = [];
-            foreach ($presetTrainset->carriage_presets as $carriagePreset) {
-                $carriageId = $carriagePreset['carriage_id'];
-                $qty = $carriagePreset['qty'];
-
-                if (isset($carriages[$carriageId])) {
-                    $carriages[$carriageId]['qty'] += $qty;
-                } else {
-                    $carriages[$carriageId] = ['qty' => $qty];
-                }
-            }
-
-            // Step 3: Sync the aggregated carriages with the trainset
-            $trainset->carriages()->sync($carriages);
+            dd();
+            //            // Step 2: Aggregate quantities for duplicate carriage IDs
+            //            $carriages = [];
+            //            foreach ($presetTrainset->carriage_presets as $carriagePreset) {
+            //                $carriageId = $carriagePreset['carriage_id'];
+            //                $qty = $carriagePreset['qty'];
+            //
+            //                if (isset($carriages[$carriageId])) {
+            //                    $carriages[$carriageId]['qty'] += $qty;
+            //                } else {
+            //                    $carriages[$carriageId] = ['qty' => $qty];
+            //                }
+            //            }
+            //
+            //            // Step 3: Sync the aggregated carriages with the trainset
+            //            $trainset->carriages()->sync($carriages);
 
             return true;
         });

@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class CarriagePanel extends Model {
     protected $fillable = [
         'progress_id',
-        'carriage_id',
+        'carriage_trainset_id',
         'panel_id',
         'qty',
     ];
+
+    public function carriage_trainset(): BelongsTo {
+        return $this->belongsTo(CarriageTrainset::class);
+    }
 
     public function carriage(): BelongsTo {
         return $this->belongsTo(Carriage::class);

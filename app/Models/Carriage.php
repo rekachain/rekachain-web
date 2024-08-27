@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Carriage extends Model {
     use HasFactory;
@@ -16,14 +15,24 @@ class Carriage extends Model {
     ];
 
     public function trainsets(): BelongsToMany {
-        return $this->belongsToMany(CarriageTrainset::class)->withPivot(['id', 'qty'])->withTimestamps();
+        return $this
+            ->belongsToMany(Trainset::class)
+            ->using(CarriageTrainset::class)
+            ->withPivot(['id', 'qty'])
+            ->withTimestamps();
     }
 
-    public function carriage_panels(): HasMany {
-        return $this->hasMany(CarriagePanel::class);
-    }
+    //    public function carriage_panels(): HasManyThrough {
+    //        return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class);
+    //    }
 
-    public function carriage_trainsets(): HasMany {
-        return $this->hasMany(CarriageTrainset::class);
-    }
+    //    public function trainsets(): BelongsToMany {
+    //        return $this->belongsToMany(Trainset::class, 'carriage_trainset', 'carriage_id', 'trainset_id')
+    //            ->withPivot(['id', 'qty'])
+    //            ->withTimestamps();
+    //    }
+
+    //    public function carriage_panels(): HasMany {
+    //        return $this->hasMany(CarriagePanel::class, 'carriage_trainset_id', 'id');
+    //    }
 }

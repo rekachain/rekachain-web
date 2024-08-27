@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Carriage;
 use App\Models\CarriagePanel;
+use App\Models\CarriageTrainset;
 use App\Models\Panel;
 use App\Models\Progress;
 use Illuminate\Database\Seeder;
@@ -27,7 +28,7 @@ class CarriagePanelSeeder extends Seeder {
                     if (Panel::whereName($data['panel_name'])->exists()) {
                         if (Progress::whereId($data['progress_id'])->exists()) {
                             CarriagePanel::create([
-                                'carriage_id' => Carriage::whereType($data['car_type'])->first()->id,
+                                'carriage_trainset_id' => CarriageTrainset::whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->first()->id,
                                 'progress_id' => Progress::whereId($data['progress_id'])->first()->id,
                                 'panel_id' => Panel::whereName($data['panel_name'])->first()->id,
                             ]);
