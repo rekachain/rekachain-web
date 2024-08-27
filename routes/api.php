@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\ApiProgressController;
 use App\Http\Controllers\Api\ApiProjectController;
 use App\Http\Controllers\Api\ApiTrainsetController;
 use App\Http\Controllers\Api\ApiUserController;
+use App\Http\Controllers\Api\ApiWorkDayController;
+use App\Http\Controllers\Api\ApiWorkDayTimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +36,8 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
         Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
         Route::apiResource('pm', ApiPanelMaterialController::class)->only(['index', 'show']);
+        Route::apiResource('workdays', ApiWorkDayController::class);
+        Route::apiResource('workdaystime', ApiWorkDayTimeController::class);
         Route::get('logout', [ApiAuthController::class, 'logout'])->name('logout');
     });
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Panel;
+namespace App\Http\Requests\WorkDayTime;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePanelRequest extends FormRequest {
+class UpdateWorkDayTimeRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -19,10 +19,10 @@ class StorePanelRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            // 'progress_id' => 'required|integer',
-            // 'carriage_id' => 'required|integer',
-            'name' => 'string|max:255',
-            'description' => 'string|max:255',
+            'work_day_id' => 'required|integer|exists:work_days,id',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'status' => 'required|string|in:'.implode(',', WorkDayTime::STATUS_TYPES),
         ];
     }
 }
