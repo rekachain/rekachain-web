@@ -9,7 +9,9 @@ class RawMaterialSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void {
+    public function run(): void
+    {
+        //Get the CSV file
         if (file_exists(base_path('database/data/rawMaterial.csv'))) {
             $csvData = array_map('str_getcsv', file(base_path('database/data/rawMaterial.csv')));
             array_walk($csvData, function (&$a) use ($csvData) {
@@ -19,10 +21,10 @@ class RawMaterialSeeder extends Seeder {
             });
             array_shift($csvData); // remove column header
             foreach ($csvData as $data) {
-                RawMaterial::create($data);
+                RawMaterial::factory()->create($data);
             }
         } else {
-            RawMaterial::factory(1)->create();
+            RawMaterial::factory(10)->create();
         }
     }
 }
