@@ -38,8 +38,9 @@ class ApiWorkDayTimeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(WorkDayTime $workDayTime)
+    public function show($id)
     {
+        $workDayTime = WorkDayTime::findOrFail($id);
         return new WorkDayTimeResource($workDayTime);
     }
 

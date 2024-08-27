@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('work_day_times', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('work_days_id')->contrained()->cascadeOnDelete();
+            $table->foreignId('work_day_id')->contrained()->cascadeOnDelete();
             $table->time('start_time');
             $table->time('end_time');
             $table->enum('status', ['work', 'break']);

@@ -18,7 +18,7 @@ class WorkDayTimeFactory extends Factory
     public function definition(): array
     {
         return [
-            'work_days_id' => WorkDay::inRandomOrder()->first()->id,
+            'work_day_id' => WorkDay::inRandomOrder()->first()->id,
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),
             'status' => $this->faker->randomElement(['work', 'break']),

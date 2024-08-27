@@ -38,10 +38,15 @@ class ApiWorkDayController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(WorkDay $workDay)
+    public function show($id)
     {
+        $workDay = WorkDay::findOrFail($id);
         return new WorkDayResource($workDay);
     }
+    // public function show(WorkDay $workDay)
+    // {
+    //     return new WorkDayResource($workDay);
+    // }
 
     /**
      * Update the specified resource in storage.
