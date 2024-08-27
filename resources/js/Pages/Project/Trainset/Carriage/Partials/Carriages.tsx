@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
-import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Partials/CarriageQty';
+import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
 
 export default function ({
     trainset,
@@ -68,9 +68,13 @@ export default function ({
                                 </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS}.show`, [carriage.id, carriage.id])}
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES_PANELS}.index`, [
+                                        trainset.project_id,
+                                        trainset.id,
+                                        carriage.id,
+                                    ])}
                                 >
-                                    Detail
+                                    Panel
                                 </Link>
                             </TableCell>
                         </TableRow>

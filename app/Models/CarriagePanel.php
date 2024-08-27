@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CarriagePanel extends Model {
     protected $fillable = [
@@ -14,5 +15,9 @@ class CarriagePanel extends Model {
 
     public function panel(): BelongsTo {
         return $this->belongsTo(Panel::class);
+    }
+
+    public function components(): HasMany {
+        return $this->hasMany(Component::class);
     }
 }

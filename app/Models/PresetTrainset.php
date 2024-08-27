@@ -22,7 +22,7 @@ class PresetTrainset extends Model {
         return $this->hasMany(Trainset::class);
     }
 
-    public function carriagePresets(): HasMany {
+    public function carriage_presets(): HasMany {
         return $this->hasMany(CarriagePreset::class);
     }
 }
