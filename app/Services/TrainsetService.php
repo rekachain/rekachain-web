@@ -21,11 +21,11 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
 
             $trainset->update(['preset_trainset_id' => $preset_trainset_id]);
-
+            // Step 1: Delete nested data related to the carriages
+            $trainset->carriage_trainsets->each->delete();
             // Step 1: Detach existing carriages from the trainset
             $trainset->carriages()->detach();
-
-            // Step 2: Aggregate quantities for duplicate carriage IDs
+            //            // Step 2: Aggregate quantities for duplicate carriage IDs
             $carriages = [];
             foreach ($presetTrainset->carriage_presets as $carriagePreset) {
                 $carriageId = $carriagePreset['carriage_id'];

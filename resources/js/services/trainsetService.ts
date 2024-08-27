@@ -1,8 +1,7 @@
 import { ROUTES } from '@/support/constants/routes.js';
 import { serviceFactory } from '@/services/serviceFactory';
-import { TrainsetResource } from '@/support/interfaces/resources';
+import { CarriageTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
 import { IntentEnum } from '@/support/enums/intentEnum';
-import { CarriageTrainsetPivotResource } from '@/support/interfaces/resources/pivots';
 
 export const trainsetService = {
     ...serviceFactory<TrainsetResource>(ROUTES.TRAINSETS),
@@ -75,7 +74,7 @@ export const trainsetService = {
     updateCarriageTrainset: async (
         trainsetId: number,
         carriageTrainsetId: number,
-        data: Partial<CarriageTrainsetPivotResource>,
+        data: Partial<CarriageTrainsetResource>,
     ) => {
         await window.axios.post(
             route(`${ROUTES.TRAINSETS}.update`, trainsetId),

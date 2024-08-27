@@ -69,6 +69,7 @@ class CarriageController extends Controller {
      */
     public function update(UpdateCarriageRequest $request, Carriage $carriage) {
         if ($this->ajax()) {
+
             return $this->carriageService->update($carriage, $request->validated());
         }
     }

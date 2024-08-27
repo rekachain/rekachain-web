@@ -5,4 +5,5 @@ export const IntentEnum = {
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
     WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET: 'web.trainset.update.carriage.trainset',
+    WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
 };

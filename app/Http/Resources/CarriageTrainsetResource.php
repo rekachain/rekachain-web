@@ -16,6 +16,7 @@ class CarriageTrainsetResource extends JsonResource {
             'id' => $this->id,
             'qty' => $this->qty,
             'carriage' => new CarriageResource($this->whenLoaded('carriage')),
+            'carriage_panels' => CarriagePanelResource::collection($this->whenLoaded('carriage_panels')),
             'trainset' => new TrainsetResource($this->whenLoaded('trainset')),
         ];
     }
