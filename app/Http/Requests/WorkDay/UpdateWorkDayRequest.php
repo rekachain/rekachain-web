@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Panel;
+namespace App\Http\Requests\WorkDay;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePanelRequest extends FormRequest {
+class UpdateWorkDayRequest extends FormRequest {
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -19,10 +19,7 @@ class StorePanelRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            // 'progress_id' => 'required|integer',
-            // 'carriage_id' => 'required|integer',
-            'name' => 'string|max:255',
-            'description' => 'string|max:255',
+            'day' => 'nullable|string|max:255',
         ];
     }
 }
