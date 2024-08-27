@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder {
             CarriageSeeder::class,
             PresetTrainsetSeeder::class,
             CarriagePresetSeeder::class,
-            // TrainsetSeeder::class,
+            TrainsetSeeder::class,
             CarriageTrainsetsSeeder::class,
             WorkshopSeeder::class,
             WorkstationSeeder::class,

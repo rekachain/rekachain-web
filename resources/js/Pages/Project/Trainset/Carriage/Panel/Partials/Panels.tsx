@@ -1,12 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { CarriageResource } from '@/support/interfaces/resources';
+import { CarriageTrainsetResource } from '@/support/interfaces/resources';
 import { useConfirmation } from '@/hooks/useConfirmation';
 
 export default function ({
-    carriage,
+    carriageTrainset,
     handleSyncCarriage,
 }: {
-    carriage: CarriageResource;
+    carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
     const handleCarriageDeletion = (carriageCarriageId: number) => {
@@ -34,7 +34,7 @@ export default function ({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriage?.carriage_panels?.map(panel => (
+                    {carriageTrainset?.carriage_panels?.map(panel => (
                         <TableRow key={panel.id}>
                             <TableCell>{panel.panel.name}</TableCell>
                             <TableCell>{panel.qty}</TableCell>

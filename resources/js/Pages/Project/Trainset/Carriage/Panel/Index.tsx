@@ -4,7 +4,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import {
-    CarriageResource,
+    CarriageTrainsetResource,
     PanelResource,
     ProgressResource,
     ProjectResource,
@@ -37,21 +37,22 @@ import { panelService } from '@/services/panelService';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { PaginateResponse } from '@/support/interfaces/others';
 import { useDebounce } from '@uidotdev/usehooks';
-import { carriageService } from '@/services/carriageService';
 import { progressService } from '@/services/progressService';
+import { carriageTrainsetService } from '@/services/carriageTrainsetService';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 
 export default function ({
     project,
     trainset,
-    carriage: initialCarriage,
+    carriageTrainset: initialCarriageTrainset,
 }: {
     project: ProjectResource;
     trainset: TrainsetResource;
-    carriage: CarriageResource;
+    carriageTrainset: CarriageTrainsetResource;
 }) {
-    const [carriage, setCarriage] = useState<CarriageResource>(initialCarriage);
+    console.log(initialCarriageTrainset);
+    const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
     const [panelFilters, setPanelFilters] = useState<ServiceFilterOptions>({
@@ -117,7 +118,7 @@ export default function ({
     const handleSyncCarriage = async () => {
         setData('isLoading', true);
         const response = await window.axios.get(location.href);
-        setCarriage(response.data.carriage);
+        setCarriageTrainset(response.data.carriageTrainset);
         setData('isLoading', false);
     };
 
@@ -125,8 +126,8 @@ export default function ({
         e.preventDefault();
         try {
             setData('isLoading', true);
-            await carriageService.addPanel(
-                carriage.id,
+            await carriageTrainsetService.addPanel(
+                carriageTrainset.id,
                 data.progress_id,
                 data.new_panel_id,
                 data.new_panel_name,
@@ -137,7 +138,7 @@ export default function ({
         } finally {
             handleResetAddCarriageSelection();
             handleResetAddProgressSelection();
-            handleSyncCarriage();
+            await handleSyncCarriage();
             setData('isLoading', false);
         }
     };
@@ -158,7 +159,7 @@ export default function ({
 
     return (
         <>
-            <Head title={`Carriage: ${carriage.type}`} />
+            <Head title={`Carriage: ${carriageTrainset?.carriage.type}`} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -186,17 +187,17 @@ export default function ({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Carriage {carriage.type}</BreadcrumbPage>
+                                    <BreadcrumbPage>Carriage {carriageTrainset?.carriage.type}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex items-center gap-4">
-                            <h1 className="text-page-header my-4">Carriage {carriage.type}</h1>
+                            <h1 className="text-page-header my-4">Carriage {carriageTrainset?.carriage.type}</h1>
                         </div>
                     </div>
 
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Panels carriage={carriage} handleSyncCarriage={handleSyncCarriage} />
+                        <Panels carriageTrainset={carriageTrainset} handleSyncCarriage={handleSyncCarriage} />
                     </Suspense>
 
                     <Dialog>
@@ -227,6 +228,7 @@ export default function ({
                                                     onValueChange={v => setData('progress_id', +v)}
                                                     value={data.progress_id?.toString()}
                                                     disabled={data.isLoading}
+                                                    required
                                                 >
                                                     <SelectTrigger id="progress">
                                                         <SelectValue placeholder="progress" />
@@ -268,6 +270,7 @@ export default function ({
                                                     onValueChange={v => setData('new_panel_id', +v)}
                                                     value={data.new_panel_id?.toString()}
                                                     disabled={data.isLoading}
+                                                    required
                                                 >
                                                     <SelectTrigger id="panel">
                                                         <SelectValue placeholder="Panel" />

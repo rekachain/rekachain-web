@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Carriage extends Model {
     use HasFactory;
@@ -22,17 +23,7 @@ class Carriage extends Model {
             ->withTimestamps();
     }
 
-    //    public function carriage_panels(): HasManyThrough {
-    //        return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class);
-    //    }
-
-    //    public function trainsets(): BelongsToMany {
-    //        return $this->belongsToMany(Trainset::class, 'carriage_trainset', 'carriage_id', 'trainset_id')
-    //            ->withPivot(['id', 'qty'])
-    //            ->withTimestamps();
-    //    }
-
-    //    public function carriage_panels(): HasMany {
-    //        return $this->hasMany(CarriagePanel::class, 'carriage_trainset_id', 'id');
-    //    }
+    public function carriage_panels(): HasManyThrough {
+        return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class, 'carriage_id', 'carriage_trainset_id');
+    }
 }

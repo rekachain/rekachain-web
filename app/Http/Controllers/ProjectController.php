@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\CarriageResource;
+use App\Http\Resources\CarriageTrainsetResource;
 use App\Http\Resources\PanelResource;
 use App\Http\Resources\PresetTrainsetResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Carriage;
+use App\Models\CarriageTrainset;
 use App\Models\Panel;
 use App\Models\Project;
 use App\Models\Trainset;
@@ -114,7 +116,6 @@ class ProjectController extends Controller {
 
     public function trainsets(Request $request, Project $project) {
         $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
-
         if ($this->ajax()) {
             return $project;
         }
@@ -160,16 +161,18 @@ class ProjectController extends Controller {
         return inertia('Project/Trainset/Carriage/Show', ['carriage' => $carriage]);
     }
 
-    public function panels(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {
-        $carriage = CarriageResource::make($carriage->load(['carriage_panels' => ['panel']]));
+    public function panels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel'], 'carriage']));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 
+        //        dump($carriageTrainset->toArray($request), $project->toArray($request), $trainset->toArray($request));
+
         if ($this->ajax()) {
-            return compact('project', 'trainset', 'carriage');
+            return compact('project', 'trainset', 'carriageTrainset');
         }
 
-        return inertia('Project/Trainset/Carriage/Panel/Index', compact('project', 'trainset', 'carriage'));
+        return inertia('Project/Trainset/Carriage/Panel/Index', compact('project', 'trainset', 'carriageTrainset'));
     }
 
     public function panel(Request $request, Project $project, Trainset $trainset, Carriage $carriage, Panel $panel) {

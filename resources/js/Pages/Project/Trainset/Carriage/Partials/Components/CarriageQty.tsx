@@ -1,11 +1,10 @@
-import { TrainsetResource } from '@/support/interfaces/resources';
+import { CarriageTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/support/constants/styling';
 import { trainsetService } from '@/services/trainsetService';
-import { CarriageTrainsetPivotResource } from '@/support/interfaces/resources/pivots';
 
 export default function ({
     trainset,
@@ -13,7 +12,7 @@ export default function ({
     handleSyncTrainset,
 }: {
     trainset: TrainsetResource;
-    carriage_trainset: CarriageTrainsetPivotResource;
+    carriage_trainset: CarriageTrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
     console.log(carriage_trainset);

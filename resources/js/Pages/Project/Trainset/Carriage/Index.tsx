@@ -310,7 +310,8 @@ export default function ({
                                                                 key={carriage.id}
                                                                 value={carriage.id.toString()}
                                                             >
-                                                                {carriage.type}:
+                                                                {carriage.type}{' '}
+                                                                {carriage.description && `: ${carriage.description}`}
                                                                 <br />
                                                                 {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>

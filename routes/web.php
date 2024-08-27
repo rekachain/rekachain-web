@@ -3,6 +3,7 @@
 use App\Http\Controllers\CarriageController;
 use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\CarriagePresetController;
+use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
@@ -65,13 +66,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('panels', PanelController::class);
     Route::resource('carriage-panels', CarriagePanelController::class);
     Route::resource('progress', ProgressController::class);
+    Route::resource('carriage-trainsets', CarriageTrainsetController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
         Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriages', 'carriages')->name('projects.trainsets.carriages.index');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}', 'carriage')->name('projects.trainsets.carriages.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}/panels', 'panels')->name('projects.trainsets.carriages.panels.index');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriages')->name('projects.trainsets.carriage-trainsets.index');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
     });
 });
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,6 +28,7 @@ class CarriageResource extends JsonResource {
             'id' => $this->id,
             'type' => $this->type,
             'description' => $this->description,
+            'pivot' => $this->pivot,
             'carriage_panels' => CarriagePanelResource::collection($this->whenLoaded('carriage_panels')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { TrainsetResource } from '@/support/interfaces/resources';
 import { ROUTES } from '@/support/constants/routes';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
+import { buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
 import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
@@ -70,7 +70,7 @@ export default function ({
                                 {/*</Button>*/}
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES_PANELS}.index`, [
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_PANELS}.index`, [
                                         trainset.project_id,
                                         trainset.id,
                                         carriage_trainset.id,
