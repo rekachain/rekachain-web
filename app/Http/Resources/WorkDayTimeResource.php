@@ -14,7 +14,7 @@ class WorkDayTimeResource extends JsonResource {
     public function toArray(Request $request): array {
         return [
             'id' => $this->id,
-            'day' => $this->workDay->day,
+            'day' => $this->work_day->day,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'status' => $this->status,
