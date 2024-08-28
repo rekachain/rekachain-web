@@ -1,16 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { CarriageResource } from '@/support/interfaces/resources';
-import { ROUTES } from '@/support/constants/routes';
-import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
+import { CarriageTrainsetResource } from '@/support/interfaces/resources';
 import { useConfirmation } from '@/hooks/useConfirmation';
-import { carriageService } from '@/services/carriageService';
 
 export default function ({
-    carriage,
+    carriageTrainset,
     handleSyncCarriage,
 }: {
-    carriage: CarriageResource;
+    carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
     const handleCarriageDeletion = (carriageCarriageId: number) => {
@@ -32,14 +28,16 @@ export default function ({
                 <TableHeader>
                     <TableRow>
                         <TableHead>Nama</TableHead>
+                        <TableHead>Jumlah</TableHead>
                         <TableHead>Deskripsi</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriage?.carriage_panels?.map(panel => (
+                    {carriageTrainset?.carriage_panels?.map(panel => (
                         <TableRow key={panel.id}>
                             <TableCell>{panel.panel.name}</TableCell>
+                            <TableCell>{panel.qty}</TableCell>
                             <TableCell>{panel.panel.description}</TableCell>
                             <TableCell>
                                 {/*<Link*/}

@@ -53,13 +53,12 @@ export default function ({
     trainset: TrainsetResource;
     presetTrainsets: PresetTrainsetResource[];
 }) {
-    console.log(project);
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
-        relations: 'carriage_panels.panel',
+        relations: 'trainsets.carriage_panels.panel',
         type: '',
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -311,7 +310,8 @@ export default function ({
                                                                 key={carriage.id}
                                                                 value={carriage.id.toString()}
                                                             >
-                                                                {carriage.type}:
+                                                                {carriage.type}{' '}
+                                                                {carriage.description && `: ${carriage.description}`}
                                                                 <br />
                                                                 {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
@@ -388,47 +388,51 @@ export default function ({
                     </Dialog>
                 </div>
 
-                {!trainset.preset_trainset_id && trainset.carriages && trainset.carriages.length > 0 && (
-                    <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
-                        <Dialog>
-                            <DialogTrigger
-                                className={buttonVariants({
-                                    className: 'w-full',
-                                })}
-                            >
-                                Tambahkan Preset
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Preset baru</DialogTitle>
-                                    <DialogDescription></DialogDescription>
-                                    <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
-                                        <div className="flex flex-col gap-4">
-                                            <Label>Nama Preset</Label>
-                                            <div className="flex gap-4">
-                                                <Input
-                                                    type="text"
-                                                    value={data.new_carriage_preset_name}
-                                                    onChange={e => setData('new_carriage_preset_name', e.target.value)}
-                                                />
-                                                <Button type="submit" disabled={isLoading} className="w-fit">
-                                                    {isLoading ? (
-                                                        <>
-                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Menambahkan preset
-                                                        </>
-                                                    ) : (
-                                                        'Tambahkan preset'
-                                                    )}
-                                                </Button>
+                {!trainset.preset_trainset_id &&
+                    trainset.carriage_trainsets &&
+                    trainset.carriage_trainsets.length > 0 && (
+                        <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
+                            <Dialog>
+                                <DialogTrigger
+                                    className={buttonVariants({
+                                        className: 'w-full',
+                                    })}
+                                >
+                                    Tambahkan Preset
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Preset baru</DialogTitle>
+                                        <DialogDescription></DialogDescription>
+                                        <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
+                                            <div className="flex flex-col gap-4">
+                                                <Label>Nama Preset</Label>
+                                                <div className="flex gap-4">
+                                                    <Input
+                                                        type="text"
+                                                        value={data.new_carriage_preset_name}
+                                                        onChange={e =>
+                                                            setData('new_carriage_preset_name', e.target.value)
+                                                        }
+                                                    />
+                                                    <Button type="submit" disabled={isLoading} className="w-fit">
+                                                        {isLoading ? (
+                                                            <>
+                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                Menambahkan preset
+                                                            </>
+                                                        ) : (
+                                                            'Tambahkan preset'
+                                                        )}
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                    </CustomPresetAlert>
-                )}
+                                        </form>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+                        </CustomPresetAlert>
+                    )}
             </AuthenticatedLayout>
         </>
     );

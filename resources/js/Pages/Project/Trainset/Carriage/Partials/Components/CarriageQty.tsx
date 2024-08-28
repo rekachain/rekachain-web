@@ -1,4 +1,4 @@
-import { CarriageResource, TrainsetResource } from '@/support/interfaces/resources';
+import { CarriageTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
@@ -8,15 +8,16 @@ import { trainsetService } from '@/services/trainsetService';
 
 export default function ({
     trainset,
-    carriage,
+    carriage_trainset,
     handleSyncTrainset,
 }: {
     trainset: TrainsetResource;
-    carriage: CarriageResource;
+    carriage_trainset: CarriageTrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
+    console.log(carriage_trainset);
     const { data, setData, reset } = useForm({
-        carriageQty: carriage.pivot?.qty,
+        carriageQty: carriage_trainset.qty,
         isLoading: false,
         isEditing: false,
     });
@@ -28,7 +29,7 @@ export default function ({
     const handleEditCarriageQty = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setData('isLoading', true);
-        await trainsetService.updateCarriageTrainset(trainset.id, carriage.pivot!.id, {
+        await trainsetService.updateCarriageTrainset(trainset.id, carriage_trainset.id, {
             qty: data.carriageQty,
         });
         setData('isEditing', false);
@@ -56,7 +57,7 @@ export default function ({
                 </form>
             ) : (
                 <div className="flex items-center gap-4">
-                    <div>{carriage.pivot?.qty}</div>
+                    <div>{carriage_trainset.qty}</div>
                     <Button
                         variant="ghost"
                         onClick={toggleEditMode}

@@ -17,12 +17,12 @@ export default function ({
     const handleTrainsetDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
+                await trainsetService.delete(id);
+                await handleSyncProject();
+                await window.Swal.fire({
                     icon: 'success',
                     title: 'Trainset deleted successfully',
                 });
-                await trainsetService.delete(id);
-                await handleSyncProject();
             }
         });
     };

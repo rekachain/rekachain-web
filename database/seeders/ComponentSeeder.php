@@ -20,11 +20,11 @@ class ComponentSeeder extends Seeder {
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                if (Progress::where('name', 'LIKE', '%' . $data['panel_name'] . '%')->where('name', 'LIKE', '%' . $data['work_aspect'] . '%')->exists() && CarriagePanel::wherePanelId(Panel::whereName($data['panel_name'])->first()->id)->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->exists()) {
+                if (Progress::where('name', 'LIKE', '%' . $data['panel_name'] . '%')->where('name', 'LIKE', '%' . $data['work_aspect'] . '%')->exists() && CarriagePanel::wherePanelId(Panel::whereName($data['panel_name'])->first()->id)->whereCarriageTrainsetId(Carriage::whereType($data['car_type'])->first()->id)->exists()) {
                     Component::create([
                         'name' => $data['component'],
                         'progress_id' => Progress::where('name', 'LIKE', '%' . $data['panel_name'] . '%')->where('name', 'LIKE', '%' . $data['work_aspect'] . '%')->first()->id,
-                        'carriage_panel_id' => CarriagePanel::wherePanelId(Panel::whereName($data['panel_name'])->first()->id)->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->first()->id,
+                        'carriage_panel_id' => CarriagePanel::wherePanelId(Panel::whereName($data['panel_name'])->first()->id)->whereCarriageTrainsetId(Carriage::whereType($data['car_type'])->first()->id)->first()->id,
                     ]);
                 }
             }
