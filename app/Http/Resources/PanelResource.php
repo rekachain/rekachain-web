@@ -18,6 +18,7 @@ class PanelResource extends JsonResource {
             'name' => $this->name,
             'description' => $this->description,
             'carriage_panels' => CarriagePanelResource::collection($this->whenLoaded('carriage_panels')),
+            'can_be_deleted' => $this->canBeDeleted(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

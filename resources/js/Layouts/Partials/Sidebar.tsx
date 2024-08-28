@@ -1,4 +1,5 @@
 import {
+    RiArtboard2Fill,
     RiBox3Line,
     RiContractLeftLine,
     RiContractRightLine,
@@ -148,6 +149,20 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
+                        {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PANELS}.index`}
+                                title="List Panel"
+                                icon={<RiArtboard2Fill size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PROJECTS}.index`}
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
@@ -158,13 +173,7 @@ export default function Sidebar() {
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
-                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
-                            <SidebarLink
-                                routeName={`${ROUTES.PROJECTS}.index`}
-                                title="List Proyek"
-                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                        )}
+
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"
