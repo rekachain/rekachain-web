@@ -22,9 +22,10 @@ class UpdatePanelRequest extends FormRequest {
         $panel = $this->route('panel')->id;
 
         return [
-            'progress_id' => 'required|integer',
-            'carriage_id' => 'required|integer',
+            // 'progress_id' => 'required|integer',
+            // 'carriage_id' => 'required|integer',
             'name' => 'string|max:255',
+            'description' => 'string|max:255',
         ];
     }
 }

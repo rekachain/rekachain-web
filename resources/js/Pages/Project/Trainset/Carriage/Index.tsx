@@ -1,8 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lazy, memo, Suspense, useEffect, useState } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { CarriageResource, PresetTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
+import {
+    CarriageResource,
+    PresetTrainsetResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/support/interfaces/resources';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
@@ -28,13 +33,23 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { STYLING } from '@/support/constants/styling';
 import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from '@/Components/ui/breadcrumb';
+import { ROUTES } from '@/support/constants/routes';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
 export default function ({
+    project,
     trainset: initialTrainset,
     presetTrainsets: initialPresetTrainset,
 }: {
+    project: ProjectResource;
     trainset: TrainsetResource;
     presetTrainsets: PresetTrainsetResource[];
 }) {
@@ -43,7 +58,7 @@ export default function ({
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
-        relations: 'carriage_panels.panel',
+        relations: 'trainsets.carriage_panels.panel',
         type: '',
     });
     const [isLoading, setIsLoading] = useState(false);
@@ -153,6 +168,23 @@ export default function ({
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
                         <div>
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem>
+                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>Home</Link>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
+                                            Proyek {project?.name}
+                                        </Link>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>Trainset {trainset.name}</BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
                             <h1 className="text-page-header my-4">Trainset {trainset.name}</h1>
                             <div className="flex flex-col gap-2 bg-background-2 p-5 rounded">
                                 {trainset.preset_name && (
@@ -278,7 +310,8 @@ export default function ({
                                                                 key={carriage.id}
                                                                 value={carriage.id.toString()}
                                                             >
-                                                                {carriage.type}:
+                                                                {carriage.type}{' '}
+                                                                {carriage.description && `: ${carriage.description}`}
                                                                 <br />
                                                                 {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
@@ -355,47 +388,51 @@ export default function ({
                     </Dialog>
                 </div>
 
-                {!trainset.preset_trainset_id && trainset.carriages && trainset.carriages.length > 0 && (
-                    <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
-                        <Dialog>
-                            <DialogTrigger
-                                className={buttonVariants({
-                                    className: 'w-full',
-                                })}
-                            >
-                                Tambahkan Preset
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Preset baru</DialogTitle>
-                                    <DialogDescription></DialogDescription>
-                                    <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
-                                        <div className="flex flex-col gap-4">
-                                            <Label>Nama Preset</Label>
-                                            <div className="flex gap-4">
-                                                <Input
-                                                    type="text"
-                                                    value={data.new_carriage_preset_name}
-                                                    onChange={e => setData('new_carriage_preset_name', e.target.value)}
-                                                />
-                                                <Button type="submit" disabled={isLoading} className="w-fit">
-                                                    {isLoading ? (
-                                                        <>
-                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Menambahkan preset
-                                                        </>
-                                                    ) : (
-                                                        'Tambahkan preset'
-                                                    )}
-                                                </Button>
+                {!trainset.preset_trainset_id &&
+                    trainset.carriage_trainsets &&
+                    trainset.carriage_trainsets.length > 0 && (
+                        <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
+                            <Dialog>
+                                <DialogTrigger
+                                    className={buttonVariants({
+                                        className: 'w-full',
+                                    })}
+                                >
+                                    Tambahkan Preset
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Preset baru</DialogTitle>
+                                        <DialogDescription></DialogDescription>
+                                        <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
+                                            <div className="flex flex-col gap-4">
+                                                <Label>Nama Preset</Label>
+                                                <div className="flex gap-4">
+                                                    <Input
+                                                        type="text"
+                                                        value={data.new_carriage_preset_name}
+                                                        onChange={e =>
+                                                            setData('new_carriage_preset_name', e.target.value)
+                                                        }
+                                                    />
+                                                    <Button type="submit" disabled={isLoading} className="w-fit">
+                                                        {isLoading ? (
+                                                            <>
+                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                Menambahkan preset
+                                                            </>
+                                                        ) : (
+                                                            'Tambahkan preset'
+                                                        )}
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </form>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog>
-                    </CustomPresetAlert>
-                )}
+                                        </form>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+                        </CustomPresetAlert>
+                    )}
             </AuthenticatedLayout>
         </>
     );

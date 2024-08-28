@@ -10,30 +10,20 @@ class RawMaterialSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-
-        $datas = [
-            [
-                'kode_material' => '22B58H00000XXG01',
-                'description' => 'LdK1Lp, LdK2Lp (Power Ready',
-                'specs' => 'Indicator Lamp, Green 220VAC',
-                'unit' => 18,
-            ],
-            [
-                'kode_material' => '22B58H00000XXW01',
-                'description' => 'LdK1Lp, LdK2Lp',
-                'specs' => 'Indicator Lamp, White 220VAC',
-                'unit' => 18,
-            ],
-            [
-                'kode_material' => '22B58H00000AAR04',
-                'description' => 'Operation Lamp for Manual Mode, Power On',
-                'specs' => 'Indicator Lamp, ABB CL2-502C24VDC/AC',
-                'unit' => 27,
-            ],
-        ];
-
-        foreach ($datas as $data) {
-            RawMaterial::create($data);
+        // Get the CSV file
+        if (file_exists(base_path('database/data/rawMaterial.csv'))) {
+            $csvData = array_map('str_getcsv', file(base_path('database/data/rawMaterial.csv')));
+            array_walk($csvData, function (&$a) use ($csvData) {
+                $a = array_map(function ($value) {
+                    return $value !== '' ? $value : null;
+                }, array_combine($csvData[0], $a));
+            });
+            array_shift($csvData); // remove column header
+            foreach ($csvData as $data) {
+                RawMaterial::factory()->create($data);
+            }
+        } else {
+            RawMaterial::factory(10)->create();
         }
     }
 }

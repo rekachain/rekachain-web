@@ -23,13 +23,15 @@ class DatabaseSeeder extends Seeder {
             TrainsetSeeder::class,
             CarriageTrainsetsSeeder::class,
             WorkshopSeeder::class,
-            RawMaterialSeeder::class,
             WorkstationSeeder::class,
             ProgressSeeder::class,
+            RawMaterialSeeder::class,
             PanelSeeder::class,
             CarriagePanelSeeder::class,
             ComponentSeeder::class,
-            //            PanelProgressSeeder::class
+            WorkDaySeeder::class,
+            WorkDayTimeSeeder::class,
+            //                        PanelProgressSeeder::class
         ]);
     }
 }

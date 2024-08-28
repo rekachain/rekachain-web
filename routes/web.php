@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\CarriagePresetController;
+use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
@@ -59,13 +63,23 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriages', CarriageController::class);
     Route::resource('carriage-presets', CarriagePresetController::class);
     Route::resource('preset-trainsets', PresetTrainsetController::class);
+    Route::resource('panels', PanelController::class);
+    Route::resource('carriage-panels', CarriagePanelController::class);
+    Route::resource('progress', ProgressController::class);
+    Route::resource('carriage-trainsets', CarriageTrainsetController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
         Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriages', 'carriages')->name('projects.trainsets.carriages.index');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriages/{carriage}', 'carriage')->name('projects.trainsets.carriages.show');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriages')->name('projects.trainsets.carriage-trainsets.index');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
     });
+});
+
+Route::get('/test', function () {
+    return \App\Models\Trainset::with('carriages')->get();
+    //    return \App\Models\Trainset::with(['carriages' => ['carriage_trainsets' => ['carriage_panels' => ['panel']]]])->get();
 });
 
 Route::get('/buat-proyek', function () {

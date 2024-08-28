@@ -19,9 +19,10 @@ class StorePanelRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'progress_id' => 'required|integer',
-            'carriage_id' => 'required|integer',
+            // 'progress_id' => 'required|integer',
+            // 'carriage_id' => 'required|integer',
             'name' => 'string|max:255',
+            'description' => 'string|max:255',
         ];
     }
 }

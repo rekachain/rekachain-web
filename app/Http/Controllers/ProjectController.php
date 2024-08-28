@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\CarriageResource;
+use App\Http\Resources\CarriageTrainsetResource;
+use App\Http\Resources\PanelResource;
 use App\Http\Resources\PresetTrainsetResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Carriage;
+use App\Models\CarriageTrainset;
+use App\Models\Panel;
 use App\Models\Project;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
@@ -70,9 +74,9 @@ class ProjectController extends Controller {
             return $project;
         }
 
-        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
-
-        $request->merge(['intent' => $intent]);
+        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
+        //
+        //        $request->merge(['intent' => $intent]);
 
         return inertia('Project/Show', ['project' => $project]);
     }
@@ -112,7 +116,6 @@ class ProjectController extends Controller {
 
     public function trainsets(Request $request, Project $project) {
         $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
-
         if ($this->ajax()) {
             return $project;
         }
@@ -125,16 +128,17 @@ class ProjectController extends Controller {
     }
 
     public function trainset(Request $request, Project $project, Trainset $trainset) {
+        $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset->load(['carriages']));
 
-        return inertia('Project/Trainset/Show', ['trainset' => $trainset]);
+        return inertia('Project/Trainset/Show', ['project' => $project, 'trainset' => $trainset]);
     }
 
     public function carriages(Request $request, Project $project, Trainset $trainset) {
-        $trainset = new TrainsetResource($trainset->load(['carriages' => ['carriage_panels' => ['panel']]]));
-
+        $project = new ProjectResource($project);
+        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel'], 'carriage']]));
         // sementara
-        $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriagePresets' => [
+        $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriage_presets' => [
             'carriage',
         ]])->getAll([
             'project_id' => $project->id,
@@ -142,17 +146,38 @@ class ProjectController extends Controller {
 
         if ($this->ajax()) {
             return [
+                'project' => $project,
                 'trainset' => $trainset,
                 'presetTrainsets' => $presetTrainsets,
             ];
         }
 
-        return inertia('Project/Trainset/Carriage/Index', compact('trainset', 'presetTrainsets'));
+        return inertia('Project/Trainset/Carriage/Index', compact('project', 'trainset', 'presetTrainsets'));
     }
 
     public function carriage(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {
         $carriage = new CarriageResource($carriage);
 
         return inertia('Project/Trainset/Carriage/Show', ['carriage' => $carriage]);
+    }
+
+    public function panels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel'], 'carriage']));
+        $project = ProjectResource::make($project);
+        $trainset = TrainsetResource::make($trainset);
+
+        //        dump($carriageTrainset->toArray($request), $project->toArray($request), $trainset->toArray($request));
+
+        if ($this->ajax()) {
+            return compact('project', 'trainset', 'carriageTrainset');
+        }
+
+        return inertia('Project/Trainset/Carriage/Panel/Index', compact('project', 'trainset', 'carriageTrainset'));
+    }
+
+    public function panel(Request $request, Project $project, Trainset $trainset, Carriage $carriage, Panel $panel) {
+        $panel = new PanelResource($panel);
+
+        return inertia('Project/Trainset/Carriage/Panel/Show', ['panel' => $panel]);
     }
 }
