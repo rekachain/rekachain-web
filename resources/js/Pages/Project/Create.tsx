@@ -7,6 +7,7 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { projectService } from '@/services/projectService';
+import { toast } from '@/Components/ui/use-toast';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -22,6 +23,15 @@ export default function () {
 
         const redirectToDetails = () => location.assign(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
 
+        let newDate = new Date();
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
+        toast({
+            title: 'Proyek Berhasil Dibuat !',
+            description: `${date} / ${month < 10 ? `0${month}` : `${month}`} / ${year}`,
+        });
         redirectToDetails();
     };
 
