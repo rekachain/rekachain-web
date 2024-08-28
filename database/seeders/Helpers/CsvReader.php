@@ -2,21 +2,18 @@
 
 namespace Database\Seeders\Helpers;
 
-class CsvReader
-{
+class CsvReader {
     protected $filePath;
     protected $delimiter;
 
-    public function __construct(String $fileName, String $delimiter = ',')
-    {
+    public function __construct(string $fileName, string $delimiter = ',') {
         $this->filePath = base_path('database/data/' . $fileName . '.csv');
-        $this->delimiter = $delimiter;        
+        $this->delimiter = $delimiter;
     }
 
-    public function getCsvData()
-    {
+    public function getCsvData() {
         if (file_exists($this->filePath)) {
-            $csvData = array_map(function($line)  {
+            $csvData = array_map(function ($line) {
                 return str_getcsv($line, $this->delimiter);
             }, file($this->filePath));
             array_walk($csvData, function (&$a) use ($csvData) {
@@ -28,6 +25,7 @@ class CsvReader
         } else {
             $csvData = null;
         }
+
         return $csvData;
     }
 }

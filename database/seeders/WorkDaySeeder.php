@@ -6,14 +6,12 @@ use App\Models\WorkDay;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class WorkDaySeeder extends Seeder
-{
+class WorkDaySeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
-        //Get the CSV file
+    public function run(): void {
+        // Get the CSV file
         if (file_exists(base_path('database/data/workdays.csv'))) {
             $csvData = array_map('str_getcsv', file(base_path('database/data/workdays.csv')));
             array_walk($csvData, function (&$a) use ($csvData) {

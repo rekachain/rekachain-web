@@ -15,7 +15,7 @@ class CarriageTrainsetsSeeder extends Seeder {
     public function run(): void {
         $csvReader = new CsvReader('carriage_trainset');
         $csvData = $csvReader->getCsvData();
-        
+
         if ($csvData) {
             foreach ($csvData as $data) {
                 if (Carriage::whereType($data['carriage_type'])->exists() && Trainset::whereName($data['trainset_name'])->exists()) {

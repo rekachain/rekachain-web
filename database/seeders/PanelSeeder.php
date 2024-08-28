@@ -14,7 +14,7 @@ class PanelSeeder extends Seeder {
     public function run(): void {
         $csvReader = new CsvReader('panel');
         $csvData = $csvReader->getCsvData();
-        
+
         if ($csvData) {
             foreach ($csvData as $data) {
                 Panel::create($data);

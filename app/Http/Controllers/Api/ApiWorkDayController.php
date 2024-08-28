@@ -10,16 +10,15 @@ use App\Models\WorkDay;
 use App\Support\Interfaces\Services\WorkDayServiceInterface;
 use Illuminate\Http\Request;
 
-class ApiWorkDayController extends Controller
-{
+class ApiWorkDayController extends Controller {
     public function __construct(
         protected WorkDayServiceInterface $workDayService
     ) {}
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $perPage = request()->get('perPage', 15);
 
         return WorkDayResource::collection(
@@ -30,37 +29,28 @@ class ApiWorkDayController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreWorkDayRequest $request)
-    {
+    public function store(StoreWorkDayRequest $request) {
         return $this->workDayService->create($request->validated());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
-    {
-        $workDay = WorkDay::findOrFail($id);
-        return new WorkDayResource($workDay);
+    public function show(Request $request, WorkDay $workDay) {
+        return WorkDayResource::make($workDay->load('times'));
     }
-    // public function show(WorkDay $workDay)
-    // {
-    //     return new WorkDayResource($workDay);
-    // }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWorkDayRequest $request, WorkDay $workDay)
-    {
+    public function update(UpdateWorkDayRequest $request, WorkDay $workDay) {
         return $this->workDayService->update($workDay, $request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WorkDay $workDay)
-    {
-        //
+    public function destroy(WorkDay $workDay) {
+        return $this->workDayService->delete($workDay);
     }
 }
