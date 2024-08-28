@@ -36,8 +36,8 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
         Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
         Route::apiResource('pm', ApiPanelMaterialController::class)->only(['index', 'show']);
-        Route::apiResource('workdays', ApiWorkDayController::class);
-        Route::apiResource('workdaystime', ApiWorkDayTimeController::class);
+        Route::apiResource('work-days', ApiWorkDayController::class);
+        Route::apiResource('work-day-times', ApiWorkDayTimeController::class);
         Route::get('logout', [ApiAuthController::class, 'logout'])->name('logout');
     });
 

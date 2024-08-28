@@ -15,7 +15,7 @@ class WorkDayResource extends JsonResource {
         return [
             'id' => $this->id,
             'day' => $this->day,
-            'times' => WorkDayTimeResource::collection($this->times),
+            'times' => WorkDayTimeResource::collection($this->whenLoaded('times')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
