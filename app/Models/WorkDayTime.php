@@ -22,7 +22,7 @@ class WorkDayTime extends Model
         'status',
     ];
 
-    public function work_day(): BelongsTo
+    public function workDay(): BelongsTo
     {
         return $this->belongsTo(WorkDay::class);
     }
