@@ -9,9 +9,8 @@ class RawMaterialSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
-        //Get the CSV file
+    public function run(): void {
+        // Get the CSV file
         if (file_exists(base_path('database/data/rawMaterial.csv'))) {
             $csvData = array_map('str_getcsv', file(base_path('database/data/rawMaterial.csv')));
             array_walk($csvData, function (&$a) use ($csvData) {
