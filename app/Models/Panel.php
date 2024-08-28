@@ -16,7 +16,7 @@ class Panel extends Model {
     ];
 
     public function carriages(): BelongsToMany {
-        return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
+        return $this->belongsToMany(Carriage::class, 'carriage_panels', relatedPivotKey: 'carriage_trainset_id')->using(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
     }
 
     public function components(): HasMany {
@@ -25,5 +25,9 @@ class Panel extends Model {
 
     public function carriage_panels(): BelongsToMany {
         return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
+    }
+
+    public function canBeDeleted() {
+        return $this->carriages()->doesntExist();
     }
 }

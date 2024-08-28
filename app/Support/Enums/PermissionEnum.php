@@ -48,6 +48,11 @@ enum PermissionEnum: string {
     case PRESET_TRAINSET_UPDATE = 'preset-trainset-update';
     case PRESET_TRAINSET_DELETE = 'preset-trainset-delete';
 
+    case PANEL_CREATE = 'panel-create';
+    case PANEL_READ = 'panel-read';
+    case PANEL_UPDATE = 'panel-update';
+    case PANEL_DELETE = 'panel-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *
