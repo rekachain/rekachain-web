@@ -5,61 +5,53 @@ namespace App\Http\Controllers;
 use App\Models\WorkDayTime;
 use Illuminate\Http\Request;
 
-class WorkDayTimeController extends Controller
-{
+class WorkDayTimeController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(WorkDayTime $workDayTime)
-    {
+    public function show(WorkDayTime $workDayTime) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(WorkDayTime $workDayTime)
-    {
+    public function edit(WorkDayTime $workDayTime) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WorkDayTime $workDayTime)
-    {
+    public function update(Request $request, WorkDayTime $workDayTime) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WorkDayTime $workDayTime)
-    {
+    public function destroy(WorkDayTime $workDayTime) {
         //
     }
 }

@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class WorkDayTime extends Model
-{
+class WorkDayTime extends Model {
     use HasFactory;
 
     public const STATUS_TYPES = [
         'work',
-        'break'
+        'break',
     ];
 
     protected $fillable = [
@@ -22,8 +21,7 @@ class WorkDayTime extends Model
         'status',
     ];
 
-    public function work_day(): BelongsTo
-    {
+    public function work_day(): BelongsTo {
         return $this->belongsTo(WorkDay::class);
     }
 }
