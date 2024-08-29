@@ -51,7 +51,6 @@ export default function ({
     trainset: TrainsetResource;
     carriageTrainset: CarriageTrainsetResource;
 }) {
-    console.log(initialCarriageTrainset);
     const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
