@@ -52,7 +52,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value="Nama" />
+                            <InputLabel htmlFor="location" value="Location" />
                             <Input
                                 id="location"
                                 type="text"
