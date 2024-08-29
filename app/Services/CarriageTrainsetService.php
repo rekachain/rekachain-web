@@ -5,12 +5,15 @@ namespace App\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\CarriageTrainset;
 use App\Support\Interfaces\Repositories\CarriageTrainsetRepositoryInterface;
+use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Support\Facades\DB;
 
 class CarriageTrainsetService extends BaseCrudService implements CarriageTrainsetServiceInterface {
-    public function __construct(protected PanelServiceInterface $panelService) {
+    public function __construct(
+        protected PanelServiceInterface $panelService,
+        protected CarriagePanelServiceInterface $carriagePanelService) {
         parent::__construct();
     }
 
@@ -48,5 +51,13 @@ class CarriageTrainsetService extends BaseCrudService implements CarriageTrainse
 
             return true;
         });
+    }
+
+    public function delete($keyOrModel): bool {
+        $keyOrModel->carriage_panels()->each(function ($carriagePanel) {
+            $this->carriagePanelService->delete($carriagePanel);
+        });
+
+        return parent::delete($keyOrModel);
     }
 }

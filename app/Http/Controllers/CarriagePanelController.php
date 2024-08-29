@@ -11,6 +11,8 @@ use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use Illuminate\Http\Request;
 
 class CarriagePanelController extends Controller {
+    // TODO: update trainset_preset_id to null
+
     public function __construct(protected CarriagePanelServiceInterface $CarriagePanelService) {}
 
     /**

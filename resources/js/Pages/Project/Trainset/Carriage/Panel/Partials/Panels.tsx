@@ -39,9 +39,7 @@ export default function ({
                 <TableBody>
                     {carriageTrainset?.carriage_panels?.map(carriage_panel => (
                         <TableRow key={carriage_panel.id}>
-                            <TableCell>
-                                {carriage_panel.id} {carriage_panel.panel.name}
-                            </TableCell>
+                            <TableCell>{carriage_panel.panel.name}</TableCell>
                             <TableCell>
                                 <PanelQty handleSyncCarriage={handleSyncCarriage} carriage_panel={carriage_panel} />
                             </TableCell>
