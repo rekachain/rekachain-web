@@ -20,7 +20,7 @@ class PanelSeeder extends Seeder {
                 Panel::create($data);
             }
         } else {
-            Panel::factory(1)->create();
+            Panel::factory(10)->create();
         }
     }
 }

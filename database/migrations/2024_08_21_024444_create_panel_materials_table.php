@@ -12,7 +12,7 @@ return new class extends Migration {
         Schema::create('panel_materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('panel_id')->nullable()->constrained();
-            $table->foreignId('material_id')->nullable()->constrained();
+            $table->foreignId('raw_material_id')->nullable()->constrained();
             $table->integer('qty')->nullable();
             $table->timestamps();
         });
