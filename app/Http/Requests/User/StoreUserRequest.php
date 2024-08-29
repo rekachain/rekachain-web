@@ -21,9 +21,9 @@ class StoreUserRequest extends FormRequest {
         return [
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'name' => 'required|string|max:255',
-            'nip' => 'required|string|max:18|unique:users',
+            'nip' => 'required|string|max:18|unique:users|regex:/^[0-9]+$/',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone_number' => 'nullable|string|max:15',
+            'phone_number' => 'nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:15',
             'password' => 'required|string|min:8',
             'role_id' => 'required|exists:roles,id',
         ];
