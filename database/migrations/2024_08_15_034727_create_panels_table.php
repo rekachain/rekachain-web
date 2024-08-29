@@ -13,6 +13,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+            $table->foreignId('progress_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
