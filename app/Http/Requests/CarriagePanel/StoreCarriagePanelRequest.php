@@ -20,8 +20,9 @@ class StoreCarriagePanelRequest extends FormRequest {
     public function rules(): array {
         return [
             'progress_id' => 'required|integer|exists:progress,id',
-            'carriage_id' => 'required|integer|exists:carriages,id',
+            'carriage_trainset_id' => 'nullable|integer|exists:carriage_trainset,id',
             'panel_id' => 'required|integer|exists:panels,id',
+            'qty' => 'nullable|integer',
         ];
     }
 }

@@ -173,6 +173,10 @@ return [
     */
 
     'custom' => [
+        'auth' => [
+            'unauthorized' => 'You do not have permission to access this application.',
+        ],
+
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],

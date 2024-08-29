@@ -53,6 +53,11 @@ enum PermissionEnum: string {
     case PANEL_UPDATE = 'panel-update';
     case PANEL_DELETE = 'panel-delete';
 
+    case CARRIAGE_PANEL_CREATE = 'carriage-panel-create';
+    case CARRIAGE_PANEL_READ = 'carriage-panel-read';
+    case CARRIAGE_PANEL_UPDATE = 'carriage-panel-update';
+    case CARRIAGE_PANEL_DELETE = 'carriage-panel-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *
