@@ -27,6 +27,6 @@ class CarriagePanel extends Model {
     }
 
     public function components(): HasMany {
-        return $this->hasMany(Component::class);
+        return $this->hasMany(CarriagePanelComponent::class);
     }
 }

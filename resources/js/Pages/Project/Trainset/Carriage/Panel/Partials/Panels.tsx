@@ -2,6 +2,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { CarriageTrainsetResource } from '@/support/interfaces/resources';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
+import { Button } from '@/Components/ui/button';
+import { carriagePanelService } from '@/services/carriagePanelService';
 
 export default function ({
     carriageTrainset,
@@ -10,15 +12,15 @@ export default function ({
     carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
-    const handleCarriageDeletion = (carriageCarriageId: number) => {
+    const handlePanelDeletion = (carriageCarriageId: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
+                await carriagePanelService.delete(carriageCarriageId);
+                await handleSyncCarriage();
                 await window.Swal.fire({
                     icon: 'success',
                     title: 'Carriage deleted successfully',
                 });
-                // await carriageService.deleteCarriageCarriage(carriage.id, carriageCarriageId);
-                // await handleSyncCarriage();
             }
         });
     };
@@ -37,7 +39,9 @@ export default function ({
                 <TableBody>
                     {carriageTrainset?.carriage_panels?.map(carriage_panel => (
                         <TableRow key={carriage_panel.id}>
-                            <TableCell>{carriage_panel.panel.name}</TableCell>
+                            <TableCell>
+                                {carriage_panel.id} {carriage_panel.panel.name}
+                            </TableCell>
                             <TableCell>
                                 <PanelQty handleSyncCarriage={handleSyncCarriage} carriage_panel={carriage_panel} />
                             </TableCell>
@@ -50,9 +54,9 @@ export default function ({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
 
-                                {/*<Button variant="link" onClick={() => handleCarriageDeletion(carriage_panel.pivot!.id)}>*/}
-                                {/*    Delete*/}
-                                {/*</Button>*/}
+                                <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>
+                                    Delete
+                                </Button>
 
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}
