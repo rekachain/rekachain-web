@@ -90,7 +90,7 @@ export default function () {
                     </Table>
                 </> */}
             {/* )} */}
-            {/* // <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} /> */}
+            <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }
