@@ -176,7 +176,7 @@ export default function Sidebar() {
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
                             icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                        /> */}
+                        />
                         {/* <SidebarLink
                         routeName="project"
                         title="Buat Proyek"
@@ -207,7 +207,7 @@ export default function Sidebar() {
                                 title="Track"
                                 icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
-                        </SidebarLinkCollapsible> */}
+                        </SidebarLinkCollapsible>
                         {/* <SidebarLink
                         route={`${ROUTES.PROFILE}.edit"
                         children="Order Batch"

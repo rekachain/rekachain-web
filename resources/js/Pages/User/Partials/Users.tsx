@@ -47,11 +47,11 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
+    // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
 
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-width: 900px)',
-    });
+    // const isDesktopOrLaptop = useMediaQuery({
+    //     query: '(min-width: 900px)',
+    // });
     return (
         <div className="space-y-4">
             {userResponse && (
@@ -69,7 +69,7 @@ export default function () {
                     </div>
                 </>
             )}
-
+            {/* 
                                     {user.id !== auth.user.id &&
                                         (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
                                             <TableCell>
@@ -88,9 +88,9 @@ export default function () {
                             ))}
                         </TableBody>
                     </Table>
-                </>
-            )}
-            <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
+                </> */}
+            {/* )} */}
+            {/* // <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} /> */}
         </div>
     );
 }
