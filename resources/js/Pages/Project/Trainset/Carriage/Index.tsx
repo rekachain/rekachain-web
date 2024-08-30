@@ -59,7 +59,7 @@ export default function ({
         page: 1,
         perPage: 10,
         relations: 'trainsets.carriage_panels.panel',
-        type: '',
+        search: '',
     });
     const [isLoading, setIsLoading] = useState(false);
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
@@ -146,8 +146,8 @@ export default function ({
     };
 
     const handleChangeSearchCarriageType = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const type = e.target.value;
-        setCarriageFilters({ ...carriageFilters, type });
+        const search = e.target.value;
+        setCarriageFilters({ ...carriageFilters, search });
         // await handleSyncCarriages();
     };
 
@@ -288,7 +288,7 @@ export default function ({
                                             <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
                                             <Input
                                                 placeholder="Cari gerbong"
-                                                value={carriageFilters.type}
+                                                value={carriageFilters.search}
                                                 onChange={handleChangeSearchCarriageType}
                                                 disabled={isLoading}
                                             />

@@ -83,14 +83,14 @@ export default function ({
     }, []);
 
     const handleChangeSearchPanelName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const name = e.target.value;
-        setPanelFilters({ ...panelFilters, name });
+        const search = e.target.value;
+        setPanelFilters({ ...panelFilters, search });
         // await handleSyncCarriages();
     };
 
     const handleChangeSearchprogressName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const name = e.target.value;
-        setProgressFilters({ ...progressFilters, name });
+        const search = e.target.value;
+        setProgressFilters({ ...progressFilters, search });
         // await handleSyncCarriages();
     };
 
