@@ -173,12 +173,26 @@ return [
     */
 
     'custom' => [
+        'auth' => [
+            'unauthorized' => 'You do not have permission to access this application.',
+        ],
+
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
 
-        'permission_name' => [
-            'regex' => 'The :attribute must be in the format of \'group-action\'.',
+        'permission' => [
+            'permission_name' => [
+                'regex' => 'The :attribute must be in the format of \'group-action\'.',
+            ],
+        ],
+
+        'preset_trainset' => [
+            'unique_preset_name_in_project' => 'The combination of preset name and project ID must be unique.',
+        ],
+
+        'carriage_trainset' => [
+            'unique_panel' => 'The selected panel is already in the carriage.',
         ],
     ],
 

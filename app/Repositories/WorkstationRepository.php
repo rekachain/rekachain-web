@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\Workstation;
-use App\Support\Interfaces\WorkstationRepositoryInterface;
+use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
 use App\Traits\Repositories\HandlesRelations;
 use Illuminate\Database\Eloquent\Builder;
 

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCarriageRequest;
-use App\Http\Requests\UpdateCarriageRequest;
+use App\Http\Requests\Carriage\StoreCarriageRequest;
+use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
-use App\Support\Interfaces\CarriageServiceInterface;
+use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -27,7 +27,7 @@ class CarriageController extends Controller {
             }
         }
 
-        return intertia('Carriage/Index');
+        return inertia('Carriage/Index');
     }
 
     /**
@@ -69,6 +69,7 @@ class CarriageController extends Controller {
      */
     public function update(UpdateCarriageRequest $request, Carriage $carriage) {
         if ($this->ajax()) {
+
             return $this->carriageService->update($carriage, $request->validated());
         }
     }

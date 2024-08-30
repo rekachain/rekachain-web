@@ -6,7 +6,7 @@ use App\Http\Requests\Panel\StorePanelRequest;
 use App\Http\Requests\Panel\UpdatePanelRequest;
 use App\Http\Resources\PanelResource;
 use App\Models\Panel;
-use App\Support\Interfaces\PanelServiceInterface;
+use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -67,7 +67,7 @@ class PanelController extends Controller {
      */
     public function update(UpdatePanelRequest $request, Panel $panel) {
         if ($this->ajax()) {
-            return $this->panelService->update($request->validated());
+            return $this->panelService->update($panel, $request->validated());
         }
     }
 

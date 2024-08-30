@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Support\Interfaces\DivisionRepositoryInterface;
-use App\Support\Interfaces\DivisionServiceInterface;
+use App\Support\Interfaces\Repositories\DivisionRepositoryInterface;
+use App\Support\Interfaces\Services\DivisionServiceInterface;
 
 class DivisionService extends BaseCrudService implements DivisionServiceInterface {
     protected function getRepositoryClass(): string {

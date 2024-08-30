@@ -12,7 +12,8 @@ return new class extends Migration {
         Schema::create('trainsets', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('project_id')->constrained();
+            $table->foreignId('preset_trainset_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

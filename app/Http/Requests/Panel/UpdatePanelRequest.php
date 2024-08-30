@@ -18,12 +18,9 @@ class UpdatePanelRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-
-        $panel = $this->route('panel')->id;
-
         return [
-            'progress_id' => 'required|integer',
             'name' => 'string|max:255',
+            'description' => 'string|max:255',
         ];
     }
 }

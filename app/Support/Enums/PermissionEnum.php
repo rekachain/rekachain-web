@@ -33,6 +33,31 @@ enum PermissionEnum: string {
     case PROJECT_UPDATE = 'project-update';
     case PROJECT_DELETE = 'project-delete';
 
+    case PERMISSION_CREATE = 'permission-create';
+    case PERMISSION_READ = 'permission-read';
+    case PERMISSION_UPDATE = 'permission-update';
+    case PERMISSION_DELETE = 'permission-delete';
+
+    case CARRIAGE_PRESET_CREATE = 'carriage-preset-create';
+    case CARRIAGE_PRESET_READ = 'carriage-preset-read';
+    case CARRIAGE_PRESET_UPDATE = 'carriage-preset-update';
+    case CARRIAGE_PRESET_DELETE = 'carriage-preset-delete';
+
+    case PRESET_TRAINSET_CREATE = 'preset-trainset-create';
+    case PRESET_TRAINSET_READ = 'preset-trainset-read';
+    case PRESET_TRAINSET_UPDATE = 'preset-trainset-update';
+    case PRESET_TRAINSET_DELETE = 'preset-trainset-delete';
+
+    case PANEL_CREATE = 'panel-create';
+    case PANEL_READ = 'panel-read';
+    case PANEL_UPDATE = 'panel-update';
+    case PANEL_DELETE = 'panel-delete';
+
+    case CARRIAGE_PANEL_CREATE = 'carriage-panel-create';
+    case CARRIAGE_PANEL_READ = 'carriage-panel-read';
+    case CARRIAGE_PANEL_UPDATE = 'carriage-panel-update';
+    case CARRIAGE_PANEL_DELETE = 'carriage-panel-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *

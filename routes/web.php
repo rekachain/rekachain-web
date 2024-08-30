@@ -1,15 +1,23 @@
 <?php
 
+use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelController;
+use App\Http\Controllers\CarriagePresetController;
+use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Input;
 use Inertia\Inertia;
 
 /*
@@ -24,12 +32,14 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect(route('dashboard'));
+
+    //    return Inertia::render('Welcome', [
+    //        'canLogin' => Route::has('login'),
+    //        'canRegister' => Route::has('register'),
+    //        'laravelVersion' => Application::VERSION,
+    //        'phpVersion' => PHP_VERSION,
+    //    ]);
 });
 
 Route::get('/dashboard', function () {
@@ -47,6 +57,29 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('projects', ProjectController::class);
+    Route::resource('trainsets', TrainsetController::class);
+    Route::resource('raw-materials', RawMaterialController::class);
+    Route::resource('carriages', CarriageController::class);
+    Route::resource('carriage-presets', CarriagePresetController::class);
+    Route::resource('preset-trainsets', PresetTrainsetController::class);
+    Route::resource('panels', PanelController::class);
+    Route::resource('carriage-panels', CarriagePanelController::class);
+    Route::resource('progress', ProgressController::class);
+    Route::resource('carriage-trainsets', CarriageTrainsetController::class);
+
+    Route::controller(ProjectController::class)->group(function () {
+        Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
+        Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriages')->name('projects.trainsets.carriage-trainsets.index');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
+    });
+});
+
+Route::get('/test', function () {
+    return \App\Models\Trainset::with('carriages')->get();
+    //    return \App\Models\Trainset::with(['carriages' => ['carriage_trainsets' => ['carriage_panels' => ['panel']]]])->get();
 });
 
 Route::get('/buat-proyek', function () {
@@ -67,11 +100,11 @@ Route::get('/buat-kpm', function () {
 })->middleware(['auth', 'verified'])->name('buat-kpm');
 require __DIR__ . '/auth.php';
 Route::get('/detail-proyek/{id}', function ($detail_proyek) {
-    return Inertia::render('Detail/DetailProject',['detail'=>$detail_proyek]);
+    return Inertia::render('Detail/DetailProject', ['detail' => $detail_proyek]);
 })->middleware(['auth', 'verified'])->name('detail-proyek');
-Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek,$detail_ts) {
-    return Inertia::render('Detail/DetailTS',['detailTS'=>$detail_ts,'noProyek'=>$detail_proyek]);
+Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek, $detail_ts) {
+    return Inertia::render('Detail/DetailTS', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek]);
 })->middleware(['auth', 'verified'])->name('detail-ts');
-Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek,$detail_ts,$detail_kereta) {
-    return Inertia::render('Detail/DetailKereta',['detailTS'=>$detail_ts,'noProyek'=>$detail_proyek,'susunanKereta'=>$detail_kereta]);
+Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, $detail_ts, $detail_kereta) {
+    return Inertia::render('Detail/DetailKereta', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek, 'susunanKereta' => $detail_kereta]);
 })->middleware(['auth', 'verified'])->name('detail-kereta');

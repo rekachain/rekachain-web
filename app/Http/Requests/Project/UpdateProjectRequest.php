@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Project;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProjectRequest extends FormRequest {
@@ -18,8 +19,14 @@ class UpdateProjectRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        $intent = $this->get('intent');
 
-        $project = $this->route('project')->id;
+        switch ($intent) {
+            case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
+                return [
+                    'trainset_needed' => 'required|numeric|min:1',
+                ];
+        }
 
         return [
             'name' => 'nullable',

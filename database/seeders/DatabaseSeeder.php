@@ -18,10 +18,21 @@ class DatabaseSeeder extends Seeder {
             UserSeeder::class,
             ProjectSeeder::class,
             CarriageSeeder::class,
+            PresetTrainsetSeeder::class,
+            CarriagePresetSeeder::class,
             TrainsetSeeder::class,
-            TrainsetCarriagesSeeder::class,
+            CarriageTrainsetsSeeder::class,
             WorkshopSeeder::class,
             WorkstationSeeder::class,
+            ProgressSeeder::class,
+            RawMaterialSeeder::class,
+            PanelSeeder::class,
+            CarriagePanelSeeder::class,
+            ComponentSeeder::class,
+            WorkDaySeeder::class,
+            WorkDayTimeSeeder::class,
+            CarriagePanelComponentSeeder::class,
+            //                        PanelProgressSeeder::class
         ]);
     }
 }

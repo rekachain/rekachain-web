@@ -115,7 +115,11 @@
     }
 
     .sidebar-collapse-toggle {
-        @apply text-zinc-400 ms-auto;
+        @apply text-zinc-400;
+    }
+
+    .sidebar-collapse-toggle-mobile {
+        @apply text-zinc-400 flex mx-auto;
     }
 
     .sidebar-collapse .sidebar-collapse-toggle {

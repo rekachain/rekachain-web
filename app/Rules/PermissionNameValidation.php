@@ -12,10 +12,10 @@ class PermissionNameValidation implements ValidationRule {
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
-        $pattern = '/^[a-z]+-[a-z]+$/';
+        $pattern = '/^[a-z]+(?:-[a-z]+)*(?:\s[a-z]+(?:-[a-z]+)*)*$/';
 
         if (!preg_match($pattern, $value)) {
-            $fail(trans('validation.custom.permission_name.regex', ['attribute' => $attribute]));
+            $fail(__('validation.custom.permission.permission_name.regex', ['attribute' => $attribute]));
         }
     }
 }

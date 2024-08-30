@@ -20,6 +20,7 @@ class StoreProjectRequest extends FormRequest {
     public function rules(): array {
         return [
             'name' => 'required',
+            'trainset_needed' => 'required|numeric|min:0', // used only to create needed trainsets
             'initial_date' => 'required|date',
         ];
     }

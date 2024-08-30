@@ -1,4 +1,5 @@
 import {
+    RiArtboard2Fill,
     RiBox3Line,
     RiContractLeftLine,
     RiContractRightLine,
@@ -52,14 +53,14 @@ export default function Sidebar() {
         <SidebarContext.Provider value={{ selectedMenu, setSelectedMenu }}>
             <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
                 <nav className="flex flex-col space-y-1">
-                    <div className="sidebar-header flex px-4 py-3 border-b-2 h-16">
+                    <div className="sidebar-header flex justify-between px-4 py-3 border-b-2 h-16">
                         <img
-                            src="/assets/images/outline putih.png"
+                            src="/assets/images/Logo REKA.svg"
                             alt="logo"
                             // className=" "
                             // className="sidebar-header-logo h-full object-contain"
-                            className="sidebar-header-logo h-full "
-                            width={170}
+                            className="sidebar-header-logo h-12 "
+                            height={200}
                             // height={500}
                         />
                         <Button
@@ -81,7 +82,6 @@ export default function Sidebar() {
                             title="Dashboard"
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
-
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                             title="Manajemen Staff"
@@ -149,6 +149,20 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
+                        {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PANELS}.index`}
+                                title="List Panel"
+                                icon={<RiArtboard2Fill size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PROJECTS}.index`}
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
@@ -159,6 +173,7 @@ export default function Sidebar() {
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
+
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"

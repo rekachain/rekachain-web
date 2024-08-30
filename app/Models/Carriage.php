@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Carriage extends Model {
     use HasFactory;
@@ -14,13 +15,15 @@ class Carriage extends Model {
         'description',
     ];
 
-    // public function trainsets(): HasMany
-    // {
-    //     return $this->hasMany(TrainsetCarriages::class, 'id_carriage', 'id');
-    // }
+    public function trainsets(): BelongsToMany {
+        return $this
+            ->belongsToMany(Trainset::class)
+            ->using(CarriageTrainset::class)
+            ->withPivot(['id', 'qty'])
+            ->withTimestamps();
+    }
 
-    // public function panels(): HasMany
-    // {
-    //     return $this->hasMany(CarriagePanels::class, 'id_carriage', 'id');
-    // }
+    public function carriage_panels(): HasManyThrough {
+        return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class, 'carriage_id', 'carriage_trainset_id');
+    }
 }
