@@ -11,6 +11,8 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { useMediaQuery } from 'react-responsive';
 import AnimateIn from '@/lib/AnimateIn';
+import WorkstationTableView from './Partials/WorkstationTableView';
+import WorkstationCardView from './Partials/WorkstationCardView';
 
 export default function () {
     const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
@@ -51,101 +53,35 @@ export default function () {
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 900px)',
     });
+    // function handleWorkstationDeletion(id: any): void {
+    //     throw new Error('Function not implemented.');
+    // }
 
     return (
         <div className="space-y-4">
-            {isTabletOrMobile && (
+            {workstationResponse && (
                 <>
-                    {workstationResponse?.data.map(workstation => (
-                        <AnimateIn
-                            from="opacity-0 -translate-y-4"
-                            to="opacity-100 translate-y-0 translate-x-0"
-                            duration={300}
-                        >
-                            <div
-                                key={workstation.id}
-                                className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2"
-                            >
-                                <div className="flex w-full justify-between items-scenter">
-                                    <h4 className="font-bold text-xl">{workstation.name}</h4>
-                                    <div className="text-center">
-                                        <h5 className="font-bold text-md items-center ">
-                                            Divisi:
-                                            {workstation.division.name}
-                                        </h5>
-                                    </div>
-                                </div>
+                    <div className="hidden md:block">
+                        <WorkstationTableView
+                            workstationResponse={workstationResponse}
+                            handleWorkstationDeletion={handleWorkstationDeletion}
+                            // auth={auth}
+                        ></WorkstationTableView>
+                        {/* <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            auth={auth}
+                        /> */}
+                    </div>
 
-                                <h5 className="font-bold text-sm ">Workshop : {workstation.workshop.name}</h5>
-                                <h5 className=" text-sm ">Lokasi : {workstation.location}</h5>
-                                {/*<div className="flex">
-                                    <div className="">
-                                        <p className="text-xs">Email </p>
-                                        <p className="text-xs">No.Hp</p>
-                                    </div>
-                                    <div className="pl-4">
-                                        <p className="text-xs">: </p>
-                                        <p className="text-xs">: </p>
-                                    </div>
-                                    <div className="pl-4 ">
-                                        <p className="text-xs">{division.email}</p>
-                                        <p className="text-xs">{division.phone_number}</p>
-                                    </div> */}
-                                <div className="flex items-center justify-end w-full">
-                                    <Link
-                                        className={buttonVariants({ variant: 'link' })}
-                                        href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
-                                    >
-                                        Edit
-                                    </Link>
-                                    <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
-                                        Delete
-                                    </Button>
-                                </div>
-                            </div>
-                            {/* </div> */}
-                        </AnimateIn>
-                    ))}
-                </>
-            )}
-            {isDesktopOrLaptop && (
-                <>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Nama</TableHead>
-                                <TableHead>Lokasi</TableHead>
-                                <TableHead>Workshop</TableHead>
-                                <TableHead>Divisi</TableHead>
-                                <TableHead></TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {workstationResponse?.data.map(workstation => (
-                                <TableRow key={workstation.id}>
-                                    <TableCell>{workstation.name}</TableCell>
-                                    <TableCell>{workstation.location}</TableCell>
-                                    <TableCell>{workstation.workshop.name}</TableCell>
-                                    <TableCell>{workstation.division.name}</TableCell>
-
-                                    <TableCell>
-                                        <Link
-                                            className={buttonVariants({ variant: 'link' })}
-                                            href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
-                                        >
-                                            Edit
-                                        </Link>
-                                        <Button
-                                            variant="link"
-                                            onClick={() => handleWorkstationDeletion(workstation.id)}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <div className="block md:hidden">
+                        <WorkstationCardView
+                            workstationResponse={workstationResponse}
+                            handleWorkstationDeletion={handleWorkstationDeletion}
+                            // auth={auth}
+                        ></WorkstationCardView>
+                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
+                    </div>
                 </>
             )}
             <GenericPagination meta={workstationResponse?.meta} handleChangePage={handlePageChange} />

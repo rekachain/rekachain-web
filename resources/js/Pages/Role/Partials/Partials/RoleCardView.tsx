@@ -20,7 +20,7 @@ export default function RoleCardView({
                 <AnimateIn from="opacity-0 -translate-y-4" to="opacity-100 translate-y-0 translate-x-0" duration={300}>
                     <div
                         key={role.id}
-                        className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2"
+                        className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-5"
                     >
                         <div className="flex w-full justify-between items-center">
                             <h4 className="font-bold text-xl">{role.name}</h4>
