@@ -14,3 +14,5 @@ export * from './PresetTrainsetResource';
 export * from './CarriagePanelResource';
 export * from './ProgressResource';
 export * from './CarriageTrainsetResource';
+export * from './ComponentResource';
+export * from './RawMaterialResource';

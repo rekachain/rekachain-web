@@ -20,7 +20,7 @@ class RawMaterialRepository extends BaseRepository implements RawMaterialReposit
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['kode_material', 'description', 'unit', 'specs']);
+        $query = $this->applySearchFilters($query, $searchParams, ['material_code', 'description', 'unit', 'specs']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 

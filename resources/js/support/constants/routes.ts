@@ -19,4 +19,6 @@ export const ROUTES = {
     CARRIAGE_PANELS: 'carriage-panels',
     PROGRESS: 'progress',
     CARRIAGE_TRAINSETS: 'carriage-trainsets',
+    RAW_MATERIALS: 'raw-materials',
+    COMPONENTS: 'components',
 };

@@ -14,7 +14,7 @@ class RawMaterialResource extends JsonResource {
     public function toArray(Request $request): array {
         return [
             'id' => $this->id,
-            'kode_material' => $this->kode_material,
+            'material_code' => $this->material_code,
             'description' => $this->description,
             'specs' => $this->specs,
             'unit' => $this->unit,
