@@ -48,4 +48,9 @@ export enum PERMISSION_ENUM {
     PANEL_READ = 'panel-read',
     PANEL_UPDATE = 'panel-update',
     PANEL_DELETE = 'panel-delete',
+
+    RAW_MATERIAL_CREATE = 'raw-material-create',
+    RAW_MATERIAL_READ = 'raw-material-read',
+    RAW_MATERIAL_UPDATE = 'raw-material-update',
+    RAW_MATERIAL_DELETE = 'raw-material-delete',
 }

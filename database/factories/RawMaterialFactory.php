@@ -15,7 +15,7 @@ class RawMaterialFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'kode_material' => $this->faker->unique()->randomNumber(8),
+            'material_code' => $this->faker->unique()->randomNumber(8),
             'description' => $this->faker->sentence,
             'specs' => $this->faker->word,
             'unit' => $this->faker->randomElement(['PCS', 'L', 'M', 'KG']),
