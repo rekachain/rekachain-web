@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder {
@@ -12,18 +13,18 @@ class RoleSeeder extends Seeder {
      */
     public function run(): void {
         $roles = [
-            ['name' => 'Super Admin'],
-            ['name' => 'PPC - Perencanaan'],
-            ['name' => 'PPC - Pengendalian'],
-            ['name' => 'Supervisor - Mekanik', 'level' => 'Supervisor', 'division_id' => 1],
-            ['name' => 'Supervisor - Elektrik', 'level' => 'Supervisor', 'division_id' => 2],
-            ['name' => 'Supervisor - Assembly', 'level' => 'Supervisor', 'division_id' => 3],
-            ['name' => 'Worker - Mekanik', 'level' => 'Worker', 'division_id' => 1],
-            ['name' => 'Worker - Elektrik', 'level' => 'Worker', 'division_id' => 2],
-            ['name' => 'Worker - Assembly', 'level' => 'Worker', 'division_id' => 3],
-            ['name' => 'QC - Mekanik', 'level' => 'QC', 'division_id' => 1],
-            ['name' => 'QC - Elektrik', 'level' => 'QC', 'division_id' => 2],
-            ['name' => 'QC - Assembly', 'level' => 'QC', 'division_id' => 3],
+            ['name' => RoleEnum::SUPER_ADMIN->value],
+            ['name' => RoleEnum::PPC_PERENCANAAN->value],
+            ['name' => RoleEnum::PPC_PENGENDALIAN->value],
+            ['name' => RoleEnum::SUPERVISOR_MEKANIK->value, 'level' => 'Supervisor', 'division_id' => 1],
+            ['name' => RoleEnum::SUPERVISOR_ELEKTRIK->value, 'level' => 'Supervisor', 'division_id' => 2],
+            ['name' => RoleEnum::SUPERVISOR_ASSEMBLY->value, 'level' => 'Supervisor', 'division_id' => 3],
+            ['name' => RoleEnum::WORKER_MEKANIK->value, 'level' => 'Worker', 'division_id' => 1],
+            ['name' => RoleEnum::WORKER_ELEKTRIK->value, 'level' => 'Worker', 'division_id' => 2],
+            ['name' => RoleEnum::WORKER_ASSEMBLY->value, 'level' => 'Worker', 'division_id' => 3],
+            ['name' => RoleEnum::QC_MEKANIK->value, 'level' => 'QC', 'division_id' => 1],
+            ['name' => RoleEnum::QC_ELEKTRIK->value, 'level' => 'QC', 'division_id' => 2],
+            ['name' => RoleEnum::QC_ASSEMBLY->value, 'level' => 'QC', 'division_id' => 3],
         ];
 
         foreach ($roles as $role) {

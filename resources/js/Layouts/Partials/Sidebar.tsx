@@ -1,4 +1,5 @@
 import {
+    RiArtboard2Fill,
     RiBox3Line,
     RiContractLeftLine,
     RiContractRightLine,
@@ -6,6 +7,7 @@ import {
     RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
+    RiInstanceLine,
     RiLockUnlockLine,
     RiQuestionLine,
     RiSettings3Line,
@@ -148,7 +150,29 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
-                        {/* <SidebarLink
+                        {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.RAW_MATERIALS}.index`}
+                                title="List Bahan Baku"
+                                icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
+                        {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PANELS}.index`}
+                                title="List Panel"
+                                icon={<RiArtboard2Fill size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.PROJECTS}.index`}
+                                title="List Proyek"
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
                             icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
@@ -158,14 +182,6 @@ export default function Sidebar() {
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
-                        {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
-                            <SidebarLink
-                                routeName={`${ROUTES.PROJECTS}.index`}
-                                title="List Proyek"
-                                icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                            />
-                        )}
-                        {/* 
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"

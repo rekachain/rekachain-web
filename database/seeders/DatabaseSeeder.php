@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder {
             ComponentSeeder::class,
             WorkDaySeeder::class,
             WorkDayTimeSeeder::class,
+            CarriagePanelComponentSeeder::class,
             //                        PanelProgressSeeder::class
         ]);
     }

@@ -24,11 +24,9 @@ export default function () {
                             Tambah Staff
                         </Link>
                     </div>
-                    <>
-                        <Suspense fallback={<StaticLoadingOverlay />}>
-                            <Users />
-                        </Suspense>
-                    </>
+                    <Suspense fallback={<StaticLoadingOverlay />}>
+                        <Users />
+                    </Suspense>
                 </div>
             </AuthenticatedLayout>
         </>

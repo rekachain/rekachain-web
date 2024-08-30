@@ -10,7 +10,18 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    /**
+     * only specific role have authorization to use web app
+     * in this case only:
+     * - SUPER_ADMIN
+     * - PPC_PERENCANAAN
+     * - PPC_PENGENDALIAN
+     * - SUPERVISOR_MEKANIK
+     * - SUPERVISOR_ELEKTRIK
+     * - SUPERVISOR_ASSEMBLY
+     * can login to the web app
+     */
+    $user = User::factory()->superAdmin()->create();
 
     $response = $this->post('/login', [
         'nip' => $user->nip,

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Component extends Model {
     use HasFactory;
@@ -12,11 +13,10 @@ class Component extends Model {
     protected $fillable = [
         'name',
         'progress_id',
-        'carriage_panel_id',
     ];
 
-    public function panel(): BelongsTo {
-        return $this->belongsTo(CarriagePanel::class);
+    public function carriage_panel_component(): HasMany {
+        return $this->hasMany(CarriagePanelComponent::class);
     }
 
     public function progress(): BelongsTo {

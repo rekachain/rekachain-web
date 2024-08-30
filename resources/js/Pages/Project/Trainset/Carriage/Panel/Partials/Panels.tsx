@@ -1,6 +1,9 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import { CarriageTrainsetResource } from '@/support/interfaces/resources';
 import { useConfirmation } from '@/hooks/useConfirmation';
+import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
+import { Button } from '@/Components/ui/button';
+import { carriagePanelService } from '@/services/carriagePanelService';
 
 export default function ({
     carriageTrainset,
@@ -9,15 +12,15 @@ export default function ({
     carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
-    const handleCarriageDeletion = (carriageCarriageId: number) => {
+    const handlePanelDeletion = (carriageCarriageId: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
+                await carriagePanelService.delete(carriageCarriageId);
+                await handleSyncCarriage();
+                await window.Swal.fire({
                     icon: 'success',
                     title: 'Carriage deleted successfully',
                 });
-                // await carriageService.deleteCarriageCarriage(carriage.id, carriageCarriageId);
-                // await handleSyncCarriage();
             }
         });
     };
@@ -34,29 +37,31 @@ export default function ({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriageTrainset?.carriage_panels?.map(panel => (
-                        <TableRow key={panel.id}>
-                            <TableCell>{panel.panel.name}</TableCell>
-                            <TableCell>{panel.qty}</TableCell>
-                            <TableCell>{panel.panel.description}</TableCell>
+                    {carriageTrainset?.carriage_panels?.map(carriage_panel => (
+                        <TableRow key={carriage_panel.id}>
+                            <TableCell>{carriage_panel.panel.name}</TableCell>
+                            <TableCell>
+                                <PanelQty handleSyncCarriage={handleSyncCarriage} carriage_panel={carriage_panel} />
+                            </TableCell>
+                            <TableCell>{carriage_panel.panel.description}</TableCell>
                             <TableCell>
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}
-                                {/*    href={route(`${ROUTES.PROJECTS_TRAINSETS}.edit`, panel.id)}*/}
+                                {/*    href={route(`${ROUTES.PROJECTS_TRAINSETS}.edit`, carriage_panel.id)}*/}
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
 
-                                {/*<Button variant="link" onClick={() => handleCarriageDeletion(panel.pivot!.id)}>*/}
-                                {/*    Delete*/}
-                                {/*</Button>*/}
+                                <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>
+                                    Delete
+                                </Button>
 
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}
                                 {/*    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES_PANELS}.index`, [*/}
-                                {/*        panel.project_id,*/}
-                                {/*        panel.id,*/}
-                                {/*        panel.id,*/}
+                                {/*        carriage_panel.project_id,*/}
+                                {/*        carriage_panel.id,*/}
+                                {/*        carriage_panel.id,*/}
                                 {/*    ])}*/}
                                 {/*>*/}
                                 {/*    Detail*/}

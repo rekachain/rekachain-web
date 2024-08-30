@@ -2,10 +2,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { TrainsetResource } from '@/support/interfaces/resources';
 import { ROUTES } from '@/support/constants/routes';
 import { Link } from '@inertiajs/react';
-import { buttonVariants } from '@/Components/ui/button';
+import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
-import { trainsetService } from '@/services/trainsetService';
 import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
+import { carriageTrainsetService } from '@/services/carriageTrainsetService';
 
 export default function ({
     trainset,
@@ -17,12 +17,12 @@ export default function ({
     const handleCarriageDeletion = (carriageTrainsetId: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
+                await carriageTrainsetService.delete(carriageTrainsetId);
+                await handleSyncTrainset();
+                await window.Swal.fire({
                     icon: 'success',
                     title: 'Trainset deleted successfully',
                 });
-                await trainsetService.deleteCarriageTrainset(trainset.id, carriageTrainsetId);
-                await handleSyncTrainset();
             }
         });
     };
@@ -65,9 +65,9 @@ export default function ({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                {/*<Button variant="link" onClick={() => handleCarriageDeletion(carriage_trainset.pivot!.id)}>*/}
-                                {/*    Delete*/}
-                                {/*</Button>*/}
+                                <Button variant="link" onClick={() => handleCarriageDeletion(carriage_trainset.id)}>
+                                    Delete
+                                </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_PANELS}.index`, [

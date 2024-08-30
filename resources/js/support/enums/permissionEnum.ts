@@ -43,4 +43,14 @@ export enum PERMISSION_ENUM {
     PRESET_TRAINSET_READ = 'preset-trainset-read',
     PRESET_TRAINSET_UPDATE = 'preset-trainset-update',
     PRESET_TRAINSET_DELETE = 'preset-trainset-delete',
+
+    PANEL_CREATE = 'panel-create',
+    PANEL_READ = 'panel-read',
+    PANEL_UPDATE = 'panel-update',
+    PANEL_DELETE = 'panel-delete',
+
+    RAW_MATERIAL_CREATE = 'raw-material-create',
+    RAW_MATERIAL_READ = 'raw-material-read',
+    RAW_MATERIAL_UPDATE = 'raw-material-update',
+    RAW_MATERIAL_DELETE = 'raw-material-delete',
 }

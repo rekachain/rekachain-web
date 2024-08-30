@@ -6,12 +6,17 @@ use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\Trainset;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
+use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Support\Facades\DB;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
-    public function __construct(protected PresetTrainsetServiceInterface $presetTrainsetService, protected CarriageServiceInterface $carriageService) {
+    public function __construct(
+        protected PresetTrainsetServiceInterface $presetTrainsetService,
+        protected CarriageServiceInterface $carriageService,
+        protected CarriageTrainsetServiceInterface $carriageTrainsetService
+    ) {
         parent::__construct();
     }
 
@@ -22,10 +27,19 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
             $trainset->update(['preset_trainset_id' => $preset_trainset_id]);
             // Step 1: Delete nested data related to the carriages
-            $trainset->carriage_trainsets->each->delete();
-            // Step 1: Detach existing carriages from the trainset
+            $trainset->carriage_trainsets->each(function ($carriageTrainset) {
+                $carriageTrainset->carriage_panels->each(function ($carriagePanel) {
+                    $carriagePanel->components->each(function ($component) {
+                        $component->delete();
+                    });
+                    $carriagePanel->delete();
+                });
+                $carriageTrainset->delete();
+            });
+
+            // Step 2: Detach existing carriages from the trainset
             $trainset->carriages()->detach();
-            //            // Step 2: Aggregate quantities for duplicate carriage IDs
+            //            // Step 3: Aggregate quantities for duplicate carriage IDs
             $carriages = [];
             foreach ($presetTrainset->carriage_presets as $carriagePreset) {
                 $carriageId = $carriagePreset['carriage_id'];
@@ -38,7 +52,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 }
             }
 
-            // Step 3: Sync the aggregated carriages with the trainset
+            // Step 4: Sync the aggregated carriages with the trainset
             $trainset->carriages()->sync($carriages);
 
             return true;
@@ -153,6 +167,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
             return true;
         });
+    }
+
+    public function delete($keyOrModel): bool {
+        $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
+            $this->carriageTrainsetService->delete($carriageTrainset);
+        });
+
+        return parent::delete($keyOrModel);
     }
 
     protected function getRepositoryClass(): string {
