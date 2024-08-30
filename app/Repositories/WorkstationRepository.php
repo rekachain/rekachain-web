@@ -5,11 +5,13 @@ namespace App\Repositories;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\Workstation;
 use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
+use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
+use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
 
 class WorkstationRepository extends BaseRepository implements WorkstationRepositoryInterface {
-    use HandlesRelations;
+    use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
         return Workstation::class;
@@ -18,11 +20,11 @@ class WorkstationRepository extends BaseRepository implements WorkstationReposit
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
 
-        if (isset($searchParams['name'])) {
-            $query->where('name', 'like', '%' . $searchParams['name'] . '%');
-        }
+        $query = $this->applySearchFilters($query, $searchParams, ['name', 'location']);
 
-        $this->applyResolvedRelations($query, $searchParams);
+        $query = $this->applyResolvedRelations($query, $searchParams);
+
+        $query = $this->applySorting($query, $searchParams);
 
         return $query;
     }
