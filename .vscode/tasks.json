@@ -93,8 +93,25 @@
             "problemMatcher": [],
             "type": "shell",
             "command": "./vendor/bin/pint"
+        },
+
+        {
+            "label": "Run Pest",
+            "type": "shell",
+            "command": ".\\vendor\\bin\\pest",
+            "args": [
+                "${input:pestFile}"
+            ],
         }
 
         // ----------------------------------------------------------------
+    ],
+    "inputs": [
+        {
+            "id": "pestFile",
+            "type": "promptString",
+            "description": "Enter the file relative path to be tested (leave blank to run all tests)",
+            "default": "tests\\Unit\\VerifyStandardProjectStructureTest.php",
+        }
     ]
 }
