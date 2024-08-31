@@ -45,9 +45,9 @@ class CarriageTrainsetService extends BaseCrudService implements CarriageTrainse
                 'qty' => $carriagePanelQty,
             ]);
 
-            $carriageTrainset->trainset()->update([
-                'preset_trainset_id' => null,
-            ]);
+            // TODO: change trainset_preset_id to null?
+
+            //            $carriageTrainset->trainset()->update(['preset_trainset_id' => null]);
 
             return true;
         });

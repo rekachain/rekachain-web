@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\CarriageTrainset;
 use App\Models\Permission;
 use App\Models\Trainset;
+use App\Observers\CarriageTrainsetObserver;
 use App\Observers\PermissionObserver;
 use App\Observers\TrainsetObserver;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -29,11 +32,14 @@ class AppServiceProvider extends ServiceProvider {
     public function boot(): void {
         Permission::observe(PermissionObserver::class);
         Trainset::observe(TrainsetObserver::class);
+        CarriageTrainset::observe(CarriageTrainsetObserver::class);
 
         JsonResource::withoutWrapping();
 
         Gate::before(function ($user, $ability) {
-            return $user->hasRole('Super Admin') ? true : null;
+            $superAdmin = RoleEnum::SUPER_ADMIN->value;
+
+            return $user->hasRole($superAdmin) ? true : null;
         });
     }
 }
