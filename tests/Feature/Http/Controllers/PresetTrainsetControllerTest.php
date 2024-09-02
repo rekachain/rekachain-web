@@ -2,8 +2,11 @@
 
 use App\Models\User;
 use App\Models\Project;
+use App\Models\Carriage;
 use App\Models\Trainset;
 use App\Models\PresetTrainset;
+use App\Support\Enums\IntentEnum;
+
 
 test('can get get all preset trainsets', function () {
     $superAdmin = User::factory()->superAdmin()->create([
@@ -51,16 +54,33 @@ test('cannot delete preset if trainsets are related', function () {
     $this->assertDatabaseHas('preset_trainsets', ['id' => $preset->id]);
 });
 
-test('can change preset from custom/null preset id', function () {
+test('can create trainset, add carriages, and save as new preset', function () {
     $superAdmin = User::factory()->superAdmin()->create();
     $project = new Project();
     $project->name = 'Project';
     $project->save();
+
+    // Create Trainset With Null Preset
     $trainset = Trainset::factory()->create(['preset_trainset_id' => null]);
+
+    // Create New Preset
     $newPreset = PresetTrainset::factory()->create();
 
+    // Create New Carriage
+    $carriage = Carriage::factory()->create();
+    $carriage2 = Carriage::factory()->create();
+
+    // Create Carriage Preset
+    $this->actingAs($superAdmin)->postJson("/carriage-presets", [
+        'carriages' => [
+            ['preset_trainset_id' => $newPreset->id, 'carriage_id' => $carriage->id, 'qty' => 2],
+            ['preset_trainset_id' => $newPreset->id, 'carriage_id' => $carriage2->id, 'qty' => 3],
+        ]
+        ]);
+
+    // Change Trainset Preset
     $response = $this->actingAs($superAdmin)->putJson("/trainsets/{$trainset->id}", [
-        'intent' => "WEB_PROJECT_CHANGE_TRAINSET_PRESET",
+        'intent' => IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET,
         'preset_trainset_id' => $newPreset->id
     ]);
 
