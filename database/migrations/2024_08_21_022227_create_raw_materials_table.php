@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('raw_materials', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_material')->nullable();
+            $table->string('material_code')->unique()->nullable();
             $table->string('description')->nullable();
             $table->string('unit')->nullable();
             $table->string('specs')->nullable();

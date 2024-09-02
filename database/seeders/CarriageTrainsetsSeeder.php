@@ -19,11 +19,13 @@ class CarriageTrainsetsSeeder extends Seeder {
         if ($csvData) {
             foreach ($csvData as $data) {
                 if (Carriage::whereType($data['carriage_type'])->exists() && Trainset::whereName($data['trainset_name'])->exists()) {
-                    CarriageTrainset::create([
-                        'trainset_id' => Trainset::whereName($data['trainset_name'])->first()->id,
-                        'carriage_id' => Carriage::whereType($data['carriage_type'])->first()->id,
-                        'qty' => $data['qty'],
-                    ]);
+                    CarriageTrainset::withoutEvents(function () use ($data) {
+                        CarriageTrainset::create([
+                            'trainset_id' => Trainset::whereName($data['trainset_name'])->first()->id,
+                            'carriage_id' => Carriage::whereType($data['carriage_type'])->first()->id,
+                            'qty' => $data['qty'],
+                        ]);
+                    });
                 }
             }
         } else {

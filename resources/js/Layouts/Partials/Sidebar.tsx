@@ -7,6 +7,7 @@ import {
     RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
+    RiInstanceLine,
     RiLockUnlockLine,
     RiQuestionLine,
     RiSettings3Line,
@@ -149,6 +150,14 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
+                        {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.RAW_MATERIALS}.index`}
+                                title="List Bahan Baku"
+                                icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
                         {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.PANELS}.index`}
