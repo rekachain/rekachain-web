@@ -51,7 +51,7 @@ class PanelController extends Controller {
      */
     public function show(Panel $panel) {
         if ($this->ajax()) {
-            return new PanelResource($panel);
+            return new PanelResource($panel->load('progress'));
         }
     }
 

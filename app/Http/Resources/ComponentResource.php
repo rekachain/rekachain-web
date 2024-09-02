@@ -15,6 +15,7 @@ class ComponentResource extends JsonResource {
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'progress_id' => $this->progress_id,
             'panel' => PanelResource::make($this->whenLoaded('panel')),
             'progress' => ProgressResource::make($this->whenLoaded('progress')),
             'updated_at' => $this->updated_at,

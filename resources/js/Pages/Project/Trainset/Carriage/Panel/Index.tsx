@@ -54,18 +54,11 @@ export default function ({
     const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
-    const [panelFilters, setPanelFilters] = useState<ServiceFilterOptions>({
-        page: 1,
-        perPage: 10,
-    });
-    const [progressFilters, setProgressFilters] = useState<ServiceFilterOptions>({
-        page: 1,
-        perPage: 10,
-    });
-
+    const [isLoading, setIsLoading] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
+        search_progress: '',
+        search_panel: '',
         trainsetNeeded: 0,
-        isLoading: false,
         new_panel_id: 0,
         progress_id: 0,
         new_panel_name: '',
@@ -73,8 +66,8 @@ export default function ({
         new_panel_qty: 1,
     });
 
-    const debouncedPanelFilters = useDebounce(panelFilters, 300);
-    const debouncedProgressFilters = useDebounce(progressFilters, 300);
+    const debouncedSearchProgress = useDebounce(data.search_progress, 300);
+    const debouncedSearchPanel = useDebounce(data.search_panel, 300);
 
     useEffect(() => {
         panelService.getAll().then(response => {
@@ -83,48 +76,59 @@ export default function ({
     }, []);
 
     const handleChangeSearchPanelName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const search = e.target.value;
-        setPanelFilters({ ...panelFilters, search });
-        // await handleSyncCarriages();
+        setData('search_panel', e.target.value);
     };
 
     const handleChangeSearchprogressName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const search = e.target.value;
-        setProgressFilters({ ...progressFilters, search });
-        // await handleSyncCarriages();
+        setData('search_progress', e.target.value);
     };
 
     const handleResetAddCarriageSelection = () => {
         setData('new_panel_id', 0);
     };
 
-    const handleResetAddProgressSelection = () => {
-        setData('progress_id', 0);
+    const handleResetProgressSearch = () => {
+        setData('search_progress', '');
+        // setProgressFilters({ ...progressFilters, search: '' });
     };
 
     const handleSyncPanels = async () => {
-        await panelService.getAll(debouncedPanelFilters).then(res => {
+        const filters: ServiceFilterOptions = { search: debouncedSearchPanel };
+        await panelService.getAll(filters).then(res => {
             setPanelResponse(res);
         });
     };
 
+    const handleChangeNewPanelName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setData('new_panel_name', e.target.value);
+    };
+
+    const handleChangeNewPanelDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setData('new_panel_description', e.target.value);
+    };
+
+    const handleChangeNewPanelQty = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setData('new_panel_qty', +e.target.value);
+    };
+
     const handleSyncProgress = async () => {
-        await progressService.getAll(debouncedProgressFilters).then(res => {
+        const filters: ServiceFilterOptions = { search: debouncedSearchProgress };
+        await progressService.getAll(filters).then(res => {
             setProgressResponse(res);
         });
     };
 
     const handleSyncCarriage = async () => {
-        setData('isLoading', true);
+        setIsLoading(true);
         const response = await window.axios.get(location.href);
         setCarriageTrainset(response.data.carriageTrainset);
-        setData('isLoading', false);
+        setIsLoading(false);
     };
 
     const handleAddPanelCarriage = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            setData('isLoading', true);
+            setIsLoading(true);
             await carriageTrainsetService.addPanel(
                 carriageTrainset.id,
                 data.progress_id,
@@ -136,25 +140,35 @@ export default function ({
         } catch (error) {
         } finally {
             handleResetAddCarriageSelection();
-            handleResetAddProgressSelection();
+            handleResetProgressSearch();
             await handleSyncCarriage();
-            setData('isLoading', false);
+            setIsLoading(false);
         }
     };
 
-    useEffect(() => {
-        setData('isLoading', true);
-        handleSyncPanels().then(() => {
-            setData('isLoading', false);
-        });
-    }, [debouncedPanelFilters]);
+    const handleChangePanel = async (v: string) => {
+        const res = await panelService.get(+v);
+        setData(prevData => ({
+            ...prevData,
+            new_panel_id: +v,
+            search_progress: res.progress?.name || '',
+            progress_id: res.progress_id || 0,
+        }));
+    };
 
     useEffect(() => {
-        setData('isLoading', true);
-        handleSyncProgress().then(() => {
-            setData('isLoading', false);
+        setIsLoading(true);
+        handleSyncPanels().then(() => {
+            setIsLoading(false);
         });
-    }, [debouncedProgressFilters]);
+    }, [debouncedSearchPanel]);
+
+    useEffect(() => {
+        setIsLoading(true);
+        handleSyncProgress().then(() => {
+            setIsLoading(false);
+        });
+    }, [debouncedSearchProgress]);
 
     return (
         <>
@@ -215,18 +229,27 @@ export default function ({
                                     <SelectGroup className="space-y-2">
                                         <div className="flex flex-col bg-background-2 gap-4 p-4">
                                             <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
-                                            <Input
-                                                placeholder="Cari progress"
-                                                value={progressFilters.type}
-                                                onChange={handleChangeSearchprogressName}
-                                                disabled={data.isLoading}
-                                            />
+                                            <div className="flex gap-4">
+                                                <Input
+                                                    placeholder="Cari progress"
+                                                    value={data.search_progress}
+                                                    onChange={handleChangeSearchprogressName}
+                                                    disabled={isLoading}
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    onClick={handleResetProgressSearch}
+                                                >
+                                                    <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
+                                                </Button>
+                                            </div>
                                             <div className="flex gap-4">
                                                 <Select
                                                     key={data.progress_id} // Force re-render when new_panel_progress_id changes
                                                     onValueChange={v => setData('progress_id', +v)}
                                                     value={data.progress_id?.toString()}
-                                                    disabled={data.isLoading}
+                                                    disabled={isLoading}
                                                     required
                                                 >
                                                     <SelectTrigger id="progress">
@@ -234,7 +257,7 @@ export default function ({
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" defaultChecked disabled>
-                                                            {data.isLoading ? 'Loading' : 'Pilih progress'}
+                                                            {isLoading ? 'Loading' : 'Pilih progress'}
                                                         </SelectItem>
                                                         {progressResponse?.data.map(progress => (
                                                             <SelectItem
@@ -247,28 +270,21 @@ export default function ({
                                                         ))}
                                                     </SelectContent>
                                                 </Select>
-                                                {/*<Button*/}
-                                                {/*    type="button"*/}
-                                                {/*    variant="ghost"*/}
-                                                {/*    onClick={handleResetAddProgressSelection}*/}
-                                                {/*>*/}
-                                                {/*    <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />*/}
-                                                {/*</Button>*/}
                                             </div>
 
                                             <Label htmlFor="panel">Pilih panel yang sudah ada</Label>
                                             <Input
                                                 placeholder="Cari panel"
-                                                value={panelFilters.type}
+                                                value={data.search_panel}
                                                 onChange={handleChangeSearchPanelName}
-                                                disabled={data.isLoading}
+                                                disabled={isLoading}
                                             />
                                             <div className="flex gap-4">
                                                 <Select
                                                     key={data.new_panel_id} // Force re-render when new_panel_id changes
-                                                    onValueChange={v => setData('new_panel_id', +v)}
+                                                    onValueChange={handleChangePanel}
                                                     value={data.new_panel_id?.toString()}
-                                                    disabled={data.isLoading}
+                                                    disabled={isLoading}
                                                     required
                                                 >
                                                     <SelectTrigger id="panel">
@@ -276,7 +292,7 @@ export default function ({
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" defaultChecked disabled>
-                                                            {data.isLoading ? 'Loading' : 'Pilih panel'}
+                                                            {isLoading ? 'Loading' : 'Pilih panel'}
                                                         </SelectItem>
                                                         {panelResponse?.data.map(panel => (
                                                             <SelectItem key={panel.id} value={panel.id.toString()}>
@@ -311,7 +327,7 @@ export default function ({
                                             <Input
                                                 type="text"
                                                 value={data.new_panel_name}
-                                                onChange={e => setData('new_panel_name', e.target.value)}
+                                                onChange={handleChangeNewPanelName}
                                                 disabled={data.new_panel_id !== 0}
                                                 required
                                             />
@@ -321,7 +337,7 @@ export default function ({
                                             id="new-panel-description"
                                             className="p-2 rounded"
                                             value={data.new_panel_description}
-                                            onChange={e => setData('new_panel_description', e.target.value)}
+                                            onChange={handleChangeNewPanelDescription}
                                             disabled={data.new_panel_id !== 0}
                                         />
                                         <Label htmlFor="new-panel-qty">Jumlah Panel</Label>
@@ -330,13 +346,13 @@ export default function ({
                                             type="number"
                                             min={1}
                                             value={data.new_panel_qty}
-                                            onChange={e => setData('new_panel_qty', +e.target.value)}
+                                            onChange={handleChangeNewPanelQty}
                                             required
                                         />
                                     </div>
 
-                                    <Button type="submit" disabled={data.isLoading}>
-                                        {data.isLoading ? (
+                                    <Button type="submit" disabled={isLoading}>
+                                        {isLoading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                 Proses

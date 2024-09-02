@@ -166,8 +166,6 @@ class ProjectController extends Controller {
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 
-        //        dump($carriageTrainset->toArray($request), $project->toArray($request), $trainset->toArray($request));
-
         if ($this->ajax()) {
             return compact('project', 'trainset', 'carriageTrainset');
         }
