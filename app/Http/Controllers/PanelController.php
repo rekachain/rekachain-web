@@ -6,6 +6,7 @@ use App\Http\Requests\Panel\StorePanelRequest;
 use App\Http\Requests\Panel\UpdatePanelRequest;
 use App\Http\Resources\PanelResource;
 use App\Models\Panel;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -19,6 +20,13 @@ class PanelController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
+
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL->value:
+                    return $this->panelService->getImportDataTemplate();
+            }
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -42,6 +50,15 @@ class PanelController extends Controller {
      */
     public function store(StorePanelRequest $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_PANEL_IMPORT_PANEL->value:
+                    $this->panelService->importData($request->file('import_file'));
+
+                    return response()->noContent();
+            }
+
             return $this->panelService->create($request->validated());
         }
     }

@@ -39,6 +39,7 @@ import { PaginateResponse } from '@/support/interfaces/others';
 import { useDebounce } from '@uidotdev/usehooks';
 import { progressService } from '@/services/progressService';
 import { carriageTrainsetService } from '@/services/carriageTrainsetService';
+import { fetchGenericData } from '@/helpers/dataManagementHelper';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 
@@ -120,8 +121,8 @@ export default function ({
 
     const handleSyncCarriage = async () => {
         setIsLoading(true);
-        const response = await window.axios.get(location.href);
-        setCarriageTrainset(response.data.carriageTrainset);
+        const data = await fetchGenericData<{ carriageTrainset: CarriageTrainsetResource }>();
+        setCarriageTrainset(data.carriageTrainset);
         setIsLoading(false);
     };
 

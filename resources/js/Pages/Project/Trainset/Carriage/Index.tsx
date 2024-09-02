@@ -24,7 +24,6 @@ import {
 } from '@/Components/ui/dialog';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
-import { projectService } from '@/services/projectService';
 import { presetTrainsetService } from '@/services/presetTrainsetService';
 import { PaginateResponse } from '@/support/interfaces/others';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
@@ -41,6 +40,7 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
 import { ROUTES } from '@/support/constants/routes';
+import { fetchGenericData } from '@/helpers/dataManagementHelper';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -103,10 +103,13 @@ export default function ({
 
     const handleSyncTrainset = async () => {
         setIsLoading(true);
-        const response = await projectService.getTrainsetCarriages(trainset.project_id, trainset.id);
-        setTrainset(response.data.trainset);
-        setPresetTrainset(response.data.presetTrainsets);
-        data.preset_trainset_id = response.data.trainset.preset_trainset_id;
+        const responseData = await fetchGenericData<{
+            trainset: TrainsetResource;
+            presetTrainsets: PresetTrainsetResource[];
+        }>();
+        setTrainset(responseData.trainset);
+        setPresetTrainset(responseData.presetTrainsets);
+        data.preset_trainset_id = responseData.trainset.preset_trainset_id;
         setIsLoading(false);
     };
 
@@ -151,7 +154,7 @@ export default function ({
         // await handleSyncCarriages();
     };
 
-    const handleSyncCarriages = async () => {
+    const handleSyncCarriages = () => {
         carriageService.getAll(debouncedCarriageFilters).then(res => {
             setCarriageResponse(res);
         });

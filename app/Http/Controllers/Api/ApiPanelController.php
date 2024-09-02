@@ -37,7 +37,7 @@ class ApiPanelController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_PANEL_IMPORT_PANEL->value:
-                $this->panelService->importPanels($request->file('import_file'));
+                $this->panelService->importData($request->file('import_file'));
 
                 return response()->noContent();
         }

@@ -6,4 +6,6 @@ export const IntentEnum = {
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
     WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET: 'web.trainset.update.carriage.trainset',
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
+    WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
+    WEB_PANEL_IMPORT_PANEL: 'web.panel.import.panel',
 };

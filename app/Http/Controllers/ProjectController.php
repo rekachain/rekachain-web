@@ -74,10 +74,6 @@ class ProjectController extends Controller {
             return $project;
         }
 
-        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
-        //
-        //        $request->merge(['intent' => $intent]);
-
         return inertia('Project/Show', ['project' => $project]);
     }
 
@@ -119,10 +115,6 @@ class ProjectController extends Controller {
         if ($this->ajax()) {
             return $project;
         }
-
-        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
-
-        //        $request->merge(['intent' => $intent]);
 
         return inertia('Project/Trainset/Index', ['project' => $project]);
     }
