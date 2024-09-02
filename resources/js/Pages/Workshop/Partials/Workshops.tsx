@@ -61,11 +61,11 @@ export default function () {
             {workshopResponse && (
                 <>
                     <div className="hidden md:block">
-                        {/* <WorkshopTableView
-                            roleResponse={roleResponse}
-                            // ={handleRoleResourceDeletion}
-                            auth={auth}
-                        ></WorkshopTableView> */}
+                        <WorkshopTableView
+                            workshopResponse={workshopResponse}
+                            handleWorkshopDeletion={handleWorkshopDeletion}
+                            auth={''}
+                        ></WorkshopTableView>
                         {/* <UserTableView
                             userResponse={userResponse}
                             handleUserDeletion={handleUserDeletion}

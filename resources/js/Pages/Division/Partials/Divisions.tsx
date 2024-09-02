@@ -11,6 +11,8 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { divisionService } from '@/services/divisionService';
 import { useMediaQuery } from 'react-responsive';
 import AnimateIn from '@/lib/AnimateIn';
+import DivisionTableView from './Partials/DivisionTableView';
+import DivisionCardView from './Partials/DivisionCardView';
 
 export default function () {
     const [divisionResponse, setDivisionResponse] = useState<PaginateResponse<DivisionResource>>();
@@ -53,7 +55,34 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            {isTabletOrMobile && (
+            {divisionResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <DivisionTableView
+                            divisionResponse={divisionResponse}
+                            handleDivisionDeletion={handleDivisionDeletion}
+                            auth={''}
+                        ></DivisionTableView>
+                        {/* <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            auth={auth}
+                        /> */}
+                    </div>
+
+                    <div className="block md:hidden">
+                        <DivisionCardView
+                            divisionResponse={divisionResponse}
+                            // handleRoleDeletion={handleRoleResourceDeletion}
+                            handleDivisionDeletion={handleDivisionDeletion}
+                            auth={''}
+                            // auth={auth}
+                        ></DivisionCardView>
+                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
+                    </div>
+                </>
+            )}
+            {/* {isTabletOrMobile && (
                 <>
                     {divisionResponse?.data.map(division => (
                         <AnimateIn
@@ -68,11 +97,10 @@ export default function () {
                                 <div className="flex w-full justify-between items-scenter">
                                     <h4 className="font-bold text-xl">{division.name}</h4>
                                     <div className="text-center">
-                                        {/* <h5 className="font-bold text-xs items-center "> {division.role?.name}</h5> */}
                                     </div>
-                                </div>
+                                </div> */}
 
-                                {/* <h5 className="font-bold text-sm ">NIP : {division.nip}</h5>
+            {/* <h5 className="font-bold text-sm ">NIP : {division.nip}</h5>
                                 <div className="flex">
                                     <div className="">
                                         <p className="text-xs">Email </p>
@@ -86,7 +114,7 @@ export default function () {
                                         <p className="text-xs">{division.email}</p>
                                         <p className="text-xs">{division.phone_number}</p>
                                     </div> */}
-                                <div className="flex items-center justify-end w-full">
+            {/* <div className="flex items-center justify-end w-full">
                                     <Link
                                         className={buttonVariants({ variant: 'link' })}
                                         href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
@@ -98,12 +126,11 @@ export default function () {
                                     </Button>
                                 </div>
                             </div>
-                            {/* </div> */}
                         </AnimateIn>
                     ))}
                 </>
-            )}
-            {isDesktopOrLaptop && (
+            )} */}
+            {/* {isDesktopOrLaptop && (
                 <div className="">
                     <Table>
                         <TableHeader>
@@ -130,11 +157,9 @@ export default function () {
                                 </TableRow>
                             ))}
                         </TableBody>
-                    </Table>
+                    </Table> */}
 
-                    <GenericPagination meta={divisionResponse?.meta} handleChangePage={handlePageChange} />
-                </div>
-            )}
+            <GenericPagination meta={divisionResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
 }
