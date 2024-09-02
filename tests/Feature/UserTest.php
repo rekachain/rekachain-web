@@ -28,9 +28,7 @@ test('only Super Admin and authorized user can view create user form', function 
 });
 
 test('user can be created', function () {
-    // Role automatically created by UserFactory
-    $superAdmin = User::factory()->superAdmin()->create();
-    $this->actingAs($superAdmin);
+    actAsSuperAdmin();
 
     $userData = [
         'nip' => '123456789012345680',
@@ -53,9 +51,7 @@ test('user can be created', function () {
 });
 
 test('user can be viewed', function () {
-    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
-
-    $this->actingAs($ppcPerencanaan);
+    actAsPpcPerencanaan();
 
     $user = User::factory()->create();
 
@@ -68,9 +64,7 @@ test('user can be viewed', function () {
 });
 
 test('user can be updated', function () {
-    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
-
-    $this->actingAs($ppcPerencanaan);
+    actAsPpcPerencanaan();
 
     $user = User::factory()->create();
 
@@ -92,10 +86,7 @@ test('user can be updated', function () {
 });
 
 test('user can be updated with providing image', function () {
-
-    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
-
-    $this->actingAs($ppcPerencanaan);
+    actAsPpcPerencanaan();
 
     $user = User::factory()->create();
 
@@ -120,9 +111,7 @@ test('user can be updated with providing image', function () {
 });
 
 test('user can be deleted', function () {
-    $ppcPerencanaan = User::factory()->ppcPerencanaan()->create();
-
-    $this->actingAs($ppcPerencanaan);
+    actAsPpcPerencanaan();
 
     $user = User::factory()->create();
 
