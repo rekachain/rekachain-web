@@ -7,6 +7,7 @@ use App\Http\Requests\Panel\StorePanelRequest;
 use App\Http\Requests\Panel\UpdatePanelRequest;
 use App\Http\Resources\PanelResource;
 use App\Models\Panel;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Http\Request;
 
@@ -32,6 +33,15 @@ class ApiPanelController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StorePanelRequest $request) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::API_PANEL_IMPORT_PANEL->value:
+                $this->panelService->importPanels($request->file('import_file'));
+
+                return response()->noContent();
+        }
+
         return $this->panelService->create($request->validated());
     }
 
