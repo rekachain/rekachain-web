@@ -19,8 +19,8 @@ class StorePanelMaterialRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'panel_id' => 'integer',
-            'material_id' => 'integer',
+            'carriage_panel_id' => 'integer',
+            'panel_material_id' => 'integer',
             'qty' => 'integer',
         ];
     }

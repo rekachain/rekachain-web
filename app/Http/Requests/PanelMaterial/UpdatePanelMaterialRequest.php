@@ -22,8 +22,8 @@ class UpdatePanelMaterialRequest extends FormRequest {
         $panelMaterial = $this->route('panelMaterial')->id;
 
         return [
-            'panel_id' => 'integer',
-            'material_id' => 'integer',
+            'carriage_panel_id' => 'integer',
+            'raw_material_id' => 'integer',
             'qty' => 'integer',
         ];
     }

@@ -15,8 +15,8 @@ class PanelMaterialResource extends JsonResource {
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'panel_id' => $this->panel_id,
-            'progress_id' => $this->progress_id,
+            'carriage_panel_id' => $this->carriage_panel_id,
+            'raw_material_id' => $this->raw_material_id,
             'qty' => $this->qty,
         ];
     }
