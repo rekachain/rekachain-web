@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class PanelService extends BaseCrudService implements PanelServiceInterface {
     public function importPanels(UploadedFile $file): bool {
         Excel::import(new PanelsImport, $file);
+
         return true;
     }
 
