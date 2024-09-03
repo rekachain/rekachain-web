@@ -68,7 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriage-panels', CarriagePanelController::class);
     Route::resource('progress', ProgressController::class);
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
-    Route::resource('components', ComponentController::class);
+    Route::resource('components', ComponentController::class)->only(['index', 'show']);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
