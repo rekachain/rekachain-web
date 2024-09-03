@@ -74,10 +74,6 @@ class ProjectController extends Controller {
             return $project;
         }
 
-        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
-        //
-        //        $request->merge(['intent' => $intent]);
-
         return inertia('Project/Show', ['project' => $project]);
     }
 
@@ -120,10 +116,6 @@ class ProjectController extends Controller {
             return $project;
         }
 
-        //        $intent = IntentEnum::WEB_PROJECT_GET_TRAINSETS->value;
-
-        //        $request->merge(['intent' => $intent]);
-
         return inertia('Project/Trainset/Index', ['project' => $project]);
     }
 
@@ -165,8 +157,6 @@ class ProjectController extends Controller {
         $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel'], 'carriage']));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
-
-        //        dump($carriageTrainset->toArray($request), $project->toArray($request), $trainset->toArray($request));
 
         if ($this->ajax()) {
             return compact('project', 'trainset', 'carriageTrainset');

@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { buttonVariants } from '@/Components/ui/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import Import from '@/Pages/Panel/Partials/Import';
 
 export default function () {
     const Panels = lazy(() => import('./Partials/Panels'));
@@ -20,6 +21,7 @@ export default function () {
                         >
                             Tambah Panel
                         </Link>
+                        <Import />
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Panels />

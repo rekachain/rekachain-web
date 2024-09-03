@@ -12,18 +12,6 @@ class CarriageResource extends JsonResource {
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array {
-
-        //        $intent = $request->get('intent');
-        //
-        //        switch ($intent) {
-        //            case IntentEnum::WEB_PROJECT_GET_TRAINSETS->value:
-        //                return [
-        //                    'id' => $this->id,
-        //                    'type' => $this->type,
-        //                    'qty' => $this->pivot->qty,
-        //                ];
-        //        }
-
         return [
             'id' => $this->id,
             'type' => $this->type,
