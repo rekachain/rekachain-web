@@ -41,7 +41,7 @@ class ApiPanelAttachmentController extends Controller
      */
     public function show(PanelAttachment $panelAttachment)
     {
-        return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation','carriage_panel.panel', 'carriage_panel.panel_materials','carriage_trainset.carriage', 'carriage_trainset.trainset']));
+        return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation','carriage_panel.panel', 'carriage_panel.panel_materials.raw_material','carriage_trainset.carriage', 'carriage_trainset.trainset']));
     }
 
     /**

@@ -16,7 +16,8 @@ class PanelMaterialResource extends JsonResource {
         return [
             'id' => $this->id,
             'carriage_panel_id' => $this->carriage_panel_id,
-            'raw_material_id' => $this->raw_material_id,
+            // 'raw_material_id' => $this->raw_material_id,
+            'raw_material' => new RawMaterialResource($this->whenLoaded('raw_material')),
             'qty' => $this->qty,
         ];
     }
