@@ -16,7 +16,7 @@ class PanelMaterial extends Model {
     ];
 
     public function raw_material(): BelongsTo {
-        return $this->belongsTo(Material::class);
+        return $this->belongsTo(RawMaterial::class);
     }
 
     public function carriage_panel(): BelongsTo {
