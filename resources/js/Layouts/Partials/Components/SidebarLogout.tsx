@@ -16,9 +16,9 @@ import {
 } from '@/Components/ui/alert-dialog';
 
 export default function () {
-    const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full`;
+    const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full pr-52 md:mr-0 `;
     return (
-        <div className="sidebar-item px-4">
+        <div className=" md:px-4 ">
             {/* <Dialog>
                 <DialogTrigger>
 
@@ -35,10 +35,21 @@ export default function () {
                 </DialogContent>
             </Dialog> */}
             <AlertDialog>
-                <AlertDialogTrigger>
-                    <div className={linkClass}>
-                        <RiLogoutBoxRLine size="20" />
-                        <span className="sidebar-item-text ml-2">Logout</span>
+                <AlertDialogTrigger className=" w-full  md:w-fit">
+                    {/* <div className={linkClass}>
+                        <RiLogoutBoxRLine size="30" className="block md:hidden" />
+                        <RiLogoutBoxRLine size="20" className="hidden md:block" />
+                        <span className="sidebar-item-text ml-2  md:mr-0">Logout</span>
+                    </div> */}
+                    <div className="hidden md:block">
+                        <div className={linkClass}>
+                            <RiLogoutBoxRLine size="20" className="" />
+                            <span className="sidebar-item-text ml-2  md:mr-0">Logout</span>
+                        </div>
+                    </div>
+                    <div className=" md:hidden flex  items-center">
+                        <RiLogoutBoxRLine size="32" className="" />
+                        <span className="text-base ml-3  md:mr-0">Logout</span>
                     </div>
                 </AlertDialogTrigger>
                 <AlertDialogContent>

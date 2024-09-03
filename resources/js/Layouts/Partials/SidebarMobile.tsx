@@ -294,6 +294,7 @@ export default function SidebarMobile() {
                                             <RiQuestionLine size={35} />
                                             <p className="text-base">Help Desk</p>
                                         </Link>
+                                        <SidebarLogout />
                                     </div>
                                 </SheetDescription>
                             </SheetHeader>
