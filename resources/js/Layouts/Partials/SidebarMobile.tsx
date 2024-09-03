@@ -1,4 +1,5 @@
 import {
+    RiArtboard2Fill,
     RiBox3Line,
     RiContractLeftLine,
     RiContractRightLine,
@@ -6,6 +7,7 @@ import {
     RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
+    RiInstanceLine,
     RiLockLine,
     RiLockUnlockFill,
     RiQuestionLine,
@@ -230,8 +232,23 @@ export default function SidebarMobile() {
 
                                     <hr className="border-gray-700 border-2 w-full" />
 
-                                    {/* <ListOrdered size={STYLING.ICON.SIZE.MEDIUM} /> */}
+                                    <Link
+                                        className="flex items-center gap-2"
+                                        href={route(`${ROUTES.RAW_MATERIALS}.index`)}
+                                    >
+                                        <RiInstanceLine size={35} />
+                                        <p className="text-base">List Bahan Baku</p>
+                                    </Link>
+                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PANELS}.index`)}>
+                                        <RiArtboard2Fill size={35} />
+                                        <p className="text-base">List Panel</p>
+                                    </Link>
+                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PROJECTS}.index`)}>
+                                        <RiBox3Line size={35} />
+                                        <p className="text-base">List Proyek</p>
+                                    </Link>
 
+                                    {/* 
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
@@ -239,7 +256,6 @@ export default function SidebarMobile() {
                                                     <ListOrdered size={35} />
                                                     <p className="text-base">List Proyek</p>
                                                 </div>
-                                                {/* <RiBox3Line size={STYLING.ICON.SIZE.MEDIUM} /> */}
                                             </AccordionTrigger>
                                             <AccordionContent className="items-center flex flex-col gap-7">
                                                 <Link
@@ -262,15 +278,23 @@ export default function SidebarMobile() {
                                                 </Link>
                                             </AccordionContent>
                                         </AccordionItem>
-                                    </Accordion>
-                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PROFILE}.edit`)}>
-                                        <RiSettings3Line size={35} />
-                                        <p className="text-base">Pengaturan</p>
-                                    </Link>
-                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PROFILE}.edit`)}>
-                                        <RiQuestionLine size={35} />
-                                        <p className="text-base">Help Desk</p>
-                                    </Link>
+                                    </Accordion> */}
+                                    <div className="flex flex-col h-44 justify-end gap-y-6 ">
+                                        <Link
+                                            className="flex items-center gap-2 m "
+                                            href={route(`${ROUTES.PROFILE}.edit`)}
+                                        >
+                                            <RiSettings3Line size={35} />
+                                            <p className="text-base">Pengaturan</p>
+                                        </Link>
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.PROFILE}.edit`)}
+                                        >
+                                            <RiQuestionLine size={35} />
+                                            <p className="text-base">Help Desk</p>
+                                        </Link>
+                                    </div>
                                 </SheetDescription>
                             </SheetHeader>
                         </SheetContent>
