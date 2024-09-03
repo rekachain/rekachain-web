@@ -4,14 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Component\StoreComponentRequest;
 use App\Http\Requests\Component\UpdateComponentRequest;
+use App\Http\Resources\ComponentResource;
 use App\Models\Component;
+use App\Support\Interfaces\Services\ComponentServiceInterface;
+use Illuminate\Http\Request;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ComponentController extends Controller {
+    public function __construct(protected ComponentServiceInterface $componentService) {}
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        //
+    public function index(Request $request) {
+        if ($this->ajax()) {
+            try {
+                $perPage = request()->get('perPage', 5);
+
+                return ComponentResource::collection($this->componentService->getAllPaginated($request->query(), $perPage));
+            } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
+            }
+        }
+
+        return inertia('Component/Index');
     }
 
     /**
@@ -32,7 +47,9 @@ class ComponentController extends Controller {
      * Display the specified resource.
      */
     public function show(Component $component) {
-        //
+        if ($this->ajax()){
+            return new ComponentResource($component->load('progress'));
+        }
     }
 
     /**

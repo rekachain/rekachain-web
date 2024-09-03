@@ -3,6 +3,7 @@
 use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Project;
 use App\Models\Component;
 use App\Models\Permission;
 use App\Support\Enums\PermissionEnum;
@@ -85,4 +86,12 @@ function  createComponent() {
     $component->save();
 
     return $component;
+}
+
+function createProject() {
+    $project = new Project();
+    $project->name = 'Project';
+    $project->save();
+
+    return $project;
 }
