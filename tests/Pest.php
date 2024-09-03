@@ -1,11 +1,12 @@
 <?php
 
-use App\Models\Permission;
+use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Component;
+use App\Models\Permission;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,4 +77,12 @@ function actAsPpcPengendalian(): TestCase {
     $user->assignRole($role);
 
     return test()->actingAs($user);
+}
+
+function  createComponent() {
+    $component = new Component();
+    $component->name = 'Component';
+    $component->save();
+
+    return $component;
 }

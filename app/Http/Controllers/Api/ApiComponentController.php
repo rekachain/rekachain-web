@@ -32,7 +32,7 @@ class ApiComponentController extends Controller {
         // $request->checkPermissionEnum(PermissionEnum::COMPONENT_CREATE);
         $component = $this->componentService->create($request->validated());
 
-        return new ComponentResource($component->load('panel', 'progress'));
+        return new ComponentResource($component->load('progress'));
     }
 
     /**
@@ -40,7 +40,7 @@ class ApiComponentController extends Controller {
      */
     public function show(Component $component) {
         // $request->checkPermissionEnum(PermissionEnum::COMPONENT_READ);
-        return new ComponentResource($component->load('panel', 'progress'));
+        return new ComponentResource($component->load('progress'));
     }
 
     /**
@@ -50,7 +50,7 @@ class ApiComponentController extends Controller {
         // $request->checkPermissionEnum(PermissionEnum::COMPONENT_UPDATE);
         $this->componentService->update($component, $request->validated());
 
-        return new ComponentResource($component->load('panel', 'progress'));
+        return new ComponentResource($component->load('progress'));
 
     }
 

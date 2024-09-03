@@ -33,7 +33,8 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('users', ApiUserController::class);
         Route::apiResource('trainsets', ApiTrainsetController::class);
         Route::apiResource('panels', ApiPanelController::class);
-        Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
+        // Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
+        Route::apiResource('components', ApiComponentController::class);
         Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
         Route::apiResource('pm', ApiPanelMaterialController::class)->only(['index', 'show']);
         Route::apiResource('work-days', ApiWorkDayController::class);

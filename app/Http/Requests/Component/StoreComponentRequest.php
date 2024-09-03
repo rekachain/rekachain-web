@@ -20,8 +20,8 @@ class StoreComponentRequest extends FormRequest {
     public function rules(): array {
         return [
             'name' => 'required',
-            'progress_id' => 'required|integer',
-            'panel_id' => 'required|integer',
+            'progress_id' => 'nullable|integer',
+            // 'panel_id' => 'required|integer',
         ];
     }
 }
