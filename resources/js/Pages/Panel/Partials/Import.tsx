@@ -11,7 +11,6 @@ import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
 import { ROUTES } from '@/support/constants/routes';
-import { IntentEnum } from '@/support/enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { panelService } from '@/services/panelService';
 import { useState } from 'react';
@@ -23,29 +22,18 @@ export default function () {
     }>({
         file: null,
     });
-    const handleGetImportDataTemplate = async () => {
-        const response = await window.axios.get(
-            route(`${ROUTES.PANELS}.index`, {
-                intent: IntentEnum.WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL,
-            }),
-            { responseType: 'blob' },
-        );
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'panels.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    };
 
     const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
-        await panelService.importData(data.file as File);
-        router.visit(route(`${ROUTES.PANELS}.index`));
-        setIsLoading(false);
+        try {
+            await panelService.importData(data.file as File);
+            router.visit(route(`${ROUTES.PANELS}.index`));
+            setIsLoading(false);
+        } catch (error) {
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,10 +50,9 @@ export default function () {
                     <DialogTitle>Import Data</DialogTitle>
                     <DialogDescription>Import data from a file to populate the table.</DialogDescription>
                 </DialogHeader>
-                {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate}>
+                    <Button type="button" variant="secondary" onClick={panelService.downloadImportDataTemplate}>
                         Download
                     </Button>
                 </div>

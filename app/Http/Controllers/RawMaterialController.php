@@ -10,6 +10,8 @@ use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use Illuminate\Http\Request;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class RawMaterialController extends Controller {
     public function __construct(protected RawMaterialServiceInterface $rawMaterialService) {}
@@ -30,13 +32,16 @@ class RawMaterialController extends Controller {
                     return $this->rawMaterialService->getImportDataTemplate();
             }
 
-            $perPage = request()->get('perPage', 'All');
+            try {
+                $perPage = request()->get('perPage', 'All');
+                if ($perPage !== 'All') {
+                    return RawMaterialResource::collection($this->rawMaterialService->getAllPaginated($request->query(), $perPage));
+                }
 
-            if ($perPage !== 'All') {
-                return RawMaterialResource::collection($this->rawMaterialService->getAllPaginated($request->query(), $perPage));
+                return RawMaterialResource::collection($this->rawMaterialService->getAll());
+            } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
 
-            return RawMaterialResource::collection($this->rawMaterialService->getAll());
         }
 
         return inertia('RawMaterial/Index');
@@ -56,20 +61,19 @@ class RawMaterialController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreRawMaterialRequest $request) {
+
         $request->checkPermissionEnum(PermissionEnum::RAW_MATERIAL_CREATE);
 
-        if ($this->ajax()) {
-            $intent = $request->get('intent');
+        $intent = $request->get('intent');
 
-            switch ($intent) {
-                case IntentEnum::WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL->value:
-                    $this->rawMaterialService->importData($request->file('import_file'));
+        switch ($intent) {
+            case IntentEnum::WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL->value:
+                $this->rawMaterialService->importData($request->file('import_file'));
 
-                    return response()->noContent();
-            }
-
-            return $this->rawMaterialService->create($request->validated());
+                return response()->noContent();
         }
+
+        return new RawMaterialResource($this->rawMaterialService->create($request->validated()));
     }
 
     /**

@@ -22,7 +22,7 @@ class StorePanelRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_PANEL_IMPORT_PANEL->value:
+            case IntentEnum::WEB_PANEL_IMPORT_PANEL->value:
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];

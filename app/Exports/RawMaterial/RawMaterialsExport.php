@@ -6,13 +6,11 @@ use App\Models\RawMaterial;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class RawMaterialsExport implements FromCollection, WithHeadings
-{
+class RawMaterialsExport implements FromCollection, WithHeadings {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
-    {
+     * @return \Illuminate\Support\Collection
+     */
+    public function collection() {
         return RawMaterial::all();
     }
 

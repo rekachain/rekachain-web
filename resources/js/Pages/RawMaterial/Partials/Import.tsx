@@ -11,7 +11,6 @@ import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
 import { ROUTES } from '@/support/constants/routes';
-import { IntentEnum } from '@/support/enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { rawMaterialService } from '@/services/rawMaterialService';
 import { useState } from 'react';
@@ -23,35 +22,25 @@ export default function () {
     }>({
         file: null,
     });
-    const handleGetImportDataTemplate = async () => {
-        const response = await window.axios.get(
-            route(`${ROUTES.RAW_MATERIALS}.index`, {
-                intent: IntentEnum.WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL,
-            }),
-            { responseType: 'blob' },
-        );
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'rawMaterials.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    };
 
     const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
-        await rawMaterialService.importData(data.file as File);
-        router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        setIsLoading(false);
+        try {
+            await rawMaterialService.importData(data.file as File);
+            setIsLoading(false);
+            router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
+        } catch (error) {
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -62,10 +51,9 @@ export default function () {
                     <DialogTitle>Import Data</DialogTitle>
                     <DialogDescription>Import data from a file to populate the table.</DialogDescription>
                 </DialogHeader>
-                {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate}>
+                    <Button type="button" variant="secondary" onClick={rawMaterialService.downloadImportDataTemplate}>
                         Download
                     </Button>
                 </div>
