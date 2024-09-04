@@ -9,6 +9,10 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
+import { useMediaQuery } from 'react-responsive';
+import AnimateIn from '@/lib/AnimateIn';
+import PermissionsTableView from './Partials/PermissionsTableView';
+import PermissionsCardView from './Partials/PermissionsCardView';
 
 export default function () {
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
@@ -50,39 +54,30 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Group</TableHead>
-                        <TableHead>Nama</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {permissionResponse?.data.map(permission => (
-                        <TableRow key={permission.id}>
-                            <TableCell>{permission.group}</TableCell>
-                            <TableCell>{permission.name}</TableCell>
-                            <TableCell>
-                                {/*<Link*/}
-                                {/*    className={buttonVariants({ variant: 'link' })}*/}
-                                {/*    href={route(`${ROUTES.ROLES}.edit`, permission.id)}*/}
-                                {/*>*/}
-                                {/*    Edit*/}
-                                {/*</Link>*/}
+            {permissionResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <PermissionsTableView
+                            permissionResponse={permissionResponse}
+                            handlePermissionDeletion={handlePermissionResourceDeletion}
+                            // auth={''}
+                        ></PermissionsTableView>
+                        {/* <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            auth={auth}
+                        /> */}
+                    </div>
 
-                                {/*<Button*/}
-                                {/*    variant="link"*/}
-                                {/*    onClick={() => handlePermissionResourceDeletion(permission.id)}*/}
-                                {/*>*/}
-                                {/*    Delete*/}
-                                {/*</Button>*/}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
+                    <div className="block md:hidden">
+                        <PermissionsCardView
+                            permissionResponse={permissionResponse}
+                            handlePermissionDeletion={handlePermissionResourceDeletion}
+                            // auth={''}
+                        ></PermissionsCardView>
+                    </div>
+                </>
+            )}
             <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );

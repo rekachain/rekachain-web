@@ -9,6 +9,10 @@ import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
+import { useMediaQuery } from 'react-responsive';
+import AnimateIn from '@/lib/AnimateIn';
+import WorkstationTableView from './Partials/WorkstationTableView';
+import WorkstationCardView from './Partials/WorkstationCardView';
 
 export default function () {
     const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
@@ -44,43 +48,42 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
+
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-width: 900px)',
+    });
+    // function handleWorkstationDeletion(id: any): void {
+    //     throw new Error('Function not implemented.');
+    // }
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Lokasi</TableHead>
-                        <TableHead>Workshop</TableHead>
-                        <TableHead>Divisi</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {workstationResponse?.data.map(workstation => (
-                        <TableRow key={workstation.id}>
-                            <TableCell>{workstation.name}</TableCell>
-                            <TableCell>{workstation.location}</TableCell>
-                            <TableCell>{workstation.workshop.name}</TableCell>
-                            <TableCell>{workstation.division.name}</TableCell>
+            {workstationResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <WorkstationTableView
+                            workstationResponse={workstationResponse}
+                            handleWorkstationDeletion={handleWorkstationDeletion}
+                            // auth={auth}
+                        ></WorkstationTableView>
+                        {/* <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            auth={auth}
+                        /> */}
+                    </div>
 
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
-                                >
-                                    Edit
-                                </Link>
-                                <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
-                                    Delete
-                                </Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
+                    <div className="block md:hidden">
+                        <WorkstationCardView
+                            workstationResponse={workstationResponse}
+                            handleWorkstationDeletion={handleWorkstationDeletion}
+                            // auth={auth}
+                        ></WorkstationCardView>
+                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
+                    </div>
+                </>
+            )}
             <GenericPagination meta={workstationResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );

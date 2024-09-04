@@ -9,6 +9,10 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { RoleResource } from '@/support/interfaces/resources/RoleResource';
+import { useMediaQuery } from 'react-responsive';
+import AnimateIn from '@/lib/AnimateIn';
+import RoleCardView from './Partials/RoleCardView';
+import RoleTableView from './Partials/RoleTableView';
 
 export default function () {
     const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();
@@ -48,46 +52,39 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
+
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-width: 900px)',
+    });
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Divisi</TableHead>
-                        <TableHead>Level</TableHead>
-                        <TableHead>Jumlah User</TableHead>
-                        <TableHead>Jumlah Izin</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {roleResponse?.data.map(role => (
-                        <TableRow key={role.id}>
-                            <TableCell>{role.name}</TableCell>
-                            <TableCell>{role.division?.name}</TableCell>
-                            <TableCell>{role.level}</TableCell>
-                            <TableCell>{role.users_count}</TableCell>
-                            <TableCell>{role.permissions_count}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.ROLES}.edit`, role.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {role.users_count <= 0 && (
-                                    <Button variant="link" onClick={() => handleRoleResourceDeletion(role.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            {roleResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <RoleTableView
+                            roleResponse={roleResponse}
+                            handleRoleDeletion={handleRoleResourceDeletion}
+                            auth={auth}
+                        ></RoleTableView>
+                        {/* <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            auth={auth}
+                        /> */}
+                    </div>
 
+                    <div className="block md:hidden">
+                        <RoleCardView
+                            roleResponse={roleResponse}
+                            handleRoleDeletion={handleRoleResourceDeletion}
+                            auth={auth}
+                        ></RoleCardView>
+                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
+                    </div>
+                </>
+            )}
             <GenericPagination meta={roleResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
