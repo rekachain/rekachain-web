@@ -56,20 +56,10 @@ class RawMaterialController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreRawMaterialRequest $request) {
+
         $request->checkPermissionEnum(PermissionEnum::RAW_MATERIAL_CREATE);
 
-        if ($this->ajax()) {
-            $intent = $request->get('intent');
-
-            switch ($intent) {
-                case IntentEnum::WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL->value:
-                    $this->rawMaterialService->importData($request->file('import_file'));
-
-                    return response()->noContent();
-            }
-
-            return $this->rawMaterialService->create($request->validated());
-        }
+        return new RawMaterialResource($this->rawMaterialService->create($request->validated()));
     }
 
     /**
