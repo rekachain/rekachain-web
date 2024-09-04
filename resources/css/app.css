@@ -153,19 +153,3 @@
         @apply w-20;
     }
 }
-
-section.login > img {
-    @apply fixed h-40;
-}
-
-section.login img#login-top-left-sm {
-    @apply top-0 left-0;
-}
-
-section.login img#login-bottom-left-sm {
-    @apply bottom-0 left-0;
-}
-
-section.login img#login-bottom-right {
-    @apply bottom-0 right-0;
-}

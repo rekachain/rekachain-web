@@ -7,7 +7,7 @@ import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { STYLING } from '@/support/constants/styling';
-import { RiMoonClearLine, RiNotification4Line, RiSearchLine } from '@remixicon/react';
+import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
@@ -51,44 +51,33 @@ export default function Login({ status, canResetPassword }: { status?: string; c
     return (
         <>
             <Head title="Log in" />
-            <section className="login min-h-screen flex flex-col md:flex-row  items-center ">
-                <div className="hero flex-1 ">
+            <section className="login max-h-screen flex flex-col md:flex-row">
+                <div className="hero flex-1 hidden md:flex">
                     <img
-                        className=" hidden md:block h-screen "
+                        className="w-full object-cover"
                         id="login-hero"
                         src="/assets/images/login-hero.jpeg"
                         alt="login-hero.png"
                     />
                 </div>
-                <div id="login-icon" className=" ">
+
+                <div className="flex-1 flex flex-col z-10 p-5 md:px-16 justify-start md:gap-20 sm:gap-10  h-screen md:py-16 relative">
                     <img
-                        className="hidden h-44 md:block mb-[27rem]"
-                        id="login-top-left"
+                        className="hidden h-44 md:block top-0 left-0 absolute"
                         src="/assets/images/login-top-left.png"
                         alt="login-top-left.png"
                     />
                     <img
-                        className="hidden h-44 md:block"
-                        id="login-bottom-left"
+                        className="hidden h-44 md:block bottom-0 left-0 absolute"
                         src="/assets/images/login-bottom-left.png"
                         alt="login-bottom-left.png"
                     />
-                </div>
-                <img
-                    className="lg:hidden md:hidden"
-                    id="login-top-left-sm"
-                    src="/assets/images/login-top-left.png"
-                    alt="login-top-left.png"
-                />
-                <img
-                    className="lg:hidden md:hidden"
-                    id="login-bottom-left-sm"
-                    src="/assets/images/login-bottom-left.png"
-                    alt="login-bottom-left.png"
-                />
-                <img id="login-bottom-right" src="/assets/images/login-bottom-right.png" alt="login-bottom-right.png" />
+                    <img
+                        className="hidden h-44 md:block bottom-0 right-0 absolute"
+                        src="/assets/images/login-bottom-right.png"
+                        alt="login-bottom-right.png"
+                    />
 
-                <div className="flex-1 flex flex-col z-10 md:px-16 justify-start md:gap-20 sm:gap-10  h-screen md:py-16">
                     <div className="">
                         <div className="flex flex-row justify-between">
                             <img
@@ -106,7 +95,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         </div>
                     </div>
                     <div className="">
-                        <div className=" text-5xl sm:text-4xl mb-16 text-center ">Welcome Back...</div>
+                        <div className="text-3xl md:text-4xl mb-16 text-center mt-12 sm:mt-0">Welcome Back...</div>
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <form onSubmit={submit}>
                             <div>
