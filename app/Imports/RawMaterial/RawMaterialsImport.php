@@ -9,8 +9,6 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class RawMaterialsImport implements ToModel , WithHeadingRow
 {
     /**
-    * @param array $row
-    *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row)
@@ -19,7 +17,7 @@ class RawMaterialsImport implements ToModel , WithHeadingRow
             'material_code'=> $row['material_code'],
             'description'=> $row['description'],
             'unit'=> $row['unit'],
-            'specs'=> $row['spec'],
+            'specs'=> $row['specs'],
         ]);
     }
 }

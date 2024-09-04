@@ -3,14 +3,14 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Support\Interfaces\Repositories\RawMaterialRepositoryInterface;
-use App\Support\Interfaces\Services\RawMaterialServiceInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Exports\RawMaterial\RawMaterialsExport;
 use App\Exports\RawMaterial\RawMaterialsTemplateExport;
 use App\Imports\RawMaterial\RawMaterialsImport;
+use App\Support\Interfaces\Repositories\RawMaterialRepositoryInterface;
+use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RawMaterialService extends BaseCrudService implements RawMaterialServiceInterface {
     public function importData(UploadedFile $file): bool {
@@ -26,7 +26,7 @@ class RawMaterialService extends BaseCrudService implements RawMaterialServiceIn
     public function getImportDataTemplate(): BinaryFileResponse {
         return (new RawMaterialsTemplateExport)->download('rawMaterials_template.xlsx');
     }
-    
+
     protected function getRepositoryClass(): string {
         return RawMaterialRepositoryInterface::class;
     }
