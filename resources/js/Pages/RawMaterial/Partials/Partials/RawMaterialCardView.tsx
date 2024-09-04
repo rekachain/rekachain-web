@@ -16,11 +16,12 @@ export default function RawMaterialCardView({
 }) {
     return (
         <div>
-            {rawMaterialResponse?.data.map(rawMaterial => ( 
+            {rawMaterialResponse?.data.map(rawMaterial => (
                 <AnimateIn
                     from="opacity-0 -translate-y-4"
                     to="opacity-100 translate-y-0 translate-x-0 mt-3"
                     duration={300}
+                    key={rawMaterial.id}
                 >
                     <div
                         // key={permission.id}

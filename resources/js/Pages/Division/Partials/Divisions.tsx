@@ -1,18 +1,14 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { DivisionResource } from '@/support/interfaces/resources';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { divisionService } from '@/services/divisionService';
-import { useMediaQuery } from 'react-responsive';
-import AnimateIn from '@/lib/AnimateIn';
-import DivisionTableView from './Partials/DivisionTableView';
-import DivisionCardView from './Partials/DivisionCardView';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
+import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
+import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardView';
 
 export default function () {
     const [divisionResponse, setDivisionResponse] = useState<PaginateResponse<DivisionResource>>();
@@ -21,10 +17,12 @@ export default function () {
         perPage: 10,
     });
 
+    const { setLoading } = useLoading();
     const syncDivisions = async () => {
-        divisionService.getAll(filters).then(res => {
-            setDivisionResponse(res);
-        });
+        setLoading(true);
+        const res = await divisionService.getAll(filters);
+        setDivisionResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -34,12 +32,9 @@ export default function () {
     const handleDivisionDeletion = (id: number) => {
         const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Division deleted successfully',
-                });
                 await divisionService.delete(id);
                 await syncDivisions();
+                useSuccessToast('Division deleted successfully');
             }
         });
     };
@@ -47,11 +42,6 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
-
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-width: 900px)',
-    });
 
     return (
         <div className="space-y-4">
@@ -62,12 +52,7 @@ export default function () {
                             divisionResponse={divisionResponse}
                             handleDivisionDeletion={handleDivisionDeletion}
                             auth={''}
-                        ></DivisionTableView>
-                        {/* <UserTableView
-                            userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
-                            auth={auth}
-                        /> */}
+                        />
                     </div>
 
                     <div className="block md:hidden">
@@ -77,8 +62,7 @@ export default function () {
                             handleDivisionDeletion={handleDivisionDeletion}
                             auth={''}
                             // auth={auth}
-                        ></DivisionCardView>
-                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
+                        />
                     </div>
                 </>
             )}

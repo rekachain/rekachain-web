@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -7,6 +7,8 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { rawMaterialService } from '@/services/rawMaterialService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -16,12 +18,16 @@ export default function () {
         specs: '',
         unit: '',
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.RAW_MATERIALS}.index`));
+        setLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
 
         await rawMaterialService.create(data);
+        useSuccessToast('Raw Material berhasil ditambahkan');
+        setLoading(false);
         redirectToIndex();
     };
 

@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
@@ -10,6 +10,8 @@ import { PermissionResource, PermissionResourceGrouped } from '@/support/interfa
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { DivisionResource } from '@/support/interfaces/resources';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -18,13 +20,15 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
         level: '',
         permissions: [] as number[],
     });
+    const { setLoading } = useLoading();
 
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
     const [divisions] = useState<DivisionResource[]>(props.divisions);
     const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.ROLES}.index`));
+        setLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
 
         await roleService.create({
             name: data.name,
@@ -32,7 +36,8 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
             level: data.level,
             permissions: data.permissions,
         });
-
+        setLoading(false);
+        useSuccessToast('Role berhasil ditambahkan');
         redirectToIndex();
     };
 

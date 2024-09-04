@@ -1,18 +1,15 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { permissionService } from '@/services/permissionService';
 import { useEffect, useState } from 'react';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
-import { useMediaQuery } from 'react-responsive';
-import AnimateIn from '@/lib/AnimateIn';
 import PermissionsTableView from './Partials/PermissionsTableView';
 import PermissionsCardView from './Partials/PermissionsCardView';
+import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
@@ -22,28 +19,25 @@ export default function () {
     });
 
     const { auth } = usePage().props;
+    const { setLoading } = useLoading();
 
     const syncPermissionResources = async () => {
-        permissionService.getAll(filters).then(res => {
-            console.log(res);
-            setPermissionResponse(res);
-        });
+        setLoading(true);
+        const res = await permissionService.getAll(filters);
+        setPermissionResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
-        console.log('first render, or filters changed');
         syncPermissionResources();
     }, [filters]);
 
     const handlePermissionResourceDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'PermissionResource deleted successfully',
-                });
                 await permissionService.delete(id);
                 await syncPermissionResources();
+                await useSuccessToast('PermissionResource deleted successfully');
             }
         });
     };
@@ -62,11 +56,6 @@ export default function () {
                             handlePermissionDeletion={handlePermissionResourceDeletion}
                             // auth={''}
                         ></PermissionsTableView>
-                        {/* <UserTableView
-                            userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
-                            auth={auth}
-                        /> */}
                     </div>
 
                     <div className="block md:hidden">

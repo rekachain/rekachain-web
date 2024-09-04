@@ -5,6 +5,8 @@ import { Button } from '@/Components/ui/button';
 import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/support/constants/styling';
 import { trainsetService } from '@/services/trainsetService';
+import { useState } from 'react';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function ({
     trainset,
@@ -15,31 +17,29 @@ export default function ({
     carriage_trainset: CarriageTrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    console.log(carriage_trainset);
     const { data, setData, reset } = useForm({
         carriageQty: carriage_trainset.qty,
-        isLoading: false,
-        isEditing: false,
     });
-
+    const [isEditing, setIsEditing] = useState(false);
     const toggleEditMode = () => {
-        setData('isEditing', !data.isEditing);
+        setIsEditing(!isEditing);
     };
+    const { setLoading, loading } = useLoading();
 
     const handleEditCarriageQty = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData('isLoading', true);
+        setLoading(true);
         await trainsetService.updateCarriageTrainset(trainset.id, carriage_trainset.id, {
             qty: data.carriageQty,
         });
-        setData('isEditing', false);
-        reset('isLoading', 'isEditing');
         await handleSyncTrainset();
+        setIsEditing(false);
+        setLoading(false);
     };
 
     return (
         <>
-            {data.isEditing ? (
+            {isEditing ? (
                 <form onSubmit={handleEditCarriageQty} className="flex gap-4">
                     <Input
                         type="number"
@@ -48,8 +48,8 @@ export default function ({
                         defaultValue={data.carriageQty}
                         onChange={e => setData('carriageQty', +e.target.value)}
                     />
-                    <Button type="submit" disabled={data.isLoading}>
-                        {data.isLoading ? 'Processing' : 'Save'}
+                    <Button type="submit" disabled={loading}>
+                        {loading ? 'Processing' : 'Save'}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
                         Cancel

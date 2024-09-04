@@ -8,6 +8,8 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
 import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [userResponse, setUserResponse] = useState<PaginateResponse<UserResource>>();
@@ -18,12 +20,15 @@ export default function () {
     });
 
     const { auth } = usePage().props;
+    const { setLoading } = useLoading();
 
     const syncUsers = async () => {
+        setLoading(true);
         userService.getAll(filters).then(res => {
             console.log(res);
             setUserResponse(res);
         });
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -34,12 +39,11 @@ export default function () {
     const handleUserDeletion = (id: number) => {
         const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'User deleted successfully',
-                });
+                setLoading(true);
                 await userService.delete(id);
                 await syncUsers();
+                useSuccessToast('User deleted successfully');
+                setLoading(false);
             }
         });
     };

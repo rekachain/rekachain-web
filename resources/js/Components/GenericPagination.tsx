@@ -67,6 +67,7 @@ export default function ({
                 return (
                     <PaginationItem key={link.label}>
                         <PaginationLink
+                            isActive={meta.current_page === fixPagination(link.label)}
                             onClick={() =>
                                 handleChangePage(fixPagination(link.label) ?? PAGINATION_NAVIGATOR.FIRST_PAGE)
                             }

@@ -1,16 +1,14 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { RawMaterialResource } from '@/support/interfaces/resources';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { rawMaterialService } from '@/services/rawMaterialService';
 import RawMaterialCardView from './Partials/RawMaterialCardView';
 import RawMaterialTableView from './Partials/RawMaterialTableView';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [rawMaterialResponse, setRawMaterialResponse] = useState<PaginateResponse<RawMaterialResource>>();
@@ -18,11 +16,13 @@ export default function () {
         page: 1,
         perPage: 10,
     });
+    const { setLoading } = useLoading();
 
     const syncRawMaterials = async () => {
-        rawMaterialService.getAll(filters).then(res => {
-            setRawMaterialResponse(res);
-        });
+        setLoading(true);
+        const res = await rawMaterialService.getAll(filters);
+        setRawMaterialResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -30,14 +30,13 @@ export default function () {
     }, [filters]);
 
     const handleRawMaterialDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Raw Material deleted successfully',
-                });
+                setLoading(true);
                 await rawMaterialService.delete(id);
                 await syncRawMaterials();
+                setLoading(false);
+                useSuccessToast('Raw Material deleted successfully');
             }
         });
     };
@@ -66,7 +65,6 @@ export default function () {
                             // auth={''}
                             // auth={auth}
                         ></RawMaterialCardView>
-                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
                     </div>
                 </>
             )}

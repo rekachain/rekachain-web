@@ -5,30 +5,32 @@ import { STYLING } from '@/support/constants/styling';
 import { Input } from '@/Components/ui/input';
 import { trainsetService } from '@/services/trainsetService';
 import { useForm } from '@inertiajs/react';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useState } from 'react';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
     const { data, setData, reset } = useForm({
         trainsetName: trainset.name,
-        isLoading: false,
-        isEditing: false,
     });
+    const [isEditing, setIsEditing] = useState(false);
+    const { setLoading, loading } = useLoading();
 
     const toggleEditMode = () => {
-        setData('isEditing', !data.isEditing);
+        setIsEditing(!isEditing);
     };
 
     const handleEditTrainsetName = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setData('isLoading', true);
+        setLoading(true);
         const { name } = await trainsetService.update(trainset.id, { name: data.trainsetName });
         trainset.name = name;
-        setData('isEditing', false);
-        reset('isLoading', 'isEditing');
+        setIsEditing(false);
+        setLoading(false);
     };
 
     return (
         <>
-            {data.isEditing ? (
+            {isEditing ? (
                 <form onSubmit={handleEditTrainsetName} className="flex gap-4">
                     <Input
                         type="text"
@@ -36,8 +38,8 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                         defaultValue={data.trainsetName}
                         onChange={e => setData('trainsetName', e.target.value)}
                     />
-                    <Button type="submit" disabled={data.isLoading}>
-                        {data.isLoading ? 'Processing' : 'Save'}
+                    <Button type="submit" disabled={loading}>
+                        {loading ? 'Processing' : 'Save'}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
                         Cancel
