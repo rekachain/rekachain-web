@@ -19,7 +19,7 @@ class RawMaterialsImport implements ToModel , WithHeadingRow
             'material_code'=> $row['material_code'],
             'description'=> $row['description'],
             'unit'=> $row['unit'],
-            'specs'=> $row['spec'],
+            'specs'=> $row['specs'],
         ]);
     }
 }
