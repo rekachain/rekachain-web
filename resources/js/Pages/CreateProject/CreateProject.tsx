@@ -22,9 +22,14 @@ export default function CreateProject() {
     const submit: FormEventHandler = e => {
         e.preventDefault();
         // alert('halo');
+        let newDate = new Date();
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
         toast({
             title: 'Proyek Berhasil Dibuat !',
-            description: 'Jumat, 10 February , 2023 saat 5:57 PM',
+            description: `${year}${month < 10 ? `0${month}` : `${month}`}${date}`,
         });
         location.href = route('list-trainset');
     };

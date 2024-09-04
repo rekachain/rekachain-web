@@ -172,18 +172,17 @@ export default function Sidebar() {
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
-                        <SidebarLink
+                        {/* <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
                             icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                        />
+                        /> */}
                         {/* <SidebarLink
                         routeName="project"
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
-
-                        <SidebarLinkCollapsible
+                        {/* <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
@@ -208,7 +207,7 @@ export default function Sidebar() {
                                 title="Track"
                                 icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
-                        </SidebarLinkCollapsible>
+                        </SidebarLinkCollapsible> */}
                         {/* <SidebarLink
                         route={`${ROUTES.PROFILE}.edit"
                         children="Order Batch"
