@@ -7,6 +7,8 @@ enum IntentEnum: string {
 
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
+    case API_PANEL_ATTACHMENT_INDEX = 'api.panel_attachment.index';
+
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
