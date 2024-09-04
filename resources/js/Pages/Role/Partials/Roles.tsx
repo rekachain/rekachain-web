@@ -9,6 +9,8 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { RoleResource } from '@/support/interfaces/resources/RoleResource';
+import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();
@@ -19,12 +21,11 @@ export default function () {
     });
 
     const { auth } = usePage().props;
+    const { setLoading } = useLoading();
 
     const syncRoleResources = async () => {
-        roleService.getAll(filters).then(res => {
-            console.log(res);
-            setRoleResponse(res);
-        });
+        const res = await roleService.getAll(filters);
+        setRoleResponse(res);
     };
 
     useEffect(() => {
@@ -33,14 +34,13 @@ export default function () {
     }, [filters]);
 
     const handleRoleResourceDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'RoleResource deleted successfully',
-                });
+                setLoading(true);
                 await roleService.delete(id);
                 await syncRoleResources();
+                setLoading(false);
+                useSuccessToast('Role deleted successfully');
             }
         });
     };

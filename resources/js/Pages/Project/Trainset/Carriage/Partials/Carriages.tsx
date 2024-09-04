@@ -6,6 +6,7 @@ import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
 import { carriageTrainsetService } from '@/services/carriageTrainsetService';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({
     trainset,
@@ -19,10 +20,7 @@ export default function ({
             if (isConfirmed) {
                 await carriageTrainsetService.delete(carriageTrainsetId);
                 await handleSyncTrainset();
-                await window.Swal.fire({
-                    icon: 'success',
-                    title: 'Trainset deleted successfully',
-                });
+                useSuccessToast('Carriage deleted successfully');
             }
         });
     };

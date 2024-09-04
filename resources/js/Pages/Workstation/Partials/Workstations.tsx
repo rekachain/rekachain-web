@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { workstationService } from '@/services/workstationService';
 import { useEffect, useState } from 'react';
 import { WorkstationResource } from '@/support/interfaces/resources';
@@ -9,6 +9,8 @@ import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
@@ -17,11 +19,13 @@ export default function () {
         perPage: 10,
         relations: 'workshop,division',
     });
+    const { setLoading } = useLoading();
 
     const syncWorkstations = async () => {
-        workstationService.getAll(filters).then(res => {
-            setWorkstationResponse(res);
-        });
+        setLoading(true);
+        const res = await workstationService.getAll(filters);
+        setWorkstationResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -29,14 +33,13 @@ export default function () {
     }, [filters]);
 
     const handleWorkstationDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Workstation deleted successfully',
-                });
+                setLoading(true);
                 await workstationService.delete(id);
                 await syncWorkstations();
+                useSuccessToast('Workstation deleted successfully');
+                setLoading(false);
             }
         });
     };

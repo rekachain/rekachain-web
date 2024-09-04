@@ -11,6 +11,7 @@ import { Checkbox } from '@/Components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { DivisionResource } from '@/support/interfaces/resources';
 import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -23,9 +24,12 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
     const [divisions] = useState<DivisionResource[]>(props.divisions);
     const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
+    const { setLoading } = useLoading();
+
     const submit: FormEventHandler = async e => {
         e.preventDefault();
 
+        setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
         await roleService.create({
             name: data.name,
@@ -33,7 +37,8 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
             level: data.level,
             permissions: data.permissions,
         });
-        await useSuccessToast('Role created successfully');
+        useSuccessToast('Role created successfully');
+        setLoading(false);
         redirectToIndex();
     };
 

@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -10,6 +10,8 @@ import { DivisionResource, WorkshopResource, WorkstationResource } from '@/suppo
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
 import { workstationService } from '@/services/workstationService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({
     workstation,
@@ -26,11 +28,16 @@ export default function ({
         workshop_id: workstation.workshop_id.toString(),
         division_id: workstation.division_id.toString(),
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.WORKSTATIONS}.index`));
+        const redirectToIndex = () => router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
+
+        setLoading(true);
         await workstationService.update(workstation.id, data);
+        setLoading(false);
+        useSuccessToast('Workstation berhasil diubah');
         redirectToIndex();
     };
 

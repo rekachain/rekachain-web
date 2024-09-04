@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/Components/ui/checkbox';
 import { roleService } from '@/services/roleService';
 import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function (props: {
     role: RoleResource;
@@ -30,12 +31,16 @@ export default function (props: {
     });
 
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
+    const { setLoading } = useLoading();
+
     const submit: FormEventHandler = async e => {
         e.preventDefault();
 
+        setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
         await roleService.update(props.role.id, data);
-        await useSuccessToast('Role updated successfully');
+        useSuccessToast('Role updated successfully');
+        setLoading(false);
         redirectToIndex();
     };
 

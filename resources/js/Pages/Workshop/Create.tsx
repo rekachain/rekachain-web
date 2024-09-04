@@ -1,27 +1,31 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
-import { Label } from '@/Components/ui/label';
 import { DivisionResource, WorkshopResource } from '@/support/interfaces/resources';
 import { workshopService } from '@/services/workshopService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ workshops, divisions }: { workshops: WorkshopResource[]; divisions: DivisionResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
         name: '',
         address: '',
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.WORKSHOPS}.index`));
+        const redirectToIndex = () => router.visit(route(`${ROUTES.WORKSHOPS}.index`));
 
+        setLoading(true);
         await workshopService.create(data);
+        setLoading(false);
+        useSuccessToast('Workshop berhasil ditambahkan');
         redirectToIndex();
     };
 

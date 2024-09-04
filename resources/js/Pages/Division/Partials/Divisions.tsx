@@ -9,6 +9,7 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { divisionService } from '@/services/divisionService';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [divisionResponse, setDivisionResponse] = useState<PaginateResponse<DivisionResource>>();
@@ -17,10 +18,12 @@ export default function () {
         perPage: 10,
     });
 
+    const { setLoading } = useLoading();
     const syncDivisions = async () => {
-        divisionService.getAll(filters).then(res => {
-            setDivisionResponse(res);
-        });
+        setLoading(true);
+        const res = await divisionService.getAll(filters);
+        setDivisionResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {

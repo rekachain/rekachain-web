@@ -8,6 +8,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
 import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
@@ -17,16 +18,16 @@ export default function () {
     });
 
     const { auth } = usePage().props;
-
+    const { setLoading } = useLoading();
+    
     const syncPermissionResources = async () => {
-        permissionService.getAll(filters).then(res => {
-            console.log(res);
-            setPermissionResponse(res);
-        });
+        setLoading(true);
+        const res = await permissionService.getAll(filters);
+        setPermissionResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
-        console.log('first render, or filters changed');
         syncPermissionResources();
     }, [filters]);
 

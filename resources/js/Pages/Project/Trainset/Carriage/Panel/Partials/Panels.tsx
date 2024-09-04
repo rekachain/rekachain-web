@@ -4,6 +4,7 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
 import { Button } from '@/Components/ui/button';
 import { carriagePanelService } from '@/services/carriagePanelService';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({
     carriageTrainset,
@@ -17,10 +18,7 @@ export default function ({
             if (isConfirmed) {
                 await carriagePanelService.delete(carriageCarriageId);
                 await handleSyncCarriage();
-                await window.Swal.fire({
-                    icon: 'success',
-                    title: 'Carriage deleted successfully',
-                });
+                useSuccessToast('Panel deleted successfully');
             }
         });
     };

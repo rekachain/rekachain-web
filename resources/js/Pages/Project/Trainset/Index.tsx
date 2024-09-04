@@ -16,6 +16,8 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
 import { ROUTES } from '@/support/constants/routes';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));
 
@@ -23,18 +25,23 @@ export default function ({ project: initialProject }: { project: ProjectResource
     const [project, setProject] = useState<ProjectResource>(initialProject);
     const { data, setData, post, processing, errors, reset } = useForm({
         trainsetNeeded: 0,
-        isLoading: false,
     });
+    const { setLoading, loading } = useLoading();
+
     const handleAddTrainset = async () => {
-        setData('isLoading', true);
+        setLoading(true);
         await projectService.addTrainset(project.id, data.trainsetNeeded);
         await handleSyncProject();
+        setLoading(false);
         reset();
+        useSuccessToast('Trainset added successfully');
     };
 
     const handleSyncProject = async () => {
+        setLoading(true);
         const updatedProject = await projectService.get(initialProject.id);
         setProject(updatedProject);
+        setLoading(false);
     };
     return (
         <>
@@ -71,8 +78,8 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                         value={data.trainsetNeeded}
                                         onChange={e => setData('trainsetNeeded', +e.target.value)}
                                     />
-                                    <Button type="submit" disabled={data.isLoading}>
-                                        {data.isLoading ? (
+                                    <Button type="submit" disabled={loading}>
+                                        {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                 Adding Trainset

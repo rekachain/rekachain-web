@@ -10,6 +10,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { panelService } from '@/services/panelService';
 import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
@@ -18,10 +19,13 @@ export default function () {
         perPage: 10,
     });
 
+    const { setLoading } = useLoading();
+
     const syncPanels = async () => {
-        panelService.getAll(filters).then(res => {
-            setPanelResponse(res);
-        });
+        setLoading(true);
+        const res = await panelService.getAll(filters);
+        setPanelResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -31,9 +35,11 @@ export default function () {
     const handlePanelDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
+                setLoading(true);
                 await panelService.delete(id);
                 await syncPanels();
-                await useSuccessToast('Panel deleted successfully');
+                useSuccessToast('Panel deleted successfully');
+                setLoading(false);
             }
         });
     };

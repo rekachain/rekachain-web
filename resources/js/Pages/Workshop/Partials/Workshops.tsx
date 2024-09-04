@@ -9,6 +9,8 @@ import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [workshopResponse, setWorkshopResponse] = useState<PaginateResponse<WorkshopResource>>();
@@ -16,11 +18,13 @@ export default function () {
         page: 1,
         perPage: 10,
     });
+    const { setLoading } = useLoading();
 
     const syncWorkshops = async () => {
-        workshopService.getAll(filters).then(res => {
-            setWorkshopResponse(res);
-        });
+        setLoading(true);
+        const res = await workshopService.getAll(filters);
+        setWorkshopResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -28,14 +32,13 @@ export default function () {
     }, [filters]);
 
     const handleWorkshopDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Workshop deleted successfully',
-                });
+                setLoading(true);
                 await workshopService.delete(id);
                 await syncWorkshops();
+                setLoading(false);
+                useSuccessToast('Workshop deleted successfully');
             }
         });
     };
