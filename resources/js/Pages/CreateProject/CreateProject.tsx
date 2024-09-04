@@ -1,11 +1,9 @@
 import { Input } from '@/Components/ui/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { useToast } from '@/Components/ui/use-toast';
 import AnimateIn from '@/lib/AnimateIn';
-import { buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 
 type Project = {
     nomorProyek: number;
@@ -22,9 +20,14 @@ export default function CreateProject() {
     const submit: FormEventHandler = e => {
         e.preventDefault();
         // alert('halo');
+        let newDate = new Date();
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+
         toast({
             title: 'Proyek Berhasil Dibuat !',
-            description: 'Jumat, 10 February , 2023 saat 5:57 PM',
+            description: `${year}${month < 10 ? `0${month}` : `${month}`}${date}`,
         });
         location.href = route('list-trainset');
     };

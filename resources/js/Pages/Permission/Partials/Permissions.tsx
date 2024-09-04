@@ -1,4 +1,3 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import { usePage } from '@inertiajs/react';
 import { permissionService } from '@/services/permissionService';
 import { useEffect, useState } from 'react';
@@ -7,6 +6,8 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
+import PermissionsTableView from './Partials/PermissionsTableView';
+import PermissionsCardView from './Partials/PermissionsCardView';
 import { useSuccessToast } from '@/hooks/useToast';
 import { useLoading } from '@/contexts/LoadingContext';
 
@@ -19,7 +20,7 @@ export default function () {
 
     const { auth } = usePage().props;
     const { setLoading } = useLoading();
-    
+
     const syncPermissionResources = async () => {
         setLoading(true);
         const res = await permissionService.getAll(filters);
@@ -47,39 +48,25 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Group</TableHead>
-                        <TableHead>Nama</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {permissionResponse?.data.map(permission => (
-                        <TableRow key={permission.id}>
-                            <TableCell>{permission.group}</TableCell>
-                            <TableCell>{permission.name}</TableCell>
-                            <TableCell>
-                                {/*<Link*/}
-                                {/*    className={buttonVariants({ variant: 'link' })}*/}
-                                {/*    href={route(`${ROUTES.ROLES}.edit`, permission.id)}*/}
-                                {/*>*/}
-                                {/*    Edit*/}
-                                {/*</Link>*/}
+            {permissionResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <PermissionsTableView
+                            permissionResponse={permissionResponse}
+                            handlePermissionDeletion={handlePermissionResourceDeletion}
+                            // auth={''}
+                        ></PermissionsTableView>
+                    </div>
 
-                                {/*<Button*/}
-                                {/*    variant="link"*/}
-                                {/*    onClick={() => handlePermissionResourceDeletion(permission.id)}*/}
-                                {/*>*/}
-                                {/*    Delete*/}
-                                {/*</Button>*/}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
+                    <div className="block md:hidden">
+                        <PermissionsCardView
+                            permissionResponse={permissionResponse}
+                            handlePermissionDeletion={handlePermissionResourceDeletion}
+                            // auth={''}
+                        ></PermissionsCardView>
+                    </div>
+                </>
+            )}
             <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );

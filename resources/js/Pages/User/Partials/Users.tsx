@@ -51,7 +51,11 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
+    // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
 
+    // const isDesktopOrLaptop = useMediaQuery({
+    //     query: '(min-width: 900px)',
+    // });
     return (
         <div className="space-y-4">
             {userResponse && (
@@ -69,7 +73,27 @@ export default function () {
                     </div>
                 </>
             )}
-
+            {/* 
+                                    {user.id !== auth.user.id &&
+                                        (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
+                                            <TableCell>
+                                                <Link
+                                                    className={buttonVariants({ variant: 'link' })}
+                                                    href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                                >
+                                                    Edit
+                                                </Link>
+                                                <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                                    Delete
+                                                </Button>
+                                            </TableCell>
+                                        )}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </> */}
+            {/* )} */}
             <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );

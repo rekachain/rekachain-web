@@ -21,10 +21,17 @@ export default function () {
     const submit: FormEventHandler = async e => {
         e.preventDefault();
         const redirectToDetails = () => router.visit(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
-
         setLoading(true);
+
         const res = await projectService.create(data);
-        useSuccessToast('Proyek berhasil ditambahkan');
+
+        const newDate = new Date();
+        const date = newDate.getDate();
+        const month = newDate.getMonth() + 1;
+        const year = newDate.getFullYear();
+        const description = `${date} / ${month < 10 ? `0${month}` : `${month}`} / ${year}`;
+
+        useSuccessToast('Proyek berhasil ditambahkan', description);
         setLoading(false);
         redirectToDetails();
     };

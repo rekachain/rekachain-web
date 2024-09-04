@@ -4,7 +4,6 @@ import {
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
-    RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
@@ -19,7 +18,6 @@ import {
 import { Button } from '@/Components/ui/button';
 import SidebarLink from './Components/SidebarLink';
 import SidebarMenu from './Components/SidebarMenu';
-import { ListOrdered } from 'lucide-react';
 import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components/SidebarLinkCollapsible';
 import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
@@ -153,7 +151,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
-                                title="List Bahan Baku"
+                                title="List Material"
                                 icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -172,18 +170,17 @@ export default function Sidebar() {
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
-                        <SidebarLink
+                        {/* <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Track Lot"
                             icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
-                        />
+                        /> */}
                         {/* <SidebarLink
                         routeName="project"
                         title="Buat Proyek"
                         icon={<ListOrdered size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
-
-                        <SidebarLinkCollapsible
+                        {/* <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.PROJECT}
                             title="Proyek"
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
@@ -208,7 +205,7 @@ export default function Sidebar() {
                                 title="Track"
                                 icon={<RiFlickrLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
-                        </SidebarLinkCollapsible>
+                        </SidebarLinkCollapsible> */}
                         {/* <SidebarLink
                         route={`${ROUTES.PROFILE}.edit"
                         children="Order Batch"
