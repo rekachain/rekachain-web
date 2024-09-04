@@ -26,7 +26,7 @@ export default function () {
     const handleGetImportDataTemplate = async () => {
         const response = await window.axios.get(
             route(`${ROUTES.RAW_MATERIALS}.index`, {
-                intent: IntentEnum.WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL,
+                intent: IntentEnum.WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL,
             }),
             { responseType: 'blob' },
         );

@@ -29,4 +29,7 @@ enum IntentEnum: string {
 
     case WEB_PANEL_IMPORT_PANEL = 'web.panel.import.panel';
 
+    case WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL = 'web.raw.material.get.template.import.raw.material';
+
+    case WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL = 'web.raw.material.import.raw.material';
 }

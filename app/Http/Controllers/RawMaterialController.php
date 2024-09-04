@@ -6,6 +6,7 @@ use App\Http\Requests\RawMaterial\StoreRawMaterialRequest;
 use App\Http\Requests\RawMaterial\UpdateRawMaterialRequest;
 use App\Http\Resources\RawMaterialResource;
 use App\Models\RawMaterial;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use Illuminate\Http\Request;
@@ -21,6 +22,14 @@ class RawMaterialController extends Controller {
         $request->checkPermissionEnum(PermissionEnum::RAW_MATERIAL_READ);
 
         if ($this->ajax()) {
+
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL->value:
+                    return $this->rawMaterialService->getImportDataTemplate();
+            }
+
             $perPage = request()->get('perPage', 'All');
 
             if ($perPage !== 'All') {
