@@ -10,16 +10,16 @@ class PanelMaterial extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'panel_id',
-        'material_id',
+        'carriage_panel_id',
+        'raw_material_id',
         'qty',
     ];
 
-    public function material(): BelongsTo {
-        return $this->belongsTo(Material::class);
+    public function raw_material(): BelongsTo {
+        return $this->belongsTo(RawMaterial::class);
     }
 
-    public function panel(): BelongsTo {
+    public function carriage_panel(): BelongsTo {
         return $this->belongsTo(Panel::class);
     }
 }

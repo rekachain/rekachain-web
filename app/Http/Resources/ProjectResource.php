@@ -12,20 +12,6 @@ class ProjectResource extends JsonResource {
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array {
-
-        $intent = $request->get('intent');
-
-        switch ($intent) {
-            //
-            //            case IntentEnum::WEB_PROJECT_GET_TRAINSETS->value:
-            //                return [
-            //                    'id' => $this->id,
-            //                    'name' => $this->name,
-            //                    'initial_date' => $this->initial_date,
-            //                    'trainsets' => TrainsetResource::collection($this->whenLoaded('trainsets')),
-            //                ];
-        }
-
         return [
             'id' => $this->id,
             'name' => $this->name,

@@ -1,12 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
+import { Head, router, useForm } from '@inertiajs/react';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { panelService } from '@/services/panelService';
+import { ROUTES } from '@/support/constants/routes';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -16,7 +16,7 @@ export default function () {
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.PANELS}.index`));
+        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
 
         await panelService.create(data);
         redirectToIndex();

@@ -1,7 +1,13 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Project;
+use App\Models\Component;
+use App\Models\Permission;
+use App\Support\Enums\PermissionEnum;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +48,50 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something() {
-    // ..
+function actAsSuperAdmin(): TestCase {
+    $role = Role::firstOrCreate(['name' => 'Super Admin']);
+    $user = User::factory(['name' => 'Super Admin'])->create();
+    $user->assignRole($role);
+
+    return test()->actingAs($user);
+}
+
+function actAsPpcPerencanaan(): TestCase {
+    $permissions = [
+        PermissionEnum::USER_CREATE->value,
+        PermissionEnum::USER_READ->value,
+        PermissionEnum::USER_UPDATE->value,
+        PermissionEnum::USER_DELETE->value,
+    ];
+    $permissions = collect($permissions)->map(fn ($permission) => Permission::firstOrCreate(['name' => $permission]));
+
+    $role = Role::firstOrCreate(['name' => 'PPC Perencanaan']);
+    $user = User::factory(['name' => 'PPC Perencanaan'])->create();
+    $user->assignRole($role);
+
+    return test()->actingAs($user);
+}
+
+function actAsPpcPengendalian(): TestCase {
+    $role = Role::firstOrCreate(['name' => 'PPC Pengendalian']);
+    $user = User::factory(['name' => 'PPC Pengendalian'])->create();
+    $user->assignRole($role);
+
+    return test()->actingAs($user);
+}
+
+function  createComponent() {
+    $component = new Component();
+    $component->name = 'Component';
+    $component->save();
+
+    return $component;
+}
+
+function createProject() {
+    $project = new Project();
+    $project->name = 'Project';
+    $project->save();
+
+    return $project;
 }

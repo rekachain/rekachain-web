@@ -34,7 +34,7 @@ function handleAxiosError(error: any) {
     if (error.config.skipInterceptor) return Promise.reject(error);
 
     console.error('Hol up:', error);
-    if (error.response.status >= 500) {
+    if (error.response?.status >= 500) {
         const ErrorSwal = withReactContent(Swal);
 
         const defaultAlertOptions: SweetAlertOptions = {
@@ -49,7 +49,7 @@ function handleAxiosError(error: any) {
         }
 
         ErrorSwal.fire(defaultAlertOptions);
-    } else if (error.response.status === 403) {
+    } else if (error.response?.status === 403) {
         const ErrorSwal = withReactContent(Swal);
 
         const defaultSwalOptions: SweetAlertOptions = {
@@ -72,7 +72,7 @@ function handleAxiosError(error: any) {
         }
 
         ErrorSwal.fire(defaultSwalOptions);
-    } else if (error.response.status >= 402) {
+    } else if (error.response?.status >= 402) {
         const ErrorSwal = withReactContent(Swal);
 
         const defaultSwalOptions: SweetAlertOptions = {

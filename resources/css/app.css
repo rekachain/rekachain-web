@@ -15,6 +15,8 @@
         --primary-foreground: 210 40% 98%;
         --secondary: 210 40% 96.1%;
         --secondary-foreground: 222.2 47.4% 11.2%;
+        --tertiary: 160.1 84.1% 39.4%;
+        --tertiary-foreground: 222.2 47.4% 11.2%;
         --muted: 210 40% 96.1%;
         --muted-foreground: 215.4 16.3% 46.9%;
         --accent: 210 40% 96.1%;
@@ -37,32 +39,34 @@
     }
 
     .dark {
-        --background: 0 0 8%;
-        --background-2: 0 0 10%;
-        --foreground: 210 40% 98%;
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
+        --background: 0 0% 15%;
+        --background-2: 0 0 18%;
+        --foreground: 216 30% 85%;
+        --card: 60 8% 5%;
+        --card-foreground: 50 3.8% 69%;
         --popover: 0 0 10%;
         --popover-foreground: 210 40% 98%;
-        --primary: 210 40% 98%;
-        --primary-foreground: 222.2 47.4% 11.2%;
+        --primary: 250 40% 92%;
+        --primary-foreground: 230.2 45.4% 13.2%;
         --secondary: 217.2 32.6% 17.5%;
         --secondary-foreground: 210 40% 98%;
-        --muted: 0 0 25%;
-        --muted-foreground: 215 20.2% 80%;
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
+        --tertiary: 160.1 84.1% 39.4%;
+        --tertiary-foreground: 222.2 47.4% 11.2%;
+        --muted: 0 0 30%;
+        --muted-foreground: 215 12% 80%;
+        --accent: 217.2 32.6% 80.5%;
+        --accent-foreground: 210 40% 15%;
         --destructive: 0 62.8% 50.6%;
         --destructive-foreground: 210 40% 98%;
-        --border: 0 0 15%;
-        --input: 217.2 32.6% 17.5%;
+        --border: 0 0 22.5%;
+        --input: 217.2 32.6% 97.5%;
         --ring: 212.7 26.8% 83.9%;
         --chart-1: 220 70% 50%;
         --chart-2: 160 60% 45%;
         --chart-3: 30 80% 55%;
         --chart-4: 280 65% 60%;
         --chart-5: 340 75% 55%;
-        --sidebar-link-active: 194, 100%, 50%;
+        --sidebar-link-active: 222 24% 22%;
         --sidebar-line-active-foreground: 210 40% 98%;
         --sidebar-header: 218, 11%, 65%;
         --navbar-secondary-foreground: 218, 11%, 65%;
@@ -100,6 +104,7 @@
         @apply p-0;
     }
 
+    .sidebar-collapse .sidebar-item-header,
     .sidebar-collapse .sidebar-item-text,
     .sidebar-collapse .sidebar-collapsible-icon,
     .sidebar-collapse .sidebar-header-logo {
@@ -153,11 +158,11 @@ section.login > img {
     @apply fixed h-40;
 }
 
-section.login img#login-top-left {
+section.login img#login-top-left-sm {
     @apply top-0 left-0;
 }
 
-section.login img#login-bottom-left {
+section.login img#login-bottom-left-sm {
     @apply bottom-0 left-0;
 }
 

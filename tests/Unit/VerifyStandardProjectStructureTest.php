@@ -191,7 +191,9 @@ test('ensure no other files in App\Support\Interfaces folder', function () {
     $fileCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces', $excludedFiles);
 
     dump('Detected files in App\Support\Interfaces folder: ' . $fileCount);
-    dump('Please move them to the appropriate subfolder.');
+    if ($fileCount > 0) {
+        dump('Please move them to the appropriate subfolder.');
+    }
 
     expect($fileCount)->toBe(0);
 });

@@ -9,51 +9,50 @@ use App\Support\Interfaces\Services\CarriageServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
     public function __construct(
         protected PresetTrainsetServiceInterface $presetTrainsetService,
         protected CarriageServiceInterface $carriageService,
-        protected CarriageTrainsetServiceInterface $carriageTrainsetService
+        protected CarriageTrainsetServiceInterface $carriageTrainsetService,
     ) {
         parent::__construct();
     }
 
     public function updatePreset(Trainset $trainset, array $data): bool {
         return DB::transaction(function () use ($trainset, $data) {
-            $preset_trainset_id = $data['preset_trainset_id'];
-            $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
+            Model::withoutEvents(function () use ($trainset, $data) {
+                // Step 1: Delete nested data related to the carriages
+                $preset_trainset_id = $data['preset_trainset_id'];
+                $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
 
-            $trainset->update(['preset_trainset_id' => $preset_trainset_id]);
-            // Step 1: Delete nested data related to the carriages
-            $trainset->carriage_trainsets->each(function ($carriageTrainset) {
-                $carriageTrainset->carriage_panels->each(function ($carriagePanel) {
-                    $carriagePanel->components->each(function ($component) {
-                        $component->delete();
-                    });
-                    $carriagePanel->delete();
+                $trainset->carriage_trainsets()->each(function ($carriageTrainset) {
+                    $this->carriageTrainsetService->delete($carriageTrainset);
                 });
-                $carriageTrainset->delete();
-            });
 
-            // Step 2: Detach existing carriages from the trainset
-            $trainset->carriages()->detach();
-            //            // Step 3: Aggregate quantities for duplicate carriage IDs
-            $carriages = [];
-            foreach ($presetTrainset->carriage_presets as $carriagePreset) {
-                $carriageId = $carriagePreset['carriage_id'];
-                $qty = $carriagePreset['qty'];
+                // Step 2: Detach existing carriages from the trainset
+                $trainset->carriages()->detach();
 
-                if (isset($carriages[$carriageId])) {
-                    $carriages[$carriageId]['qty'] += $qty;
-                } else {
-                    $carriages[$carriageId] = ['qty' => $qty];
+                // Step 3: Aggregate quantities for duplicate carriage IDs
+                $carriages = [];
+                foreach ($presetTrainset->carriage_presets as $carriagePreset) {
+                    $carriageId = $carriagePreset['carriage_id'];
+                    $qty = $carriagePreset['qty'];
+
+                    if (isset($carriages[$carriageId])) {
+                        $carriages[$carriageId]['qty'] += $qty;
+                    } else {
+                        $carriages[$carriageId] = ['qty' => $qty];
+                    }
                 }
-            }
 
-            // Step 4: Sync the aggregated carriages with the trainset
-            $trainset->carriages()->sync($carriages);
+                // Step 4: Sync the aggregated carriages with the trainset
+                $trainset->carriages()->sync($carriages);
+
+                $this->update($trainset, ['preset_trainset_id' => $preset_trainset_id]);
+            });
 
             return true;
         });
@@ -92,6 +91,8 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             // Step 5: Update the trainset's preset_trainset_id
             $trainset->update(['preset_trainset_id' => $presetTrainset->id]);
 
+            // avoid event listener
+
             return true;
         });
     }
@@ -107,7 +108,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $trainset->carriages()->detach($carriage);
 
             // Step 3: Optionally update the trainset's preset_trainset_id to null
-            $trainset->update(['preset_trainset_id' => null]);
+            //            $trainset->update(['preset_trainset_id' => null]);
 
             return true;
         });
@@ -142,7 +143,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             }
 
             // Step 3: Optionally update the trainset's preset_trainset_id to null
-            $trainset->update(['preset_trainset_id' => null]);
+            //            $trainset->update(['preset_trainset_id' => null]);
 
             return true;
         });
@@ -163,7 +164,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
             $trainset->carriages()->updateExistingPivot($carriage->id, $updateData);
 
-            $trainset->update(['preset_trainset_id' => null]);
+            //            $trainset->update(['preset_trainset_id' => null]);
 
             return true;
         });
