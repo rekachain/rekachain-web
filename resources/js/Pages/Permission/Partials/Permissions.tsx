@@ -1,14 +1,13 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { permissionService } from '@/services/permissionService';
 import { useEffect, useState } from 'react';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
@@ -32,14 +31,11 @@ export default function () {
     }, [filters]);
 
     const handlePermissionResourceDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'PermissionResource deleted successfully',
-                });
                 await permissionService.delete(id);
                 await syncPermissionResources();
+                await useSuccessToast('PermissionResource deleted successfully');
             }
         });
     };

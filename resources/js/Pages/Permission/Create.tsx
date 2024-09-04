@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
@@ -10,6 +10,7 @@ import { PermissionResource, PermissionResourceGrouped } from '@/support/interfa
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { DivisionResource } from '@/support/interfaces/resources';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -24,15 +25,15 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
     const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.ROLES}.index`));
 
+        const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
         await roleService.create({
             name: data.name,
             division_id: data.division_id,
             level: data.level,
             permissions: data.permissions,
         });
-
+        await useSuccessToast('Role created successfully');
         redirectToIndex();
     };
 
@@ -82,7 +83,6 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                                     <SelectValue placeholder="Pilih divisi" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {/*none*/}
                                     <SelectItem value="none">none</SelectItem>
                                     {divisions.map(division => (
                                         <SelectItem key={division.id} value={division.id.toString()}>

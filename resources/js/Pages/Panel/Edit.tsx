@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -8,6 +8,7 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { PanelResource } from '@/support/interfaces/resources';
 import { panelService } from '@/services/panelService';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ panel }: { panel: PanelResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -18,8 +19,10 @@ export default function ({ panel }: { panel: PanelResource }) {
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.PANELS}.index`));
+
+        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
         await panelService.update(panel.id, data);
+        await useSuccessToast('Panel deleted successfully');
         redirectToIndex();
     };
 

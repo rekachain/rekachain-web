@@ -7,6 +7,7 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { panelService } from '@/services/panelService';
 import { ROUTES } from '@/support/constants/routes';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -16,9 +17,10 @@ export default function () {
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
 
+        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
         await panelService.create(data);
+        await useSuccessToast('Panel deleted successfully');
         redirectToIndex();
     };
 

@@ -15,6 +15,7 @@ import { IntentEnum } from '@/support/enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { panelService } from '@/services/panelService';
 import { useState } from 'react';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +24,9 @@ export default function () {
     }>({
         file: null,
     });
+
     const handleGetImportDataTemplate = async () => {
+        setIsLoading(true);
         const response = await window.axios.get(
             route(`${ROUTES.PANELS}.index`, {
                 intent: IntentEnum.WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL,
@@ -38,13 +41,17 @@ export default function () {
         document.body.appendChild(link);
         link.click();
         link.remove();
+        setIsLoading(false);
     };
 
     const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         setIsLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
         await panelService.importData(data.file as File);
-        router.visit(route(`${ROUTES.PANELS}.index`));
+        await useSuccessToast('Data imported successfully');
+        redirectToIndex();
         setIsLoading(false);
     };
 
@@ -52,6 +59,7 @@ export default function () {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -65,8 +73,13 @@ export default function () {
                 {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate}>
-                        Download
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={handleGetImportDataTemplate}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Processing' : 'Download'}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
