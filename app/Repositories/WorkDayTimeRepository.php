@@ -5,12 +5,13 @@ namespace App\Repositories;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\WorkDayTime;
 use App\Support\Interfaces\Repositories\WorkDayTimeRepositoryInterface;
+use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
 use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
 
 class WorkDayTimeRepository extends BaseRepository implements WorkDayTimeRepositoryInterface {
-    use HandlesRelations, HandlesSorting;
+    use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
         return WorkDayTime::class;
@@ -18,6 +19,8 @@ class WorkDayTimeRepository extends BaseRepository implements WorkDayTimeReposit
 
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
+
+        $query = $this->applySearchFilters($query, $searchParams, ['status']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 

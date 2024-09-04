@@ -21,7 +21,7 @@ class UpdateComponentRequest extends FormRequest {
         return [
             'name' => 'nullable',
             'progress_id' => 'nullable|exists:progress,id',
-            'panel_id' => 'nullable|exists:panels,id',
+            // 'panel_id' => 'nullable|exists:panels,id',
         ];
     }
 }

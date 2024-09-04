@@ -19,7 +19,7 @@ class StoreRawMaterialRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'kode_material' => 'required|string|max:255',
+            'material_code' => 'required|string|max:255|unique:raw_materials',
             'description' => 'required|string|max:255',
             'specs' => 'required|string|max:255',
             'unit' => 'required|string|max:255',

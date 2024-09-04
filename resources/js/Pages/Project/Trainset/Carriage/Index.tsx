@@ -24,7 +24,6 @@ import {
 } from '@/Components/ui/dialog';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
-import { projectService } from '@/services/projectService';
 import { presetTrainsetService } from '@/services/presetTrainsetService';
 import { PaginateResponse } from '@/support/interfaces/others';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
@@ -41,6 +40,7 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
 import { ROUTES } from '@/support/constants/routes';
+import { fetchGenericData } from '@/helpers/dataManagementHelper';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -59,7 +59,7 @@ export default function ({
         page: 1,
         perPage: 10,
         relations: 'trainsets.carriage_panels.panel',
-        type: '',
+        search: '',
     });
     const [isLoading, setIsLoading] = useState(false);
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
@@ -103,10 +103,13 @@ export default function ({
 
     const handleSyncTrainset = async () => {
         setIsLoading(true);
-        const response = await projectService.getTrainsetCarriages(trainset.project_id, trainset.id);
-        setTrainset(response.data.trainset);
-        setPresetTrainset(response.data.presetTrainsets);
-        data.preset_trainset_id = response.data.trainset.preset_trainset_id;
+        const responseData = await fetchGenericData<{
+            trainset: TrainsetResource;
+            presetTrainsets: PresetTrainsetResource[];
+        }>();
+        setTrainset(responseData.trainset);
+        setPresetTrainset(responseData.presetTrainsets);
+        data.preset_trainset_id = responseData.trainset.preset_trainset_id;
         setIsLoading(false);
     };
 
@@ -146,12 +149,12 @@ export default function ({
     };
 
     const handleChangeSearchCarriageType = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const type = e.target.value;
-        setCarriageFilters({ ...carriageFilters, type });
+        const search = e.target.value;
+        setCarriageFilters({ ...carriageFilters, search });
         // await handleSyncCarriages();
     };
 
-    const handleSyncCarriages = async () => {
+    const handleSyncCarriages = () => {
         carriageService.getAll(debouncedCarriageFilters).then(res => {
             setCarriageResponse(res);
         });
@@ -288,7 +291,7 @@ export default function ({
                                             <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
                                             <Input
                                                 placeholder="Cari gerbong"
-                                                value={carriageFilters.type}
+                                                value={carriageFilters.search}
                                                 onChange={handleChangeSearchCarriageType}
                                                 disabled={isLoading}
                                             />

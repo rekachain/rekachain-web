@@ -10,12 +10,11 @@ class RawMaterial extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'kode_material',
+        'material_code',
         'description',
         'specs',
         'unit',
     ];
-    protected $table = 'raw_materials';
 
     public function panels(): HasMany {
         return $this->hasMany(Panel::class);

@@ -1,15 +1,13 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { userService } from '@/services/userService';
 import { useEffect, useState } from 'react';
 import { UserResource } from '@/support/interfaces/resources';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Avatar, AvatarImage } from '@/Components/ui/avatar';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
+import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
+import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
 
 export default function () {
     const [userResponse, setUserResponse] = useState<PaginateResponse<UserResource>>();
@@ -52,52 +50,21 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead></TableHead>
-                        <TableHead>NIP</TableHead>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>No. Hp</TableHead>
-                        <TableHead>Role</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {userResponse?.data.map(user => (
-                        <TableRow key={user.id}>
-                            <TableCell>
-                                {user.image_path && (
-                                    <Avatar>
-                                        <AvatarImage className="object-cover" src={user.image} alt={user.name} />
-                                    </Avatar>
-                                )}
-                            </TableCell>
-                            <TableCell>{user.nip}</TableCell>
-                            <TableCell>{user.name}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.phone_number}</TableCell>
-                            <TableCell>{user.role?.name}</TableCell>
+            {userResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            auth={auth}
+                        />
+                    </div>
 
-                            {user.id !== auth.user.id &&
-                                (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
-                                    <TableCell>
-                                        <Link
-                                            className={buttonVariants({ variant: 'link' })}
-                                            href={route(`${ROUTES.USERS}.edit`, user.id)}
-                                        >
-                                            Edit
-                                        </Link>
-                                        <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                            Delete
-                                        </Button>
-                                    </TableCell>
-                                )}
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    <div className="block md:hidden">
+                        <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} />
+                    </div>
+                </>
+            )}
 
             <GenericPagination meta={userResponse?.meta} handleChangePage={handlePageChange} />
         </div>

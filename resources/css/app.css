@@ -15,6 +15,8 @@
         --primary-foreground: 210 40% 98%;
         --secondary: 210 40% 96.1%;
         --secondary-foreground: 222.2 47.4% 11.2%;
+        --tertiary: 160.1 84.1% 39.4%;
+        --tertiary-foreground: 222.2 47.4% 11.2%;
         --muted: 210 40% 96.1%;
         --muted-foreground: 215.4 16.3% 46.9%;
         --accent: 210 40% 96.1%;
@@ -48,6 +50,8 @@
         --primary-foreground: 230.2 45.4% 13.2%;
         --secondary: 217.2 32.6% 17.5%;
         --secondary-foreground: 210 40% 98%;
+        --tertiary: 160.1 84.1% 39.4%;
+        --tertiary-foreground: 222.2 47.4% 11.2%;
         --muted: 0 0 30%;
         --muted-foreground: 215 12% 80%;
         --accent: 217.2 32.6% 80.5%;
@@ -100,6 +104,7 @@
         @apply p-0;
     }
 
+    .sidebar-collapse .sidebar-item-header,
     .sidebar-collapse .sidebar-item-text,
     .sidebar-collapse .sidebar-collapsible-icon,
     .sidebar-collapse .sidebar-header-logo {

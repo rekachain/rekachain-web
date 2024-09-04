@@ -16,7 +16,7 @@ class PresetTrainsetFactory extends Factory {
     public function definition(): array {
         return [
             'name' => $this->faker->name,
-            //            'project_id' => \App\Models\Project::factory(),
+            'project_id' => \App\Models\Project::factory(),
         ];
     }
 }
