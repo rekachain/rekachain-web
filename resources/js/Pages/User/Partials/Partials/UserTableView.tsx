@@ -44,7 +44,7 @@ export default function ({
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.role?.name}</TableCell>
 
-                        {user.id !== auth.user.id &&
+                        {user.id !== auth.user.id ? (
                             (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
                                 <TableCell>
                                     <Link
@@ -57,7 +57,10 @@ export default function ({
                                         Delete
                                     </Button>
                                 </TableCell>
-                            )}
+                            )
+                        ) : (
+                            <TableCell></TableCell>
+                        )}
                     </TableRow>
                 ))}
             </TableBody>
