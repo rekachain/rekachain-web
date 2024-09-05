@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -7,7 +7,8 @@ import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { projectService } from '@/services/projectService';
-import { toast } from '@/Components/ui/use-toast';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -15,23 +16,23 @@ export default function () {
         trainset_needed: 0,
         initial_date: '',
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
+        const redirectToDetails = () => router.visit(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
+        setLoading(true);
 
         const res = await projectService.create(data);
 
-        const redirectToDetails = () => location.assign(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
+        const newDate = new Date();
+        const date = newDate.getDate();
+        const month = newDate.getMonth() + 1;
+        const year = newDate.getFullYear();
+        const description = `${date} / ${month < 10 ? `0${month}` : `${month}`} / ${year}`;
 
-        let newDate = new Date();
-        let date = newDate.getDate();
-        let month = newDate.getMonth() + 1;
-        let year = newDate.getFullYear();
-
-        toast({
-            title: 'Proyek Berhasil Dibuat !',
-            description: `${date} / ${month < 10 ? `0${month}` : `${month}`} / ${year}`,
-        });
+        useSuccessToast('Proyek berhasil ditambahkan', description);
+        setLoading(false);
         redirectToDetails();
     };
 

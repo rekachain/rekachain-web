@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
@@ -15,6 +15,8 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { roleService } from '@/services/roleService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function (props: {
     role: RoleResource;
@@ -27,13 +29,17 @@ export default function (props: {
         level: props.role.level,
         permissions: props.role.permissions as unknown as number[],
     });
+    const { setLoading } = useLoading();
 
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.ROLES}.index`));
-        console.log(data);
+        setLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
+
         await roleService.update(props.role.id, data);
+        setLoading(false);
+        useSuccessToast('Role berhasil diubah');
         redirectToIndex();
     };
 

@@ -9,6 +9,8 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { panelService } from '@/services/panelService';
+import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
@@ -17,10 +19,13 @@ export default function () {
         perPage: 10,
     });
 
+    const { setLoading } = useLoading();
+
     const syncPanels = async () => {
-        panelService.getAll(filters).then(res => {
-            setPanelResponse(res);
-        });
+        setLoading(true);
+        const res = await panelService.getAll(filters);
+        setPanelResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -28,14 +33,13 @@ export default function () {
     }, [filters]);
 
     const handlePanelDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Panel deleted successfully',
-                });
+                setLoading(true);
                 await panelService.delete(id);
                 await syncPanels();
+                useSuccessToast('Panel deleted successfully');
+                setLoading(false);
             }
         });
     };

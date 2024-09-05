@@ -40,6 +40,8 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { progressService } from '@/services/progressService';
 import { carriageTrainsetService } from '@/services/carriageTrainsetService';
 import { fetchGenericData } from '@/helpers/dataManagementHelper';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 
@@ -55,7 +57,6 @@ export default function ({
     const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
-    const [isLoading, setIsLoading] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
         search_progress: '',
         search_panel: '',
@@ -66,14 +67,16 @@ export default function ({
         new_panel_description: '',
         new_panel_qty: 1,
     });
-
+    const { setLoading, loading } = useLoading();
     const debouncedSearchProgress = useDebounce(data.search_progress, 300);
     const debouncedSearchPanel = useDebounce(data.search_panel, 300);
 
     useEffect(() => {
+        setLoading(true);
         panelService.getAll().then(response => {
             setPanelResponse(response);
         });
+        setLoading(false);
     }, []);
 
     const handleChangeSearchPanelName = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,10 +97,11 @@ export default function ({
     };
 
     const handleSyncPanels = async () => {
+        setLoading(true);
         const filters: ServiceFilterOptions = { search: debouncedSearchPanel };
-        await panelService.getAll(filters).then(res => {
-            setPanelResponse(res);
-        });
+        const res = await panelService.getAll(filters);
+        setPanelResponse(res);
+        setLoading(false);
     };
 
     const handleChangeNewPanelName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,23 +117,24 @@ export default function ({
     };
 
     const handleSyncProgress = async () => {
+        setLoading(true);
         const filters: ServiceFilterOptions = { search: debouncedSearchProgress };
-        await progressService.getAll(filters).then(res => {
-            setProgressResponse(res);
-        });
+        const res = await progressService.getAll(filters);
+        setProgressResponse(res);
+        setLoading(false);
     };
 
     const handleSyncCarriage = async () => {
-        setIsLoading(true);
+        setLoading(true);
         const data = await fetchGenericData<{ carriageTrainset: CarriageTrainsetResource }>();
         setCarriageTrainset(data.carriageTrainset);
-        setIsLoading(false);
+        setLoading(false);
     };
 
     const handleAddPanelCarriage = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            setIsLoading(true);
+            setLoading(true);
             await carriageTrainsetService.addPanel(
                 carriageTrainset.id,
                 data.progress_id,
@@ -138,12 +143,13 @@ export default function ({
                 data.new_panel_description,
                 data.new_panel_qty,
             );
+            useSuccessToast('Panel berhasil ditambahkan');
         } catch (error) {
         } finally {
             handleResetAddCarriageSelection();
             handleResetProgressSearch();
             await handleSyncCarriage();
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
@@ -158,17 +164,11 @@ export default function ({
     };
 
     useEffect(() => {
-        setIsLoading(true);
-        handleSyncPanels().then(() => {
-            setIsLoading(false);
-        });
+        handleSyncPanels();
     }, [debouncedSearchPanel]);
 
     useEffect(() => {
-        setIsLoading(true);
-        handleSyncProgress().then(() => {
-            setIsLoading(false);
-        });
+        handleSyncProgress();
     }, [debouncedSearchProgress]);
 
     return (
@@ -235,7 +235,7 @@ export default function ({
                                                     placeholder="Cari progress"
                                                     value={data.search_progress}
                                                     onChange={handleChangeSearchprogressName}
-                                                    disabled={isLoading}
+                                                    disabled={loading}
                                                 />
                                                 <Button
                                                     type="button"
@@ -250,7 +250,7 @@ export default function ({
                                                     key={data.progress_id} // Force re-render when new_panel_progress_id changes
                                                     onValueChange={v => setData('progress_id', +v)}
                                                     value={data.progress_id?.toString()}
-                                                    disabled={isLoading}
+                                                    disabled={loading}
                                                     required
                                                 >
                                                     <SelectTrigger id="progress">
@@ -258,7 +258,7 @@ export default function ({
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" defaultChecked disabled>
-                                                            {isLoading ? 'Loading' : 'Pilih progress'}
+                                                            {loading ? 'Loading' : 'Pilih progress'}
                                                         </SelectItem>
                                                         {progressResponse?.data.map(progress => (
                                                             <SelectItem
@@ -278,14 +278,14 @@ export default function ({
                                                 placeholder="Cari panel"
                                                 value={data.search_panel}
                                                 onChange={handleChangeSearchPanelName}
-                                                disabled={isLoading}
+                                                disabled={loading}
                                             />
                                             <div className="flex gap-4">
                                                 <Select
                                                     key={data.new_panel_id} // Force re-render when new_panel_id changes
                                                     onValueChange={handleChangePanel}
                                                     value={data.new_panel_id?.toString()}
-                                                    disabled={isLoading}
+                                                    disabled={loading}
                                                     required
                                                 >
                                                     <SelectTrigger id="panel">
@@ -293,7 +293,7 @@ export default function ({
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" defaultChecked disabled>
-                                                            {isLoading ? 'Loading' : 'Pilih panel'}
+                                                            {loading ? 'Loading' : 'Pilih panel'}
                                                         </SelectItem>
                                                         {panelResponse?.data.map(panel => (
                                                             <SelectItem key={panel.id} value={panel.id.toString()}>
@@ -352,8 +352,8 @@ export default function ({
                                         />
                                     </div>
 
-                                    <Button type="submit" disabled={isLoading}>
-                                        {isLoading ? (
+                                    <Button type="submit" disabled={loading}>
+                                        {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                 Proses

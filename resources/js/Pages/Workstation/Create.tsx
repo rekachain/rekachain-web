@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -8,8 +8,10 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
-import { DivisionResource, WorkshopResource, WorkstationResource } from '@/support/interfaces/resources';
+import { DivisionResource, WorkshopResource } from '@/support/interfaces/resources';
 import { workstationService } from '@/services/workstationService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ workshops, divisions }: { workshops: WorkshopResource[]; divisions: DivisionResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -18,12 +20,16 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
         workshop_id: '',
         division_id: '',
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.WORKSTATIONS}.index`));
+        const redirectToIndex = () => router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
 
+        setLoading(true);
         await workstationService.create(data);
+        setLoading(false);
+        useSuccessToast('Workstation berhasil ditambahkan');
         redirectToIndex();
     };
 

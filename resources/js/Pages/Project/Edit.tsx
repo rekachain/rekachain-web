@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -8,6 +8,8 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { ProjectResource } from '@/support/interfaces/resources';
 import { projectService } from '@/services/projectService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ project }: { project: ProjectResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -15,11 +17,16 @@ export default function ({ project }: { project: ProjectResource }) {
         name: project.name,
         initial_date: project.initial_date,
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.PROJECTS}.index`));
+
+        setLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.PROJECTS}.index`));
         await projectService.update(project.id, data);
+        useSuccessToast('Proyek berhasil diubah');
+        setLoading(false);
         redirectToIndex();
     };
 

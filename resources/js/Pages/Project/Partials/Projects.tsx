@@ -9,6 +9,8 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { projectService } from '@/services/projectService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [projectResponse, setProjectResponse] = useState<PaginateResponse<ProjectResource>>();
@@ -16,11 +18,13 @@ export default function () {
         page: 1,
         perPage: 10,
     });
+    const { setLoading } = useLoading();
 
     const handleSyncProjects = async () => {
-        projectService.getAll(filters).then(res => {
-            setProjectResponse(res);
-        });
+        setLoading(true);
+        const res = await projectService.getAll(filters);
+        setProjectResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -30,12 +34,9 @@ export default function () {
     const handleProjectDeletion = (id: number) => {
         const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Project deleted successfully',
-                });
                 await projectService.delete(id);
                 await handleSyncProjects();
+                useSuccessToast('Project deleted successfully');
             }
         });
     };

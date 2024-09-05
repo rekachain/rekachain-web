@@ -8,17 +8,24 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { DivisionResource } from '@/support/interfaces/resources';
 import { divisionService } from '@/services/divisionService';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ division }: { division: DivisionResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
         id: division.id,
         name: division.name,
     });
+    const { setLoading } = useLoading();
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
+
+        setLoading(true);
         const redirectToIndex = () => location.assign(route(`${ROUTES.DIVISIONS}.index`));
         await divisionService.update(division.id, data);
+        useSuccessToast('Division updated successfully');
+        setLoading(false);
         redirectToIndex();
     };
 
