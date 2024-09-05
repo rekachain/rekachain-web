@@ -37,7 +37,8 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('panel-attachments', ApiPanelAttachmentController::class);
         // Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
         Route::apiResource('components', ApiComponentController::class);
-        Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
+        // Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);
+        Route::apiResource('progress', ApiProgressController::class);
         Route::apiResource('pm', ApiPanelMaterialController::class)->only(['index', 'show']);
         Route::apiResource('work-days', ApiWorkDayController::class);
         Route::apiResource('work-day-times', ApiWorkDayTimeController::class);
