@@ -53,4 +53,8 @@ class PanelAttachment extends Model
     public function supervisor(): BelongsTo {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+    public function handlers(): HasMany {
+        return $this->hasMany(PanelAttachmentHandler::class);
+    }
 }
