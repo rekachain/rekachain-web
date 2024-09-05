@@ -1,18 +1,14 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
 import { workstationService } from '@/services/workstationService';
 import { useEffect, useState } from 'react';
 import { WorkstationResource } from '@/support/interfaces/resources';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
-import { useMediaQuery } from 'react-responsive';
-import AnimateIn from '@/lib/AnimateIn';
 import WorkstationTableView from './Partials/WorkstationTableView';
 import WorkstationCardView from './Partials/WorkstationCardView';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
     const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
@@ -21,11 +17,13 @@ export default function () {
         perPage: 10,
         relations: 'workshop,division',
     });
+    const { setLoading } = useLoading();
 
     const syncWorkstations = async () => {
-        workstationService.getAll(filters).then(res => {
-            setWorkstationResponse(res);
-        });
+        setLoading(true);
+        const res = await workstationService.getAll(filters);
+        setWorkstationResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -33,14 +31,13 @@ export default function () {
     }, [filters]);
 
     const handleWorkstationDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'Workstation deleted successfully',
-                });
+                setLoading(true);
                 await workstationService.delete(id);
                 await syncWorkstations();
+                useSuccessToast('Workstation deleted successfully');
+                setLoading(false);
             }
         });
     };
@@ -48,14 +45,6 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
-
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-width: 900px)',
-    });
-    // function handleWorkstationDeletion(id: any): void {
-    //     throw new Error('Function not implemented.');
-    // }
 
     return (
         <div className="space-y-4">
@@ -67,11 +56,6 @@ export default function () {
                             handleWorkstationDeletion={handleWorkstationDeletion}
                             // auth={auth}
                         ></WorkstationTableView>
-                        {/* <UserTableView
-                            userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
-                            auth={auth}
-                        /> */}
                     </div>
 
                     <div className="block md:hidden">
@@ -80,7 +64,6 @@ export default function () {
                             handleWorkstationDeletion={handleWorkstationDeletion}
                             // auth={auth}
                         ></WorkstationCardView>
-                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
                     </div>
                 </>
             )}

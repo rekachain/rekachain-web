@@ -21,11 +21,9 @@ export default function PermissionsCardView({
                     from="opacity-0 -translate-y-4"
                     to="opacity-100 translate-y-0 translate-x-0 mt-3"
                     duration={300}
+                    key={permission.id}
                 >
-                    <div
-                        key={permission.id}
-                        className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2"
-                    >
+                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2">
                         <div className="flex w-full justify-between items-center">
                             <div className="text-center">
                                 {/* <h5 className="font-bold text-xs items-center "> {division.role?.name}</h5> */}

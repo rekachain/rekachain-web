@@ -41,6 +41,8 @@ import {
 } from '@/Components/ui/breadcrumb';
 import { ROUTES } from '@/support/constants/routes';
 import { fetchGenericData } from '@/helpers/dataManagementHelper';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -61,7 +63,8 @@ export default function ({
         relations: 'trainsets.carriage_panels.panel',
         search: '',
     });
-    const [isLoading, setIsLoading] = useState(false);
+
+    const { setLoading, loading } = useLoading();
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
     const { data, setData } = useForm({
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
@@ -79,30 +82,34 @@ export default function ({
         try {
             await useConfirmation().then(async result => {
                 if (result.isConfirmed) {
-                    setIsLoading(true);
+                    setLoading(true);
                     await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
                     await handleSyncTrainset();
+                    useSuccessToast('Preset changed successfully');
                 }
             });
         } catch (error) {
         } finally {
-            // reset('isLoading');
+            setLoading(false);
+            // reset('loading');
         }
     };
 
     const handleSaveTrainsetPreset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
+        setLoading(true);
         try {
             await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
+            useSuccessToast('Preset saved successfully');
         } catch (error) {
         } finally {
             await handleSyncTrainset();
+            setLoading(false);
         }
     };
 
     const handleSyncTrainset = async () => {
-        setIsLoading(true);
+        setLoading(true);
         const responseData = await fetchGenericData<{
             trainset: TrainsetResource;
             presetTrainsets: PresetTrainsetResource[];
@@ -110,12 +117,12 @@ export default function ({
         setTrainset(responseData.trainset);
         setPresetTrainset(responseData.presetTrainsets);
         data.preset_trainset_id = responseData.trainset.preset_trainset_id;
-        setIsLoading(false);
+        setLoading(false);
     };
 
     const handleAddCarriageTrainset = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsLoading(true);
+        setLoading(true);
         try {
             await trainsetService.addCarriageTrainset(
                 trainset.id,
@@ -124,6 +131,7 @@ export default function ({
                 data.new_carriage_description,
                 data.new_carriage_qty,
             );
+            useSuccessToast('Carriage added successfully');
         } catch (error) {
         } finally {
             await handleSyncTrainset();
@@ -131,11 +139,12 @@ export default function ({
     };
 
     const handleDeletePresetTrainset = async () => {
-        setIsLoading(true);
+        setLoading(true);
         try {
             await useConfirmation().then(async result => {
                 if (result.isConfirmed) {
                     await presetTrainsetService.delete(data.preset_trainset_id);
+                    useSuccessToast('Preset deleted successfully');
                 }
             });
         } catch (error) {
@@ -229,12 +238,12 @@ export default function ({
                                             <Button
                                                 type="submit"
                                                 disabled={
-                                                    isLoading ||
+                                                    loading ||
                                                     !data.preset_trainset_id ||
                                                     data.preset_trainset_id === trainset.preset_trainset_id
                                                 }
                                             >
-                                                {isLoading ? (
+                                                {loading ? (
                                                     <>
                                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                         Loading
@@ -248,13 +257,13 @@ export default function ({
                                                 type="button"
                                                 variant="destructive"
                                                 disabled={
-                                                    isLoading ||
+                                                    loading ||
                                                     !data.preset_trainset_id ||
                                                     (selectedPreset && selectedPreset.has_trainsets)
                                                 }
                                                 onClick={handleDeletePresetTrainset}
                                             >
-                                                {isLoading ? (
+                                                {loading ? (
                                                     <>
                                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                         Loading
@@ -293,7 +302,7 @@ export default function ({
                                                 placeholder="Cari gerbong"
                                                 value={carriageFilters.search}
                                                 onChange={handleChangeSearchCarriageType}
-                                                disabled={isLoading}
+                                                disabled={loading}
                                             />
                                             <div className="flex gap-4">
                                                 <Select
@@ -375,8 +384,8 @@ export default function ({
                                         />
                                     </div>
 
-                                    <Button type="submit" disabled={isLoading}>
-                                        {isLoading ? (
+                                    <Button type="submit" disabled={loading}>
+                                        {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                 Proses
@@ -418,8 +427,8 @@ export default function ({
                                                             setData('new_carriage_preset_name', e.target.value)
                                                         }
                                                     />
-                                                    <Button type="submit" disabled={isLoading} className="w-fit">
-                                                        {isLoading ? (
+                                                    <Button type="submit" disabled={loading} className="w-fit">
+                                                        {loading ? (
                                                             <>
                                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                                 Menambahkan preset

@@ -100,7 +100,7 @@ export default function Navbar() {
                     <DropdownMenuTrigger>
                         <div className="flex justify-start gap-1 md:gap-2">
                             <Avatar>
-                                <AvatarImage src={auth?.user.image} />
+                                <AvatarImage src={auth?.user.image} className="object-cover" />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
                             {isTabletOrMobile && <span></span>}

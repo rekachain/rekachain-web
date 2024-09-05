@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
@@ -10,6 +10,8 @@ import { Button } from '@/Components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
 import { RoleResource } from '@/support/interfaces/resources';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function (props: { roles: RoleResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -21,20 +23,28 @@ export default function (props: { roles: RoleResource[] }) {
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
-
+    const { setLoading } = useLoading();
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.USERS}.index`));
 
-        const formData = new FormData();
-        formData.append('nip', data.nip);
-        formData.append('name', data.name);
-        formData.append('email', data.email);
-        formData.append('password', data.password);
-        formData.append('role_id', data.role_id);
-        if (photo) formData.append('image_path', photo);
-        await userService.create(formData);
-        redirectToIndex();
+        setLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.USERS}.index`));
+
+        try {
+            const formData = new FormData();
+            formData.append('nip', data.nip);
+            formData.append('name', data.name);
+            formData.append('email', data.email);
+            formData.append('password', data.password);
+            formData.append('role_id', data.role_id);
+            if (photo) formData.append('image_path', photo);
+            await userService.create(formData);
+            useSuccessToast('User created successfully');
+            redirectToIndex();
+        } catch {
+        } finally {
+            setLoading(false);
+        }
 
         // post(route(`${ROUTES.USERS}.store`), {
         //     onFinish: redirectToIndex, onError: console.log});

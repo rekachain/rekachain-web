@@ -1,18 +1,15 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { roleService } from '@/services/roleService';
 import { useEffect, useState } from 'react';
 import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { RoleResource } from '@/support/interfaces/resources/RoleResource';
-import { useMediaQuery } from 'react-responsive';
-import AnimateIn from '@/lib/AnimateIn';
 import RoleCardView from './Partials/RoleCardView';
 import RoleTableView from './Partials/RoleTableView';
+import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function () {
     const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();
@@ -23,12 +20,13 @@ export default function () {
     });
 
     const { auth } = usePage().props;
+    const { setLoading } = useLoading();
 
     const syncRoleResources = async () => {
-        roleService.getAll(filters).then(res => {
-            console.log(res);
-            setRoleResponse(res);
-        });
+        setLoading(true);
+        const res = await roleService.getAll(filters);
+        setRoleResponse(res);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -37,14 +35,13 @@ export default function () {
     }, [filters]);
 
     const handleRoleResourceDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
+        useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
-                window.Swal.fire({
-                    icon: 'success',
-                    title: 'RoleResource deleted successfully',
-                });
+                setLoading(true);
                 await roleService.delete(id);
                 await syncRoleResources();
+                setLoading(false);
+                useSuccessToast('Role deleted successfully');
             }
         });
     };
@@ -52,11 +49,6 @@ export default function () {
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
-
-    const isDesktopOrLaptop = useMediaQuery({
-        query: '(min-width: 900px)',
-    });
 
     return (
         <div className="space-y-4">
@@ -68,11 +60,6 @@ export default function () {
                             handleRoleDeletion={handleRoleResourceDeletion}
                             auth={auth}
                         ></RoleTableView>
-                        {/* <UserTableView
-                            userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
-                            auth={auth}
-                        /> */}
                     </div>
 
                     <div className="block md:hidden">
@@ -81,7 +68,6 @@ export default function () {
                             handleRoleDeletion={handleRoleResourceDeletion}
                             auth={auth}
                         ></RoleCardView>
-                        {/* <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} /> */}
                     </div>
                 </>
             )}

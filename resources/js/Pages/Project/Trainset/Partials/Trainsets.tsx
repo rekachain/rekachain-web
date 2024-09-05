@@ -6,6 +6,8 @@ import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/TrainsetName';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({
     project,
@@ -14,15 +16,16 @@ export default function ({
     project: ProjectResource;
     handleSyncProject: () => Promise<void>;
 }) {
+    const { setLoading } = useLoading();
+
     const handleTrainsetDeletion = (id: number) => {
         useConfirmation().then(async ({ isConfirmed }) => {
             if (isConfirmed) {
+                setLoading(true);
                 await trainsetService.delete(id);
                 await handleSyncProject();
-                await window.Swal.fire({
-                    icon: 'success',
-                    title: 'Trainset deleted successfully',
-                });
+                setLoading(false);
+                useSuccessToast('Trainset deleted successfully');
             }
         });
     };

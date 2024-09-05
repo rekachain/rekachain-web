@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
@@ -11,6 +11,8 @@ import { RoleResource, UserResource } from '@/support/interfaces/resources';
 import { parseFormData } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
+import { useLoading } from '@/contexts/LoadingContext';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ user, roles }: { user: UserResource; roles: RoleResource[] }) {
     console.log(user, roles);
@@ -24,23 +26,30 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
-
+    const { setLoading } = useLoading();
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-        const redirectToIndex = () => location.assign(route(`${ROUTES.USERS}.index`));
 
-        const formData = new FormData();
-        if (data.nip) formData.append('nip', data.nip);
-        if (data.name) formData.append('name', data.name);
-        if (data.phone_number) formData.append('phone_number', data.phone_number);
-        if (data.email) formData.append('email', data.email);
-        if (data.password) formData.append('password', data.password);
-        if (photo) formData.append('image_path', photo);
-        if (data.role_id) formData.append('role_id', data.role_id);
-        console.log(parseFormData(formData));
-        await userService.update(user.id, formData);
-        redirectToIndex();
+        setLoading(true);
+        const redirectToIndex = () => router.visit(route(`${ROUTES.USERS}.index`));
 
+        try {
+            const formData = new FormData();
+            if (data.nip) formData.append('nip', data.nip);
+            if (data.name) formData.append('name', data.name);
+            if (data.phone_number) formData.append('phone_number', data.phone_number);
+            if (data.email) formData.append('email', data.email);
+            if (data.password) formData.append('password', data.password);
+            if (photo) formData.append('image_path', photo);
+            if (data.role_id) formData.append('role_id', data.role_id);
+            console.log(parseFormData(formData));
+            await userService.update(user.id, formData);
+            useSuccessToast('User updated successfully');
+            redirectToIndex();
+        } catch {
+        } finally {
+            setLoading(false);
+        }
         // post(route(`${ROUTES.USERS}.store`), {
         //     onFinish: redirectToIndex, onError: console.log});
     };
