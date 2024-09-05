@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { buttonVariants } from '@/Components/ui/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import Import from '@/Pages/RawMaterial/Partials/Import';
 
 export default function () {
     const RawMaterials = lazy(() => import('./Partials/RawMaterials'));
@@ -20,6 +21,7 @@ export default function () {
                         >
                             Tambah Raw Material
                         </Link>
+                        <Import />
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <RawMaterials />

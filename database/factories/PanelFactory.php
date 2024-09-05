@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 // use App\Models\Carriage;
-// use App\Models\Progress;
+use App\Models\Progress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +17,10 @@ class PanelFactory extends Factory {
      */
     public function definition(): array {
         return [
-            // 'progress_id' => Progress::inRandomOrder()->first()->id,
             // 'carriage_id' => Carriage::inRandomOrder()->first()->id,
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
+            'progress_id' => Progress::inRandomOrder()->first()->id,
         ];
     }
 }
