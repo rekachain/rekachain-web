@@ -25,9 +25,9 @@ export default function RoleCardView({
                 >
                     <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-5">
                         <div className="flex w-full justify-between items-center">
-                            <h4 className="font-bold text-xl">{role.name}</h4>
+                            <h4 className="font-bold text-lg">{role.name}</h4>
                             <div className="text-center">
-                                <h5 className="font-bold text-md items-center ">Divisi : {role.division?.name}</h5>
+                                <h5 className="font-bold text-base items-center ">Divisi : {role.division?.name}</h5>
                             </div>
                         </div>
                         <h4 className="text-base">Level : {role.level}</h4>
