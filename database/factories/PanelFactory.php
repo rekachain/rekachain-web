@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 // use App\Models\Carriage;
-// use App\Models\Progress;
+use App\Models\Progress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

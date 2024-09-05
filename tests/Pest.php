@@ -3,7 +3,9 @@
 use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Panel;
 use App\Models\Project;
+use App\Models\Progress;
 use App\Models\Trainset;
 use App\Models\Component;
 use App\Models\Permission;
@@ -103,4 +105,17 @@ function createTrainset() {
     $trainset = Trainset::factory()->create();
 
     return $trainset;
+}
+
+function createProgress() {
+    $progress = Progress::factory()->create();
+
+    return $progress;
+}
+
+function createPanel() {
+    createProgress();
+    $panel = Panel::factory()->create();
+
+    return $panel;
 }
