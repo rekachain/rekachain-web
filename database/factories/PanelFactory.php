@@ -17,10 +17,10 @@ class PanelFactory extends Factory {
      */
     public function definition(): array {
         return [
-            // 'progress_id' => Progress::inRandomOrder()->first()->id,
             // 'carriage_id' => Carriage::inRandomOrder()->first()->id,
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
+            'progress_id' => Progress::inRandomOrder()->first()->id,
         ];
     }
 }

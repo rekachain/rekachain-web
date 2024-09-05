@@ -31,6 +31,7 @@ class StorePanelRequest extends FormRequest {
         return [
             'name' => 'string|max:255',
             'description' => 'string|max:255',
+            'progress_id' => 'nullable|integer|exists:progress,id',
         ];
     }
 }
