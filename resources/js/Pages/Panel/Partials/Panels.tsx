@@ -11,6 +11,7 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { panelService } from '@/services/panelService';
 import { useSuccessToast } from '@/hooks/useToast';
 import { useLoading } from '@/contexts/LoadingContext';
+import PanelCardView from './Partials/PanelCardView';
 
 export default function () {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
@@ -50,37 +51,50 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Deskripsi</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {panelResponse?.data.map(panel => (
-                        <TableRow key={panel.id}>
-                            <TableCell>{panel.name}</TableCell>
-                            <TableCell>{panel.description}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PANELS}.edit`, panel.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {panel.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            {panelResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Nama</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
+                                    <TableHead></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {panelResponse?.data.map(panel => (
+                                    <TableRow key={panel.id}>
+                                        <TableCell>{panel.name}</TableCell>
+                                        <TableCell>{panel.description}</TableCell>
+                                        <TableCell>
+                                            <Link
+                                                className={buttonVariants({ variant: 'link' })}
+                                                href={route(`${ROUTES.PANELS}.edit`, panel.id)}
+                                            >
+                                                Edit
+                                            </Link>
+                                            {panel.can_be_deleted && (
+                                                <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
+                                                    Delete
+                                                </Button>
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
 
+                    <div className="block md:hidden">
+                        <PanelCardView
+                            panelResponse={panelResponse}
+                            handlePanelDeletion={handlePanelDeletion}
+                            auth={''}
+                        ></PanelCardView>
+                    </div>
+                </>
+            )}
             <GenericPagination meta={panelResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
