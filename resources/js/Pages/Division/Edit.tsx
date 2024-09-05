@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -20,13 +20,17 @@ export default function ({ division }: { division: DivisionResource }) {
 
     const submit: FormEventHandler = async e => {
         e.preventDefault();
-
         setLoading(true);
-        const redirectToIndex = () => location.assign(route(`${ROUTES.DIVISIONS}.index`));
-        await divisionService.update(division.id, data);
-        useSuccessToast('Division updated successfully');
-        setLoading(false);
-        redirectToIndex();
+        const redirectToIndex = () => router.visit(route(`${ROUTES.DIVISIONS}.index`));
+
+        try {
+            await divisionService.update(division.id, data);
+            useSuccessToast('Division updated successfully');
+        } catch (error) {
+        } finally {
+            setLoading(false);
+            redirectToIndex();
+        }
     };
 
     return (

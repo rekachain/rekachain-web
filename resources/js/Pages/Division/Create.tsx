@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
@@ -19,8 +19,7 @@ export default function Create() {
     const submit: FormEventHandler = async e => {
         e.preventDefault();
         setLoading(true);
-        const redirectToIndex = () => location.assign(route(`${ROUTES.DIVISIONS}.index`));
-
+        const redirectToIndex = () => router.visit(route(`${ROUTES.DIVISIONS}.index`));
         await divisionService.create(data);
         useSuccessToast('Division created successfully');
         setLoading(false);
