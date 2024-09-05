@@ -24,6 +24,6 @@ class Controller extends BaseController {
      * Determine if the request is a test route.
      */
     private function isTestRoute(): bool {
-        return str_starts_with(\Route::currentRouteName(), 'test-');
+        return str_starts_with(\Route::currentRouteName(), 'test');
     }
 }
