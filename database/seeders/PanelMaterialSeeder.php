@@ -18,7 +18,7 @@ class PanelMaterialSeeder extends Seeder {
         $csvData = $csvReader->getCsvData();
 
         if (!$csvData) {
-            PanelMaterial::factory(10)->create();
+            PanelMaterial::factory(30)->create();
 
             return;
         }

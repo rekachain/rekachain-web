@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder {
             CarriagePanelComponentSeeder::class,
             PanelMaterialSeeder::class,
             PanelAttachmentSeeder::class,
+            PanelAttachmentHandlerSeeder::class,
             //                        PanelProgressSeeder::class
         ]);
     }

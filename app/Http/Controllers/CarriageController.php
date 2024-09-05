@@ -10,6 +10,7 @@ use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Support\Enums\IntentEnum;
 
 class CarriageController extends Controller {
     public function __construct(protected CarriageServiceInterface $carriageService) {}
@@ -19,6 +20,14 @@ class CarriageController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
+            
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE->value:
+                    return $this->carriageService->getImportDataTemplate();
+            }
+            
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -42,6 +51,15 @@ class CarriageController extends Controller {
      */
     public function store(StoreCarriageRequest $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_CARRIAGE_IMPORT_CARRIAGE->value:
+                    $this->carriageService->importData($request->file('import_file'));
+
+                    return response()->noContent();
+            }
+
             return $this->carriageService->create($request->validated());
         }
     }

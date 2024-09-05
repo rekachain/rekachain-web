@@ -15,11 +15,14 @@ return new class extends Migration {
             $table->foreignId('carriage_panel_id')->constrained();
             $table->foreignId('source_workstation_id')->references('id')->on('workstations')->constrained();
             $table->foreignId('destination_workstation_id')->references('id')->on('workstations')->constrained();
+            $table->string('attachment_number')->nullable();
+            $table->string('qr_code')->nullable();
             $table->string('qr_path')->nullable();
             $table->string('current_step')->nullable();
             $table->string('elapsed_time')->nullable();
             $table->string('status')->nullable();
             $table->foreignId('panel_attachment_id')->nullable()->constrained();
+            $table->foreignId('supervisor_id')->nullable()->references('id')->on('users')->constrained();
             $table->timestamps();
         });
     }

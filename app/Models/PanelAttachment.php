@@ -16,11 +16,14 @@ class PanelAttachment extends Model
         'carriage_panel_id',
         'source_workstation_id',
         'destination_workstation_id',
+        'attachment_number',
+        'qr_code',
         'qr_path',
         'current_step',
         'elapsed_time',
         'status',
         'panel_attachment_id',
+        'supervisor_id',
     ];
 
     public function parent(): BelongsTo {
@@ -45,5 +48,13 @@ class PanelAttachment extends Model
 
     public function carriage_trainset(): BelongsTo {
         return $this->belongsTo(CarriageTrainset::class);
+    }
+
+    public function supervisor(): BelongsTo {
+        return $this->belongsTo(User::class, 'supervisor_id');
+    }
+
+    public function handlers(): HasMany {
+        return $this->hasMany(PanelAttachmentHandler::class);
     }
 }
