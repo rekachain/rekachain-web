@@ -12,8 +12,8 @@ class RawMaterial extends Model {
     protected $fillable = [
         'material_code',
         'description',
-        'specs',
         'unit',
+        'specs',
     ];
 
     public function panels(): HasMany {

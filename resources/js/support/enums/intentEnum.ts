@@ -8,4 +8,6 @@ export const IntentEnum = {
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
     WEB_PANEL_IMPORT_PANEL: 'web.panel.import.panel',
+    WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL: 'web.raw.material.get.template.import.raw.material',
+    WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL: 'web.raw.material.import.raw.material',
 };
