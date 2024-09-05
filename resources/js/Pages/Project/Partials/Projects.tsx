@@ -11,6 +11,7 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { projectService } from '@/services/projectService';
 import { useLoading } from '@/contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
+import ProjectCardView from './Partials/ProjectCardView';
 
 export default function () {
     const [projectResponse, setProjectResponse] = useState<PaginateResponse<ProjectResource>>();
@@ -47,45 +48,63 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Tanggal Inisiasi</TableHead>
-                        <TableHead>Jumlah Trainset</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {projectResponse?.data.map(project => (
-                        <TableRow key={project.id}>
-                            <TableCell>{project.name}</TableCell>
-                            <TableCell>{project.initial_date}</TableCell>
-                            <TableCell>{project.trainset_count}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {project.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
-                                >
-                                    Trainset
-                                </Link>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            <>
+                {projectResponse && (
+                    <>
+                        <div className="hidden md:block">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Nama</TableHead>
+                                        <TableHead>Tanggal Inisiasi</TableHead>
+                                        <TableHead>Jumlah Trainset</TableHead>
+                                        <TableHead></TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {projectResponse?.data.map(project => (
+                                        <TableRow key={project.id}>
+                                            <TableCell>{project.name}</TableCell>
+                                            <TableCell>{project.initial_date}</TableCell>
+                                            <TableCell>{project.trainset_count}</TableCell>
+                                            <TableCell>
+                                                <Link
+                                                    className={buttonVariants({ variant: 'link' })}
+                                                    href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
+                                                >
+                                                    Edit
+                                                </Link>
+                                                {project.can_be_deleted && (
+                                                    <Button
+                                                        variant="link"
+                                                        onClick={() => handleProjectDeletion(project.id)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                )}
+                                                <Link
+                                                    className={buttonVariants({ variant: 'link' })}
+                                                    href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
+                                                >
+                                                    Trainset
+                                                </Link>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
 
+                        <div className="block md:hidden">
+                            <ProjectCardView
+                                projectResponse={projectResponse}
+                                handleProjectDeletion={handleProjectDeletion}
+                                auth={''}
+                            ></ProjectCardView>
+                        </div>
+                    </>
+                )}
+            </>
             <GenericPagination meta={projectResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
