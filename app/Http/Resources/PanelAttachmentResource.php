@@ -44,6 +44,7 @@ class PanelAttachmentResource extends JsonResource {
             'status' => $this->status,
             'panel_attachment_id' => $this->panel_attachment_id,
             'supervisor' => new UserResource($this->whenLoaded('supervisor')),
+            'handlers' => PanelAttachmentHandlerResource::collection($this->handlers),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
