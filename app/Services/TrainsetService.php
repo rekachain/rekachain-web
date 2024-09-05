@@ -11,6 +11,12 @@ use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Exports\Trainset\TrainsetsExport;
+use App\Exports\Trainset\TrainsetsTemplateExport;
+use App\Imports\Trainset\TrainsetsImport;
+use Illuminate\Http\UploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
     public function __construct(
@@ -176,6 +182,20 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         });
 
         return parent::delete($keyOrModel);
+    }
+
+    public function importData(UploadedFile $file): bool {
+        Excel::import(new TrainsetsImport, $file);
+
+        return true;
+    }
+
+    public function exportData(): BinaryFileResponse {
+        return Excel::download(new TrainsetsExport, 'trainsets.xlsx');
+    }
+
+    public function getImportDataTemplate(): BinaryFileResponse {
+        return (new TrainsetsTemplateExport)->download('trainsets_template.xlsx');
     }
 
     protected function getRepositoryClass(): string {
