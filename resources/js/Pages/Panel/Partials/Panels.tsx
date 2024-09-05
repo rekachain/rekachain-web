@@ -1,4 +1,3 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { PanelResource } from '@/support/interfaces/resources';
@@ -12,6 +11,7 @@ import { panelService } from '@/services/panelService';
 import { useSuccessToast } from '@/hooks/useToast';
 import { useLoading } from '@/contexts/LoadingContext';
 import PanelCardView from './Partials/PanelCardView';
+import PanelTableView from './Partials/PanelTableView';
 
 export default function () {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
@@ -54,36 +54,11 @@ export default function () {
             {panelResponse && (
                 <>
                     <div className="hidden md:block">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Nama</TableHead>
-                                    <TableHead>Deskripsi</TableHead>
-                                    <TableHead></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {panelResponse?.data.map(panel => (
-                                    <TableRow key={panel.id}>
-                                        <TableCell>{panel.name}</TableCell>
-                                        <TableCell>{panel.description}</TableCell>
-                                        <TableCell>
-                                            <Link
-                                                className={buttonVariants({ variant: 'link' })}
-                                                href={route(`${ROUTES.PANELS}.edit`, panel.id)}
-                                            >
-                                                Edit
-                                            </Link>
-                                            {panel.can_be_deleted && (
-                                                <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
-                                                    Delete
-                                                </Button>
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <PanelTableView
+                            panelResponse={panelResponse}
+                            handlePanelDeletion={handlePanelDeletion}
+                            auth={''}
+                        ></PanelTableView>
                     </div>
 
                     <div className="block md:hidden">
