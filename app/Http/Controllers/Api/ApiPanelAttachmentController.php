@@ -24,7 +24,7 @@ class ApiPanelAttachmentController extends Controller {
     public function index(Request $request) {
         $perPage = request()->get('perPage', 5);
 
-        $request->merge(['intent' => IntentEnum::API_PANEL_GET_ATTACHMENTS->value]);
+        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
         return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
     }
@@ -43,9 +43,9 @@ class ApiPanelAttachmentController extends Controller {
         $intent = request()->get('intent');
         
         switch ($intent) {
-            case IntentEnum::API_PANEL_GET_ATTACHMENT_DETAILS->value:
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
-            case IntentEnum::API_PANEL_GET_ATTACHMENT_DETAILS_WITH_QR->value:
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
                     if($panelAttachment->qr_code == $qr){
@@ -57,17 +57,17 @@ class ApiPanelAttachmentController extends Controller {
                     return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
                 }
 
-            case IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBERS->value:
-                $request->merge(['intent' => IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBERS->value]);
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value:
+                $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value]);
                 return SerialPanelResource::collection($this->serialPanelService->getAllPaginated($request->query(), 10));
-            case IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
                     $serialPanel = SerialPanel::wherePanelAttachmentId($panelAttachment->id)
                         ->whereQrCode($qr)->first();
 
                     if ($serialPanel) {
-                        $request->merge(['intent' => IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
+                        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
                         return new SerialPanelResource($serialPanel);
                     }
                     return response()->json(['status' => 'Fail', 'message' => 'Invalid SN QR code' ], 400);

@@ -18,7 +18,7 @@ class SerialPanelResource extends JsonResource
         $intent = $request->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'serial_number' => $this->id,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
@@ -26,7 +26,7 @@ class SerialPanelResource extends JsonResource
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
-            case IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBERS->value:
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value:
                 return [
                     'serial_number' => $this->id,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
