@@ -15,3 +15,5 @@ export * from './Progress';
 export * from './CarriageTrainset';
 export * from './RawMaterial';
 export * from './Component';
+
+export * from './CarriagePanelComponent';

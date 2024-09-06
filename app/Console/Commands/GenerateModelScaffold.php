@@ -386,7 +386,7 @@ class GenerateModelScaffold extends Command {
     protected function getReactResourceTemplate($modelName) {
         return <<<TS
         import { {$modelName} } from '@/support/models';
-        import { Resource } from '@/support/interfaces/resources/Resource';
+        import { Resource } from '@/support/interfaces/resources';
 
         export interface {$modelName}Resource extends Resource, {$modelName} {}
         TS;
