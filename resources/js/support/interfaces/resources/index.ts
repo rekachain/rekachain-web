@@ -20,3 +20,4 @@ export * from './RawMaterialResource';
 export * from './CarriagePanelComponentResource';
 export * from './PanelAttachmentResource';
 export * from './PanelAttachmentHandlerResource';
+export * from './PanelMaterialResource';
