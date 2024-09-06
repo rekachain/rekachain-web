@@ -13,7 +13,7 @@ class GenerateModelScaffold extends Command {
      *
      * @var string
      */
-    protected $signature = 'make:scaffold {model : The name of the model} {--seeder : Generate a seeder for the model} {--factory : Generate a factory for the model}';
+    protected $signature = 'make:scaffold {model : The name of the model} {--seeder : Generate a seeder for the model} {--factory : Generate a factory for the model} {--react : Generate React standard data model structure with its resources and services }';
 
     /**
      * The console command description.
@@ -29,12 +29,13 @@ class GenerateModelScaffold extends Command {
         $model = $this->argument('model');
         $withSeeder = $this->option('seeder');
         $withFactory = $this->option('factory');
+        $withReact = $this->option('react');
 
         // Create the model with migration
         $this->generateModel($model, true, $withSeeder, $withFactory);
 
         // Generate the rest of the files
-        $this->generateFiles($model);
+        $this->generateFiles($model, $withReact);
 
         $this->info('Files for ' . $model . ' have been generated.');
     }
@@ -61,9 +62,14 @@ class GenerateModelScaffold extends Command {
 
     }
 
-    protected function generateFiles($model) {
+    protected function generateFiles($model, $withReact = false) {
         $basePath = app_path();
+        $resourcePath = resource_path();
         $modelName = Str::studly($model); // Capitalizes the first letter (e.g., User)
+        $modelCamel = Str::camel($model); // Converts to camelCase (e.g., user)
+        $modelSnake = Str::snake($model); // Converts to snake_case (e.g., user)
+        $modelUpperSnake = Str::upper(Str::snake($model)); // Converts to UPPERCASE_SNAKE_CASE (e.g., USER)
+        $modelDashed = Str::kebab($model); // Converts to kebab-case (e.g., user)
 
         // Paths for files to be created
         $paths = [
@@ -75,6 +81,9 @@ class GenerateModelScaffold extends Command {
             'storeRequest' => $basePath . "/Http/Requests/{$modelName}/Store{$modelName}Request.php",
             'updateRequest' => $basePath . "/Http/Requests/{$modelName}/Update{$modelName}Request.php",
             'resource' => $basePath . "/Http/Resources/{$modelName}Resource.php",
+            'reactModelInterface' => $resourcePath . '/js/support/models/' . $modelName . '.ts',
+            'reactResource' => $resourcePath . '/js/support/interfaces/resources/' . $modelName . 'Resource.ts',
+            'reactService' => $resourcePath . '/js/services/' . $modelCamel . 'Service.ts',
         ];
 
         // Ensure directories exist
@@ -93,6 +102,12 @@ class GenerateModelScaffold extends Command {
             'resource' => $this->getResourceTemplate($modelName),
         ];
 
+        if ($withReact) {
+            $templates['reactModelInterface'] = $this->getReactModelInterfaceTemplate($modelName);
+            $templates['reactResource'] = $this->getReactResourceTemplate($modelName);
+            $templates['reactService'] = $this->getReactServiceTemplate($modelCamel, $modelName, $modelUpperSnake);
+        }
+
         // Generate the controller separately to handle camelCase correctly
         $this->generateController($model);
 
@@ -106,6 +121,15 @@ class GenerateModelScaffold extends Command {
                     $this->error("File already exists, skipping: {$path}", 'fg=red');
                 }
             }
+        }
+
+        if ($withReact) {
+            $this->info('Appending generated model into ROUTES file constant', 'fg=green');
+            $this->appendReactModelToRoutes($modelUpperSnake, $modelDashed);
+
+            $this->info('Appending generated model interface and resources to each of the respective index files.', 'fg=green');
+            $this->appendReactModelInterface($modelName);
+            $this->appendReactResource($modelName);
         }
     }
 
@@ -347,5 +371,70 @@ class GenerateModelScaffold extends Command {
             }
         }
         PHP;
+    }
+
+    protected function getReactModelInterfaceTemplate($modelName) {
+        return <<<TS
+        export interface {$modelName} {
+            id: number;
+            created_at: string;
+            updated_at: string;
+        }
+        TS;
+    }
+
+    protected function getReactResourceTemplate($modelName) {
+        return <<<TS
+        import { {$modelName} } from '@/support/models';
+        import { Resource } from '@/support/interfaces/resources';
+
+        export interface {$modelName}Resource extends Resource, {$modelName} {}
+        TS;
+    }
+
+    protected function getReactServiceTemplate($modelCamel, $modelName, $modelUpper) {
+        $routeName = $modelUpper . 'S';
+
+        return <<<TS
+        import { ROUTES } from '@/support/constants/routes';
+        import { serviceFactory } from '@/services/serviceFactory';
+        import { {$modelName}Resource } from '@/support/interfaces/resources';
+
+        export const {$modelCamel}Service = {
+            ...serviceFactory<{$modelName}Resource>(ROUTES.{$routeName}),
+            customFunctionExample: async () => {
+                console.log('custom function');
+            },
+        };
+        TS;
+    }
+
+    protected function appendReactModelInterface($modelName) {
+        $modelInterfacePath = resource_path('js/support/models/index.ts');
+        $modelInterfaceContent = File::get($modelInterfacePath);
+
+        $modelInterfaceContent .= "\nexport * from './{$modelName}';";
+
+        File::put($modelInterfacePath, $modelInterfaceContent);
+    }
+
+    protected function appendReactResource($modelName) {
+        $resourceInterfacePath = resource_path('js/support/interfaces/resources/index.ts');
+        $resourceInterfaceContent = File::get($resourceInterfacePath);
+
+        $resourceInterfaceContent .= "\nexport * from './{$modelName}Resource';";
+
+        File::put($resourceInterfacePath, $resourceInterfaceContent);
+    }
+
+    protected function appendReactModelToRoutes($modelUpperSnake, $modelDashed) {
+        $routesPath = resource_path('js/support/constants/routes.ts');
+        $routesContent = File::get($routesPath);
+        $routePostfix = 'S';
+        $routePostfixLower = Str::lower($routePostfix);
+
+        $routesContent = str_replace('export const ROUTES = {', "export const ROUTES = {\n\t{$modelUpperSnake}{$routePostfix}: '{$modelDashed}{$routePostfixLower}',", $routesContent);
+
+        File::put($routesPath, $routesContent);
     }
 }
