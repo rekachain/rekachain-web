@@ -22,3 +22,5 @@ export * from './PanelAttachmentHandler';
 export * from './PanelMaterial';
 export * from './WorkDayTime';
 export * from './WorkDay';
+
+export * from './SerialPanel';
