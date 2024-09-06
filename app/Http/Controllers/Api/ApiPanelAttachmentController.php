@@ -36,7 +36,15 @@ class ApiPanelAttachmentController extends Controller {
      * Display the specified resource.
      */
     public function show(PanelAttachment $panelAttachment) {
-        return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+        $qr = request()->get('qr_code');
+        if ($qr) {
+            if($panelAttachment->qr_code == $qr){
+                return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+            } else {
+                return response()->json(['status' => 'Fail', 'message' => 'Invalid QR code' ], 400);
+            }
+        }
+        return response()->json(['status' => 'Fail', 'message' => 'QR code is required' ], 400);
     }
 
     /**

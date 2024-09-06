@@ -7,8 +7,10 @@ enum IntentEnum: string {
 
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
-    case API_PANEL_ATTACHMENT_INDEX = 'api.panel_attachment.index';
+    case API_PANEL_ATTACHMENT_INDEX = 'api.panel.attachment.index';
 
+    case API_PANEL_ATTACHMENT_QR = 'api.panel.attachment.qr';
+    
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
@@ -32,5 +34,9 @@ enum IntentEnum: string {
     case WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL = 'web.raw.material.get.template.import.raw.material';
 
     case WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL = 'web.raw.material.import.raw.material';
+    
+    case WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE = 'web.carriage.get.template.import.carriage';
+
+    case WEB_CARRIAGE_IMPORT_CARRIAGE = 'web.carriage.import.carriage';
 
 }

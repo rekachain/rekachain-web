@@ -46,6 +46,10 @@ class PanelAttachment extends Model
         return $this->belongsTo(CarriagePanel::class);
     }
 
+    public function serial_panels(): HasMany {
+        return $this->hasMany(SerialPanel::class);
+    }
+
     public function carriage_trainset(): BelongsTo {
         return $this->belongsTo(CarriageTrainset::class);
     }
