@@ -13,14 +13,17 @@ class GenerateModelScaffold extends Command {
      *
      * @var string
      */
-    protected $signature = 'make:scaffold {model : The name of the model} {--seeder : Generate a seeder for the model} {--factory : Generate a factory for the model} {--react : Generate React standard data model structure with its resources and services }';
+    protected $signature = 'make:scaffold {model : The name of the model}
+                            {--seeder : Generate a seeder for the model}
+                            {--factory : Generate a factory for the model}
+                            {--react : Generate React standard data model structure}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Scaffold model, repository, service, controller, request files for a model with optional seeder and factory generation';
+    protected $description = 'Scaffold model, repository, service, controller, request files for a model with optional seeder, factory, and React structure generation.';
 
     /**
      * Execute the console command.
@@ -31,24 +34,13 @@ class GenerateModelScaffold extends Command {
         $withFactory = $this->option('factory');
         $withReact = $this->option('react');
 
-        // Create the model with migration
         $this->generateModel($model, true, $withSeeder, $withFactory);
-
-        // Generate the rest of the files
         $this->generateFiles($model, $withReact);
 
-        $this->info('Files for ' . $model . ' have been generated.');
+        $this->info('Scaffolding for model ' . $model . ' is complete.');
     }
 
     protected function generateModel($model, $withMigration, $withSeeder, $withFactory) {
-        $options = ['--migration' => true];
-        if ($withSeeder) {
-            $options['--seeder'] = true;
-        }
-        if ($withFactory) {
-            $options['--factory'] = true;
-        }
-
         $options = [
             'name' => $model,
             '--migration' => $withMigration,
@@ -58,40 +50,70 @@ class GenerateModelScaffold extends Command {
 
         Artisan::call('make:model', $options);
 
-        $this->info("Model {$model} has been created with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : ''));
-
+        $this->info("Model {$model} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : ''));
     }
 
     protected function generateFiles($model, $withReact = false) {
-        $basePath = app_path();
-        $resourcePath = resource_path();
-        $modelName = Str::studly($model); // Capitalizes the first letter (e.g., User)
-        $modelCamel = Str::camel($model); // Converts to camelCase (e.g., user)
-        $modelSnake = Str::snake($model); // Converts to snake_case (e.g., user)
-        $modelUpperSnake = Str::upper(Str::snake($model)); // Converts to UPPERCASE_SNAKE_CASE (e.g., USER)
-        $modelDashed = Str::kebab($model); // Converts to kebab-case (e.g., user)
+        $paths = $this->definePaths($model, $withReact);
+        dump($withReact, $paths);
+        $templates = $this->defineTemplates($model, $withReact);
 
-        // Paths for files to be created
-        $paths = [
-            'repositoryInterface' => $basePath . "/Support/Interfaces/Repositories/{$modelName}RepositoryInterface.php",
-            'serviceInterface' => $basePath . "/Support/Interfaces/Services/{$modelName}ServiceInterface.php",
-            'repository' => $basePath . "/Repositories/{$modelName}Repository.php",
-            'service' => $basePath . "/Services/{$modelName}Service.php",
-            'controller' => $basePath . "/Http/Controllers/{$modelName}Controller.php",
-            'storeRequest' => $basePath . "/Http/Requests/{$modelName}/Store{$modelName}Request.php",
-            'updateRequest' => $basePath . "/Http/Requests/{$modelName}/Update{$modelName}Request.php",
-            'resource' => $basePath . "/Http/Resources/{$modelName}Resource.php",
-            'reactModelInterface' => $resourcePath . '/js/support/models/' . $modelName . '.ts',
-            'reactResource' => $resourcePath . '/js/support/interfaces/resources/' . $modelName . 'Resource.ts',
-            'reactService' => $resourcePath . '/js/services/' . $modelCamel . 'Service.ts',
-        ];
-
-        // Ensure directories exist
-        foreach ($paths as $path) {
+        foreach ($paths as $key => $path) {
+            dump($templates, $key, $path);
             File::ensureDirectoryExists(dirname($path));
+
+            if (!File::exists($path) && $key !== 'controller') {
+                File::put($path, $templates[$key]);
+                $this->info("File created: {$path}");
+            } else {
+                if ($key !== 'controller') {
+                    $this->warn("File already exists, skipping: {$path}");
+                }
+            }
         }
 
-        // Template data for files
+        $this->generateController($model);
+
+        if ($withReact) {
+            $this->handleReactScaffolding($model);
+        }
+    }
+
+    protected function definePaths(string $model, bool $withReact) {
+        $basePath = app_path();
+        $resourcePath = resource_path();
+        $modelName = Str::studly($model);
+        $modelCamel = Str::camel($model);
+        $modelUpperSnake = Str::upper(Str::snake($model));
+
+        $paths = [
+            'repositoryInterface' => "{$basePath}/Support/Interfaces/Repositories/{$modelName}RepositoryInterface.php",
+            'serviceInterface' => "{$basePath}/Support/Interfaces/Services/{$modelName}ServiceInterface.php",
+            'repository' => "{$basePath}/Repositories/{$modelName}Repository.php",
+            'service' => "{$basePath}/Services/{$modelName}Service.php",
+            'controller' => "{$basePath}/Http/Controllers/{$modelName}Controller.php",
+            'storeRequest' => "{$basePath}/Http/Requests/{$modelName}/Store{$modelName}Request.php",
+            'updateRequest' => "{$basePath}/Http/Requests/{$modelName}/Update{$modelName}Request.php",
+            'resource' => "{$basePath}/Http/Resources/{$modelName}Resource.php",
+
+        ];
+
+        if ($withReact) {
+            $paths = array_merge($paths, [
+                'reactModelInterface' => "{$resourcePath}/js/support/models/{$modelName}.ts",
+                'reactResource' => "{$resourcePath}/js/support/interfaces/resources/{$modelName}Resource.ts",
+                'reactService' => "{$resourcePath}/js/services/{$modelCamel}Service.ts",
+            ]);
+        }
+
+        return $paths;
+    }
+
+    protected function defineTemplates($model, bool $withReact = false) {
+        $modelName = Str::studly($model);
+        $modelCamel = Str::camel($model);
+        $modelUpper = Str::upper($model);
+
         $templates = [
             'repositoryInterface' => $this->getRepositoryInterfaceTemplate($modelName),
             'serviceInterface' => $this->getServiceInterfaceTemplate($modelName),
@@ -103,98 +125,44 @@ class GenerateModelScaffold extends Command {
         ];
 
         if ($withReact) {
-            $templates['reactModelInterface'] = $this->getReactModelInterfaceTemplate($modelName);
-            $templates['reactResource'] = $this->getReactResourceTemplate($modelName);
-            $templates['reactService'] = $this->getReactServiceTemplate($modelCamel, $modelName, $modelUpperSnake);
+            $templates = array_merge($templates, [
+                'reactModelInterface' => $this->getReactModelInterfaceTemplate($modelName),
+                'reactResource' => $this->getReactResourceTemplate($modelName),
+                'reactService' => $this->getReactServiceTemplate($modelCamel, $modelName, $modelUpper),
+            ]);
         }
 
-        // Generate the controller separately to handle camelCase correctly
-        $this->generateController($model);
+        return $templates;
 
-        // Write the other files if they don't already exist, with colored logs
-        foreach ($paths as $key => $path) {
-            if (!File::exists($path) && $key !== 'controller') { // Controller is handled separately
-                File::put($path, $templates[$key]);
-                $this->info("File created: {$path}", 'fg=green');
-            } else {
-                if ($key !== 'controller') {
-                    $this->error("File already exists, skipping: {$path}", 'fg=red');
-                }
-            }
-        }
-
-        if ($withReact) {
-            $this->info('Appending generated model into ROUTES file constant', 'fg=green');
-            $this->appendReactModelToRoutes($modelUpperSnake, $modelDashed);
-
-            $this->info('Appending generated model interface and resources to each of the respective index files.', 'fg=green');
-            $this->appendReactModelInterface($modelName);
-            $this->appendReactResource($modelName);
-        }
     }
 
-    /**
-     * Generates the controller for the given model, ensuring camelCase is used for injected services.
-     */
     protected function generateController($model) {
-        $modelName = Str::studly($model); // Capitalizes the first letter (e.g., RawMaterial)
-        $modelNameLower = Str::lower($model); // All lowercase (e.g., user)
-        $camelCasedService = Str::camel($model) . 'Service'; // Converts to camelCase (e.g., rawMaterialService)
-        $serviceInterface = "{$modelName}ServiceInterface";
-
+        $modelName = Str::studly($model);
+        $modelNameLower = Str::lower($model);
         $controllerPath = app_path("Http/Controllers/{$modelName}Controller.php");
 
-        // Check if the controller file exists
         if (File::exists($controllerPath)) {
-            $this->error("File already exists, skipping: {$controllerPath}", 'fg=red');
+            $this->warn("File already exists, skipping: {$controllerPath}");
 
             return;
         }
 
-        // Template for the controller
-        $controllerContent = <<<PHP
-        <?php
-
-        namespace App\Http\Controllers;
-
-        use App\Http\Requests\\{$modelName}\Store{$modelName}Request;
-        use App\Http\Requests\\{$modelName}\Update{$modelName}Request;
-        use App\Http\Resources\\{$modelName}Resource;
-        use App\Models\\{$modelName};
-        use App\Support\Interfaces\Services\\{$serviceInterface};
-        use Illuminate\Http\Request;
-
-        class {$modelName}Controller extends Controller {
-            public function __construct(protected {$serviceInterface} \${$camelCasedService}) {}
-
-            public function index(Request \$request) {
-                return inertia('{$modelName}/Index', [
-                    'data' => {$modelName}Resource::collection(\$this->{$camelCasedService}->getAllPaginated(\$request->all())),
-                ]);
-            }
-
-            public function store(Store{$modelName}Request \$request) {
-                return \$this->{$camelCasedService}->create(\$request->validated());
-            }
-
-            public function show({$modelName} \${$modelNameLower}) {
-                return new {$modelName}Resource(\${$modelNameLower});
-            }
-
-            public function update(Update{$modelName}Request \$request, {$modelName} \${$modelNameLower}) {
-                return \$this->{$camelCasedService}->update(\${$modelNameLower}, \$request->validated());
-            }
-
-            public function destroy({$modelName} \${$modelNameLower}) {
-                return \$this->{$camelCasedService}->delete(\${$modelNameLower});
-            }
-        }
-        PHP;
-
-        // Write the controller file
+        $controllerContent = $this->getControllerTemplate($modelName, $modelNameLower);
         File::put($controllerPath, $controllerContent);
 
-        $this->info("File created: {$controllerPath}", 'fg=green');
+        $this->info("Controller created: {$controllerPath}");
+    }
+
+    protected function handleReactScaffolding($model) {
+        $modelUpperSnake = Str::upper(Str::snake($model));
+        $modelDashed = Str::kebab($model);
+
+        $this->info('Appending generated model to React ROUTES constant');
+        $this->appendReactModelToRoutes($modelUpperSnake, $modelDashed);
+
+        $this->info('Appending React model interfaces and resources');
+        $this->appendReactModelInterface($model);
+        $this->appendReactResource($model);
     }
 
     // Templates for each file type
@@ -284,7 +252,7 @@ class GenerateModelScaffold extends Command {
 
         use App\Http\Requests\\{$modelName}\Store{$modelName}Request;
         use App\Http\Requests\\{$modelName}\Update{$modelName}Request;
-        use App\Http\Resources\\{$modelName}\\{$modelName}Resource;
+        use App\Http\Resources\\{$modelName}Resource;
         use App\Models\\{$modelName};
         use App\Support\Interfaces\Services\\{$modelName}ServiceInterface;
         use Illuminate\Http\Request;
