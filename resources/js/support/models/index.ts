@@ -18,3 +18,4 @@ export * from './Component';
 
 export * from './CarriagePanelComponent';
 export * from './PanelAttachment';
+export * from './PanelAttachmentHandler';
