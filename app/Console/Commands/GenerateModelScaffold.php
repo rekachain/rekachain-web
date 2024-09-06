@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Str;
 
-class GenerateModelFiles extends Command {
+class GenerateModelScaffold extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -64,7 +64,6 @@ class GenerateModelFiles extends Command {
     protected function generateFiles($model) {
         $basePath = app_path();
         $modelName = Str::studly($model); // Capitalizes the first letter (e.g., User)
-        $modelNameLower = Str::lower($model); // All lowercase (e.g., user)
 
         // Paths for files to be created
         $paths = [
@@ -103,7 +102,9 @@ class GenerateModelFiles extends Command {
                 File::put($path, $templates[$key]);
                 $this->info("File created: {$path}", 'fg=green');
             } else {
-                $this->error("File already exists, skipping: {$path}", 'fg=red');
+                if ($key !== 'controller') {
+                    $this->error("File already exists, skipping: {$path}", 'fg=red');
+                }
             }
         }
     }
@@ -113,6 +114,7 @@ class GenerateModelFiles extends Command {
      */
     protected function generateController($model) {
         $modelName = Str::studly($model); // Capitalizes the first letter (e.g., RawMaterial)
+        $modelNameLower = Str::lower($model); // All lowercase (e.g., user)
         $camelCasedService = Str::camel($model) . 'Service'; // Converts to camelCase (e.g., rawMaterialService)
         $serviceInterface = "{$modelName}ServiceInterface";
 
@@ -297,6 +299,8 @@ class GenerateModelFiles extends Command {
 
         namespace App\Http\Requests\\{$modelName};
 
+        use Illuminate\Foundation\Http\FormRequest;
+
         class Store{$modelName}Request extends FormRequest {
             public function rules(): array {
                 return [
@@ -329,7 +333,7 @@ class GenerateModelFiles extends Command {
         return <<<PHP
         <?php
 
-        namespace App\Http\Resources\\{$modelName};
+        namespace App\Http\Resources;
 
         use Illuminate\Http\Resources\Json\JsonResource;
 
