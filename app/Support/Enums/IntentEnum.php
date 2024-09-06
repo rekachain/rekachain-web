@@ -43,4 +43,8 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_IMPORT_TRAINSET = 'web.trainset.import.trainset';
 
+    case WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT = 'web.component.get.template.import.component';
+
+    case WEB_COMPONENT_IMPORT_COMPONENT = 'web.component.import.component';
+
 }
