@@ -7,9 +7,17 @@ enum IntentEnum: string {
 
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
-    case API_PANEL_ATTACHMENT_INDEX = 'api.panel.attachment.index';
+    case API_PANEL_GET_ATTACHMENTS = 'api.panel.get.attachments';
 
-    case API_PANEL_ATTACHMENT_SERIAL_NUMBER = 'api.panel.attachment.serial.number';
+    case API_PANEL_GET_ATTACHMENT_DETAILS = 'api.panel.get.attachment.details';
+
+    case API_PANEL_GET_ATTACHMENT_DETAILS_WITH_QR = 'api.panel.get.attachment.details.with.qr';
+
+    case API_PANEL_GET_ATTACHMENT_SERIAL_NUMBERS = 'api.panel.get.attachment.serial.numbers';
+
+    case API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS = 'api.panel.get.attachment.serial.number.details';
+
+    case API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.get.attachment.serial.number.details.with.qr';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 

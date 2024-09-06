@@ -16,7 +16,7 @@ class PanelAttachmentResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_PANEL_ATTACHMENT_INDEX->value:
+            case IntentEnum::API_PANEL_GET_ATTACHMENTS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
                     'source_workstation' => $this->source_workstation->name,
