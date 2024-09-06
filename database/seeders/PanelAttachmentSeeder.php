@@ -19,14 +19,11 @@ class PanelAttachmentSeeder extends Seeder
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                $panelAttcahment = PanelAttachment::create($data);
-                $panelAttachments = PanelAttachment::whereCarriageTrainsetId($panelAttcahment->carriage_trainset_id)->get();
-                $i = $panelAttachments->where('id', '<', $panelAttcahment->id)->count() + 1;
-                $panelAttcahment->update([
-                    'attachment_number' => $panelAttcahment->id . '/PPC/KPM/' . NumberHelper::intToRoman($i) . '/' . date('Y', strtotime($panelAttcahment->created_at)),
-                ]);
-                $panelAttcahment->update([
-                    'qr_code' => 'KPM:' . $panelAttcahment->attachment_number . ';P:'. $panelAttcahment->carriage_trainset->trainset->project->name . ';TS:' . $panelAttcahment->carriage_trainset->trainset->name . ';;'
+                $panelAttachment = PanelAttachment::create($data);
+                $panelAttachments = PanelAttachment::whereCarriageTrainsetId($panelAttachment->carriage_trainset_id)->get();
+                $i = $panelAttachments->where('id', '<', $panelAttachment->id)->count() + 1;
+                $panelAttachment->update([
+                    'attachment_number' => $panelAttachment->id . '/PPC/KPM/' . NumberHelper::intToRoman($i) . '/' . date('Y', strtotime($panelAttachment->created_at)),
                 ]);
             }
         } else {

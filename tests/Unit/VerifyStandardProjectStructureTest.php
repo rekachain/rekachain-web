@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 // Helper function to count files in a directory, excluding specified files or folders
 function countFilesInDirectory(string $dir, array $excluded = []): int {
     $iterator = new FilesystemIterator($dir, FilesystemIterator::SKIP_DOTS);
@@ -184,6 +186,79 @@ test('models should have corresponding services and repositories', function () {
         ->and($modelsWithoutRepositories)->toBeEmpty();
 });
 
+test('(react) models should have corresponding model interface', function () {
+    $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
+    $modelDir = $baseDir . '/app/Models';
+    $modelInterfaceDir = $baseDir . '/resources/js/support/models';
+
+    $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
+    $modelsWithoutModelInterface = [];
+
+    foreach ($modelFiles as $modelFile) {
+        if ($modelFile->isFile()) {
+            $modelName = pathinfo($modelFile->getFilename(), PATHINFO_FILENAME);
+            $interfacePath = $modelInterfaceDir . '/' . $modelName . '.ts';
+            if (!file_exists($interfacePath)) {
+                if (!file_exists($interfacePath)) {
+                    $modelsWithoutModelInterface[] = $modelName;
+                }
+            }
+        }
+    }
+
+    dump('(react) Models without model interfaces: ', $modelsWithoutModelInterface);
+    expect($modelsWithoutModelInterface)->toBeEmpty();
+});
+
+test('(react) models should have corresponding resource interface', function () {
+    $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
+    $modelDir = $baseDir . '/app/Models';
+    $modelResourceInterfaceDir = $baseDir . '/resources/js/support/interfaces/resources';
+
+    $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
+    $modelsWithoutResourceInterface = [];
+
+    foreach ($modelFiles as $modelFile) {
+        if ($modelFile->isFile()) {
+            $modelName = pathinfo($modelFile->getFilename(), PATHINFO_FILENAME);
+            $resourcePath = $modelResourceInterfaceDir . '/' . $modelName . 'Resource.ts';
+            if (!file_exists($resourcePath)) {
+                if (!file_exists($resourcePath)) {
+                    $modelsWithoutResourceInterface[] = $modelName;
+                }
+            }
+        }
+    }
+
+    dump('(react) Models without resource interfaces: ', $modelsWithoutResourceInterface);
+    expect($modelsWithoutResourceInterface)->toBeEmpty();
+});
+
+test('(react) models should have corresponding services', function () {
+    $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
+    $modelDir = $baseDir . '/app/Models';
+    $serviceDir = $baseDir . '/resources/js/services';
+
+    $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
+    $modelsWithoutServices = [];
+
+    foreach ($modelFiles as $modelFile) {
+        if ($modelFile->isFile()) {
+            $modelName = pathinfo($modelFile->getFilename(), PATHINFO_FILENAME);
+            $modelNameCamelCase = Str::camel($modelName);
+            $servicePath = $serviceDir . '/' . $modelNameCamelCase . 'Service.ts';
+            if (!file_exists($servicePath)) {
+                if (!file_exists($servicePath)) {
+                    $modelsWithoutServices[] = $modelName;
+                }
+            }
+        }
+    }
+
+    dump('(react) Models without services: ', $modelsWithoutServices);
+    expect($modelsWithoutServices)->toBeEmpty();
+});
+
 test('ensure no other files in App\Support\Interfaces folder', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
 
@@ -206,10 +281,16 @@ test('model should have controllers, form request, resource, service interface, 
     $controllerDir = $baseDir . '/app/Http/Controllers';
     $requestDir = $baseDir . '/app/Http/Requests';
     $resourceDir = $baseDir . '/app/Http/Resources';
+    $reactModelInterfaceDir = $baseDir . '/resources/js/support/models';
+    $reactResourceDir = $baseDir . '/resources/js/support/interfaces/resources';
+    $reactServiceDir = $baseDir . '/resources/js/services';
 
     // Exclude certain folders or files
     $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php'];
     $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php'];
+    $excludedReactModelInterfaces = ['index.ts'];
+    $excludedReactResources = ['index.ts', 'Resource.ts'];
+    $excludedReactServices = ['serviceFactory.ts'];
 
     // Count files in each directory
     $modelCount = countFilesInDirectory($modelDir);
@@ -220,6 +301,9 @@ test('model should have controllers, form request, resource, service interface, 
     $repositoryInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Repositories');
     $serviceCount = countFilesInDirectory($baseDir . '/app/Services');
     $repositoryCount = countFilesInDirectory($baseDir . '/app/Repositories');
+    $reactModelInterfaceCount = countFilesInDirectory($reactModelInterfaceDir, $excludedReactModelInterfaces);
+    $reactResourceCount = countFilesInDirectory($reactResourceDir, $excludedReactResources);
+    $reactServiceCount = countFilesInDirectory($reactServiceDir, $excludedReactServices);
 
     dump('modelCount: ' . $modelCount);
     dump('controllerCount: ' . $controllerCount);
@@ -229,6 +313,9 @@ test('model should have controllers, form request, resource, service interface, 
     dump('repositoryInterfaceCount: ' . $repositoryInterfaceCount);
     dump('serviceCount: ' . $serviceCount);
     dump('repositoryCount: ' . $repositoryCount);
+    dump('reactModelInterfaceCount: ' . $reactModelInterfaceCount);
+    dump('reactResourceCount: ' . $reactResourceCount);
+    dump('reactServiceCount: ' . $reactServiceCount);
 
     // Assert counts
     $this->assertEquals($modelCount, $controllerCount);
@@ -238,4 +325,7 @@ test('model should have controllers, form request, resource, service interface, 
     $this->assertEquals($modelCount, $repositoryInterfaceCount);
     $this->assertEquals($modelCount, $serviceCount);
     $this->assertEquals($modelCount, $repositoryCount);
+    $this->assertEquals($modelCount, $reactModelInterfaceCount);
+    $this->assertEquals($modelCount, $reactResourceCount);
+    $this->assertEquals($modelCount, $reactServiceCount);
 });

@@ -16,3 +16,12 @@ export * from './ProgressResource';
 export * from './CarriageTrainsetResource';
 export * from './ComponentResource';
 export * from './RawMaterialResource';
+
+export * from './CarriagePanelComponentResource';
+export * from './PanelAttachmentResource';
+export * from './PanelAttachmentHandlerResource';
+export * from './PanelMaterialResource';
+export * from './WorkDayTimeResource';
+export * from './WorkDayResource';
+
+export * from './SerialPanelResource';
