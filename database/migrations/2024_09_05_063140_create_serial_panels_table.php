@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('serial_panels', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('panel_attachment_id')->constrained();
+            $table->string('qr_code')->nullable()->unique();
+            $table->string('qr_path')->nullable()->unique();
             $table->timestamps();
         });
     }

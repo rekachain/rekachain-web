@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->foreignId('source_workstation_id')->references('id')->on('workstations')->constrained();
             $table->foreignId('destination_workstation_id')->references('id')->on('workstations')->constrained();
             $table->string('attachment_number')->nullable();
-            $table->string('qr_code')->nullable();
-            $table->string('qr_path')->nullable();
+            $table->string('qr_code')->nullable()->unique();
+            $table->string('qr_path')->nullable()->unique();
             $table->string('current_step')->nullable();
             $table->string('elapsed_time')->nullable();
             $table->string('status')->nullable();

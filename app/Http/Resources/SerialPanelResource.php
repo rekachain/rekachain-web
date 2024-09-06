@@ -14,6 +14,11 @@ class SerialPanelResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'serial_number' => $this->id,
+            // 'panel_attachment_id' => $this->panel_attachment_id,
+            'qr_code' => $this->qr_code,
+            'qr_path' => $this->qr_path,
+        ];
     }
 }

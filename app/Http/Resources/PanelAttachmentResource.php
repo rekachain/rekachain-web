@@ -35,6 +35,7 @@ class PanelAttachmentResource extends JsonResource {
             'attachment_number' => $this->attachment_number,
             'carriage_trainset' => new CarriageTrainsetResource($this->whenLoaded('carriage_trainset')),
             'carriage_panel' => new CarriagePanelResource($this->whenLoaded('carriage_panel')),
+            'serial_panels' => SerialPanelResource::collection($this->serial_panels),
             'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
             'destination_workstation' => new WorkstationResource($this->whenLoaded('destination_workstation')),
             'qr_code' => $this->qr_code,
