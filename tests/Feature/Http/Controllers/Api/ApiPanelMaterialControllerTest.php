@@ -1,7 +1,6 @@
 <?php
 
 
-test('view all Components', function () {
-    createComponent();
-    actAsSuperAdmin()->get('/api/components')->assertStatus(200);
+test('view all panel-materials', function () {
+    actAsSuperAdmin()->get('/api/panel-materials')->assertStatus(200);
 });

@@ -20,14 +20,14 @@ class CarriageController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
-            
+
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE->value:
                     return $this->carriageService->getImportDataTemplate();
             }
-            
+
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -79,7 +79,7 @@ class CarriageController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Carriage $carriage) {
-        return inertia('Carriage/Edit', ['user' => new CarriageResource($carriage)]);
+        return inertia('Carriage/Edit', ['carriage' => new CarriageResource($carriage)]);
     }
 
     /**
