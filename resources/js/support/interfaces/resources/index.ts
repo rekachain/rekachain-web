@@ -22,3 +22,4 @@ export * from './PanelAttachmentResource';
 export * from './PanelAttachmentHandlerResource';
 export * from './PanelMaterialResource';
 export * from './WorkDayTimeResource';
+export * from './WorkDayResource';
