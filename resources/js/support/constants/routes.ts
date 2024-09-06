@@ -1,4 +1,5 @@
 export const ROUTES = {
+	PANEL_ATTACHMENTS: 'panel-attachments',
 	CARRIAGE_PANEL_COMPONENTS: 'carriage-panel-components',
     USERS: 'users',
     PROFILE: 'profile',

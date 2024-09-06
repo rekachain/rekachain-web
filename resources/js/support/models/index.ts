@@ -17,3 +17,4 @@ export * from './RawMaterial';
 export * from './Component';
 
 export * from './CarriagePanelComponent';
+export * from './PanelAttachment';
