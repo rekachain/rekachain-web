@@ -49,23 +49,23 @@ class GenerateModelScaffold extends Command {
      * @var string
      */
     protected $signature = 'make:scaffold {model : The name of the model}
-                            {--all : Generate seeder, factory, and React structure for the model}
+                            {--all : Generate seeder, factory, and Frontend structure for the model}
                             {--migration : Generate a migration for the model}
                             {--seeder : Generate a seeder for the model}
                             {--factory : Generate a factory for the model}
-                            {--frontend : Generate React structure for the model}';
+                            {--frontend : Generate Frontend structure for the model}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Scaffold model, repository, service, controller, request files for a model with optional seeder, factory, and React structure generation.';
+    protected $description = 'Scaffold model, repository, service, controller, request files for a model with optional seeder, factory, and Frontend structure generation.';
 
     /**
      * Execute the console command.
      */
-    public function handle() {
+    public function handle(): void {
         self::$model = new Model($this->argument('model'));
         self::$withAll = $this->option('all');
         self::$withMigration = $this->option('migration');
@@ -88,7 +88,7 @@ class GenerateModelScaffold extends Command {
         $this->info('Scaffolding for model ' . $model . ' is complete.');
     }
 
-    protected function generateModel() {
+    protected function generateModel(): void {
         $options = [
             'name' => self::$model->name,
             '--migration' => self::$withMigration,
@@ -105,7 +105,7 @@ class GenerateModelScaffold extends Command {
         $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : ''));
     }
 
-    protected function generateFiles() {
+    protected function generateFiles(): void {
         $withFrontend = self::$withFrontend;
 
         $paths = $this->definePaths();
@@ -127,16 +127,16 @@ class GenerateModelScaffold extends Command {
         $this->generateController();
 
         if ($withFrontend) {
-            $this->handleReactScaffolding();
+            $this->handleFrontendScaffolding();
         }
     }
 
-    protected function definePaths() {
+    protected function definePaths(): array {
         $basePath = app_path();
         $resourcePath = resource_path();
         $modelNameStudly = self::$model->studly;
         $modelCamel = self::$model->camel;
-        $withReact = self::$withFrontend;
+        $withFrontend = self::$withFrontend;
         $scriptExtension = self::$frontEndExtensions->value;
 
         $paths = [
@@ -150,7 +150,7 @@ class GenerateModelScaffold extends Command {
             'resource' => "{$basePath}/Http/Resources/{$modelNameStudly}Resource.php",
         ];
 
-        if ($withReact) {
+        if ($withFrontend) {
             $paths = array_merge($paths, [
                 'reactModelInterface' => "{$resourcePath}/js/support/models/{$modelNameStudly}{$scriptExtension}",
                 'reactResource' => "{$resourcePath}/js/support/interfaces/resources/{$modelNameStudly}Resource{$scriptExtension}",
@@ -161,7 +161,7 @@ class GenerateModelScaffold extends Command {
         return $paths;
     }
 
-    protected function defineTemplates() {
+    protected function defineTemplates(): array {
         $modelNameStudly = self::$model->studly;
         $modelCamel = self::$model->camel;
         $modelUpper = self::$model->upper;
@@ -179,9 +179,9 @@ class GenerateModelScaffold extends Command {
 
         if ($withFrontend) {
             $templates = array_merge($templates, [
-                'reactModelInterface' => $this->getReactModelInterfaceTemplate($modelNameStudly),
-                'reactResource' => $this->getReactResourceTemplate($modelNameStudly),
-                'reactService' => $this->getReactServiceTemplate($modelCamel, $modelNameStudly, $modelUpper),
+                'reactModelInterface' => $this->getFrontendModelInterfaceTemplate($modelNameStudly),
+                'reactResource' => $this->getFrontendResourceTemplate($modelNameStudly),
+                'reactService' => $this->getFrontendServiceTemplate($modelCamel, $modelNameStudly, $modelUpper),
             ]);
         }
 
@@ -189,7 +189,7 @@ class GenerateModelScaffold extends Command {
 
     }
 
-    protected function generateController() {
+    protected function generateController(): void {
         $modelNameStudly = self::$model->studly;
         $modelNameLower = self::$model->lower;
         $controllerPath = app_path("Http/Controllers/{$modelNameStudly}Controller.php");
@@ -206,20 +206,20 @@ class GenerateModelScaffold extends Command {
         $this->info("Controller created: {$controllerPath}");
     }
 
-    protected function handleReactScaffolding() {
+    protected function handleFrontendScaffolding(): void {
         $modelUpperSnake = self::$model->upperSnake;
         $modelDashed = self::$model->kebab;
 
-        $this->info('Appending generated model to React ROUTES constant');
-        $this->appendReactModelToRoutes($modelUpperSnake, $modelDashed);
+        $this->info('Appending generated model to Frontend ROUTES constant');
+        $this->appendFrontendModelToRoutes($modelUpperSnake, $modelDashed);
 
-        $this->info('Appending React model interfaces and resources');
-        $this->appendReactModelInterface();
-        $this->appendReactResource();
+        $this->info('Appending Frontend model interfaces and resources');
+        $this->appendFrontendModelInterface();
+        $this->appendFrontendResource();
     }
 
     // Templates for each file type
-    protected function getRepositoryInterfaceTemplate($modelName) {
+    protected function getRepositoryInterfaceTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -231,7 +231,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getServiceInterfaceTemplate($modelName) {
+    protected function getServiceInterfaceTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -243,7 +243,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getRepositoryTemplate($modelName) {
+    protected function getRepositoryTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -279,7 +279,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getServiceTemplate($modelName) {
+    protected function getServiceTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -297,7 +297,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getControllerTemplate($modelName, $modelNameLower) {
+    protected function getControllerTemplate($modelName, $modelNameLower): string {
         return <<<PHP
         <?php
 
@@ -338,7 +338,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getStoreRequestTemplate($modelName) {
+    protected function getStoreRequestTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -356,7 +356,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getUpdateRequestTemplate($modelName) {
+    protected function getUpdateRequestTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -374,7 +374,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getResourceTemplate($modelName) {
+    protected function getResourceTemplate($modelName): string {
         return <<<PHP
         <?php
 
@@ -394,7 +394,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getReactModelInterfaceTemplate($modelName) {
+    protected function getFrontendModelInterfaceTemplate($modelName): string {
         return <<<TS
         export interface {$modelName} {
             id: number;
@@ -404,7 +404,7 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getReactResourceTemplate($modelName) {
+    protected function getFrontendResourceTemplate($modelName): string {
         return <<<TS
         import { {$modelName} } from '@/support/models';
         import { Resource } from '@/support/interfaces/resources';
@@ -413,7 +413,7 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getReactServiceTemplate($modelCamel, $modelName, $modelUpper) {
+    protected function getFrontendServiceTemplate($modelCamel, $modelName, $modelUpper): string {
         $routeName = $modelUpper . 'S';
 
         return <<<TS
@@ -430,7 +430,7 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function appendReactModelInterface() {
+    protected function appendFrontendModelInterface(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
         $modelInterfacePath = resource_path("js/support/models/index{$scriptExtension}");
@@ -441,7 +441,7 @@ class GenerateModelScaffold extends Command {
         File::put($modelInterfacePath, $modelInterfaceContent);
     }
 
-    protected function appendReactResource() {
+    protected function appendFrontendResource(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
         $resourceInterfacePath = resource_path("js/support/interfaces/resources/index{$scriptExtension}");
@@ -452,7 +452,7 @@ class GenerateModelScaffold extends Command {
         File::put($resourceInterfacePath, $resourceInterfaceContent);
     }
 
-    protected function appendReactModelToRoutes() {
+    protected function appendFrontendModelToRoutes(): void {
         $modelUpperSnake = self::$model->upperSnake;
         $modelDashed = self::$model->kebab;
         $scriptExtension = self::$frontEndExtensions->value;
@@ -461,8 +461,15 @@ class GenerateModelScaffold extends Command {
         $routePostfix = 'S';
         $routePostfixLower = Str::lower($routePostfix);
 
-        $routesContent = str_replace('export const ROUTES = {', "export const ROUTES = {\n\t{$modelUpperSnake}{$routePostfix}: '{$modelDashed}{$routePostfixLower}',", $routesContent);
+        // Check if the route is already defined to avoid duplicates
+        if (strpos($routesContent, "{$modelUpperSnake}{$routePostfix}") === false) {
+            // Append the new route at the end of the ROUTES object
+            $routesContent = str_replace('};', "\t{$modelUpperSnake}{$routePostfix}: '{$modelDashed}{$routePostfixLower}',\n};", $routesContent);
 
-        File::put($routesPath, $routesContent);
+            // Write back the updated content to the routes file
+            File::put($routesPath, $routesContent);
+        } else {
+            $this->warn("Route {$modelUpperSnake}{$routePostfix} already exists.");
+        }
     }
 }
