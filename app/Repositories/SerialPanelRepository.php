@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\Panel;
+use App\Models\SerialPanel;
 use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
@@ -14,7 +14,7 @@ class SerialPanelRepository extends BaseRepository implements SerialPanelReposit
     use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
-        return Panel::class;
+        return SerialPanel::class;
     }
 
     protected function applyFilters(array $searchParams = []): Builder {

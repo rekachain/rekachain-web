@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\PanelAttachment;
+use App\Models\PanelAttachmentHandler;
 use App\Support\Interfaces\Repositories\PanelAttachmentHandlerRepositoryInterface;
 use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
@@ -14,7 +14,7 @@ class PanelAttachmentHandlerRepository extends BaseRepository implements PanelAt
     use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
-        return PanelAttachment::class;
+        return PanelAttachmentHandler::class;
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
