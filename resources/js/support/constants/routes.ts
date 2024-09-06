@@ -1,4 +1,5 @@
 export const ROUTES = {
+	WORK_DAY_TIMES: 'work-day-times',
 	PANEL_MATERIALS: 'panel-materials',
 	PANEL_ATTACHMENT_HANDLERS: 'panel-attachment-handlers',
 	PANEL_ATTACHMENTS: 'panel-attachments',
