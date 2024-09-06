@@ -20,7 +20,6 @@ class PanelController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
-
             $intent = $request->get('intent');
 
             switch ($intent) {

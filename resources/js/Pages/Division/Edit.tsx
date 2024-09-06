@@ -4,34 +4,26 @@ import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { DivisionResource } from '@/support/interfaces/resources';
 import { divisionService } from '@/services/divisionService';
-import { useLoading } from '@/contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
+import { withLoading } from '@/utils/withLoading';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function ({ division }: { division: DivisionResource }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         id: division.id,
         name: division.name,
     });
-    const { setLoading } = useLoading();
+    const { loading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.DIVISIONS}.index`));
-
-        try {
-            await divisionService.update(division.id, data);
-            useSuccessToast('Division updated successfully');
-        } catch (error) {
-        } finally {
-            setLoading(false);
-            redirectToIndex();
-        }
-    };
+        await divisionService.update(division.id, data);
+        useSuccessToast('Division updated successfully');
+        router.visit(route(`${ROUTES.DIVISIONS}.index`));
+    });
 
     return (
         <>
@@ -54,10 +46,9 @@ export default function ({ division }: { division: DivisionResource }) {
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Division
                         </Button>
                     </form>
