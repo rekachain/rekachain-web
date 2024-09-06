@@ -9,8 +9,8 @@ enum IntentEnum: string {
 
     case API_PANEL_ATTACHMENT_INDEX = 'api.panel.attachment.index';
 
-    case API_PANEL_ATTACHMENT_QR = 'api.panel.attachment.qr';
-    
+    case API_PANEL_ATTACHMENT_SERIAL_NUMBER = 'api.panel.attachment.serial.number';
+
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
