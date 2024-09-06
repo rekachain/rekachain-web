@@ -63,21 +63,16 @@ class ApiPanelAttachmentController extends Controller {
             case IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
-                    $serialPanel = SerialPanel::wherePanelAttachmentId($panelAttachment->id);
+                    $serialPanel = SerialPanel::wherePanelAttachmentId($panelAttachment->id)
+                        ->whereQrCode($qr)->first();
+
                     if ($serialPanel) {
-                        $serialPanel = $serialPanel->whereQrCode($qr)->first();
-                        if ($serialPanel->qr_code == $qr) {
-                            $request->merge(['intent' => IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
-                            return new SerialPanelResource($serialPanel, $request->all());
-                        } else {
-                            return response()->json(['status' => 'Fail', 'message' => 'Invalid SN QR code' ], 400);
-                        }
-                    } else {
-                        return response()->json(['status' => 'Fail', 'message' => 'SN not found' ], 404);
+                        $request->merge(['intent' => IntentEnum::API_PANEL_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
+                        return new SerialPanelResource($serialPanel);
                     }
-                } else {
-                    return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
+                    return response()->json(['status' => 'Fail', 'message' => 'Invalid SN QR code' ], 400);
                 }
+                return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
         }
         return response()->json(['status' => 'Fail', 'message' => 'NOTHING TO SHOW🗿' ], 404);
     }
