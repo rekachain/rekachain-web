@@ -127,6 +127,7 @@ class GenerateModelScaffold extends Command {
         $this->generateController();
 
         if ($withFrontend) {
+            $this->generateRequiredFiles();
             $this->handleFrontendScaffolding();
         }
     }
@@ -147,7 +148,7 @@ class GenerateModelScaffold extends Command {
             'controller' => "{$basePath}/Http/Controllers/{$modelNameStudly}Controller.php",
             'storeRequest' => "{$basePath}/Http/Requests/{$modelNameStudly}/Store{$modelNameStudly}Request.php",
             'updateRequest' => "{$basePath}/Http/Requests/{$modelNameStudly}/Update{$modelNameStudly}Request.php",
-            'resource' => "{$basePath}/Http/Resources/{$modelNameStudly}Resource.php",
+            'resource' => "{$basePath}/Http/resources/{$modelNameStudly}Resource.php",
         ];
 
         if ($withFrontend) {
@@ -216,6 +217,54 @@ class GenerateModelScaffold extends Command {
         $this->info('Appending Frontend model interfaces and resources');
         $this->appendFrontendModelInterface();
         $this->appendFrontendResource();
+    }
+
+    protected function generateRequiredFiles() {
+        $filesToCheck = [
+            'resources/js/support/interfaces/resources/Resource.ts' => <<<'TS'
+            export interface Resource {
+                id: number;
+                created_at: string;
+                updated_at: string;
+            }
+        TS,
+            'resources/js/support/models/index.ts' => <<<'TS'
+            // Add your model interfaces here
+        TS,
+            'resources/js/support/interfaces/resources/index.ts' => <<<'TS'
+            // Add your resource interfaces here
+        TS,
+            'resources/js/services/serviceFactory.ts' => <<<'TS'
+            import { PaginateResponse } from '@/support/interfaces/others';
+            import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
+            import { Resource } from '@/support/interfaces/resources';
+
+            const DEBUG_MODE = true;
+
+            export function serviceFactory<T extends Resource>(baseRoute: string) {
+                return {
+                    // CRUD methods here...
+                };
+            }
+        TS,
+        ];
+
+        foreach ($filesToCheck as $filePath => $content) {
+            $fullPath = base_path($filePath);
+            $directory = dirname($fullPath);
+
+            // Ensure the directory exists
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true); // Create the directory recursively if needed
+            }
+
+            if (!file_exists($fullPath)) {
+                file_put_contents($fullPath, $content);
+                $this->info("Created: {$filePath}");
+            } else {
+                $this->info("File already exists: {$filePath}");
+            }
+        }
     }
 
     // Templates for each file type
@@ -314,25 +363,52 @@ class GenerateModelScaffold extends Command {
             public function __construct(protected {$modelName}ServiceInterface \${$modelNameLower}Service) {}
 
             public function index(Request \$request) {
-                return inertia('{$modelName}/Index', [
-                    'data' => {$modelName}Resource::collection(\$this->{$modelNameLower}Service->getAllPaginated(\$request->all())),
-                ]);
+                \$perPage = \$request->get('perPage', 10);
+                \$data = {$modelName}Resource::collection(\$this->{$modelNameLower}Service->getAllPaginated(\$request->query(), \$perPage));
+
+                if (\$this->ajax()) {
+                    return \$data;
+                }
+
+                return inertia('{$modelName}/Index');
+            }
+
+            public function create() {
+                return inertia('{$modelName}/Create');
             }
 
             public function store(Store{$modelName}Request \$request) {
-                return \$this->{$modelNameLower}Service->create(\$request->validated());
+                if (\$this->ajax()) {
+                    return \$this->{$modelNameLower}Service->create(\$request->validated());
+                }
             }
 
             public function show({$modelName} \${$modelNameLower}) {
-                return new {$modelName}Resource(\${$modelNameLower});
+                \$data = {$modelName}Resource::make(\${$modelNameLower});
+
+                if (\$this->ajax()) {
+                    return \$data;
+                }
+
+                return inertia('{$modelName}/Show', compact('data'));
+            }
+
+            public function edit({$modelName} \${$modelNameLower}) {
+                \$data = {$modelName}Resource::make(\${$modelNameLower});
+
+                return inertia('{$modelName}/Edit', compact('data'));
             }
 
             public function update(Update{$modelName}Request \$request, {$modelName} \${$modelNameLower}) {
-                return \$this->{$modelNameLower}Service->update(\${$modelNameLower}, \$request->validated());
+                if (\$this->ajax()) {
+                    return \$this->{$modelNameLower}Service->update(\${$modelNameLower}, \$request->validated());
+                }
             }
 
             public function destroy({$modelName} \${$modelNameLower}) {
-                return \$this->{$modelNameLower}Service->delete(\${$modelNameLower});
+                if (\$this->ajax()) {
+                    return \$this->{$modelNameLower}Service->delete(\${$modelNameLower});
+                }
             }
         }
         PHP;
