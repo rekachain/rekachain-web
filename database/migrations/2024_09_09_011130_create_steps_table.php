@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('progress_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('process');
-            $table->time('estimated_time');
+            $table->time('estimated_time')->nullable();
             $table->timestamps();
         });
     }
