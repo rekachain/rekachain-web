@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\RawMaterial;
 use App\Models\User;
+use App\Models\RawMaterial;
+use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated raw-materials', function () {
     $user = User::factory()->superAdmin()->create();
@@ -12,6 +13,15 @@ test('index method returns paginated raw-materials', function () {
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
         ->assertJsonCount(5, 'data');
+});
+
+test('create method returns create page', function () {
+    $user = User::factory()->superAdmin()->create();
+
+    $response = $this->actingAs($user)->get('/raw-materials/create');
+
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('RawMaterial/Create'));
 });
 
 test('store method creates new rawMaterial', function () {
@@ -46,6 +56,16 @@ test('show method returns rawMaterial details', function () {
         ]);
 });
 
+test('edit method returns edit page', function () {
+    $user = User::factory()->superAdmin()->create();
+    $rawMaterial = RawMaterial::factory()->create();
+
+    $response = $this->actingAs($user)->get("/raw-materials/{$rawMaterial->id}/edit");
+
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('RawMaterial/Edit'));
+});
+
 test('update method updates rawMaterial', function () {
     $user = User::factory()->superAdmin()->create();
     $rawMaterial = RawMaterial::factory()->create();
@@ -71,4 +91,14 @@ test('destroy method deletes rawMaterial', function () {
 
     $response->assertStatus(204);
     $this->assertDatabaseMissing('raw_materials', ['id' => $rawMaterial->id]);
+});
+
+// IMPLEMENTED RAW MATERIAL TEMPLATE
+test('index method returns import template', function () {
+    $user = User::factory()->superAdmin()->create();
+
+    $response = $this->actingAs($user)->getJson('/raw-materials?intent=' . IntentEnum::WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL->value);
+
+    $response->assertStatus(200)
+        ->assertDownload('rawMaterials_template.xlsx');
 });
