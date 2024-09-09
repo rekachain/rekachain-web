@@ -6,6 +6,7 @@ use App\Http\Controllers\CarriageController;
 use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\StepController;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     Route::get('/', fn () => 'test');
@@ -16,5 +17,6 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
         Route::resource('trainsets', TrainsetController::class);
         Route::resource('components', ComponentController::class);
         Route::resource('progress', ProgressController::class);
+        Route::resource('steps', StepController::class);
     });
 });

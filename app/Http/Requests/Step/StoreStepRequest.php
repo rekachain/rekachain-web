@@ -19,14 +19,14 @@ class StoreStepRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        // $intent = $this->get('intent');
+        $intent = $this->get('intent');
 
-        // switch ($intent) {
-        //     case IntentEnum::WEB_TRAINSET_IMPORT_TRAINSET->value:
-        //         return [
-        //             'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
-        //         ];
-        // }
+        switch ($intent) {
+            case IntentEnum::WEB_STEP_IMPORT_STEP->value:
+                return [
+                    'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
+                ];
+        }
 
         return [
             'progress_id' => 'required|integer|exists:progress,id',

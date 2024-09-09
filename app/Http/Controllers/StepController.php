@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Step;
 use Illuminate\Http\Request;
+use App\Support\Enums\IntentEnum;
 use App\Http\Resources\StepResource;
+use App\Support\Enums\PermissionEnum;
 use App\Http\Requests\Step\StoreStepRequest;
 use App\Http\Requests\Step\UpdateStepRequest;
 use Psr\Container\NotFoundExceptionInterface;
@@ -19,6 +21,13 @@ class StepController extends Controller
      */
     public function index(Request $request)
     {
+        $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_STEP_GET_TEMPLATE_IMPORT_STEP->value:
+                    return $this->stepsService->getImportDataTemplate();
+            }
+
         $perPage = request()->get('perPage', 5);
         return StepResource::collection($this->stepsService->getAllPaginated($request->query(), $perPage));
     }
@@ -36,6 +45,16 @@ class StepController extends Controller
      */
     public function store(StoreStepRequest $request)
     {
+
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_STEP_IMPORT_STEP->value:
+                $this->stepsService->importData($request->file('import_file'));
+
+                return response()->noContent();
+        }
+
         return $this->stepsService->create($request->validated());
     }
 
