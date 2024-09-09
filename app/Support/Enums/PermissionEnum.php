@@ -63,6 +63,11 @@ enum PermissionEnum: string {
     case RAW_MATERIAL_UPDATE = 'raw-material-update';
     case RAW_MATERIAL_DELETE = 'raw-material-delete';
 
+    case CARRIAGE_CREATE = 'carriage-create';
+    case CARRIAGE_READ = 'carriage-read';
+    case CARRIAGE_UPDATE = 'carriage-update';
+    case CARRIAGE_DELETE = 'carriage-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *

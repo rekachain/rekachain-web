@@ -6,11 +6,11 @@ use App\Http\Requests\Carriage\StoreCarriageRequest;
 use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Support\Enums\IntentEnum;
 
 class CarriageController extends Controller {
     public function __construct(protected CarriageServiceInterface $carriageService) {}
@@ -20,14 +20,14 @@ class CarriageController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
-            
+
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE->value:
                     return $this->carriageService->getImportDataTemplate();
             }
-            
+
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -79,7 +79,7 @@ class CarriageController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Carriage $carriage) {
-        return inertia('Carriage/Edit', ['user' => new CarriageResource($carriage)]);
+        return inertia('Carriage/Edit', ['carriage' => new CarriageResource($carriage)]);
     }
 
     /**

@@ -1,6 +1,7 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
+    RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
@@ -168,6 +169,13 @@ export default function Sidebar() {
                                 routeName={`${ROUTES.PROJECTS}.index`}
                                 title="List Proyek"
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.CARRIAGES}.index`}
+                                title="List Gerbong"
+                                icon={<RiCaravanLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         {/* <SidebarLink
