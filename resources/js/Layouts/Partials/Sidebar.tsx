@@ -1,6 +1,7 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
+    RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
@@ -81,6 +82,13 @@ export default function Sidebar() {
                             title="Dashboard"
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
+                        {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.WORK_DAYS}.index`}
+                                title="Hari Kerja"
+                                icon={<RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                             title="Manajemen Staff"
@@ -168,6 +176,13 @@ export default function Sidebar() {
                                 routeName={`${ROUTES.PROJECTS}.index`}
                                 title="List Proyek"
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.CARRIAGES}.index`}
+                                title="List Gerbong"
+                                icon={<RiCaravanLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         {/* <SidebarLink

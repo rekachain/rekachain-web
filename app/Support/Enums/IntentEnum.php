@@ -42,7 +42,7 @@ enum IntentEnum: string {
     case WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL = 'web.raw.material.get.template.import.raw.material';
 
     case WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL = 'web.raw.material.import.raw.material';
-    
+
     case WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE = 'web.carriage.get.template.import.carriage';
 
     case WEB_CARRIAGE_IMPORT_CARRIAGE = 'web.carriage.import.carriage';

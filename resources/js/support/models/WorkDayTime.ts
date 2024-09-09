@@ -1,5 +1,6 @@
 export interface WorkDayTime {
-    id: number;
-    created_at: string;
-    updated_at: string;
+    work_day_id: number;
+    start_time: string;
+    end_time: string;
+    status: string;
 }
