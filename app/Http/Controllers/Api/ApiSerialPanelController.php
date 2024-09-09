@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SerialPanelResource;
+use App\Models\SerialPanel;
 use Illuminate\Http\Request;
 
 class ApiSerialPanelController extends Controller
@@ -26,9 +28,17 @@ class ApiSerialPanelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(SerialPanel $serialPanel)
     {
-        //
+        $qr = request()->get('qr_code');
+        if ($qr) {
+            if($serialPanel->qr_code == $qr){
+                return new SerialPanelResource($serialPanel);
+            } else {
+                return response()->json(['status' => 'Fail', 'message' => 'Invalid QR code'], 400);
+            }
+        }
+        return response()->json(['status' => 'Fail', 'message' => 'QR code is required' ], 400);
     }
 
     /**
