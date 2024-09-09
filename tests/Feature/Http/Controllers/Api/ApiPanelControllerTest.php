@@ -32,3 +32,12 @@ test('store one panel', function () {
         'name' => 'Panel',
     ]);
 });
+
+// NOT IMPLEMENTED YET
+// test('destroy one panel', function () {
+//     $panel = createPanel();
+//     actAsSuperAdmin()->delete('/api/panels/' . $panel->id)->assertStatus(200);
+//     $this->assertDatabaseMissing('panels', [
+//         'id' => $panel->id,
+//     ]);
+// });

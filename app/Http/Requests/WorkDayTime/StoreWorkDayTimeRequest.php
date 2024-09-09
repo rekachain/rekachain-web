@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\WorkDayTime;
 
+use App\Models\WorkDayTime;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreWorkDayTimeRequest extends FormRequest {

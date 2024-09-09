@@ -23,13 +23,13 @@ class SerialPanelSeeder extends Seeder
                 $serialPanel = SerialPanel::create([
                     'panel_attachment_id' => $panelAttachment->id,
                 ]);
-                $qrcode = 'KPM:'.$panelAttachment->attachment_number.';S:'. $serialPanel->id .';P:'.$panelAttachment->carriage_trainset->trainset->project->name.';TS:'.$panelAttachment->carriage_trainset->trainset->name.';;';
+                $qrcode = 'KPM:'.$panelAttachment->attachment_number.';SN:'. $serialPanel->id .';P:'.$panelAttachment->carriage_trainset->trainset->project->name.';TS:'.$panelAttachment->carriage_trainset->trainset->name.';;';
                 $serialPanel->update(['qr_code' => $qrcode]);
                 array_push($serialForPanel, $serialPanel->id);
             }
             $serialPanels = implode(',', $serialForPanel);
             $panelAttachment->update([
-                'qr_code' => 'KPM:' . $panelAttachment->attachment_number . 'S:[' . $serialPanels . '];P:'. $panelAttachment->carriage_trainset->trainset->project->name . ';TS:' . $panelAttachment->carriage_trainset->trainset->name . ';;'
+                'qr_code' => 'KPM:' . $panelAttachment->attachment_number . ';SN:[' . $serialPanels . '];P:'. $panelAttachment->carriage_trainset->trainset->project->name . ';TS:' . $panelAttachment->carriage_trainset->trainset->name . ';;'
             ]);
         }
     }

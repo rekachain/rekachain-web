@@ -5,10 +5,12 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Panel;
 use App\Models\Project;
+use App\Models\WorkDay;
 use App\Models\Progress;
 use App\Models\Trainset;
 use App\Models\Component;
 use App\Models\Permission;
+use App\Models\WorkDayTime;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -118,4 +120,17 @@ function createPanel() {
     $panel = Panel::factory()->create();
 
     return $panel;
+}
+
+function createWorkDay() {
+    $workDay = WorkDay::factory()->create();
+
+    return $workDay;
+}
+
+function createWorkDayTime() {
+    $workDay = createWorkDay();
+    $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
+
+    return $workDayTime;
 }
