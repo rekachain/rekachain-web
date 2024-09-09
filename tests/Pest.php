@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Panel;
 use App\Models\Project;
 use App\Models\WorkDay;
+use App\Models\Division;
 use App\Models\Progress;
 use App\Models\Trainset;
 use App\Models\Component;
@@ -133,4 +134,12 @@ function createWorkDayTime() {
     $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
 
     return $workDayTime;
+}
+
+function createDivision() {
+    $division = new Division();
+    $division->name = 'Test Division';
+    $division->save();
+
+    return $division;
 }
