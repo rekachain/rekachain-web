@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Progress;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProgressRequest extends FormRequest {
@@ -18,6 +19,15 @@ class StoreProgressRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PROGRESS_IMPORT_PROGRESS->value:
+                return [
+                    'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
+                ];
+        }
+        
         return [
             'name' => 'string|max:255',
         ];

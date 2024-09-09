@@ -55,4 +55,8 @@ enum IntentEnum: string {
 
     case WEB_COMPONENT_IMPORT_COMPONENT = 'web.component.import.component';
 
+    case WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS = 'web.progress.get.template.import.progress';
+
+    case WEB_PROGRESS_IMPORT_PROGRESS = 'web.progress.import.progress';
+
 }
