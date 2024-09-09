@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Component;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Support\Enums\IntentEnum;
 
 class StoreComponentRequest extends FormRequest {
     /**
@@ -18,6 +19,15 @@ class StoreComponentRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_COMPONENT_IMPORT_COMPONENT->value:
+                return [
+                    'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
+                ];
+        }
+
         return [
             'name' => 'required',
             'progress_id' => 'nullable|integer',

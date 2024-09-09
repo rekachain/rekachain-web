@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Progress;
+use Illuminate\Http\Request;
+use App\Support\Enums\IntentEnum;
+use App\Http\Resources\ProgressResource;
+use Psr\Container\NotFoundExceptionInterface;
+use Psr\Container\ContainerExceptionInterface;
 use App\Http\Requests\Progress\StoreProgressRequest;
 use App\Http\Requests\Progress\UpdateProgressRequest;
-use App\Http\Resources\ProgressResource;
-use App\Models\Progress;
 use App\Support\Interfaces\Services\ProgressServiceInterface;
-use Illuminate\Http\Request;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class ProgressController extends Controller {
     public function __construct(protected ProgressServiceInterface $progressService) {}
@@ -19,6 +20,13 @@ class ProgressController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS->value:
+                    return $this->progressService->getImportDataTemplate();
+            }
+            
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -40,6 +48,15 @@ class ProgressController extends Controller {
      */
     public function store(StoreProgressRequest $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_PROGRESS_IMPORT_PROGRESS->value:
+                    $this->progressService->importData($request->file('import_file'));
+
+                    return response()->noContent();
+            }
+            
             return $this->progressService->create($request->validated());
         }
     }

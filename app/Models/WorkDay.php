@@ -13,7 +13,11 @@ class WorkDay extends Model {
         'day',
     ];
 
-    public function times(): HasMany {
+    public function work_day_times(): HasMany {
         return $this->hasMany(WorkDayTime::class);
+    }
+
+    public function canBeDeleted() {
+        return $this->work_day_times->isEmpty();
     }
 }

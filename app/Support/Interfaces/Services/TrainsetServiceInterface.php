@@ -4,6 +4,8 @@ namespace App\Support\Interfaces\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\Contracts\BaseCrudServiceInterface;
 use App\Models\Trainset;
+use Illuminate\Http\UploadedFile;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 interface TrainsetServiceInterface extends BaseCrudServiceInterface {
     /*
@@ -54,4 +56,19 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * $data['carriage_qty'] - quantity of the carriage
      */
     public function updateCarriageTrainset(Trainset $trainset, array $data): bool;
+
+    /**
+     * Import trainsets from file.
+     */
+    public function importData(UploadedFile $file): bool;
+
+    /**
+     * Export trainsets to file.
+     */
+    public function exportData(): BinaryFileResponse;
+
+    /*
+     * Serve the trainset template.
+     */
+    public function getImportDataTemplate(): BinaryFileResponse;
 }

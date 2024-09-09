@@ -13,7 +13,7 @@ class SerialPanel extends Model
     protected $fillable = [
         'panel_attachment_id',
         'qr_code',
-        'qr_path',        
+        'qr_path',
     ];
 
     public function panel_attachment(): BelongsTo {

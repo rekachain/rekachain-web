@@ -15,12 +15,10 @@ export * from './Progress';
 export * from './CarriageTrainset';
 export * from './RawMaterial';
 export * from './Component';
-
 export * from './CarriagePanelComponent';
 export * from './PanelAttachment';
 export * from './PanelAttachmentHandler';
 export * from './PanelMaterial';
 export * from './WorkDayTime';
 export * from './WorkDay';
-
 export * from './SerialPanel';

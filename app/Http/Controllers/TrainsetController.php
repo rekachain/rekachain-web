@@ -20,6 +20,13 @@ class TrainsetController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_TRAINSET_GET_TEMPLATE_IMPORT_TRAINSET->value:
+                    return $this->trainsetService->getImportDataTemplate();
+            }
+            
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -43,6 +50,15 @@ class TrainsetController extends Controller {
      */
     public function store(StoreTrainsetRequest $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_TRAINSET_IMPORT_TRAINSET->value:
+                    $this->trainsetService->importData($request->file('import_file'));
+
+                    return response()->noContent();
+            }
+
             return $this->trainsetService->create($request->validated());
         }
     }
