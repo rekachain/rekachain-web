@@ -82,6 +82,13 @@ export default function Sidebar() {
                             title="Dashboard"
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
+                        {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.WORK_DAYS}.index`}
+                                title="Hari Kerja"
+                                icon={<RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                             title="Manajemen Staff"

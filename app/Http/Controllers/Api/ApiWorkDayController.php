@@ -37,7 +37,7 @@ class ApiWorkDayController extends Controller {
      * Display the specified resource.
      */
     public function show(Request $request, WorkDay $workDay) {
-        return WorkDayResource::make($workDay->load('times'));
+        return WorkDayResource::make($workDay->load('work_day_times'));
     }
 
     /**

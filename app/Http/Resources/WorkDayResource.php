@@ -15,9 +15,12 @@ class WorkDayResource extends JsonResource {
         return [
             'id' => $this->id,
             'day' => $this->day,
-            'times' => WorkDayTimeResource::collection($this->whenLoaded('times')),
+            'work_day_times' => WorkDayTimeResource::collection($this->whenLoaded('work_day_times')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'can_be_deleted' => $this->canBeDeleted(),
+            'start_time' => $this->work_day_times->min('start_time'),
+            'end_time' => $this->work_day_times->max('end_time'),
         ];
     }
 }
