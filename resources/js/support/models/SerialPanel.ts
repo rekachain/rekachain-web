@@ -1,5 +1,5 @@
 export interface SerialPanel {
-    id: number;
-    created_at: string;
-    updated_at: string;
+    panel_attachment_id: number;
+    qr_code: number;
+    qr_path: string;
 }

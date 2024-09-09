@@ -53,4 +53,9 @@ export enum PERMISSION_ENUM {
     RAW_MATERIAL_READ = 'raw-material-read',
     RAW_MATERIAL_UPDATE = 'raw-material-update',
     RAW_MATERIAL_DELETE = 'raw-material-delete',
+
+    CARRIAGE_CREATE = 'carriage-create',
+    CARRIAGE_READ = 'carriage-read',
+    CARRIAGE_UPDATE = 'carriage-update',
+    CARRIAGE_DELETE = 'carriage-delete',
 }
