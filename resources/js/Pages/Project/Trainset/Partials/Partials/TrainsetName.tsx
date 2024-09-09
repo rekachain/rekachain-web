@@ -31,14 +31,26 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
     return (
         <>
             {isEditing ? (
-                <form onSubmit={handleEditTrainsetName} className="flex gap-4">
-                    <Input
-                        type="text"
-                        className="w-fit"
-                        defaultValue={data.trainsetName}
-                        onChange={e => setData('trainsetName', e.target.value)}
-                    />
-                    <Button type="submit" disabled={loading}>
+                <form onSubmit={handleEditTrainsetName} className="flex gap-4 group">
+                    <div className="">
+                        <Input
+                            pattern="^(?!\s*$).+"
+                            required
+                            type="text"
+                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
+                            // className="w-fit"
+                            defaultValue={data.trainsetName}
+                            onChange={e => setData('trainsetName', e.target.value)}
+                        />
+                        <span className="mt-2 text-sm hidden text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+                            Kode Trainset tidak boleh kosong.
+                        </span>
+                    </div>
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                        className="group-invalid:pointer-events-none group-invalid:opacity-30"
+                    >
                         {loading ? 'Processing' : 'Save'}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
