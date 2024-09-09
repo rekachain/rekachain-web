@@ -4,14 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PanelAttachmentResource;
+use App\Http\Resources\SerialPanelResource;
 use App\Models\PanelAttachment;
+use App\Models\SerialPanel;
 use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
+use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use Illuminate\Http\Request;
 
 class ApiPanelAttachmentController extends Controller {
     public function __construct(
-        protected PanelAttachmentServiceInterface $panelAttachmentService
+        protected PanelAttachmentServiceInterface $panelAttachmentService,
+        protected SerialPanelServiceInterface $serialPanelService
     ) {}
 
     /**
@@ -20,7 +24,7 @@ class ApiPanelAttachmentController extends Controller {
     public function index(Request $request) {
         $perPage = request()->get('perPage', 5);
 
-        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_INDEX->value]);
+        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
         return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
     }
@@ -35,8 +39,42 @@ class ApiPanelAttachmentController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(PanelAttachment $panelAttachment) {
-        return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+    public function show(PanelAttachment $panelAttachment, Request $request) {
+        $intent = request()->get('intent');
+        
+        switch ($intent) {
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
+                return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
+                $qr = request()->get('qr_code');
+                if ($qr) {
+                    if($panelAttachment->qr_code == $qr){
+                        return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+                    } else {
+                        return response()->json(['status' => 'Fail', 'message' => 'Invalid KPM QR code' ], 400);
+                    }
+                } else {
+                    return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
+                }
+
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value:
+                $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value]);
+                return SerialPanelResource::collection($this->serialPanelService->getAllPaginated($request->query(), 10));
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
+                $qr = request()->get('qr_code');
+                if ($qr) {
+                    $serialPanel = SerialPanel::wherePanelAttachmentId($panelAttachment->id)
+                        ->whereQrCode($qr)->first();
+
+                    if ($serialPanel) {
+                        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
+                        return new SerialPanelResource($serialPanel);
+                    }
+                    return response()->json(['status' => 'Fail', 'message' => 'Invalid SN QR code' ], 400);
+                }
+                return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
+        }
+        return response()->json(['status' => 'Fail', 'message' => 'NOTHING TO SHOW🗿' ], 404);
     }
 
     /**

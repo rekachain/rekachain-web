@@ -24,11 +24,14 @@ class PanelAttachmentFactory extends Factory
             'carriage_panel_id' => CarriagePanel::inRandomOrder()->first()->id,
             'source_workstation_id' => Workstation::inRandomOrder()->first()->id,
             'destination_workstation_id' => Workstation::inRandomOrder()->first()->id,
+            'attachment_number' => $this->faker->text(10),
+            'qr_code' => $this->faker->text(10),
             'qr_path' => $this->faker->imageUrl(),
             'current_step' => $this->faker->text(10),
             'elapsed_time' => $this->faker->numberBetween(1, 10),
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'panel_attachment_id' => null,
+            'supervisor_id' => null,
         ];
     }
 }

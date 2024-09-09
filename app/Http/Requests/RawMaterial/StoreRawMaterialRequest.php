@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\RawMaterial;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRawMaterialRequest extends FormRequest {
@@ -18,6 +19,15 @@ class StoreRawMaterialRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL->value:
+                return [
+                    'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
+                ];
+        }
+
         return [
             'material_code' => 'required|string|max:255|unique:raw_materials',
             'description' => 'required|string|max:255',

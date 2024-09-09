@@ -1,31 +1,24 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { divisionService } from '@/services/divisionService';
-import { useLoading } from '@/contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
+import { withLoading } from '@/utils/withLoading';
+import { useLoading } from '@/contexts/LoadingContext';
 
 export default function Create() {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
-        name: '',
-    });
-    const { setLoading } = useLoading();
-
-    const submit: FormEventHandler = async e => {
+    const { data, setData } = useForm({ name: '' });
+    const { loading } = useLoading();
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => location.assign(route(`${ROUTES.DIVISIONS}.index`));
-
         await divisionService.create(data);
         useSuccessToast('Division created successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.DIVISIONS}.index`));
+    });
 
     return (
         <AuthenticatedLayout>
@@ -47,10 +40,9 @@ export default function Create() {
                             autoComplete="nama"
                             onChange={e => setData('name', e.target.value)}
                         />
-                        <InputError message={errors.name} className="mt-2" />
                     </div>
 
-                    <Button className="mt-4" disabled={processing}>
+                    <Button className="mt-4" disabled={loading}>
                         Tambah Division
                     </Button>
                 </form>
