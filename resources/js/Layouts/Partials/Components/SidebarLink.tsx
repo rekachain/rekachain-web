@@ -12,13 +12,26 @@ interface SidebarLinkProps {
 }
 
 export default function (props: SidebarLinkProps) {
-    const active = route().current(props.routeName);
+    const sidebarContext = useContext(SidebarContext);
+    const currentPath = window.location.pathname;
+
+    // Parsing the route from props.routeName
+    const parsedRoute = route(props.routeName);
+    const parsedPath = new URL(parsedRoute).pathname;
+
+    // Determine active state logic, excluding the index route from always being active
+    const isActive =
+        parsedPath === '/'
+            ? currentPath === parsedPath // Only mark as active if we're truly on the homepage
+            : currentPath.includes(parsedPath); // For all other routes, check if the path includes the parsed path
+
     const linkClass = `${buttonVariants({
-        variant: active ? 'sidebar-active' : 'sidebar',
+        variant: isActive ? 'sidebar-active' : 'sidebar',
     })} w-full`;
     const titleClass = props.icon ? 'sidebar-item-text ml-2' : 'sidebar-item-text';
-    const sidebarContext = useContext(SidebarContext);
+
     const handleSetSelectedMenu = () => sidebarContext?.setSelectedMenu('');
+
     return (
         <div className="sidebar-item px-4" title={props.title}>
             <Link href={route(props.routeName)} className={linkClass} onClick={handleSetSelectedMenu}>
