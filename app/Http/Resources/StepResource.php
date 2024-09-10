@@ -16,8 +16,11 @@ class StepResource extends JsonResource {
             'id' => $this->id,
             'progress_id' => $this->progress_id,
             'name' => $this->name,
-            'process' => $this->name,
-            'estimated_time' => $this->name,
+            'process' => $this->process,
+            'progress' => ProgressResource::make($this->whenLoaded('progress')),
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'estimated_time' => $this->estimated_time,
+            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

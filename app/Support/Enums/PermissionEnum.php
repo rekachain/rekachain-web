@@ -78,6 +78,11 @@ enum PermissionEnum: string {
     case WORK_DAY_TIME_UPDATE = 'work-day-time-update';
     case WORK_DAY_TIME_DELETE = 'work-day-time-delete';
 
+    case STEP_CREATE = 'step-create';
+    case STEP_READ = 'step-read';
+    case STEP_UPDATE = 'step-update';
+    case STEP_DELETE = 'step-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *

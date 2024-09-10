@@ -22,7 +22,7 @@ export default function () {
         setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.WORK_DAYS}.index`));
         await workDayService.create(data);
-        useSuccessToast('WorkDay deleted successfully');
+        useSuccessToast('WorkDay created successfully');
         setLoading(false);
         redirectToIndex();
     };

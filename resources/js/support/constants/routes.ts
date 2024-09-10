@@ -28,4 +28,5 @@ export const ROUTES = {
     CARRIAGE_TRAINSETS: 'carriage-trainsets',
     RAW_MATERIALS: 'raw-materials',
     COMPONENTS: 'components',
+	STEPS: 'steps',
 };

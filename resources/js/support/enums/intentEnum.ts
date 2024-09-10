@@ -12,4 +12,6 @@ export const IntentEnum = {
     WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL: 'web.raw.material.import.raw.material',
     WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE: 'web.carriage.get.template.import.carriage',
     WEB_CARRIAGE_IMPORT_CARRIAGE: 'web.carriage.import.carriage',
+    WEB_STEP_GET_TEMPLATE_IMPORT_STEP: 'web.step.get.template.import.step',
+    WEB_STEP_IMPORT_STEP: 'web.step.import.step',
 };

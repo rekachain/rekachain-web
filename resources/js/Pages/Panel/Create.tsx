@@ -23,7 +23,7 @@ export default function () {
         setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
         await panelService.create(data);
-        useSuccessToast('Panel deleted successfully');
+        useSuccessToast('Panel created successfully');
         setLoading(false);
         redirectToIndex();
     };
