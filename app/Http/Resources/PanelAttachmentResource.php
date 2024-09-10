@@ -24,6 +24,7 @@ class PanelAttachmentResource extends JsonResource {
                     'trainset' => $this->carriage_trainset->trainset->name,
                     'carriage' => $this->carriage_trainset->carriage->type,
                     'panel' => $this->carriage_panel->panel->name,
+                    'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,

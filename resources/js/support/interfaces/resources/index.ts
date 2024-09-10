@@ -26,3 +26,4 @@ export * from './WorkDayResource';
 
 export * from './SerialPanelResource';
 export * from './StepResource';
+export * from './DetailWorkerPanelResource';
