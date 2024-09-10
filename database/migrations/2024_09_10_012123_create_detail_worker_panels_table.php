@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\Enums\DetailWorkerPanelStatusEnum;
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('step_id')->constrained();
             $table->integer('estimated_time')->nullable();
             $table->enum('work_status',DetailWorkerPanelWorkStatusEnum::toArray())->default(DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value);
-            $table->enum('status',DetailWorkerPanelStatusEnum::toArray())->nullable();
+            $table->enum('acceptance_status',DetailWorkerPanelAcceptanceStatusEnum::toArray())->nullable();
             $table->timestamps();
         });
     }
