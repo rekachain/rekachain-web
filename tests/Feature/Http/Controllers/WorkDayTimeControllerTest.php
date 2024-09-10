@@ -67,7 +67,7 @@ test('show method returns workDayTime details', function () {
             'id' => $workDayTime->id,
             'start_time' => $workDayTime->start_time,
             'end_time' => $workDayTime->end_time,
-            'status' => $workDayTime->status,
+            'status' => $workDayTime->status->value,
         ]);
 });
 
