@@ -9,6 +9,7 @@ use App\Models\WorkDay;
 use App\Models\Division;
 use App\Models\Progress;
 use App\Models\Trainset;
+use App\Models\Workshop;
 use App\Models\Component;
 use App\Models\Permission;
 use App\Models\WorkDayTime;
@@ -142,4 +143,14 @@ function createDivision() {
     $division->save();
 
     return $division;
+}
+
+
+function createWorkshop() {
+    $workshop = new Workshop();
+    $workshop->name = 'Test Workshop';
+    $workshop->address = 'Test Address';
+    $workshop->save();
+
+    return $workshop;
 }
