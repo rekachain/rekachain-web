@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
-use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\DetailWorkerPanelStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,8 +20,7 @@ class DetailWorkerPanel extends Model
     ];
 
     protected $casts = [
-        'status' => DetailWorkerPanelAcceptanceStatusEnum::class,
-        'work_status' => DetailWorkerPanelWorkStatusEnum::class
+        'status' => DetailWorkerPanelStatusEnum::class
     ];
 
     public function serialPanel()
