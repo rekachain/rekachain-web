@@ -32,7 +32,7 @@ class StoreStepRequest extends FormRequest {
             'progress_id' => 'required|integer|exists:progress,id',
             'name' => 'required|string|max:255',
             'process' => 'required|string|max:255',
-            'estimated_time' => 'required|string|max:255',
+            'estimated_time' => 'nullable|integer',
         ];
     }
 }

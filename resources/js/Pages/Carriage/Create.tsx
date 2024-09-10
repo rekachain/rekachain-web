@@ -23,7 +23,7 @@ export default function () {
         setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.CARRIAGES}.index`));
         await carriageService.create(data);
-        useSuccessToast('Carriage deleted successfully');
+        useSuccessToast('Carriage created successfully');
         setLoading(false);
         redirectToIndex();
     };

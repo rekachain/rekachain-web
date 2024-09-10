@@ -5,6 +5,7 @@ import {
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
+    RiExpandRightLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
@@ -156,6 +157,14 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
+                        {checkPermission(PERMISSION_ENUM.STEP_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.STEPS}.index`}
+                                title="List Step"
+                                icon={<RiExpandRightLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
@@ -171,6 +180,7 @@ export default function Sidebar() {
                                 icon={<RiArtboard2Fill size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
+
                         {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.PROJECTS}.index`}
@@ -178,6 +188,7 @@ export default function Sidebar() {
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
+
                         {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.CARRIAGES}.index`}

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Step;
 
-use App\Rules\UniquePresetNameInProjectValidation;
-use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateStepRequest extends FormRequest {
@@ -25,7 +23,7 @@ class UpdateStepRequest extends FormRequest {
             'progress_id' => 'required|integer|exists:progress,id',
             'name' => 'required|string|max:255',
             'process' => 'required|string|max:255',
-            'estimated_time' => 'required|string|max:255',
+            'estimated_time' => 'nullable|integer',
         ];
     }
 }

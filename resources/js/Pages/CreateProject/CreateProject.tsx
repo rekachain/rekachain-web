@@ -27,7 +27,7 @@ export default function CreateProject() {
 
         toast({
             title: 'Proyek Berhasil Dibuat !',
-            description: `${year}${month < 10 ? `0${month}` : `${month}`}${date}`,
+            process: `${year}${month < 10 ? `0${month}` : `${month}`}${date}`,
         });
         location.href = route('list-trainset');
     };
