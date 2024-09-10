@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\SerialPanel;
 use App\Models\Step;
-use App\Support\Enums\DetailWorkerPanelStatusEnum;
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +26,7 @@ class DetailWorkerPanelFactory extends Factory
             'step_id' => Step::inRandomOrder()->first()->id,
             'estimated_time' => $this->faker->numberBetween(20, 60),
             'work_status' => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
-            'status' => DetailWorkerPanelStatusEnum::ACCEPTED->value
+            'status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value
         ];
     }
 }

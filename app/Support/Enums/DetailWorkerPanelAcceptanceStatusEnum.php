@@ -4,7 +4,7 @@ namespace App\Support\Enums;
 
 use App\Traits\Enums\Arrayable;
 
-enum DetailWorkerPanelStatusEnum: string {
+enum DetailWorkerPanelAcceptanceStatusEnum: string {
     use Arrayable;
 
     case ACCEPTED = 'accepted';
