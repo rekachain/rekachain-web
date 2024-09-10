@@ -25,3 +25,4 @@ export * from './WorkDayTimeResource';
 export * from './WorkDayResource';
 
 export * from './SerialPanelResource';
+export * from './StepResource';

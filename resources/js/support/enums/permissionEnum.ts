@@ -68,4 +68,9 @@ export enum PERMISSION_ENUM {
     WORK_DAY_TIME_READ = 'work-day-time-read',
     WORK_DAY_TIME_UPDATE = 'work-day-time-update',
     WORK_DAY_TIME_DELETE = 'work-day-time-delete',
+
+    STEP_CREATE = 'step-create',
+    STEP_READ = 'step-read',
+    STEP_UPDATE = 'step-update',
+    STEP_DELETE = 'step-delete',
 }
