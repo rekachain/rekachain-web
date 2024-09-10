@@ -165,8 +165,8 @@ class GenerateModelScaffold extends Command {
     protected function defineTemplates(): array {
         $modelNameStudly = self::$model->studly;
         $modelCamel = self::$model->camel;
-        $modelUpper = self::$model->upper;
         $withFrontend = self::$withFrontend;
+        $modelUpperSnake = self::$model->upperSnake;
 
         $templates = [
             'repositoryInterface' => $this->getRepositoryInterfaceTemplate($modelNameStudly),
@@ -182,7 +182,7 @@ class GenerateModelScaffold extends Command {
             $templates = array_merge($templates, [
                 'reactModelInterface' => $this->getFrontendModelInterfaceTemplate($modelNameStudly),
                 'reactResource' => $this->getFrontendResourceTemplate($modelNameStudly),
-                'reactService' => $this->getFrontendServiceTemplate($modelCamel, $modelNameStudly, $modelUpper),
+                'reactService' => $this->getFrontendServiceTemplate($modelCamel, $modelNameStudly, $modelUpperSnake),
             ]);
         }
 
@@ -489,8 +489,8 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getFrontendServiceTemplate($modelCamel, $modelName, $modelUpper): string {
-        $routeName = $modelUpper . 'S';
+    protected function getFrontendServiceTemplate($modelCamel, $modelName, $modelSnakeUpper): string {
+        $routeName = $modelSnakeUpper . 'S';
 
         return <<<TS
         import { ROUTES } from '@/support/constants/routes';
