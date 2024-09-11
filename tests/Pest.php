@@ -6,11 +6,14 @@ use App\Models\User;
 use App\Models\Panel;
 use App\Models\Project;
 use App\Models\WorkDay;
+use App\Models\Division;
 use App\Models\Progress;
 use App\Models\Trainset;
+use App\Models\Workshop;
 use App\Models\Component;
 use App\Models\Permission;
 use App\Models\WorkDayTime;
+use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -133,4 +136,35 @@ function createWorkDayTime() {
     $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
 
     return $workDayTime;
+}
+
+function createDivision() {
+    $division = new Division();
+    $division->name = 'Test Division';
+    $division->save();
+
+    return $division;
+}
+
+
+function createWorkshop() {
+    $workshop = new Workshop();
+    $workshop->name = 'Test Workshop';
+    $workshop->address = 'Test Address';
+    $workshop->save();
+
+    return $workshop;
+}
+
+function createWorkstation() {
+    $division = createDivision();
+    $workshop = createWorkshop();
+    $workstation = new Workstation();
+    $workstation->name = 'Test Workstation';
+    $workstation->location = 'Test Workstation Location';
+    $workstation->division_id = $division->id;
+    $workstation->workshop_id = $workshop->id;
+    $workstation->save();
+
+    return $workstation;
 }

@@ -8,4 +8,5 @@ export interface CarriageResource extends Resource, Carriage {
     panels?: PanelResource[]; // available only in route projects.trainsets.carriages.index
     carriage_panels: CarriagePanelResource[];
     pivot: CarriageTrainsetResource;
+    can_be_deleted: boolean;
 }

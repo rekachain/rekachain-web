@@ -53,4 +53,24 @@ export enum PERMISSION_ENUM {
     RAW_MATERIAL_READ = 'raw-material-read',
     RAW_MATERIAL_UPDATE = 'raw-material-update',
     RAW_MATERIAL_DELETE = 'raw-material-delete',
+
+    CARRIAGE_CREATE = 'carriage-create',
+    CARRIAGE_READ = 'carriage-read',
+    CARRIAGE_UPDATE = 'carriage-update',
+    CARRIAGE_DELETE = 'carriage-delete',
+
+    WORK_DAY_CREATE = 'work-day-create',
+    WORK_DAY_READ = 'work-day-read',
+    WORK_DAY_UPDATE = 'work-day-update',
+    WORK_DAY_DELETE = 'work-day-delete',
+
+    WORK_DAY_TIME_CREATE = 'work-day-time-create',
+    WORK_DAY_TIME_READ = 'work-day-time-read',
+    WORK_DAY_TIME_UPDATE = 'work-day-time-update',
+    WORK_DAY_TIME_DELETE = 'work-day-time-delete',
+
+    STEP_CREATE = 'step-create',
+    STEP_READ = 'step-read',
+    STEP_UPDATE = 'step-update',
+    STEP_DELETE = 'step-delete',
 }

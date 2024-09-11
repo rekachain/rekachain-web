@@ -1,9 +1,11 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
+    RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
+    RiExpandRightLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
@@ -81,6 +83,13 @@ export default function Sidebar() {
                             title="Dashboard"
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
+                        {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.WORK_DAYS}.index`}
+                                title="Hari Kerja"
+                                icon={<RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                             title="Manajemen Staff"
@@ -148,6 +157,14 @@ export default function Sidebar() {
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
                     <SidebarMenu title="MANUFAKTUR" bordered>
+                        {checkPermission(PERMISSION_ENUM.STEP_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.STEPS}.index`}
+                                title="List Step"
+                                icon={<RiExpandRightLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
@@ -163,11 +180,20 @@ export default function Sidebar() {
                                 icon={<RiArtboard2Fill size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
+
                         {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.PROJECTS}.index`}
                                 title="List Proyek"
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
+                        {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.CARRIAGES}.index`}
+                                title="List Gerbong"
+                                icon={<RiCaravanLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         {/* <SidebarLink

@@ -42,9 +42,24 @@ enum IntentEnum: string {
     case WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL = 'web.raw.material.get.template.import.raw.material';
 
     case WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL = 'web.raw.material.import.raw.material';
-    
+
     case WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE = 'web.carriage.get.template.import.carriage';
 
     case WEB_CARRIAGE_IMPORT_CARRIAGE = 'web.carriage.import.carriage';
 
+    case WEB_TRAINSET_GET_TEMPLATE_IMPORT_TRAINSET = 'web.trainset.get.template.import.trainset';
+
+    case WEB_TRAINSET_IMPORT_TRAINSET = 'web.trainset.import.trainset';
+
+    case WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT = 'web.component.get.template.import.component';
+
+    case WEB_COMPONENT_IMPORT_COMPONENT = 'web.component.import.component';
+
+    case WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS = 'web.progress.get.template.import.progress';
+
+    case WEB_PROGRESS_IMPORT_PROGRESS = 'web.progress.import.progress';
+
+    case WEB_STEP_GET_TEMPLATE_IMPORT_STEP = 'web.step.get.template.import.step';
+
+    case WEB_STEP_IMPORT_STEP = 'web.step.import.step';
 }

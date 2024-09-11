@@ -21,8 +21,13 @@ class SerialPanelResource extends JsonResource
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'serial_number' => $this->id,
-                    'panel' => $this->panel_attachment?->carriage_panel->panel->name,
+                    'project' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->project->name,
+                    'trainset' => $this->panel_attachment?->carriage_trainset->trainset->name,
                     'carriage' => $this->panel_attachment?->carriage_trainset->carriage->type,
+                    'panel' => $this->panel_attachment?->carriage_panel->panel->name,
+                    'manufacture_status' => $this->manufacture_status,
+                    'notes' => $this->notes,
+                    'detail_workers' => DetailWorkerPanelResource::collection($this->whenLoaded('detail_worker_panels')),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];

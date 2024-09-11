@@ -26,4 +26,8 @@ class Carriage extends Model {
     public function carriage_panels(): HasManyThrough {
         return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class, 'carriage_id', 'carriage_trainset_id');
     }
+
+    public function canBeDeleted() {
+        return $this->trainsets()->doesntExist();
+    }
 }

@@ -63,6 +63,26 @@ enum PermissionEnum: string {
     case RAW_MATERIAL_UPDATE = 'raw-material-update';
     case RAW_MATERIAL_DELETE = 'raw-material-delete';
 
+    case CARRIAGE_CREATE = 'carriage-create';
+    case CARRIAGE_READ = 'carriage-read';
+    case CARRIAGE_UPDATE = 'carriage-update';
+    case CARRIAGE_DELETE = 'carriage-delete';
+
+    case WORK_DAY_CREATE = 'work-day-create';
+    case WORK_DAY_READ = 'work-day-read';
+    case WORK_DAY_UPDATE = 'work-day-update';
+    case WORK_DAY_DELETE = 'work-day-delete';
+
+    case WORK_DAY_TIME_CREATE = 'work-day-time-create';
+    case WORK_DAY_TIME_READ = 'work-day-time-read';
+    case WORK_DAY_TIME_UPDATE = 'work-day-time-update';
+    case WORK_DAY_TIME_DELETE = 'work-day-time-delete';
+
+    case STEP_CREATE = 'step-create';
+    case STEP_READ = 'step-read';
+    case STEP_UPDATE = 'step-update';
+    case STEP_DELETE = 'step-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *

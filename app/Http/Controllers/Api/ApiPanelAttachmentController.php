@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\PanelAttachment\InvalidKpmQrCodeException;
+use App\Exceptions\PanelAttachment\InvalidSnQrCodeException;
+use App\Exceptions\PanelAttachment\NothingToShowException;
+use App\Exceptions\PanelAttachment\QrCodeNotIdentifiedException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\SerialPanelResource;
 use App\Models\PanelAttachment;
-use App\Models\SerialPanel;
 use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
@@ -41,40 +44,46 @@ class ApiPanelAttachmentController extends Controller {
      */
     public function show(PanelAttachment $panelAttachment, Request $request) {
         $intent = request()->get('intent');
-        
+
         switch ($intent) {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
-                    if($panelAttachment->qr_code == $qr){
+                    if ($panelAttachment->qr_code == $qr) {
                         return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
-                    } else {
-                        return response()->json(['status' => 'Fail', 'message' => 'Invalid KPM QR code' ], 400);
                     }
+                    abort(400, 'Invalid KPM QR code');
                 } else {
-                    return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
+                    abort(400, 'QR code not identified');
                 }
 
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value:
                 $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value]);
-                return SerialPanelResource::collection($this->serialPanelService->getAllPaginated($request->query(), 10));
+
+                return SerialPanelResource::collection($this->serialPanelService->find([
+                    'panel_attachment_id' => $panelAttachment->id,
+                ]));
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
-                    $serialPanel = SerialPanel::wherePanelAttachmentId($panelAttachment->id)
-                        ->whereQrCode($qr)->first();
+
+                    $serialPanel = $this->serialPanelService->find([
+                        'panel_attachment_id' => $panelAttachment->id,
+                        'qr_code' => $qr,
+                    ])->first();
 
                     if ($serialPanel) {
                         $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
+
                         return new SerialPanelResource($serialPanel);
                     }
-                    return response()->json(['status' => 'Fail', 'message' => 'Invalid SN QR code' ], 400);
+                    abort(400, 'Invalid SN QR code');
                 }
-                return response()->json(['status' => 'Fail', 'message' => 'QR code not identified' ], 400);
+                abort(400, 'QR code not identified');
         }
-        return response()->json(['status' => 'Fail', 'message' => 'NOTHING TO SHOW🗿' ], 404);
+        abort(404, 'NOTHING TO SHOW🗿');
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Support\Interfaces\Services\ComponentServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use App\Support\Enums\IntentEnum;
 
 class ComponentController extends Controller {
     public function __construct(protected ComponentServiceInterface $componentService) {}
@@ -18,6 +19,13 @@ class ComponentController extends Controller {
      */
     public function index(Request $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT->value:
+                    return $this->componentService->getImportDataTemplate();
+            }
+
             try {
                 $perPage = request()->get('perPage', 5);
 
@@ -40,7 +48,18 @@ class ComponentController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreComponentRequest $request) {
-        //
+        if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_COMPONENT_IMPORT_COMPONENT->value:
+                    $this->componentService->importData($request->file('import_file'));
+
+                    return response()->noContent();
+            }
+
+            return $this->componentService->create($request->validated());
+        }
     }
 
     /**
