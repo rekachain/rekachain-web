@@ -13,14 +13,14 @@ test('index method returns paginated workstations', function () {
         ->assertJsonCount(1, 'data');
 });
 
-// test('create method returns create page', function () {
-//     $user = User::factory()->superAdmin()->create();
+test('create method returns create page', function () {
+    $user = User::factory()->superAdmin()->create();
 
-//     $response = $this->actingAs($user)->get('/workstations/create');
+    $response = $this->actingAs($user)->get('/workstations/create');
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('WorkDay/Create'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('Workstation/Create'));
+});
 
 test('store method creates new workstation', function () {
     $user = User::factory()->superAdmin()->create();
@@ -68,15 +68,15 @@ test('show method returns workstation details', function () {
         ]);
 });
 
-// test('edit method returns edit page', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $workstation = createWorkstation();
+test('edit method returns edit page', function () {
+    $user = User::factory()->superAdmin()->create();
+    $workstation = createWorkstation();
 
-//     $response = $this->actingAs($user)->get("/workstations/{$workstation->id}/edit");
+    $response = $this->actingAs($user)->get("/workstations/{$workstation->id}/edit");
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('WorkDay/Edit'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('Workstation/Edit'));
+});
 
 test('update method updates workstation', function () {
     $user = User::factory()->superAdmin()->create();
