@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ApiPanelController;
 use App\Http\Controllers\Api\ApiPanelMaterialController;
 use App\Http\Controllers\Api\ApiProgressController;
 use App\Http\Controllers\Api\ApiProjectController;
+use App\Http\Controllers\Api\ApiSerialPanelController;
 use App\Http\Controllers\Api\ApiTrainsetController;
 use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiWorkDayController;
@@ -37,6 +38,7 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('panels', ApiPanelController::class);
         Route::apiResource('panel-attachments', ApiPanelAttachmentController::class);
         Route::apiResource('panel-attachment-handlers', ApiPanelAttachmentHandlerController::class);
+        Route::apiResource('serial-panels', ApiSerialPanelController::class);
         // Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
         Route::apiResource('components', ApiComponentController::class);
         // Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);

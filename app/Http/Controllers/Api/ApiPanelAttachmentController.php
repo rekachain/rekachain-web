@@ -41,11 +41,6 @@ class ApiPanelAttachmentController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @throws QrCodeNotIdentifiedException
-     * @throws InvalidKpmQrCodeException
-     * @throws InvalidSnQrCodeException
-     * @throws NothingToShowException
      */
     public function show(PanelAttachment $panelAttachment, Request $request) {
         $intent = request()->get('intent');
