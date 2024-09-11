@@ -13,6 +13,7 @@ use App\Models\Workshop;
 use App\Models\Component;
 use App\Models\Permission;
 use App\Models\WorkDayTime;
+use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -153,4 +154,17 @@ function createWorkshop() {
     $workshop->save();
 
     return $workshop;
+}
+
+function createWorkstation() {
+    $division = createDivision();
+    $workshop = createWorkshop();
+    $workstation = new Workstation();
+    $workstation->name = 'Test Workstation';
+    $workstation->location = 'Test Workstation Location';
+    $workstation->division_id = $division->id;
+    $workstation->workshop_id = $workshop->id;
+    $workstation->save();
+
+    return $workstation;
 }
