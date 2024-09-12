@@ -42,7 +42,7 @@ class ComponentController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        //
+        return inertia('Component/Create');
     }
 
     /**
@@ -70,26 +70,32 @@ class ComponentController extends Controller {
         if ($this->ajax()) {
             return new ComponentResource($component->load('progress'));
         }
+
+        return inertia('Component/Show', compact('component'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Component $component) {
-        //
+        return inertia('Component/Edit', compact('component'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateComponentRequest $request, Component $component) {
-        //
+        if ($this->ajax()) {
+            return $this->componentService->update($component, $request->validated());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Component $component) {
-        //
+        if ($this->ajax()) {
+            return $this->componentService->delete($component);
+        }
     }
 }

@@ -73,4 +73,9 @@ export enum PERMISSION_ENUM {
     STEP_READ = 'step-read',
     STEP_UPDATE = 'step-update',
     STEP_DELETE = 'step-delete',
+
+    COMPONENT_CREATE = 'component-create',
+    COMPONENT_READ = 'component-read',
+    COMPONENT_UPDATE = 'component-update',
+    COMPONENT_DELETE = 'component-delete',
 }
