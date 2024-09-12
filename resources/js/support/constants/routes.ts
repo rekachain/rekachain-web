@@ -30,4 +30,5 @@ export const ROUTES = {
     COMPONENTS: 'components',
 	STEPS: 'steps',
 	DETAIL_WORKER_PANELS: 'detail-worker-panels',
+	PROGRESS_STEPS: 'progress-steps',
 };
