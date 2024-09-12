@@ -12,7 +12,7 @@ import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { trainsetService } from '@/services/trainsetService';
-import { Loader2, RefreshCcw } from 'lucide-react';
+import { Check, ChevronsUpDown, Loader2, RefreshCcw } from 'lucide-react';
 import { Input } from '@/Components/ui/input';
 import {
     Dialog,
@@ -43,6 +43,9 @@ import { ROUTES } from '@/support/constants/routes';
 import { fetchGenericData } from '@/helpers/dataManagementHelper';
 import { useLoading } from '@/contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
+import cn from 'mxcn';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -55,6 +58,8 @@ export default function ({
     trainset: TrainsetResource;
     presetTrainsets: PresetTrainsetResource[];
 }) {
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
@@ -167,6 +172,12 @@ export default function ({
         carriageService.getAll(debouncedCarriageFilters).then(res => {
             setCarriageResponse(res);
         });
+    };
+
+    const handleSearchCarriages = (carriageResponse: PaginateResponse<CarriageResource> | undefined) => {
+        let carriage = carriageResponse?.data.find(carriage => carriage.type === value);
+
+        return `${carriage?.type} : ${carriage?.description}`;
     };
 
     useEffect(() => {
@@ -345,6 +356,61 @@ export default function ({
                                             </div>
                                         </div>
                                     </SelectGroup>
+                                    <Popover open={open} onOpenChange={setOpen}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                aria-expanded={open}
+                                                className="w-full justify-between"
+                                            >
+                                                {value ? handleSearchCarriages(carriageResponse) : 'Pilih carriage...'}
+                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-full p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Cari Gerbong..." />
+                                                <CommandList>
+                                                    <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        {carriageResponse?.data.map(carriage => (
+                                                            <CommandItem
+                                                                key={carriage.type}
+                                                                value={carriage.type}
+                                                                onSelect={currentValue => {
+                                                                    // alert(currentValue);
+                                                                    setValue(
+                                                                        currentValue === value ? '' : currentValue,
+                                                                    );
+                                                                    setOpen(false);
+                                                                }}
+                                                            >
+                                                                {carriage.type} : {carriage.description}
+                                                                <br />
+                                                                {/* {carriage.carriage_panels?.map((c, i) => (
+                                                                    <span key={c.id}>
+                                                                        <br />
+                                                                        {c.panel.name}
+                                                                    </span>
+                                                                ))} */}
+                                                                {/* <Check
+                                                                    className={cn(
+                                                                        'mr-2 h-4 w-4',
+                                                                        value === carriage.type
+                                                                            ? 'opacity-100'
+                                                                            : 'opacity-0',
+                                                                    )}
+                                                                /> */}
+                                                                {/* {carriage.type} */}
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+
                                     <div className="flex gap-4 items-center">
                                         <div className=" flex-1">
                                             <Separator />
