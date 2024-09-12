@@ -1,6 +1,7 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
+    RiCalendar2Line,
     RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
@@ -13,6 +14,7 @@ import {
     RiQuestionLine,
     RiSettings3Line,
     RiShieldLine,
+    RiStackLine,
     RiToolsFill,
     RiUser2Line,
     RiUserLine,
@@ -87,7 +89,7 @@ export default function Sidebar() {
                             <SidebarLink
                                 routeName={`${ROUTES.WORK_DAYS}.index`}
                                 title="Hari Kerja"
-                                icon={<RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                                icon={<RiCalendar2Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         <SidebarLinkCollapsible
@@ -170,6 +172,14 @@ export default function Sidebar() {
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
                                 title="List Material"
                                 icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
+                        {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
+                            <SidebarLink
+                                routeName={`${ROUTES.COMPONENTS}.index`}
+                                title="List Component"
+                                icon={<RiStackLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
 
