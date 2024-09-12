@@ -18,6 +18,7 @@ class ComponentResource extends JsonResource {
             'progress_id' => $this->progress_id,
             // 'panel' => PanelResource::make($this->whenLoaded('panel')),
             'progress' => ProgressResource::make($this->whenLoaded('progress')),
+            'can_be_deleted' => $this->canBeDeleted(),
             'updated_at' => $this->updated_at,
         ];
     }

@@ -83,6 +83,11 @@ enum PermissionEnum: string {
     case STEP_UPDATE = 'step-update';
     case STEP_DELETE = 'step-delete';
 
+    case COMPONENT_CREATE = 'component-create';
+    case COMPONENT_READ = 'component-read';
+    case COMPONENT_UPDATE = 'component-update';
+    case COMPONENT_DELETE = 'component-delete';
+
     /**
      * [Deprecated] Group permissions by first word.
      *
