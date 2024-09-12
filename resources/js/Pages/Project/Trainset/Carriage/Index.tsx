@@ -175,7 +175,7 @@ export default function ({
     };
 
     const handleSearchCarriages = (carriageResponse: PaginateResponse<CarriageResource> | undefined) => {
-        let carriage = carriageResponse?.data.find(carriage => carriage.type === value);
+        let carriage = carriageResponse?.data.find(carriage => `${carriage.type} : ${carriage.description}` === value);
 
         return `${carriage?.type} : ${carriage?.description}`;
     };
@@ -309,14 +309,14 @@ export default function ({
                                     <SelectGroup className="space-y-2">
                                         <div className="flex flex-col bg-background-2 gap-4 p-4">
                                             <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
-                                            <Input
+                                            {/* <Input
                                                 placeholder="Cari gerbong"
                                                 value={carriageFilters.search}
                                                 onChange={handleChangeSearchCarriageType}
                                                 disabled={loading}
-                                            />
+                                            /> */}
                                             <div className="flex gap-4">
-                                                <Select
+                                                {/* <Select
                                                     key={data.new_carriage_id} // Force re-render when new_carriage_id changes
                                                     onValueChange={v => setData('new_carriage_id', +v)}
                                                     value={data.new_carriage_id?.toString()}
@@ -352,49 +352,54 @@ export default function ({
                                                     onClick={handleResetAddCarriageSelection}
                                                 >
                                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </SelectGroup>
-                                    <Popover open={open} onOpenChange={setOpen}>
-                                        <PopoverTrigger asChild>
-                                            <Button
-                                                variant="outline"
-                                                role="combobox"
-                                                aria-expanded={open}
-                                                className="w-full justify-between"
-                                            >
-                                                {value ? handleSearchCarriages(carriageResponse) : 'Pilih carriage...'}
-                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-full p-0">
-                                            <Command>
-                                                <CommandInput placeholder="Cari Gerbong..." />
-                                                <CommandList>
-                                                    <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
-                                                    <CommandGroup>
-                                                        {carriageResponse?.data.map(carriage => (
-                                                            <CommandItem
-                                                                key={carriage.type}
-                                                                value={carriage.type}
-                                                                onSelect={currentValue => {
-                                                                    // alert(currentValue);
-                                                                    setValue(
-                                                                        currentValue === value ? '' : currentValue,
-                                                                    );
-                                                                    setOpen(false);
-                                                                }}
-                                                            >
-                                                                {carriage.type} : {carriage.description}
-                                                                <br />
-                                                                {/* {carriage.carriage_panels?.map((c, i) => (
+                                                </Button> */}
+                                                <Popover open={open} onOpenChange={setOpen}>
+                                                    <PopoverTrigger asChild>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            aria-expanded={open}
+                                                            className="w-full justify-between"
+                                                        >
+                                                            {value
+                                                                ? handleSearchCarriages(carriageResponse)
+                                                                : 'Pilih carriage...'}
+                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-full p-0">
+                                                        <Command>
+                                                            <CommandInput placeholder="Cari Gerbong..." />
+                                                            <CommandList>
+                                                                <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
+                                                                <CommandGroup>
+                                                                    {carriageResponse?.data.map(carriage => (
+                                                                        <CommandItem
+                                                                            key={carriage.type}
+                                                                            value={`${carriage.type} : ${carriage.description}`}
+                                                                            onSelect={currentValue => {
+                                                                                setData(
+                                                                                    'new_carriage_id',
+                                                                                    +carriage.id,
+                                                                                );
+                                                                                // alert(currentValue);
+                                                                                setValue(
+                                                                                    currentValue === value
+                                                                                        ? ''
+                                                                                        : currentValue,
+                                                                                );
+                                                                                setOpen(false);
+                                                                            }}
+                                                                        >
+                                                                            {carriage.type} : {carriage.description}
+                                                                            <br />
+                                                                            {/* {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
                                                                         <br />
                                                                         {c.panel.name}
                                                                     </span>
                                                                 ))} */}
-                                                                {/* <Check
+                                                                            {/* <Check
                                                                     className={cn(
                                                                         'mr-2 h-4 w-4',
                                                                         value === carriage.type
@@ -402,14 +407,17 @@ export default function ({
                                                                             : 'opacity-0',
                                                                     )}
                                                                 /> */}
-                                                                {/* {carriage.type} */}
-                                                            </CommandItem>
-                                                        ))}
-                                                    </CommandGroup>
-                                                </CommandList>
-                                            </Command>
-                                        </PopoverContent>
-                                    </Popover>
+                                                                            {/* {carriage.type} */}
+                                                                        </CommandItem>
+                                                                    ))}
+                                                                </CommandGroup>
+                                                            </CommandList>
+                                                        </Command>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </div>
+                                        </div>
+                                    </SelectGroup>
 
                                     <div className="flex gap-4 items-center">
                                         <div className=" flex-1">
