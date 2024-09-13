@@ -21,5 +21,4 @@ interface CarriageServiceInterface extends BaseCrudServiceInterface {
      * Serve the carriage template.
      */
     public function getImportDataTemplate(): BinaryFileResponse;
-    
 }

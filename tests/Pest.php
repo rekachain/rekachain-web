@@ -1,21 +1,21 @@
 <?php
 
-use Tests\TestCase;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Panel;
-use App\Models\Project;
-use App\Models\WorkDay;
-use App\Models\Division;
-use App\Models\Progress;
-use App\Models\Trainset;
-use App\Models\Workshop;
 use App\Models\Component;
+use App\Models\Division;
+use App\Models\Panel;
 use App\Models\Permission;
+use App\Models\Progress;
+use App\Models\Project;
+use App\Models\Role;
+use App\Models\Trainset;
+use App\Models\User;
+use App\Models\WorkDay;
 use App\Models\WorkDayTime;
+use App\Models\Workshop;
 use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,8 +88,8 @@ function actAsPpcPengendalian(): TestCase {
     return test()->actingAs($user);
 }
 
-function  createComponent() {
-    $component = new Component();
+function createComponent() {
+    $component = new Component;
     $component->name = 'Component';
     $component->save();
 
@@ -97,7 +97,7 @@ function  createComponent() {
 }
 
 function createProject() {
-    $project = new Project();
+    $project = new Project;
     $project->name = 'Project';
     $project->save();
 
@@ -139,16 +139,15 @@ function createWorkDayTime() {
 }
 
 function createDivision() {
-    $division = new Division();
+    $division = new Division;
     $division->name = 'Test Division';
     $division->save();
 
     return $division;
 }
 
-
 function createWorkshop() {
-    $workshop = new Workshop();
+    $workshop = new Workshop;
     $workshop->name = 'Test Workshop';
     $workshop->address = 'Test Address';
     $workshop->save();
@@ -159,7 +158,7 @@ function createWorkshop() {
 function createWorkstation() {
     $division = createDivision();
     $workshop = createWorkshop();
-    $workstation = new Workstation();
+    $workstation = new Workstation;
     $workstation->name = 'Test Workstation';
     $workstation->location = 'Test Workstation Location';
     $workstation->division_id = $division->id;

@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\RawMaterial;
-use Illuminate\Database\Seeder;
 use Database\Seeders\Helpers\CsvReader;
+use Illuminate\Database\Seeder;
 
 class RawMaterialSeeder extends Seeder {
     /**

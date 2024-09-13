@@ -8,7 +8,7 @@ test('login Success', function () {
         'nip' => $user->nip,
         'password' => 'password',
     ])->assertStatus(200)
-      ->assertJsonStructure([
+        ->assertJsonStructure([
             'user',
             'token',
             'role',
@@ -42,7 +42,6 @@ test('logout Success', function () {
 
     $logoutResponse->assertStatus(200)
         ->assertJson([
-            'message' => 'Logged out'
+            'message' => 'Logged out',
         ]);
 });
-

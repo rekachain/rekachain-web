@@ -15,8 +15,9 @@ class Progress extends Model {
 
     public function panels(): HasMany {
         return $this->hasMany(Panel::class);
-    
+
     }
+
     public function steps(): HasMany {
         return $this->hasMany(Step::class);
     }

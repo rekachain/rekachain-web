@@ -1,6 +1,5 @@
 <?php
 
-
 test('view all work day times', function () {
     createWorkDayTime();
     actAsSuperAdmin()->get('/api/work-day-times')->assertStatus(200);

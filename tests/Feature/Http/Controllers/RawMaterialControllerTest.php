@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\RawMaterial;
+use App\Models\User;
 use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated raw-materials', function () {

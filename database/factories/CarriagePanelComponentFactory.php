@@ -10,15 +10,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CarriagePanelComponent>
  */
-class CarriagePanelComponentFactory extends Factory
-{
+class CarriagePanelComponentFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             //
             'component_id' => Component::inRandomOrder()->first()->id,

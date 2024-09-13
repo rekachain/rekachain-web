@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SerialPanel extends Model
-{
+class SerialPanel extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -16,7 +15,7 @@ class SerialPanel extends Model
         'qr_code',
         'qr_path',
         'manufacture_status',
-        'notes'
+        'notes',
     ];
 
     public function panel_attachment(): BelongsTo {
