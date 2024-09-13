@@ -22,6 +22,7 @@ class TrainsetResource extends JsonResource {
             'preset_trainset' => PresetTrainsetResource::make($this->whenLoaded('preset_trainset')),
             'preset_trainset_id' => $this->preset_trainset_id,
             'preset_name' => $this->preset_trainset?->name,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
