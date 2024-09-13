@@ -63,6 +63,14 @@ export default function ({
                 if (meta.current_page !== 1) return <PaginationPrevious onClick={navigateToPrevious} />;
             } else if (link.label === PAGINATION_NAVIGATOR.NEXT) {
                 if (meta.current_page !== meta.last_page) return <PaginationNext onClick={navigateToNext} />;
+            } else if (link.label === PAGINATION_NAVIGATOR.ELLIPSIS) {
+                return (
+                    <PaginationItem key={link.label}>
+                        <PaginationLink onClick={() => {}}>
+                            <ParsedPagination html={link.label} />
+                        </PaginationLink>
+                    </PaginationItem>
+                );
             } else {
                 return (
                     <PaginationItem key={link.label}>
