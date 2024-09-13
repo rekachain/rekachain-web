@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('progress_step', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('progress_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('step_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
