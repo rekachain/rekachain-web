@@ -1,21 +1,24 @@
 <?php
 
-use App\Models\Component;
-use App\Models\Division;
-use App\Models\Panel;
-use App\Models\Permission;
-use App\Models\Progress;
-use App\Models\Project;
+use Tests\TestCase;
 use App\Models\Role;
-use App\Models\Trainset;
 use App\Models\User;
+use App\Models\Panel;
+use App\Models\Project;
 use App\Models\WorkDay;
-use App\Models\WorkDayTime;
+use App\Models\Carriage;
+use App\Models\Division;
+use App\Models\Progress;
+use App\Models\Trainset;
 use App\Models\Workshop;
+use App\Models\Component;
+use App\Models\Permission;
+use App\Models\WorkDayTime;
 use App\Models\Workstation;
+use App\Models\CarriagePanel;
+use App\Models\CarriageTrainset;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -166,4 +169,27 @@ function createWorkstation() {
     $workstation->save();
 
     return $workstation;
+}
+
+function createCarriageTrainset() {
+    $trainset = createTrainset();
+    $carriage = Carriage::factory()->create();
+
+    $carriageTrainset = new CarriageTrainset;
+    $carriageTrainset->trainset_id = $trainset->id;
+    $carriageTrainset->carriage_id = $carriage->id;
+    $carriageTrainset->qty = 5;
+    $carriageTrainset->save();
+
+    return $carriageTrainset;
+}
+
+function createCarriagePanel() {
+    $carriageTrainset = createCarriageTrainset();
+    $panel = createPanel();
+    $carriagePanel = new CarriagePanel;
+    $carriagePanel->carriage_trainset_id = $carriageTrainset->id;
+    $carriagePanel->panel_id = $panel->id;
+    $carriagePanel->qty = 5;
+    $carriagePanel->save();
 }
