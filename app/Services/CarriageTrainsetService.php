@@ -7,13 +7,16 @@ use App\Models\CarriageTrainset;
 use App\Support\Interfaces\Repositories\CarriageTrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Support\Facades\DB;
 
 class CarriageTrainsetService extends BaseCrudService implements CarriageTrainsetServiceInterface {
     public function __construct(
         protected PanelServiceInterface $panelService,
-        protected CarriagePanelServiceInterface $carriagePanelService) {
+        protected CarriagePanelServiceInterface $carriagePanelService,
+        protected PanelAttachmentServiceInterface $panelAttachmentService,
+    ) {
         parent::__construct();
     }
 
@@ -54,6 +57,10 @@ class CarriageTrainsetService extends BaseCrudService implements CarriageTrainse
     }
 
     public function delete($keyOrModel): bool {
+        $keyOrModel->panel_attachments()->each(function ($panelAttachment) {
+            $this->panelAttachmentService->delete($panelAttachment);
+        });
+
         $keyOrModel->carriage_panels()->each(function ($carriagePanel) {
             $this->carriagePanelService->delete($carriagePanel);
         });

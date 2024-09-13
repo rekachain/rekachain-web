@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\TrainsetStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,10 @@ class Trainset extends Model {
         'project_id',
         'preset_trainset_id',
         'name',
+        'status',
+    ];
+    protected $casts = [
+        'status' => TrainsetStatusEnum::class,
     ];
 
     public function carriages(): BelongsToMany {

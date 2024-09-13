@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-class PanelAttachment extends Model
-{
+class PanelAttachment extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -26,11 +26,15 @@ class PanelAttachment extends Model
         'supervisor_id',
     ];
 
+    public function trainset(): HasOneThrough {
+        return $this->hasOneThrough(Trainset::class, CarriageTrainset::class, 'id', 'id', 'carriage_trainset_id', 'trainset_id');
+    }
+
     public function parent(): BelongsTo {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
-    public function child(): HasMany {
+    public function childs(): HasMany {
         return $this->hasMany(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
@@ -58,7 +62,7 @@ class PanelAttachment extends Model
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
-    public function handlers(): HasMany {
+    public function panel_attachment_handlers(): HasMany {
         return $this->hasMany(PanelAttachmentHandler::class);
     }
 }

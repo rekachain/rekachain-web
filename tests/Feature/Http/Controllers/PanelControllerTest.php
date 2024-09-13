@@ -2,9 +2,9 @@
 
 use App\Models\Panel;
 use App\Models\User;
+use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated panels', function () {
     $user = User::factory()->create();

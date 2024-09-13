@@ -2,9 +2,9 @@
 
 use App\Models\Trainset;
 use App\Models\User;
+use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated trainsets', function () {
     $user = User::factory()->create();

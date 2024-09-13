@@ -97,7 +97,7 @@ class GenerateModelScaffold extends Command {
             '--migration' => self::$withMigration,
             '--seed' => self::$withSeeder,
             '--factory' => self::$withFactory,
-            '--pivot' => self::$withPivot
+            '--pivot' => self::$withPivot,
         ];
 
         $modelName = self::$model->studly;

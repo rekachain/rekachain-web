@@ -47,7 +47,6 @@ test('can get edit role', function () {
     actAsSuperAdmin()->get('/roles/' . $role->id . '/edit')->assertStatus(200);
 });
 
-
 // test('can update role', function () {
 //     $user = User::factory()->create();
 //     $role = Role::factory()->create();

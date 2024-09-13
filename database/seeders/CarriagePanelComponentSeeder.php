@@ -9,16 +9,13 @@ use App\Models\Component;
 use App\Models\Panel;
 use App\Models\Progress;
 use Database\Seeders\Helpers\CsvReader;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CarriagePanelComponentSeeder extends Seeder
-{
+class CarriagePanelComponentSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $csvReader = new CsvReader('carriage_panel_component');
         $csvData = $csvReader->getCsvData();
 

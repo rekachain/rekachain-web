@@ -1,6 +1,5 @@
 <?php
 
-
 test('view all trainsets', function () {
     createTrainset();
     actAsSuperAdmin()->get('/api/trainsets')->assertStatus(200);

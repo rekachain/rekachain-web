@@ -1,6 +1,5 @@
 <?php
 
-
 test('view all progress', function () {
     createProgress();
     actAsSuperAdmin()->get('/api/progress')->assertStatus(200);

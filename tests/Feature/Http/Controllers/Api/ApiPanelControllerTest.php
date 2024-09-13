@@ -1,6 +1,5 @@
 <?php
 
-
 test('view all panels', function () {
     createPanel();
     actAsSuperAdmin()->get('/api/panels')->assertStatus(200);

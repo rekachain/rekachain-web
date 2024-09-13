@@ -27,7 +27,7 @@ class StoreProgressRequest extends FormRequest {
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
         }
-        
+
         return [
             'name' => 'string|max:255',
         ];

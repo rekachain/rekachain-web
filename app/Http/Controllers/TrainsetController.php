@@ -26,7 +26,7 @@ class TrainsetController extends Controller {
                 case IntentEnum::WEB_TRAINSET_GET_TEMPLATE_IMPORT_TRAINSET->value:
                     return $this->trainsetService->getImportDataTemplate();
             }
-            
+
             try {
                 $perPage = request()->get('perPage', 5);
 
