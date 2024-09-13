@@ -22,4 +22,8 @@ class Component extends Model {
     public function progress(): BelongsTo {
         return $this->belongsTo(Progress::class);
     }
+
+    public function canBeDeleted(): bool {
+        return $this->carriage_panel_component()->count() === 0;
+    }
 }

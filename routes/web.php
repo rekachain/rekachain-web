@@ -71,7 +71,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriage-panels', CarriagePanelController::class);
     Route::resource('progress', ProgressController::class);
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
-    Route::resource('components', ComponentController::class)->only(['index', 'show']);
+    Route::resource('components', ComponentController::class);
     Route::resource('work-days', WorkDayController::class);
     Route::resource('work-day-times', WorkDayTimeController::class);
 
