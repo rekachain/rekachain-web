@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Component;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\IntentEnum;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreComponentRequest extends FormRequest {
     /**
