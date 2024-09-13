@@ -5,61 +5,53 @@ namespace App\Http\Controllers;
 use App\Models\SerialPanel;
 use Illuminate\Http\Request;
 
-class SerialPanelController extends Controller
-{
+class SerialPanelController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SerialPanel $serialPanel)
-    {
+    public function show(SerialPanel $serialPanel) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SerialPanel $serialPanel)
-    {
+    public function edit(SerialPanel $serialPanel) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SerialPanel $serialPanel)
-    {
+    public function update(Request $request, SerialPanel $serialPanel) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SerialPanel $serialPanel)
-    {
+    public function destroy(SerialPanel $serialPanel) {
         //
     }
 }

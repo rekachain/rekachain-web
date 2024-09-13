@@ -5,13 +5,11 @@ namespace App\Exports\Step;
 use App\Models\Step;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class StepsExport implements FromCollection
-{
+class StepsExport implements FromCollection {
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
-    {
+     * @return \Illuminate\Support\Collection
+     */
+    public function collection() {
         return Step::all();
     }
 
@@ -23,5 +21,4 @@ class StepsExport implements FromCollection
             'estimated_time',
         ];
     }
-    
 }

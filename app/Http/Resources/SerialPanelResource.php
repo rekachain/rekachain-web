@@ -6,15 +6,13 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SerialPanelResource extends JsonResource
-{
+class SerialPanelResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
-    {
+    public function toArray(Request $request): array {
         $intent = $request->get('intent');
 
         switch ($intent) {
@@ -37,6 +35,7 @@ class SerialPanelResource extends JsonResource
                     'updated_at' => $this->updated_at,
                 ];
         }
+
         return [
             'serial_number' => $this->id,
             // 'panel_attachment_id' => $this->panel_attachment_id,
