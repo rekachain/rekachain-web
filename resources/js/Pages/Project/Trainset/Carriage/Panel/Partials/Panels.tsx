@@ -1,15 +1,18 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { CarriageTrainsetResource } from '@/support/interfaces/resources';
+import { CarriageTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
 import { Button } from '@/Components/ui/button';
 import { carriagePanelService } from '@/services/carriagePanelService';
 import { useSuccessToast } from '@/hooks/useToast';
+import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
 
 export default function ({
+    trainset,
     carriageTrainset,
     handleSyncCarriage,
 }: {
+    trainset: TrainsetResource;
     carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
@@ -39,7 +42,11 @@ export default function ({
                         <TableRow key={carriage_panel.id}>
                             <TableCell>{carriage_panel.panel.name}</TableCell>
                             <TableCell>
-                                <PanelQty handleSyncCarriage={handleSyncCarriage} carriage_panel={carriage_panel} />
+                                {trainset.status === TrainsetStatusEnum.PROGRESS ? (
+                                    <span>{carriage_panel.qty}</span>
+                                ) : (
+                                    <PanelQty handleSyncCarriage={handleSyncCarriage} carriage_panel={carriage_panel} />
+                                )}
                             </TableCell>
                             <TableCell>{carriage_panel.panel.description}</TableCell>
                             <TableCell>
@@ -50,9 +57,11 @@ export default function ({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
 
-                                <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>
-                                    Delete
-                                </Button>
+                                {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                    <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>
+                                        Delete
+                                    </Button>
+                                )}
 
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}

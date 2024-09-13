@@ -4,9 +4,10 @@ import { ROUTES } from '@/support/constants/routes';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
-import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
 import { carriageTrainsetService } from '@/services/carriageTrainsetService';
 import { useSuccessToast } from '@/hooks/useToast';
+import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
+import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
 
 export default function ({
     trainset,
@@ -41,11 +42,15 @@ export default function ({
                         <TableRow key={carriage_trainset.id}>
                             <TableCell>{carriage_trainset.carriage.type}</TableCell>
                             <TableCell>
-                                <CarriageQty
-                                    trainset={trainset}
-                                    carriage_trainset={carriage_trainset}
-                                    handleSyncTrainset={handleSyncTrainset}
-                                />
+                                {trainset.status === TrainsetStatusEnum.PROGRESS ? (
+                                    <span>{carriage_trainset.qty}</span>
+                                ) : (
+                                    <CarriageQty
+                                        trainset={trainset}
+                                        carriage_trainset={carriage_trainset}
+                                        handleSyncTrainset={handleSyncTrainset}
+                                    />
+                                )}
                             </TableCell>
                             <TableCell>
                                 {carriage_trainset.carriage_panels?.map(panel => (
@@ -63,9 +68,11 @@ export default function ({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                <Button variant="link" onClick={() => handleCarriageDeletion(carriage_trainset.id)}>
-                                    Delete
-                                </Button>
+                                {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                    <Button variant="link" onClick={() => handleCarriageDeletion(carriage_trainset.id)}>
+                                        Delete
+                                    </Button>
+                                )}
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_PANELS}.index`, [
