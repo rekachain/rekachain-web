@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialPanelResource;
 use App\Models\SerialPanel;
+use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 
 class ApiSerialPanelController extends Controller {
@@ -25,18 +26,10 @@ class ApiSerialPanelController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(SerialPanel $serialPanel) {
-        $qr = request()->get('qr_code');
-        if ($qr) {
-            if ($serialPanel->qr_code == $qr) {
-                return new SerialPanelResource($serialPanel);
-            }
+    public function show(SerialPanel $serialPanel, Request $request) {
+        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
 
-            return response()->json(['status' => 'Fail', 'message' => 'Invalid QR code'], 400);
-
-        }
-
-        return response()->json(['status' => 'Fail', 'message' => 'QR code is required'], 400);
+        return new SerialPanelResource($serialPanel->load('detail_worker_panels.step.progress'));
     }
 
     /**

@@ -29,4 +29,6 @@ export const ROUTES = {
     RAW_MATERIALS: 'raw-materials',
     COMPONENTS: 'components',
 	STEPS: 'steps',
+	DETAIL_WORKER_PANELS: 'detail-worker-panels',
+	PROGRESS_STEPS: 'progress-steps',
 };

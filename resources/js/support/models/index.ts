@@ -24,3 +24,5 @@ export * from './WorkDay';
 export * from './SerialPanel';
 
 export * from './Step';
+export * from './DetailWorkerPanel';
+export * from './ProgressStep';

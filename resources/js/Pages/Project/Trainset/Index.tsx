@@ -67,18 +67,30 @@ export default function ({ project: initialProject }: { project: ProjectResource
                         </div>
 
                         <div className="rounded p-5 bg-background-2">
-                            <form onSubmit={handleAddTrainset} className="flex flex-col gap-2">
+                            <form onSubmit={handleAddTrainset} className="flex flex-col gap-2 group" noValidate>
                                 <Label htmlFor="tambah-trainset">Tambah trainset baru</Label>
                                 <div className="flex gap-2">
-                                    <Input
-                                        id="tambah-trainset"
-                                        type="number"
-                                        className="w-fit"
-                                        placeholder="Add Trainset"
-                                        value={data.trainsetNeeded}
-                                        onChange={e => setData('trainsetNeeded', +e.target.value)}
-                                    />
-                                    <Button type="submit" disabled={loading}>
+                                    <div className="">
+                                        <Input
+                                            // pattern="^[2-9]\d*$"
+                                            id="tambah-trainset"
+                                            type="number"
+                                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
+                                            min={1}
+                                            placeholder="Add Trainset"
+                                            value={data.trainsetNeeded}
+                                            onChange={e => setData('trainsetNeeded', +e.target.value)}
+                                            required
+                                        />
+                                        <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+                                            Jumlah Trainset harus lebih dari 0
+                                        </span>
+                                    </div>
+                                    <Button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="group-invalid:pointer-events-none group-invalid:opacity-30"
+                                    >
                                         {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

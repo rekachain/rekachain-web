@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder {
             PanelAttachmentSeeder::class,
             PanelAttachmentHandlerSeeder::class,
             SerialPanelSeeder::class,
-            //                        PanelProgressSeeder::class
+            DetailWorkerPanelSeeder::class,
         ]);
     }
 }

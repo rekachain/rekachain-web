@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\PanelAttachment\InvalidKpmQrCodeException;
-use App\Exceptions\PanelAttachment\InvalidSnQrCodeException;
-use App\Exceptions\PanelAttachment\NothingToShowException;
-use App\Exceptions\PanelAttachment\QrCodeNotIdentifiedException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\SerialPanelResource;
@@ -41,11 +37,6 @@ class ApiPanelAttachmentController extends Controller {
 
     /**
      * Display the specified resource.
-     *
-     * @throws QrCodeNotIdentifiedException
-     * @throws InvalidKpmQrCodeException
-     * @throws InvalidSnQrCodeException
-     * @throws NothingToShowException
      */
     public function show(PanelAttachment $panelAttachment, Request $request) {
         $intent = request()->get('intent');

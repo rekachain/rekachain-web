@@ -11,6 +11,8 @@ use App\Models\Trainset;
 use App\Models\User;
 use App\Models\WorkDay;
 use App\Models\WorkDayTime;
+use App\Models\Workshop;
+use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -142,4 +144,26 @@ function createDivision() {
     $division->save();
 
     return $division;
+}
+
+function createWorkshop() {
+    $workshop = new Workshop;
+    $workshop->name = 'Test Workshop';
+    $workshop->address = 'Test Address';
+    $workshop->save();
+
+    return $workshop;
+}
+
+function createWorkstation() {
+    $division = createDivision();
+    $workshop = createWorkshop();
+    $workstation = new Workstation;
+    $workstation->name = 'Test Workstation';
+    $workstation->location = 'Test Workstation Location';
+    $workstation->division_id = $division->id;
+    $workstation->workshop_id = $workshop->id;
+    $workstation->save();
+
+    return $workstation;
 }

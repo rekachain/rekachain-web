@@ -41,6 +41,7 @@ class GenerateModelScaffold extends Command {
     private static bool $withMigration = false;
     private static bool $withSeeder = false;
     private static bool $withFactory = false;
+    private static bool $withPivot = false;
     private static bool $withFrontend = false;
 
     /**
@@ -53,6 +54,7 @@ class GenerateModelScaffold extends Command {
                             {--migration : Generate a migration for the model}
                             {--seeder : Generate a seeder for the model}
                             {--factory : Generate a factory for the model}
+                            {--pivot : Generate a pivot model for the model}
                             {--frontend : Generate Frontend structure for the model}';
 
     /**
@@ -71,6 +73,7 @@ class GenerateModelScaffold extends Command {
         self::$withMigration = $this->option('migration');
         self::$withSeeder = $this->option('seeder');
         self::$withFactory = $this->option('factory');
+        self::$withPivot = $this->option('pivot');
         self::$withFrontend = $this->option('frontend');
 
         if (self::$withAll) {
@@ -94,15 +97,17 @@ class GenerateModelScaffold extends Command {
             '--migration' => self::$withMigration,
             '--seed' => self::$withSeeder,
             '--factory' => self::$withFactory,
+            '--pivot' => self::$withPivot,
         ];
 
         $modelName = self::$model->studly;
         $withSeeder = self::$withSeeder;
         $withFactory = self::$withFactory;
+        $withPivot = self::$withPivot;
 
         Artisan::call('make:model', $options);
 
-        $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : ''));
+        $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : '') . (self::$withPivot ? ' as pivot' : ''));
     }
 
     protected function generateFiles(): void {
