@@ -3,15 +3,15 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Exports\Carriage\CarriagesExport;
+use App\Exports\Carriage\CarriagesTemplateExport;
+use App\Imports\Carriage\CarriagesImport;
 use App\Support\Interfaces\Repositories\CarriageRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\Carriage\CarriagesExport;
-use App\Exports\Carriage\CarriagesTemplateExport;
-use App\Imports\Carriage\CarriagesImport;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CarriageService extends BaseCrudService implements CarriageServiceInterface {

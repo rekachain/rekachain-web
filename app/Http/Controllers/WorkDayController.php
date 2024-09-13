@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\WorkDay\StoreWorkDayRequest;
 use App\Http\Requests\WorkDay\UpdateWorkDayRequest;
 use App\Http\Resources\WorkDayResource;
@@ -11,18 +10,18 @@ use App\Support\Interfaces\Services\WorkDayServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Support\Enums\IntentEnum;
 
 class WorkDayController extends Controller {
-    public function __construct(protected WorkDayServiceInterface $workDayService){}
+    public function __construct(protected WorkDayServiceInterface $workDayService) {}
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request) {
         if ($this->ajax()) {
-            try{
+            try {
                 $perPage = request()->get('perPage', 5);
+
                 return WorkDayResource::collection($this->workDayService->getAllPaginated($request->query(), $perPage));
             } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
@@ -42,7 +41,7 @@ class WorkDayController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreWorkDayRequest $request) {
-        if($this->ajax()){
+        if ($this->ajax()) {
             return $this->workDayService->create($request->validated());
         }
     }
@@ -51,7 +50,7 @@ class WorkDayController extends Controller {
      * Display the specified resource.
      */
     public function show(WorkDay $workDay) {
-        if ($this->ajax()){
+        if ($this->ajax()) {
             return new WorkDayResource($workDay);
         }
 
@@ -69,7 +68,7 @@ class WorkDayController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateWorkDayRequest $request, WorkDay $workDay) {
-        if ($this->ajax()){
+        if ($this->ajax()) {
             return $this->workDayService->update($workDay, $request->validated());
         }
     }

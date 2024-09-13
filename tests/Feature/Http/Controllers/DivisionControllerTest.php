@@ -35,7 +35,6 @@ test('store method creates new division', function () {
     $this->assertDatabaseHas('divisions', $divisionData);
 });
 
-
 test('show method returns division details', function () {
     $user = User::factory()->superAdmin()->create();
     $division = createDivision();

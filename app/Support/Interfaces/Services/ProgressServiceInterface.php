@@ -2,9 +2,9 @@
 
 namespace App\Support\Interfaces\Services;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\Contracts\BaseCrudServiceInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ProgressServiceInterface extends BaseCrudServiceInterface {
     /**

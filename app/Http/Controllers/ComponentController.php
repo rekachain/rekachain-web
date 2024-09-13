@@ -6,14 +6,15 @@ use App\Http\Requests\Component\StoreComponentRequest;
 use App\Http\Requests\Component\UpdateComponentRequest;
 use App\Http\Resources\ComponentResource;
 use App\Models\Component;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\ComponentServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Support\Enums\IntentEnum;
 
 class ComponentController extends Controller {
     public function __construct(protected ComponentServiceInterface $componentService) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -66,7 +67,7 @@ class ComponentController extends Controller {
      * Display the specified resource.
      */
     public function show(Component $component) {
-        if ($this->ajax()){
+        if ($this->ajax()) {
             return new ComponentResource($component->load('progress'));
         }
     }

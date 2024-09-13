@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PanelController;
 use App\Http\Controllers\CarriageController;
-use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\StepController;
+use App\Http\Controllers\TrainsetController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     Route::get('/', fn () => 'test');
