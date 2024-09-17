@@ -18,6 +18,10 @@ export default function () {
         page: 1,
         perPage: 10,
         relations: 'progress',
+        ordering: {
+            name: 'asc',
+            created_at: 'desc',
+        },
     });
 
     const { setLoading } = useLoading();
