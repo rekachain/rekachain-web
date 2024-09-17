@@ -11,6 +11,8 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('progress_step', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('progress_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('step_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -20,5 +20,9 @@ class Progress extends Model {
 
     public function steps(): HasMany {
         return $this->hasMany(Step::class);
+    
+    }
+    public function progress_steps(): HasMany {
+        return $this->hasMany(ProgressStep::class);
     }
 }
