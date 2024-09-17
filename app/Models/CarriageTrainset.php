@@ -31,4 +31,8 @@ class CarriageTrainset extends Pivot {
     public function carriage_trainset(): BelongsTo {
         return $this->belongsTo(Carriage::class);
     }
+
+    public function panel_attachments(): HasMany {
+        return $this->hasMany(PanelAttachment::class, 'carriage_trainset_id');
+    }
 }

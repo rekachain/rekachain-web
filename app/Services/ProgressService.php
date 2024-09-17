@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\Progress\ProgressExport;
-use App\Imports\Progress\ProgressImport;
-use App\Exports\Progress\ProgressTemplateExport;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use App\Support\Interfaces\Services\ProgressServiceInterface;
-use App\Support\Interfaces\Repositories\ProgressRepositoryInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Exports\Progress\ProgressExport;
+use App\Exports\Progress\ProgressTemplateExport;
+use App\Imports\Progress\ProgressImport;
+use App\Support\Interfaces\Repositories\ProgressRepositoryInterface;
+use App\Support\Interfaces\Services\ProgressServiceInterface;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ProgressService extends BaseCrudService implements ProgressServiceInterface {
     public function importData(UploadedFile $file): bool {
@@ -26,7 +26,7 @@ class ProgressService extends BaseCrudService implements ProgressServiceInterfac
     public function getImportDataTemplate(): BinaryFileResponse {
         return (new ProgressTemplateExport)->download('progress_template.xlsx');
     }
-    
+
     protected function getRepositoryClass(): string {
         return ProgressRepositoryInterface::class;
     }

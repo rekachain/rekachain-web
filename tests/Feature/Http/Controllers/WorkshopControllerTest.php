@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Models\Workshop;
 
 test('index method returns paginated workshops', function () {
     $user = User::factory()->superAdmin()->create();

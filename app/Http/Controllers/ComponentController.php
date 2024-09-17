@@ -6,14 +6,15 @@ use App\Http\Requests\Component\StoreComponentRequest;
 use App\Http\Requests\Component\UpdateComponentRequest;
 use App\Http\Resources\ComponentResource;
 use App\Models\Component;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\ComponentServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use App\Support\Enums\IntentEnum;
 
 class ComponentController extends Controller {
     public function __construct(protected ComponentServiceInterface $componentService) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -41,7 +42,7 @@ class ComponentController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
-        //
+        return inertia('Component/Create');
     }
 
     /**
@@ -66,29 +67,35 @@ class ComponentController extends Controller {
      * Display the specified resource.
      */
     public function show(Component $component) {
-        if ($this->ajax()){
+        if ($this->ajax()) {
             return new ComponentResource($component->load('progress'));
         }
+
+        return inertia('Component/Show', compact('component'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Component $component) {
-        //
+        return inertia('Component/Edit', compact('component'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateComponentRequest $request, Component $component) {
-        //
+        if ($this->ajax()) {
+            return $this->componentService->update($component, $request->validated());
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Component $component) {
-        //
+        if ($this->ajax()) {
+            return $this->componentService->delete($component);
+        }
     }
 }

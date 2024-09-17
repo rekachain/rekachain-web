@@ -2,9 +2,9 @@
 
 use App\Models\Step;
 use App\Models\User;
+use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated steps', function () {
     $user = User::factory()->create();

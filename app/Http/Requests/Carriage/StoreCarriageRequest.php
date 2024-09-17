@@ -27,7 +27,7 @@ class StoreCarriageRequest extends FormRequest {
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
         }
-        
+
         return [
             'type' => 'required|string|max:255',
             'description' => 'required|string|max:255',
