@@ -3,7 +3,7 @@ import { buttonVariants } from '@/Components/ui/button';
 import { Link } from '@inertiajs/react';
 import React, { useContext } from 'react';
 import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
-import { SidebarContext } from '@/contexts/SidebarContext';
+import { useSidebar } from '@/Contexts/SidebarContext';
 
 interface SidebarLinkCollapsibleItemProps {
     group: SIDEBAR_GROUP_ENUM;
@@ -20,7 +20,7 @@ interface SidebarLinkCollapsibleProps {
 }
 
 const SidebarLinkCollapsible = ({ title, group, children, icon }: SidebarLinkCollapsibleProps) => {
-    const sidebarContext = useContext(SidebarContext);
+    const sidebarContext = useSidebar();
 
     const hasChildren = React.Children.toArray(children).length > 0;
     return (
@@ -44,7 +44,7 @@ const SidebarLinkCollapsible = ({ title, group, children, icon }: SidebarLinkCol
 };
 
 const SidebarLinkCollapsibleItem = ({ group, routeName, title, icon }: SidebarLinkCollapsibleItemProps) => {
-    const sidebarContext = useContext(SidebarContext);
+    const sidebarContext = useSidebar();
     const handleSetSelectedMenu = () => sidebarContext?.setSelectedMenu(group);
     const active = route().current(routeName);
 

@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { buttonVariants } from '@/Components/ui/button';
 import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
 import { useContext } from 'react';
-import { SidebarContext } from '@/contexts/SidebarContext';
+import { useSidebar } from '@/Contexts/SidebarContext';
 
 interface SidebarLinkProps {
     routeName: string;
@@ -12,7 +12,7 @@ interface SidebarLinkProps {
 }
 
 export default function (props: SidebarLinkProps) {
-    const sidebarContext = useContext(SidebarContext);
+    const sidebarContext = useSidebar();
     const currentPath = window.location.pathname;
 
     // Parsing the route from props.routeName
