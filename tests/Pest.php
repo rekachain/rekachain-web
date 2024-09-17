@@ -175,11 +175,12 @@ function createCarriageTrainset() {
     $trainset = createTrainset();
     $carriage = Carriage::factory()->create();
 
-    $carriageTrainset = new CarriageTrainset;
-    $carriageTrainset->trainset_id = $trainset->id;
-    $carriageTrainset->carriage_id = $carriage->id;
-    $carriageTrainset->qty = 5;
-    $carriageTrainset->save();
+    $carriageTrainset = CarriageTrainset::create([
+        'trainset_id' => $trainset->id,
+        'carriage_id' => $carriage->id,
+        'qty' => 5,
+    ]);
+    // $carriageTrainset->save();
 
     return $carriageTrainset;
 }
