@@ -99,8 +99,8 @@ export default function ({
         setData('search_panel', e);
     };
 
-    const handleChangeSearchprogressName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData('search_progress', e.target.value);
+    const handleChangeSearchprogressName = async (e: string) => {
+        setData('search_progress', e);
     };
 
     const handleResetAddCarriageSelection = () => {
@@ -309,7 +309,10 @@ export default function ({
                                                     </PopoverTrigger>
                                                     <PopoverContent className="w-full p-0">
                                                         <Command>
-                                                            <CommandInput placeholder="Cari Progress..." />
+                                                            <CommandInput
+                                                                onValueChange={e => handleChangeSearchprogressName(e)}
+                                                                placeholder="Cari Progress..."
+                                                            />
                                                             <CommandList>
                                                                 <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
                                                                 <CommandGroup>
