@@ -101,39 +101,6 @@ function createComponent() {
     return $component;
 }
 
-function createPanelMaterial() {
-    createRawMaterial();
-    createCarriagePanel();
-    $panelMaterial = new PanelMaterial;
-    $panelMaterial->save();
-
-    return $panelMaterial;
-}
-
-function createRawMaterial() {
-    $rawMaterial = RawMaterial::factory()->create();
-
-    return $rawMaterial;
-}
-
-function createCarriagePanel() {
-    Carriage::factory()->create();
-    createProgress();
-    createCarriageTrainset();
-    createPanel();
-    
-    $carriagePanel = CarriagePanel::factory()->create();
-
-    return $carriagePanel;
-}
-
-function createCarriageTrainset() {
-    $trainset = createTrainset();
-    $carriageTrainset = CarriageTrainset::factory()->create();
-
-    return $carriageTrainset;
-}
-
 function createProject() {
     $project = new Project;
     $project->name = 'Project';
@@ -205,4 +172,28 @@ function createWorkstation() {
     $workstation->save();
 
     return $workstation;
+}
+
+function createCarriageTrainset() {
+    $trainset = createTrainset();
+    $carriage = Carriage::factory()->create();
+
+    $carriageTrainset = CarriageTrainset::create([
+        'trainset_id' => $trainset->id,
+        'carriage_id' => $carriage->id,
+        'qty' => 5,
+    ]);
+    // $carriageTrainset->save();
+
+    return $carriageTrainset;
+}
+
+function createCarriagePanel() {
+    $carriageTrainset = createCarriageTrainset();
+    $panel = createPanel();
+    $carriagePanel = new CarriagePanel;
+    $carriagePanel->carriage_trainset_id = $carriageTrainset->id;
+    $carriagePanel->panel_id = $panel->id;
+    $carriagePanel->qty = 5;
+    $carriagePanel->save();
 }
