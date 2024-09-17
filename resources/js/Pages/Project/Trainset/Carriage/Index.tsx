@@ -162,8 +162,8 @@ export default function ({
         setData('new_carriage_id', 0);
     };
 
-    const handleChangeSearchCarriageType = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const search = e.target.value;
+    const handleChangeSearchCarriageType = async (e: string) => {
+        const search = e;
         setCarriageFilters({ ...carriageFilters, search });
         // await handleSyncCarriages();
     };
@@ -369,7 +369,10 @@ export default function ({
                                                     </PopoverTrigger>
                                                     <PopoverContent className="w-full p-0">
                                                         <Command>
-                                                            <CommandInput placeholder="Cari Gerbong..." />
+                                                            <CommandInput
+                                                                onValueChange={e => handleChangeSearchCarriageType(e)}
+                                                                placeholder="Cari Gerbong..."
+                                                            />
                                                             <CommandList>
                                                                 <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
                                                                 <CommandGroup>
