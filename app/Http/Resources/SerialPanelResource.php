@@ -16,6 +16,16 @@ class SerialPanelResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER->value:
+                return [
+                    'serial_number' => $this->id,
+                    'project' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->project->name,
+                    'trainset' => $this->panel_attachment?->carriage_trainset->trainset->name,
+                    'carriage' => $this->panel_attachment?->carriage_trainset->carriage->type,
+                    'panel' => $this->panel_attachment?->carriage_panel->panel->name,
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'serial_number' => $this->id,
@@ -25,6 +35,7 @@ class SerialPanelResource extends JsonResource {
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
                     'manufacture_status' => $this->manufacture_status,
                     'notes' => $this->notes,
+                    'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
                     'detail_workers' => DetailWorkerPanelResource::collection($this->whenLoaded('detail_worker_panels')),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,

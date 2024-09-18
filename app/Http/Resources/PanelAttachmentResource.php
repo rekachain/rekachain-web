@@ -29,6 +29,17 @@ class PanelAttachmentResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'source_workstation' => $this->source_workstation->name,
+                    'destination_workstation' => $this->destination_workstation->name,
+                    'trainset' => $this->carriage_trainset->trainset->name,
+                    'carriage' => $this->carriage_trainset->carriage->type,
+                    'panel' => $this->carriage_panel->panel->name,
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                ];
         }
 
         return [
