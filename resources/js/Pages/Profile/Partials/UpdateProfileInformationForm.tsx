@@ -6,6 +6,8 @@ import { PageProps } from '@/types';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
+import { FilePond } from 'react-filepond';
+import { withLoading } from '@/utils/withLoading';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -21,33 +23,31 @@ export default function UpdateProfileInformation({
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
-        image_path: null,
+        image_path: [] as any[],
     });
 
-    const submit: FormEventHandler = e => {
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        // const formData = new FormData();
-        // formData.append('name', data.name);
-        // formData.append('email', data.email);
-        // if (data.image_path) formData.append('image_path', data.image_path);
+        const formData = new FormData();
+        formData.append('_method', 'PATCH'); // Append the method override for Inertia
+        formData.append('name', data.name);
+        formData.append('email', data.email);
 
-        router.post(route('profile.update'), {
-            _method: 'PATCH',
-            name: data.name,
-            email: data.email,
-            image_path: data.image_path ?? null,
-        });
-        // patch(route('profile.update'), {
-        //     data: formData,
-        //     headers: {
-        //         'Content-Type': 'multipart/form-data',
-        //     },
-        // });
-    };
+        if (data.image_path.length > 0) {
+            formData.append('image_path', data.image_path[0]); // Append the image file
+        }
 
-    const handleFileChange = (event: any) => {
-        setData('image_path', event.target.files[0]);
+        await window.axios.post(route('profile.update'), formData);
+
+        router.reload();
+    });
+
+    const handleFileChange = (fileItems: any) => {
+        setData(
+            'image_path',
+            fileItems.map((fileItem: any) => fileItem.file),
+        );
     };
 
     return (
@@ -93,10 +93,13 @@ export default function UpdateProfileInformation({
 
                 <div>
                     <Label htmlFor="image_path">Image</Label>
-
-                    <Input id="image_path" type="file" onChange={handleFileChange} />
-
-                    <InputError className="mt-2" message={errors.image_path} />
+                    <FilePond
+                        allowMultiple={false}
+                        files={data.image_path}
+                        onupdatefiles={handleFileChange}
+                        labelIdle="Drop files here or click to upload"
+                    />
+                    {errors.image_path && `${errors.image_path}`}
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (
