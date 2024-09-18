@@ -16,6 +16,7 @@ use App\Models\Permission;
 use App\Models\WorkDayTime;
 use App\Models\Workstation;
 use App\Models\CarriagePanel;
+use App\Models\PanelAttachment;
 use App\Models\CarriageTrainset;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -186,11 +187,26 @@ function createCarriageTrainset() {
 }
 
 function createCarriagePanel() {
-    $carriageTrainset = createCarriageTrainset();
+    createCarriageTrainset();
+    $progress = createProgress();
     $panel = createPanel();
     $carriagePanel = new CarriagePanel;
-    $carriagePanel->carriage_trainset_id = $carriageTrainset->id;
+    $carriagePanel->carriage_trainset_id = CarriageTrainset::inRandomOrder()->first()->id;
     $carriagePanel->panel_id = $panel->id;
+    $carriagePanel->progress_id = $progress->id;
     $carriagePanel->qty = 5;
     $carriagePanel->save();
+
+    return $carriagePanel;
+}
+
+function createPanelAttachment() {
+    createCarriageTrainset();
+    createCarriagePanel();
+    createWorkstation();
+    createWorkstation();
+
+    $panelAttachment = PanelAttachment::factory()->create();
+
+    return $panelAttachment;
 }
