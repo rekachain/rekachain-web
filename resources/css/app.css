@@ -152,4 +152,46 @@
     .sidebar-collapse.sidebar {
         @apply w-20;
     }
+
+    /* Default light theme styles */
+    .filepond--panel-root {
+        @apply bg-background
+    }
+
+    /* Dark theme styles */
+    .dark .filepond--panel-root {
+        @apply bg-background;
+    }
+
+    .dark .filepond--drop-label {
+       @apply text-foreground;
+    }
+
+    .dark .filepond--label-action {
+       @apply text-foreground;
+    }
+
+    .dark .filepond--item-panel {
+        @apply bg-card;
+    }
+
+    .dark .filepond--drip-blob {
+        @apply bg-card;
+    }
+
+    .dark .filepond--file-action-button {
+        @apply bg-white bg-opacity-50 text-black;
+    }
+
+    /* ... other dark theme styles ... */
+
+    /* You can also customize the colors for error and success states in dark mode */
+    .dark [data-filepond-item-state*='error'] .filepond--item-panel {
+        @apply bg-red-500;
+    }
+
+    .dark [data-filepond-item-state='processing-complete'] .filepond--item-panel {
+        @apply bg-green-500;
+    }
+
 }

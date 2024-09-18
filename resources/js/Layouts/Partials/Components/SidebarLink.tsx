@@ -2,7 +2,7 @@ import { Link } from '@inertiajs/react';
 import { buttonVariants } from '@/Components/ui/button';
 import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
 import { useContext } from 'react';
-import { SidebarContext } from '@/contexts/SidebarContext';
+import { useSidebar } from '@/Contexts/SidebarContext';
 
 interface SidebarLinkProps {
     routeName: string;
@@ -12,7 +12,7 @@ interface SidebarLinkProps {
 }
 
 export default function (props: SidebarLinkProps) {
-    const sidebarContext = useContext(SidebarContext);
+    const sidebarContext = useSidebar();
     const currentPath = window.location.pathname;
 
     // Parsing the route from props.routeName
@@ -22,8 +22,8 @@ export default function (props: SidebarLinkProps) {
     // Determine active state logic, excluding the index route from always being active
     const isActive =
         parsedPath === '/'
-            ? currentPath === parsedPath // Only mark as active if we're truly on the homepage
-            : currentPath.includes(parsedPath); // For all other routes, check if the path includes the parsed path
+            ? currentPath === parsedPath // Only mark as active if we're on the homepage
+            : currentPath === parsedPath || currentPath.startsWith(`${parsedPath}/`); // Match exact or deeper route paths
 
     const linkClass = `${buttonVariants({
         variant: isActive ? 'sidebar-active' : 'sidebar',

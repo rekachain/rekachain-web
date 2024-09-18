@@ -12,7 +12,7 @@ import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { trainsetService } from '@/services/trainsetService';
-import { Check, ChevronsUpDown, Loader2, RefreshCcw } from 'lucide-react';
+import { ChevronsUpDown, Loader2 } from 'lucide-react';
 import { Input } from '@/Components/ui/input';
 import {
     Dialog,
@@ -29,9 +29,6 @@ import { PaginateResponse } from '@/support/interfaces/others';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { carriageService } from '@/services/carriageService';
 import { useDebounce } from '@uidotdev/usehooks';
-import { STYLING } from '@/support/constants/styling';
-import { Separator } from '@/Components/ui/separator';
-import { Textarea } from '@/Components/ui/textarea';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -43,9 +40,11 @@ import { ROUTES } from '@/support/constants/routes';
 import { fetchGenericData } from '@/helpers/dataManagementHelper';
 import { useLoading } from '@/contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
+import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
-import cn from 'mxcn';
+import { Separator } from '@/Components/ui/separator';
+import { Textarea } from '@/Components/ui/textarea';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -214,78 +213,83 @@ export default function ({
                                     <p className="text-page-subheader">Preset: {trainset.preset_name}</p>
                                 )}
 
-                                <form onSubmit={handleChangePreset} className="flex gap-2">
-                                    <SelectGroup className="space-y-2 w-fit">
-                                        <Label htmlFor="preset-trainset">Preset</Label>
-                                        <div className="flex gap-2">
-                                            <Select
-                                                key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
-                                                onValueChange={v => setData('preset_trainset_id', +v)}
-                                                value={data.preset_trainset_id?.toString()}
-                                                defaultValue={trainset.preset_trainset_id?.toString()}
-                                            >
-                                                <SelectTrigger id="preset-trainset">
-                                                    <SelectValue placeholder="Preset Trainset" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Select Preset
-                                                    </SelectItem>
-                                                    {presetTrainset.map(preset => (
-                                                        <SelectItem key={preset.id} value={preset.id.toString()}>
-                                                            {preset.name} (
-                                                            {preset.carriage_presets.map((c, i) => (
-                                                                <span key={c.id}>
-                                                                    {c.qty} {c.carriage.type}
-                                                                    {i < preset.carriage_presets!.length - 1 && ' + '}
-                                                                </span>
-                                                            ))}
-                                                            )
+                                {trainset.status === TrainsetStatusEnum.PROGRESS ? (
+                                    <p className="text-page-subheader">Status: Sedang dikerjakan</p>
+                                ) : (
+                                    <form onSubmit={handleChangePreset} className="flex gap-2">
+                                        <SelectGroup className="space-y-2 w-fit">
+                                            <Label htmlFor="preset-trainset">Preset</Label>
+                                            <div className="flex gap-2">
+                                                <Select
+                                                    key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
+                                                    onValueChange={v => setData('preset_trainset_id', +v)}
+                                                    value={data.preset_trainset_id?.toString()}
+                                                    defaultValue={trainset.preset_trainset_id?.toString()}
+                                                >
+                                                    <SelectTrigger id="preset-trainset">
+                                                        <SelectValue placeholder="Preset Trainset" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Select Preset
                                                         </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                                        {presetTrainset.map(preset => (
+                                                            <SelectItem key={preset.id} value={preset.id.toString()}>
+                                                                {preset.name} (
+                                                                {preset.carriage_presets.map((c, i) => (
+                                                                    <span key={c.id}>
+                                                                        {c.qty} {c.carriage.type}
+                                                                        {i < preset.carriage_presets!.length - 1 &&
+                                                                            ' + '}
+                                                                    </span>
+                                                                ))}
+                                                                )
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
 
-                                            <Button
-                                                type="submit"
-                                                disabled={
-                                                    loading ||
-                                                    !data.preset_trainset_id ||
-                                                    data.preset_trainset_id === trainset.preset_trainset_id
-                                                }
-                                            >
-                                                {loading ? (
-                                                    <>
-                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                        Loading
-                                                    </>
-                                                ) : (
-                                                    'Ubah Preset'
-                                                )}
-                                            </Button>
+                                                <Button
+                                                    type="submit"
+                                                    disabled={
+                                                        loading ||
+                                                        !data.preset_trainset_id ||
+                                                        data.preset_trainset_id === trainset.preset_trainset_id
+                                                    }
+                                                >
+                                                    {loading ? (
+                                                        <>
+                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                            Loading
+                                                        </>
+                                                    ) : (
+                                                        'Ubah Preset'
+                                                    )}
+                                                </Button>
 
-                                            <Button
-                                                type="button"
-                                                variant="destructive"
-                                                disabled={
-                                                    loading ||
-                                                    !data.preset_trainset_id ||
-                                                    (selectedPreset && selectedPreset.has_trainsets)
-                                                }
-                                                onClick={handleDeletePresetTrainset}
-                                            >
-                                                {loading ? (
-                                                    <>
-                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                        Loading
-                                                    </>
-                                                ) : (
-                                                    'Hapus Preset'
-                                                )}
-                                            </Button>
-                                        </div>
-                                    </SelectGroup>
-                                </form>
+                                                <Button
+                                                    type="button"
+                                                    variant="destructive"
+                                                    disabled={
+                                                        loading ||
+                                                        !data.preset_trainset_id ||
+                                                        (selectedPreset && selectedPreset.has_trainsets)
+                                                    }
+                                                    onClick={handleDeletePresetTrainset}
+                                                >
+                                                    {loading ? (
+                                                        <>
+                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                            Loading
+                                                        </>
+                                                    ) : (
+                                                        'Hapus Preset'
+                                                    )}
+                                                </Button>
+                                            </div>
+                                        </SelectGroup>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -293,30 +297,31 @@ export default function ({
                         <Carriages trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </Suspense>
 
-                    <Dialog>
-                        <DialogTrigger
-                            className={buttonVariants({
-                                className: 'w-full',
-                            })}
-                        >
-                            Tambah gerbong baru
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>{data.new_carriage_type}</DialogTitle>
-                                <DialogDescription></DialogDescription>
-                                <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-4">
-                                    <SelectGroup className="space-y-2">
-                                        <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                            <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
-                                            {/* <Input
+                    {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                        <Dialog>
+                            <DialogTrigger
+                                className={buttonVariants({
+                                    className: 'w-full',
+                                })}
+                            >
+                                Tambah gerbong baru
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>{data.new_carriage_type}</DialogTitle>
+                                    <DialogDescription></DialogDescription>
+                                    <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-4">
+                                        <SelectGroup className="space-y-2">
+                                            <div className="flex flex-col bg-background-2 gap-4 p-4">
+                                                <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
+                                                {/* <Input
                                                 placeholder="Cari gerbong"
                                                 value={carriageFilters.search}
                                                 onChange={handleChangeSearchCarriageType}
                                                 disabled={loading}
                                             /> */}
-                                            <div className="flex gap-4">
-                                                {/* <Select
+                                                <div className="flex gap-4">
+                                                    {/* <Select
                                                     key={data.new_carriage_id} // Force re-render when new_carriage_id changes
                                                     onValueChange={v => setData('new_carriage_id', +v)}
                                                     value={data.new_carriage_id?.toString()}
@@ -353,53 +358,55 @@ export default function ({
                                                 >
                                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                                 </Button> */}
-                                                <Popover open={open} onOpenChange={setOpen}>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={open}
-                                                            className="w-full justify-between"
-                                                        >
-                                                            {value
-                                                                ? handleSearchCarriages(carriageResponse)
-                                                                : 'Pilih carriage...'}
-                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-full p-0">
-                                                        <Command>
-                                                            <CommandInput placeholder="Cari Gerbong..." />
-                                                            <CommandList>
-                                                                <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {carriageResponse?.data.map(carriage => (
-                                                                        <CommandItem
-                                                                            key={carriage.type}
-                                                                            value={`${carriage.type} : ${carriage.description}`}
-                                                                            onSelect={currentValue => {
-                                                                                setData(
-                                                                                    'new_carriage_id',
-                                                                                    +carriage.id,
-                                                                                );
-                                                                                // alert(currentValue);
-                                                                                setValue(
-                                                                                    currentValue === value
-                                                                                        ? ''
-                                                                                        : currentValue,
-                                                                                );
-                                                                                setOpen(false);
-                                                                            }}
-                                                                        >
-                                                                            {carriage.type} : {carriage.description}
-                                                                            <br />
-                                                                            {/* {carriage.carriage_panels?.map((c, i) => (
+                                                    <Popover open={open} onOpenChange={setOpen}>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                role="combobox"
+                                                                aria-expanded={open}
+                                                                className="w-full justify-between"
+                                                            >
+                                                                {value
+                                                                    ? handleSearchCarriages(carriageResponse)
+                                                                    : 'Pilih carriage...'}
+                                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-full p-0">
+                                                            <Command>
+                                                                <CommandInput placeholder="Cari Gerbong..." />
+                                                                <CommandList>
+                                                                    <CommandEmpty>
+                                                                        Gerbong tidak ditemukan.
+                                                                    </CommandEmpty>
+                                                                    <CommandGroup>
+                                                                        {carriageResponse?.data.map(carriage => (
+                                                                            <CommandItem
+                                                                                key={carriage.type}
+                                                                                value={`${carriage.type} : ${carriage.description}`}
+                                                                                onSelect={currentValue => {
+                                                                                    setData(
+                                                                                        'new_carriage_id',
+                                                                                        +carriage.id,
+                                                                                    );
+                                                                                    // alert(currentValue);
+                                                                                    setValue(
+                                                                                        currentValue === value
+                                                                                            ? ''
+                                                                                            : currentValue,
+                                                                                    );
+                                                                                    setOpen(false);
+                                                                                }}
+                                                                            >
+                                                                                {carriage.type} : {carriage.description}
+                                                                                <br />
+                                                                                {/* {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
                                                                         <br />
                                                                         {c.panel.name}
                                                                     </span>
                                                                 ))} */}
-                                                                            {/* <Check
+                                                                                {/* <Check
                                                                     className={cn(
                                                                         'mr-2 h-4 w-4',
                                                                         value === carriage.type
@@ -407,71 +414,72 @@ export default function ({
                                                                             : 'opacity-0',
                                                                     )}
                                                                 /> */}
-                                                                            {/* {carriage.type} */}
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
-                                                            </CommandList>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
+                                                                                {/* {carriage.type} */}
+                                                                            </CommandItem>
+                                                                        ))}
+                                                                    </CommandGroup>
+                                                                </CommandList>
+                                                            </Command>
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                </div>
+                                            </div>
+                                        </SelectGroup>
+
+                                        <div className="flex gap-4 items-center">
+                                            <div className=" flex-1">
+                                                <Separator />
+                                            </div>
+                                            Atau
+                                            <div className=" flex-1">
+                                                <Separator />
                                             </div>
                                         </div>
-                                    </SelectGroup>
-
-                                    <div className="flex gap-4 items-center">
-                                        <div className=" flex-1">
-                                            <Separator />
-                                        </div>
-                                        Atau
-                                        <div className=" flex-1">
-                                            <Separator />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-4 bg-background-2 p-4">
-                                        <div className="flex flex-col gap-2">
-                                            <Label>Tipe Gerbong</Label>
-                                            <Input
-                                                type="text"
-                                                value={data.new_carriage_type}
-                                                onChange={e => setData('new_carriage_type', e.target.value)}
+                                        <div className="flex flex-col gap-4 bg-background-2 p-4">
+                                            <div className="flex flex-col gap-2">
+                                                <Label>Tipe Gerbong</Label>
+                                                <Input
+                                                    type="text"
+                                                    value={data.new_carriage_type}
+                                                    onChange={e => setData('new_carriage_type', e.target.value)}
+                                                    disabled={data.new_carriage_id !== 0}
+                                                    required
+                                                />
+                                            </div>
+                                            <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>
+                                            <Textarea
+                                                id="new-carriage-description"
+                                                className="p-2 rounded"
+                                                value={data.new_carriage_description}
+                                                onChange={e => setData('new_carriage_description', e.target.value)}
                                                 disabled={data.new_carriage_id !== 0}
+                                            />
+                                            <Label htmlFor="new-carriage-qty">Jumlah Gerbong</Label>
+                                            <Input
+                                                id="new-carriage-qty"
+                                                type="number"
+                                                min={1}
+                                                value={data.new_carriage_qty}
+                                                onChange={e => setData('new_carriage_qty', +e.target.value)}
                                                 required
                                             />
                                         </div>
-                                        <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>
-                                        <Textarea
-                                            id="new-carriage-description"
-                                            className="p-2 rounded"
-                                            value={data.new_carriage_description}
-                                            onChange={e => setData('new_carriage_description', e.target.value)}
-                                            disabled={data.new_carriage_id !== 0}
-                                        />
-                                        <Label htmlFor="new-carriage-qty">Jumlah Gerbong</Label>
-                                        <Input
-                                            id="new-carriage-qty"
-                                            type="number"
-                                            min={1}
-                                            value={data.new_carriage_qty}
-                                            onChange={e => setData('new_carriage_qty', +e.target.value)}
-                                            required
-                                        />
-                                    </div>
 
-                                    <Button type="submit" disabled={loading}>
-                                        {loading ? (
-                                            <>
-                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                Proses
-                                            </>
-                                        ) : (
-                                            'Tambahkan gerbong'
-                                        )}
-                                    </Button>
-                                </form>
-                            </DialogHeader>
-                        </DialogContent>
-                    </Dialog>
+                                        <Button type="submit" disabled={loading}>
+                                            {loading ? (
+                                                <>
+                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                    Proses
+                                                </>
+                                            ) : (
+                                                'Tambahkan gerbong'
+                                            )}
+                                        </Button>
+                                    </form>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </div>
 
                 {!trainset.preset_trainset_id &&
