@@ -2,13 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Panel;
-use App\Models\Progress;
-use App\Models\CarriageTrainset;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Progress;
 use App\Models\CarriageTrainset;
 use App\Models\Panel;
+use App\Models\Progress;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CarriagePanel>

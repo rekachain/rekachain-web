@@ -13,7 +13,7 @@ class DetailWorkerPanel extends Model {
     protected $fillable = [
         'serial_panel_id',
         'worker_id',
-        'step_id',
+        'progress_step_id',
         'estimated_time',
         'work_status',
         'acceptance_status',

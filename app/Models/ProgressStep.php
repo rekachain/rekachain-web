@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProgressStep extends Pivot {
+class ProgressStep extends Model {
     protected $fillable = [
         'progress_id',
         'step_id',
