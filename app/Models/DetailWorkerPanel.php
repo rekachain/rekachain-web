@@ -12,12 +12,12 @@ class DetailWorkerPanel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'serial_panel_id', 
-        'worker_id', 
-        'step_id', 
-        'estimated_time', 
-        'work_status', 
-        'acceptance_status'
+        'serial_panel_id',
+        'worker_id',
+        'progress_step_id',
+        'estimated_time',
+        'work_status',
+        'acceptance_status',
     ];
 
     protected $casts = [

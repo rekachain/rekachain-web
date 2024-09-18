@@ -23,10 +23,10 @@ class DetailWorkerPanelFactory extends Factory
         return [
             'serial_panel_id' => SerialPanel::inRandomOrder()->first()->id,
             'worker_id' => 9,
-            'step_id' => Step::inRandomOrder()->first()->id,
+            'progress_step_id' => Step::inRandomOrder()->first()->id,
             'estimated_time' => $this->faker->numberBetween(20, 60),
             'work_status' => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
-            'status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value
+            'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value,
         ];
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('serial_panel_id')->constrained();
             $table->foreignId('worker_id')->constrained('users');
-            $table->foreignId('step_id')->constrained();
+            $table->foreignId('progress_step_id')->constrained();
             $table->integer('estimated_time')->nullable();
             $table->enum('work_status',DetailWorkerPanelWorkStatusEnum::toArray())->default(DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value);
             $table->enum('acceptance_status',DetailWorkerPanelAcceptanceStatusEnum::toArray())->nullable();
