@@ -14,4 +14,5 @@ export const IntentEnum = {
     WEB_CARRIAGE_IMPORT_CARRIAGE: 'web.carriage.import.carriage',
     WEB_STEP_GET_TEMPLATE_IMPORT_STEP: 'web.step.get.template.import.step',
     WEB_STEP_IMPORT_STEP: 'web.step.import.step',
+    WEB_TRAINSET_GENERATE_ATTACHMENTS: 'web.trainset.generate.attachments',
 };

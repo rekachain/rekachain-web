@@ -5,7 +5,9 @@ namespace App\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Trainset\TrainsetsExport;
 use App\Exports\Trainset\TrainsetsTemplateExport;
+use App\Helpers\NumberHelper;
 use App\Imports\Trainset\TrainsetsImport;
+use App\Models\PanelAttachment;
 use App\Models\Trainset;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
@@ -196,6 +198,77 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
     public function getImportDataTemplate(): BinaryFileResponse {
         return (new TrainsetsTemplateExport)->download('trainsets_template.xlsx');
+    }
+
+    public function generateAttachments(Trainset $trainset): bool {
+
+        /**
+         * Draft 1:
+         *
+         * get all trainsets of the project
+         * get all carriages of the trainsets (carriage_trainsets)
+         *
+         * -- Panel Attachment
+         *
+         * get all carriage panels of the carriages (carriage_panels) [!count panel qty]
+         *      get all serial panels
+         *
+         * -- Trainset Attachment
+         *
+         *      get panel components (carriage_panel_component)
+         *          get panel component material (component_material) [qty]
+         *              get component
+         *                 get component progress (progress)
+         *                      get progress_step
+         *                      get work_aspect
+         *              get component material (raw_material)
+         *      get panel progress (progress)
+         *          get progress_step
+         *          get work_aspect
+         *      get panel material (panel_material) [qty]
+         *        get material (raw_material)
+         *
+         * Draft 2:
+         *
+         * get panel component (carriage_panel_component)
+         *  get component (component) [qty]
+         *     get component material (component_material) [qty]
+         *      get material (raw_material)
+         * get all components of the project (component)
+         */
+        $this->generatePanelAttachment($trainset);
+
+        return true;
+    }
+
+    private function generatePanelAttachment(Trainset $trainset) {
+        $trainset->carriage_trainsets()->each(function ($carriageTrainset) {
+            $carriageTrainset->carriage_panels()->each(function ($carriagePanel) {
+                $panelAttachment = $carriagePanel->panel_attachments()->create([
+                    'carriage_panel_id' => $carriagePanel->panel_id,
+                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
+                    // source_workstation?
+                    // dest_workstation?
+                    'qr_path' => 'qr_path', // generate qr code
+                    'current_step' => 0, // get first step
+                    'status' => 'pending', // default status
+                    'panel_attachment_id' => null, // default
+                    'attachment_number' => null, // default
+                    'supervisor_id' => null, // default
+                ]);
+
+                $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
+            });
+        });
+    }
+
+    private function generateAttachmentNumber(PanelAttachment $panelAttachment) {
+        $numberAttachmentOnTrainset = $panelAttachment->carriage_trainset->panel_attachments()->count();
+        $romanNumberAttachmentOnTrainset = NumberHelper::intToRoman($numberAttachmentOnTrainset);
+        $currentYear = date('Y');
+        $attachmentNumber = "{$panelAttachment->id}/PPC/KPM/{$romanNumberAttachmentOnTrainset}/{$currentYear}";
+
+        return $attachmentNumber;
     }
 
     protected function getRepositoryClass(): string {

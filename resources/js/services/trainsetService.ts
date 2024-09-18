@@ -90,4 +90,11 @@ export const trainsetService = {
             },
         );
     },
+    generateAttachments: async (trainsetId: number) => {
+        return window.axios.get(route(`${ROUTES.TRAINSETS}.show`, trainsetId), {
+            params: {
+                intent: IntentEnum.WEB_TRAINSET_GENERATE_ATTACHMENTS,
+            },
+        });
+    },
 };
