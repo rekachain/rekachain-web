@@ -8,6 +8,7 @@ import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { FilePond } from 'react-filepond';
 import { withLoading } from '@/utils/withLoading';
+import { useSuccessToast } from '@/hooks/useToast';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -39,6 +40,8 @@ export default function UpdateProfileInformation({
         }
 
         await window.axios.post(route('profile.update'), formData);
+
+        useSuccessToast('Profile updated successfully.');
 
         router.reload();
     });
