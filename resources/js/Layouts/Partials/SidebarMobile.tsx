@@ -252,7 +252,7 @@ export default function SidebarMobile() {
                                         href={route(`${ROUTES.RAW_MATERIALS}.index`)}
                                     >
                                         <RiInstanceLine size={35} />
-                                        <p className="text-base">List Bahan Baku</p>
+                                        <p className="text-base">List Material</p>
                                     </Link>
                                     {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
                                         <Link
