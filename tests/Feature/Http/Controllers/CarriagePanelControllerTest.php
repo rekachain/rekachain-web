@@ -34,7 +34,7 @@ test('store method creates new carriagePanel', function () {
     createProgress();
     createPanel();
     createCarriageTrainset();
-    dump(CarriageTrainset::inRandomOrder()->first()->id);
+    // dump(CarriageTrainset::inRandomOrder()->first()->id);
     $carriagePanelData = [
         'progress_id' => Progress::inRandomOrder()->first()->id,
         'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
