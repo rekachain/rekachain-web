@@ -45,6 +45,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
 import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
+import { withLoading } from '@/utils/withLoading';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -179,6 +180,18 @@ export default function ({
         return `${carriage?.type} : ${carriage?.description}`;
     };
 
+    const handleGenerateProjectAttachment = withLoading(
+        async () => {
+            await trainsetService.generateAttachments(trainset.id);
+            useSuccessToast('KPM generated successfully');
+        },
+        true,
+        {
+            title: 'Are you sure?',
+            text: 'This process may take a while to complete.',
+        },
+    );
+
     useEffect(() => {
         handleSyncCarriages();
     }, [debouncedCarriageFilters]);
@@ -285,6 +298,14 @@ export default function ({
                                                     ) : (
                                                         'Hapus Preset'
                                                     )}
+                                                </Button>
+
+                                                <Button
+                                                    type="button"
+                                                    variant="tertiary"
+                                                    onClick={handleGenerateProjectAttachment}
+                                                >
+                                                    Generate KPM
                                                 </Button>
                                             </div>
                                         </SelectGroup>
