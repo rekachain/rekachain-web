@@ -7,8 +7,7 @@ use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DetailWorkerPanel extends Model
-{
+class DetailWorkerPanel extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -19,24 +18,20 @@ class DetailWorkerPanel extends Model
         'work_status',
         'acceptance_status',
     ];
-
     protected $casts = [
         'work_status' => DetailWorkerPanelWorkStatusEnum::class,
-        'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::class
+        'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::class,
     ];
 
-    public function serial_panel()
-    {
+    public function serial_panel() {
         return $this->belongsTo(SerialPanel::class);
     }
 
-    public function worker()
-    {
+    public function worker() {
         return $this->belongsTo(User::class, 'worker_id');
     }
 
-    public function step()
-    {
+    public function step() {
         return $this->belongsTo(Step::class);
     }
 }

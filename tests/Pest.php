@@ -16,10 +16,10 @@ use App\Models\Permission;
 use App\Models\WorkDayTime;
 use App\Models\Workstation;
 use App\Models\CarriagePanel;
-use App\Models\PanelAttachment;
 use App\Models\CarriageTrainset;
 use App\Models\RawMaterial;
 use App\Models\PanelMaterial;
+use App\Models\PanelAttachment;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -102,6 +102,39 @@ function createComponent() {
     return $component;
 }
 
+function createPanelMaterial() {
+    createRawMaterial();
+    createCarriagePanel();
+    $panelMaterial = new PanelMaterial;
+    $panelMaterial->save();
+
+    return $panelMaterial;
+}
+
+function createRawMaterial() {
+    $rawMaterial = RawMaterial::factory()->create();
+
+    return $rawMaterial;
+}
+
+// function createCarriagePanel() {
+//     Carriage::factory()->create();
+//     createProgress();
+//     createCarriageTrainset();
+//     createPanel();
+
+//     $carriagePanel = CarriagePanel::factory()->create();
+
+//     return $carriagePanel;
+// }
+
+// function createCarriageTrainset() {
+//     $trainset = createTrainset();
+//     $carriageTrainset = CarriageTrainset::factory()->create();
+
+//     return $carriageTrainset;
+// }
+
 function createProject() {
     $project = new Project;
     $project->name = 'Project';
@@ -152,9 +185,8 @@ function createDivision() {
     return $division;
 }
 
-
 function createWorkshop() {
-    $workshop = new Workshop();
+    $workshop = new Workshop;
     $workshop->name = 'Test Workshop';
     $workshop->address = 'Test Address';
     $workshop->save();
@@ -165,7 +197,7 @@ function createWorkshop() {
 function createWorkstation() {
     $division = createDivision();
     $workshop = createWorkshop();
-    $workstation = new Workstation();
+    $workstation = new Workstation;
     $workstation->name = 'Test Workstation';
     $workstation->location = 'Test Workstation Location';
     $workstation->division_id = $division->id;
@@ -174,7 +206,6 @@ function createWorkstation() {
 
     return $workstation;
 }
-
 function createCarriageTrainset() {
     $trainset = createTrainset();
     $carriage = Carriage::factory()->create();

@@ -6,8 +6,7 @@ use App\Models\ProgressStep;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
-class ProgressStepSeeder extends Seeder
-{
+class ProgressStepSeeder extends Seeder {
     /**
      * Run the database seeds.
      */

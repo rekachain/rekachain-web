@@ -15,7 +15,7 @@ class SerialPanel extends Model {
         'qr_code',
         'qr_path',
         'manufacture_status',
-        'notes'
+        'notes',
     ];
 
     public function panel_attachment(): BelongsTo {

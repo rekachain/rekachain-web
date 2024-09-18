@@ -11,15 +11,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DetailWorkerPanel>
  */
-class DetailWorkerPanelFactory extends Factory
-{
+class DetailWorkerPanelFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             'serial_panel_id' => SerialPanel::inRandomOrder()->first()->id,
             'worker_id' => 9,
