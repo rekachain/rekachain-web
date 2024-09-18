@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PresetTrainset\StorePresetTrainsetRequest;
-use App\Http\Requests\PresetTrainset\UpdatePresetTrainsetRequest;
+use App\Http\Requests\CarriagePreset\StoreCarriagePresetRequest;
+use App\Http\Requests\CarriagePreset\UpdateCarriagePresetRequest;
 use App\Http\Resources\CarriagePresetResource;
 use App\Models\CarriagePreset;
 use App\Support\Enums\PermissionEnum;
@@ -46,7 +46,7 @@ class CarriagePresetController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePresetTrainsetRequest $request) {
+    public function store(StoreCarriagePresetRequest $request) {
 
         $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_CREATE);
 
@@ -80,7 +80,7 @@ class CarriagePresetController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePresetTrainsetRequest $request, CarriagePreset $carriagePreset) {
+    public function update(UpdateCarriagePresetRequest $request, CarriagePreset $carriagePreset) {
 
         $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_UPDATE);
 
