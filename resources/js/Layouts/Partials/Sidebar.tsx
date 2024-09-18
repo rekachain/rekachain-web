@@ -28,14 +28,13 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
 import { STYLING } from '@/support/constants/styling';
 import { ROUTES } from '@/support/constants/routes';
-import { SidebarContext } from '@/contexts/SidebarContext';
 import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
 import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
 import { checkPermission } from '@/helpers/sidebarHelper';
+import { SidebarProvider } from '@/Contexts/SidebarContext';
 
 export default function Sidebar() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
-    const [selectedMenu, setSelectedMenu] = useLocalStorage('selectedMenu', '');
     const handleSidebarCollapse = () => {
         setSidebarCollapse(!sidebarCollapse);
     };
@@ -53,7 +52,7 @@ export default function Sidebar() {
     useEffect(applySidebarCollapse, [sidebarCollapse]);
 
     return (
-        <SidebarContext.Provider value={{ selectedMenu, setSelectedMenu }}>
+        <SidebarProvider>
             <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
                 <nav className="flex flex-col space-y-1">
                     <div className="sidebar-header flex justify-between px-4 py-3 border-b-2 h-16">
@@ -268,6 +267,6 @@ export default function Sidebar() {
                     </SidebarMenu>
                 </nav>
             </aside>
-        </SidebarContext.Provider>
+        </SidebarProvider>
     );
 }
