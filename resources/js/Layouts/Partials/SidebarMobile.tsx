@@ -1,9 +1,11 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
+    RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
+    RiExpandRightLine,
     RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
@@ -13,6 +15,7 @@ import {
     RiQuestionLine,
     RiSettings3Line,
     RiShieldLine,
+    RiStackLine,
     RiToolsFill,
     RiUser2Line,
     RiUserLine,
@@ -232,6 +235,18 @@ export default function SidebarMobile() {
 
                                     <hr className="border-gray-700 border-2 w-full" />
 
+                                    {checkPermission(PERMISSION_ENUM.STEP_READ) && (
+                                        <Link className="flex items-center gap-2" href={route(`${ROUTES.STEPS}.index`)}>
+                                            <RiExpandRightLine size={35} />
+                                            <p className="text-base">List Step</p>
+                                        </Link>
+                                        // <SidebarLink
+                                        //     routeName={`${ROUTES.STEPS}.index`}
+                                        //     title="List Step"
+                                        //     icon={<RiExpandRightLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        // />
+                                    )}
+
                                     <Link
                                         className="flex items-center gap-2"
                                         href={route(`${ROUTES.RAW_MATERIALS}.index`)}
@@ -239,6 +254,20 @@ export default function SidebarMobile() {
                                         <RiInstanceLine size={35} />
                                         <p className="text-base">List Bahan Baku</p>
                                     </Link>
+                                    {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.COMPONENTS}.index`)}
+                                        >
+                                            <RiStackLine size={35} />
+                                            <p className="text-base">List Component</p>
+                                        </Link>
+                                        // <SidebarLink
+                                        //     routeName={`${ROUTES.COMPONENTS}.index`}
+                                        //     title="List Component"
+                                        //     icon={<RiStackLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        // />
+                                    )}
                                     <Link className="flex items-center gap-2" href={route(`${ROUTES.PANELS}.index`)}>
                                         <RiArtboard2Fill size={35} />
                                         <p className="text-base">List Panel</p>
@@ -247,6 +276,20 @@ export default function SidebarMobile() {
                                         <RiBox3Line size={35} />
                                         <p className="text-base">List Proyek</p>
                                     </Link>
+                                    {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.CARRIAGES}.index`)}
+                                        >
+                                            <RiCaravanLine size={35} />
+                                            <p className="text-base">List Gerbong</p>
+                                        </Link>
+                                        // <SidebarLink
+                                        //     routeName={`${ROUTES.CARRIAGES}.index`}
+                                        //     title="List Gerbong"
+                                        //     icon={<RiCaravanLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        // />
+                                    )}
 
                                     {/* 
                                     <Accordion type="single" collapsible>
