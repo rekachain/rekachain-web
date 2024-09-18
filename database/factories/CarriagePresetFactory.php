@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Carriage;
+use App\Models\PresetTrainset;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,7 +17,9 @@ class CarriagePresetFactory extends Factory {
      */
     public function definition(): array {
         return [
-            //
+            'preset_trainset_id' => PresetTrainset::inRandomOrder()->first()->id,
+            'carriage_id' => Carriage::inRandomOrder()->first()->id,
+            'qty' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

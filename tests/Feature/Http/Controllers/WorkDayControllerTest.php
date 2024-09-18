@@ -14,14 +14,14 @@ test('index method returns paginated work-days', function () {
         ->assertJsonCount(5, 'data');
 });
 
-// test('create method returns create page', function () {
-//     $user = User::factory()->create();
+test('create method returns create page', function () {
+    $user = User::factory()->create();
 
-//     $response = $this->actingAs($user)->get('/work-days/create');
+    $response = $this->actingAs($user)->get('/work-days/create');
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('WorkDay/Create'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('WorkDay/Create'));
+});
 
 test('store method creates new workDay', function () {
     $user = User::factory()->create();
@@ -60,15 +60,15 @@ test('show method returns workDay details', function () {
         ->assertJson(['id' => $workDay->id, 'day' => $workDay->day]);
 });
 
-// test('edit method returns edit page', function () {
-//     $user = User::factory()->create();
-//     $workDay = WorkDay::factory()->create();
+test('edit method returns edit page', function () {
+    $user = User::factory()->create();
+    $workDay = WorkDay::factory()->create();
 
-//     $response = $this->actingAs($user)->get("/work-days/{$workDay->id}/edit");
+    $response = $this->actingAs($user)->get("/work-days/{$workDay->id}/edit");
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('WorkDay/Edit'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('WorkDay/Edit'));
+});
 
 test('update method updates workDay', function () {
     $user = User::factory()->create();
