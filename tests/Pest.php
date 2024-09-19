@@ -13,13 +13,14 @@ use App\Models\Trainset;
 use App\Models\Workshop;
 use App\Models\Component;
 use App\Models\Permission;
+use App\Models\RawMaterial;
+use App\Models\SerialPanel;
 use App\Models\WorkDayTime;
 use App\Models\Workstation;
 use App\Models\CarriagePanel;
-use App\Models\CarriageTrainset;
-use App\Models\RawMaterial;
 use App\Models\PanelMaterial;
 use App\Models\PanelAttachment;
+use App\Models\CarriageTrainset;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -243,4 +244,18 @@ function createPanelAttachment() {
     $panelAttachment = PanelAttachment::factory()->create();
 
     return $panelAttachment;
+}
+
+function createSerialPanel() {
+    $panelAttachment = createPanelAttachment();
+    $serialPanel = SerialPanel::create([
+        'panel_attachment_id' => $panelAttachment->id,
+        'qr_code' => $panelAttachment->qr_code,
+        'qr_path' => $panelAttachment->qr_path,
+        'manufacture_status' => 'in_progress',
+        'notes' => 'ini serial panel notes',
+    ]);
+
+    return $serialPanel;
+
 }
