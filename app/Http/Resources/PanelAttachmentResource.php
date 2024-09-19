@@ -29,6 +29,29 @@ class PanelAttachmentResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
+                return [
+                    'id' => $this->id,
+                    'attachment_number' => $this->attachment_number,
+                    'project' => new ProjectResource($this->carriage_panel?->carriage_trainset->trainset->project),
+                    'trainset' => new TrainsetResource($this->carriage_panel?->carriage_trainset->trainset),
+                    'carriage_trainset' => new CarriageTrainsetResource($this->carriage_panel?->carriage_trainset()->with('carriage')->without('trainset')->first()),
+                    'carriage_panel' => new CarriagePanelResource($this->carriage_panel),
+                    'serial_panels' => SerialPanelResource::collection($this->serial_panels),
+                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop')->first()),
+                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop')->first()),
+                    'qr_code' => $this->qr_code,
+                    'qr_path' => $this->qr_path,
+                    'current_step' => $this->current_step,
+                    'elapsed_time' => $this->elapsed_time,
+                    'status' => $this->status,
+                    // 'panel_attachment_childs' => PanelAttachmentResource::collection($this->childs),
+                    // 'panel_attachment_parents' => new PanelAttachmentResource($this->parent),
+                    'supervisor' => new UserResource($this->whenLoaded('supervisor')),
+                    'panel_attachment_handlers' => PanelAttachmentHandlerResource::collection($this->panel_attachment_handlers),
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,

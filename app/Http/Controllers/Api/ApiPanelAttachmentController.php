@@ -43,12 +43,13 @@ class ApiPanelAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-                return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+                return new PanelAttachmentResource($panelAttachment);
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
                     if ($panelAttachment->qr_code == $qr) {
-                        return new PanelAttachmentResource($panelAttachment->load(['source_workstation', 'destination_workstation', 'carriage_panel.panel', 'carriage_panel.panel_materials.raw_material', 'carriage_trainset.carriage', 'carriage_trainset.trainset']));
+                        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
+                        return new PanelAttachmentResource($panelAttachment);
                     }
                     abort(400, 'Invalid KPM QR code');
                 } else {
