@@ -9,9 +9,11 @@ use App\Helpers\NumberHelper;
 use App\Imports\Trainset\TrainsetsImport;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
+use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +27,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected PresetTrainsetServiceInterface $presetTrainsetService,
         protected CarriageServiceInterface $carriageService,
         protected CarriageTrainsetServiceInterface $carriageTrainsetService,
+        protected PanelAttachmentServiceInterface $panelAttachmentService,
     ) {
         parent::__construct();
     }
@@ -200,8 +203,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         return (new TrainsetsTemplateExport)->download('trainsets_template.xlsx');
     }
 
-    public function generateAttachments(Trainset $trainset): bool {
-
+    public function generateAttachments(Trainset $trainset, array $data): bool {
         /**
          * Draft 1:
          *
@@ -236,27 +238,41 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
          *      get material (raw_material)
          * get all components of the project (component)
          */
-        $this->generatePanelAttachment($trainset);
+        DB::transaction(function () use ($trainset, $data) {
+            $this->generatePanelAttachment($trainset, $data);
+
+            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+        });
 
         return true;
     }
 
-    private function generatePanelAttachment(Trainset $trainset) {
-        $trainset->carriage_trainsets()->each(function ($carriageTrainset) {
-            $carriageTrainset->carriage_panels()->each(function ($carriagePanel) {
-                $panelAttachment = $carriagePanel->panel_attachments()->create([
-                    'carriage_panel_id' => $carriagePanel->panel_id,
-                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
-                    // source_workstation?
-                    // dest_workstation?
-                    'qr_path' => 'qr_path', // generate qr code
-                    'current_step' => 0, // get first step
-                    'status' => 'pending', // default status
-                    'panel_attachment_id' => null, // default
-                    'attachment_number' => null, // default
-                    'supervisor_id' => null, // default
-                ]);
+    private function generatePanelAttachment(Trainset $trainset, array $data) {
 
+        $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($data) {
+            $carriageTrainset->carriage_panels()->each(function ($carriagePanel) use ($data) {
+                $sourceWorkstationId = $data['source_workstation_id'];
+                $destinationWorkstationId = $data['destination_workstation_id'];
+
+                $panelAttachment = $this->panelAttachmentService->create([
+                    'carriage_panel_id' => $carriagePanel->panel_id,
+                    'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
+                    'source_workstation_id' => $sourceWorkstationId,
+                    'destination_workstation_id' => $destinationWorkstationId,
+                ]);
+                //                $panelAttachment = $carriagePanel->panel_attachments()->create([
+                //                    'carriage_panel_id' => $carriagePanel->panel_id,
+                //                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
+                //                    // source_workstation?
+                //                    // dest_workstation?
+                //                    'qr_path' => 'qr_path', // generate qr code
+                //                    'current_step' => 0, // get first step
+                //                    'status' => 'pending', // default status
+                //                    'panel_attachment_id' => null, // default
+                //                    'attachment_number' => null, // default
+                //                    'supervisor_id' => null, // default
+                //                ]);
+                //
                 $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
             });
         });

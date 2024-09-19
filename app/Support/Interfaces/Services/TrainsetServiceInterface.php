@@ -74,6 +74,10 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
 
     /**
      * generate attachments
+     *
+     * Required data:
+     * $data['source_workstation_id'] - source workstation ID
+     * $data['destination_workstation_id'] - destination workstation ID
      */
-    public function generateAttachments(Trainset $trainset): bool;
+    public function generateAttachments(Trainset $trainset, array $data): bool;
 }

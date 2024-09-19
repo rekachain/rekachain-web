@@ -59,6 +59,12 @@ class UpdateTrainsetRequest extends FormRequest {
                     'qty' => 'nullable|integer|min:1',
                     'carriage_id' => 'nullable|integer|exists:carriages,id',
                 ];
+
+            case IntentEnum::WEB_TRAINSET_GENERATE_ATTACHMENTS->value:
+                return [
+                    'source_workstation_id' => 'required|integer|exists:workstations,id',
+                    'destination_workstation_id' => 'required|integer|different:source_workstation_id|exists:workstations,id',
+                ];
         }
 
         $trainset = $this->route('trainset')->id;

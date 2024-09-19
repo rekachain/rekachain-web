@@ -7,6 +7,7 @@ import {
     PresetTrainsetResource,
     ProjectResource,
     TrainsetResource,
+    WorkstationResource,
 } from '@/support/interfaces/resources';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
@@ -46,6 +47,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
 import { withLoading } from '@/utils/withLoading';
+import { workstationService } from '@/services/workstationService';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -62,11 +64,27 @@ export default function ({
     const [value, setValue] = useState('');
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
+    const [sourceWorkstations, setSourceWorkstations] = useState<WorkstationResource[]>([]);
+    const [destinationWorkstations, setdestinationWorkstations] = useState<WorkstationResource[]>([]);
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
         relations: 'trainsets.carriage_panels.panel',
         search: '',
+    });
+
+    const [sourceWorkstationFilters, setSourceWorkstationFilters] = useState<ServiceFilterOptions>({
+        page: 1,
+        perPage: 10,
+        search: '',
+        relations: 'workshop',
+    });
+
+    const [destinationWorkstationFilters, setDestinationWorkstationFilters] = useState<ServiceFilterOptions>({
+        page: 1,
+        perPage: 10,
+        search: '',
+        relations: 'workshop',
     });
 
     const { setLoading, loading } = useLoading();
@@ -79,7 +97,15 @@ export default function ({
         new_carriage_description: '',
         new_carriage_qty: 1,
     });
+
+    const { data: generateAttachmentData, setData: setGenerateAttachmentData } = useForm({
+        source_workstation_id: 0,
+        destination_workstation_id: 0,
+    });
+
     const debouncedCarriageFilters = useDebounce(carriageFilters, 300);
+    const debouncedSourceWorkstationFilters = useDebounce(sourceWorkstationFilters, 300);
+    const debouncedDestinationWorkstationFilters = useDebounce(destinationWorkstationFilters, 300);
     const selectedPreset = presetTrainset.find(preset => preset.id === data.preset_trainset_id);
 
     const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -180,21 +206,52 @@ export default function ({
         return `${carriage?.type} : ${carriage?.description}`;
     };
 
-    const handleGenerateProjectAttachment = withLoading(
-        async () => {
-            await trainsetService.generateAttachments(trainset.id);
-            useSuccessToast('KPM generated successfully');
-        },
-        true,
-        {
-            title: 'Are you sure?',
-            text: 'This process may take a while to complete.',
-        },
-    );
+    const handleSyncSourceWorkstations = async () => {
+        const response = await workstationService.getAll(sourceWorkstationFilters);
+        console.log(response.data);
+        setSourceWorkstations(response.data);
+    };
+
+    const handleSearchSourceWorkstations = (sourceWorkstations: WorkstationResource[] | undefined) => {
+        let sourceWorkstation = sourceWorkstations?.find(
+            workstation => workstation.id === generateAttachmentData.source_workstation_id,
+        );
+        return sourceWorkstation?.name;
+    };
+
+    const handleSyncDestinationWorkstations = async () => {
+        const response = await workstationService.getAll(destinationWorkstationFilters);
+        setdestinationWorkstations(response.data);
+    };
+
+    const handleSearchDestinationWorkstations = (destinationWorkstations: WorkstationResource[] | undefined) => {
+        let destinationWorkstation = destinationWorkstations?.find(
+            workstation => workstation.id === generateAttachmentData.destination_workstation_id,
+        );
+        return destinationWorkstation?.name;
+    };
+
+    const handleGenerateProjectAttachment = withLoading(async e => {
+        e.preventDefault();
+        await trainsetService.generateAttachments(
+            trainset.id,
+            generateAttachmentData.source_workstation_id,
+            generateAttachmentData.destination_workstation_id,
+        );
+        useSuccessToast('KPM generated successfully');
+    });
 
     useEffect(() => {
         handleSyncCarriages();
     }, [debouncedCarriageFilters]);
+
+    useEffect(() => {
+        handleSyncSourceWorkstations();
+    }, [debouncedSourceWorkstationFilters]);
+
+    useEffect(() => {
+        handleSyncDestinationWorkstations();
+    }, [debouncedDestinationWorkstationFilters]);
 
     return (
         <>
@@ -229,87 +286,212 @@ export default function ({
                                 {trainset.status === TrainsetStatusEnum.PROGRESS ? (
                                     <p className="text-page-subheader">Status: Sedang dikerjakan</p>
                                 ) : (
-                                    <form onSubmit={handleChangePreset} className="flex gap-2">
-                                        <SelectGroup className="space-y-2 w-fit">
-                                            <Label htmlFor="preset-trainset">Preset</Label>
-                                            <div className="flex gap-2">
-                                                <Select
-                                                    key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
-                                                    onValueChange={v => setData('preset_trainset_id', +v)}
-                                                    value={data.preset_trainset_id?.toString()}
-                                                    defaultValue={trainset.preset_trainset_id?.toString()}
-                                                >
-                                                    <SelectTrigger id="preset-trainset">
-                                                        <SelectValue placeholder="Preset Trainset" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="0" disabled>
-                                                            Select Preset
-                                                        </SelectItem>
-                                                        {presetTrainset.map(preset => (
-                                                            <SelectItem key={preset.id} value={preset.id.toString()}>
-                                                                {preset.name} (
-                                                                {preset.carriage_presets.map((c, i) => (
-                                                                    <span key={c.id}>
-                                                                        {c.qty} {c.carriage.type}
-                                                                        {i < preset.carriage_presets!.length - 1 &&
-                                                                            ' + '}
-                                                                    </span>
-                                                                ))}
-                                                                )
+                                    <div className="flex gap-2 items-center">
+                                        <form onSubmit={handleChangePreset} className="flex gap-2">
+                                            <SelectGroup>
+                                                <Label htmlFor="preset-trainset">Preset</Label>
+                                                <div className="flex gap-2">
+                                                    <Select
+                                                        key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
+                                                        onValueChange={v => setData('preset_trainset_id', +v)}
+                                                        value={data.preset_trainset_id?.toString()}
+                                                        defaultValue={trainset.preset_trainset_id?.toString()}
+                                                    >
+                                                        <SelectTrigger id="preset-trainset">
+                                                            <SelectValue placeholder="Preset Trainset" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="0" disabled>
+                                                                Select Preset
                                                             </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                            {presetTrainset.map(preset => (
+                                                                <SelectItem
+                                                                    key={preset.id}
+                                                                    value={preset.id.toString()}
+                                                                >
+                                                                    {preset.name} (
+                                                                    {preset.carriage_presets.map((c, i) => (
+                                                                        <span key={c.id}>
+                                                                            {c.qty} {c.carriage.type}
+                                                                            {i < preset.carriage_presets!.length - 1 &&
+                                                                                ' + '}
+                                                                        </span>
+                                                                    ))}
+                                                                    )
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
 
-                                                <Button
-                                                    type="submit"
-                                                    disabled={
-                                                        loading ||
-                                                        !data.preset_trainset_id ||
-                                                        data.preset_trainset_id === trainset.preset_trainset_id
-                                                    }
-                                                >
-                                                    {loading ? (
-                                                        <>
-                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Loading
-                                                        </>
-                                                    ) : (
-                                                        'Ubah Preset'
-                                                    )}
-                                                </Button>
+                                                    <Button
+                                                        type="submit"
+                                                        disabled={
+                                                            loading ||
+                                                            !data.preset_trainset_id ||
+                                                            data.preset_trainset_id === trainset.preset_trainset_id
+                                                        }
+                                                    >
+                                                        {loading ? (
+                                                            <>
+                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                Loading
+                                                            </>
+                                                        ) : (
+                                                            'Ubah Preset'
+                                                        )}
+                                                    </Button>
 
-                                                <Button
-                                                    type="button"
-                                                    variant="destructive"
-                                                    disabled={
-                                                        loading ||
-                                                        !data.preset_trainset_id ||
-                                                        (selectedPreset && selectedPreset.has_trainsets)
-                                                    }
-                                                    onClick={handleDeletePresetTrainset}
-                                                >
-                                                    {loading ? (
-                                                        <>
-                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Loading
-                                                        </>
-                                                    ) : (
-                                                        'Hapus Preset'
-                                                    )}
-                                                </Button>
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        disabled={
+                                                            loading ||
+                                                            !data.preset_trainset_id ||
+                                                            (selectedPreset && selectedPreset.has_trainsets)
+                                                        }
+                                                        onClick={handleDeletePresetTrainset}
+                                                    >
+                                                        {loading ? (
+                                                            <>
+                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                Loading
+                                                            </>
+                                                        ) : (
+                                                            'Hapus Preset'
+                                                        )}
+                                                    </Button>
+                                                </div>
+                                            </SelectGroup>
+                                        </form>
 
-                                                <Button
-                                                    type="button"
-                                                    variant="tertiary"
-                                                    onClick={handleGenerateProjectAttachment}
-                                                >
-                                                    Generate KPM
-                                                </Button>
-                                            </div>
-                                        </SelectGroup>
-                                    </form>
+                                        <Dialog>
+                                            <DialogTrigger
+                                                className={buttonVariants({
+                                                    className: 'self-end',
+                                                })}
+                                            >
+                                                Generate KPM
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>Generate KPM</DialogTitle>
+                                                    <DialogDescription></DialogDescription>
+                                                    <form
+                                                        onSubmit={handleGenerateProjectAttachment}
+                                                        className="flex flex-col gap-4"
+                                                    >
+                                                        <div className="flex flex-col gap-4">
+                                                            <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                                                <Label>Sumber Workstation</Label>
+                                                                <Input
+                                                                    value={sourceWorkstationFilters.search}
+                                                                    placeholder="Type a command or search..."
+                                                                    onInput={e =>
+                                                                        setSourceWorkstationFilters({
+                                                                            ...sourceWorkstationFilters,
+                                                                            search: e.currentTarget.value,
+                                                                        })
+                                                                    }
+                                                                />
+                                                                <SelectGroup>
+                                                                    <Select
+                                                                        key={
+                                                                            generateAttachmentData.source_workstation_id
+                                                                        }
+                                                                        onValueChange={v =>
+                                                                            setGenerateAttachmentData(
+                                                                                'source_workstation_id',
+                                                                                +v,
+                                                                            )
+                                                                        }
+                                                                        value={generateAttachmentData.source_workstation_id.toString()}
+                                                                    >
+                                                                        <SelectTrigger id="source-workstation">
+                                                                            <SelectValue placeholder="Workstation" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectItem value="0" disabled>
+                                                                                Pilih Workstation
+                                                                            </SelectItem>
+                                                                            {sourceWorkstations.map(workstation => (
+                                                                                <SelectItem
+                                                                                    key={workstation.id}
+                                                                                    value={workstation.id.toString()}
+                                                                                >
+                                                                                    {workstation.name} -{' '}
+                                                                                    {workstation.workshop.name}
+                                                                                </SelectItem>
+                                                                            ))}
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </SelectGroup>
+                                                            </div>
+
+                                                            <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                                                <Label className="mb-2">Tujuan Workstation</Label>
+                                                                <Input
+                                                                    value={destinationWorkstationFilters.search}
+                                                                    placeholder="Type a command or search..."
+                                                                    onInput={e =>
+                                                                        setDestinationWorkstationFilters({
+                                                                            ...destinationWorkstationFilters,
+                                                                            search: e.currentTarget.value,
+                                                                        })
+                                                                    }
+                                                                />
+
+                                                                <SelectGroup>
+                                                                    <Select
+                                                                        key={
+                                                                            generateAttachmentData.destination_workstation_id
+                                                                        }
+                                                                        onValueChange={v =>
+                                                                            setGenerateAttachmentData(
+                                                                                'destination_workstation_id',
+                                                                                +v,
+                                                                            )
+                                                                        }
+                                                                        value={generateAttachmentData.destination_workstation_id.toString()}
+                                                                    >
+                                                                        <SelectTrigger id="destination-workstation">
+                                                                            <SelectValue placeholder="Workstation" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectItem value="0" disabled>
+                                                                                Pilih Workstation
+                                                                            </SelectItem>
+                                                                            {destinationWorkstations.map(
+                                                                                workstation => (
+                                                                                    <SelectItem
+                                                                                        key={workstation.id}
+                                                                                        value={workstation.id.toString()}
+                                                                                    >
+                                                                                        {workstation.name} -{' '}
+                                                                                        {workstation.workshop.name}
+                                                                                    </SelectItem>
+                                                                                ),
+                                                                            )}
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </SelectGroup>
+                                                            </div>
+                                                        </div>
+
+                                                        <Button type="submit" disabled={loading}>
+                                                            {loading ? (
+                                                                <>
+                                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                    Proses
+                                                                </>
+                                                            ) : (
+                                                                'Generate KPM'
+                                                            )}
+                                                        </Button>
+                                                    </form>
+                                                </DialogHeader>
+                                            </DialogContent>
+                                        </Dialog>
+                                    </div>
                                 )}
                             </div>
                         </div>
