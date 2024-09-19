@@ -67,13 +67,6 @@ class TrainsetController extends Controller {
      * Display the specified resource.
      */
     public function show(Request $request, Trainset $trainset) {
-        $intent = $request->get('intent');
-
-        switch ($intent) {
-            case IntentEnum::WEB_TRAINSET_GENERATE_ATTACHMENTS->value:
-                return $this->trainsetService->generateAttachments($trainset);
-        }
-
         if ($this->ajax()) {
             return new TrainsetResource($trainset->load(['carriages' => ['panels']]));
         }
@@ -107,6 +100,9 @@ class TrainsetController extends Controller {
 
             case IntentEnum::WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET->value:
                 return $this->trainsetService->updateCarriageTrainset($trainset, $request->validated());
+
+            case IntentEnum::WEB_TRAINSET_GENERATE_ATTACHMENTS->value:
+                return $this->trainsetService->generateAttachments($trainset, $request->validated());
         }
 
         //        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {

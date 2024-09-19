@@ -90,11 +90,19 @@ export const trainsetService = {
             },
         );
     },
-    generateAttachments: async (trainsetId: number) => {
-        return window.axios.get(route(`${ROUTES.TRAINSETS}.show`, trainsetId), {
-            params: {
-                intent: IntentEnum.WEB_TRAINSET_GENERATE_ATTACHMENTS,
+    generateAttachments: async (trainsetId: number, sourceWorkstationId: number, destinationWorkstationId: number) => {
+        return window.axios.post(
+            route(`${ROUTES.TRAINSETS}.update`, trainsetId),
+            {
+                source_workstation_id: sourceWorkstationId,
+                destination_workstation_id: destinationWorkstationId,
             },
-        });
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_TRAINSET_GENERATE_ATTACHMENTS,
+                },
+            },
+        );
     },
 };
