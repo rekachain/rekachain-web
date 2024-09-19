@@ -1,2 +1,2 @@
-carriage_trainset_id,carriage_panel_id,source_workstation_id,destination_workstation_id,qr_path,current_step,elapsed_time,status,panel_attachment_id
-1,1,1,2,,,,,
+carriage_panel_id,source_workstation_id,destination_workstation_id,qr_path,current_step,elapsed_time,status,panel_attachment_id
+1,1,2,,,,,
