@@ -18,18 +18,18 @@ test('show one panelAttachment', function () {
 
 test('show one panelAttachment with QR', function () {
     $panelAttachment = createPanelAttachment();
-    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value . 'qr_code=' . $panelAttachment->qr_code)->assertStatus(200);
+    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value . '&qr_code=' . $panelAttachment->qr_code)->assertStatus(200);
 });
 
 test('show one panelAttachment with invalid QR', function () {
     $panelAttachment = createPanelAttachment();
-    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value . 'qr_code=' . $panelAttachment->qr_code . '123132')->assertStatus(400);
+    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value . '&qr_code=' . $panelAttachment->qr_code . '123132')->assertStatus(400);
 });
 
-// test('show one panelAttachment with SN', function () {
-//     $panelAttachment = createPanelAttachment();
-//     actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value)->assertStatus(200);
-// });
+test('show one panelAttachment with SN', function () {
+    $panelAttachment = createPanelAttachment();
+    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value)->assertStatus(200);
+});
 
 // THE REST IS PENDING
 
