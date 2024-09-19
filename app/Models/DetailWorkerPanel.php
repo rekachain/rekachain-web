@@ -31,7 +31,7 @@ class DetailWorkerPanel extends Model {
         return $this->belongsTo(User::class, 'worker_id');
     }
 
-    public function step() {
-        return $this->belongsTo(Step::class);
+    public function progress_step() {
+        return $this->belongsTo(ProgressStep::class);
     }
 }

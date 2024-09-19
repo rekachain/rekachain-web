@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Helpers\NumberHelper;
+use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Support\Enums\TrainsetStatusEnum;
 use Database\Seeders\Helpers\CsvReader;
@@ -19,7 +20,7 @@ class PanelAttachmentSeeder extends Seeder {
         if ($csvData) {
             foreach ($csvData as $data) {
                 $panelAttachment = PanelAttachment::create($data);
-                $panelAttachments = PanelAttachment::whereCarriageTrainsetId($panelAttachment->carriage_trainset_id)->get();
+                $panelAttachments = PanelAttachment::whereIn('carriage_panel_id', CarriagePanel::whereCarriageTrainsetId($panelAttachment->carriage_panel->carriage_trainset_id)->pluck('id'))->get();
                 $i = $panelAttachments->where('id', '<', $panelAttachment->id)->count() + 1;
                 $panelAttachment->update([
                     'attachment_number' => $panelAttachment->id . '/PPC/KPM/' . NumberHelper::intToRoman($i) . '/' . date('Y', strtotime($panelAttachment->created_at)),

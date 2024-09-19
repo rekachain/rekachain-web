@@ -11,7 +11,6 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('panel_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carriage_trainset_id')->constrained('carriage_trainset');
             $table->foreignId('carriage_panel_id')->constrained();
             $table->foreignId('source_workstation_id')->references('id')->on('workstations')->constrained();
             $table->foreignId('destination_workstation_id')->references('id')->on('workstations')->constrained();

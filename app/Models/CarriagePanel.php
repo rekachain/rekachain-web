@@ -17,6 +17,10 @@ class CarriagePanel extends Model {
         'qty',
     ];
 
+    public function progress(): BelongsTo {
+        return $this->belongsTo(Progress::class);
+    }
+
     public function carriage_trainset(): BelongsTo {
         return $this->belongsTo(CarriageTrainset::class);
     }
