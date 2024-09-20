@@ -7,14 +7,17 @@ use App\Exports\Trainset\TrainsetsExport;
 use App\Exports\Trainset\TrainsetsTemplateExport;
 use App\Helpers\NumberHelper;
 use App\Imports\Trainset\TrainsetsImport;
+use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
+use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -28,6 +31,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected CarriageServiceInterface $carriageService,
         protected CarriageTrainsetServiceInterface $carriageTrainsetService,
         protected PanelAttachmentServiceInterface $panelAttachmentService,
+        protected SerialPanelServiceInterface $serialPanelService,
     ) {
         parent::__construct();
     }
@@ -260,6 +264,9 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     'source_workstation_id' => $sourceWorkstationId,
                     'destination_workstation_id' => $destinationWorkstationId,
                 ]);
+
+                $this->generateSerialPanels($panelAttachment, $carriagePanel);
+
                 //                $panelAttachment = $carriagePanel->panel_attachments()->create([
                 //                    'carriage_panel_id' => $carriagePanel->panel_id,
                 //                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
@@ -276,6 +283,42 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
             });
         });
+    }
+
+    private function generateSerialPanels(PanelAttachment $panelAttachment, CarriagePanel $carriagePanel) {
+        $carriagePanel->panel_components()->each(function ($panelComponent) use ($carriagePanel, $panelAttachment) {
+            $qty = $panelComponent->qty;
+
+            for ($i = 0; $i < $qty; $i++) {
+                $serialPanel = $this->serialPanelService->create([
+                    'panel_attachment_id' => $panelAttachment->id,
+                    'panel_component_id' => $panelComponent->id,
+                    'manufacture_status' => SerialPanelManufactureStatusEnum::IN_PROGRESS,
+                ]);
+
+                $qrCode = "KPM:{$panelAttachment->attachment_number};SN:{$serialPanel->id};P{$carriagePanel->carriage_trainset()->trainset()->project()->name};TS:{$carriagePanel->carriage_trainset()->trainset()->name};;";
+
+                $serialPanel->update(['qr_code' => $qrCode]);
+            }
+            //            $component = $panelComponent->component;
+            //            $componentMaterials = $component->component_materials;
+            //
+            //            $componentMaterials->each(function ($componentMaterial) {
+            //                $material = $componentMaterial->material;
+            //                $qty = $componentMaterial->qty;
+            //
+            //                $serialPanels = $material->serial_panels;
+            //
+            //                $serialPanels->each(function ($serialPanel) use ($qty) {
+            //                    $serialPanel->update(['qty' => $serialPanel->qty + $qty]);
+            //                });
+            //            });
+        });
+
+    }
+
+    private function generateQrCode(PanelAttachment $panelAttachment) {
+        return 'KPM';
     }
 
     private function generateAttachmentNumber(PanelAttachment $panelAttachment) {
