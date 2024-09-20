@@ -18,7 +18,6 @@ class PanelAttachmentFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
             'carriage_panel_id' => CarriagePanel::inRandomOrder()->first()->id,
             'source_workstation_id' => Workstation::inRandomOrder()->first()->id,
             'destination_workstation_id' => Workstation::inRandomOrder()->first()->id,

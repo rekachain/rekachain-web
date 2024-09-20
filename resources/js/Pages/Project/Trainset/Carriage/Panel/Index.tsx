@@ -52,6 +52,7 @@ import { cn } from '@/lib/utils';
 // import { Button } from '@/Components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
+import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
 
 export default function ({
     project,
@@ -227,26 +228,31 @@ export default function ({
                     </div>
 
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Panels carriageTrainset={carriageTrainset} handleSyncCarriage={handleSyncCarriage} />
+                        <Panels
+                            trainset={trainset}
+                            carriageTrainset={carriageTrainset}
+                            handleSyncCarriage={handleSyncCarriage}
+                        />
                     </Suspense>
 
-                    <Dialog>
-                        <DialogTrigger
-                            className={buttonVariants({
-                                className: 'w-full',
-                            })}
-                        >
-                            Tambah panel baru
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>{data.new_panel_name}</DialogTitle>
-                                <DialogDescription></DialogDescription>
-                                <form onSubmit={handleAddPanelCarriage} className="flex flex-col gap-4">
-                                    <SelectGroup className="space-y-2">
-                                        <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                            <Label htmlFor="progress">Progress</Label>
-                                            {/* <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
+                    {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                        <Dialog>
+                            <DialogTrigger
+                                className={buttonVariants({
+                                    className: 'w-full',
+                                })}
+                            >
+                                Tambah panel baru
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>{data.new_panel_name}</DialogTitle>
+                                    <DialogDescription></DialogDescription>
+                                    <form onSubmit={handleAddPanelCarriage} className="flex flex-col gap-4">
+                                        <SelectGroup className="space-y-2">
+                                            <div className="flex flex-col bg-background-2 gap-4 p-4">
+                                                <Label htmlFor="progress">Progress</Label>
+                                                {/* <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
                                             <div className="flex gap-4">
                                                 <Input
                                                     placeholder="Cari progress"
@@ -355,8 +361,8 @@ export default function ({
                                                 </Button>
                                             </div>
 
-                                            <Label htmlFor="panel">Panel </Label>
-                                            {/* <Input
+                                                <Label htmlFor="panel">Panel </Label>
+                                                {/* <Input
                                                 placeholder="Cari panel"
                                                 value={data.search_panel}
                                                 onChange={handleChangeSearchPanelName}
@@ -448,60 +454,51 @@ export default function ({
                                                 </PopoverContent>
                                             </Popover>
                                         </div>
-                                    </SelectGroup>
-                                    <div className="flex gap-4 items-center">
-                                        <div className=" flex-1">
-                                            <Separator />
-                                        </div>
-                                        Atau
-                                        <div className=" flex-1">
-                                            <Separator />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-4 bg-background-2 p-4">
-                                        <div className="flex flex-col gap-2">
-                                            <Label>Panel</Label>
-                                            <Input
-                                                type="text"
-                                                value={data.new_panel_name}
-                                                onChange={handleChangeNewPanelName}
+                                        <div className="flex flex-col gap-4 bg-background-2 p-4">
+                                            <div className="flex flex-col gap-2">
+                                                <Label>Panel</Label>
+                                                <Input
+                                                    type="text"
+                                                    value={data.new_panel_name}
+                                                    onChange={handleChangeNewPanelName}
+                                                    disabled={data.new_panel_id !== 0}
+                                                    required
+                                                />
+                                            </div>
+                                            <Label htmlFor="new-panel-description">Deskripsi Panel</Label>
+                                            <Textarea
+                                                id="new-panel-description"
+                                                className="p-2 rounded"
+                                                value={data.new_panel_description}
+                                                onChange={handleChangeNewPanelDescription}
                                                 disabled={data.new_panel_id !== 0}
+                                            />
+                                            <Label htmlFor="new-panel-qty">Jumlah Panel</Label>
+                                            <Input
+                                                id="new-panel-qty"
+                                                type="number"
+                                                min={1}
+                                                value={data.new_panel_qty}
+                                                onChange={handleChangeNewPanelQty}
                                                 required
                                             />
                                         </div>
-                                        <Label htmlFor="new-panel-description">Deskripsi Panel</Label>
-                                        <Textarea
-                                            id="new-panel-description"
-                                            className="p-2 rounded"
-                                            value={data.new_panel_description}
-                                            onChange={handleChangeNewPanelDescription}
-                                            disabled={data.new_panel_id !== 0}
-                                        />
-                                        <Label htmlFor="new-panel-qty">Jumlah Panel</Label>
-                                        <Input
-                                            id="new-panel-qty"
-                                            type="number"
-                                            min={1}
-                                            value={data.new_panel_qty}
-                                            onChange={handleChangeNewPanelQty}
-                                            required
-                                        />
-                                    </div>
 
-                                    <Button type="submit" disabled={loading}>
-                                        {loading ? (
-                                            <>
-                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                Proses
-                                            </>
-                                        ) : (
-                                            'Tambahkan panel'
-                                        )}
-                                    </Button>
-                                </form>
-                            </DialogHeader>
-                        </DialogContent>
-                    </Dialog>
+                                        <Button type="submit" disabled={loading}>
+                                            {loading ? (
+                                                <>
+                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                    Proses
+                                                </>
+                                            ) : (
+                                                'Tambahkan panel'
+                                            )}
+                                        </Button>
+                                    </form>
+                                </DialogHeader>
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </div>
             </AuthenticatedLayout>
         </>

@@ -1,21 +1,28 @@
 <?php
 
-use App\Models\Component;
-use App\Models\Division;
-use App\Models\Panel;
-use App\Models\Permission;
-use App\Models\Progress;
-use App\Models\Project;
+use Tests\TestCase;
 use App\Models\Role;
-use App\Models\Trainset;
 use App\Models\User;
+use App\Models\Panel;
+use App\Models\Project;
 use App\Models\WorkDay;
-use App\Models\WorkDayTime;
+use App\Models\Carriage;
+use App\Models\Division;
+use App\Models\Progress;
+use App\Models\Trainset;
 use App\Models\Workshop;
+use App\Models\Component;
+use App\Models\Permission;
+use App\Models\RawMaterial;
+use App\Models\SerialPanel;
+use App\Models\WorkDayTime;
 use App\Models\Workstation;
+use App\Models\CarriagePanel;
+use App\Models\PanelMaterial;
+use App\Models\PanelAttachment;
+use App\Models\CarriageTrainset;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +103,39 @@ function createComponent() {
     return $component;
 }
 
+function createPanelMaterial() {
+    createRawMaterial();
+    createCarriagePanel();
+    $panelMaterial = new PanelMaterial;
+    $panelMaterial->save();
+
+    return $panelMaterial;
+}
+
+function createRawMaterial() {
+    $rawMaterial = RawMaterial::factory()->create();
+
+    return $rawMaterial;
+}
+
+// function createCarriagePanel() {
+//     Carriage::factory()->create();
+//     createProgress();
+//     createCarriageTrainset();
+//     createPanel();
+
+//     $carriagePanel = CarriagePanel::factory()->create();
+
+//     return $carriagePanel;
+// }
+
+// function createCarriageTrainset() {
+//     $trainset = createTrainset();
+//     $carriageTrainset = CarriageTrainset::factory()->create();
+
+//     return $carriageTrainset;
+// }
+
 function createProject() {
     $project = new Project;
     $project->name = 'Project';
@@ -166,4 +206,56 @@ function createWorkstation() {
     $workstation->save();
 
     return $workstation;
+}
+function createCarriageTrainset() {
+    $trainset = createTrainset();
+    $carriage = Carriage::factory()->create();
+
+    $carriageTrainset = CarriageTrainset::create([
+        'trainset_id' => $trainset->id,
+        'carriage_id' => $carriage->id,
+        'qty' => 5,
+    ]);
+    // $carriageTrainset->save();
+
+    return $carriageTrainset;
+}
+
+function createCarriagePanel() {
+    createCarriageTrainset();
+    $progress = createProgress();
+    $panel = createPanel();
+    $carriagePanel = new CarriagePanel;
+    $carriagePanel->carriage_trainset_id = CarriageTrainset::inRandomOrder()->first()->id;
+    $carriagePanel->panel_id = $panel->id;
+    $carriagePanel->progress_id = $progress->id;
+    $carriagePanel->qty = 5;
+    $carriagePanel->save();
+
+    return $carriagePanel;
+}
+
+function createPanelAttachment() {
+    createCarriageTrainset();
+    createCarriagePanel();
+    createWorkstation();
+    createWorkstation();
+
+    $panelAttachment = PanelAttachment::factory()->create();
+
+    return $panelAttachment;
+}
+
+function createSerialPanel() {
+    $panelAttachment = createPanelAttachment();
+    $serialPanel = SerialPanel::create([
+        'panel_attachment_id' => $panelAttachment->id,
+        'qr_code' => $panelAttachment->qr_code,
+        'qr_path' => $panelAttachment->qr_path,
+        'manufacture_status' => 'in_progress',
+        'notes' => 'ini serial panel notes',
+    ]);
+
+    return $serialPanel;
+
 }
