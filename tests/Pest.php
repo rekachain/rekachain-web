@@ -145,7 +145,7 @@ function createProject() {
 }
 
 function createTrainset() {
-    $project = createProject();
+    createProject();
 
     $trainset = Trainset::factory()->create();
 
@@ -216,7 +216,7 @@ function createCarriageTrainset() {
         'carriage_id' => $carriage->id,
         'qty' => 5,
     ]);
-    // $carriageTrainset->save();
+    $carriageTrainset->save();
 
     return $carriageTrainset;
 }
