@@ -13,6 +13,13 @@ export const carriageTrainsetService = {
         panelDescription: string,
         panelQty: number,
     ) => {
+        return console.log({
+            carriage_panel_progress_id: progressId,
+            panel_id: panelId || null,
+            panel_name: panelName,
+            panel_description: panelDescription,
+            carriage_panel_qty: panelQty,
+        });
         await window.axios.post(
             route(`${ROUTES.CARRIAGE_TRAINSETS}.update`, carriageId),
             {
