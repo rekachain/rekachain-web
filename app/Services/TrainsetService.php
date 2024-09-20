@@ -22,7 +22,9 @@ use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
@@ -243,9 +245,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
          * get all components of the project (component)
          */
         DB::transaction(function () use ($trainset, $data) {
+            if ($trainset->status === TrainsetStatusEnum::PROGRESS) {
+                return false;
+            }
             $this->generatePanelAttachment($trainset, $data);
 
             $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+
+            //            DB::rollBack();
         });
 
         return true;
@@ -265,8 +272,16 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     'destination_workstation_id' => $destinationWorkstationId,
                 ]);
 
-                $this->generateSerialPanels($panelAttachment, $carriagePanel);
+                $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
 
+                $serialPanelIds = $this->generateSerialPanels($panelAttachment, $carriagePanel);
+
+                $serialPanelIdsString = implode(',', $serialPanelIds);
+                $qrCode = "KPM:{$panelAttachment->attachment_number};SN:[{$serialPanelIdsString}];P:{$carriagePanel->carriage_trainset->trainset->project->name};TS:{$carriagePanel->carriage_trainset->trainset->name};;";
+                $path = "panel_attachments/qr_images/{$panelAttachment->id}.svg";
+                $this->generateQrCode($qrCode, $path);
+
+                $panelAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
                 //                $panelAttachment = $carriagePanel->panel_attachments()->create([
                 //                    'carriage_panel_id' => $carriagePanel->panel_id,
                 //                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
@@ -280,45 +295,58 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 //                    'supervisor_id' => null, // default
                 //                ]);
                 //
-                $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
             });
         });
     }
 
-    private function generateSerialPanels(PanelAttachment $panelAttachment, CarriagePanel $carriagePanel) {
-        $carriagePanel->panel_components()->each(function ($panelComponent) use ($carriagePanel, $panelAttachment) {
-            $qty = $panelComponent->qty;
-
-            for ($i = 0; $i < $qty; $i++) {
-                $serialPanel = $this->serialPanelService->create([
-                    'panel_attachment_id' => $panelAttachment->id,
-                    'panel_component_id' => $panelComponent->id,
-                    'manufacture_status' => SerialPanelManufactureStatusEnum::IN_PROGRESS,
-                ]);
-
-                $qrCode = "KPM:{$panelAttachment->attachment_number};SN:{$serialPanel->id};P{$carriagePanel->carriage_trainset()->trainset()->project()->name};TS:{$carriagePanel->carriage_trainset()->trainset()->name};;";
-
-                $serialPanel->update(['qr_code' => $qrCode]);
-            }
-            //            $component = $panelComponent->component;
-            //            $componentMaterials = $component->component_materials;
-            //
-            //            $componentMaterials->each(function ($componentMaterial) {
-            //                $material = $componentMaterial->material;
-            //                $qty = $componentMaterial->qty;
-            //
-            //                $serialPanels = $material->serial_panels;
-            //
-            //                $serialPanels->each(function ($serialPanel) use ($qty) {
-            //                    $serialPanel->update(['qty' => $serialPanel->qty + $qty]);
-            //                });
-            //            });
-        });
-
+    private function generateQrCode(string $content, string $path) {
+        $qrCodeContent = QrCode::format('svg')->size(600)->generate($content);
+        Storage::put("public/{$path}", $qrCodeContent);
     }
 
-    private function generateQrCode(PanelAttachment $panelAttachment) {
-        return 'KPM';
+    private function generateSerialPanels(PanelAttachment $panelAttachment, CarriagePanel $carriagePanel) {
+        $serialPanelIds = [];
+        $qty = $carriagePanel->carriage_trainset->qty * $carriagePanel->qty;
+        logger('Qty: ' . $qty);
+        for ($i = 0; $i < $qty; $i++) {
+            $serialPanel = $this->serialPanelService->create([
+                'panel_attachment_id' => $panelAttachment->id,
+                'manufacture_status' => SerialPanelManufactureStatusEnum::IN_PROGRESS,
+            ]);
+
+            $serialPanelIds[] = $serialPanel->id;
+
+            $qrCode = "KPM:{$panelAttachment->attachment_number};SN:{$serialPanel->id};P{$carriagePanel->carriage_trainset->trainset->project->name};TS:{$carriagePanel->carriage_trainset->trainset->name};;";
+            $path = "serial_panels/qr_images/{$serialPanel->id}.svg";
+            $this->generateQrCode($qrCode, $path);
+
+            $this->serialPanelService->update($serialPanel, ['qr_code' => $qrCode, 'qr_path' => $path]);
+
+            //            logger('Current serialPanelIds array: ' . json_encode($serialPanelIds));
+        }
+
+        //        logger('Final serialPanelIds array: ' . json_encode($serialPanelIds));
+
+        return $serialPanelIds;
+
+        //        $carriagePanel->panel_components()->each(function ($panelComponent) use ($carriagePanel, $panelAttachment) {
+        //            $qty = $panelComponent->qty;
+
+        //            $component = $panelComponent->component;
+        //            $componentMaterials = $component->component_materials;
+        //
+        //            $componentMaterials->each(function ($componentMaterial) {
+        //                $material = $componentMaterial->material;
+        //                $qty = $componentMaterial->qty;
+        //
+        //                $serialPanels = $material->serial_panels;
+        //
+        //                $serialPanels->each(function ($serialPanel) use ($qty) {
+        //                    $serialPanel->update(['qty' => $serialPanel->qty + $qty]);
+        //                });
+        //            });
+        //        });
+
     }
 
     private function generateAttachmentNumber(PanelAttachment $panelAttachment) {
