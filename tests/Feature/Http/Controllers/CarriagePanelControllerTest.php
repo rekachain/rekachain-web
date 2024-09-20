@@ -34,16 +34,15 @@ test('store method creates new carriagePanel', function () {
     createProgress();
     createPanel();
     createCarriageTrainset();
-    // dump(CarriageTrainset::inRandomOrder()->first()->id);
     $carriagePanelData = [
         'progress_id' => Progress::inRandomOrder()->first()->id,
         'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
         'panel_id' => Panel::inRandomOrder()->first()->id,
         'qty' => 1,
     ];
-
-    $response = $this->actingAs($user)->postJson('/carriage-panels', $carriagePanelData);
-
+    
+    $response = $this->actingAs($user)->post('/carriage-panels', $carriagePanelData);
+    
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'progress_id', 'carriage_trainset_id', 'panel_id', 'qty']);
     $this->assertDatabaseHas('carriage_panels', $carriagePanelData);
