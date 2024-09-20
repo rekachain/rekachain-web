@@ -1,2 +1,2 @@
-progress_id,car_type,panel_name
-id progress,tipe gerbong,nama panel
+trainset,progress_id,car_type,panel_name
+nama trainset,id progress,tipe gerbong,nama panel
