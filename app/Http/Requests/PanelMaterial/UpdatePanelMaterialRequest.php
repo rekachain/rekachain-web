@@ -19,7 +19,7 @@ class UpdatePanelMaterialRequest extends FormRequest {
      */
     public function rules(): array {
 
-        $panelMaterial = $this->route('panelMaterial')->id;
+        // $panelMaterial = $this->route('panelMaterial')->id;
 
         return [
             'carriage_panel_id' => 'integer',

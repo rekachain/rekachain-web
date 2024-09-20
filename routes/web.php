@@ -11,6 +11,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProgressStepController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
@@ -74,6 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('components', ComponentController::class);
     Route::resource('work-days', WorkDayController::class);
     Route::resource('work-day-times', WorkDayTimeController::class);
+    Route::resource('steps', StepController::class);
+    Route::resource('progress-steps', ProgressStepController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
@@ -83,8 +86,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
     });
 });
-Route::resource('steps', StepController::class);
-
 require __DIR__ . '/auth.php';
 
 Route::get('/buat-proyek', function () {

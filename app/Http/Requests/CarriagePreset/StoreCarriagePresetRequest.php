@@ -19,7 +19,7 @@ class StoreCarriagePresetRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'preset_trainset_id' => ['required', 'integer', 'exists:trainsets,id'],
+            'preset_trainset_id' => ['required', 'integer', 'exists:preset_trainsets,id'],
             'carriage_id' => ['required', 'integer', 'exists:carriages,id'],
             'qty' => ['required', 'integer', 'min:1'],
         ];

@@ -13,7 +13,7 @@ class DetailWorkerPanel extends Model {
     protected $fillable = [
         'serial_panel_id',
         'worker_id',
-        'step_id',
+        'progress_step_id',
         'estimated_time',
         'work_status',
         'acceptance_status',
@@ -31,7 +31,7 @@ class DetailWorkerPanel extends Model {
         return $this->belongsTo(User::class, 'worker_id');
     }
 
-    public function step() {
-        return $this->belongsTo(Step::class);
+    public function progress_step() {
+        return $this->belongsTo(ProgressStep::class);
     }
 }
