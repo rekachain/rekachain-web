@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,10 @@ class PanelAttachment extends Model {
         'status',
         'panel_attachment_id',
         'supervisor_id',
+    ];
+
+    protected $casts = [
+        'status' => PanelAttachmentStatusEnum::class,
     ];
 
     public function trainset(): HasOneThrough {

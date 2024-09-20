@@ -7,6 +7,7 @@ use App\Models\CarriagePanel;
 use App\Models\CarriageTrainset;
 use App\Models\Panel;
 use App\Models\Progress;
+use App\Models\Trainset;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
@@ -23,7 +24,9 @@ class CarriagePanelSeeder extends Seeder {
                     if (Panel::whereName($data['panel_name'])->exists()) {
                         if (Progress::whereId($data['progress_id'])->exists()) {
                             CarriagePanel::create([
-                                'carriage_trainset_id' => CarriageTrainset::whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)->first()->id,
+                                'carriage_trainset_id' => CarriageTrainset::whereTrainsetId(Trainset::whereName($data['trainset'])->first()->id)
+                                                                        ->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)
+                                                                        ->first()->id,
                                 'progress_id' => Progress::whereId($data['progress_id'])->first()->id,
                                 'panel_id' => Panel::whereName($data['panel_name'])->first()->id,
                             ]);
