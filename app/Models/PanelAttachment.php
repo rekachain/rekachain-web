@@ -12,7 +12,6 @@ class PanelAttachment extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'carriage_trainset_id',
         'carriage_panel_id',
         'source_workstation_id',
         'destination_workstation_id',
@@ -52,10 +51,6 @@ class PanelAttachment extends Model {
 
     public function serial_panels(): HasMany {
         return $this->hasMany(SerialPanel::class);
-    }
-
-    public function carriage_trainset(): BelongsTo {
-        return $this->belongsTo(CarriageTrainset::class);
     }
 
     public function supervisor(): BelongsTo {

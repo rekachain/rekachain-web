@@ -20,8 +20,8 @@ class SerialPanelResource extends JsonResource {
                 return [
                     'serial_number' => $this->id,
                     'project' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->project->name,
-                    'trainset' => $this->panel_attachment?->carriage_trainset->trainset->name,
-                    'carriage' => $this->panel_attachment?->carriage_trainset->carriage->type,
+                    'trainset' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->name,
+                    'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
@@ -30,8 +30,8 @@ class SerialPanelResource extends JsonResource {
                 return [
                     'serial_number' => $this->id,
                     'project' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->project->name,
-                    'trainset' => $this->panel_attachment?->carriage_trainset->trainset->name,
-                    'carriage' => $this->panel_attachment?->carriage_trainset->carriage->type,
+                    'trainset' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->name,
+                    'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
                     'manufacture_status' => $this->manufacture_status,
                     'notes' => $this->notes,
@@ -44,7 +44,7 @@ class SerialPanelResource extends JsonResource {
                 return [
                     'serial_number' => $this->id,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
-                    'carriage' => $this->panel_attachment?->carriage_trainset->carriage->type,
+                    'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'created_at' => $this->created_at,
