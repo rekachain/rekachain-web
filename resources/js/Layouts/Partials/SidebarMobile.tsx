@@ -1,9 +1,11 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
+    RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
+    RiExpandRightLine,
     RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
@@ -13,6 +15,7 @@ import {
     RiQuestionLine,
     RiSettings3Line,
     RiShieldLine,
+    RiStackLine,
     RiToolsFill,
     RiUser2Line,
     RiUserLine,
@@ -69,17 +72,8 @@ export default function SidebarMobile() {
                                 <img
                                     src="/assets/images/icon.png"
                                     alt="logo"
-                                    // className=" "
-                                    // className="sidebar-header-logo h-full object-contain"
-                                    // className="sidebar-header-logo h-full "
                                     width={50}
-                                    // height={500}
                                 />
-                                {/* {sidebarCollapse ? (
-                            <RiContractRightLine size={STYLING.ICON.SIZE.SMALL} />
-                        ) : (
-                            <RiContractLeftLine size={STYLING.ICON.SIZE.SMALL} />
-                        )} */}
                             </Button>
                         </SheetTrigger>
                         <SheetContent side={'left'} className="w-[250px] sm:w-[540px]">
@@ -88,11 +82,7 @@ export default function SidebarMobile() {
                                     <img
                                         src="/assets/images/icon.png"
                                         alt="logo"
-                                        // className=" "
-                                        // className="sidebar-header-logo h-full object-contain"
-                                        // className="sidebar-header-logo h-full "
                                         width={50}
-                                        // height={500}
                                     />
                                 </SheetTitle>
                                 <SheetDescription className="items-start w-full  flex flex-col gap-7 dark:text-white text-black">
@@ -117,15 +107,8 @@ export default function SidebarMobile() {
                                                         href={route(`${ROUTES.DIVISIONS}.index`)}
                                                     >
                                                         <RiDivideLine size={STYLING.ICON.SIZE.SMALL} />
-                                                        {/* <RiLockUnlockFill size={25} /> */}
                                                         <p className="text-base">Divisi</p>
                                                     </Link>
-                                                    // <SidebarLinkCollapsibleItem
-                                                    //     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                                    //     routeName={`${ROUTES.DIVISIONS}.index`}
-                                                    //     title="Divisi"
-                                                    //     icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
-                                                    // />
                                                 )}
 
                                                 {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
@@ -134,16 +117,8 @@ export default function SidebarMobile() {
                                                         href={route(`${ROUTES.WORKSHOPS}.index`)}
                                                     >
                                                         <RiHome2Line size={STYLING.ICON.SIZE.SMALL} />
-                                                        {/* <RiDivideLine size={STYLING.ICON.SIZE.SMALL} /> */}
-                                                        {/* <RiLockUnlockFill size={25} /> */}
                                                         <p className="text-base">Workshop</p>
                                                     </Link>
-                                                    // <SidebarLinkCollapsibleItem
-                                                    //     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                                    //     routeName={`${ROUTES.WORKSHOPS}.index`}
-                                                    //     title="Workshop"
-                                                    //     icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
-                                                    // />
                                                 )}
 
                                                 {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
@@ -152,15 +127,8 @@ export default function SidebarMobile() {
                                                         href={route(`${ROUTES.WORKSTATIONS}.index`)}
                                                     >
                                                         <RiToolsFill size={STYLING.ICON.SIZE.SMALL} />
-                                                        {/* <RiDivideLine size={STYLING.ICON.SIZE.SMALL} /> */}
                                                         <p className="text-base">Workstation</p>
                                                     </Link>
-                                                    // <SidebarLinkCollapsibleItem
-                                                    //     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                                    //     routeName={`${ROUTES.WORKSTATIONS}.index`}
-                                                    //     title="Workstation"
-                                                    //     icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
-                                                    // />
                                                 )}
 
                                                 {checkPermission(PERMISSION_ENUM.USER_READ) && (
@@ -169,40 +137,13 @@ export default function SidebarMobile() {
                                                         href={route(`${ROUTES.USERS}.index`)}
                                                     >
                                                         <RiUserLine size={STYLING.ICON.SIZE.SMALL} />
-                                                        {/* <RiDivideLine size={STYLING.ICON.SIZE.SMALL} /> */}
                                                         <p className="text-base">Staff</p>
                                                     </Link>
-                                                    // <SidebarLinkCollapsibleItem
-                                                    //     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                                    //     routeName={`${ROUTES.USERS}.index`}
-                                                    //     title="Staff"
-                                                    //     icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                                                    // />
                                                 )}
-                                                {/* <Link
-                                                    className="flex items-center gap-2"
-                                                    href={route(`${ROUTES.PERMISSIONS}.index`)}
-                                                >
-                                                    <RiLockUnlockFill size={25} />
-                                                    <p className="text-base">Permissions</p>
-                                                </Link>
-                                                <Link
-                                                    className="flex items-center gap-2"
-                                                    href={route(`${ROUTES.ROLES}.index`)}
-                                                >
-                                                    <RiShieldLine className="mt-2" size={25} />
-                                                    <p className="text-base">Roles</p>
-                                                </Link> */}
                                             </AccordionContent>
                                         </AccordionItem>
                                     </Accordion>
 
-                                    {/* <Link href={route(`${ROUTES.USERS}.index`)}>
-                                        <div className="flex items-center gap-2">
-                                            <RiUserLine size={35} />
-                                            <p className="text-base">Manajemen Staff</p>
-                                        </div>
-                                    </Link> */}
                                     <Accordion type="single" collapsible>
                                         <AccordionItem value="item-1">
                                             <AccordionTrigger>
@@ -232,53 +173,59 @@ export default function SidebarMobile() {
 
                                     <hr className="border-gray-700 border-2 w-full" />
 
-                                    <Link
-                                        className="flex items-center gap-2"
-                                        href={route(`${ROUTES.RAW_MATERIALS}.index`)}
-                                    >
-                                        <RiInstanceLine size={35} />
-                                        <p className="text-base">List Bahan Baku</p>
-                                    </Link>
-                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PANELS}.index`)}>
-                                        <RiArtboard2Fill size={35} />
-                                        <p className="text-base">List Panel</p>
-                                    </Link>
-                                    <Link className="flex items-center gap-2" href={route(`${ROUTES.PROJECTS}.index`)}>
-                                        <RiBox3Line size={35} />
-                                        <p className="text-base">List Proyek</p>
-                                    </Link>
+                                    {checkPermission(PERMISSION_ENUM.STEP_READ) && (
+                                        <Link className="flex items-center gap-2" href={route(`${ROUTES.STEPS}.index`)}>
+                                            <RiExpandRightLine size={35} />
+                                            <p className="text-base">List Step</p>
+                                        </Link>
+                                    )}
 
-                                    {/* 
-                                    <Accordion type="single" collapsible>
-                                        <AccordionItem value="item-1">
-                                            <AccordionTrigger>
-                                                <div className="flex items-center gap-2">
-                                                    <ListOrdered size={35} />
-                                                    <p className="text-base">List Proyek</p>
-                                                </div>
-                                            </AccordionTrigger>
-                                            <AccordionContent className="items-center flex flex-col gap-7">
-                                                <Link
-                                                    className="flex items-center gap-2"
-                                                    href={route(`${ROUTES.PROJECTS}.index`)}
-                                                >
-                                                    <RiBox3Line size={30} />
-                                                    <p className="text-base">List Proyek</p>
-                                                </Link>
-                                                <Link className="flex items-center gap-2" href={'buat-proyek'}>
-                                                    <RiBox3Line size={30} />
-                                                    <p className="text-base">Buat Proyek</p>
-                                                </Link>
-                                                <Link
-                                                    className="flex items-center gap-2"
-                                                    href={route(`${ROUTES.PROFILE}.edit`)}
-                                                >
-                                                    <RiBox3Line size={30} />
-                                                    <p className="text-base">Buat Proyek</p>
-                                                </Link>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    </Accordion> */}
+                                    {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.RAW_MATERIALS}.index`)}
+                                        >
+                                            <RiInstanceLine size={35} />
+                                            <p className="text-base">List Material</p>
+                                        </Link>
+                                    )}
+                                    {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.COMPONENTS}.index`)}
+                                        >
+                                            <RiStackLine size={35} />
+                                            <p className="text-base">List Component</p>
+                                        </Link>
+                                    )}
+                                    {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.PANELS}.index`)}
+                                        >
+                                            <RiArtboard2Fill size={35} />
+                                            <p className="text-base">List Panel</p>
+                                        </Link>
+                                    )}
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.PROJECTS}.index`)}
+                                        >
+                                            <RiBox3Line size={35} />
+                                            <p className="text-base">List Proyek</p>
+                                        </Link>
+                                    )}
+                                    {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
+                                        <Link
+                                            className="flex items-center gap-2"
+                                            href={route(`${ROUTES.CARRIAGES}.index`)}
+                                        >
+                                            <RiCaravanLine size={35} />
+                                            <p className="text-base">List Gerbong</p>
+                                        </Link>
+                                    )}
+
                                     <div className="flex flex-col h-44 justify-end gap-y-6 ">
                                         <Link
                                             className="flex items-center gap-2 m "

@@ -188,8 +188,8 @@ export default function ({
         setData('new_carriage_id', 0);
     };
 
-    const handleChangeSearchCarriageType = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const search = e.target.value;
+    const handleChangeSearchCarriageType = async (e: string) => {
+        const search = e;
         setCarriageFilters({ ...carriageFilters, search });
         // await handleSyncCarriages();
     };
@@ -561,49 +561,50 @@ export default function ({
                                                 >
                                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                                 </Button> */}
-                                                    <Popover open={open} onOpenChange={setOpen}>
-                                                        <PopoverTrigger asChild>
-                                                            <Button
-                                                                variant="outline"
-                                                                role="combobox"
-                                                                aria-expanded={open}
-                                                                className="w-full justify-between"
-                                                            >
-                                                                {value
-                                                                    ? handleSearchCarriages(carriageResponse)
-                                                                    : 'Pilih carriage...'}
-                                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                            </Button>
-                                                        </PopoverTrigger>
-                                                        <PopoverContent className="w-full p-0">
-                                                            <Command>
-                                                                <CommandInput placeholder="Cari Gerbong..." />
-                                                                <CommandList>
-                                                                    <CommandEmpty>
-                                                                        Gerbong tidak ditemukan.
-                                                                    </CommandEmpty>
-                                                                    <CommandGroup>
-                                                                        {carriageResponse?.data.map(carriage => (
-                                                                            <CommandItem
-                                                                                key={carriage.type}
-                                                                                value={`${carriage.type} : ${carriage.description}`}
-                                                                                onSelect={currentValue => {
-                                                                                    setData(
-                                                                                        'new_carriage_id',
-                                                                                        +carriage.id,
-                                                                                    );
-                                                                                    // alert(currentValue);
-                                                                                    setValue(
-                                                                                        currentValue === value
-                                                                                            ? ''
-                                                                                            : currentValue,
-                                                                                    );
-                                                                                    setOpen(false);
-                                                                                }}
-                                                                            >
-                                                                                {carriage.type} : {carriage.description}
-                                                                                <br />
-                                                                                {/* {carriage.carriage_panels?.map((c, i) => (
+                                                <Popover open={open} onOpenChange={setOpen}>
+                                                    <PopoverTrigger asChild>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            aria-expanded={open}
+                                                            className="w-full justify-between"
+                                                        >
+                                                            {value
+                                                                ? handleSearchCarriages(carriageResponse)
+                                                                : 'Pilih carriage...'}
+                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-full p-0">
+                                                        <Command>
+                                                            <CommandInput
+                                                                onValueChange={e => handleChangeSearchCarriageType(e)}
+                                                                placeholder="Cari Gerbong..."
+                                                            />
+                                                            <CommandList>
+                                                                <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
+                                                                <CommandGroup>
+                                                                    {carriageResponse?.data.map(carriage => (
+                                                                        <CommandItem
+                                                                            key={carriage.type}
+                                                                            value={`${carriage.type} : ${carriage.description}`}
+                                                                            onSelect={currentValue => {
+                                                                                setData(
+                                                                                    'new_carriage_id',
+                                                                                    +carriage.id,
+                                                                                );
+                                                                                // alert(currentValue);
+                                                                                setValue(
+                                                                                    currentValue === value
+                                                                                        ? ''
+                                                                                        : currentValue,
+                                                                                );
+                                                                                setOpen(false);
+                                                                            }}
+                                                                        >
+                                                                            {carriage.type} : {carriage.description}
+                                                                            <br />
+                                                                            {/* {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
                                                                         <br />
                                                                         {c.panel.name}

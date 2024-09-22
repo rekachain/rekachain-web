@@ -92,12 +92,16 @@ export default function ({
         setLoading(false);
     }, []);
 
-    const handleChangeSearchPanelName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData('search_panel', e.target.value);
+    // const handleChangeSearchPanelName = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    //     setData('search_panel', e.target.value);
+    // };
+    const handleChangeSearchPanelName = async (e: string) => {
+        // setData('search_panel', e.target.value);
+        setData('search_panel', e);
     };
 
-    const handleChangeSearchprogressName = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData('search_progress', e.target.value);
+    const handleChangeSearchprogressName = async (e: string) => {
+        setData('search_progress', e);
     };
 
     const handleResetAddCarriageSelection = () => {
@@ -291,61 +295,71 @@ export default function ({
                                                     </SelectContent>
                                                 </Select>
                                             </div> */}
+                                            </div>
+                                        </SelectGroup>
+                                        <div className="flex gap-2">
+                                            <Popover open={open} onOpenChange={setOpen}>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        aria-expanded={open}
+                                                        className="w-full justify-between"
+                                                    >
+                                                        {value
+                                                            ? progressResponse?.data.find(
+                                                                  progress => progress.name === value,
+                                                              )?.name
+                                                            : 'Pilih progress...'}
+                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-full p-0">
+                                                    <Command>
+                                                        <CommandInput
+                                                            onValueChange={e => handleChangeSearchprogressName(e)}
+                                                            placeholder="Cari Progress..."
+                                                        />
+                                                        <CommandList>
+                                                            <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
+                                                            <CommandGroup>
+                                                                {progressResponse?.data.map(progress => (
+                                                                    <CommandItem
+                                                                        key={progress.name}
+                                                                        value={progress.name}
+                                                                        onSelect={currentValue => {
+                                                                            setData('progress_id', +progress.id);
+                                                                            setValue(
+                                                                                currentValue === value
+                                                                                    ? ''
+                                                                                    : currentValue,
+                                                                            );
+                                                                            setOpen(false);
+                                                                        }}
+                                                                    >
+                                                                        <Check
+                                                                            className={cn(
+                                                                                'mr-2 h-4 w-4',
+                                                                                value === progress.name
+                                                                                    ? 'opacity-100'
+                                                                                    : 'opacity-0',
+                                                                            )}
+                                                                        />
+                                                                        {progress.name}
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </CommandGroup>
+                                                        </CommandList>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                            <Button type="button" variant="ghost" onClick={handleResetProgressSearch}>
+                                                <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
+                                            </Button>
+                                        </div>
 
-                                                <Popover open={open} onOpenChange={setOpen}>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={open}
-                                                            className="w-full justify-between"
-                                                        >
-                                                            {value
-                                                                ? progressResponse?.data.find(
-                                                                      progress => progress.name === value,
-                                                                  )?.name
-                                                                : 'Pilih progress...'}
-                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-full p-0">
-                                                        <Command>
-                                                            <CommandInput placeholder="Cari Progress..." />
-                                                            <CommandList>
-                                                                <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {progressResponse?.data.map(progress => (
-                                                                        <CommandItem
-                                                                            key={progress.name}
-                                                                            value={progress.name}
-                                                                            onSelect={currentValue => {
-                                                                                setValue(
-                                                                                    currentValue === value
-                                                                                        ? ''
-                                                                                        : currentValue,
-                                                                                );
-                                                                                setOpen(false);
-                                                                            }}
-                                                                        >
-                                                                            <Check
-                                                                                className={cn(
-                                                                                    'mr-2 h-4 w-4',
-                                                                                    value === progress.name
-                                                                                        ? 'opacity-100'
-                                                                                        : 'opacity-0',
-                                                                                )}
-                                                                            />
-                                                                            {progress.name}
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
-                                                            </CommandList>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-
-                                                <Label htmlFor="panel">Panel </Label>
-                                                {/* <Input
+                                        <Label htmlFor="panel">Panel </Label>
+                                        {/* <Input
                                                 placeholder="Cari panel"
                                                 value={data.search_panel}
                                                 onChange={handleChangeSearchPanelName}
@@ -381,68 +395,61 @@ export default function ({
                                                 >
                                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                                 </Button> */}
-                                                <Popover open={openPanel} onOpenChange={setOpenPanel}>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={openPanel}
-                                                            className="w-full justify-between"
-                                                        >
-                                                            {valuePanel
-                                                                ? panelResponse?.data.find(
-                                                                      panel => panel.name === valuePanel,
-                                                                  )?.name
-                                                                : 'Pilih panel...'}
-                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-full p-0">
-                                                        <Command>
-                                                            <CommandInput placeholder="Cari Progress..." />
-                                                            <CommandList>
-                                                                <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {panelResponse?.data.map(panel => (
-                                                                        <CommandItem
-                                                                            key={panel.name}
-                                                                            value={panel.name}
-                                                                            onSelect={currentValue => {
-                                                                                setValuePanel(
-                                                                                    currentValue === valuePanel
-                                                                                        ? ''
-                                                                                        : currentValue,
-                                                                                );
-                                                                                setOpenPanel(false);
-                                                                            }}
-                                                                        >
-                                                                            <Check
-                                                                                className={cn(
-                                                                                    'mr-2 h-4 w-4',
-                                                                                    value === panel.name
-                                                                                        ? 'opacity-100'
-                                                                                        : 'opacity-0',
-                                                                                )}
-                                                                            />
-                                                                            {panel.name}
-                                                                        </CommandItem>
-                                                                    ))}
-                                                                </CommandGroup>
-                                                            </CommandList>
-                                                        </Command>
-                                                    </PopoverContent>
-                                                </Popover>
-                                            </div>
-                                        </SelectGroup>
-                                        <div className="flex gap-4 items-center">
-                                            <div className=" flex-1">
-                                                <Separator />
-                                            </div>
-                                            Atau
-                                            <div className=" flex-1">
-                                                <Separator />
-                                            </div>
-                                        </div>
+                                        <Popover open={openPanel} onOpenChange={setOpenPanel}>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    aria-expanded={openPanel}
+                                                    className="w-full justify-between"
+                                                >
+                                                    {valuePanel
+                                                        ? panelResponse?.data.find(panel => panel.name === valuePanel)
+                                                              ?.name
+                                                        : 'Pilih panel...'}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-full p-0">
+                                                <Command>
+                                                    <CommandInput
+                                                        onValueChange={handleChangeSearchPanelName}
+                                                        placeholder="Cari Progress..."
+                                                    />
+                                                    <CommandList>
+                                                        <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {panelResponse?.data.map(panel => (
+                                                                <CommandItem
+                                                                    key={panel.name}
+                                                                    value={panel.name}
+                                                                    onSelect={currentValue => {
+                                                                        handleChangePanel(panel.id.toString());
+                                                                        setValuePanel(
+                                                                            currentValue === valuePanel
+                                                                                ? ''
+                                                                                : currentValue,
+                                                                        );
+                                                                        setOpenPanel(false);
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            value === panel.name
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0',
+                                                                        )}
+                                                                    />
+                                                                    {panel.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        {/* </div> */}
                                         <div className="flex flex-col gap-4 bg-background-2 p-4">
                                             <div className="flex flex-col gap-2">
                                                 <Label>Panel</Label>

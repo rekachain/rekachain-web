@@ -11,16 +11,21 @@ import { useLoading } from '@/contexts/LoadingContext';
 import { ProgressResource, StepResource } from '@/support/interfaces/resources';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Label } from '@/Components/ui/label';
-import { RefreshCcw } from 'lucide-react';
+import { Check, ChevronsUpDown, RefreshCcw } from 'lucide-react';
 import { STYLING } from '@/support/constants/styling';
 import { PaginateResponse } from '@/support/interfaces/others';
 import { withLoading } from '@/utils/withLoading';
 import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
 import { progressService } from '@/services/progressService';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
+import cn from 'mxcn';
 
 export default function ({ step }: { step: StepResource }) {
     console.log(step);
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
     const [searchProgress, setSearchProgress] = useState(step.progress?.name);
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -64,7 +69,69 @@ export default function ({ step }: { step: StepResource }) {
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
                                     <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
-                                    <div className="flex gap-4">
+                                    <div className="flex gap-2">
+                                        <Popover open={open} onOpenChange={setOpen}>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    aria-expanded={open}
+                                                    className="w-full justify-between"
+                                                >
+                                                    {value
+                                                        ? progressResponse?.data.find(
+                                                              progress => progress.name === value,
+                                                          )?.name
+                                                        : 'Pilih progress...'}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-full p-0">
+                                                <Command>
+                                                    <CommandInput
+                                                        onValueChange={e => setSearchProgress(e)}
+                                                        placeholder="Cari Progress..."
+                                                    />
+                                                    <CommandList>
+                                                        <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {progressResponse?.data.map(progress => (
+                                                                <CommandItem
+                                                                    key={progress.name}
+                                                                    value={progress.name}
+                                                                    onSelect={currentValue => {
+                                                                        setData('progress_id', +progress.id);
+                                                                        setValue(
+                                                                            currentValue === value ? '' : currentValue,
+                                                                        );
+                                                                        setOpen(false);
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            value === progress.name
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0',
+                                                                        )}
+                                                                    />
+                                                                    {progress.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            onClick={setSearchProgress.bind(null, '')}
+                                        >
+                                            <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
+                                        </Button>
+                                    </div>
+                                    {/* <div className="flex gap-4">
                                         <Input
                                             placeholder="Cari progress"
                                             value={searchProgress}
@@ -101,7 +168,7 @@ export default function ({ step }: { step: StepResource }) {
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </SelectGroup>
                         </div>

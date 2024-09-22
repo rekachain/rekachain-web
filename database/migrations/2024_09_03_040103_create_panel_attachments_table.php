@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ return new class extends Migration {
             $table->string('qr_path')->nullable()->unique();
             $table->string('current_step')->nullable();
             $table->string('elapsed_time')->nullable();
-            $table->string('status')->nullable();
+            $table->enum('status', PanelAttachmentStatusEnum::toArray())->nullable();
             $table->foreignId('panel_attachment_id')->nullable()->constrained();
             $table->foreignId('supervisor_id')->nullable()->references('id')->on('users')->constrained();
             $table->timestamps();
