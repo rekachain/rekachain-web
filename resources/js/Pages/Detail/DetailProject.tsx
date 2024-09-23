@@ -9,7 +9,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/Components/ui/table';
+} from '@/Components/UI/table';
 //   No Proyek jumlah TS Detail
 
 type Trainset = {
@@ -27,7 +27,7 @@ const listTrainset: Trainset[] = [
     { kodeTrainset: 'TS3', susunanKereta: 'TSC 3 (8 K3 + 1 M + 1 P)' },
 ];
 import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 
 export default function DetailProject({ detail }: DetailProject) {
     return (

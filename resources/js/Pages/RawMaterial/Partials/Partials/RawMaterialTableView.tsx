@@ -1,8 +1,8 @@
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { ROUTES } from '@/support/constants/routes';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { RawMaterialResource } from '@/support/interfaces/resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { ROUTES } from '@/Support/Constants/routes';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { RawMaterialResource } from '../../../../Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 

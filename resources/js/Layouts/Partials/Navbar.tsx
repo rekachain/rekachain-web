@@ -1,11 +1,11 @@
 import { RiMoonClearLine, RiNotification4Line, RiSearchLine } from '@remixicon/react';
-import { Input } from '@/Components/ui/input';
-import { Separator } from '@/Components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
+import { Input } from '@/Components/UI/input';
+import { Separator } from '@/Components/UI/separator';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
-import { Button, buttonVariants } from '@/Components/ui/button';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { Sun } from 'lucide-react';
 import {
@@ -15,9 +15,9 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu';
-import { STYLING } from '@/support/constants/styling';
-import { ROUTES } from '@/support/constants/routes';
+} from '@/Components/UI/dropdown-menu';
+import { STYLING } from '@/Support/Constants/styling';
+import { ROUTES } from '@/Support/Constants/routes';
 import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {

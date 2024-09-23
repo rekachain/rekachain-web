@@ -1,6 +1,6 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { PermissionResource } from '@/support/interfaces/resources';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { PermissionResource } from '../../../../Support/Interfaces/Resources';
 import React from 'react';
 
 export default function PermissionsTableView({

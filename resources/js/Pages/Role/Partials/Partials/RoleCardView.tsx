@@ -1,7 +1,7 @@
-import { Button } from '@/Components/ui/button';
-import AnimateIn from '@/lib/AnimateIn';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { RoleResource } from '@/support/interfaces/resources';
+import { Button } from '@/Components/UI/button';
+import AnimateIn from '@/Lib/AnimateIn';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { RoleResource } from '../../../../Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
@@ -27,8 +27,12 @@ export default function RoleCardView({
                         <div className="flex w-full justify-between items-center">
                             <h4 className="font-bold text-lg">{role.name}</h4>
                             <div className="text-center">
-                                <h5 className="font-bold text-base
-                                 items-center ">Divisi : {role.division?.name}</h5>
+                                <h5
+                                    className="font-bold text-base
+                                 items-center "
+                                >
+                                    Divisi : {role.division?.name}
+                                </h5>
                             </div>
                         </div>
                         <h4 className="text-base">Level : {role.level}</h4>

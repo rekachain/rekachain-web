@@ -17,4 +17,21 @@ trait HandlesFiltering {
 
         return $query;
     }
+
+    /**
+     * Apply filters to the query based on search parameters for related models.
+     */
+    public function applyRelationSearchFilters(Builder $query, array $searchParams, array $relationFilterableColumns): Builder {
+        if (isset($searchParams['search'])) {
+            foreach ($relationFilterableColumns as $relation => $columns) {
+                $query->orWhereHas($relation, function ($query) use ($searchParams, $columns) {
+                    foreach ($columns as $column) {
+                        $query->where($column, 'like', '%' . $searchParams['search'] . '%');
+                    }
+                });
+            }
+        }
+
+        return $query;
+    }
 }

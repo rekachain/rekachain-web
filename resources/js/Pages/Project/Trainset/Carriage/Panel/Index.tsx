@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import {
     CarriageTrainsetResource,
@@ -9,15 +9,15 @@ import {
     ProgressResource,
     ProjectResource,
     TrainsetResource,
-} from '@/support/interfaces/resources';
+} from '../../../../../Support/Interfaces/Resources';
 import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/support/constants/routes';
+} from '@/Components/UI/breadcrumb';
+import { ROUTES } from '@/Support/Constants/routes';
 import {
     Dialog,
     DialogContent,
@@ -25,34 +25,31 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { Label } from '@/Components/ui/label';
-import { Input } from '@/Components/ui/input';
+} from '@/Components/UI/dialog';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { Label } from '@/Components/UI/label';
+import { Input } from '@/Components/UI/input';
 import { Loader2, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/support/constants/styling';
-import { Separator } from '@/Components/ui/separator';
-import { Textarea } from '@/Components/ui/textarea';
-import { panelService } from '@/services/panelService';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { STYLING } from '@/Support/Constants/styling';
+import { Separator } from '@/Components/UI/separator';
+import { Textarea } from '@/Components/UI/textarea';
+import { panelService } from '@/Services/panelService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { PaginateResponse } from '../../../../../Support/Interfaces/Others';
 import { useDebounce } from '@uidotdev/usehooks';
-import { progressService } from '@/services/progressService';
-import { carriageTrainsetService } from '@/services/carriageTrainsetService';
-import { fetchGenericData } from '@/helpers/dataManagementHelper';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { progressService } from '@/Services/progressService';
+import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
+import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/Lib/utils';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { withLoading } from '@/Utils/withLoading';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
-
-import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
-
-import { cn } from '@/lib/utils';
-// import { Button } from '@/Components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
-import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
 
 export default function ({
     project,
@@ -63,10 +60,10 @@ export default function ({
     trainset: TrainsetResource;
     carriageTrainset: CarriageTrainsetResource;
 }) {
-    const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState('');
-    const [openPanel, setOpenPanel] = React.useState(false);
-    const [valuePanel, setValuePanel] = React.useState('');
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
+    const [openPanel, setOpenPanel] = useState(false);
+    const [valuePanel, setValuePanel] = useState('');
     const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
@@ -92,7 +89,7 @@ export default function ({
         setLoading(false);
     }, []);
 
-    // const handleChangeSearchPanelName = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const handleChangeSearchPanelName = async (e: ChangeEvent<HTMLInputElement>) => {
     //     setData('search_panel', e.target.value);
     // };
     const handleChangeSearchPanelName = async (e: string) => {
@@ -121,56 +118,46 @@ export default function ({
         setLoading(false);
     };
 
-    const handleChangeNewPanelName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeNewPanelName = (e: ChangeEvent<HTMLInputElement>) => {
         setData('new_panel_name', e.target.value);
     };
 
-    const handleChangeNewPanelDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChangeNewPanelDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setData('new_panel_description', e.target.value);
     };
 
-    const handleChangeNewPanelQty = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeNewPanelQty = (e: ChangeEvent<HTMLInputElement>) => {
         setData('new_panel_qty', +e.target.value);
     };
 
-    const handleSyncProgress = async () => {
-        setLoading(true);
+    const handleSyncProgress = withLoading(async () => {
         const filters: ServiceFilterOptions = { search: debouncedSearchProgress };
         const res = await progressService.getAll(filters);
         setProgressResponse(res);
-        setLoading(false);
-    };
+    });
 
-    const handleSyncCarriage = async () => {
-        setLoading(true);
+    const handleSyncCarriage = withLoading(async () => {
         const data = await fetchGenericData<{ carriageTrainset: CarriageTrainsetResource }>();
         setCarriageTrainset(data.carriageTrainset);
-        setLoading(false);
-    };
+    });
 
-    const handleAddPanelCarriage = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleAddPanelCarriage = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            setLoading(true);
-            await carriageTrainsetService.addPanel(
-                carriageTrainset.id,
-                data.progress_id,
-                data.new_panel_id,
-                data.new_panel_name,
-                data.new_panel_description,
-                data.new_panel_qty,
-            );
-            useSuccessToast('Panel berhasil ditambahkan');
-        } catch (error) {
-        } finally {
-            handleResetAddCarriageSelection();
-            handleResetProgressSearch();
-            await handleSyncCarriage();
-            setLoading(false);
-        }
-    };
+        await carriageTrainsetService.addPanel(
+            carriageTrainset.id,
+            data.progress_id,
+            data.new_panel_id,
+            data.new_panel_name,
+            data.new_panel_description,
+            data.new_panel_qty,
+        );
+        handleResetAddCarriageSelection();
+        handleResetProgressSearch();
+        await handleSyncCarriage();
+        useSuccessToast('Panel berhasil ditambahkan');
+    });
 
-    const handleChangePanel = async (v: string) => {
+    const handleChangePanel = withLoading(async (v: string) => {
         const res = await panelService.get(+v);
         setData(prevData => ({
             ...prevData,
@@ -178,7 +165,7 @@ export default function ({
             search_progress: res.progress?.name || '',
             progress_id: res.progress_id || 0,
         }));
-    };
+    });
 
     useEffect(() => {
         handleSyncPanels();

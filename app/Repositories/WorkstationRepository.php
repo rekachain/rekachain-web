@@ -22,6 +22,10 @@ class WorkstationRepository extends BaseRepository implements WorkstationReposit
 
         $query = $this->applySearchFilters($query, $searchParams, ['name', 'location']);
 
+        $query = $this->applyRelationSearchFilters($query, $searchParams, [
+            'workshop' => ['name'],
+        ]);
+
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);

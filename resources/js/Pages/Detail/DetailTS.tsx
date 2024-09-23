@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
-import HeadLampiran from '@/Components/ui/lampiran';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
+import HeadLampiran from '@/Components/UI/lampiran';
 import {
     Table,
     TableBody,
@@ -11,7 +11,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/Components/ui/table';
+} from '@/Components/UI/table';
 //   No Proyek jumlah TS Detail
 
 type SusunanKereta = {
@@ -30,7 +30,7 @@ const listTrainset: SusunanKereta[] = [
     { susunanKereta: 'P', panel: 'AC Dist P, Distribusi M, Pids M' },
 ];
 import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 
 export default function DetailTS({ noProyek, detailTS }: DetailTS) {
     return (
