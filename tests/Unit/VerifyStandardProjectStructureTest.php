@@ -213,7 +213,7 @@ test('(react) Models should have corresponding model interface', function () {
 test('(react) Models should have corresponding resource interface', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
-    $modelResourceInterfaceDir = $baseDir . '/resources/js/Support/Interfaces/resources';
+    $modelResourceInterfaceDir = $baseDir . '/resources/js/Support/Interfaces/Resources';
 
     $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
     $modelsWithoutResourceInterface = [];
@@ -282,7 +282,7 @@ test('model should have controllers, form request, resource, service interface, 
     $requestDir = $baseDir . '/app/Http/Requests';
     $resourceDir = $baseDir . '/app/Http/Resources';
     $reactModelInterfaceDir = $baseDir . '/resources/js/Support/models';
-    $reactResourceDir = $baseDir . '/resources/js/Support/Interfaces/resources';
+    $reactResourceDir = $baseDir . '/resources/js/Support/Interfaces/Resources';
     $reactServiceDir = $baseDir . '/resources/js/Services';
 
     // Exclude certain folders or files
