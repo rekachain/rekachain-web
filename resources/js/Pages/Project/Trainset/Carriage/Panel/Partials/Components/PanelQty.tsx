@@ -1,13 +1,13 @@
-import { CarriagePanelResource } from '@/support/interfaces/resources';
+import { CarriagePanelResource } from '@/Support/interfaces/resources';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/support/constants/styling';
-import { carriagePanelService } from '@/services/carriagePanelService';
+import { STYLING } from '@/Support/constants/styling';
+import { carriagePanelService } from '@/Services/carriagePanelService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useState } from 'react';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({
     carriage_panel,

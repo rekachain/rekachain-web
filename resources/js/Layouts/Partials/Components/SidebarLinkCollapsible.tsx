@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { buttonVariants } from '@/Components/ui/button';
 import { Link } from '@inertiajs/react';
 import React, { useContext } from 'react';
-import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/enums/sidebarGroupEnum';
 import { useSidebar } from '@/Contexts/SidebarContext';
 
 interface SidebarLinkCollapsibleItemProps {

@@ -1,8 +1,8 @@
 import { Button, buttonVariants } from '@/Components/ui/button';
-import AnimateIn from '@/lib/AnimateIn';
-import { ROUTES } from '@/support/constants/routes';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { WorkstationResource } from '@/support/interfaces/resources';
+import AnimateIn from '@/Lib/AnimateIn';
+import { ROUTES } from '@/Support/constants/routes';
+import { PaginateResponse } from '@/Support/interfaces/others';
+import { WorkstationResource } from '@/Support/interfaces/resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 

@@ -1,7 +1,7 @@
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 import { Head } from '@inertiajs/react';
 import { Pencil, Trash } from 'lucide-react';
 import { useState } from 'react';

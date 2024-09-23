@@ -1,16 +1,16 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/ui/button';
-import { roleService } from '@/services/roleService';
-import { PermissionResource, PermissionResourceGrouped } from '@/support/interfaces/resources/PermissionResource';
+import { roleService } from '@/Services/roleService';
+import { PermissionResource, PermissionResourceGrouped } from '@/Support/interfaces/resources/PermissionResource';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { DivisionResource } from '@/support/interfaces/resources';
-import { useSuccessToast } from '@/hooks/useToast';
+import { DivisionResource } from '@/Support/interfaces/resources';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {

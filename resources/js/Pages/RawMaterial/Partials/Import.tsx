@@ -10,9 +10,9 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { router, useForm } from '@inertiajs/react';
-import { rawMaterialService } from '@/services/rawMaterialService';
+import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useState } from 'react';
 
 export default function () {

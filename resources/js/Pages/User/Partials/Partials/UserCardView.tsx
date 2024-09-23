@@ -1,9 +1,9 @@
 import { Avatar, AvatarImage } from '@/Components/ui/avatar';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { UserResource } from '@/support/interfaces/resources';
+import { ROUTES } from '@/Support/constants/routes';
+import { PaginateResponse } from '@/Support/interfaces/others';
+import { UserResource } from '@/Support/interfaces/resources';
 
 export default function ({
     userResponse,

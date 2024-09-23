@@ -5,9 +5,9 @@ import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
-import { workDayService } from '@/services/workDayService';
-import { ROUTES } from '@/support/constants/routes';
-import { useSuccessToast } from '@/hooks/useToast';
+import { workDayService } from '@/Services/workDayService';
+import { ROUTES } from '@/Support/constants/routes';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {

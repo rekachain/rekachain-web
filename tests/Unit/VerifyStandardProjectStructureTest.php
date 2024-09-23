@@ -189,7 +189,7 @@ test('models should have corresponding services and repositories', function () {
 test('(react) models should have corresponding model interface', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
-    $modelInterfaceDir = $baseDir . '/resources/js/support/models';
+    $modelInterfaceDir = $baseDir . '/resources/js/Support/models';
 
     $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
     $modelsWithoutModelInterface = [];
@@ -213,7 +213,7 @@ test('(react) models should have corresponding model interface', function () {
 test('(react) models should have corresponding resource interface', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
-    $modelResourceInterfaceDir = $baseDir . '/resources/js/support/interfaces/resources';
+    $modelResourceInterfaceDir = $baseDir . '/resources/js/Support/interfaces/resources';
 
     $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
     $modelsWithoutResourceInterface = [];
@@ -237,7 +237,7 @@ test('(react) models should have corresponding resource interface', function () 
 test('(react) models should have corresponding services', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
-    $serviceDir = $baseDir . '/resources/js/services';
+    $serviceDir = $baseDir . '/resources/js/Services';
 
     $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
     $modelsWithoutServices = [];
@@ -281,9 +281,9 @@ test('model should have controllers, form request, resource, service interface, 
     $controllerDir = $baseDir . '/app/Http/Controllers';
     $requestDir = $baseDir . '/app/Http/Requests';
     $resourceDir = $baseDir . '/app/Http/Resources';
-    $reactModelInterfaceDir = $baseDir . '/resources/js/support/models';
-    $reactResourceDir = $baseDir . '/resources/js/support/interfaces/resources';
-    $reactServiceDir = $baseDir . '/resources/js/services';
+    $reactModelInterfaceDir = $baseDir . '/resources/js/Support/models';
+    $reactResourceDir = $baseDir . '/resources/js/Support/interfaces/resources';
+    $reactServiceDir = $baseDir . '/resources/js/Services';
 
     // Exclude certain folders or files
     $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php'];

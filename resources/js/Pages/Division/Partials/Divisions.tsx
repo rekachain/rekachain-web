@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { DivisionResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { DivisionResource } from '@/Support/interfaces/resources';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { divisionService } from '@/services/divisionService';
-import { useSuccessToast } from '@/hooks/useToast';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { divisionService } from '@/Services/divisionService';
+import { useSuccessToast } from '@/Hooks/useToast';
 import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
 import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardView';
-import { withLoading } from '@/utils/withLoading';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [divisionResponse, setDivisionResponse] = useState<PaginateResponse<DivisionResource>>();

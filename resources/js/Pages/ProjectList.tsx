@@ -23,7 +23,7 @@ const listProyek: Proyek[] = [
     { noProyek: 612, jumlahTS: 25 },
 ];
 import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 
 export default function ProjectList() {
     return (

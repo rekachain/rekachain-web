@@ -1,15 +1,15 @@
 import { usePage } from '@inertiajs/react';
-import { userService } from '@/services/userService';
+import { userService } from '@/Services/userService';
 import { useEffect, useState } from 'react';
-import { UserResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { UserResource } from '@/Support/interfaces/resources';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
 import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
 import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function () {
     const [userResponse, setUserResponse] = useState<PaginateResponse<UserResource>>();

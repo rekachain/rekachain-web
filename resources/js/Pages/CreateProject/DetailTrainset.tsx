@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 import { Head, Link } from '@inertiajs/react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
 import { Input } from '@/Components/ui/input';

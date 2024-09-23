@@ -8,11 +8,11 @@ import {
     ProjectResource,
     TrainsetResource,
     WorkstationResource,
-} from '@/support/interfaces/resources';
+} from '@/Support/interfaces/resources';
 import { Button, buttonVariants } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { trainsetService } from '@/services/trainsetService';
+import { trainsetService } from '@/Services/trainsetService';
 import { ChevronsUpDown, Loader2 } from 'lucide-react';
 import { Input } from '@/Components/ui/input';
 import {
@@ -24,10 +24,10 @@ import {
     DialogTrigger,
 } from '@/Components/ui/dialog';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
-import { presetTrainsetService } from '@/services/presetTrainsetService';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { carriageService } from '@/services/carriageService';
+import { presetTrainsetService } from '@/Services/presetTrainsetService';
+import { PaginateResponse } from '@/Support/interfaces/others';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { carriageService } from '@/Services/carriageService';
 import { useDebounce } from '@uidotdev/usehooks';
 import {
     Breadcrumb,
@@ -36,16 +36,16 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/support/constants/routes';
-import { fetchGenericData } from '@/helpers/dataManagementHelper';
-import { useSuccessToast } from '@/hooks/useToast';
-import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
+import { ROUTES } from '@/Support/constants/routes';
+import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { TrainsetStatusEnum } from '@/Support/enums/trainsetStatusEnum';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
 import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
-import { withLoading } from '@/utils/withLoading';
-import { workstationService } from '@/services/workstationService';
+import { withLoading } from '@/Utils/withLoading';
+import { workstationService } from '@/Services/workstationService';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));

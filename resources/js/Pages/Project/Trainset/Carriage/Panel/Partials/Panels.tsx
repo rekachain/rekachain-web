@@ -1,11 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { CarriageTrainsetResource, TrainsetResource } from '@/support/interfaces/resources';
-import { useConfirmation } from '@/hooks/useConfirmation';
+import { CarriageTrainsetResource, TrainsetResource } from '@/Support/interfaces/resources';
+import { useConfirmation } from '@/Hooks/useConfirmation';
 import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
 import { Button } from '@/Components/ui/button';
-import { carriagePanelService } from '@/services/carriagePanelService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
+import { carriagePanelService } from '@/Services/carriagePanelService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { TrainsetStatusEnum } from '@/Support/enums/trainsetStatusEnum';
 
 export default function ({
     trainset,

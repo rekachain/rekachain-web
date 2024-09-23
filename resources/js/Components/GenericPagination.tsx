@@ -6,8 +6,8 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/Components/ui/pagination';
-import { PaginateMeta, PaginateMetaLink } from '@/support/interfaces/others';
-import { PAGINATION_NAVIGATOR } from '@/support/constants/paginationNavigator';
+import { PaginateMeta, PaginateMetaLink } from '@/Support/interfaces/others';
+import { PAGINATION_NAVIGATOR } from '@/Support/constants/paginationNavigator';
 
 export default function ({
     meta,

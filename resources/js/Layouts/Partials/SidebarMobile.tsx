@@ -28,15 +28,15 @@ import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components
 import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
-import { STYLING } from '@/support/constants/styling';
+import { STYLING } from '@/Support/constants/styling';
 import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
-import { checkPermission } from '@/helpers/sidebarHelper';
-import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
-import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
+import { checkPermission } from '@/Helpers/sidebarHelper';
+import { PERMISSION_ENUM } from '@/Support/enums/permissionEnum';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/enums/sidebarGroupEnum';
 
 export default function SidebarMobile() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', true);
@@ -69,21 +69,13 @@ export default function SidebarMobile() {
                                 className="sidebar-collapse-toggle-mobile w-full h-10  bg-transparent hover:bg-transparent"
                                 onClick={handleSidebarCollapse}
                             >
-                                <img
-                                    src="/assets/images/icon.png"
-                                    alt="logo"
-                                    width={50}
-                                />
+                                <img src="/assets/images/icon.png" alt="logo" width={50} />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side={'left'} className="w-[250px] sm:w-[540px]">
                             <SheetHeader>
                                 <SheetTitle className="mx-auto">
-                                    <img
-                                        src="/assets/images/icon.png"
-                                        alt="logo"
-                                        width={50}
-                                    />
+                                    <img src="/assets/images/icon.png" alt="logo" width={50} />
                                 </SheetTitle>
                                 <SheetDescription className="items-start w-full  flex flex-col gap-7 dark:text-white text-black">
                                     <Link href={'dashboard'} className="mt-5">

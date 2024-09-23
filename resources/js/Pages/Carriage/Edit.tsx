@@ -1,14 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
-import { CarriageResource } from '@/support/interfaces/resources';
-import { carriageService } from '@/services/carriageService';
-import { useSuccessToast } from '@/hooks/useToast';
+import { CarriageResource } from '@/Support/interfaces/resources';
+import { carriageService } from '@/Services/carriageService';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ carriage }: { carriage: CarriageResource }) {

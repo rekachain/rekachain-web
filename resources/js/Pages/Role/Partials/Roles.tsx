@@ -1,14 +1,14 @@
 import { usePage } from '@inertiajs/react';
-import { roleService } from '@/services/roleService';
+import { roleService } from '@/Services/roleService';
 import { useEffect, useState } from 'react';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { RoleResource } from '@/support/interfaces/resources/RoleResource';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { RoleResource } from '@/Support/interfaces/resources/RoleResource';
 import RoleCardView from './Partials/RoleCardView';
 import RoleTableView from './Partials/RoleTableView';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {

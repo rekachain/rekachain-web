@@ -1,15 +1,15 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { StepResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { StepResource } from '@/Support/interfaces/resources';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { stepService } from '@/services/stepService';
-import { useSuccessToast } from '@/hooks/useToast';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { stepService } from '@/Services/stepService';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {

@@ -1,15 +1,15 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { ProjectResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { ProjectResource } from '@/Support/interfaces/resources';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { projectService } from '@/services/projectService';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { projectService } from '@/Services/projectService';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 import ProjectCardView from './Partials/ProjectCardView';
 import ProjectTableView from './Partials/ProjectTableView';
 

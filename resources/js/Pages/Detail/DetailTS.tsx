@@ -30,7 +30,7 @@ const listTrainset: SusunanKereta[] = [
     { susunanKereta: 'P', panel: 'AC Dist P, Distribusi M, Pids M' },
 ];
 import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 
 export default function DetailTS({ noProyek, detailTS }: DetailTS) {
     return (
