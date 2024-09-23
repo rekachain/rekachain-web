@@ -6,7 +6,7 @@ import { Button, buttonVariants } from '@/Components/ui/button';
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { trainsetService } from '@/services/trainsetService';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/TrainsetName';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({

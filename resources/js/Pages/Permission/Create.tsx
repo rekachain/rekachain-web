@@ -11,7 +11,7 @@ import { Checkbox } from '@/Components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { DivisionResource } from '@/support/interfaces/resources';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

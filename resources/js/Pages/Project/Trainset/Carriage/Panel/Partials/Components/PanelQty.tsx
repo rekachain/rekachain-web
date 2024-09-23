@@ -5,7 +5,7 @@ import { Button } from '@/Components/ui/button';
 import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/support/constants/styling';
 import { carriagePanelService } from '@/services/carriagePanelService';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useState } from 'react';
 import { useSuccessToast } from '@/hooks/useToast';
 

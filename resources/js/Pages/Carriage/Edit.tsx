@@ -9,7 +9,7 @@ import { Button } from '@/Components/ui/button';
 import { CarriageResource } from '@/support/interfaces/resources';
 import { carriageService } from '@/services/carriageService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ carriage }: { carriage: CarriageResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

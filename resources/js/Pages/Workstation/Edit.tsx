@@ -10,7 +10,7 @@ import { DivisionResource, WorkshopResource, WorkstationResource } from '@/suppo
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
 import { workstationService } from '@/services/workstationService';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({

@@ -10,7 +10,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { workDayService } from '@/services/workDayService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { WorkDayTimeEnum } from '@/support/enums/workDayTimeEnum';
 
 export default function () {

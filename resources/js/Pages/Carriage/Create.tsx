@@ -8,7 +8,7 @@ import { Button } from '@/Components/ui/button';
 import { carriageService } from '@/services/carriageService';
 import { ROUTES } from '@/support/constants/routes';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

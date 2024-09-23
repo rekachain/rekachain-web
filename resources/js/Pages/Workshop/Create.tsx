@@ -8,7 +8,7 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { DivisionResource, WorkshopResource } from '@/support/interfaces/resources';
 import { workshopService } from '@/services/workshopService';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ workshops, divisions }: { workshops: WorkshopResource[]; divisions: DivisionResource[] }) {

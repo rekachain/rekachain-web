@@ -8,7 +8,7 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { RawMaterialResource } from '@/support/interfaces/resources';
 import { rawMaterialService } from '@/services/rawMaterialService';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) {

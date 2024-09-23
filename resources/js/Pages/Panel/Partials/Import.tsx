@@ -15,7 +15,7 @@ import { IntentEnum } from '@/support/enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { panelService } from '@/services/panelService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const { data, setData } = useForm<{

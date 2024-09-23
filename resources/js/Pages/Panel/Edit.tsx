@@ -9,7 +9,7 @@ import { Button } from '@/Components/ui/button';
 import { PanelResource } from '@/support/interfaces/resources';
 import { panelService } from '@/services/panelService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ panel }: { panel: PanelResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

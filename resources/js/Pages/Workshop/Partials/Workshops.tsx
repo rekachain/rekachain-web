@@ -7,7 +7,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import WorkshopTableView from './Partials/WorkshopTableView';
 import WorkshopCardView from './Partials/WorkshopCardView';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {

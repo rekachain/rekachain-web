@@ -1,7 +1,7 @@
 // src/components/LoadingOverlay.tsx
 import React from 'react';
-import { useLoading } from '@/contexts/LoadingContext';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function LoadingOverlay() {
     const { loading } = useLoading();

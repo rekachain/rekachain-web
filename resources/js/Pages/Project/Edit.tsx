@@ -8,7 +8,7 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { ProjectResource } from '@/support/interfaces/resources';
 import { projectService } from '@/services/projectService';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ project }: { project: ProjectResource }) {

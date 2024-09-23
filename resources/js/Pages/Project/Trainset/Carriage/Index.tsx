@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
+import { FormEvent, lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import {
@@ -23,7 +23,6 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/ui/dialog';
-import { useConfirmation } from '@/hooks/useConfirmation';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
 import { presetTrainsetService } from '@/services/presetTrainsetService';
 import { PaginateResponse } from '@/support/interfaces/others';
@@ -39,7 +38,6 @@ import {
 } from '@/Components/ui/breadcrumb';
 import { ROUTES } from '@/support/constants/routes';
 import { fetchGenericData } from '@/helpers/dataManagementHelper';
-import { useLoading } from '@/contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
@@ -48,6 +46,7 @@ import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
 import { withLoading } from '@/utils/withLoading';
 import { workstationService } from '@/services/workstationService';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -68,7 +67,7 @@ export default function ({
     const [destinationWorkstations, setdestinationWorkstations] = useState<WorkstationResource[]>([]);
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
-        perPage: 10,
+        perPage: 2,
         relations: 'trainsets.carriage_panels.panel',
         search: '',
     });
@@ -108,39 +107,21 @@ export default function ({
     const debouncedDestinationWorkstationFilters = useDebounce(destinationWorkstationFilters, 300);
     const selectedPreset = presetTrainset.find(preset => preset.id === data.preset_trainset_id);
 
-    const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleChangePreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            await useConfirmation().then(async result => {
-                if (result.isConfirmed) {
-                    setLoading(true);
-                    await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
-                    await handleSyncTrainset();
-                    useSuccessToast('Preset changed successfully');
-                }
-            });
-        } catch (error) {
-        } finally {
-            setLoading(false);
-            // reset('loading');
-        }
-    };
+        await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
+        await handleSyncTrainset();
+        useSuccessToast('Preset changed successfully');
+    });
 
-    const handleSaveTrainsetPreset = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSaveTrainsetPreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
-        try {
-            await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
-            useSuccessToast('Preset saved successfully');
-        } catch (error) {
-        } finally {
-            await handleSyncTrainset();
-            setLoading(false);
-        }
-    };
+        await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
+        useSuccessToast('Preset saved successfully');
+        await handleSyncTrainset();
+    });
 
-    const handleSyncTrainset = async () => {
-        setLoading(true);
+    const handleSyncTrainset = withLoading(async () => {
         const responseData = await fetchGenericData<{
             trainset: TrainsetResource;
             presetTrainsets: PresetTrainsetResource[];
@@ -148,41 +129,26 @@ export default function ({
         setTrainset(responseData.trainset);
         setPresetTrainset(responseData.presetTrainsets);
         data.preset_trainset_id = responseData.trainset.preset_trainset_id;
-        setLoading(false);
-    };
+    });
 
-    const handleAddCarriageTrainset = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleAddCarriageTrainset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
-        try {
-            await trainsetService.addCarriageTrainset(
-                trainset.id,
-                data.new_carriage_id,
-                data.new_carriage_type,
-                data.new_carriage_description,
-                data.new_carriage_qty,
-            );
-            useSuccessToast('Carriage added successfully');
-        } catch (error) {
-        } finally {
-            await handleSyncTrainset();
-        }
-    };
+        await trainsetService.addCarriageTrainset(
+            trainset.id,
+            data.new_carriage_id,
+            data.new_carriage_type,
+            data.new_carriage_description,
+            data.new_carriage_qty,
+        );
+        useSuccessToast('Carriage added successfully');
+        await handleSyncTrainset();
+    });
 
-    const handleDeletePresetTrainset = async () => {
-        setLoading(true);
-        try {
-            await useConfirmation().then(async result => {
-                if (result.isConfirmed) {
-                    await presetTrainsetService.delete(data.preset_trainset_id);
-                    useSuccessToast('Preset deleted successfully');
-                }
-            });
-        } catch (error) {
-        } finally {
-            await handleSyncTrainset();
-        }
-    };
+    const handleDeletePresetTrainset = withLoading(async () => {
+        await presetTrainsetService.delete(data.preset_trainset_id);
+        useSuccessToast('Preset deleted successfully');
+        await handleSyncTrainset();
+    }, true);
 
     const handleResetAddCarriageSelection = () => {
         setData('new_carriage_id', 0);
@@ -194,23 +160,20 @@ export default function ({
         // await handleSyncCarriages();
     };
 
-    const handleSyncCarriages = () => {
-        carriageService.getAll(debouncedCarriageFilters).then(res => {
-            setCarriageResponse(res);
-        });
-    };
+    const handleSyncCarriages = withLoading(async () => {
+        const response = await carriageService.getAll(debouncedCarriageFilters);
+        setCarriageResponse(response);
+    });
 
     const handleSearchCarriages = (carriageResponse: PaginateResponse<CarriageResource> | undefined) => {
         let carriage = carriageResponse?.data.find(carriage => `${carriage.type} : ${carriage.description}` === value);
-
         return `${carriage?.type} : ${carriage?.description}`;
     };
 
-    const handleSyncSourceWorkstations = async () => {
+    const handleSyncSourceWorkstations = withLoading(async () => {
         const response = await workstationService.getAll(sourceWorkstationFilters);
-        console.log(response.data);
         setSourceWorkstations(response.data);
-    };
+    });
 
     const handleSearchSourceWorkstations = (sourceWorkstations: WorkstationResource[] | undefined) => {
         let sourceWorkstation = sourceWorkstations?.find(
@@ -219,10 +182,10 @@ export default function ({
         return sourceWorkstation?.name;
     };
 
-    const handleSyncDestinationWorkstations = async () => {
+    const handleSyncDestinationWorkstations = withLoading(async () => {
         const response = await workstationService.getAll(destinationWorkstationFilters);
         setdestinationWorkstations(response.data);
-    };
+    });
 
     const handleSearchDestinationWorkstations = (destinationWorkstations: WorkstationResource[] | undefined) => {
         let destinationWorkstation = destinationWorkstations?.find(
@@ -238,6 +201,8 @@ export default function ({
             generateAttachmentData.source_workstation_id,
             generateAttachmentData.destination_workstation_id,
         );
+        await handleSyncTrainset();
+        await handleSyncCarriages();
         useSuccessToast('KPM generated successfully');
     });
 
@@ -561,50 +526,54 @@ export default function ({
                                                 >
                                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                                 </Button> */}
-                                                <Popover open={open} onOpenChange={setOpen}>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={open}
-                                                            className="w-full justify-between"
-                                                        >
-                                                            {value
-                                                                ? handleSearchCarriages(carriageResponse)
-                                                                : 'Pilih carriage...'}
-                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-full p-0">
-                                                        <Command>
-                                                            <CommandInput
-                                                                onValueChange={e => handleChangeSearchCarriageType(e)}
-                                                                placeholder="Cari Gerbong..."
-                                                            />
-                                                            <CommandList>
-                                                                <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {carriageResponse?.data.map(carriage => (
-                                                                        <CommandItem
-                                                                            key={carriage.type}
-                                                                            value={`${carriage.type} : ${carriage.description}`}
-                                                                            onSelect={currentValue => {
-                                                                                setData(
-                                                                                    'new_carriage_id',
-                                                                                    +carriage.id,
-                                                                                );
-                                                                                // alert(currentValue);
-                                                                                setValue(
-                                                                                    currentValue === value
-                                                                                        ? ''
-                                                                                        : currentValue,
-                                                                                );
-                                                                                setOpen(false);
-                                                                            }}
-                                                                        >
-                                                                            {carriage.type} : {carriage.description}
-                                                                            <br />
-                                                                            {/* {carriage.carriage_panels?.map((c, i) => (
+                                                    <Popover open={open} onOpenChange={setOpen}>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                role="combobox"
+                                                                aria-expanded={open}
+                                                                className="w-full justify-between"
+                                                            >
+                                                                {value
+                                                                    ? handleSearchCarriages(carriageResponse)
+                                                                    : 'Pilih carriage...'}
+                                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-full p-0">
+                                                            <Command>
+                                                                <CommandInput
+                                                                    onValueChange={e =>
+                                                                        handleChangeSearchCarriageType(e)
+                                                                    }
+                                                                    placeholder="Cari Gerbong..."
+                                                                />
+                                                                <CommandList>
+                                                                    <CommandEmpty>
+                                                                        Gerbong tidak ditemukan.
+                                                                    </CommandEmpty>
+                                                                    <CommandGroup>
+                                                                        {carriageResponse?.data.map(carriage => (
+                                                                            <CommandItem
+                                                                                key={carriage.type}
+                                                                                value={`${carriage.type} : ${carriage.description}`}
+                                                                                onSelect={currentValue => {
+                                                                                    setData(
+                                                                                        'new_carriage_id',
+                                                                                        +carriage.id,
+                                                                                    );
+                                                                                    // alert(currentValue);
+                                                                                    setValue(
+                                                                                        currentValue === value
+                                                                                            ? ''
+                                                                                            : currentValue,
+                                                                                    );
+                                                                                    setOpen(false);
+                                                                                }}
+                                                                            >
+                                                                                {carriage.type} : {carriage.description}
+                                                                                <br />
+                                                                                {/* {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
                                                                         <br />
                                                                         {c.panel.name}
@@ -688,7 +657,8 @@ export default function ({
 
                 {!trainset.preset_trainset_id &&
                     trainset.carriage_trainsets &&
-                    trainset.carriage_trainsets.length > 0 && (
+                    trainset.carriage_trainsets.length > 0 &&
+                    trainset.status !== TrainsetStatusEnum.PROGRESS && (
                         <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
                             <Dialog>
                                 <DialogTrigger

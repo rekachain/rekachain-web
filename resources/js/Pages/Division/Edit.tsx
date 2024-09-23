@@ -9,7 +9,7 @@ import { DivisionResource } from '@/support/interfaces/resources';
 import { divisionService } from '@/services/divisionService';
 import { useSuccessToast } from '@/hooks/useToast';
 import { withLoading } from '@/utils/withLoading';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ division }: { division: DivisionResource }) {
     const { data, setData } = useForm({

@@ -8,7 +8,7 @@ import { Button } from '@/Components/ui/button';
 import { divisionService } from '@/services/divisionService';
 import { useSuccessToast } from '@/hooks/useToast';
 import { withLoading } from '@/utils/withLoading';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function Create() {
     const { data, setData } = useForm({ name: '' });

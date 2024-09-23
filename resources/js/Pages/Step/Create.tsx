@@ -7,7 +7,7 @@ import { Button } from '@/Components/ui/button';
 import { stepService } from '@/services/stepService';
 import { ROUTES } from '@/support/constants/routes';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { ProgressResource } from '@/support/interfaces/resources';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { Label } from '@/Components/ui/label';
