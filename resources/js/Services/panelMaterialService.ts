@@ -1,6 +1,6 @@
-import { ROUTES } from '@/Support/constants/routes';
+import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { PanelMaterialResource } from '@/Support/interfaces/resources';
+import { PanelMaterialResource } from '../Support/Interfaces/Resources';
 
 export const panelMaterialService = {
     ...serviceFactory<PanelMaterialResource>(ROUTES.PANEL_MATERIALS),

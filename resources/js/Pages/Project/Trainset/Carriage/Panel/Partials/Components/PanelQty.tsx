@@ -1,9 +1,9 @@
-import { CarriagePanelResource } from '@/Support/interfaces/resources';
+import { CarriagePanelResource } from '../../../../../../../Support/Interfaces/Resources';
 import { useForm } from '@inertiajs/react';
-import { Input } from '@/Components/ui/input';
-import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/UI/input';
+import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/Support/constants/styling';
+import { STYLING } from '@/Support/Constants/styling';
 import { carriagePanelService } from '@/Services/carriagePanelService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useState } from 'react';

@@ -1,15 +1,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/constants/routes';
-import { Input } from '@/Components/ui/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Input } from '@/Components/UI/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { userService } from '@/Services/userService';
-import { Button } from '@/Components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
-import { Label } from '@/Components/ui/label';
-import { RoleResource } from '@/Support/interfaces/resources';
+import { Button } from '@/Components/UI/button';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Label } from '@/Components/UI/label';
+import { RoleResource } from '../../Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 

@@ -1,8 +1,8 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { ProjectResource } from '@/Support/interfaces/resources';
-import { ROUTES } from '@/Support/constants/routes';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { ProjectResource } from '../../../../Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { useConfirmation } from '@/Hooks/useConfirmation';
 import { trainsetService } from '@/Services/trainsetService';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/TrainsetName';

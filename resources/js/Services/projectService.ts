@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/constants/routes.js';
+import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProjectResource } from '@/Support/interfaces/resources';
-import { IntentEnum } from '@/Support/enums/intentEnum';
+import { ProjectResource } from '../Support/Interfaces/Resources';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export const projectService = {
     ...serviceFactory<ProjectResource>(ROUTES.PROJECTS),

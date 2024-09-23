@@ -1,8 +1,8 @@
-import { TrainsetResource } from '@/Support/interfaces/resources';
-import { Button } from '@/Components/ui/button';
+import { TrainsetResource } from '../../../../../Support/Interfaces/Resources';
+import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/Support/constants/styling';
-import { Input } from '@/Components/ui/input';
+import { STYLING } from '@/Support/Constants/styling';
+import { Input } from '@/Components/UI/input';
 import { trainsetService } from '@/Services/trainsetService';
 import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';

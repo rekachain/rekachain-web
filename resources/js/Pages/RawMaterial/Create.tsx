@@ -1,11 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/constants/routes';
-import { Input } from '@/Components/ui/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/UI/button';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';

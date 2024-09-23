@@ -9,7 +9,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/Components/ui/table';
+} from '@/Components/UI/table';
 //   No Proyek jumlah TS Detail
 
 type Proyek = {

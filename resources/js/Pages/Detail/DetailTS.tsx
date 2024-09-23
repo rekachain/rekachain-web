@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
-import HeadLampiran from '@/Components/ui/lampiran';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
+import HeadLampiran from '@/Components/UI/lampiran';
 import {
     Table,
     TableBody,
@@ -11,7 +11,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/Components/ui/table';
+} from '@/Components/UI/table';
 //   No Proyek jumlah TS Detail
 
 type SusunanKereta = {

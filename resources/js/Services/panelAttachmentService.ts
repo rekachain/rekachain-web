@@ -1,6 +1,6 @@
-import { ROUTES } from '@/Support/constants/routes';
+import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { PanelAttachmentResource } from '@/Support/interfaces/resources';
+import { PanelAttachmentResource } from '../Support/Interfaces/Resources';
 
 export const panelAttachmentService = {
     ...serviceFactory<PanelAttachmentResource>(ROUTES.PANEL_ATTACHMENTS),

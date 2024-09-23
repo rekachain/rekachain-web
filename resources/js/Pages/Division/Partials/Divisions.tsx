@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { DivisionResource } from '@/Support/interfaces/resources';
-import { PaginateResponse } from '@/Support/interfaces/others';
+import { DivisionResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { divisionService } from '@/Services/divisionService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';

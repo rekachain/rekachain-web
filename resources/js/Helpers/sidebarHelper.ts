@@ -1,4 +1,4 @@
-import { PERMISSION_ENUM } from '@/Support/enums/permissionEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 import { usePage } from '@inertiajs/react';
 

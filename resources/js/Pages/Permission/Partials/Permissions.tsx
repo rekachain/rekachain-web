@@ -1,11 +1,11 @@
 import { usePage } from '@inertiajs/react';
 import { permissionService } from '@/Services/permissionService';
 import { useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/interfaces/others';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useConfirmation } from '@/Hooks/useConfirmation';
-import { PermissionResource } from '@/Support/interfaces/resources/PermissionResource';
+import { PermissionResource } from '@/Support/Interfaces/Resources/PermissionResource';
 import PermissionsTableView from './Partials/PermissionsTableView';
 import PermissionsCardView from './Partials/PermissionsCardView';
 import { useSuccessToast } from '@/Hooks/useToast';

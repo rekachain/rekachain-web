@@ -1,6 +1,6 @@
-import { ROUTES } from '@/Support/constants/routes';
+import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { WorkDayTimeResource } from '@/Support/interfaces/resources';
+import { WorkDayTimeResource } from '../Support/Interfaces/Resources';
 
 export const workDayTimeService = {
     ...serviceFactory<WorkDayTimeResource>(ROUTES.WORK_DAY_TIMES),
