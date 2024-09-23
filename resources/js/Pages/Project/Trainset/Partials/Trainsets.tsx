@@ -1,13 +1,13 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { ProjectResource } from '@/support/interfaces/resources';
-import { ROUTES } from '@/support/constants/routes';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { ProjectResource } from '../../../../Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { trainsetService } from '@/services/trainsetService';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { trainsetService } from '@/Services/trainsetService';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/TrainsetName';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({
     project,

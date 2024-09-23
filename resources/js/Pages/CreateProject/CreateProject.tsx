@@ -1,9 +1,9 @@
-import { Input } from '@/Components/ui/input';
+import { Input } from '@/Components/UI/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-import { useToast } from '@/Components/ui/use-toast';
-import AnimateIn from '@/lib/AnimateIn';
+import { useToast } from '@/Components/UI/use-toast';
+import AnimateIn from '@/Lib/AnimateIn';
 
 type Project = {
     nomorProyek: number;

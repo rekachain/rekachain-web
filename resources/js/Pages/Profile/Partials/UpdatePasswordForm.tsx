@@ -2,9 +2,9 @@ import { FormEventHandler, useRef } from 'react';
 import InputError from '@/Components/InputError';
 import { useForm } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
-import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
+import { Button } from '@/Components/UI/button';
 
 export default function UpdatePasswordForm({ className = '' }: { className?: string }) {
     const passwordInput = useRef<HTMLInputElement>(null);

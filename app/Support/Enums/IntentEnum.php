@@ -64,4 +64,6 @@ enum IntentEnum: string {
     case WEB_STEP_GET_TEMPLATE_IMPORT_STEP = 'web.step.get.template.import.step';
 
     case WEB_STEP_IMPORT_STEP = 'web.step.import.step';
+
+    case WEB_TRAINSET_GENERATE_ATTACHMENTS = 'web.trainset.generate.attachments';
 }

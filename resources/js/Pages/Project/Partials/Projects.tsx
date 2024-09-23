@@ -1,15 +1,15 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { ProjectResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { ProjectResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { projectService } from '@/services/projectService';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { projectService } from '@/Services/projectService';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 import ProjectCardView from './Partials/ProjectCardView';
 import ProjectTableView from './Partials/ProjectTableView';
 

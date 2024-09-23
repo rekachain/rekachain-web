@@ -1,15 +1,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
-import { Input } from '@/Components/ui/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { Button } from '@/Components/ui/button';
-import { WorkshopResource } from '@/support/interfaces/resources';
-import { workshopService } from '@/services/workshopService';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { Button } from '@/Components/UI/button';
+import { WorkshopResource } from '../../Support/Interfaces/Resources';
+import { workshopService } from '@/Services/workshopService';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({ workshop }: { workshop: WorkshopResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

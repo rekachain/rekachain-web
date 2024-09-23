@@ -1,8 +1,8 @@
-import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
+import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 import { Head, Link } from '@inertiajs/react';
 import { FileSearch } from 'lucide-react';
 import { useState } from 'react';

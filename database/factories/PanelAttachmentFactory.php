@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\CarriagePanel;
-use App\Models\CarriageTrainset;
 use App\Models\Workstation;
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,7 +26,7 @@ class PanelAttachmentFactory extends Factory {
             'qr_path' => $this->faker->imageUrl(),
             'current_step' => $this->faker->text(10),
             'elapsed_time' => $this->faker->numberBetween(1, 10),
-            'status' => $this->faker->randomElement(['material_in_transit', 'material_accepted', 'in_progress', 'pending', 'done']),
+            'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value,
             'panel_attachment_id' => null,
             'supervisor_id' => null,
         ];

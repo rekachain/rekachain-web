@@ -1,11 +1,11 @@
-import { TrainsetResource } from '@/support/interfaces/resources';
-import { Button } from '@/Components/ui/button';
+import { TrainsetResource } from '../../../../../Support/Interfaces/Resources';
+import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/support/constants/styling';
-import { Input } from '@/Components/ui/input';
-import { trainsetService } from '@/services/trainsetService';
+import { STYLING } from '@/Support/Constants/styling';
+import { Input } from '@/Components/UI/input';
+import { trainsetService } from '@/Services/trainsetService';
 import { useForm } from '@inertiajs/react';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useState } from 'react';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {

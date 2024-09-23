@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
+import { FormEvent, lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import {
@@ -7,13 +7,14 @@ import {
     PresetTrainsetResource,
     ProjectResource,
     TrainsetResource,
-} from '@/support/interfaces/resources';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { Label } from '@/Components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { trainsetService } from '@/services/trainsetService';
+    WorkstationResource,
+} from '../../../../Support/Interfaces/Resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { Label } from '@/Components/UI/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { trainsetService } from '@/Services/trainsetService';
 import { ChevronsUpDown, Loader2 } from 'lucide-react';
-import { Input } from '@/Components/ui/input';
+import { Input } from '@/Components/UI/input';
 import {
     Dialog,
     DialogContent,
@@ -21,13 +22,12 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { useConfirmation } from '@/hooks/useConfirmation';
+} from '@/Components/UI/dialog';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
-import { presetTrainsetService } from '@/services/presetTrainsetService';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { carriageService } from '@/services/carriageService';
+import { presetTrainsetService } from '@/Services/presetTrainsetService';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { carriageService } from '@/Services/carriageService';
 import { useDebounce } from '@uidotdev/usehooks';
 import {
     Breadcrumb,
@@ -35,16 +35,18 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/support/constants/routes';
-import { fetchGenericData } from '@/helpers/dataManagementHelper';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
-import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
-import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
-import { Separator } from '@/Components/ui/separator';
-import { Textarea } from '@/Components/ui/textarea';
+} from '@/Components/UI/breadcrumb';
+import { ROUTES } from '@/Support/Constants/routes';
+import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Separator } from '@/Components/UI/separator';
+import { Textarea } from '@/Components/UI/textarea';
+import { withLoading } from '@/Utils/withLoading';
+import { workstationService } from '@/Services/workstationService';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -61,11 +63,27 @@ export default function ({
     const [value, setValue] = useState('');
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
+    const [sourceWorkstations, setSourceWorkstations] = useState<WorkstationResource[]>([]);
+    const [destinationWorkstations, setdestinationWorkstations] = useState<WorkstationResource[]>([]);
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
-        perPage: 10,
+        perPage: 2,
         relations: 'trainsets.carriage_panels.panel',
         search: '',
+    });
+
+    const [sourceWorkstationFilters, setSourceWorkstationFilters] = useState<ServiceFilterOptions>({
+        page: 1,
+        perPage: 10,
+        search: '',
+        relations: 'workshop',
+    });
+
+    const [destinationWorkstationFilters, setDestinationWorkstationFilters] = useState<ServiceFilterOptions>({
+        page: 1,
+        perPage: 10,
+        search: '',
+        relations: 'workshop',
     });
 
     const { setLoading, loading } = useLoading();
@@ -78,42 +96,32 @@ export default function ({
         new_carriage_description: '',
         new_carriage_qty: 1,
     });
+
+    const { data: generateAttachmentData, setData: setGenerateAttachmentData } = useForm({
+        source_workstation_id: 0,
+        destination_workstation_id: 0,
+    });
+
     const debouncedCarriageFilters = useDebounce(carriageFilters, 300);
+    const debouncedSourceWorkstationFilters = useDebounce(sourceWorkstationFilters, 300);
+    const debouncedDestinationWorkstationFilters = useDebounce(destinationWorkstationFilters, 300);
     const selectedPreset = presetTrainset.find(preset => preset.id === data.preset_trainset_id);
 
-    const handleChangePreset = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleChangePreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            await useConfirmation().then(async result => {
-                if (result.isConfirmed) {
-                    setLoading(true);
-                    await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
-                    await handleSyncTrainset();
-                    useSuccessToast('Preset changed successfully');
-                }
-            });
-        } catch (error) {
-        } finally {
-            setLoading(false);
-            // reset('loading');
-        }
-    };
+        await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
+        await handleSyncTrainset();
+        useSuccessToast('Preset changed successfully');
+    });
 
-    const handleSaveTrainsetPreset = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSaveTrainsetPreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
-        try {
-            await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
-            useSuccessToast('Preset saved successfully');
-        } catch (error) {
-        } finally {
-            await handleSyncTrainset();
-            setLoading(false);
-        }
-    };
+        await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
+        useSuccessToast('Preset saved successfully');
+        await handleSyncTrainset();
+    });
 
-    const handleSyncTrainset = async () => {
-        setLoading(true);
+    const handleSyncTrainset = withLoading(async () => {
         const responseData = await fetchGenericData<{
             trainset: TrainsetResource;
             presetTrainsets: PresetTrainsetResource[];
@@ -121,41 +129,26 @@ export default function ({
         setTrainset(responseData.trainset);
         setPresetTrainset(responseData.presetTrainsets);
         data.preset_trainset_id = responseData.trainset.preset_trainset_id;
-        setLoading(false);
-    };
+    });
 
-    const handleAddCarriageTrainset = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleAddCarriageTrainset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
-        try {
-            await trainsetService.addCarriageTrainset(
-                trainset.id,
-                data.new_carriage_id,
-                data.new_carriage_type,
-                data.new_carriage_description,
-                data.new_carriage_qty,
-            );
-            useSuccessToast('Carriage added successfully');
-        } catch (error) {
-        } finally {
-            await handleSyncTrainset();
-        }
-    };
+        await trainsetService.addCarriageTrainset(
+            trainset.id,
+            data.new_carriage_id,
+            data.new_carriage_type,
+            data.new_carriage_description,
+            data.new_carriage_qty,
+        );
+        useSuccessToast('Carriage added successfully');
+        await handleSyncTrainset();
+    });
 
-    const handleDeletePresetTrainset = async () => {
-        setLoading(true);
-        try {
-            await useConfirmation().then(async result => {
-                if (result.isConfirmed) {
-                    await presetTrainsetService.delete(data.preset_trainset_id);
-                    useSuccessToast('Preset deleted successfully');
-                }
-            });
-        } catch (error) {
-        } finally {
-            await handleSyncTrainset();
-        }
-    };
+    const handleDeletePresetTrainset = withLoading(async () => {
+        await presetTrainsetService.delete(data.preset_trainset_id);
+        useSuccessToast('Preset deleted successfully');
+        await handleSyncTrainset();
+    }, true);
 
     const handleResetAddCarriageSelection = () => {
         setData('new_carriage_id', 0);
@@ -167,21 +160,63 @@ export default function ({
         // await handleSyncCarriages();
     };
 
-    const handleSyncCarriages = () => {
-        carriageService.getAll(debouncedCarriageFilters).then(res => {
-            setCarriageResponse(res);
-        });
-    };
+    const handleSyncCarriages = withLoading(async () => {
+        const response = await carriageService.getAll(debouncedCarriageFilters);
+        setCarriageResponse(response);
+    });
 
     const handleSearchCarriages = (carriageResponse: PaginateResponse<CarriageResource> | undefined) => {
         let carriage = carriageResponse?.data.find(carriage => `${carriage.type} : ${carriage.description}` === value);
-
         return `${carriage?.type} : ${carriage?.description}`;
     };
+
+    const handleSyncSourceWorkstations = withLoading(async () => {
+        const response = await workstationService.getAll(sourceWorkstationFilters);
+        setSourceWorkstations(response.data);
+    });
+
+    const handleSearchSourceWorkstations = (sourceWorkstations: WorkstationResource[] | undefined) => {
+        let sourceWorkstation = sourceWorkstations?.find(
+            workstation => workstation.id === generateAttachmentData.source_workstation_id,
+        );
+        return sourceWorkstation?.name;
+    };
+
+    const handleSyncDestinationWorkstations = withLoading(async () => {
+        const response = await workstationService.getAll(destinationWorkstationFilters);
+        setdestinationWorkstations(response.data);
+    });
+
+    const handleSearchDestinationWorkstations = (destinationWorkstations: WorkstationResource[] | undefined) => {
+        let destinationWorkstation = destinationWorkstations?.find(
+            workstation => workstation.id === generateAttachmentData.destination_workstation_id,
+        );
+        return destinationWorkstation?.name;
+    };
+
+    const handleGenerateProjectAttachment = withLoading(async e => {
+        e.preventDefault();
+        await trainsetService.generateAttachments(
+            trainset.id,
+            generateAttachmentData.source_workstation_id,
+            generateAttachmentData.destination_workstation_id,
+        );
+        await handleSyncTrainset();
+        await handleSyncCarriages();
+        useSuccessToast('KPM generated successfully');
+    });
 
     useEffect(() => {
         handleSyncCarriages();
     }, [debouncedCarriageFilters]);
+
+    useEffect(() => {
+        handleSyncSourceWorkstations();
+    }, [debouncedSourceWorkstationFilters]);
+
+    useEffect(() => {
+        handleSyncDestinationWorkstations();
+    }, [debouncedDestinationWorkstationFilters]);
 
     return (
         <>
@@ -216,79 +251,212 @@ export default function ({
                                 {trainset.status === TrainsetStatusEnum.PROGRESS ? (
                                     <p className="text-page-subheader">Status: Sedang dikerjakan</p>
                                 ) : (
-                                    <form onSubmit={handleChangePreset} className="flex gap-2">
-                                        <SelectGroup className="space-y-2 w-fit">
-                                            <Label htmlFor="preset-trainset">Preset</Label>
-                                            <div className="flex gap-2">
-                                                <Select
-                                                    key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
-                                                    onValueChange={v => setData('preset_trainset_id', +v)}
-                                                    value={data.preset_trainset_id?.toString()}
-                                                    defaultValue={trainset.preset_trainset_id?.toString()}
-                                                >
-                                                    <SelectTrigger id="preset-trainset">
-                                                        <SelectValue placeholder="Preset Trainset" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="0" disabled>
-                                                            Select Preset
-                                                        </SelectItem>
-                                                        {presetTrainset.map(preset => (
-                                                            <SelectItem key={preset.id} value={preset.id.toString()}>
-                                                                {preset.name} (
-                                                                {preset.carriage_presets.map((c, i) => (
-                                                                    <span key={c.id}>
-                                                                        {c.qty} {c.carriage.type}
-                                                                        {i < preset.carriage_presets!.length - 1 &&
-                                                                            ' + '}
-                                                                    </span>
-                                                                ))}
-                                                                )
+                                    <div className="flex gap-2 items-center">
+                                        <form onSubmit={handleChangePreset} className="flex gap-2">
+                                            <SelectGroup>
+                                                <Label htmlFor="preset-trainset">Preset</Label>
+                                                <div className="flex gap-2">
+                                                    <Select
+                                                        key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
+                                                        onValueChange={v => setData('preset_trainset_id', +v)}
+                                                        value={data.preset_trainset_id?.toString()}
+                                                        defaultValue={trainset.preset_trainset_id?.toString()}
+                                                    >
+                                                        <SelectTrigger id="preset-trainset">
+                                                            <SelectValue placeholder="Preset Trainset" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="0" disabled>
+                                                                Select Preset
                                                             </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                            {presetTrainset.map(preset => (
+                                                                <SelectItem
+                                                                    key={preset.id}
+                                                                    value={preset.id.toString()}
+                                                                >
+                                                                    {preset.name} (
+                                                                    {preset.carriage_presets.map((c, i) => (
+                                                                        <span key={c.id}>
+                                                                            {c.qty} {c.carriage.type}
+                                                                            {i < preset.carriage_presets!.length - 1 &&
+                                                                                ' + '}
+                                                                        </span>
+                                                                    ))}
+                                                                    )
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
 
-                                                <Button
-                                                    type="submit"
-                                                    disabled={
-                                                        loading ||
-                                                        !data.preset_trainset_id ||
-                                                        data.preset_trainset_id === trainset.preset_trainset_id
-                                                    }
-                                                >
-                                                    {loading ? (
-                                                        <>
-                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Loading
-                                                        </>
-                                                    ) : (
-                                                        'Ubah Preset'
-                                                    )}
-                                                </Button>
+                                                    <Button
+                                                        type="submit"
+                                                        disabled={
+                                                            loading ||
+                                                            !data.preset_trainset_id ||
+                                                            data.preset_trainset_id === trainset.preset_trainset_id
+                                                        }
+                                                    >
+                                                        {loading ? (
+                                                            <>
+                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                Loading
+                                                            </>
+                                                        ) : (
+                                                            'Ubah Preset'
+                                                        )}
+                                                    </Button>
 
-                                                <Button
-                                                    type="button"
-                                                    variant="destructive"
-                                                    disabled={
-                                                        loading ||
-                                                        !data.preset_trainset_id ||
-                                                        (selectedPreset && selectedPreset.has_trainsets)
-                                                    }
-                                                    onClick={handleDeletePresetTrainset}
-                                                >
-                                                    {loading ? (
-                                                        <>
-                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                            Loading
-                                                        </>
-                                                    ) : (
-                                                        'Hapus Preset'
-                                                    )}
-                                                </Button>
-                                            </div>
-                                        </SelectGroup>
-                                    </form>
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        disabled={
+                                                            loading ||
+                                                            !data.preset_trainset_id ||
+                                                            (selectedPreset && selectedPreset.has_trainsets)
+                                                        }
+                                                        onClick={handleDeletePresetTrainset}
+                                                    >
+                                                        {loading ? (
+                                                            <>
+                                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                Loading
+                                                            </>
+                                                        ) : (
+                                                            'Hapus Preset'
+                                                        )}
+                                                    </Button>
+                                                </div>
+                                            </SelectGroup>
+                                        </form>
+
+                                        <Dialog>
+                                            <DialogTrigger
+                                                className={buttonVariants({
+                                                    className: 'self-end',
+                                                })}
+                                            >
+                                                Generate KPM
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>Generate KPM</DialogTitle>
+                                                    <DialogDescription></DialogDescription>
+                                                    <form
+                                                        onSubmit={handleGenerateProjectAttachment}
+                                                        className="flex flex-col gap-4"
+                                                    >
+                                                        <div className="flex flex-col gap-4">
+                                                            <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                                                <Label>Sumber Workstation</Label>
+                                                                <Input
+                                                                    value={sourceWorkstationFilters.search}
+                                                                    placeholder="Type a command or search..."
+                                                                    onInput={e =>
+                                                                        setSourceWorkstationFilters({
+                                                                            ...sourceWorkstationFilters,
+                                                                            search: e.currentTarget.value,
+                                                                        })
+                                                                    }
+                                                                />
+                                                                <SelectGroup>
+                                                                    <Select
+                                                                        key={
+                                                                            generateAttachmentData.source_workstation_id
+                                                                        }
+                                                                        onValueChange={v =>
+                                                                            setGenerateAttachmentData(
+                                                                                'source_workstation_id',
+                                                                                +v,
+                                                                            )
+                                                                        }
+                                                                        value={generateAttachmentData.source_workstation_id.toString()}
+                                                                    >
+                                                                        <SelectTrigger id="source-workstation">
+                                                                            <SelectValue placeholder="Workstation" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectItem value="0" disabled>
+                                                                                Pilih Workstation
+                                                                            </SelectItem>
+                                                                            {sourceWorkstations.map(workstation => (
+                                                                                <SelectItem
+                                                                                    key={workstation.id}
+                                                                                    value={workstation.id.toString()}
+                                                                                >
+                                                                                    {workstation.name} -{' '}
+                                                                                    {workstation.workshop.name}
+                                                                                </SelectItem>
+                                                                            ))}
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </SelectGroup>
+                                                            </div>
+
+                                                            <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                                                <Label className="mb-2">Tujuan Workstation</Label>
+                                                                <Input
+                                                                    value={destinationWorkstationFilters.search}
+                                                                    placeholder="Type a command or search..."
+                                                                    onInput={e =>
+                                                                        setDestinationWorkstationFilters({
+                                                                            ...destinationWorkstationFilters,
+                                                                            search: e.currentTarget.value,
+                                                                        })
+                                                                    }
+                                                                />
+
+                                                                <SelectGroup>
+                                                                    <Select
+                                                                        key={
+                                                                            generateAttachmentData.destination_workstation_id
+                                                                        }
+                                                                        onValueChange={v =>
+                                                                            setGenerateAttachmentData(
+                                                                                'destination_workstation_id',
+                                                                                +v,
+                                                                            )
+                                                                        }
+                                                                        value={generateAttachmentData.destination_workstation_id.toString()}
+                                                                    >
+                                                                        <SelectTrigger id="destination-workstation">
+                                                                            <SelectValue placeholder="Workstation" />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            <SelectItem value="0" disabled>
+                                                                                Pilih Workstation
+                                                                            </SelectItem>
+                                                                            {destinationWorkstations.map(
+                                                                                workstation => (
+                                                                                    <SelectItem
+                                                                                        key={workstation.id}
+                                                                                        value={workstation.id.toString()}
+                                                                                    >
+                                                                                        {workstation.name} -{' '}
+                                                                                        {workstation.workshop.name}
+                                                                                    </SelectItem>
+                                                                                ),
+                                                                            )}
+                                                                        </SelectContent>
+                                                                    </Select>
+                                                                </SelectGroup>
+                                                            </div>
+                                                        </div>
+
+                                                        <Button type="submit" disabled={loading}>
+                                                            {loading ? (
+                                                                <>
+                                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                    Proses
+                                                                </>
+                                                            ) : (
+                                                                'Generate KPM'
+                                                            )}
+                                                        </Button>
+                                                    </form>
+                                                </DialogHeader>
+                                            </DialogContent>
+                                        </Dialog>
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -358,50 +526,54 @@ export default function ({
                                                 >
                                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                                 </Button> */}
-                                                <Popover open={open} onOpenChange={setOpen}>
-                                                    <PopoverTrigger asChild>
-                                                        <Button
-                                                            variant="outline"
-                                                            role="combobox"
-                                                            aria-expanded={open}
-                                                            className="w-full justify-between"
-                                                        >
-                                                            {value
-                                                                ? handleSearchCarriages(carriageResponse)
-                                                                : 'Pilih carriage...'}
-                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                        </Button>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-full p-0">
-                                                        <Command>
-                                                            <CommandInput
-                                                                onValueChange={e => handleChangeSearchCarriageType(e)}
-                                                                placeholder="Cari Gerbong..."
-                                                            />
-                                                            <CommandList>
-                                                                <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
-                                                                <CommandGroup>
-                                                                    {carriageResponse?.data.map(carriage => (
-                                                                        <CommandItem
-                                                                            key={carriage.type}
-                                                                            value={`${carriage.type} : ${carriage.description}`}
-                                                                            onSelect={currentValue => {
-                                                                                setData(
-                                                                                    'new_carriage_id',
-                                                                                    +carriage.id,
-                                                                                );
-                                                                                // alert(currentValue);
-                                                                                setValue(
-                                                                                    currentValue === value
-                                                                                        ? ''
-                                                                                        : currentValue,
-                                                                                );
-                                                                                setOpen(false);
-                                                                            }}
-                                                                        >
-                                                                            {carriage.type} : {carriage.description}
-                                                                            <br />
-                                                                            {/* {carriage.carriage_panels?.map((c, i) => (
+                                                    <Popover open={open} onOpenChange={setOpen}>
+                                                        <PopoverTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                role="combobox"
+                                                                aria-expanded={open}
+                                                                className="w-full justify-between"
+                                                            >
+                                                                {value
+                                                                    ? handleSearchCarriages(carriageResponse)
+                                                                    : 'Pilih carriage...'}
+                                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                            </Button>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className="w-full p-0">
+                                                            <Command>
+                                                                <CommandInput
+                                                                    onValueChange={e =>
+                                                                        handleChangeSearchCarriageType(e)
+                                                                    }
+                                                                    placeholder="Cari Gerbong..."
+                                                                />
+                                                                <CommandList>
+                                                                    <CommandEmpty>
+                                                                        Gerbong tidak ditemukan.
+                                                                    </CommandEmpty>
+                                                                    <CommandGroup>
+                                                                        {carriageResponse?.data.map(carriage => (
+                                                                            <CommandItem
+                                                                                key={carriage.type}
+                                                                                value={`${carriage.type} : ${carriage.description}`}
+                                                                                onSelect={currentValue => {
+                                                                                    setData(
+                                                                                        'new_carriage_id',
+                                                                                        +carriage.id,
+                                                                                    );
+                                                                                    // alert(currentValue);
+                                                                                    setValue(
+                                                                                        currentValue === value
+                                                                                            ? ''
+                                                                                            : currentValue,
+                                                                                    );
+                                                                                    setOpen(false);
+                                                                                }}
+                                                                            >
+                                                                                {carriage.type} : {carriage.description}
+                                                                                <br />
+                                                                                {/* {carriage.carriage_panels?.map((c, i) => (
                                                                     <span key={c.id}>
                                                                         <br />
                                                                         {c.panel.name}
@@ -485,7 +657,8 @@ export default function ({
 
                 {!trainset.preset_trainset_id &&
                     trainset.carriage_trainsets &&
-                    trainset.carriage_trainsets.length > 0 && (
+                    trainset.carriage_trainsets.length > 0 &&
+                    trainset.status !== TrainsetStatusEnum.PROGRESS && (
                         <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
                             <Dialog>
                                 <DialogTrigger

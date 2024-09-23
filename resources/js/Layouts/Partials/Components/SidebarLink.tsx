@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
-import { buttonVariants } from '@/Components/ui/button';
-import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
+import { buttonVariants } from '@/Components/UI/button';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { useContext } from 'react';
 import { useSidebar } from '@/Contexts/SidebarContext';
 

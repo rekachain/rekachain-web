@@ -1,14 +1,14 @@
-import { workstationService } from '@/services/workstationService';
+import { workstationService } from '@/Services/workstationService';
 import { useEffect, useState } from 'react';
-import { WorkstationResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { WorkstationResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
 import WorkstationTableView from './Partials/WorkstationTableView';
 import WorkstationCardView from './Partials/WorkstationCardView';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function () {
     const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();

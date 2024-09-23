@@ -1,17 +1,17 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { WorkDayResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { WorkDayResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { workDayService } from '@/services/workDayService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
-import { WorkDayTimeEnum } from '@/support/enums/workDayTimeEnum';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { workDayService } from '@/Services/workDayService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 
 export default function () {
     const [workDayResponse, setWorkDayResponse] = useState<PaginateResponse<WorkDayResource>>();

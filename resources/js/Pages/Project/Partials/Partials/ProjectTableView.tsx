@@ -1,10 +1,10 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { ProjectResource } from '@/support/interfaces/resources';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { ProjectResource } from '../../../../Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 
 export default function ProjectTableView({
     projectResponse,

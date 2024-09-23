@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { RiLogoutBoxRLine } from '@remixicon/react';
-import { buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 
 import {
     AlertDialog,
@@ -13,7 +13,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/Components/ui/alert-dialog';
+} from '@/Components/UI/alert-dialog';
 
 export default function () {
     const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full pr-52 md:mr-0 `;

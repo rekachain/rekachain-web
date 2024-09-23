@@ -1,10 +1,10 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Avatar, AvatarImage } from '@/Components/ui/avatar';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { Avatar, AvatarImage } from '@/Components/UI/avatar';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { UserResource } from '@/support/interfaces/resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { UserResource } from '../../../../Support/Interfaces/Resources';
 
 export default function ({
     userResponse,

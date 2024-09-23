@@ -9,7 +9,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/Components/ui/table';
+} from '@/Components/UI/table';
 //   No Proyek jumlah TS Detail
 
 type KPM = {
@@ -30,7 +30,7 @@ const listTrainset: KPM[] = [
     { noLampKpm: '351/PPC/KPM/VI/2024', tanggal: '16 Agustus', panel: 'AC Dist P, Distribusi M, Pids M' },
 ];
 import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/lib/AnimateIn';
+import AnimateIn from '@/Lib/AnimateIn';
 
 export default function DetailTS({ noProyek, detailTS, susunanKereta }: DetailKereta) {
     noProyek;

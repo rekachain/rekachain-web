@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider {
     /**
-     * Register services.
+     * Register Services.
      */
     public function register(): void {
         $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
@@ -34,7 +34,7 @@ class RepositoryServiceProvider extends ServiceProvider {
     }
 
     /**
-     * Bootstrap services.
+     * Bootstrap Services.
      */
     public function boot(): void {
         //

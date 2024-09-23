@@ -6,16 +6,16 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
-import { Label } from '@/Components/ui/label';
-import { Input } from '@/Components/ui/input';
-import { ROUTES } from '@/support/constants/routes';
-import { IntentEnum } from '@/support/enums/intentEnum';
+} from '@/Components/UI/dialog';
+import { Button } from '@/Components/UI/button';
+import { Label } from '@/Components/UI/label';
+import { Input } from '@/Components/UI/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
-import { stepService } from '@/services/stepService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { stepService } from '@/Services/stepService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const { data, setData } = useForm<{
