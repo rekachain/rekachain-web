@@ -17,14 +17,14 @@ test('index method returns paginated carriages', function () {
         ->assertJsonCount(10, 'data');
 });
 
-// test('create method returns create page', function () {
-//     $user = User::factory()->create();
+test('create method returns create page', function () {
+    $user = User::factory()->create();
 
-//     $response = $this->actingAs($user)->get('/carriages/create');
+    $response = $this->actingAs($user)->get('/carriages/create');
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('Carriage/Create'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('Carriage/Create'));
+});
 
 test('store method creates new carriage', function () {
     $user = User::factory()->create();
@@ -63,15 +63,15 @@ test('show method returns carriage details', function () {
         ->assertJson(['id' => $carriage->id, 'type' => $carriage->type]);
 });
 
-// test('edit method returns edit page', function () {
-//     $user = User::factory()->create();
-//     $carriage = Carriage::factory()->create();
+test('edit method returns edit page', function () {
+    $user = User::factory()->create();
+    $carriage = Carriage::factory()->create();
 
-//     $response = $this->actingAs($user)->get("/carriages/{$carriage->id}/edit");
+    $response = $this->actingAs($user)->get("/carriages/{$carriage->id}/edit");
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('Carriage/Edit'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('Carriage/Edit'));
+});
 
 test('update method updates carriage', function () {
     $user = User::factory()->create();
