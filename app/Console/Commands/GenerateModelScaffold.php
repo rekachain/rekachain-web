@@ -158,7 +158,7 @@ class GenerateModelScaffold extends Command {
 
         if ($withFrontend) {
             $paths = array_merge($paths, [
-                'reactModelInterface' => "{$resourcePath}/js/Support/Models/{$modelNameStudly}{$scriptExtension}",
+                'reactModelInterface' => "{$resourcePath}/js/Support/Interfaces/Models/{$modelNameStudly}{$scriptExtension}",
                 'reactResource' => "{$resourcePath}/js/Support/Interfaces/Resources/{$modelNameStudly}Resource{$scriptExtension}",
                 'reactService' => "{$resourcePath}/js/Services/{$modelCamel}Service{$scriptExtension}",
             ]);
@@ -226,23 +226,23 @@ class GenerateModelScaffold extends Command {
 
     protected function generateRequiredFiles() {
         $filesToCheck = [
-            'resources/js/Support/Interfaces/resources/Resource.ts' => <<<'TS'
+            'resources/js/Support/Interfaces/Resources/Resource.ts' => <<<'TS'
             export interface Resource {
                 id: number;
                 created_at: string;
                 updated_at: string;
             }
         TS,
-            'resources/js/Support/Models/index.ts' => <<<'TS'
+            'resources/js/Support/Interfaces/Models/index.ts' => <<<'TS'
             // Add your model Interfaces here
         TS,
-            'resources/js/Support/Interfaces/resources/index.ts' => <<<'TS'
+            'resources/js/Support/Interfaces/Resources/index.ts' => <<<'TS'
             // Add your resource Interfaces here
         TS,
             'resources/js/Services/serviceFactory.ts' => <<<'TS'
             import { PaginateResponse } from '@/Support/Interfaces/Others';
             import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-            import { Resource } from '@/Support/Interfaces/resources';
+            import { Resource } from '@/Support/Interfaces/Resources';
 
             const DEBUG_MODE = true;
 
@@ -487,7 +487,7 @@ class GenerateModelScaffold extends Command {
 
     protected function getFrontendResourceTemplate($modelName): string {
         return <<<TS
-        import { {$modelName} } from '@/Support/Models';
+        import { {$modelName} } from '@/Support/Interfaces/Models';
         import { Resource } from '@/Support/Interfaces/Resources';
 
         export interface {$modelName}Resource extends Resource, {$modelName} {}
@@ -514,7 +514,7 @@ class GenerateModelScaffold extends Command {
     protected function appendFrontendModelInterface(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
-        $modelInterfacePath = resource_path("js/Support/Models/index{$scriptExtension}");
+        $modelInterfacePath = resource_path("js/Support/Interfaces/Models/index{$scriptExtension}");
         $modelInterfaceContent = File::get($modelInterfacePath);
 
         $modelInterfaceContent .= "\nexport * from './{$modelName}';";
