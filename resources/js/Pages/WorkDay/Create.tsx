@@ -8,7 +8,7 @@ import { Button } from '@/Components/ui/button';
 import { workDayService } from '@/services/workDayService';
 import { ROUTES } from '@/support/constants/routes';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const { data, setData, processing, errors } = useForm({

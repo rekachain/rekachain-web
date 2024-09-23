@@ -16,7 +16,7 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
 import { ROUTES } from '@/support/constants/routes';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));

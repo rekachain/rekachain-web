@@ -11,7 +11,7 @@ import { RoleResource, UserResource } from '@/support/interfaces/resources';
 import { parseFormData } from '@/lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function ({ user, roles }: { user: UserResource; roles: RoleResource[] }) {

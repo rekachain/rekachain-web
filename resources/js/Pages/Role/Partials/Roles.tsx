@@ -9,7 +9,7 @@ import { RoleResource } from '@/support/interfaces/resources/RoleResource';
 import RoleCardView from './Partials/RoleCardView';
 import RoleTableView from './Partials/RoleTableView';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();

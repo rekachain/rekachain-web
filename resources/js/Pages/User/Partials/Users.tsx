@@ -8,7 +8,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
 import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {
@@ -73,7 +73,7 @@ export default function () {
                     </div>
                 </>
             )}
-            {/* 
+            {/*
                                     {user.id !== auth.user.id &&
                                         (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
                                             <TableCell>

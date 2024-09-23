@@ -10,7 +10,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { componentService } from '@/services/componentService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const [componentResponse, setComponentResponse] = useState<PaginateResponse<ComponentResource>>();

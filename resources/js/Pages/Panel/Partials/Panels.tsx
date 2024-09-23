@@ -9,7 +9,7 @@ import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterO
 import { useConfirmation } from '@/hooks/useConfirmation';
 import { panelService } from '@/services/panelService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import PanelCardView from './Partials/PanelCardView';
 import PanelTableView from './Partials/PanelTableView';
 

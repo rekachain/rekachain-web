@@ -7,7 +7,7 @@ import { useConfirmation } from '@/hooks/useConfirmation';
 import { rawMaterialService } from '@/services/rawMaterialService';
 import RawMaterialCardView from './Partials/RawMaterialCardView';
 import RawMaterialTableView from './Partials/RawMaterialTableView';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/hooks/useToast';
 
 export default function () {

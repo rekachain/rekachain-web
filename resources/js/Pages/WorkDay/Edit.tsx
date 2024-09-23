@@ -9,7 +9,7 @@ import { Button } from '@/Components/ui/button';
 import { WorkDayResource } from '@/support/interfaces/resources';
 import { workDayService } from '@/services/workDayService';
 import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ workDay }: { workDay: WorkDayResource }) {
     const { data, setData, processing, errors } = useForm({

@@ -5,7 +5,7 @@ import { STYLING } from '@/support/constants/styling';
 import { Input } from '@/Components/ui/input';
 import { trainsetService } from '@/services/trainsetService';
 import { useForm } from '@inertiajs/react';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useState } from 'react';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {

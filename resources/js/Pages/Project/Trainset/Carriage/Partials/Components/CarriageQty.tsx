@@ -6,7 +6,7 @@ import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/support/constants/styling';
 import { trainsetService } from '@/services/trainsetService';
 import { useState } from 'react';
-import { useLoading } from '@/contexts/LoadingContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({
     trainset,
