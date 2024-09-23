@@ -1,17 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
-import { DivisionResource, WorkshopResource, WorkstationResource } from '@/support/interfaces/resources';
+import { DivisionResource, WorkshopResource, WorkstationResource } from '@/Support/interfaces/resources';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
-import { workstationService } from '@/services/workstationService';
+import { workstationService } from '@/Services/workstationService';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({
     workstation,

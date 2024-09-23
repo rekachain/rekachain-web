@@ -1,12 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { TrainsetResource } from '@/support/interfaces/resources';
-import { ROUTES } from '@/support/constants/routes';
+import { TrainsetResource } from '@/Support/interfaces/resources';
+import { ROUTES } from '@/Support/constants/routes';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { carriageTrainsetService } from '@/services/carriageTrainsetService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { TrainsetStatusEnum } from '@/Support/enums/trainsetStatusEnum';
 import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
 
 export default function ({

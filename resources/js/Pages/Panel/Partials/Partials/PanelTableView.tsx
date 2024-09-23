@@ -1,10 +1,10 @@
-import { PaginateResponse } from '@/support/interfaces/others';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { PanelResource } from '@/support/interfaces/resources';
+import { PanelResource } from '@/Support/interfaces/resources';
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 
 export default function PanelCardView({
     panelResponse,

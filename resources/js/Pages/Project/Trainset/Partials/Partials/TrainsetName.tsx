@@ -1,9 +1,9 @@
-import { TrainsetResource } from '@/support/interfaces/resources';
+import { TrainsetResource } from '@/Support/interfaces/resources';
 import { Button } from '@/Components/ui/button';
 import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/support/constants/styling';
+import { STYLING } from '@/Support/constants/styling';
 import { Input } from '@/Components/ui/input';
-import { trainsetService } from '@/services/trainsetService';
+import { trainsetService } from '@/Services/trainsetService';
 import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useState } from 'react';

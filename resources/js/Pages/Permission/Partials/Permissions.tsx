@@ -1,14 +1,14 @@
 import { usePage } from '@inertiajs/react';
-import { permissionService } from '@/services/permissionService';
+import { permissionService } from '@/Services/permissionService';
 import { useEffect, useState } from 'react';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { PermissionResource } from '@/support/interfaces/resources/PermissionResource';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { PermissionResource } from '@/Support/interfaces/resources/PermissionResource';
 import PermissionsTableView from './Partials/PermissionsTableView';
 import PermissionsCardView from './Partials/PermissionsCardView';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {

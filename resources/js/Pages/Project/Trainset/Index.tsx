@@ -3,10 +3,10 @@ import { lazy, memo, Suspense, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Button } from '@/Components/ui/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { ProjectResource } from '@/support/interfaces/resources';
+import { ProjectResource } from '@/Support/interfaces/resources';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
-import { projectService } from '@/services/projectService';
+import { projectService } from '@/Services/projectService';
 import { Loader2 } from 'lucide-react';
 import {
     Breadcrumb,
@@ -15,9 +15,9 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));
 

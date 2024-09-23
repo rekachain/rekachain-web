@@ -6,7 +6,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
-import { STYLING } from '@/support/constants/styling';
+import { STYLING } from '@/Support/constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
 

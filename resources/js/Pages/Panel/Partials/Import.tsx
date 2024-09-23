@@ -10,11 +10,11 @@ import {
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
-import { ROUTES } from '@/support/constants/routes';
-import { IntentEnum } from '@/support/enums/intentEnum';
+import { ROUTES } from '@/Support/constants/routes';
+import { IntentEnum } from '@/Support/enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
-import { panelService } from '@/services/panelService';
-import { useSuccessToast } from '@/hooks/useToast';
+import { panelService } from '@/Services/panelService';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {

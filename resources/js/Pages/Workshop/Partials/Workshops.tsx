@@ -1,14 +1,14 @@
-import { workshopService } from '@/services/workshopService';
+import { workshopService } from '@/Services/workshopService';
 import { useEffect, useState } from 'react';
-import { WorkshopResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { WorkshopResource } from '@/Support/interfaces/resources';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
 import WorkshopTableView from './Partials/WorkshopTableView';
 import WorkshopCardView from './Partials/WorkshopCardView';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function () {
     const [workshopResponse, setWorkshopResponse] = useState<PaginateResponse<WorkshopResource>>();

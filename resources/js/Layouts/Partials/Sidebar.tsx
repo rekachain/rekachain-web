@@ -26,11 +26,11 @@ import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components
 import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
-import { STYLING } from '@/support/constants/styling';
-import { ROUTES } from '@/support/constants/routes';
-import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
-import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
-import { checkPermission } from '@/helpers/sidebarHelper';
+import { STYLING } from '@/Support/constants/styling';
+import { ROUTES } from '@/Support/constants/routes';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/enums/sidebarGroupEnum';
+import { PERMISSION_ENUM } from '@/Support/enums/permissionEnum';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { SidebarProvider } from '@/Contexts/SidebarContext';
 
 export default function Sidebar() {

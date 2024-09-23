@@ -2,13 +2,13 @@ import InputError from '@/Components/InputError';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
 import { FormEventHandler } from 'react';
-import { PageProps } from '@/types';
+import { PageProps } from '../../../Types';
 import { Input } from '@/Components/ui/input';
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { FilePond } from 'react-filepond';
-import { withLoading } from '@/utils/withLoading';
-import { useSuccessToast } from '@/hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,

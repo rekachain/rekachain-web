@@ -16,8 +16,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
-import { STYLING } from '@/support/constants/styling';
-import { ROUTES } from '@/support/constants/routes';
+import { STYLING } from '@/Support/constants/styling';
+import { ROUTES } from '@/Support/constants/routes';
 import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {

@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { RiLogoutBoxRLine } from '@remixicon/react';
 import { buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 
 import {
     AlertDialog,

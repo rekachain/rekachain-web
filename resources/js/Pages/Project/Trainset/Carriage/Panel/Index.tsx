@@ -9,7 +9,7 @@ import {
     ProgressResource,
     ProjectResource,
     TrainsetResource,
-} from '@/support/interfaces/resources';
+} from '@/Support/interfaces/resources';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -17,7 +17,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import {
     Dialog,
     DialogContent,
@@ -30,24 +30,24 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
 import { Loader2, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/support/constants/styling';
+import { STYLING } from '@/Support/constants/styling';
 import { Separator } from '@/Components/ui/separator';
 import { Textarea } from '@/Components/ui/textarea';
-import { panelService } from '@/services/panelService';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { PaginateResponse } from '@/support/interfaces/others';
+import { panelService } from '@/Services/panelService';
+import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { PaginateResponse } from '@/Support/interfaces/others';
 import { useDebounce } from '@uidotdev/usehooks';
-import { progressService } from '@/services/progressService';
-import { carriageTrainsetService } from '@/services/carriageTrainsetService';
-import { fetchGenericData } from '@/helpers/dataManagementHelper';
+import { progressService } from '@/Services/progressService';
+import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
+import { fetchGenericData } from '@/Helpers/dataManagementHelper';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/Lib/utils';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
-import { TrainsetStatusEnum } from '@/support/enums/trainsetStatusEnum';
-import { withLoading } from '@/utils/withLoading';
+import { TrainsetStatusEnum } from '@/Support/enums/trainsetStatusEnum';
+import { withLoading } from '@/Utils/withLoading';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 

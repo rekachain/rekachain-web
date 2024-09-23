@@ -1,18 +1,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
+import { ROUTES } from '@/Support/constants/routes';
 import { Input } from '@/Components/ui/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { userService } from '@/services/userService';
+import { userService } from '@/Services/userService';
 import { Button } from '@/Components/ui/button';
-import { RoleResource, UserResource } from '@/support/interfaces/resources';
-import { parseFormData } from '@/lib/utils';
+import { RoleResource, UserResource } from '@/Support/interfaces/resources';
+import { parseFormData } from '@/Lib/utils';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { Label } from '@/Components/ui/label';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({ user, roles }: { user: UserResource; roles: RoleResource[] }) {
     console.log(user, roles);
