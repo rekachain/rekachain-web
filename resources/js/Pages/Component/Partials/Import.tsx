@@ -28,7 +28,7 @@ export default function () {
         setLoading(true);
         const response = await window.axios.get(
             route(`${ROUTES.COMPONENTS}.index`, {
-                intent: IntentEnum.WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT,
+                // intent: IntentEnum.WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT,
             }),
             { responseType: 'blob' },
         );
@@ -47,7 +47,7 @@ export default function () {
         event.preventDefault();
         setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.COMPONENTS}.index`));
-        await componentService.importData(data.file as File);
+        // await componentService.importData(data.file as File);
         await useSuccessToast('Data imported successfully');
         redirectToIndex();
         setLoading(false);
