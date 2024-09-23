@@ -1,8 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lazy, Suspense } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/constants/routes';
-import { buttonVariants } from '@/Components/ui/button';
+import { ROUTES } from '@/Support/Constants/routes';
+import { buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import Import from '@/Pages/Carriage/Partials/Import';
 

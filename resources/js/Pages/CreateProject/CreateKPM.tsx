@@ -1,5 +1,5 @@
-import { Button } from '@/Components/ui/button';
-import { Input } from '@/Components/ui/input';
+import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AnimateIn from '@/Lib/AnimateIn';
 import { Head } from '@inertiajs/react';
@@ -14,8 +14,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Label } from '@/Components/ui/label';
+} from '@/Components/UI/dialog';
+import { Label } from '@/Components/UI/label';
 
 import {
     AlertDialog,
@@ -27,7 +27,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from '@/Components/ui/alert-dialog';
+} from '@/Components/UI/alert-dialog';
 
 type material = {
     nama: string;

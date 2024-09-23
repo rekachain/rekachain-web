@@ -1,10 +1,10 @@
 import { usePage } from '@inertiajs/react';
 import { userService } from '@/Services/userService';
 import { useEffect, useState } from 'react';
-import { UserResource } from '@/Support/interfaces/resources';
-import { PaginateResponse } from '@/Support/interfaces/others';
+import { UserResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useConfirmation } from '@/Hooks/useConfirmation';
 import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
 import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';

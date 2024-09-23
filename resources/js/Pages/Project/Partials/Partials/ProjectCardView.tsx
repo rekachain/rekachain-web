@@ -1,7 +1,7 @@
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
-import { PaginateResponse } from '@/Support/interfaces/others';
-import { ProjectResource } from '@/Support/interfaces/resources';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { ProjectResource } from '../../../../Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 

@@ -1,6 +1,6 @@
-import { ROUTES } from '@/Support/constants/routes';
+import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProgressStepResource } from '@/Support/interfaces/resources';
+import { ProgressStepResource } from '../Support/Interfaces/Resources';
 
 export const progressStepService = {
     ...serviceFactory<ProgressStepResource>(ROUTES.PROGRESS_STEPS),

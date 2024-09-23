@@ -20,7 +20,7 @@ import {
     RiUser2Line,
     RiUserLine,
 } from '@remixicon/react';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/UI/button';
 import SidebarLink from './Components/SidebarLink';
 import SidebarMenu from './Components/SidebarMenu';
 import { ListOrdered } from 'lucide-react';
@@ -28,15 +28,15 @@ import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components
 import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
-import { STYLING } from '@/Support/constants/styling';
+import { STYLING } from '@/Support/Constants/styling';
 import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/constants/routes';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
 import { checkPermission } from '@/Helpers/sidebarHelper';
-import { PERMISSION_ENUM } from '@/Support/enums/permissionEnum';
-import { SIDEBAR_GROUP_ENUM } from '@/Support/enums/sidebarGroupEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
 
 export default function SidebarMobile() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', true);

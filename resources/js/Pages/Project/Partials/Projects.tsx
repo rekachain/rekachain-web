@@ -1,11 +1,11 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { ProjectResource } from '@/Support/interfaces/resources';
-import { PaginateResponse } from '@/Support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/Support/constants/routes';
+import { ProjectResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useConfirmation } from '@/Hooks/useConfirmation';
 import { projectService } from '@/Services/projectService';
 import { useLoading } from '@/Contexts/LoadingContext';

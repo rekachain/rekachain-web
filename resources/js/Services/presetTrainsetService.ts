@@ -1,6 +1,6 @@
-import { ROUTES } from '@/Support/constants/routes.js';
+import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { PresetTrainsetResource } from '@/Support/interfaces/resources';
+import { PresetTrainsetResource } from '../Support/Interfaces/Resources';
 
 export const presetTrainsetService = {
     ...serviceFactory<PresetTrainsetResource>(ROUTES.PRESET_TRAINSETS),

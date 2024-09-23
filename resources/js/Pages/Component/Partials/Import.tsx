@@ -6,12 +6,12 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
-import { Label } from '@/Components/ui/label';
-import { Input } from '@/Components/ui/input';
-import { ROUTES } from '@/Support/constants/routes';
-import { IntentEnum } from '@/Support/enums/intentEnum';
+} from '@/Components/UI/dialog';
+import { Button } from '@/Components/UI/button';
+import { Label } from '@/Components/UI/label';
+import { Input } from '@/Components/UI/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { componentService } from '@/Services/componentService';
 import { useSuccessToast } from '@/Hooks/useToast';

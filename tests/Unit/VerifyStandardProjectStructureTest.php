@@ -27,7 +27,7 @@ function countFilesInDirectory(string $dir, array $excluded = []): int {
 }
 
 // Test that models have corresponding controllers
-test('models should have corresponding controllers', function () {
+test('Models should have corresponding controllers', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
     $controllerDir = $baseDir . '/app/Http/Controllers';
@@ -58,7 +58,7 @@ test('models should have corresponding controllers', function () {
     dump('Models without controllers: ', $modelsWithoutControllers);
     expect($modelsWithoutControllers)->toBeEmpty();
 });
-test('models should have corresponding form requests', function () {
+test('Models should have corresponding form requests', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
     $requestBaseDir = $baseDir . '/app/Http/Requests';
@@ -82,7 +82,7 @@ test('models should have corresponding form requests', function () {
     expect($modelsWithoutRequests)->toBeEmpty();
 });
 
-test('models should have corresponding resources', function () {
+test('Models should have corresponding resources', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
     $resourceDir = $baseDir . '/app/Http/Resources';
@@ -114,7 +114,7 @@ test('models should have corresponding resources', function () {
     expect($modelsWithoutResources)->toBeEmpty();
 });
 
-test('models should have corresponding services and repositories interface', function () {
+test('Models should have corresponding services and repositories interface', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
     $serviceInterfaceDir = $baseDir . '/app/Support/Interfaces/Services';
@@ -152,7 +152,7 @@ test('models should have corresponding services and repositories interface', fun
         ->and($modelsWithoutRepositories)->toBeEmpty();
 });
 
-test('models should have corresponding services and repositories', function () {
+test('Models should have corresponding services and repositories', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
     $serviceDir = $baseDir . '/app/Services';
@@ -186,10 +186,10 @@ test('models should have corresponding services and repositories', function () {
         ->and($modelsWithoutRepositories)->toBeEmpty();
 });
 
-test('(react) models should have corresponding model interface', function () {
+test('(react) Models should have corresponding model interface', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
-    $modelInterfaceDir = $baseDir . '/resources/js/Support/models';
+    $modelInterfaceDir = $baseDir . '/resources/js/Support/Models';
 
     $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
     $modelsWithoutModelInterface = [];
@@ -210,10 +210,10 @@ test('(react) models should have corresponding model interface', function () {
     expect($modelsWithoutModelInterface)->toBeEmpty();
 });
 
-test('(react) models should have corresponding resource interface', function () {
+test('(react) Models should have corresponding resource interface', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
-    $modelResourceInterfaceDir = $baseDir . '/resources/js/Support/interfaces/resources';
+    $modelResourceInterfaceDir = $baseDir . '/resources/js/Support/Interfaces/resources';
 
     $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
     $modelsWithoutResourceInterface = [];
@@ -234,7 +234,7 @@ test('(react) models should have corresponding resource interface', function () 
     expect($modelsWithoutResourceInterface)->toBeEmpty();
 });
 
-test('(react) models should have corresponding services', function () {
+test('(react) Models should have corresponding services', function () {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
     $modelDir = $baseDir . '/app/Models';
     $serviceDir = $baseDir . '/resources/js/Services';
@@ -282,7 +282,7 @@ test('model should have controllers, form request, resource, service interface, 
     $requestDir = $baseDir . '/app/Http/Requests';
     $resourceDir = $baseDir . '/app/Http/Resources';
     $reactModelInterfaceDir = $baseDir . '/resources/js/Support/models';
-    $reactResourceDir = $baseDir . '/resources/js/Support/interfaces/resources';
+    $reactResourceDir = $baseDir . '/resources/js/Support/Interfaces/resources';
     $reactServiceDir = $baseDir . '/resources/js/Services';
 
     // Exclude certain folders or files

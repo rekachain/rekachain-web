@@ -1,6 +1,6 @@
-import {ROUTES} from '@/Support/constants/routes.js';
+import {ROUTES} from '@/Support/Constants/routes.js';
 import {serviceFactory} from '@/Services/serviceFactory';
-import {UserResource} from '@/Support/interfaces/resources';
+import {UserResource} from '../Support/Interfaces/Resources';
 
 export const userService = {
     ...serviceFactory<UserResource>(ROUTES.USERS),

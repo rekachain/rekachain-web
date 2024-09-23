@@ -1,25 +1,25 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/ui/input';
+import { Input } from '@/Components/UI/input';
 import { FormEventHandler, useEffect, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/UI/button';
 import { stepService } from '@/Services/stepService';
-import { ROUTES } from '@/Support/constants/routes';
+import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { ProgressResource, StepResource } from '@/Support/interfaces/resources';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { Label } from '@/Components/ui/label';
+import { ProgressResource, StepResource } from '../../Support/Interfaces/Resources';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { Label } from '@/Components/UI/label';
 import { Check, ChevronsUpDown, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/Support/constants/styling';
-import { PaginateResponse } from '@/Support/interfaces/others';
+import { STYLING } from '@/Support/Constants/styling';
+import { PaginateResponse } from '../../Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useDebounce } from '@uidotdev/usehooks';
-import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { progressService } from '@/Services/progressService';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import cn from 'mxcn';
 
 export default function ({ step }: { step: StepResource }) {

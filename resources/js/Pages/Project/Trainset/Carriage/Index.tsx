@@ -8,13 +8,13 @@ import {
     ProjectResource,
     TrainsetResource,
     WorkstationResource,
-} from '@/Support/interfaces/resources';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { Label } from '@/Components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
+} from '../../../../Support/Interfaces/Resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { Label } from '@/Components/UI/label';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { trainsetService } from '@/Services/trainsetService';
 import { ChevronsUpDown, Loader2 } from 'lucide-react';
-import { Input } from '@/Components/ui/input';
+import { Input } from '@/Components/UI/input';
 import {
     Dialog,
     DialogContent,
@@ -22,11 +22,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
+} from '@/Components/UI/dialog';
 import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
 import { presetTrainsetService } from '@/Services/presetTrainsetService';
-import { PaginateResponse } from '@/Support/interfaces/others';
-import { ServiceFilterOptions } from '@/Support/interfaces/others/ServiceFilterOptions';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { carriageService } from '@/Services/carriageService';
 import { useDebounce } from '@uidotdev/usehooks';
 import {
@@ -35,15 +35,15 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/Support/constants/routes';
+} from '@/Components/UI/breadcrumb';
+import { ROUTES } from '@/Support/Constants/routes';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { TrainsetStatusEnum } from '@/Support/enums/trainsetStatusEnum';
-import { Popover, PopoverContent, PopoverTrigger } from '@/Components/ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/ui/command';
-import { Separator } from '@/Components/ui/separator';
-import { Textarea } from '@/Components/ui/textarea';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Separator } from '@/Components/UI/separator';
+import { Textarea } from '@/Components/UI/textarea';
 import { withLoading } from '@/Utils/withLoading';
 import { workstationService } from '@/Services/workstationService';
 import { useLoading } from '@/Contexts/LoadingContext';

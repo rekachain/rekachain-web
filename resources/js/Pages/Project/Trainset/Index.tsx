@@ -1,11 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lazy, memo, Suspense, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { ProjectResource } from '@/Support/interfaces/resources';
-import { Label } from '@/Components/ui/label';
-import { Input } from '@/Components/ui/input';
+import { ProjectResource } from '../../../Support/Interfaces/Resources';
+import { Label } from '@/Components/UI/label';
+import { Input } from '@/Components/UI/input';
 import { projectService } from '@/Services/projectService';
 import { Loader2 } from 'lucide-react';
 import {
@@ -14,8 +14,8 @@ import {
     BreadcrumbList,
     BreadcrumbPage,
     BreadcrumbSeparator,
-} from '@/Components/ui/breadcrumb';
-import { ROUTES } from '@/Support/constants/routes';
+} from '@/Components/UI/breadcrumb';
+import { ROUTES } from '@/Support/Constants/routes';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 

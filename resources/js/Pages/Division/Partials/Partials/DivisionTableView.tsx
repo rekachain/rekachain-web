@@ -1,9 +1,9 @@
-import { PaginateResponse } from '@/Support/interfaces/others';
-import { DivisionResource } from '@/Support/interfaces/resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { DivisionResource } from '../../../../Support/Interfaces/Resources';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/Support/constants/routes';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 import React from 'react';
 
 export default function DivisionTableView({

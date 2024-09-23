@@ -6,11 +6,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
-import { Label } from '@/Components/ui/label';
-import { Input } from '@/Components/ui/input';
-import { ROUTES } from '@/Support/constants/routes';
+} from '@/Components/UI/dialog';
+import { Button } from '@/Components/UI/button';
+import { Label } from '@/Components/UI/label';
+import { Input } from '@/Components/UI/input';
+import { ROUTES } from '@/Support/Constants/routes';
 import { router, useForm } from '@inertiajs/react';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useState } from 'react';
