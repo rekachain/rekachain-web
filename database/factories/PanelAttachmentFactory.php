@@ -26,7 +26,7 @@ class PanelAttachmentFactory extends Factory {
             'qr_path' => $this->faker->imageUrl(),
             'current_step' => $this->faker->text(10),
             'elapsed_time' => $this->faker->numberBetween(1, 10),
-            'status' => $this->faker->randomElement(['active', 'inactive']),
+            'status' => $this->faker->randomElement(['material_in_transit', 'material_accepted', 'in_progress', 'pending', 'done']),
             'panel_attachment_id' => null,
             'supervisor_id' => null,
         ];
