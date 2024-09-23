@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CarriagePanel extends Model {
     use HasFactory;
@@ -39,5 +39,9 @@ class CarriagePanel extends Model {
 
     public function panel_materials(): HasMany {
         return $this->hasMany(PanelMaterial::class);
+    }
+
+    public function panel_attachments(): HasMany {
+        return $this->hasMany(PanelAttachment::class);
     }
 }
