@@ -57,10 +57,6 @@ class CarriageTrainsetService extends BaseCrudService implements CarriageTrainse
     }
 
     public function delete($keyOrModel): bool {
-        $keyOrModel->panel_attachments()->each(function ($panelAttachment) {
-            $this->panelAttachmentService->delete($panelAttachment);
-        });
-
         $keyOrModel->carriage_panels()->each(function ($carriagePanel) {
             $this->carriagePanelService->delete($carriagePanel);
         });
