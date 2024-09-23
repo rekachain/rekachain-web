@@ -31,4 +31,5 @@ export const ROUTES = {
 	STEPS: 'steps',
 	DETAIL_WORKER_PANELS: 'detail-worker-panels',
 	PROGRESS_STEPS: 'progress-steps',
+	TRAINSET_ATTACHMENTS: 'trainset-attachments',
 };
