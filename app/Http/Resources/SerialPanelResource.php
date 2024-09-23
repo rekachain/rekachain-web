@@ -36,7 +36,7 @@ class SerialPanelResource extends JsonResource {
                     'manufacture_status' => $this->manufacture_status,
                     'notes' => $this->notes,
                     'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
-                    'detail_workers' => DetailWorkerPanelResource::collection($this->whenLoaded('detail_worker_panels')),
+                    'detail_worker_panels' => DetailWorkerPanelResource::collection($this->whenLoaded('detail_worker_panels')),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
