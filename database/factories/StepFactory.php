@@ -11,7 +11,6 @@ class StepFactory extends Factory {
 
     public function definition(): array {
         return [
-            'progress_id' => Progress::inRandomOrder()->first()->id,
             'name' => $this->faker->word,
             'process' => $this->faker->sentence,
             'estimated_time' => $this->faker->numberBetween(1, 10),
