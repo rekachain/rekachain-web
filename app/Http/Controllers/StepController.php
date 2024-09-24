@@ -63,10 +63,10 @@ class StepController extends Controller {
      * Display the specified resource.
      */
     public function show(Step $step) {
-        $step = new StepResource($step->load(['progress', 'user']));
+        // $step = new StepResource($step->load(['progress', 'user']));
 
         if ($this->ajax()) {
-            return $step;
+            return new StepResource($step);
         }
 
         return inertia('Step/Show', ['step' => $step]);
@@ -76,7 +76,8 @@ class StepController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Request $request, Step $step) {
-        $step = StepResource::make($step->load(['progress', 'user']));
+        // $step = StepResource::make($step->load(['progress', 'user']));
+        $step = StepResource::make($step);
 
         if ($this->ajax()) {
             return $step;

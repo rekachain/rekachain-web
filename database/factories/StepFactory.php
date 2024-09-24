@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Progress;
 use App\Models\Step;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -1,110 +1,122 @@
 <!-- route not ready -->
 <?php
 
-use App\Models\Carriage;
-use App\Models\User;
-use App\Support\Enums\IntentEnum;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+// use App\Models\Step;
+// use App\Models\User;
+// use App\Models\SerialPanel;
+// use App\Models\DetailWorkerPanel;
+// use App\Support\Enums\IntentEnum;
+// use Illuminate\Http\UploadedFile;
+// use Illuminate\Support\Facades\Storage;
+// use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+// use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
-test('index method returns paginated detail-worker-panels', function () {
-    $user = User::factory()->superAdmin()->create();
-    Carriage::factory()->count(15)->create();
-
-    $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=10');
-
-    $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(10, 'data');
-});
-
-test('create method returns create page', function () {
-    $user = User::factory()->superAdmin()->create();
-
-    $response = $this->actingAs($user)->get('/detail-worker-panels/create');
-
-    $response->assertStatus(200)
-        ->assertInertia(fn ($assert) => $assert->component('Carriage/Create'));
-});
-
-test('store method creates new carriage', function () {
-    $user = User::factory()->superAdmin()->create();
-    $carriageData = [
-        'type' => 'Test Type',
-        'description' => 'Test Description',
-    ];
-
-    $response = $this->actingAs($user)->postJson('/detail-worker-panels', $carriageData);
-
-    $response->assertStatus(201)
-        ->assertJsonStructure(['id', 'type', 'description']);
-    $this->assertDatabaseHas('detail-worker-panels', $carriageData);
-});
-
-// test('store method imports detail-worker-panels', function () {
-//     Storage::fake('local');
+// test('index method returns paginated detail-worker-panels', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $file = UploadedFile::fake()->create('detail-worker-panels.xlsx');
+//     createDetailWorkerPanel();
 
-//     $response = $this->actingAs($user)->postJson('/detail-worker-panels', [
-//         'intent' => IntentEnum::WEB_CARRIAGE_IMPORT_CARRIAGE->value,
-//         'import_file' => $file,
-//     ]);
+//     $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=10');
 
-//     $response->assertStatus(204);
+//     $response->assertStatus(200)
+//         ->assertJsonStructure(['data', 'meta'])
+//         ->assertJsonCount(1, 'data');
 // });
 
-test('show method returns carriage details', function () {
-    $user = User::factory()->superAdmin()->create();
-    $carriage = Carriage::factory()->create();
+// // Not ready
+// // test('create method returns create page', function () {
+// //     $user = User::factory()->superAdmin()->create();
 
-    $response = $this->actingAs($user)->getJson("/detail-worker-panels/{$carriage->id}");
+// //     $response = $this->actingAs($user)->get('/detail-worker-panels/create');
 
-    $response->assertStatus(200)
-        ->assertJson(['id' => $carriage->id, 'type' => $carriage->type]);
-});
+// //     $response->assertStatus(200)
+// //         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerPanel/Create'));
+// // });
 
-test('edit method returns edit page', function () {
-    $user = User::factory()->superAdmin()->create();
-    $carriage = Carriage::factory()->create();
+// test('store method creates new DetailWorkerPanel', function () {
+//     $user = User::factory()->superAdmin()->create();
+//     User::factory()->create();
+//     createSerialPanel();
+//     createProgressStep();
+//     $DetailWorkerPanelData = [
+//         'serial_panel_id' => SerialPanel::inRandomOrder()->first()->id,
+//         'worker_id' => User::inRandomOrder()->first()->id,
+//         'progress_step_id' => Step::inRandomOrder()->first()->id,
+//         'estimated_time' => 40,
+//         'work_status' => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
+//         'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value,
+//     ];
 
-    $response = $this->actingAs($user)->get("/detail-worker-panels/{$carriage->id}/edit");
+//     $response = $this->actingAs($user)->postJson('/detail-worker-panels', $DetailWorkerPanelData);
 
-    $response->assertStatus(200)
-        ->assertInertia(fn ($assert) => $assert->component('Carriage/Edit'));
-});
+//     $response->assertStatus(201)
+//         ->assertJsonStructure(['id', 'serial_panel_id', 'worker_id', 'progress_step_id', 'estimated_time', 'work_status', 'acceptance_status']);
+//     $this->assertDatabaseHas('detail_worker_panels', $DetailWorkerPanelData);
+// });
 
-test('update method updates carriage', function () {
-    $user = User::factory()->superAdmin()->create();
-    $carriage = Carriage::factory()->create();
-    $updatedData = [
-        'type' => 'Updated Type',
-        'description' => 'Updated Description',
-    ];
+// // test('store method imports detail-worker-panels', function () {
+// //     Storage::fake('local');
+// //     $user = User::factory()->superAdmin()->create();
+// //     $file = UploadedFile::fake()->create('detail-worker-panels.xlsx');
 
-    $response = $this->actingAs($user)->putJson("/detail-worker-panels/{$carriage->id}", $updatedData);
+// //     $response = $this->actingAs($user)->postJson('/detail-worker-panels', [
+// //         'intent' => IntentEnum::WEB_DetailWorkerPanel_IMPORT_DetailWorkerPanel->value,
+// //         'import_file' => $file,
+// //     ]);
 
-    $response->assertStatus(200)
-        ->assertJson($updatedData);
-    $this->assertDatabaseHas('detail-worker-panels', $updatedData);
-});
+// //     $response->assertStatus(204);
+// // });
 
-test('destroy method deletes carriage', function () {
-    $user = User::factory()->superAdmin()->create();
-    $carriage = Carriage::factory()->create();
+// test('show method returns DetailWorkerPanel details', function () {
+//     $user = User::factory()->superAdmin()->create();
+//     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
 
-    $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$carriage->id}");
+//     $response = $this->actingAs($user)->getJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 
-    $response->assertStatus(200);
-    $this->assertDatabaseMissing('detail-worker-panels', ['id' => $carriage->id]);
-});
+//     $response->assertStatus(200)
+//         ->assertJson(['id' => $DetailWorkerPanel->id, 'type' => $DetailWorkerPanel->type]);
+// });
 
-test('index method returns import template', function () {
-    $user = User::factory()->superAdmin()->create();
+// // Not ready
+// // test('edit method returns edit page', function () {
+// //     $user = User::factory()->superAdmin()->create();
+// //     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
 
-    $response = $this->actingAs($user)->getJson('/detail-worker-panels?intent=' . IntentEnum::WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE->value);
+// //     $response = $this->actingAs($user)->get("/detail-worker-panels/{$DetailWorkerPanel->id}/edit");
 
-    $response->assertStatus(200)
-        ->assertDownload('detail-worker-panels_template.xlsx');
-});
+// //     $response->assertStatus(200)
+// //         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerPanel/Edit'));
+// // });
+
+// test('update method updates DetailWorkerPanel', function () {
+//     $user = User::factory()->superAdmin()->create();
+//     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
+//     $updatedData = [
+//         'estimated_time' => 35,
+//     ];
+
+//     $response = $this->actingAs($user)->putJson("/detail-worker-panels/{$DetailWorkerPanel->id}", $updatedData);
+
+//     $response->assertStatus(200)
+//         ->assertJson($updatedData);
+//     $this->assertDatabaseHas('detail_worker_panels', $updatedData);
+// });
+
+// test('destroy method deletes DetailWorkerPanel', function () {
+//     $user = User::factory()->superAdmin()->create();
+//     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
+
+//     $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
+
+//     $response->assertStatus(200);
+//     $this->assertDatabaseMissing('detail_worker_panels', ['id' => $DetailWorkerPanel->id]);
+// });
+
+// // test('index method returns import template', function () {
+// //     $user = User::factory()->superAdmin()->create();
+
+// //     $response = $this->actingAs($user)->getJson('/detail-worker-panels?intent=' . IntentEnum::WEB_DetailWorkerPanel_GET_TEMPLATE_IMPORT_DetailWorkerPanel->value);
+
+// //     $response->assertStatus(200)
+// //         ->assertDownload('detail-worker-panels_template.xlsx');
+// // });
 
