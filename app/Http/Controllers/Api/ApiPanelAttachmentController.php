@@ -27,10 +27,14 @@ class ApiPanelAttachmentController extends Controller {
 
         if ($intent === 'api.panel.attachment.get.attachment.details'){
             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
-        } else if ($intent === 'api.panel.attachment.get.attachment.details.filter.status') {
-            $query = $this->panelAttachmentService->filterStatus($request->query(), ['in_progress', 'done']);
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS->value]);
-        } 
+        } else if ($intent === 'api.panel.attachment.get.attachment.details.filter.status.process') {
+            $query = $this->panelAttachmentService->filterStatus();
+            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_PROCESS->value]);
+            return PanelAttachmentResource::collection($this->panelAttachmentService->filterStatus($request->query(), $perPage));
+        } else if ($intent === 'api.panel.attachment.get.attachment.details.filter.status.done') {
+            $query = $this->panelAttachmentService->filterStatus($request->query(), ['done']);
+            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_DONE->value]);
+        }
         else{
             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
         }

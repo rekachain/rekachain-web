@@ -21,7 +21,9 @@ enum IntentEnum: string {
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
 
-    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS = 'api.panel.attachment.get.attachment.details.filter.status';
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_PROCESS = 'api.panel.attachment.get.attachment.details.filter.status.process';
+    
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_DONE = 'api.panel.attachment.get.attachment.details.filter.status.done';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
