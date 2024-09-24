@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 test('index method returns paginated steps', function () {
     $user = User::factory()->create();
-    createProgress();
     Step::factory()->count(5)->create();
 
     $response = $this->actingAs($user)->getJson('/steps?page=1&perPage=10');
@@ -29,9 +28,7 @@ test('create method returns create page', function () {
 
 test('store method creates new step', function () {
     $user = User::factory()->create();
-    $progress = createProgress();
     $stepData = [
-        'progress_id' => $progress->id,
         'name' => 'Test name',
         'process' => 'Test process',
     ];
@@ -39,7 +36,7 @@ test('store method creates new step', function () {
     $response = $this->actingAs($user)->postJson('/steps', $stepData);
 
     $response->assertStatus(201)
-        ->assertJsonStructure(['id', 'progress_id', 'name', 'process']);
+        ->assertJsonStructure(['id', 'name', 'process']);
     $this->assertDatabaseHas('steps', $stepData);
 });
 
@@ -58,7 +55,6 @@ test('store method creates new step', function () {
 
 test('show method returns step details', function () {
     $user = User::factory()->create();
-    createProgress();
     $step = Step::factory()->create();
 
     $response = $this->actingAs($user)->getJson("/steps/{$step->id}");
@@ -74,7 +70,6 @@ test('show method returns step details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->create();
-    createProgress();
     $step = Step::factory()->create();
 
     $response = $this->actingAs($user)->get("/steps/{$step->id}/edit");
@@ -85,10 +80,8 @@ test('edit method returns edit page', function () {
 
 test('update method updates step', function () {
     $user = User::factory()->create();
-    createProgress();
     $step = Step::factory()->create();
     $updatedData = [
-        'progress_id' => $step->progress_id,
         'name' => 'Updated name',
         'process' => 'Updated process',
     ];
@@ -102,7 +95,6 @@ test('update method updates step', function () {
 
 test('destroy method deletes step', function () {
     $user = User::factory()->create();
-    createProgress();
     $step = Step::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/steps/{$step->id}");
