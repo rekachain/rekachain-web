@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Step;
+use App\Models\Progress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,7 +17,8 @@ class ProgressStepFactory extends Factory {
      */
     public function definition(): array {
         return [
-            //
+            'progress_id' => Progress::inRandomOrder()->first()->id,
+            'step_id' => Step::inRandomOrder()->first()->id,
         ];
     }
 }

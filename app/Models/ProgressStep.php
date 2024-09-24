@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProgressStep extends Model {
+    use HasFactory;
+
     protected $fillable = [
         'progress_id',
         'step_id',
