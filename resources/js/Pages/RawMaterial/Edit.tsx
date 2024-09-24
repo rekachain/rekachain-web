@@ -1,15 +1,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
-import { Input } from '@/Components/ui/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { Button } from '@/Components/ui/button';
-import { RawMaterialResource } from '@/support/interfaces/resources';
-import { rawMaterialService } from '@/services/rawMaterialService';
-import { useLoading } from '@/contexts/LoadingContext';
-import { useSuccessToast } from '@/hooks/useToast';
+import { Button } from '@/Components/UI/button';
+import { RawMaterialResource } from '../../Support/Interfaces/Resources';
+import { rawMaterialService } from '@/Services/rawMaterialService';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

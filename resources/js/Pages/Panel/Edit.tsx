@@ -1,15 +1,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/support/constants/routes';
-import { Input } from '@/Components/ui/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
-import { Button } from '@/Components/ui/button';
-import { PanelResource } from '@/support/interfaces/resources';
-import { panelService } from '@/services/panelService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { Button } from '@/Components/UI/button';
+import { PanelResource } from '../../Support/Interfaces/Resources';
+import { panelService } from '@/Services/panelService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ panel }: { panel: PanelResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({

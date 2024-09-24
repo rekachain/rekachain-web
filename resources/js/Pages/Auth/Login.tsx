@@ -3,10 +3,10 @@ import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/ui/input';
-import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/UI/input';
+import { Button } from '@/Components/UI/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
-import { STYLING } from '@/support/constants/styling';
+import { STYLING } from '@/Support/Constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
 

@@ -1,7 +1,7 @@
-import { Button } from '@/Components/ui/button';
-import AnimateIn from '@/lib/AnimateIn';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { PermissionResource } from '@/support/interfaces/resources';
+import { Button } from '@/Components/UI/button';
+import AnimateIn from '@/Lib/AnimateIn';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { PermissionResource } from '../../../../Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 

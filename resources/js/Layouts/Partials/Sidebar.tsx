@@ -19,18 +19,18 @@ import {
     RiUser2Line,
     RiUserLine,
 } from '@remixicon/react';
-import { Button } from '@/Components/ui/button';
+import { Button } from '@/Components/UI/button';
 import SidebarLink from './Components/SidebarLink';
 import SidebarMenu from './Components/SidebarMenu';
 import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components/SidebarLinkCollapsible';
 import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
-import { STYLING } from '@/support/constants/styling';
-import { ROUTES } from '@/support/constants/routes';
-import { SIDEBAR_GROUP_ENUM } from '@/support/enums/sidebarGroupEnum';
-import { PERMISSION_ENUM } from '@/support/enums/permissionEnum';
-import { checkPermission } from '@/helpers/sidebarHelper';
+import { STYLING } from '@/Support/Constants/styling';
+import { ROUTES } from '@/Support/Constants/routes';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { SidebarProvider } from '@/Contexts/SidebarContext';
 
 export default function Sidebar() {

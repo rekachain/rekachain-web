@@ -6,16 +6,16 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
-import { Label } from '@/Components/ui/label';
-import { Input } from '@/Components/ui/input';
-import { ROUTES } from '@/support/constants/routes';
-import { IntentEnum } from '@/support/enums/intentEnum';
+} from '@/Components/UI/dialog';
+import { Button } from '@/Components/UI/button';
+import { Label } from '@/Components/UI/label';
+import { Input } from '@/Components/UI/input';
+import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
-import { componentService } from '@/services/componentService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { componentService } from '@/Services/componentService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
     const { data, setData } = useForm<{
@@ -28,7 +28,7 @@ export default function () {
         setLoading(true);
         const response = await window.axios.get(
             route(`${ROUTES.COMPONENTS}.index`, {
-                intent: IntentEnum.WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT,
+                // intent: IntentEnum.WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT,
             }),
             { responseType: 'blob' },
         );
@@ -47,7 +47,7 @@ export default function () {
         event.preventDefault();
         setLoading(true);
         const redirectToIndex = () => router.visit(route(`${ROUTES.COMPONENTS}.index`));
-        await componentService.importData(data.file as File);
+        // await componentService.importData(data.file as File);
         await useSuccessToast('Data imported successfully');
         redirectToIndex();
         setLoading(false);

@@ -1,15 +1,15 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { PanelResource } from '@/support/interfaces/resources';
-import { PaginateResponse } from '@/support/interfaces/others';
-import { Button, buttonVariants } from '@/Components/ui/button';
-import { ROUTES } from '@/support/constants/routes';
+import { PanelResource } from '../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/support/interfaces/others/ServiceFilterOptions';
-import { useConfirmation } from '@/hooks/useConfirmation';
-import { panelService } from '@/services/panelService';
-import { useSuccessToast } from '@/hooks/useToast';
-import { useLoading } from '@/contexts/LoadingContext';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { panelService } from '@/Services/panelService';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
 import PanelCardView from './Partials/PanelCardView';
 import PanelTableView from './Partials/PanelTableView';
 
