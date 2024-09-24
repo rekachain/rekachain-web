@@ -10,7 +10,6 @@ class Step extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'progress_id',
         'name',
         'process',
         'estimated_time',
