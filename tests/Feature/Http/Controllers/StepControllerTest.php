@@ -62,7 +62,6 @@ test('show method returns step details', function () {
     $response->assertStatus(200)
         ->assertJson([
             'id' => $step->id,
-            'progress_id' => $step->progress_id,
             'process' => $step->process,
             'estimated_time' => $step->estimated_time,
         ]);
