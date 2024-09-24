@@ -2,6 +2,7 @@
 
 use Tests\TestCase;
 use App\Models\Role;
+use App\Models\Step;
 use App\Models\User;
 use App\Models\Panel;
 use App\Models\Project;
@@ -17,10 +18,12 @@ use App\Models\RawMaterial;
 use App\Models\SerialPanel;
 use App\Models\WorkDayTime;
 use App\Models\Workstation;
+use App\Models\ProgressStep;
 use App\Models\CarriagePanel;
 use App\Models\PanelMaterial;
 use App\Models\PanelAttachment;
 use App\Models\CarriageTrainset;
+use App\Models\DetailWorkerPanel;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -258,4 +261,27 @@ function createSerialPanel() {
 
     return $serialPanel;
 
+}
+
+function createStep() {
+    $step = Step::factory()->create();
+
+    return $step;
+}
+
+function createProgressStep() {
+    createProgress();
+    createStep();
+    $progressStep = ProgressStep::factory()->create();
+
+    return $progressStep;
+}
+
+function createDetailWorkerPanel() {
+    User::factory()->create();
+    createSerialPanel();
+    createProgressStep();
+    $detailWorkerPanel = DetailWorkerPanel::factory()->create();
+
+    return $detailWorkerPanel;
 }
