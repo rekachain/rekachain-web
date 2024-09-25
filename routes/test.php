@@ -9,7 +9,9 @@ use App\Http\Controllers\TrainsetController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
-    Route::get('/', fn () => 'test');
+    Route::get('/', function () {
+        return \App\Models\CarriagePanel::with('carriage_panel_components')->get();
+    });
 
     Route::group(['as' => '.'], function () {
         Route::resource('panels', PanelController::class);

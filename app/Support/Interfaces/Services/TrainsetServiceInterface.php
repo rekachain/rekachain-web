@@ -73,11 +73,20 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
     public function getImportDataTemplate(): BinaryFileResponse;
 
     /**
-     * generate attachments
+     * generate panel attachment
      *
      * Required data:
      * $data['source_workstation_id'] - source workstation ID
      * $data['destination_workstation_id'] - destination workstation ID
      */
-    public function generateAttachments(Trainset $trainset, array $data): bool;
+    public function generatePanelAttachment(Trainset $trainset, array $data): bool;
+
+    /**
+     * generate trainset attachment
+     *
+     * Required data:
+     * $data['source_workstation_id'] - source workstation ID
+     * $data['destination_workstation_id'] - destination workstation ID
+     */
+    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool;
 }
