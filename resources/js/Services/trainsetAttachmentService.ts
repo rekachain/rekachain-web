@@ -1,6 +1,6 @@
-import { ROUTES } from '@/support/constants/routes';
-import { serviceFactory } from '@/services/serviceFactory';
-import { TrainsetAttachmentResource } from '@/support/interfaces/resources';
+import { ROUTES } from '@/Support/Constants/routes';
+import { serviceFactory } from '@/Services/serviceFactory';
+import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 
 export const trainsetAttachmentService = {
     ...serviceFactory<TrainsetAttachmentResource>(ROUTES.TRAINSET_ATTACHMENTS),
