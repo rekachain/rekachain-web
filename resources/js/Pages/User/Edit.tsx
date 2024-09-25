@@ -22,7 +22,7 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
         email: user.email,
         phone_number: user.phone_number ?? '',
         password: '',
-        role_id: user.role_id.toString(),
+        role_id: user.role_id?.toString(),
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
@@ -153,13 +153,16 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
                             <h2 className="text-lg font-semibold">Role</h2>
                             <RadioGroup
-                                defaultValue={user.role_id.toString()}
+                                defaultValue={user.role_id?.toString()}
                                 onValueChange={v => setData('role_id', v)}
                             >
                                 {roles?.map(role => (
                                     <div key={role.id} className="flex items-center space-x-2">
-                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
-                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
+                                        <RadioGroupItem
+                                            value={role.id?.toString()}
+                                            id={`role.${role.id?.toString()}`}
+                                        />
+                                        <Label htmlFor={`role.${role.id?.toString()}`}>{role.name}</Label>
                                     </div>
                                 ))}
                             </RadioGroup>
