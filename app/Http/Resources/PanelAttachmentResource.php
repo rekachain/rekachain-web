@@ -48,6 +48,14 @@ class PanelAttachmentResource extends JsonResource {
                     // 'panel_attachment_childs' => PanelAttachmentResource::collection($this->childs),
                     // 'panel_attachment_parents' => new PanelAttachmentResource($this->parent),
                     'supervisor' => new UserResource($this->whenLoaded('supervisor')),
+                    'workers' => $this->serial_panels->map(function($serialPanel) {
+                        return $serialPanel->detail_worker_panels->map(function($detailWorkerPanel) {
+                            return [
+                                'worker_id' => $detailWorkerPanel->worker->id,
+                                'name' => $detailWorkerPanel->worker->name,
+                            ];
+                        });
+                    })->flatten(), 
                     'panel_attachment_handlers' => PanelAttachmentHandlerResource::collection($this->panel_attachment_handlers),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,

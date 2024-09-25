@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailWorkerPanelResource;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\SerialPanelResource;
+use App\Models\DetailWorkerPanel;
 use App\Models\PanelAttachment;
 use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
@@ -22,8 +24,10 @@ class ApiPanelAttachmentController extends Controller {
      */
     public function index(Request $request) {
         $perPage = request()->get('perPage', 5);
+        
+        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
 
-        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
+        
 
         return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
     }
@@ -47,6 +51,8 @@ class ApiPanelAttachmentController extends Controller {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
+                    // return $qr;
+                    // return $panelAttachment->qr_code;
                     if ($panelAttachment->qr_code == $qr) {
                         $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
                         return new PanelAttachmentResource($panelAttachment);
@@ -65,7 +71,6 @@ class ApiPanelAttachmentController extends Controller {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
-
                     $serialPanel = $this->serialPanelService->find([
                         'panel_attachment_id' => $panelAttachment->id,
                         'qr_code' => $qr,
