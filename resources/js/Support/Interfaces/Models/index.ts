@@ -27,3 +27,4 @@ export * from './Step';
 export * from './DetailWorkerPanel';
 export * from './ProgressStep';
 export * from './TrainsetAttachment';
+export * from './DetailWorkerTrainset';
