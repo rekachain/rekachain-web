@@ -1,4 +1,4 @@
-import { Resource, RoleResource } from '@/Support/Interfaces/Resources';
+import { Resource, RoleResource, StepResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { User } from '@/Support/Interfaces/Models';
 
 export interface UserResource extends Resource, User {
@@ -6,4 +6,7 @@ export interface UserResource extends Resource, User {
     role_id: number;
     role: RoleResource;
     division_id: number;
+    division: RoleResource;
+    workstation?: WorkstationResource;
+    step?: StepResource;
 }

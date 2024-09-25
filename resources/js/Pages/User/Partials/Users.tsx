@@ -16,7 +16,7 @@ export default function () {
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
-        relations: 'roles',
+        relations: 'roles,workstation,step',
     });
 
     const { auth } = usePage().props;
