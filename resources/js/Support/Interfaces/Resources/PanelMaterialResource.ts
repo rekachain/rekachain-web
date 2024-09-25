@@ -1,4 +1,4 @@
-import { PanelMaterial } from '../Models';
 import { Resource } from '@/Support/Interfaces/Resources';
+import { PanelMaterial } from '@/Support/Interfaces/Models';
 
 export interface PanelMaterialResource extends Resource, PanelMaterial {}

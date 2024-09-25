@@ -1,4 +1,4 @@
-import { TrainsetAttachment } from '@/support/models';
-import { Resource } from '@/support/interfaces/resources';
+import { Resource } from '@/Support/Interfaces/Resources';
+import { TrainsetAttachment } from '@/Support/Interfaces/Models';
 
 export interface TrainsetAttachmentResource extends Resource, TrainsetAttachment {}
