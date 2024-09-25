@@ -1,6 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { CarriagePreset } from '../Models';
-import { CarriageResource } from '@/Support/Interfaces/Resources/CarriageResource';
+import { CarriageResource, Resource } from '@/Support/Interfaces/Resources';
+import { CarriagePreset } from '@/Support/Interfaces/Models';
 
 export interface CarriagePresetResource extends Resource, CarriagePreset {
     carriage: CarriageResource;
