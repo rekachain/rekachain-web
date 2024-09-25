@@ -10,19 +10,14 @@ class Step extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'progress_id',
         'name',
         'process',
         'estimated_time',
     ];
 
-    public function progress(): BelongsTo {
-        return $this->belongsTo(Progress::class);
-    }
-
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
-    }
+    // public function user(): BelongsTo {
+    //     return $this->belongsTo(User::class);
+    // }
 
     //    public function completion_proof() {}
 
