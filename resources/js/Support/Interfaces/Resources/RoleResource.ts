@@ -1,6 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { Division, Role } from '../Models';
-import { DivisionResource } from '@/Support/Interfaces/Resources/DivisionResource';
+import { DivisionResource, Resource } from '@/Support/Interfaces/Resources';
+import { Role } from '@/Support/Interfaces/Models';
 
 export interface RoleResource extends Resource, Role {
     users_count: number;

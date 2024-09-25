@@ -1,6 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { PresetTrainset } from '../Models';
-import { CarriagePresetResource } from '';
+import { CarriagePresetResource, Resource } from '@/Support/Interfaces/Resources';
+import { PresetTrainset } from '@/Support/Interfaces/Models';
 
 export interface PresetTrainsetResource extends Resource, PresetTrainset {
     carriage_presets: CarriagePresetResource[];

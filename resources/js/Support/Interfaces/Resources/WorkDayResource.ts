@@ -1,5 +1,5 @@
-import { WorkDay } from '../Models';
-import { Resource, WorkDayTimeResource } from '';
+import { Resource, WorkDayTimeResource } from '@/Support/Interfaces/Resources';
+import { WorkDay } from '@/Support/Interfaces/Models';
 
 export interface WorkDayResource extends Resource, WorkDay {
     can_be_deleted: boolean;
