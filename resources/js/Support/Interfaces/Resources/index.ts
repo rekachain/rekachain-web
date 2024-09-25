@@ -29,3 +29,4 @@ export * from './StepResource';
 export * from './DetailWorkerPanelResource';
 export * from './ProgressStepResource';
 export * from './TrainsetAttachmentResource';
+export * from './DetailWorkerTrainsetResource';
