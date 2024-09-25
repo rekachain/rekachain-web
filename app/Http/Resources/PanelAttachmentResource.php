@@ -64,36 +64,6 @@ class PanelAttachmentResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
-            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_PROCESS->value:
-                    return [
-                        'id' => $this->id,
-                        'attachment_number' => $this->attachment_number,
-                        'status' => $this->status,
-                        'source_workstation' => $this->source_workstation->name,
-                        'destination_workstation' => $this->destination_workstation->name,
-                        'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
-                        'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
-                        'panel' => $this->carriage_panel->panel->name,
-                        'qr_code' => $this->qr_code,
-                        'qr_path' => $this->qr_path,
-                        'created_at' => $this->created_at,
-                        'updated_at' => $this->updated_at,
-                    ];
-                case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_DONE->value:
-                    return [
-                        'id' => $this->id,
-                        'attachment_number' => $this->attachment_number,
-                        'status' => $this->status,
-                        'source_workstation' => $this->source_workstation->name,
-                        'destination_workstation' => $this->destination_workstation->name,
-                        'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
-                        'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
-                        'panel' => $this->carriage_panel->panel->name,
-                        'qr_code' => $this->qr_code,
-                        'qr_path' => $this->qr_path,
-                        'created_at' => $this->created_at,
-                        'updated_at' => $this->updated_at,
-                        ];        
         }
 
         return [

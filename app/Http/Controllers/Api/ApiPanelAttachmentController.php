@@ -22,23 +22,8 @@ class ApiPanelAttachmentController extends Controller {
      */
     public function index(Request $request) {
         $perPage = request()->get('perPage', 5);
-        $intent = request()->get('intent');
-        $query = null;
 
-        if ($intent === 'api.panel.attachment.get.attachment.details'){
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
-        } else if ($intent === 'api.panel.attachment.get.attachment.details.filter.status.process') {
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_PROCESS->value]);
-            return PanelAttachmentResource::collection($this->panelAttachmentService->filterStatus(['in_progress']));
-        } else if ($intent === 'api.panel.attachment.get.attachment.details.filter.status.done') {
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_FILTER_STATUS_PROCESS->value]);
-            return PanelAttachmentResource::collection($this->panelAttachmentService->filterStatus(['done']));
-        }
-        else{
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
-        }
-
-        // $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
+        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
         return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
     }
