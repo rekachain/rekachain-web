@@ -1,5 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { Permission } from '../Models';
+import { Resource } from '@/Support/Interfaces/Resources';
+import { Permission } from '@/Support/Interfaces/Models';
 
 export interface PermissionResource extends Resource, Permission {}
 

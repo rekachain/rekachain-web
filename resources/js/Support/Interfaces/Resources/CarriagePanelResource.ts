@@ -1,6 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { CarriagePanel } from '../Models';
-import { PanelResource } from '';
+import { PanelResource, Resource } from '@/Support/Interfaces/Resources';
+import { CarriagePanel } from '@/Support/Interfaces/Models';
 
 export interface CarriagePanelResource extends Resource, CarriagePanel {
     panel: PanelResource;

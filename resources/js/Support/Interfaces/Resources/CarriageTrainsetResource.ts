@@ -1,6 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { CarriagePanelResource, CarriageResource, TrainsetResource } from '';
-import { CarriageTrainset } from '../Models';
+import { CarriagePanelResource, CarriageResource, Resource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { CarriageTrainset } from '@/Support/Interfaces/Models';
 
 export interface CarriageTrainsetResource extends Resource, CarriageTrainset {
     trainset: TrainsetResource;

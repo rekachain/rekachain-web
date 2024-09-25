@@ -1,6 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { Trainset } from '../Models';
-import { CarriageResource, CarriageTrainsetResource } from '';
+import { CarriageResource, CarriageTrainsetResource, Resource } from '@/Support/Interfaces/Resources';
+import { Trainset } from '@/Support/Interfaces/Models';
 
 export interface TrainsetResource extends Resource, Trainset {
     // carriages_count: number;

@@ -1,5 +1,5 @@
-import { Resource } from '@/Support/Interfaces/Resources/Resource';
-import { Division, Workshop, Workstation } from '../Models';
+import { Resource } from '@/Support/Interfaces/Resources';
+import { Division, Workshop, Workstation } from '@/Support/Interfaces/Models';
 
 export interface WorkstationResource extends Resource, Workstation {
     workshop: Workshop;
