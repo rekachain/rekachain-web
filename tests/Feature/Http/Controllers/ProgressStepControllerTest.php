@@ -1,106 +1,92 @@
 <?php
 
-use App\Models\Progress;
 use App\Models\User;
-use App\Support\Enums\IntentEnum;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use App\Models\ProgressStep;
+use App\Models\Progress;
+use App\Models\Step;
 
-// test('index method returns paginated progress', function () {
+test('index method returns paginated progress-steps', function () {
+    $user = User::factory()->superAdmin()->create();
+    ProgressStep::factory()->count(15)->create();
+
+    $response = $this->actingAs($user)->getJson('/progress-steps?page=1&perPage=10');
+
+    $response->assertStatus(200)
+        ->assertJsonStructure(['data', 'meta'])
+        ->assertJsonCount(10, 'data');
+});
+// NOT READY
+// test('create method returns create page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     Progress::factory()->count(15)->create();
 
-//     $response = $this->actingAs($user)->getJson('/progress?page=1&perPage=10');
+//     $response = $this->actingAs($user)->get('/progress-steps/create');
 
 //     $response->assertStatus(200)
-//         ->assertJsonStructure(['data', 'meta'])
-//         ->assertJsonCount(10, 'data');
+//         ->assertInertia(fn ($assert) => $assert->component('ProgressStep/Create'));
 // });
 
-// // test('create method returns create page', function () {
-// //     $user = User::factory()->superAdmin()->create();
+test('store method creates new progress-step', function () {
+    $user = User::factory()->superAdmin()->create();
+    $progress = Progress::factory()->create();
+    $step = Step::factory()->create();
+    $progressStepData = [
+        'progress_id' => $progress->id,
+        'step_id' => $step->id,
+    ];
 
-// //     $response = $this->actingAs($user)->get('/progress/create');
+    $response = $this->actingAs($user)->postJson('/progress-steps', $progressStepData);
 
-// //     $response->assertStatus(200)
-// //         ->assertInertia(fn ($assert) => $assert->component('Progress/Create'));
-// // });
+    $response->assertStatus(201)
+        ->assertJsonStructure(['id', 'progress_id', 'step_id']);
+    $this->assertDatabaseHas('progress_steps', $progressStepData);
+});
 
-// test('store method creates new progress', function () {
+test('show method returns progress-step details', function () {
+    $user = User::factory()->superAdmin()->create();
+    $progressStep = ProgressStep::factory()->create();
+
+    $response = $this->actingAs($user)->getJson("/progress-steps/{$progressStep->id}");
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'id' => $progressStep->id,
+            'progress_id' => $progressStep->progress_id,
+            'step_id' => $progressStep->step_id,
+        ]);
+});
+
+// NOT READY
+// test('edit method returns edit page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $progressData = [
-//         'name' => 'Test name',
-//     ];
+//     $progressStep = ProgressStep::factory()->create();
 
-//     $response = $this->actingAs($user)->postJson('/progress', $progressData);
-
-//     $response->assertStatus(201)
-//         ->assertJsonStructure(['id', 'name']);
-//     $this->assertDatabaseHas('progress', $progressData);
-// });
-
-// // test('store method imports progress', function () {
-// //     Storage::fake('local');
-// //     $user = User::factory()->superAdmin()->create();
-// //     $file = UploadedFile::fake()->create('progress.xlsx');
-
-// //     $response = $this->actingAs($user)->postJson('/progress', [
-// //         'intent' => IntentEnum::WEB_PROGRESS_IMPORT_PROGRESS->value,
-// //         'import_file' => $file,
-// //     ]);
-
-// //     $response->assertStatus(204);
-// // });
-
-// test('show method returns progress details', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $progress = Progress::factory()->create();
-
-//     $response = $this->actingAs($user)->getJson("/progress/{$progress->id}");
+//     $response = $this->actingAs($user)->get("/progress-steps/{$progressStep->id}/edit");
 
 //     $response->assertStatus(200)
-//         ->assertJson(['id' => $progress->id, 'name' => $progress->name]);
+//         ->assertInertia(fn ($assert) => $assert->component('ProgressStep/Edit'));
 // });
 
-// // test('edit method returns edit page', function () {
-// //     $user = User::factory()->superAdmin()->create();
-// //     $progress = Progress::factory()->create();
+test('update method updates progress-step', function () {
+    $user = User::factory()->superAdmin()->create();
+    $progressStep = ProgressStep::factory()->create();
+    $newStep = Step::factory()->create();
+    $updatedData = [
+        'step_id' => $newStep->id,
+    ];
 
-// //     $response = $this->actingAs($user)->get("/progress/{$progress->id}/edit");
+    $response = $this->actingAs($user)->putJson("/progress-steps/{$progressStep->id}", $updatedData);
 
-// //     $response->assertStatus(200)
-// //         ->assertInertia(fn ($assert) => $assert->component('Progress/Edit'));
-// // });
+    $response->assertStatus(200)
+        ->assertJson($updatedData);
+    $this->assertDatabaseHas('progress_steps', $updatedData);
+});
 
-// test('update method updates progress', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $progress = Progress::factory()->create();
-//     $updatedData = [
-//         'name' => 'Updated name',
-//     ];
+test('destroy method deletes progress-step', function () {
+    $user = User::factory()->superAdmin()->create();
+    $progressStep = ProgressStep::factory()->create();
 
-//     $response = $this->actingAs($user)->putJson("/progress/{$progress->id}", $updatedData);
+    $response = $this->actingAs($user)->deleteJson("/progress-steps/{$progressStep->id}");
 
-//     $response->assertStatus(200)
-//         ->assertJson($updatedData);
-//     $this->assertDatabaseHas('progress', $updatedData);
-// });
-
-// test('destroy method deletes progress', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $progress = Progress::factory()->create();
-
-//     $response = $this->actingAs($user)->deleteJson("/progress/{$progress->id}");
-
-//     $response->assertStatus(200);
-//     $this->assertDatabaseMissing('progress', ['id' => $progress->id]);
-// });
-
-// test('index method returns import template', function () {
-//     $user = User::factory()->superAdmin()->create();
-
-//     $response = $this->actingAs($user)->getJson('/progress?intent=' . IntentEnum::WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS->value);
-
-//     $response->assertStatus(200)
-//         ->assertDownload('progress_template.xlsx');
-// });
+    $response->assertStatus(204);
+    $this->assertDatabaseMissing('progress_steps', ['id' => $progressStep->id]);
+});
