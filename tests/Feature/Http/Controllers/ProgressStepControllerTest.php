@@ -87,6 +87,6 @@ test('destroy method deletes progress-step', function () {
 
     $response = $this->actingAs($user)->deleteJson("/progress-steps/{$progressStep->id}");
 
-    $response->assertStatus(204);
+    $response->assertStatus(200);
     $this->assertDatabaseMissing('progress_steps', ['id' => $progressStep->id]);
 });
