@@ -64,12 +64,11 @@ class ApiPanelAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-                return new PanelAttachmentResource($panelAttachment);
+                return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged, 
+                'id' => $panelAttachment->id]));
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
-                    // return $qr;
-                    // return $panelAttachment->qr_code;
                     if ($panelAttachment->qr_code == $qr) {
                         $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
                         return new PanelAttachmentResource($panelAttachment);
