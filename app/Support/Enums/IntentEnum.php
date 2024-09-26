@@ -9,6 +9,10 @@ enum IntentEnum: string {
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
 
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_FILTER_PROCESS = 'api.panel.attachment.get.attachments.filter.process';
+
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_FILTER_DONE = 'api.panel.attachment.get.attachments.filter.done';
+
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.panel.attachment.get.attachment.details';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.details.with.qr';
