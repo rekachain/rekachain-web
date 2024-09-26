@@ -69,4 +69,8 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS = 'web.trainset.generate.trainset.attachments';
 
+    case WEB_TRAINSET_GET_COMPONENTS = 'web.trainset.get.components';
+
+    case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
+
 }

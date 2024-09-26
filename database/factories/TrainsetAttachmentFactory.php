@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\CarriageTrainset;
+use App\Models\Trainset;
 use App\Models\User;
 use App\Models\Workstation;
 use App\Support\Enums\RoleEnum;
@@ -20,7 +20,7 @@ class TrainsetAttachmentFactory extends Factory {
      */
     public function definition(): array {
         return [
-            'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
+            'trainset_id' => Trainset::inRandomOrder()->first()->id,
             'source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
             'destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
             'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
