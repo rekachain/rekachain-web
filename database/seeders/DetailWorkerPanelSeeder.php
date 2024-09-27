@@ -16,11 +16,10 @@ class DetailWorkerPanelSeeder extends Seeder {
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                DetailWorkerPanel::create($data);
+                DetailWorkerPanel::factory()->create($data);
             }
-
             return;
         }
-        DetailWorkerPanel::factory(10)->create();
+        // DetailWorkerPanel::factory(10)->create();
     }
 }
