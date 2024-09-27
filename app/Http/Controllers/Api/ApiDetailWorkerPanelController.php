@@ -47,10 +47,14 @@ class ApiDetailWorkerPanelController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(DetailWorkerPanel $serialPanel, Request $request) {
-        $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
+    public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
+        return $detailWorkerPanel;
+        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAILS->value]);
+        
+        return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> $request->logged, 'id' => $detailWorkerPanel->id]));
+        // $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
 
-        return new DetailWorkerPanelResource($serialPanel->load('detail_worker_panels.step.progress'));
+        // return new DetailWorkerPanelResource($serialPanel->load('detail_worker_panels.step.progress'));
     }
 
     /**
