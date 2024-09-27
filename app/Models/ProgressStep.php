@@ -18,7 +18,7 @@ class ProgressStep extends Model {
         return $this->belongsTo(Progress::class);
     }
 
-    public function steps(): BelongsTo {
+    public function step(): BelongsTo {
         return $this->belongsTo(Step::class);
     }
 }
