@@ -29,17 +29,17 @@ class ApiPanelAttachmentController extends Controller {
         $intent = request()->get('intent');
         
         if ($intent === 'api.panel.attachment.get.attachments.filter.process') {
-            $request->merge([$intent => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
+            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
             return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged,
             'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value]));
         } else if ($intent === 'api.panel.attachment.get.attachments.filter.done') {
-            $request->merge([$intent => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
+            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
             return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged,
             'status' => PanelAttachmentStatusEnum::DONE->value]));
         } else {
-            $request->merge([$intent => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
+            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
             return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged]));
         }
