@@ -19,7 +19,7 @@ class PanelAttachmentSeeder extends Seeder {
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                $panelAttachment = PanelAttachment::create($data);
+                $panelAttachment = PanelAttachment::factory()->create($data);
                 $panelAttachments = PanelAttachment::whereIn('carriage_panel_id', CarriagePanel::whereCarriageTrainsetId($panelAttachment->carriage_panel->carriage_trainset_id)->pluck('id'))->get();
                 $i = $panelAttachments->where('id', '<', $panelAttachment->id)->count() + 1;
                 $panelAttachment->update([

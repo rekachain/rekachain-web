@@ -20,6 +20,9 @@ class CsvReader {
                 $a = array_map(function ($value) {
                     return $value !== '' ? $value : null;
                 }, array_combine($csvData[0], $a));
+                $a = array_filter($a, function ($value) {
+                    return $value !== null;
+                });
             });
             array_shift($csvData); // remove column header
         } else {

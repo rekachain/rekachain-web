@@ -17,7 +17,7 @@ class PanelSeeder extends Seeder {
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                Panel::create($data);
+                Panel::factory()->create($data);
             }
         } else {
             Panel::factory(10)->create();
