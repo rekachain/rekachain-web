@@ -15,6 +15,11 @@ class RawMaterialSeeder extends Seeder {
         $csvReader = new CsvReader('rawMaterial');
         $csvData = $csvReader->getCsvData();
 
+        if (!$csvData) {
+            RawMaterial::factory(30)->create();
+            return;
+        }
+
         $uniqueData = [];
 
         foreach ($csvData as $row) {
