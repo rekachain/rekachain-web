@@ -24,8 +24,12 @@ use App\Models\PanelMaterial;
 use App\Models\PanelAttachment;
 use App\Models\CarriageTrainset;
 use App\Models\DetailWorkerPanel;
+use App\Models\TrainsetAttachment;
+use App\Models\DetailWorkerTrainset;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +43,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 */
 
 uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+// uses(TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -120,24 +125,6 @@ function createRawMaterial() {
 
     return $rawMaterial;
 }
-
-// function createCarriagePanel() {
-//     Carriage::factory()->create();
-//     createProgress();
-//     createCarriageTrainset();
-//     createPanel();
-
-//     $carriagePanel = CarriagePanel::factory()->create();
-
-//     return $carriagePanel;
-// }
-
-// function createCarriageTrainset() {
-//     $trainset = createTrainset();
-//     $carriageTrainset = CarriageTrainset::factory()->create();
-
-//     return $carriageTrainset;
-// }
 
 function createProject() {
     $project = new Project;
@@ -284,4 +271,33 @@ function createDetailWorkerPanel() {
     $detailWorkerPanel = DetailWorkerPanel::factory()->create();
 
     return $detailWorkerPanel;
+}
+
+function createTrainsetAttachment() {
+    createCarriageTrainset();
+    createWorkstation(); //source
+    createWorkstation(); //destination
+
+    $trainsetAttachment = TrainsetAttachment::factory()->create();
+
+    return $trainsetAttachment;
+}
+
+function createDetailWorkerTrainset() {
+    $role = Role::firstOrCreate(['name' => 'Supervisor - Mekanik', 'guard_name' => 'web']);
+    $user = User::factory(['name' => 'Supervisor - Mekanik'])->create();
+    $user->assignRole($role);
+
+    createProgressStep();
+    createTrainsetAttachment();
+    $detailWorkerTrainset = DetailWorkerTrainset::create([
+        'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
+        'worker_id' => $user->id,
+        'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
+        'estimated_time' => 7,
+        'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
+        'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value
+    ]);
+
+    return $detailWorkerTrainset;
 }
