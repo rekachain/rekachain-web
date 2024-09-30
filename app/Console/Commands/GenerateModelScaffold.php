@@ -197,7 +197,7 @@ class GenerateModelScaffold extends Command {
 
     protected function generateController(): void {
         $modelNameStudly = self::$model->studly;
-        $modelNameLower = self::$model->lower;
+        $modelNameCamel = self::$model->camel;
         $controllerPath = app_path("Http/Controllers/{$modelNameStudly}Controller.php");
 
         if (File::exists($controllerPath)) {
@@ -206,7 +206,7 @@ class GenerateModelScaffold extends Command {
             return;
         }
 
-        $controllerContent = $this->getControllerTemplate($modelNameStudly, $modelNameLower);
+        $controllerContent = $this->getControllerTemplate($modelNameStudly, $modelNameCamel);
         File::put($controllerPath, $controllerContent);
 
         $this->info("Controller created: {$controllerPath}");
@@ -351,7 +351,7 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getControllerTemplate($modelName, $modelNameLower): string {
+    protected function getControllerTemplate($modelName, $modelNameCamel): string {
         return <<<PHP
         <?php
 
@@ -365,11 +365,11 @@ class GenerateModelScaffold extends Command {
         use Illuminate\Http\Request;
 
         class {$modelName}Controller extends Controller {
-            public function __construct(protected {$modelName}ServiceInterface \${$modelNameLower}Service) {}
+            public function __construct(protected {$modelName}ServiceInterface \${$modelNameCamel}Service) {}
 
             public function index(Request \$request) {
                 \$perPage = \$request->get('perPage', 10);
-                \$data = {$modelName}Resource::collection(\$this->{$modelNameLower}Service->getAllPaginated(\$request->query(), \$perPage));
+                \$data = {$modelName}Resource::collection(\$this->{$modelNameCamel}Service->getAllPaginated(\$request->query(), \$perPage));
 
                 if (\$this->ajax()) {
                     return \$data;
@@ -384,12 +384,12 @@ class GenerateModelScaffold extends Command {
 
             public function store(Store{$modelName}Request \$request) {
                 if (\$this->ajax()) {
-                    return \$this->{$modelNameLower}Service->create(\$request->validated());
+                    return \$this->{$modelNameCamel}Service->create(\$request->validated());
                 }
             }
 
-            public function show({$modelName} \${$modelNameLower}) {
-                \$data = {$modelName}Resource::make(\${$modelNameLower});
+            public function show({$modelName} \${$modelNameCamel}) {
+                \$data = {$modelName}Resource::make(\${$modelNameCamel});
 
                 if (\$this->ajax()) {
                     return \$data;
@@ -398,21 +398,21 @@ class GenerateModelScaffold extends Command {
                 return inertia('{$modelName}/Show', compact('data'));
             }
 
-            public function edit({$modelName} \${$modelNameLower}) {
-                \$data = {$modelName}Resource::make(\${$modelNameLower});
+            public function edit({$modelName} \${$modelNameCamel}) {
+                \$data = {$modelName}Resource::make(\${$modelNameCamel});
 
                 return inertia('{$modelName}/Edit', compact('data'));
             }
 
-            public function update(Update{$modelName}Request \$request, {$modelName} \${$modelNameLower}) {
+            public function update(Update{$modelName}Request \$request, {$modelName} \${$modelNameCamel}) {
                 if (\$this->ajax()) {
-                    return \$this->{$modelNameLower}Service->update(\${$modelNameLower}, \$request->validated());
+                    return \$this->{$modelNameCamel}Service->update(\${$modelNameCamel}, \$request->validated());
                 }
             }
 
-            public function destroy({$modelName} \${$modelNameLower}) {
+            public function destroy({$modelName} \${$modelNameCamel}) {
                 if (\$this->ajax()) {
-                    return \$this->{$modelNameLower}Service->delete(\${$modelNameLower});
+                    return \$this->{$modelNameCamel}Service->delete(\${$modelNameCamel});
                 }
             }
         }

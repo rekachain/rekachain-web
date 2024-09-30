@@ -1,7 +1,20 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelController;
+use App\Http\Controllers\CarriagePresetController;
+use App\Http\Controllers\CarriageTrainsetController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PanelAttachmentController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PresetTrainsetController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProgressStepController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\UserController;
@@ -78,7 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('work-day-times', WorkDayTimeController::class);
     Route::resource('steps', StepController::class);
     Route::resource('progress-steps', ProgressStepController::class);
-    Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
+    Route::resource('panel-attachments', PanelAttachmentController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

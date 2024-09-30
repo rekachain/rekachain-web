@@ -12,7 +12,11 @@ class DatabaseSeeder extends Seeder {
      */
     public function run(): void {
         $this->call([
+            WorkshopSeeder::class,
             DivisionSeeder::class,
+            WorkstationSeeder::class,
+            ProgressSeeder::class,
+            StepSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
@@ -22,10 +26,6 @@ class DatabaseSeeder extends Seeder {
             CarriagePresetSeeder::class,
             TrainsetSeeder::class,
             CarriageTrainsetsSeeder::class,
-            WorkshopSeeder::class,
-            WorkstationSeeder::class,
-            ProgressSeeder::class,
-            StepSeeder::class,
             ProgressStepSeeder::class,
             RawMaterialSeeder::class,
             PanelSeeder::class,

@@ -1,8 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { CarriageResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { CarriageResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';

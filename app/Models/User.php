@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,6 +59,8 @@ class User extends Authenticatable {
         'email',
         'phone_number',
         'password',
+        'workstation_id',
+        'step_id',
     ];
 
     /**
@@ -79,6 +82,14 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function workstation(): HasOne {
+        return $this->hasOne(Workstation::class, 'id', 'workstation_id');
+    }
+
+    public function step(): HasOne {
+        return $this->hasOne(Step::class, 'id', 'step_id');
+    }
 
     public function getImageAttribute() {
         return $this->image_path ? asset('storage/' . $this->image_path) : null;
