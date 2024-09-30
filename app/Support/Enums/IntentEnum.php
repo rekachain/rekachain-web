@@ -31,6 +31,8 @@ enum IntentEnum: string {
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
 
+    case API_MAKE_ASSIGN = 'api.make.assign';
+
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';

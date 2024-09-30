@@ -41,7 +41,9 @@ class ApiDetailWorkerPanelController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        //
+        $request->merge(['intent' => IntentEnum::API_MAKE_ASSIGN->value]);
+
+        return $this->detailWorkerPanelService->addAssign($request);
     }
 
     /**
