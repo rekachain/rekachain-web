@@ -1,5 +1,5 @@
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { DivisionResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
