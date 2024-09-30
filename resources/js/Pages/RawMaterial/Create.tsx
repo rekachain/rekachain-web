@@ -4,32 +4,30 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { loading } = useLoading();
+
+    const { data, setData} = useForm({
         name: '',
         material_code: '',
         description: '',
         specs: '',
         unit: '',
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
 
         await rawMaterialService.create(data);
-        useSuccessToast('Raw Material berhasil ditambahkan');
-        setLoading(false);
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
+        void useSuccessToast('Raw Material berhasil ditambahkan');
+    });
 
     return (
         <>
@@ -52,7 +50,6 @@ export default function () {
                                 autoComplete="material_code"
                                 onChange={e => setData('material_code', e.target.value)}
                             />
-                            <InputError message={errors.material_code} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -66,7 +63,6 @@ export default function () {
                                 autoComplete="description"
                                 onChange={e => setData('description', e.target.value)}
                             />
-                            <InputError message={errors.description} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -80,7 +76,6 @@ export default function () {
                                 autoComplete="specs"
                                 onChange={e => setData('specs', e.target.value)}
                             />
-                            <InputError message={errors.specs} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -94,10 +89,9 @@ export default function () {
                                 autoComplete="unit"
                                 onChange={e => setData('unit', e.target.value)}
                             />
-                            <InputError message={errors.unit} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Raw Material
                         </Button>
                     </form>

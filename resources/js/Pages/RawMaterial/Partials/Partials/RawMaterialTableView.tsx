@@ -9,7 +9,6 @@ import React from 'react';
 export default function RawMaterialTableView({
     rawMaterialResponse,
     handleRawMaterialDeletion,
-    // auth,
 }: {
     rawMaterialResponse: PaginateResponse<RawMaterialResource>;
     handleRawMaterialDeletion: (id: number) => void;

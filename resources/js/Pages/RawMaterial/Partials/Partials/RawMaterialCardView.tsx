@@ -8,11 +8,9 @@ import React from 'react';
 export default function RawMaterialCardView({
     rawMaterialResponse,
     handleRawMaterialDeletion,
-    // auth,
 }: {
     rawMaterialResponse: PaginateResponse<RawMaterialResource>;
     handleRawMaterialDeletion: (id: number) => void;
-    // auth: any; // sementara
 }) {
     return (
         <div>
