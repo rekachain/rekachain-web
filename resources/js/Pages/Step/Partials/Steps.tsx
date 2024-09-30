@@ -54,6 +54,38 @@ export default function () {
             {stepResponse && (
                 <>
                     <div className="hidden md:block">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Nama</TableHead>
+                                    <TableHead>Proses</TableHead>
+                                    <TableHead>Estimasi Manufaktur</TableHead>
+                                    <TableHead></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {stepResponse?.data.map(step => (
+                                    <TableRow key={step.id}>
+                                        <TableCell>{step.name}</TableCell>
+                                        <TableCell>{step.process}</TableCell>
+                                        <TableCell>{step.estimated_time}</TableCell>
+                                        <TableCell>
+                                            <Link
+                                                className={buttonVariants({ variant: 'link' })}
+                                                href={route(`${ROUTES.STEPS}.edit`, step.id)}
+                                            >
+                                                Edit
+                                            </Link>
+                                            {step.can_be_deleted && (
+                                                <Button variant="link" onClick={() => handleStepDeletion(step.id)}>
+                                                    Delete
+                                                </Button>
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                         {/* <WorkstationTableView
                     workstationResponse={workstationResponse}
                     handleWorkstationDeletion={handleWorkstationDeletion}
@@ -71,38 +103,6 @@ export default function () {
                 </>
             )}
             <GenericPagination meta={stepResponse?.meta} handleChangePage={handlePageChange} />
-            {/* <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Proses</TableHead>
-                        <TableHead>Estimasi Manufaktur</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {stepResponse?.data.map(step => (
-                        <TableRow key={step.id}>
-                            <TableCell>{step.name}</TableCell>
-                            <TableCell>{step.process}</TableCell>
-                            <TableCell>{step.estimated_time}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.STEPS}.edit`, step.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {step.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleStepDeletion(step.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table> */}
         </div>
     );
 }

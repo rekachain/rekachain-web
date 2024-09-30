@@ -27,14 +27,16 @@ export default function StepCardView({
                 >
                     <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                         <div className="flex w-full justify-between items-scenter">
-                            <h4 className="font-bold text-xl">{step.name}</h4>
+                            <h4 className="font-bold text-base">{step.name}</h4>
                             <div className="text-center">
-                                <h5 className="font-bold text-md items-center ">
+                                <h4 className="font-bold text-base">Proses : {step.name}</h4>
+                                {/* <h5 className="font-bold text-md items-center ">
                                     Divisi:
-                                    {/* {step.division.name} */}
-                                </h5>
+                                    {step.division.name}
+                                </h5> */}
                             </div>
                         </div>
+                        <p className="text-sm">Estimasi Manufaktur : {step.estimated_time}</p>
 
                         {/* <h5 className="font-bold text-sm ">Workshop : {step.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {step.location}</h5> */}
