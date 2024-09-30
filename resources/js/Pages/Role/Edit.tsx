@@ -4,7 +4,6 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
 import {
     DivisionResource,
@@ -24,7 +23,7 @@ export default function (props: {
     permissions: PermissionResourceGrouped[];
     divisions: DivisionResource[];
 }) {
-    const { data, setData, } = useForm({
+    const { data, setData } = useForm({
         name: props.role.name,
         division_id: props.role.division_id?.toString(),
         level: props.role.level,

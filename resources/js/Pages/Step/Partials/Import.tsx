@@ -11,7 +11,6 @@ import { Button } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';

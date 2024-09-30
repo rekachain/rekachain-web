@@ -13,7 +13,7 @@ import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
 import { router, useForm } from '@inertiajs/react';
 import { rawMaterialService } from '@/Services/rawMaterialService';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
@@ -25,7 +25,7 @@ export default function () {
         file: null,
     });
 
-    const {loading} = useLoading();
+    const { loading } = useLoading();
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
