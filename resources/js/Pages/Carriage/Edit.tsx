@@ -6,7 +6,7 @@ import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { CarriageResource } from '../../Support/Interfaces/Resources';
+import { CarriageResource } from '@/Support/Interfaces/Resources';
 import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';

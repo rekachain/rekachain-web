@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Step;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +24,7 @@ class UserSeeder extends Seeder {
             'name' => 'PPC Perencanaan',
             'email' => 'user2@example.com',
             'nip' => '2',
+            'workstation_id' => 1,
         ]);
 
         $ppcPerencanaan->assignRole('PPC - Perencanaan');
@@ -31,6 +33,7 @@ class UserSeeder extends Seeder {
             'name' => 'PPC Pengendalian',
             'email' => 'user3@example.com',
             'nip' => '3',
+            'workstation_id' => 1,
         ]);
 
         $ppcPengendalian->assignRole('PPC - Pengendalian');
@@ -39,6 +42,7 @@ class UserSeeder extends Seeder {
             'name' => 'Supervisor Mekanik',
             'email' => 'user4@example.com',
             'nip' => '4',
+            'workstation_id' => 1,
         ]);
 
         $supervisorMekanik->assignRole('Supervisor - Mekanik');
@@ -47,6 +51,7 @@ class UserSeeder extends Seeder {
             'name' => 'Supervisor Elektrik',
             'email' => 'user5@example.com',
             'nip' => '5',
+            'workstation_id' => 1,
         ]);
 
         $supervisorElektrik->assignRole('Supervisor - Elektrik');
@@ -55,6 +60,7 @@ class UserSeeder extends Seeder {
             'name' => 'Supervisor Assembly',
             'email' => 'user6@example.com',
             'nip' => '6',
+            'workstation_id' => 1,
         ]);
 
         $supervisorAssembly->assignRole('Supervisor - Assembly');
@@ -63,6 +69,8 @@ class UserSeeder extends Seeder {
             'name' => 'Mekanik',
             'email' => 'user7@example.com',
             'nip' => '7',
+            'workstation_id' => 1,
+            'step_id' => Step::inRandomOrder()->first()->id,
         ]);
 
         $mekanik->assignRole('Worker - Mekanik');
@@ -71,6 +79,8 @@ class UserSeeder extends Seeder {
             'name' => 'Elektrik',
             'email' => 'user8@example.com',
             'nip' => '8',
+            'workstation_id' => 1,
+            'step_id' => Step::inRandomOrder()->first()->id,
         ]);
 
         $elektrik->assignRole('Worker - Elektrik');
@@ -79,6 +89,8 @@ class UserSeeder extends Seeder {
             'name' => 'Assembly',
             'email' => 'user9@example.com',
             'nip' => '9',
+            'workstation_id' => 1,
+            'step_id' => Step::inRandomOrder()->first()->id,
         ]);
 
         $assembly->assignRole('Worker - Assembly');
@@ -87,6 +99,7 @@ class UserSeeder extends Seeder {
             'name' => 'QC Mekanik',
             'email' => 'user10@example.com',
             'nip' => '10',
+            'workstation_id' => 1,
         ]);
 
         $qcMekanik->assignRole('QC - Mekanik');
@@ -95,6 +108,7 @@ class UserSeeder extends Seeder {
             'name' => 'QC Elektrik',
             'email' => 'user11@example.com',
             'nip' => '11',
+            'workstation_id' => 1,
         ]);
 
         $qcElektrik->assignRole('QC - Elektrik');
@@ -103,6 +117,7 @@ class UserSeeder extends Seeder {
             'name' => 'QC Assembly',
             'email' => 'user12@example.com',
             'nip' => '12',
+            'workstation_id' => 1,
         ]);
 
         $qcAssembly->assignRole('QC - Assembly');

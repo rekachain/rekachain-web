@@ -25,6 +25,8 @@ export default function ({
                     <TableHead>Email</TableHead>
                     <TableHead>No. Hp</TableHead>
                     <TableHead>Role</TableHead>
+                    <TableHead>Workstation</TableHead>
+                    <TableHead>Step</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
@@ -43,7 +45,8 @@ export default function ({
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.phone_number}</TableCell>
                         <TableCell>{user.role?.name}</TableCell>
-
+                        <TableCell>{user.workstation?.name}</TableCell>
+                        <TableCell>{user.step?.name}</TableCell>
                         {user.id !== auth.user.id ? (
                             (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
                                 <TableCell>

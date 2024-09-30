@@ -64,6 +64,38 @@ class PanelAttachmentResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
+                $panelAttachment = $this->load(['carriage_panel' => ['carriage_trainset', 'panel_materials']]);
+
+                $materialQuantities = $panelAttachment->carriage_panel->panel_materials->map(function ($panelMaterial) use ($panelAttachment) {
+                    $totalQty = $panelAttachment->carriage_panel->carriage_trainset->qty * $panelAttachment->carriage_panel->qty * $panelMaterial->qty;
+
+                    return [
+                        'id' => $panelMaterial->id,
+                        'raw_material_id' => $panelMaterial->raw_material_id,
+                        'qty' => $totalQty,
+                        'created_at' => $panelMaterial->created_at,
+                        'updated_at' => $panelMaterial->updated_at,
+                    ];
+                });
+
+                return [
+                    'id' => $this->id,
+                    'carriage_panel_id' => $this->carriage_panel_id,
+                    'source_workstation_id' => $this->source_workstation_id,
+                    'destination_workstation_id' => $this->destination_workstation_id,
+                    'attachment_number' => $this->attachment_number,
+                    'qr_code' => $this->qr_code,
+                    'qr_path' => $this->qr_path,
+                    'current_step' => $this->current_step,
+                    'elapsed_time' => $this->elapsed_time,
+                    'status' => $this->status,
+                    'panel_attachment_id' => $this->panel_attachment_id,
+                    'supervisor_id' => $this->supervisor_id,
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                    'panel_materials' => $materialQuantities,
+                ];
         }
 
         return [

@@ -60,10 +60,18 @@ class UpdateTrainsetRequest extends FormRequest {
                     'carriage_id' => 'nullable|integer|exists:carriages,id',
                 ];
 
-            case IntentEnum::WEB_TRAINSET_GENERATE_ATTACHMENTS->value:
+            case IntentEnum::WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS->value:
                 return [
-                    'source_workstation_id' => 'required|integer|exists:workstations,id',
-                    'destination_workstation_id' => 'required|integer|different:source_workstation_id|exists:workstations,id',
+                    'assembly_source_workstation_id' => 'required|integer|exists:workstations,id',
+                    'assembly_destination_workstation_id' => 'required|integer|different:source_workstation_id|exists:workstations,id',
+                ];
+            case IntentEnum::WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS->value:
+                return [
+                    'division' => 'required|in:mechanic,electric',
+                    'mechanic_source_workstation_id' => 'nullable|integer|exists:workstations,id',
+                    'mechanic_destination_workstation_id' => 'nullable|integer|different:mechanic_source_workstation_id|exists:workstations,id',
+                    'electric_source_workstation_id' => 'nullable|integer|exists:workstations,id',
+                    'electric_destination_workstation_id' => 'nullable|integer|different:electric_source_workstation_id|exists:workstations,id',
                 ];
         }
 
