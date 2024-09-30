@@ -15,11 +15,11 @@ class TrainsetSeeder extends Seeder {
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                if (Project::whereName($data['project_name'])->exists()) {
+                if (isset($data['project_name']) && Project::whereName($data['project_name'])->exists()) {
                     Trainset::create([
                         'project_id' => Project::whereName($data['project_name'])->first()->id,
                         'name' => $data['trainset_name'],
-                        'preset_trainset_id' => PresetTrainset::whereName($data['preset'])->first()->id ?? null, // jika ada
+                        'preset_trainset_id' => isset($data['preset']) && PresetTrainset::whereName($data['preset'])->exists() ? PresetTrainset::whereName($data['preset'])->first()->id : null,
                     ]);
                 }
 

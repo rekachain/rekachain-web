@@ -12,7 +12,7 @@ class StepFactory extends Factory {
         return [
             'name' => $this->faker->word,
             'process' => $this->faker->sentence,
-            'estimated_time' => $this->faker->numberBetween(1, 10),
+            'estimated_time' => $this->faker->numberBetween(5, 30),
         ];
     }
 }

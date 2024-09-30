@@ -17,7 +17,7 @@ class StepSeeder extends Seeder {
 
         if ($csvData) {
             foreach ($csvData as $data) {
-                Step::create($data);
+                Step::factory()->create($data);
             }
         } else {
             Step::factory(10)->create();

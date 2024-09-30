@@ -74,7 +74,7 @@ class UserSeeder extends Seeder {
         ]);
 
         $mekanik->assignRole('Worker - Mekanik');
-
+        
         $elektrik = User::factory()->create([
             'name' => 'Elektrik',
             'email' => 'user8@example.com',
@@ -122,7 +122,12 @@ class UserSeeder extends Seeder {
 
         $qcAssembly->assignRole('QC - Assembly');
 
-        //        User::factory(25)->create();
+        User::factory(10)->create()->each(fn ($user) => $user->assignRole('Worker - Mekanik'));
+        User::factory(10)->create()->each(fn ($user) => $user->assignRole('Worker - Elektrik'));
+        User::factory(10)->create()->each(fn ($user) => $user->assignRole('Worker - Assembly'));
+        User::factory(10)->create()->each(fn ($user) => $user->assignRole('QC - Mekanik'));
+        User::factory(10)->create()->each(fn ($user) => $user->assignRole('QC - Elektrik'));
+        User::factory(10)->create()->each(fn ($user) => $user->assignRole('QC - Assembly'));
 
     }
 }
