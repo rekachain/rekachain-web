@@ -1,17 +1,13 @@
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { PanelResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { ROUTES } from '@/Support/Constants/routes';
+import { PanelResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import PanelCardView from './Partials/PanelCardView';
 import PanelTableView from './Partials/PanelTableView';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
@@ -20,30 +16,20 @@ export default function () {
         perPage: 10,
     });
 
-    const { setLoading } = useLoading();
-
-    const syncPanels = async () => {
-        setLoading(true);
+    const syncPanels = withLoading(async () => {
         const res = await panelService.getAll(filters);
         setPanelResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncPanels();
+        void syncPanels();
     }, [filters]);
 
-    const handlePanelDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await panelService.delete(id);
-                await syncPanels();
-                useSuccessToast('Panel deleted successfully');
-                setLoading(false);
-            }
-        });
-    };
+    const handlePanelDeletion = withLoading(async (id: number) => {
+        await panelService.delete(id);
+        await syncPanels();
+        void useSuccessToast('Panel deleted successfully');
+    }, true );
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -57,16 +43,14 @@ export default function () {
                         <PanelTableView
                             panelResponse={panelResponse}
                             handlePanelDeletion={handlePanelDeletion}
-                            auth={''}
-                        ></PanelTableView>
+                        />
                     </div>
 
                     <div className="block md:hidden">
                         <PanelCardView
                             panelResponse={panelResponse}
                             handlePanelDeletion={handlePanelDeletion}
-                            auth={''}
-                        ></PanelCardView>
+                        />
                     </div>
                 </>
             )}

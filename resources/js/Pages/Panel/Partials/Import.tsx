@@ -16,6 +16,8 @@ import { router, useForm } from '@inertiajs/react';
 import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { data, setData } = useForm<{
@@ -23,37 +25,16 @@ export default function () {
     }>({
         file: null,
     });
-    const { setLoading, loading } = useLoading();
-    const handleGetImportDataTemplate = async () => {
-        setLoading(true);
-        const response = await window.axios.get(
-            route(`${ROUTES.PANELS}.index`, {
-                intent: IntentEnum.WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL,
-            }),
-            { responseType: 'blob' },
-        );
+    const { loading } = useLoading();
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'panels.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setLoading(false);
-    };
-
-    const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
         await panelService.importData(data.file as File);
+        router.visit(route(`${ROUTES.PANELS}.index`));
         await useSuccessToast('Data imported successfully');
-        redirectToIndex();
-        setLoading(false);
-    };
+    });
 
-    const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
@@ -68,10 +49,14 @@ export default function () {
                     <DialogTitle>Import Data</DialogTitle>
                     <DialogDescription>Import data from a file to populate the table.</DialogDescription>
                 </DialogHeader>
-                {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate} disabled={loading}>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={panelService.downloadImportDataTemplate}
+                        disabled={loading}
+                    >
                         {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>
