@@ -12,7 +12,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('trainset_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carriage_trainset_id')->constrained('carriage_trainset');
+            $table->foreignId('trainset_id')->constrained();
             $table->foreignId('source_workstation_id')->references('id')->on('workstations')->constrained();
             $table->foreignId('destination_workstation_id')->references('id')->on('workstations')->constrained();
             $table->string('attachment_number')->nullable();

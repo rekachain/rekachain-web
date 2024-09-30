@@ -90,17 +90,51 @@ export const trainsetService = {
             },
         );
     },
-    generateAttachments: async (trainsetId: number, sourceWorkstationId: number, destinationWorkstationId: number) => {
+    generateTrainsetAttachments: async (
+        trainsetId: number,
+        sourceWorkstationId: number,
+        destinationWorkstationId: number,
+        division = 'assembly' as 'mechanic' | 'electric',
+    ) => {
+        const data = {
+            mechanic: {
+                mechanic_source_workstation_id: sourceWorkstationId,
+                mechanic_destination_workstation_id: destinationWorkstationId,
+            },
+            electric: {
+                electric_source_workstation_id: sourceWorkstationId,
+                electric_destination_workstation_id: destinationWorkstationId,
+            },
+        };
         return window.axios.post(
             route(`${ROUTES.TRAINSETS}.update`, trainsetId),
             {
-                source_workstation_id: sourceWorkstationId,
-                destination_workstation_id: destinationWorkstationId,
+                division,
+                ...data[division],
             },
             {
                 params: {
                     _method: 'PUT',
-                    intent: IntentEnum.WEB_TRAINSET_GENERATE_ATTACHMENTS,
+                    intent: IntentEnum.WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS,
+                },
+            },
+        );
+    },
+    generatePanelAttachments: async (
+        trainsetId: number,
+        sourceWorkstationId: number,
+        destinationWorkstationId: number,
+    ) => {
+        return window.axios.post(
+            route(`${ROUTES.TRAINSETS}.update`, trainsetId),
+            {
+                assembly_source_workstation_id: sourceWorkstationId,
+                assembly_destination_workstation_id: destinationWorkstationId,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS,
                 },
             },
         );

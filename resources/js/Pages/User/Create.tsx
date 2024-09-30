@@ -18,6 +18,7 @@ export default function (props: { roles: RoleResource[] }) {
         nip: '',
         name: '',
         email: '',
+        phone_number: '',
         password: '',
         role_id: '',
     });
@@ -35,6 +36,7 @@ export default function (props: { roles: RoleResource[] }) {
             formData.append('nip', data.nip);
             formData.append('name', data.name);
             formData.append('email', data.email);
+            formData.append('phone_number', data.phone_number);
             formData.append('password', data.password);
             formData.append('role_id', data.role_id);
             if (photo) formData.append('image_path', photo);
@@ -101,6 +103,21 @@ export default function (props: { roles: RoleResource[] }) {
                                 required
                             />
                         </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="phone_number" value="Nomor Telepon" />
+                            <Input
+                                id="phone_number"
+                                type="text"
+                                name="phone_number"
+                                value={data.phone_number}
+                                className="mt-1"
+                                autoComplete="phone_number"
+                                onChange={e => setData('phone_number', e.target.value)}
+                                required
+                            />
+                        </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="password" value="Password" />
                             <Input

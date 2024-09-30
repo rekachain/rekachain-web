@@ -6,6 +6,7 @@ use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
@@ -77,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('work-day-times', WorkDayTimeController::class);
     Route::resource('steps', StepController::class);
     Route::resource('progress-steps', ProgressStepController::class);
+    Route::resource('panel-attachments', PanelAttachmentController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

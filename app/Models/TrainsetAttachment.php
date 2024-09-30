@@ -12,7 +12,7 @@ class TrainsetAttachment extends Model {
     use HasFactory;
 
     protected $fillable = [
-        'carriage_trainset_id',
+        'trainset_id',
         'source_workstation_id',
         'destination_workstation_id',
         'attachment_number',
@@ -35,8 +35,8 @@ class TrainsetAttachment extends Model {
         return $this->hasMany(TrainsetAttachment::class, 'trainset_attachment_id');
     }
 
-    public function carriage_trainset(): BelongsTo {
-        return $this->belongsTo(CarriageTrainset::class, 'carriage_trainset_id');
+    public function trainset(): BelongsTo {
+        return $this->belongsTo(Trainset::class);
     }
 
     public function source_workstation(): BelongsTo {

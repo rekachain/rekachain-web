@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider {
      * Bootstrap any application services.
      */
     public function boot(): void {
+
         Permission::observe(PermissionObserver::class);
         Trainset::observe(TrainsetObserver::class);
         CarriageTrainset::observe(CarriageTrainsetObserver::class);
