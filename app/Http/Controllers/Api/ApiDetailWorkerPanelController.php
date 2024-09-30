@@ -21,17 +21,17 @@ class ApiDetailWorkerPanelController extends Controller {
         $intent = request()->get('intent');
 
         if ($intent === 'api.detail.worker.panel.get.details.filter.process') {
-            $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAILS->value]);
+            $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value]);
 
             return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> $request->logged,
             'work_status' => 'in_progress']));
         } else if ($intent === 'api.panel.attachment.get.attachments.filter.completed') {
-            $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAILS->value]);
+            $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value]);
 
             return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> $request->logged,
             'work_status' => 'completed']));
         } else {
-            $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAILS->value]);
+            $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value]);
 
             return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> $request->logged]));
         }
@@ -48,8 +48,8 @@ class ApiDetailWorkerPanelController extends Controller {
      * Display the specified resource.
      */
     public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
-        return $detailWorkerPanel;
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAILS->value]);
+        // return $detailWorkerPanel;
+        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
         
         return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> $request->logged, 'id' => $detailWorkerPanel->id]));
         // $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
