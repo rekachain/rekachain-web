@@ -11,6 +11,7 @@ import { useConfirmation } from '@/Hooks/useConfirmation';
 import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import StepCardView from './Partials/StepCardView';
 
 export default function () {
     const [stepResponse, setStepResponse] = useState<PaginateResponse<StepResource>>();
@@ -50,7 +51,27 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
+            {stepResponse && (
+                <>
+                    <div className="hidden md:block">
+                        {/* <WorkstationTableView
+                    workstationResponse={workstationResponse}
+                    handleWorkstationDeletion={handleWorkstationDeletion}
+                    // auth={auth}
+                ></WorkstationTableView> */}
+                    </div>
+
+                    <div className="block md:hidden">
+                        <StepCardView
+                            stepResponse={stepResponse}
+                            handleStepDeletion={handleStepDeletion}
+                            // auth={auth}
+                        ></StepCardView>
+                    </div>
+                </>
+            )}
+            <GenericPagination meta={stepResponse?.meta} handleChangePage={handlePageChange} />
+            {/* <Table>
                 <TableHeader>
                     <TableRow>
                         <TableHead>Nama</TableHead>
@@ -81,9 +102,7 @@ export default function () {
                         </TableRow>
                     ))}
                 </TableBody>
-            </Table>
-
-            <GenericPagination meta={stepResponse?.meta} handleChangePage={handlePageChange} />
+            </Table> */}
         </div>
     );
 }
