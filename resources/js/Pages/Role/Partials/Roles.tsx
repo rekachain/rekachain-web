@@ -1,15 +1,13 @@
-import { usePage } from '@inertiajs/react';
 import { roleService } from '@/Services/roleService';
 import { useEffect, useState } from 'react';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { RoleResource } from '@/Support/Interfaces/Resources/RoleResource';
 import RoleCardView from './Partials/RoleCardView';
 import RoleTableView from './Partials/RoleTableView';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();
@@ -19,32 +17,20 @@ export default function () {
         relations: 'division',
     });
 
-    const { auth } = usePage().props;
-    const { setLoading } = useLoading();
-
-    const syncRoleResources = async () => {
-        setLoading(true);
+    const syncRoleResources = withLoading(async () => {
         const res = await roleService.getAll(filters);
         setRoleResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        console.log('first render, or filters changed');
-        syncRoleResources();
+        void syncRoleResources();
     }, [filters]);
 
-    const handleRoleResourceDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await roleService.delete(id);
-                await syncRoleResources();
-                setLoading(false);
-                useSuccessToast('Role deleted successfully');
-            }
-        });
-    };
+    const handleRoleResourceDeletion = withLoading(async (id: number) => {
+        await roleService.delete(id);
+        await syncRoleResources();
+        void useSuccessToast('Role deleted successfully');
+    });
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -55,19 +41,11 @@ export default function () {
             {roleResponse && (
                 <>
                     <div className="hidden md:block">
-                        <RoleTableView
-                            roleResponse={roleResponse}
-                            handleRoleDeletion={handleRoleResourceDeletion}
-                            auth={auth}
-                        ></RoleTableView>
+                        <RoleTableView roleResponse={roleResponse} handleRoleDeletion={handleRoleResourceDeletion} />
                     </div>
 
                     <div className="block md:hidden">
-                        <RoleCardView
-                            roleResponse={roleResponse}
-                            handleRoleDeletion={handleRoleResourceDeletion}
-                            auth={auth}
-                        ></RoleCardView>
+                        <RoleCardView roleResponse={roleResponse} handleRoleDeletion={handleRoleResourceDeletion} />
                     </div>
                 </>
             )}
