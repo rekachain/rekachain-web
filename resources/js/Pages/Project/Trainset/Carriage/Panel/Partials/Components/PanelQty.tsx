@@ -1,4 +1,4 @@
-import { CarriagePanelResource } from '../../../../../../../Support/Interfaces/Resources';
+import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
@@ -6,8 +6,9 @@ import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/Support/Constants/styling';
 import { carriagePanelService } from '@/Services/carriagePanelService';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({
     carriage_panel,
@@ -17,25 +18,24 @@ export default function ({
     handleSyncCarriage: () => Promise<void>;
 }) {
     const [isEditing, setIsEditing] = useState(false);
-    const { data, setData, reset } = useForm({
+    const { data, setData} = useForm({
         panelQty: carriage_panel.qty,
     });
-    const { setLoading, loading } = useLoading();
+    const { loading } = useLoading();
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleEditCarriageQty = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleEditCarriageQty = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
+
         await carriagePanelService.update(carriage_panel.id, {
             qty: data.panelQty,
         });
         await handleSyncCarriage();
         setIsEditing(false);
-        setLoading(false);
-        useSuccessToast('Panel qty updated successfully');
-    };
+        void useSuccessToast('Panel qty updated successfully');
+    });
 
     return (
         <>

@@ -8,25 +8,20 @@ import { Button } from '@/Components/UI/button';
 import { carriageService } from '@/Services/carriageService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
         type: '',
         description: '',
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.CARRIAGES}.index`));
         await carriageService.create(data);
-        useSuccessToast('Carriage created successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        void useSuccessToast('Carriage created successfully');
+        router.visit(route(`${ROUTES.CARRIAGES}.index`));
+    });
 
     return (
         <>

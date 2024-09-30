@@ -16,6 +16,8 @@ import { router, useForm } from '@inertiajs/react';
 import { componentService } from '@/Services/componentService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { ChangeEvent, FormEvent } from 'react';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const { data, setData } = useForm<{
@@ -23,37 +25,16 @@ export default function () {
     }>({
         file: null,
     });
-    const { setLoading, loading } = useLoading();
-    const handleGetImportDataTemplate = async () => {
-        setLoading(true);
-        const response = await window.axios.get(
-            route(`${ROUTES.COMPONENTS}.index`, {
-                // intent: IntentEnum.WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT,
-            }),
-            { responseType: 'blob' },
-        );
+    const {  loading } = useLoading();
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'components.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setLoading(false);
-    };
-
-    const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.COMPONENTS}.index`));
         // await componentService.importData(data.file as File);
         await useSuccessToast('Data imported successfully');
-        redirectToIndex();
-        setLoading(false);
-    };
+        router.visit(route(`${ROUTES.COMPONENTS}.index`));
+    });
 
-    const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
@@ -68,10 +49,9 @@ export default function () {
                     <DialogTitle>Import Data</DialogTitle>
                     <DialogDescription>Import data from a file to populate the table.</DialogDescription>
                 </DialogHeader>
-                {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate} disabled={loading}>
+                    <Button type="button" variant="secondary" onClick={componentService.downloadImportDataTemplate} disabled={loading}>
                         {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>

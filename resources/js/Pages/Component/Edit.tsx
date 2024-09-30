@@ -7,7 +7,6 @@ import { Button } from '@/Components/UI/button';
 import { componentService } from '@/Services/componentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { ComponentResource, ProgressResource } from '@/Support/Interfaces/Resources';
 import { SelectGroup } from '@/Components/UI/select';
 import { Label } from '@/Components/UI/label';
@@ -31,7 +30,6 @@ export default function ({ component }: { component: ComponentResource }) {
         progress_id: component.progress_id,
         name: component.name,
     });
-    const { loading, setLoading } = useLoading();
 
     const debouncedSearchProgress = useDebounce(searchProgress, 300);
 
@@ -42,13 +40,13 @@ export default function ({ component }: { component: ComponentResource }) {
     });
 
     useEffect(() => {
-        handleSyncProgress();
+        void handleSyncProgress();
     }, [debouncedSearchProgress]);
 
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await componentService.update(component.id, data);
-        useSuccessToast('Component updated successfully');
+        void useSuccessToast('Component updated successfully');
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
     });
 

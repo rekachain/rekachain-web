@@ -4,45 +4,43 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
 import {
     DivisionResource,
     PermissionResource,
     PermissionResourceGrouped,
     RoleResource,
-} from '../../Support/Interfaces/Resources';
+} from '@/Support/Interfaces/Resources';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { Checkbox } from '@/Components/UI/checkbox';
 import { roleService } from '@/Services/roleService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function (props: {
     role: RoleResource;
     permissions: PermissionResourceGrouped[];
     divisions: DivisionResource[];
 }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         name: props.role.name,
         division_id: props.role.division_id?.toString(),
         level: props.role.level,
         permissions: props.role.permissions as unknown as number[],
     });
 
-    const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
-    const { setLoading } = useLoading();
+    const { loading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
         await roleService.update(props.role.id, data);
-        useSuccessToast('Role updated successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        void useSuccessToast('Role updated successfully');
+        router.visit(route(`${ROUTES.ROLES}.index`));
+    });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
         if (checked) {
@@ -77,7 +75,6 @@ export default function (props: {
                                 placeholder={props.role.name}
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -150,7 +147,7 @@ export default function (props: {
                             </div>
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Role
                         </Button>
                     </form>
