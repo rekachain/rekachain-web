@@ -1,13 +1,13 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { ProjectResource } from '../../../../Support/Interfaces/Resources';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { trainsetService } from '@/Services/trainsetService';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/TrainsetName';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({
     project,
@@ -16,19 +16,13 @@ export default function ({
     project: ProjectResource;
     handleSyncProject: () => Promise<void>;
 }) {
-    const { setLoading } = useLoading();
+    const { loading } = useLoading();
 
-    const handleTrainsetDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await trainsetService.delete(id);
-                await handleSyncProject();
-                setLoading(false);
-                useSuccessToast('Trainset deleted successfully');
-            }
-        });
-    };
+    const handleTrainsetDeletion = withLoading(async (id: number) => {
+        await trainsetService.delete(id);
+        await handleSyncProject();
+        void useSuccessToast('Trainset deleted successfully');
+    }, true);
 
     return (
         <div className="space-y-4">
@@ -65,7 +59,7 @@ export default function ({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                <Button variant="link" onClick={() => handleTrainsetDeletion(trainset.id)}>
+                                <Button variant="link" disabled={loading} onClick={() => handleTrainsetDeletion(trainset.id)}>
                                     Delete
                                 </Button>
                                 <Link

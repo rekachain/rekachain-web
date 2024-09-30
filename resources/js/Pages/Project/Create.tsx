@@ -4,35 +4,38 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
 import { projectService } from '@/Services/projectService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function () {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         name: '',
         trainset_needed: 0,
         initial_date: '',
     });
-    const { setLoading } = useLoading();
+    const { loading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
-        e.preventDefault();
-        const redirectToDetails = () => router.visit(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
-        setLoading(true);
-
-        const res = await projectService.create(data);
-
+    function getCurrentDate() {
         const newDate = new Date();
         const date = newDate.getDate();
         const month = newDate.getMonth() + 1;
         const year = newDate.getFullYear();
-        const description = `${date} / ${month < 10 ? `0${month}` : `${month}`} / ${year}`;
+        return `${date} / ${month < 10 ? `0${month}` : `${month}`} / ${year}`;
+    }
 
-        useSuccessToast('Proyek berhasil ditambahkan', description);
-        setLoading(false);
+    const submit: FormEventHandler = async e => {
+        e.preventDefault();
+
+        const redirectToDetails = () => router.visit(route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [res.id]));
+
+        const res = await projectService.create(data);
+
+        const description = getCurrentDate();
+
+        void useSuccessToast('Proyek berhasil ditambahkan', description);
+
         redirectToDetails();
     };
 
@@ -58,7 +61,6 @@ export default function () {
                                 onChange={e => setData('name', e.target.value)}
                                 required
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -73,7 +75,6 @@ export default function () {
                                 onChange={e => setData('trainset_needed', +e.target.value)}
                                 required
                             />
-                            <InputError message={errors.trainset_needed} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -88,10 +89,9 @@ export default function () {
                                 onChange={e => setData('initial_date', e.target.value)}
                                 required
                             />
-                            <InputError message={errors.initial_date} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Proyek
                         </Button>
                     </form>
