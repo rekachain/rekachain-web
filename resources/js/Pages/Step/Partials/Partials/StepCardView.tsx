@@ -43,7 +43,7 @@ export default function StepCardView({
                         <div className="flex items-center justify-end w-full">
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
-                                href={route(`${ROUTES.WORKSTATIONS}.edit`, step.id)}
+                                href={route(`${ROUTES.STEPS}.edit`, step.id)}
                             >
                                 Edit
                             </Link>
