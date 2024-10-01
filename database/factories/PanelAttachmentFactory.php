@@ -3,8 +3,10 @@
 namespace Database\Factories;
 
 use App\Models\CarriagePanel;
+use App\Models\User;
 use App\Models\Workstation;
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +30,7 @@ class PanelAttachmentFactory extends Factory {
             'elapsed_time' => $this->faker->numberBetween(1, 10),
             'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value,
             'panel_attachment_id' => null,
-            'supervisor_id' => null,
+            'supervisor_id' => User::role(RoleEnum::SUPERVISOR_ASSEMBLY)->inRandomOrder()->first()->id,
         ];
     }
 }
