@@ -56,6 +56,7 @@ class PanelAttachmentResource extends JsonResource {
                 return [
                     'attachment_number' => $this->attachment_number,
                     'source_workstation' => $this->source_workstation->name,
+                    'status' => $this->status,
                     'destination_workstation' => $this->destination_workstation->name,
                     'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,

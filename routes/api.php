@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ApiTrainsetController;
 use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiWorkDayController;
 use App\Http\Controllers\Api\ApiWorkDayTimeController;
+use App\Http\Controllers\Api\ApiDetailWorkerPanelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,7 @@ Route::group(['as' => 'api.'], function () {
     Route::post('login', [ApiAuthController::class, 'login'])->name('login');
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);
