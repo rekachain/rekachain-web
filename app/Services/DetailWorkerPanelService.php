@@ -16,7 +16,7 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
     public function assignWorker($request){
         DetailWorkerPanel::create([
             'serial_panel_id' => $request->serial_panel_id,
-            'worker_id' => $request->worker_id,
+            'worker_id' => $request->user()->id,
             'progress_step_id' => $request->progress_step_id
         ]);
     }
