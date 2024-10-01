@@ -28,20 +28,20 @@ class ApiPanelAttachmentController extends Controller {
         $perPage = request()->get('perPage', 5);
         $intent = request()->get('intent');
         
-        if ($intent === 'api.panel.attachment.get.attachments.filter.process') {
+        if ($intent === IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_PROCESS->value) {
             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
-            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged,
+            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id,
             'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value]));
-        } else if ($intent === 'api.panel.attachment.get.attachments.filter.done') {
+        } else if ($intent === IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_DONE->value) {
             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
-            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged,
+            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id,
             'status' => PanelAttachmentStatusEnum::DONE->value]));
         } else {
             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
 
-            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged]));
+            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id]));
         }
         
         
@@ -64,7 +64,7 @@ class ApiPanelAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-                return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->logged, 
+                return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id, 
                 'id' => $panelAttachment->id]));
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');

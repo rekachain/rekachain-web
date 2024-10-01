@@ -9,9 +9,9 @@ enum IntentEnum: string {
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
 
-    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_FILTER_PROCESS = 'api.panel.attachment.get.attachments.filter.process';
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_PROCESS = 'api.panel.attachment.get.attachments.by.process';
 
-    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_FILTER_DONE = 'api.panel.attachment.get.attachments.filter.done';
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_DONE = 'api.panel.attachment.get.attachments.by.done';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.panel.attachment.get.attachment.details';
 
@@ -31,7 +31,11 @@ enum IntentEnum: string {
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
 
-    case API_MAKE_ASSIGN = 'api.make.assign';
+    case API_DETAIL_WORKER_PANEL_ASSIGN_WORKER = 'api.detail.worker.panel.assign.worker';
+
+    case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
+    
+    case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
