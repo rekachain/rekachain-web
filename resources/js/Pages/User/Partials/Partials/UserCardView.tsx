@@ -1,19 +1,23 @@
 import { Avatar, AvatarImage } from '@/Components/UI/avatar';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { UserResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { UserResource } from '@/Support/Interfaces/Resources';
 
 export default function ({
     userResponse,
     handleUserDeletion,
-    auth,
 }: {
     userResponse: PaginateResponse<UserResource>;
     handleUserDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
+    const { auth } = usePage().props;
+
+    const canEditOrDelete = (user: UserResource) => {
+        return user.id !== auth.user.id && (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin');
+    };
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {userResponse?.data.map(user => (
@@ -34,20 +38,19 @@ export default function ({
                                 <div className="text-sm text-gray-500">{user.email}</div>
                                 <div className="text-sm text-gray-500">{user.phone_number}</div>
                             </div>
-                            {user.id !== auth.user.id &&
-                                (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
-                                    <div className="flex gap-4 items-center flex-wrap">
-                                        <Link
-                                            className={buttonVariants({ variant: 'link' })}
-                                            href={route(`${ROUTES.USERS}.edit`, user.id)}
-                                        >
-                                            Edit
-                                        </Link>
-                                        <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                )}
+                            {canEditOrDelete(user) && (
+                                <div className="flex gap-4 items-center flex-wrap">
+                                    <Link
+                                        className={buttonVariants({ variant: 'link' })}
+                                        href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                    >
+                                        Edit
+                                    </Link>
+                                    <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                        Delete
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

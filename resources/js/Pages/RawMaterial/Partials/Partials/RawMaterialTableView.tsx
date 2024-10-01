@@ -1,15 +1,14 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { RawMaterialResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function RawMaterialTableView({
     rawMaterialResponse,
     handleRawMaterialDeletion,
-    // auth,
 }: {
     rawMaterialResponse: PaginateResponse<RawMaterialResource>;
     handleRawMaterialDeletion: (id: number) => void;

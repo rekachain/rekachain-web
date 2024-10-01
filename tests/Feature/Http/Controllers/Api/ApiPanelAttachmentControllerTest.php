@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\Workstation;
 use App\Models\CarriagePanel;
 use App\Models\CarriageTrainset;
+use App\Models\Workstation;
 use App\Support\Enums\IntentEnum;
 
+beforeEach(fn() => createSupervisorAssembly());
 
 test('view all panelAttachment', function () {
     createPanelAttachment();
@@ -13,7 +14,7 @@ test('view all panelAttachment', function () {
 
 test('show one panelAttachment', function () {
     $panelAttachment = createPanelAttachment();
-    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id .'?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value)->assertStatus(200);
+    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value)->assertStatus(200);
 });
 
 test('show one panelAttachment with QR', function () {

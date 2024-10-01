@@ -1,17 +1,16 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { WorkDayResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { WorkDayResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { workDayService } from '@/Services/workDayService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [workDayResponse, setWorkDayResponse] = useState<PaginateResponse<WorkDayResource>>();
@@ -21,30 +20,20 @@ export default function () {
         perPage: 10,
     });
 
-    const { setLoading } = useLoading();
-
-    const syncWorkDays = async () => {
-        setLoading(true);
+    const syncWorkDays = withLoading(async () => {
         const res = await workDayService.getAll(filters);
         setWorkDayResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncWorkDays();
+        void syncWorkDays();
     }, [filters]);
 
-    const handleWorkDayDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await workDayService.delete(id);
-                await syncWorkDays();
-                useSuccessToast('WorkDay deleted successfully');
-                setLoading(false);
-            }
-        });
-    };
+    const handleWorkDayDeletion = withLoading(async (id: number) => {
+        await workDayService.delete(id);
+        await syncWorkDays();
+        void useSuccessToast('WorkDay deleted successfully');
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
