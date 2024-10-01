@@ -6,6 +6,9 @@ use GuzzleHttp\Promise\Create;
 use App\Models\DetailWorkerPanel;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Models\ProgressStep;
+use App\Models\SerialPanel;
+use App\Models\User;
 use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 
 class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPanelServiceInterface {
@@ -14,11 +17,18 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
     }
 
     public function assignWorker($request){
+        $progress = SerialPanel::find($request->serial_panel_id)->panel_attachment->carriage_panel->progress;
+        $step = User::find($request->user()->id)->step;
+        $progress_step = ProgressStep::where('progress_id', $progress->id)
+                                    ->where('step_id', $step->id)
+                                    ->first();
+        
         DetailWorkerPanel::create([
             'serial_panel_id' => $request->serial_panel_id,
             'worker_id' => $request->user()->id,
-            'progress_step_id' => $request->progress_step_id
+            'progress_step_id' => $progress_step->id
         ]);
+
     }
 
     public function acceptAssign($detailWorkerPanel){
