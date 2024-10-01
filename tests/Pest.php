@@ -1,31 +1,32 @@
 <?php
 
-use Tests\TestCase;
-use App\Models\Role;
-use App\Models\Step;
-use App\Models\User;
-use App\Models\Panel;
-use App\Models\Project;
-use App\Models\WorkDay;
 use App\Models\Carriage;
-use App\Models\Division;
-use App\Models\Progress;
-use App\Models\Trainset;
-use App\Models\Workshop;
-use App\Models\Component;
-use App\Models\Permission;
-use App\Models\RawMaterial;
-use App\Models\SerialPanel;
-use App\Models\WorkDayTime;
-use App\Models\Workstation;
-use App\Models\ProgressStep;
 use App\Models\CarriagePanel;
-use App\Models\PanelMaterial;
-use App\Models\PanelAttachment;
 use App\Models\CarriageTrainset;
+use App\Models\Component;
 use App\Models\DetailWorkerPanel;
+use App\Models\Division;
+use App\Models\Panel;
+use App\Models\PanelAttachment;
+use App\Models\PanelMaterial;
+use App\Models\Permission;
+use App\Models\Progress;
+use App\Models\ProgressStep;
+use App\Models\Project;
+use App\Models\RawMaterial;
+use App\Models\Role;
+use App\Models\SerialPanel;
+use App\Models\Step;
+use App\Models\Trainset;
+use App\Models\User;
+use App\Models\WorkDay;
+use App\Models\WorkDayTime;
+use App\Models\Workshop;
+use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,7 +99,18 @@ function actAsPpcPengendalian(): TestCase {
     return test()->actingAs($user);
 }
 
-function createComponent() {
+/**
+ * Used to handle: ApiPanelAttachmentControllerTest requiring user with role SUPERVISOR_ASSEMBLY
+ */
+function createSupervisorAssembly(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::SUPERVISOR_ASSEMBLY]);
+    $user = User::factory(['name' => 'Supervisor Assembly'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createComponent(): Component {
     $component = new Component;
     $component->name = 'Component';
     $component->save();
@@ -106,7 +118,7 @@ function createComponent() {
     return $component;
 }
 
-function createPanelMaterial() {
+function createPanelMaterial(): PanelMaterial {
     createRawMaterial();
     createCarriagePanel();
     $panelMaterial = new PanelMaterial;
@@ -115,7 +127,7 @@ function createPanelMaterial() {
     return $panelMaterial;
 }
 
-function createRawMaterial() {
+function createRawMaterial(): RawMaterial {
     $rawMaterial = RawMaterial::factory()->create();
 
     return $rawMaterial;
@@ -139,7 +151,7 @@ function createRawMaterial() {
 //     return $carriageTrainset;
 // }
 
-function createProject() {
+function createProject(): Project {
     $project = new Project;
     $project->name = 'Project';
     $project->save();
@@ -147,7 +159,7 @@ function createProject() {
     return $project;
 }
 
-function createTrainset() {
+function createTrainset(): Trainset {
     createProject();
 
     $trainset = Trainset::factory()->create();
@@ -155,33 +167,33 @@ function createTrainset() {
     return $trainset;
 }
 
-function createProgress() {
+function createProgress(): Progress {
     $progress = Progress::factory()->create();
 
     return $progress;
 }
 
-function createPanel() {
+function createPanel(): Panel {
     createProgress();
     $panel = Panel::factory()->create();
 
     return $panel;
 }
 
-function createWorkDay() {
+function createWorkDay(): WorkDay {
     $workDay = WorkDay::factory()->create();
 
     return $workDay;
 }
 
-function createWorkDayTime() {
+function createWorkDayTime(): WorkDayTime {
     $workDay = createWorkDay();
     $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
 
     return $workDayTime;
 }
 
-function createDivision() {
+function createDivision(): Division {
     $division = new Division;
     $division->name = 'Test Division';
     $division->save();
@@ -189,7 +201,7 @@ function createDivision() {
     return $division;
 }
 
-function createWorkshop() {
+function createWorkshop(): Workshop {
     $workshop = new Workshop;
     $workshop->name = 'Test Workshop';
     $workshop->address = 'Test Address';
@@ -198,7 +210,7 @@ function createWorkshop() {
     return $workshop;
 }
 
-function createWorkstation() {
+function createWorkstation(): Workstation {
     $division = createDivision();
     $workshop = createWorkshop();
     $workstation = new Workstation;
@@ -210,7 +222,8 @@ function createWorkstation() {
 
     return $workstation;
 }
-function createCarriageTrainset() {
+
+function createCarriageTrainset(): CarriageTrainset {
     $trainset = createTrainset();
     $carriage = Carriage::factory()->create();
 
@@ -224,7 +237,7 @@ function createCarriageTrainset() {
     return $carriageTrainset;
 }
 
-function createCarriagePanel() {
+function createCarriagePanel(): CarriagePanel {
     createCarriageTrainset();
     $progress = createProgress();
     $panel = createPanel();
@@ -238,7 +251,7 @@ function createCarriagePanel() {
     return $carriagePanel;
 }
 
-function createPanelAttachment() {
+function createPanelAttachment(): PanelAttachment {
     createCarriageTrainset();
     createCarriagePanel();
     createWorkstation();
@@ -249,7 +262,7 @@ function createPanelAttachment() {
     return $panelAttachment;
 }
 
-function createSerialPanel() {
+function createSerialPanel(): SerialPanel {
     $panelAttachment = createPanelAttachment();
     $serialPanel = SerialPanel::create([
         'panel_attachment_id' => $panelAttachment->id,
@@ -263,13 +276,13 @@ function createSerialPanel() {
 
 }
 
-function createStep() {
+function createStep(): Step {
     $step = Step::factory()->create();
 
     return $step;
 }
 
-function createProgressStep() {
+function createProgressStep(): ProgressStep {
     createProgress();
     createStep();
     $progressStep = ProgressStep::factory()->create();
@@ -277,7 +290,7 @@ function createProgressStep() {
     return $progressStep;
 }
 
-function createDetailWorkerPanel() {
+function createDetailWorkerPanel(): DetailWorkerPanel {
     User::factory()->create();
     createSerialPanel();
     createProgressStep();
