@@ -6,27 +6,27 @@ import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { WorkDayResource } from '../../Support/Interfaces/Resources';
+import { WorkDayResource } from '@/Support/Interfaces/Resources';
 import { workDayService } from '@/Services/workDayService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ workDay }: { workDay: WorkDayResource }) {
-    const { data, setData, processing, errors } = useForm({
+    const { data, setData } = useForm({
         id: workDay.id,
         day: workDay.day,
     });
-    const { setLoading } = useLoading();
-    const submit: FormEventHandler = async e => {
+
+    const { loading } = useLoading();
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.WORK_DAYS}.index`));
         await workDayService.update(workDay.id, data);
-        useSuccessToast('WorkDay deleted successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.WORK_DAYS}.index`));
+        void useSuccessToast('WorkDay deleted successfully');
+    });
 
     return (
         <>
@@ -49,10 +49,9 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
                                 autoComplete="type"
                                 onChange={e => setData('day', e.target.value)}
                             />
-                            <InputError message={errors.day} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah WorkDay
                         </Button>
                     </form>
