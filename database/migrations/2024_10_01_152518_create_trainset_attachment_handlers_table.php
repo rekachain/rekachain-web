@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('trainset_attachment_id')->constrained();
+            $table->enum('handles', ['prepare', 'send', 'receive']);
             $table->timestamps();
         });
     }
