@@ -7,10 +7,8 @@ import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { workDayService } from '@/Services/workDayService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { withLoading } from '@/Utils/withLoading';
 
