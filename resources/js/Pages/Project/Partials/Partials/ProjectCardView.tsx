@@ -1,18 +1,16 @@
 import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { ProjectResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function ProjectCardView({
     projectResponse,
     handleProjectDeletion,
-    auth,
 }: {
     projectResponse: PaginateResponse<ProjectResource>;
     handleProjectDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
     return (
         <div>

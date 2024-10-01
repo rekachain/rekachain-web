@@ -1,3 +1,6 @@
+// TODO: Refactor this page
+// Reason: This page is too long and contains too many logic
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ChangeEvent, FormEvent, lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -9,7 +12,7 @@ import {
     ProgressResource,
     ProjectResource,
     TrainsetResource,
-} from '../../../../../Support/Interfaces/Resources';
+} from '@/Support/Interfaces/Resources';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -35,7 +38,7 @@ import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
 import { panelService } from '@/Services/panelService';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { PaginateResponse } from '../../../../../Support/Interfaces/Others';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { useDebounce } from '@uidotdev/usehooks';
 import { progressService } from '@/Services/progressService';
 import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
@@ -67,7 +70,7 @@ export default function ({
     const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData } = useForm({
         search_progress: '',
         search_panel: '',
         trainsetNeeded: 0,
@@ -77,16 +80,17 @@ export default function ({
         new_panel_description: '',
         new_panel_qty: 1,
     });
-    const { setLoading, loading } = useLoading();
+    const { loading } = useLoading();
     const debouncedSearchProgress = useDebounce(data.search_progress, 300);
     const debouncedSearchPanel = useDebounce(data.search_panel, 300);
 
+    const fetchInitialPanelData = withLoading(async () => {
+        const res = await panelService.getAll();
+        setPanelResponse(res);
+    })
+
     useEffect(() => {
-        setLoading(true);
-        panelService.getAll().then(response => {
-            setPanelResponse(response);
-        });
-        setLoading(false);
+        void fetchInitialPanelData();
     }, []);
 
     // const handleChangeSearchPanelName = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +101,7 @@ export default function ({
         setData('search_panel', e);
     };
 
-    const handleChangeSearchprogressName = async (e: string) => {
+    const handleChangeSearchProgressName = async (e: string) => {
         setData('search_progress', e);
     };
 
@@ -110,13 +114,11 @@ export default function ({
         // setProgressFilters({ ...progressFilters, search: '' });
     };
 
-    const handleSyncPanels = async () => {
-        setLoading(true);
+    const handleSyncPanels = withLoading(async () => {
         const filters: ServiceFilterOptions = { search: debouncedSearchPanel };
         const res = await panelService.getAll(filters);
         setPanelResponse(res);
-        setLoading(false);
-    };
+    });
 
     const handleChangeNewPanelName = (e: ChangeEvent<HTMLInputElement>) => {
         setData('new_panel_name', e.target.value);
@@ -154,7 +156,7 @@ export default function ({
         handleResetAddCarriageSelection();
         handleResetProgressSearch();
         await handleSyncCarriage();
-        useSuccessToast('Panel berhasil ditambahkan');
+        void useSuccessToast('Panel berhasil ditambahkan');
     });
 
     const handleChangePanel = withLoading(async (v: string) => {
@@ -168,11 +170,11 @@ export default function ({
     });
 
     useEffect(() => {
-        handleSyncPanels();
+        void handleSyncPanels();
     }, [debouncedSearchPanel]);
 
     useEffect(() => {
-        handleSyncProgress();
+        void handleSyncProgress();
     }, [debouncedSearchProgress]);
 
     return (
@@ -304,7 +306,7 @@ export default function ({
                                                 <PopoverContent className="w-full p-0">
                                                     <Command>
                                                         <CommandInput
-                                                            onValueChange={e => handleChangeSearchprogressName(e)}
+                                                            onValueChange={e => handleChangeSearchProgressName(e)}
                                                             placeholder="Cari Progress..."
                                                         />
                                                         <CommandList>
@@ -411,7 +413,7 @@ export default function ({
                                                                     key={panel.name}
                                                                     value={panel.name}
                                                                     onSelect={currentValue => {
-                                                                        handleChangePanel(panel.id.toString());
+                                                                        void handleChangePanel(panel.id.toString());
                                                                         setValuePanel(
                                                                             currentValue === valuePanel
                                                                                 ? ''

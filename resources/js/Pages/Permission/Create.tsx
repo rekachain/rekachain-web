@@ -9,12 +9,13 @@ import { roleService } from '@/Services/roleService';
 import { PermissionResource, PermissionResourceGrouped } from '@/Support/Interfaces/Resources/PermissionResource';
 import { Checkbox } from '@/Components/UI/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
-import { DivisionResource } from '../../Support/Interfaces/Resources';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         name: '',
         division_id: '',
         level: '',
@@ -24,23 +25,20 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
     const [divisions] = useState<DivisionResource[]>(props.divisions);
     const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
-    const { setLoading } = useLoading();
+    const { loading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.ROLES}.index`));
         await roleService.create({
             name: data.name,
             division_id: data.division_id,
             level: data.level,
             permissions: data.permissions,
         });
-        useSuccessToast('Role created successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        void useSuccessToast('Role created successfully');
+        router.visit(route(`${ROUTES.ROLES}.index`));
+    });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
         if (checked) {
@@ -140,7 +138,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                                 </div>
                             </div>
                         </div>
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Role
                         </Button>
                     </form>

@@ -1,4 +1,4 @@
-import { TrainsetResource } from '../../../../../Support/Interfaces/Resources';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/Support/Constants/styling';
@@ -6,27 +6,26 @@ import { Input } from '@/Components/UI/input';
 import { trainsetService } from '@/Services/trainsetService';
 import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
-    const { data, setData, reset } = useForm({
+    const { data, setData,  } = useForm({
         trainsetName: trainset.name,
     });
     const [isEditing, setIsEditing] = useState(false);
-    const { setLoading, loading } = useLoading();
+    const {  loading } = useLoading();
 
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
     };
 
-    const handleEditTrainsetName = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleEditTrainsetName = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
         const { name } = await trainsetService.update(trainset.id, { name: data.trainsetName });
         trainset.name = name;
         setIsEditing(false);
-        setLoading(false);
-    };
+    });
 
     return (
         <>
