@@ -34,7 +34,7 @@ export default function () {
     };
 
     useEffect(() => {
-        syncComponents();
+        void syncComponents();
     }, [filters]);
 
     const handleComponentDeletion = (id: number) => {
@@ -43,7 +43,7 @@ export default function () {
                 setLoading(true);
                 await componentService.delete(id);
                 await syncComponents();
-                useSuccessToast('Component deleted successfully');
+                void useSuccessToast('Component deleted successfully');
                 setLoading(false);
             }
         });

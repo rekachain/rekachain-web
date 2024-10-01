@@ -1,3 +1,6 @@
+// TODO: Refactor this page
+// Reason: This page is too long and contains too many logic
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { FormEvent, lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -64,10 +67,10 @@ export default function ({
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
     const [sourceWorkstations, setSourceWorkstations] = useState<WorkstationResource[]>([]);
-    const [destinationWorkstations, setdestinationWorkstations] = useState<WorkstationResource[]>([]);
+    const [destinationWorkstations, setDestinationWorkstations] = useState<WorkstationResource[]>([]);
     const [carriageFilters, setCarriageFilters] = useState<ServiceFilterOptions>({
         page: 1,
-        perPage: 2,
+        perPage: 10,
         relations: 'trainsets.carriage_panels.panel',
         search: '',
     });
@@ -86,7 +89,7 @@ export default function ({
         relations: 'workshop',
     });
 
-    const { setLoading, loading } = useLoading();
+    const {loading } = useLoading();
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
     const { data, setData } = useForm({
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
@@ -123,13 +126,13 @@ export default function ({
         e.preventDefault();
         await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
         await handleSyncTrainset();
-        useSuccessToast('Preset changed successfully');
+        void useSuccessToast('Preset changed successfully');
     });
 
     const handleSaveTrainsetPreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
-        useSuccessToast('Preset saved successfully');
+        void useSuccessToast('Preset saved successfully');
         await handleSyncTrainset();
     });
 
@@ -152,13 +155,13 @@ export default function ({
             data.new_carriage_description,
             data.new_carriage_qty,
         );
-        useSuccessToast('Carriage added successfully');
+        void useSuccessToast('Carriage added successfully');
         await handleSyncTrainset();
     });
 
     const handleDeletePresetTrainset = withLoading(async () => {
         await presetTrainsetService.delete(data.preset_trainset_id);
-        useSuccessToast('Preset deleted successfully');
+        void useSuccessToast('Preset deleted successfully');
         await handleSyncTrainset();
     }, true);
 
@@ -196,7 +199,7 @@ export default function ({
 
     const handleSyncDestinationWorkstations = withLoading(async () => {
         const response = await workstationService.getAll(destinationWorkstationFilters);
-        setdestinationWorkstations(response.data);
+        setDestinationWorkstations(response.data);
     });
 
     const handleSearchDestinationWorkstations = (destinationWorkstations: WorkstationResource[] | undefined) => {
@@ -215,7 +218,7 @@ export default function ({
         );
         await handleSyncTrainset();
         await handleSyncCarriages();
-        useSuccessToast('KPM generated successfully');
+        void useSuccessToast('KPM generated successfully');
     });
 
     const handleGenerateMechanicTrainsetAttachment = withLoading(async e => {
@@ -228,7 +231,7 @@ export default function ({
         );
         await handleSyncTrainset();
         await handleSyncCarriages();
-        useSuccessToast('KPM generated successfully');
+        void useSuccessToast('KPM generated successfully');
     });
 
     const handleGenerateElectricTrainsetAttachment = withLoading(async e => {
@@ -241,19 +244,19 @@ export default function ({
         );
         await handleSyncTrainset();
         await handleSyncCarriages();
-        useSuccessToast('KPM generated successfully');
+        void useSuccessToast('KPM generated successfully');
     });
 
     useEffect(() => {
-        handleSyncCarriages();
+        void handleSyncCarriages();
     }, [debouncedCarriageFilters]);
 
     useEffect(() => {
-        handleSyncSourceWorkstations();
+        void handleSyncSourceWorkstations();
     }, [debouncedSourceWorkstationFilters]);
 
     useEffect(() => {
-        handleSyncDestinationWorkstations();
+        void handleSyncDestinationWorkstations();
     }, [debouncedDestinationWorkstationFilters]);
 
     return (

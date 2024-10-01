@@ -7,10 +7,9 @@ import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
@@ -19,30 +18,20 @@ export default function () {
         perPage: 10,
     });
 
-    const { setLoading } = useLoading();
-
-    const syncCarriages = async () => {
-        setLoading(true);
+    const syncCarriages = withLoading(async () => {
         const res = await carriageService.getAll(filters);
         setCarriageResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncCarriages();
+        void syncCarriages();
     }, [filters]);
 
-    const handleCarriageDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await carriageService.delete(id);
-                await syncCarriages();
-                useSuccessToast('Carriage deleted successfully');
-                setLoading(false);
-            }
-        });
-    };
+    const handleCarriageDeletion = withLoading(async (id: number) => {
+        await carriageService.delete(id);
+        await syncCarriages();
+        void useSuccessToast('Carriage deleted successfully');
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });

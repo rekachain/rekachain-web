@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { DivisionResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { divisionService } from '@/Services/divisionService';
@@ -22,13 +22,13 @@ export default function () {
     });
 
     useEffect(() => {
-        syncDivisions();
+        void syncDivisions();
     }, [filters]);
 
     const handleDivisionDeletion = withLoading(async (id: number) => {
         await divisionService.delete(id);
         await syncDivisions();
-        useSuccessToast('Division deleted successfully');
+        void useSuccessToast('Division deleted successfully');
     }, true);
 
     const handlePageChange = (page: number) => {

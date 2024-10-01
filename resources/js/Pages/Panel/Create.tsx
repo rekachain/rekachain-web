@@ -9,24 +9,23 @@ import { panelService } from '@/Services/panelService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         name: '',
         description: '',
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const { loading } = useLoading();
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.PANELS}.index`));
         await panelService.create(data);
-        useSuccessToast('Panel created successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.PANELS}.index`));
+        void useSuccessToast('Panel created successfully');
+    });
 
     return (
         <>
@@ -49,7 +48,6 @@ export default function () {
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -63,10 +61,9 @@ export default function () {
                                 autoComplete="deskripsi"
                                 onChange={e => setData('description', e.target.value)}
                             />
-                            <InputError message={errors.description} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Panel
                         </Button>
                     </form>

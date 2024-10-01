@@ -10,6 +10,7 @@ import PermissionsTableView from './Partials/PermissionsTableView';
 import PermissionsCardView from './Partials/PermissionsCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
@@ -18,29 +19,20 @@ export default function () {
         per_page: 10,
     });
 
-    const { auth } = usePage().props;
-    const { setLoading } = useLoading();
-
-    const syncPermissionResources = async () => {
-        setLoading(true);
+    const syncPermissionResources = withLoading(async () => {
         const res = await permissionService.getAll(filters);
         setPermissionResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncPermissionResources();
+        void syncPermissionResources();
     }, [filters]);
 
-    const handlePermissionResourceDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                await permissionService.delete(id);
-                await syncPermissionResources();
-                await useSuccessToast('PermissionResource deleted successfully');
-            }
-        });
-    };
+    const handlePermissionResourceDeletion = withLoading(async (id: number) => {
+        await permissionService.delete(id);
+        await syncPermissionResources();
+        await useSuccessToast('PermissionResource deleted successfully');
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -54,16 +46,14 @@ export default function () {
                         <PermissionsTableView
                             permissionResponse={permissionResponse}
                             handlePermissionDeletion={handlePermissionResourceDeletion}
-                            // auth={''}
-                        ></PermissionsTableView>
+                        />
                     </div>
 
                     <div className="block md:hidden">
                         <PermissionsCardView
                             permissionResponse={permissionResponse}
                             handlePermissionDeletion={handlePermissionResourceDeletion}
-                            // auth={''}
-                        ></PermissionsCardView>
+                        />
                     </div>
                 </>
             )}
