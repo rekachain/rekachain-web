@@ -1,4 +1,4 @@
-<!-- detail-worker-trainsets test route -->
+
 <?php
 
 use App\Models\Role;
