@@ -4,31 +4,29 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { WorkshopResource } from '../../Support/Interfaces/Resources';
+import { WorkshopResource } from '@/Support/Interfaces/Resources';
 import { workshopService } from '@/Services/workshopService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ workshop }: { workshop: WorkshopResource }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         id: workshop.id,
         name: workshop.name,
         address: workshop.address,
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const { loading } = useLoading();
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        const redirectToIndex = () => router.visit(route(`${ROUTES.WORKSHOPS}.index`));
 
-        setLoading(true);
         await workshopService.update(workshop.id, data);
-        setLoading(false);
-        useSuccessToast('Workshop berhasil diubah');
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.WORKSHOPS}.index`));
+        void useSuccessToast('Workshop berhasil diubah');
+    });
 
     return (
         <>
@@ -51,7 +49,6 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -65,10 +62,9 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                                 autoComplete="address"
                                 onChange={e => setData('address', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Workshop
                         </Button>
                     </form>

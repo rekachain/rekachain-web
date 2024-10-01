@@ -33,7 +33,9 @@ export default function WorkshopTableView({
                                     <Link
                                         className={buttonVariants({ variant: 'link' })}
                                         href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
-                                    ></Link>
+                                    >
+                                        Edit
+                                    </Link>
                                     <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                                         Delete
                                     </Button>

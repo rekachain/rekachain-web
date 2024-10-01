@@ -1,14 +1,13 @@
 import { workshopService } from '@/Services/workshopService';
 import { useEffect, useState } from 'react';
-import { WorkshopResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { WorkshopResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import WorkshopTableView from './Partials/WorkshopTableView';
 import WorkshopCardView from './Partials/WorkshopCardView';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [workshopResponse, setWorkshopResponse] = useState<PaginateResponse<WorkshopResource>>();
@@ -16,30 +15,21 @@ export default function () {
         page: 1,
         perPage: 10,
     });
-    const { setLoading } = useLoading();
 
-    const syncWorkshops = async () => {
-        setLoading(true);
+    const syncWorkshops = withLoading(async () => {
         const res = await workshopService.getAll(filters);
         setWorkshopResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncWorkshops();
+        void syncWorkshops();
     }, [filters]);
 
-    const handleWorkshopDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await workshopService.delete(id);
-                await syncWorkshops();
-                setLoading(false);
-                useSuccessToast('Workshop deleted successfully');
-            }
-        });
-    };
+    const handleWorkshopDeletion = withLoading(async (id: number) => {
+        await workshopService.delete(id);
+        await syncWorkshops();
+        void useSuccessToast('Workshop deleted successfully');
+    });
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -53,8 +43,7 @@ export default function () {
                         <WorkshopTableView
                             workshopResponse={workshopResponse}
                             handleWorkshopDeletion={handleWorkshopDeletion}
-                            auth={''}
-                        ></WorkshopTableView>
+                        />
                     </div>
 
                     <div className="block md:hidden">
@@ -62,9 +51,7 @@ export default function () {
                             workshopResponse={workshopResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
                             handleWorkshopDeletion={handleWorkshopDeletion}
-                            auth={''}
-                            // auth={auth}
-                        ></WorkshopCardView>
+                        />
                     </div>
                 </>
             )}
