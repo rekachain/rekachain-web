@@ -19,7 +19,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
-                ];        
+                ];
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 return [
                     // 'attachment_number' => $this->attachment_number,
@@ -39,12 +39,14 @@ class DetailWorkerPanelResource extends JsonResource {
                     'serial_panel_id' => $this->serial_panel_id,
                     'worker_id' => $this->worker_id,
                     'progress_step_id' => $this->progress_step_id,
-                    ];        
+                    ];
         }
-        
+
         return [
-            'worker' => $this->worker,
-            'step' => $this->step,
+            'id' => $this->id,
+            'serial_panel_id' => $this->serial_panel_id,
+            'worker_id' => $this->worker_id,
+            'progress_step_id' => $this->progress_step_id,
             'estimated_time' => $this->estimated_time,
             'work_status' => $this->work_status,
             'acceptance_status' => $this->acceptance_status,
