@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Step;
 use App\Models\User;
+use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder {
@@ -11,12 +12,20 @@ class UserSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-        $workerMekanikSteps = [3,4,6,8,9,11];
-        $workerElektrikSteps = [13,14,15];
-        $workerAssemblySteps = [19,20];
-        $qcMekanikSteps = [5,7,10,12];
-        $qcElektrikSteps = [16];
-        $qcAssemblySteps = [21,22,23];
+        $csvReader = new CsvReader('step');
+        $csvData = $csvReader->getCsvData();
+
+        if (!$csvData) {
+            $steps = range(1, 10);
+            $workerMekanikSteps = $workerElektrikSteps = $workerAssemblySteps = $qcMekanikSteps = $qcElektrikSteps = $qcAssemblySteps = $steps;
+        } else {
+            $workerMekanikSteps = [3,4,6,8,9,11];
+            $workerElektrikSteps = [13,14,15];
+            $workerAssemblySteps = [19,20];
+            $qcMekanikSteps = [5,7,10,12];
+            $qcElektrikSteps = [16];
+            $qcAssemblySteps = [21,22,23];
+        }
 
         $superadmin = User::factory()->create([
             'name' => 'Test User',
