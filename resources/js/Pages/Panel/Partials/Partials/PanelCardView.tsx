@@ -1,18 +1,16 @@
 import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { PanelResource, RoleResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { PanelResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function PanelTableView({
     panelResponse,
     handlePanelDeletion,
-    auth,
 }: {
     panelResponse: PaginateResponse<PanelResource>;
     handlePanelDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
     return (
         <div>

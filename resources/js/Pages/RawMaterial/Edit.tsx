@@ -4,32 +4,30 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { RawMaterialResource } from '../../Support/Interfaces/Resources';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { loading } = useLoading();
+
+    const { data, setData } = useForm({
         id: rawMaterial.id,
         material_code: rawMaterial.material_code,
         description: rawMaterial.description,
         specs: rawMaterial.specs,
         unit: rawMaterial.unit,
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
         await rawMaterialService.update(rawMaterial.id, data);
-        useSuccessToast('Raw Material berhasil diubah');
-        setLoading(false);
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
+        void useSuccessToast('Raw Material berhasil diubah');
+    });
 
     return (
         <>
@@ -52,7 +50,6 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                                 autoComplete="material_code"
                                 onChange={e => setData('material_code', e.target.value)}
                             />
-                            <InputError message={errors.material_code} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -66,7 +63,6 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                                 autoComplete="description"
                                 onChange={e => setData('description', e.target.value)}
                             />
-                            <InputError message={errors.description} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -80,7 +76,6 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                                 autoComplete="specs"
                                 onChange={e => setData('specs', e.target.value)}
                             />
-                            <InputError message={errors.specs} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -94,10 +89,9 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                                 autoComplete="unit"
                                 onChange={e => setData('unit', e.target.value)}
                             />
-                            <InputError message={errors.unit} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Raw Material
                         </Button>
                     </form>

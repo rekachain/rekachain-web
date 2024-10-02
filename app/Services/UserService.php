@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Models\User;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
 use App\Traits\Services\HandlesImages;
@@ -13,11 +14,12 @@ use Illuminate\Validation\ValidationException;
 class UserService extends BaseCrudService implements UserServiceInterface {
     use HandlesImages;
 
-    protected $imagePath = 'users/images';
+    protected string $imagePath = 'users/images';
 
     public function create(array $data): ?Model {
         $data = $this->handleImageUpload($data);
 
+        /** @var User $user */
         $user = parent::create($data);
 
         if (isset($data['role_id'])) {

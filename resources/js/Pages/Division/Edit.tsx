@@ -5,7 +5,7 @@ import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { DivisionResource } from '../../Support/Interfaces/Resources';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { divisionService } from '@/Services/divisionService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
@@ -21,7 +21,7 @@ export default function ({ division }: { division: DivisionResource }) {
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
         await divisionService.update(division.id, data);
-        useSuccessToast('Division updated successfully');
+        void useSuccessToast('Division updated successfully');
         router.visit(route(`${ROUTES.DIVISIONS}.index`));
     });
 

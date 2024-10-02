@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { ProjectResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
@@ -9,11 +9,9 @@ import { ROUTES } from '@/Support/Constants/routes';
 export default function ProjectTableView({
     projectResponse,
     handleProjectDeletion,
-    auth,
 }: {
     projectResponse: PaginateResponse<ProjectResource>;
     handleProjectDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
     return (
         <div>

@@ -1,12 +1,14 @@
-import { CarriageTrainsetResource, TrainsetResource } from '../../../../../../Support/Interfaces/Resources';
+import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
 import { STYLING } from '@/Support/Constants/styling';
 import { trainsetService } from '@/Services/trainsetService';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
+import { useSuccessToast } from '@/Hooks/useToast';
 
 export default function ({
     trainset,
@@ -17,25 +19,24 @@ export default function ({
     carriage_trainset: CarriageTrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    const { data, setData, reset } = useForm({
+    const { data, setData } = useForm({
         carriageQty: carriage_trainset.qty,
     });
     const [isEditing, setIsEditing] = useState(false);
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
     };
-    const { setLoading, loading } = useLoading();
+    const { loading } = useLoading();
 
-    const handleEditCarriageQty = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleEditCarriageQty = withLoading(async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
         await trainsetService.updateCarriageTrainset(trainset.id, carriage_trainset.id, {
             qty: data.carriageQty,
         });
         await handleSyncTrainset();
         setIsEditing(false);
-        setLoading(false);
-    };
+        void useSuccessToast('Carriage qty updated successfully');
+    });
 
     return (
         <>

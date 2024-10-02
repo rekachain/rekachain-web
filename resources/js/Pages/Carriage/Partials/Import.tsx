@@ -16,6 +16,8 @@ import { router, useForm } from '@inertiajs/react';
 import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { data, setData } = useForm<{
@@ -23,37 +25,16 @@ export default function () {
     }>({
         file: null,
     });
-    const { setLoading, loading } = useLoading();
-    const handleGetImportDataTemplate = async () => {
-        setLoading(true);
-        const response = await window.axios.get(
-            route(`${ROUTES.CARRIAGES}.index`, {
-                intent: IntentEnum.WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE,
-            }),
-            { responseType: 'blob' },
-        );
+    const { loading } = useLoading();
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'carriages.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setLoading(false);
-    };
-
-    const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.CARRIAGES}.index`));
         await carriageService.importData(data.file as File);
-        await useSuccessToast('Data imported successfully');
-        redirectToIndex();
-        setLoading(false);
-    };
+        void useSuccessToast('Data imported successfully');
+        router.visit(route(`${ROUTES.CARRIAGES}.index`));
+    });
 
-    const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
@@ -71,7 +52,7 @@ export default function () {
                 {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate} disabled={loading}>
+                    <Button type="button" variant="secondary" onClick={carriageService.downloadImportDataTemplate} disabled={loading}>
                         {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>

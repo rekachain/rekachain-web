@@ -1,11 +1,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { CarriageTrainsetResource, TrainsetResource } from '../../../../../../Support/Interfaces/Resources';
-import { useConfirmation } from '@/Hooks/useConfirmation';
+import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
 import { Button } from '@/Components/UI/button';
 import { carriagePanelService } from '@/Services/carriagePanelService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({
     trainset,
@@ -16,15 +16,11 @@ export default function ({
     carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
-    const handlePanelDeletion = (carriageCarriageId: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                await carriagePanelService.delete(carriageCarriageId);
-                await handleSyncCarriage();
-                useSuccessToast('Panel deleted successfully');
-            }
-        });
-    };
+    const handlePanelDeletion = withLoading(async (carriageCarriageId: number) => {
+        await carriagePanelService.delete(carriageCarriageId);
+        await handleSyncCarriage();
+        void useSuccessToast('Panel deleted successfully');
+    }, true);
 
     return (
         <div className="space-y-4">

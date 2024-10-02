@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller {
             RoleEnum::SUPERVISOR_ASSEMBLY->value,
         ];
 
-        if (!in_array($user->roles()->first()->name, $allowedRoles)) {
+        if (!in_array($user->roles()->first()?->name, $allowedRoles)) {
             Auth::guard('web')->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();

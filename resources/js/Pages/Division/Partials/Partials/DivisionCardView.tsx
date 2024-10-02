@@ -1,8 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { DivisionResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
