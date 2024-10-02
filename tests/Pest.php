@@ -24,10 +24,12 @@ use App\Models\PanelMaterial;
 use App\Models\PanelAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Models\CarriageTrainset;
+use App\Models\ComponentMaterial;
 use App\Models\DetailWorkerPanel;
 use App\Models\TrainsetAttachment;
 use App\Models\DetailWorkerTrainset;
 use App\Support\Enums\PermissionEnum;
+use App\Models\CarriagePanelComponent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
@@ -152,7 +154,7 @@ function createWorkerElektrik(): User {
     $user = User::factory(['name' => 'Worker Elektrik'])->create();
     $user->assignRole($role);
 
-    return $user;
+
 }
 
 function createComponent(): Component {
@@ -161,6 +163,33 @@ function createComponent(): Component {
     $component->save();
 
     return $component;
+}
+
+function createCarriagePanelComponent(Progress $progress = null): CarriagePanelComponent {
+    createCarriagePanel();
+    $component = createComponent();
+
+    $attributes = [];
+    if ($progress) {
+        $attributes['progress_id'] = $progress->id;
+    } else if ($component->progress) {
+        $attributes['progress_id'] = $component->progress->id;
+    } else {
+        $attributes['progress_id'] = createProgress()->id;
+    }
+
+    $carriagePanelComponent = CarriagePanelComponent::factory()->create($attributes);
+
+    return $carriagePanelComponent;
+}
+
+function createComponentMaterial(): ComponentMaterial {
+    $progress = createProgress();
+    createRawMaterial();
+    createCarriagePanelComponent($progress);
+    $componentMaterial = ComponentMaterial::factory()->create();
+
+    return $componentMaterial;
 }
 
 function createPanelMaterial(): PanelMaterial {

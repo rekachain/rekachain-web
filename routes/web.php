@@ -23,6 +23,7 @@ use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\CarriageTrainsetController;
+use App\Http\Controllers\ComponentMaterialController;
 use App\Http\Controllers\DetailWorkerPanelController;
 use App\Http\Controllers\DetailWorkerTrainsetController;
 
@@ -74,6 +75,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('progress', ProgressController::class);
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
     Route::resource('components', ComponentController::class);
+    Route::resource('component-materials', ComponentMaterialController::class);
     Route::resource('work-days', WorkDayController::class);
     Route::resource('work-day-times', WorkDayTimeController::class);
     Route::resource('steps', StepController::class);
