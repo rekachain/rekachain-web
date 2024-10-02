@@ -10,6 +10,8 @@ class ComponentMaterial extends Pivot
 {
     use HasFactory;
 
+    protected $table = 'component_materials';
+
     public $incrementing = true;
 
     protected $fillable = [
