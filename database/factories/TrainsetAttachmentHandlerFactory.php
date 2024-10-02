@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\TrainsetAttachment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class TrainsetAttachmentHandlerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::inRandomOrder()->first()->id,
+            'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
+            'handles' => $this->faker->unique()->randomElement(['prepare', 'send', 'receive']),
         ];
     }
 }

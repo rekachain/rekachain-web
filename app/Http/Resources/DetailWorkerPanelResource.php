@@ -12,7 +12,6 @@ class DetailWorkerPanelResource extends JsonResource {
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value:
                 return [
-                    // 'attachment_number' => $this->attachment_number,
                     'worker' => $this->worker,
                     'attachment_number' => PanelAttachmentResource::make($this->serial_panel->panel_attachment),
                     'step' => $this->progress_step->step->name,
