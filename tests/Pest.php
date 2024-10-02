@@ -131,6 +131,30 @@ function createSupervisorElektrik(): User {
     return $user;
 }
 
+function createWorkerAssembly(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_ASSEMBLY]);
+    $user = User::factory(['name' => 'Worker Assembly'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createWorkerMekanik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_MEKANIK]);
+    $user = User::factory(['name' => 'Worker Mekanik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createWorkerElektrik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_ELEKTRIK]);
+    $user = User::factory(['name' => 'Worker Elektrik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
 function createComponent(): Component {
     $component = new Component;
     $component->name = 'Component';

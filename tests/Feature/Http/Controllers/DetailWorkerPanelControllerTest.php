@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
+beforeEach(function () {
+    createSupervisorAssembly();
+    createWorkerAssembly();
+});
+
 test('index method returns paginated detail-worker-panels', function () {
     $user = User::factory()->superAdmin()->create();
     createDetailWorkerPanel();
