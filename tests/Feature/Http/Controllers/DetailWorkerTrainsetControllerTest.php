@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 
+beforeEach(function () {
+    createSupervisorMekanik();
+    createSupervisorElektrik();
+});
+
 test('index method returns paginated detail-worker-trainsets', function () {
     $user = User::factory()->superAdmin()->create();
     $detail = createDetailWorkerTrainset();
@@ -43,7 +48,7 @@ test('store method creates new DetailWorkerTrainset', function () {
     $userMekanik->assignRole('Supervisor - Mekanik');
 
     $progress_step = createProgressStep();
-    $trainset_attachment = createTrainsetAttachment();
+    $trainset_attachment = createTrainsetAttachment($userMekanik);
 
     $DetailWorkerTrainsetData = [
         'trainset_attachment_id' => $trainset_attachment->id,

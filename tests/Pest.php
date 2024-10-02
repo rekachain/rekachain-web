@@ -115,6 +115,22 @@ function createSupervisorAssembly(): User {
     return $user;
 }
 
+function createSupervisorMekanik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::SUPERVISOR_MEKANIK]);
+    $user = User::factory(['name' => 'Supervisor Mekanik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createSupervisorElektrik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::SUPERVISOR_ELEKTRIK]);
+    $user = User::factory(['name' => 'Supervisor Elektrik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
 function createComponent(): Component {
     $component = new Component;
     $component->name = 'Component';
@@ -304,23 +320,29 @@ function createDetailWorkerPanel(): DetailWorkerPanel {
     return $detailWorkerPanel;
 }
 
-function createTrainsetAttachment() {
+function createTrainsetAttachment(User $user = null) {
     createCarriageTrainset();
-    createWorkstation(); //source
-    createWorkstation(); //destination
+    createWorkstation(); // source
+    createWorkstation(); // destination
 
-    $trainsetAttachment = TrainsetAttachment::factory()->create();
+    $attributes = [];
+    if ($user) {
+        $attributes['supervisor_id'] = $user->id;
+    }
+
+    $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
 
     return $trainsetAttachment;
 }
 
 function createDetailWorkerTrainset() {
+    createSupervisorAssembly();
     $role = Role::firstOrCreate(['name' => 'Supervisor - Elektrik', 'guard_name' => 'web']);
     $user = User::factory(['name' => 'Supervisor - Elektrik'])->create();
     $user->assignRole('Supervisor - Elektrik');
 
     createProgressStep();
-    createTrainsetAttachment();
+    createTrainsetAttachment($user);
     $detailWorkerTrainset = DetailWorkerTrainset::create([
         'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
         'worker_id' => $user->id,
