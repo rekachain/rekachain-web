@@ -22,6 +22,8 @@ class PanelAttachmentRepository extends BaseRepository implements PanelAttachmen
 
         $query = $this->applySearchFilters($query, $searchParams, ['status']);
 
+        $query = $this->applyColumnFilters($query, $searchParams, ['status']);
+        
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);
