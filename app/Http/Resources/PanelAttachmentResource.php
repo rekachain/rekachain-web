@@ -18,14 +18,16 @@ class PanelAttachmentResource extends JsonResource {
         switch ($intent) {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
+                    'id' => $this->id,
                     'attachment_number' => $this->attachment_number,
-                    'source_workstation' => $this->source_workstation->name,
-                    'destination_workstation' => $this->destination_workstation->name,
+                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
+                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
                     'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
                     'panel' => $this->carriage_panel->panel->name,
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
+                    'status' => $this->status,
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
@@ -38,8 +40,8 @@ class PanelAttachmentResource extends JsonResource {
                     'carriage_trainset' => new CarriageTrainsetResource($this->carriage_panel?->carriage_trainset()->with('carriage')->without('trainset')->first()),
                     'carriage_panel' => new CarriagePanelResource($this->carriage_panel),
                     'serial_panels' => SerialPanelResource::collection($this->serial_panels),
-                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop')->first()),
-                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop')->first()),
+                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
+                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'current_step' => $this->current_step,
