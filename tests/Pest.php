@@ -1,32 +1,36 @@
 <?php
 
-use App\Models\Carriage;
-use App\Models\CarriagePanel;
-use App\Models\CarriageTrainset;
-use App\Models\Component;
-use App\Models\DetailWorkerPanel;
-use App\Models\Division;
-use App\Models\Panel;
-use App\Models\PanelAttachment;
-use App\Models\PanelMaterial;
-use App\Models\Permission;
-use App\Models\Progress;
-use App\Models\ProgressStep;
-use App\Models\Project;
-use App\Models\RawMaterial;
-use App\Models\Role;
-use App\Models\SerialPanel;
-use App\Models\Step;
-use App\Models\Trainset;
-use App\Models\User;
-use App\Models\WorkDay;
-use App\Models\WorkDayTime;
-use App\Models\Workshop;
-use App\Models\Workstation;
-use App\Support\Enums\PermissionEnum;
-use App\Support\Enums\RoleEnum;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Role;
+use App\Models\Step;
+use App\Models\User;
+use App\Models\Panel;
+use App\Models\Project;
+use App\Models\WorkDay;
+use App\Models\Carriage;
+use App\Models\Division;
+use App\Models\Progress;
+use App\Models\Trainset;
+use App\Models\Workshop;
+use App\Models\Component;
+use App\Models\Permission;
+use App\Models\RawMaterial;
+use App\Models\SerialPanel;
+use App\Models\WorkDayTime;
+use App\Models\Workstation;
+use App\Models\ProgressStep;
+use App\Models\CarriagePanel;
+use App\Models\PanelMaterial;
+use App\Models\PanelAttachment;
+use App\Support\Enums\RoleEnum;
+use App\Models\CarriageTrainset;
+use App\Models\DetailWorkerPanel;
+use App\Models\TrainsetAttachment;
+use App\Models\DetailWorkerTrainset;
+use App\Support\Enums\PermissionEnum;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 
 /*
 |--------------------------------------------------------------------------
@@ -311,9 +315,9 @@ function createTrainsetAttachment() {
 }
 
 function createDetailWorkerTrainset() {
-    $role = Role::firstOrCreate(['name' => 'Supervisor - Mekanik', 'guard_name' => 'web']);
-    $user = User::factory(['name' => 'Supervisor - Mekanik'])->create();
-    $user->assignRole($role);
+    $role = Role::firstOrCreate(['name' => 'Supervisor - Elektrik', 'guard_name' => 'web']);
+    $user = User::factory(['name' => 'Supervisor - Elektrik'])->create();
+    $user->assignRole('Supervisor - Elektrik');
 
     createProgressStep();
     createTrainsetAttachment();

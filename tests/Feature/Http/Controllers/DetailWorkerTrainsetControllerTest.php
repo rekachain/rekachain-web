@@ -40,7 +40,7 @@ test('store method creates new DetailWorkerTrainset', function () {
 
     $role = Role::firstOrCreate(['name' => 'Supervisor - Mekanik', 'guard_name' => 'web']);
     $userMekanik = User::factory(['name' => 'Supervisor - Mekanik'])->create();
-    $userMekanik->assignRole($role);
+    $userMekanik->assignRole('Supervisor - Mekanik');
 
     $progress_step = createProgressStep();
     $trainset_attachment = createTrainsetAttachment();
