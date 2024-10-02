@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ComponentMaterial\StoreComponentMaterialRequest;
+use App\Http\Requests\ComponentMaterial\UpdateComponentMaterialRequest;
+use App\Http\Resources\ComponentMaterialResource;
 use App\Models\ComponentMaterial;
+use App\Support\Interfaces\Services\ComponentMaterialServiceInterface;
 use Illuminate\Http\Request;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ComponentMaterialController extends Controller {
 
