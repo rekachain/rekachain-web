@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\ComponentMaterialSeeder;
 
 class DatabaseSeeder extends Seeder {
     /**
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder {
             WorkDaySeeder::class,
             WorkDayTimeSeeder::class,
             CarriagePanelComponentSeeder::class,
+            // ComponentMaterialSeeder::class,
             PanelMaterialSeeder::class,
             PanelAttachmentSeeder::class,
             PanelAttachmentHandlerSeeder::class,
