@@ -4,17 +4,17 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { Label } from '@/Components/UI/label';
-import { RoleResource } from '../../Support/Interfaces/Resources';
+import { RoleResource } from '@/Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function (props: { roles: RoleResource[] }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData, progress } = useForm({
         nip: '',
         name: '',
         email: '',
@@ -24,33 +24,22 @@ export default function (props: { roles: RoleResource[] }) {
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
-    const { setLoading } = useLoading();
-    const submit: FormEventHandler = async e => {
+    const { loading } = useLoading();
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.USERS}.index`));
-
-        try {
-            const formData = new FormData();
-            formData.append('nip', data.nip);
-            formData.append('name', data.name);
-            formData.append('email', data.email);
-            formData.append('phone_number', data.phone_number);
-            formData.append('password', data.password);
-            formData.append('role_id', data.role_id);
-            if (photo) formData.append('image_path', photo);
-            await userService.create(formData);
-            useSuccessToast('User created successfully');
-            redirectToIndex();
-        } catch {
-        } finally {
-            setLoading(false);
-        }
-
-        // post(route(`${ROUTES.USERS}.store`), {
-        //     onFinish: redirectToIndex, onError: console.log});
-    };
+        const formData = new FormData();
+        formData.append('nip', data.nip);
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('phone_number', data.phone_number);
+        formData.append('password', data.password);
+        formData.append('role_id', data.role_id);
+        if (photo) formData.append('image_path', photo);
+        await userService.create(formData);
+        router.visit(route(`${ROUTES.USERS}.index`));
+        void useSuccessToast('User created successfully');
+    });
 
     return (
         <>
@@ -75,7 +64,6 @@ export default function (props: { roles: RoleResource[] }) {
                                 onChange={e => setData('nip', e.target.value)}
                                 required
                             />
-                            <InputError message={errors.nip} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="nama" value="Nama" />
@@ -161,7 +149,7 @@ export default function (props: { roles: RoleResource[] }) {
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Staff
                         </Button>
                     </form>

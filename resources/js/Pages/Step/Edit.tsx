@@ -8,12 +8,12 @@ import { stepService } from '@/Services/stepService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { ProgressResource, StepResource } from '../../Support/Interfaces/Resources';
+import { ProgressResource, StepResource } from '@/Support/Interfaces/Resources';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { Label } from '@/Components/UI/label';
 import { Check, ChevronsUpDown, RefreshCcw } from 'lucide-react';
 import { STYLING } from '@/Support/Constants/styling';
-import { PaginateResponse } from '../../Support/Interfaces/Others';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
@@ -23,18 +23,18 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover
 import cn from 'mxcn';
 
 export default function ({ step }: { step: StepResource }) {
-    console.log(step);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
     const [searchProgress, setSearchProgress] = useState(step.progress?.name);
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         progress_id: step.progress_id,
         name: step.name,
         estimated_time: step.estimated_time ?? 0,
         process: step.process,
     });
-    const { loading, setLoading } = useLoading();
+
+    const { loading } = useLoading();
 
     const debouncedSearchProgress = useDebounce(searchProgress, 300);
 
@@ -45,14 +45,14 @@ export default function ({ step }: { step: StepResource }) {
     });
 
     useEffect(() => {
-        handleSyncProgress();
+        void handleSyncProgress();
     }, [debouncedSearchProgress]);
 
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await stepService.update(step.id, data);
-        useSuccessToast('Step created successfully');
         router.visit(route(`${ROUTES.STEPS}.index`));
+        void useSuccessToast('Step created successfully');
     });
 
     return (
@@ -212,7 +212,7 @@ export default function ({ step }: { step: StepResource }) {
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Step
                         </Button>
                     </form>

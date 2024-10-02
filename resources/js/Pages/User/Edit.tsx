@@ -4,19 +4,18 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
-import { RoleResource, UserResource } from '../../Support/Interfaces/Resources';
-import { parseFormData } from '@/Lib/utils';
+import { RoleResource, UserResource } from '@/Support/Interfaces/Resources';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { Label } from '@/Components/UI/label';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function ({ user, roles }: { user: UserResource; roles: RoleResource[] }) {
     console.log(user, roles);
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData, progress } = useForm({
         nip: user.nip,
         name: user.name,
         email: user.email,
@@ -25,34 +24,25 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
         role_id: user.role_id?.toString(),
     });
 
+    const { loading } = useLoading();
+
     const [photo, setPhoto] = useState<Blob | null>(null);
-    const { setLoading } = useLoading();
-    const submit: FormEventHandler = async e => {
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.USERS}.index`));
-
-        try {
-            const formData = new FormData();
-            if (data.nip) formData.append('nip', data.nip);
-            if (data.name) formData.append('name', data.name);
-            if (data.phone_number) formData.append('phone_number', data.phone_number);
-            if (data.email) formData.append('email', data.email);
-            if (data.password) formData.append('password', data.password);
-            if (photo) formData.append('image_path', photo);
-            if (data.role_id) formData.append('role_id', data.role_id);
-            console.log(parseFormData(formData));
-            await userService.update(user.id, formData);
-            useSuccessToast('User updated successfully');
-            redirectToIndex();
-        } catch {
-        } finally {
-            setLoading(false);
-        }
-        // post(route(`${ROUTES.USERS}.store`), {
-        //     onFinish: redirectToIndex, onError: console.log});
-    };
+        const formData = new FormData();
+        if (data.nip) formData.append('nip', data.nip);
+        if (data.name) formData.append('name', data.name);
+        if (data.phone_number) formData.append('phone_number', data.phone_number);
+        if (data.email) formData.append('email', data.email);
+        if (data.password) formData.append('password', data.password);
+        if (photo) formData.append('image_path', photo);
+        if (data.role_id) formData.append('role_id', data.role_id);
+        await userService.update(user.id, formData);
+        router.visit(route(`${ROUTES.USERS}.index`));
+        void useSuccessToast('User updated successfully');
+    });
 
     return (
         <>
@@ -77,7 +67,6 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 maxLength={18}
                                 onChange={e => setData('nip', e.target.value)}
                             />
-                            <InputError message={errors.nip} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="nama" value="Nama" />
@@ -90,7 +79,6 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="email" value="Email" />
@@ -104,7 +92,6 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 autoComplete="email"
                                 onChange={e => setData('email', e.target.value)}
                             />
-                            <InputError message={errors.email} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="phone" value="Phone" />
@@ -117,7 +104,6 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 autoComplete="phone"
                                 onChange={e => setData('phone_number', e.target.value)}
                             />
-                            <InputError message={errors.phone_number} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="password" value="Password" />
@@ -130,7 +116,6 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 autoComplete="password"
                                 onChange={e => setData('password', e.target.value)}
                             />
-                            <InputError message={errors.password} className="mt-2" />
                         </div>
                         <div className="mt-4">
                             <InputLabel htmlFor="avatar" value="Foto staff" />
@@ -168,7 +153,7 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Staff
                         </Button>
                     </form>

@@ -1,20 +1,24 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Avatar, AvatarImage } from '@/Components/UI/avatar';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { UserResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { UserResource } from '@/Support/Interfaces/Resources';
 
 export default function ({
     userResponse,
     handleUserDeletion,
-    auth,
 }: {
     userResponse: PaginateResponse<UserResource>;
     handleUserDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
+    const { auth } = usePage().props;
+
+    const canEditOrDelete = (user: UserResource) => {
+        return user.id !== auth.user.id && (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin');
+    };
+
     return (
         <Table>
             <TableHeader>
@@ -47,20 +51,18 @@ export default function ({
                         <TableCell>{user.role?.name}</TableCell>
                         <TableCell>{user.workstation?.name}</TableCell>
                         <TableCell>{user.step?.name}</TableCell>
-                        {user.id !== auth.user.id ? (
-                            (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin') && (
-                                <TableCell>
-                                    <Link
-                                        className={buttonVariants({ variant: 'link' })}
-                                        href={route(`${ROUTES.USERS}.edit`, user.id)}
-                                    >
-                                        Edit
-                                    </Link>
-                                    <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                        Delete
-                                    </Button>
-                                </TableCell>
-                            )
+                        {canEditOrDelete(user) ? (
+                            <TableCell>
+                                <Link
+                                    className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                >
+                                    Edit
+                                </Link>
+                                <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                    Delete
+                                </Button>
+                            </TableCell>
                         ) : (
                             <TableCell></TableCell>
                         )}

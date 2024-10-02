@@ -1,16 +1,15 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { StepResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { StepResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [stepResponse, setStepResponse] = useState<PaginateResponse<StepResource>>();
@@ -19,30 +18,20 @@ export default function () {
         perPage: 10,
     });
 
-    const { setLoading } = useLoading();
-
-    const syncSteps = async () => {
-        setLoading(true);
+    const handleSyncSteps = withLoading(async () => {
         const res = await stepService.getAll(filters);
         setStepResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncSteps();
+        void handleSyncSteps();
     }, [filters]);
 
-    const handleStepDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await stepService.delete(id);
-                await syncSteps();
-                useSuccessToast('Step deleted successfully');
-                setLoading(false);
-            }
-        });
-    };
+    const handleStepDeletion = withLoading(async (id: number) => {
+        await stepService.delete(id);
+        await handleSyncSteps();
+        void useSuccessToast('Step deleted successfully');
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });

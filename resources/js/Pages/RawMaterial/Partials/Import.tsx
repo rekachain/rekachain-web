@@ -13,30 +13,28 @@ import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
 import { router, useForm } from '@inertiajs/react';
 import { rawMaterialService } from '@/Services/rawMaterialService';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function () {
-    const [isLoading, setIsLoading] = useState(false);
     const { data, setData } = useForm<{
         file: File | null;
     }>({
         file: null,
     });
 
-    const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsLoading(true);
-        try {
-            await rawMaterialService.importData(data.file as File);
-            setIsLoading(false);
-            router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        } catch (error) {
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { loading } = useLoading();
 
-    const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        await rawMaterialService.importData(data.file as File);
+        router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
+        void useSuccessToast('Data imported successfully');
+    });
+
+    const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
@@ -68,8 +66,8 @@ export default function () {
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={isLoading}>
-                            {isLoading ? 'Processing' : 'Import'}
+                        <Button type="submit" disabled={loading}>
+                            {loading ? 'Processing' : 'Import'}
                         </Button>
                     </DialogFooter>
                 </form>
