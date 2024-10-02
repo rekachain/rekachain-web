@@ -10,7 +10,7 @@ use App\Models\DetailWorkerPanel;
 use App\Models\PanelAttachment;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
-
+use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use Illuminate\Http\Request;
@@ -27,26 +27,63 @@ class ApiPanelAttachmentController extends Controller {
     public function index(Request $request) {
         $perPage = request()->get('perPage', 5);
         $intent = request()->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS->value:
+                $status = request()->get('status');
+                if (!$status) {
+                    abort(400, 'Status not identified');
+                }
+                if (!in_array($status, array_column(PanelAttachmentStatusEnum::cases(), 'value'), true)) {
+                    abort(400, 'Status not included in PanelAttachmentStatusEnum');
+                }
+                $request->merge([
+                    'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
+                    'column_filters' => [
+                        'status'=>$status,
+                    ],
+                ]);
+                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
+
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+
+                $request->merge([
+                    'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
+                    'column_filters' => [
+                        'supervisor_id'=> $request->user()->id
+                    ]
+                ]);
+                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
+
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER->value:
+                $status = request()->get('status');
+                if (!$status) {
+                    abort(400, 'Status not identified');
+                }
+                if (!in_array($status, PanelAttachmentStatusEnum::toArray(), true)) {
+                    abort(400, 'Status not included in PanelAttachmentStatusEnum');
+                }
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                
+                $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
         
-        if ($intent === IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_PROCESS->value) {
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
-
-            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id,
-            'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value]));
-        } else if ($intent === IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_DONE->value) {
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
-
-            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id,
-            'status' => PanelAttachmentStatusEnum::DONE->value]));
-        } else {
-            $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
-
-            return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id]));
+                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated(array_merge($request->query(), [
+                    'column_filters' => [
+                        'supervisor_id'=> $request->user()->id,
+                        'status' => $status
+                    ]
+                ]), $perPage));
+            
+            default:
+                $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
+        
+                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(),$perPage));
         }
-        
-        
-
-        // return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
     }
 
     /**

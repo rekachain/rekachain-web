@@ -9,9 +9,11 @@ enum IntentEnum: string {
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
 
-    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_PROCESS = 'api.panel.attachment.get.attachments.by.process';
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER = 'api.panel.attachment.get.attachments.by.current.user';
 
-    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_DONE = 'api.panel.attachment.get.attachments.by.done';
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS = 'api.panel.attachment.get.attachments.by.status';
+
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER = 'api.panel.attachment.get.attachments.by.status.and.current.user';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.panel.attachment.get.attachment.details';
 
@@ -32,6 +34,10 @@ enum IntentEnum: string {
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
 
     case API_DETAIL_WORKER_PANEL_ASSIGN_WORKER = 'api.detail.worker.panel.assign.worker';
+    
+    case API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER = 'api.detail.worker.panel.accept.assign.worker';
+    
+    case API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER = 'api.detail.worker.panel.decline.assign.worker';
 
     case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
     

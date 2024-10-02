@@ -18,6 +18,16 @@ trait HandlesFiltering {
         return $query;
     }
 
+    public function applyColumnFilters(Builder $query, array $searchParams, array $filterableColumns) : Builder {
+        if (isset($searchParams['column_filters'])) {
+            foreach ($searchParams['column_filters'] as $key => $value) {
+                if (!in_array($key, $filterableColumns)) continue;
+                $query->where($key, $value);
+            }
+        }
+        return $query;
+    }
+
     /**
      * Apply filters to the query based on search parameters for related models.
      */
