@@ -1,18 +1,16 @@
 import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { RawMaterialResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function RawMaterialCardView({
     rawMaterialResponse,
     handleRawMaterialDeletion,
-    // auth,
 }: {
     rawMaterialResponse: PaginateResponse<RawMaterialResource>;
     handleRawMaterialDeletion: (id: number) => void;
-    // auth: any; // sementara
 }) {
     return (
         <div>

@@ -1,7 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { ComponentResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { ComponentResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
@@ -35,7 +35,7 @@ export default function () {
     };
 
     useEffect(() => {
-        syncComponents();
+        void syncComponents();
     }, [filters]);
 
     const handleComponentDeletion = (id: number) => {
@@ -44,7 +44,7 @@ export default function () {
                 setLoading(true);
                 await componentService.delete(id);
                 await syncComponents();
-                useSuccessToast('Component deleted successfully');
+                void useSuccessToast('Component deleted successfully');
                 setLoading(false);
             }
         });

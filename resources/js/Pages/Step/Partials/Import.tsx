@@ -11,11 +11,12 @@ import { Button } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { ChangeEvent, FormEvent } from 'react';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const { data, setData } = useForm<{
@@ -23,37 +24,17 @@ export default function () {
     }>({
         file: null,
     });
-    const { setLoading, loading } = useLoading();
-    const handleGetImportDataTemplate = async () => {
-        setLoading(true);
-        const response = await window.axios.get(
-            route(`${ROUTES.STEPS}.index`, {
-                intent: IntentEnum.WEB_STEP_GET_TEMPLATE_IMPORT_STEP,
-            }),
-            { responseType: 'blob' },
-        );
+    const { loading } = useLoading();
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'steps.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setLoading(false);
-    };
-
-    const handleImportData = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.STEPS}.index`));
-        await stepService.importData(data.file as File);
-        await useSuccessToast('Data imported successfully');
-        redirectToIndex();
-        setLoading(false);
-    };
 
-    const handleChangeImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        await stepService.importData(data.file as File);
+        router.visit(route(`${ROUTES.STEPS}.index`));
+        await useSuccessToast('Data imported successfully');
+    });
+
+    const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.currentTarget.files;
         if (files) setData('file', files[0]);
     };
@@ -68,10 +49,14 @@ export default function () {
                     <DialogTitle>Import Data</DialogTitle>
                     <DialogDescription>Import data from a file to populate the table.</DialogDescription>
                 </DialogHeader>
-                {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={handleGetImportDataTemplate} disabled={loading}>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={stepService.downloadImportDataTemplate}
+                        disabled={loading}
+                    >
                         {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>

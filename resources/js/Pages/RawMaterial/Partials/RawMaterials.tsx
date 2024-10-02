@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { RawMaterialResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import RawMaterialCardView from './Partials/RawMaterialCardView';
 import RawMaterialTableView from './Partials/RawMaterialTableView';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [rawMaterialResponse, setRawMaterialResponse] = useState<PaginateResponse<RawMaterialResource>>();
@@ -16,30 +15,20 @@ export default function () {
         page: 1,
         perPage: 10,
     });
-    const { setLoading } = useLoading();
-
-    const syncRawMaterials = async () => {
-        setLoading(true);
+    const syncRawMaterials = withLoading(async () => {
         const res = await rawMaterialService.getAll(filters);
         setRawMaterialResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        syncRawMaterials();
+        void syncRawMaterials();
     }, [filters]);
 
-    const handleRawMaterialDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await rawMaterialService.delete(id);
-                await syncRawMaterials();
-                setLoading(false);
-                useSuccessToast('Raw Material deleted successfully');
-            }
-        });
-    };
+    const handleRawMaterialDeletion = withLoading(async (id: number) => {
+        await rawMaterialService.delete(id);
+        await syncRawMaterials();
+        void useSuccessToast('Raw Material deleted successfully');
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -54,7 +43,7 @@ export default function () {
                             rawMaterialResponse={rawMaterialResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
                             handleRawMaterialDeletion={handleRawMaterialDeletion}
-                        ></RawMaterialTableView>
+                        />
                     </div>
 
                     <div className="block md:hidden">
@@ -62,9 +51,7 @@ export default function () {
                             rawMaterialResponse={rawMaterialResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
                             handleRawMaterialDeletion={handleRawMaterialDeletion}
-                            // auth={''}
-                            // auth={auth}
-                        ></RawMaterialCardView>
+                        />
                     </div>
                 </>
             )}

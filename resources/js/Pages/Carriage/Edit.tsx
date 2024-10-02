@@ -6,10 +6,10 @@ import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { CarriageResource } from '../../Support/Interfaces/Resources';
+import { CarriageResource } from '@/Support/Interfaces/Resources';
 import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ carriage }: { carriage: CarriageResource }) {
     const { data, setData, post, processing, errors, reset, progress } = useForm({
@@ -17,17 +17,13 @@ export default function ({ carriage }: { carriage: CarriageResource }) {
         type: carriage.type,
         description: carriage.description,
     });
-    const { setLoading } = useLoading();
-    const submit: FormEventHandler = async e => {
-        e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.CARRIAGES}.index`));
+    const submit: FormEventHandler = withLoading(async e => {
+        e.preventDefault();
         await carriageService.update(carriage.id, data);
-        useSuccessToast('Carriage deleted successfully');
-        setLoading(false);
-        redirectToIndex();
-    };
+        void useSuccessToast('Carriage deleted successfully');
+        router.visit(route(`${ROUTES.CARRIAGES}.index`));
+    });
 
     return (
         <>

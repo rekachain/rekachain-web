@@ -4,31 +4,29 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { ProjectResource } from '../../Support/Interfaces/Resources';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { projectService } from '@/Services/projectService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ project }: { project: ProjectResource }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         id: project.id,
         name: project.name,
         initial_date: project.initial_date,
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const { loading } = useLoading();
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
-        setLoading(true);
-        const redirectToIndex = () => router.visit(route(`${ROUTES.PROJECTS}.index`));
         await projectService.update(project.id, data);
-        useSuccessToast('Proyek berhasil diubah');
-        setLoading(false);
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.PROJECTS}.index`));
+        void useSuccessToast('Proyek berhasil diubah');
+    });
 
     return (
         <>
@@ -51,7 +49,6 @@ export default function ({ project }: { project: ProjectResource }) {
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -65,10 +62,9 @@ export default function ({ project }: { project: ProjectResource }) {
                                 autoComplete="initial_date"
                                 onChange={e => setData('initial_date', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Proyek
                         </Button>
                     </form>

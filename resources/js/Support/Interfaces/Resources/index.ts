@@ -30,3 +30,4 @@ export * from './DetailWorkerPanelResource';
 export * from './ProgressStepResource';
 export * from './TrainsetAttachmentResource';
 export * from './DetailWorkerTrainsetResource';
+export * from './TrainsetAttachmentHandlerResource';

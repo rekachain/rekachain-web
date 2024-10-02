@@ -3,7 +3,7 @@ import { lazy, memo, Suspense, useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Button } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { ProjectResource } from '../../../Support/Interfaces/Resources';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
 import { projectService } from '@/Services/projectService';
@@ -18,31 +18,29 @@ import {
 import { ROUTES } from '@/Support/Constants/routes';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));
 
 export default function ({ project: initialProject }: { project: ProjectResource }) {
     const [project, setProject] = useState<ProjectResource>(initialProject);
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, reset } = useForm({
         trainsetNeeded: 0,
     });
-    const { setLoading, loading } = useLoading();
 
-    const handleAddTrainset = async () => {
-        setLoading(true);
+    const { loading } = useLoading();
+
+    const handleAddTrainset = withLoading(async () => {
         await projectService.addTrainset(project.id, data.trainsetNeeded);
         await handleSyncProject();
-        setLoading(false);
         reset();
-        useSuccessToast('Trainset added successfully');
-    };
+        void useSuccessToast('Trainset added successfully');
+    });
 
-    const handleSyncProject = async () => {
-        setLoading(true);
+    const handleSyncProject = withLoading(async () => {
         const updatedProject = await projectService.get(initialProject.id);
         setProject(updatedProject);
-        setLoading(false);
-    };
+    });
     return (
         <>
             <Head title={`Project ${project.name}`} />

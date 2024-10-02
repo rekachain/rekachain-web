@@ -4,14 +4,14 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { DivisionResource, WorkshopResource, WorkstationResource } from '../../Support/Interfaces/Resources';
+import { DivisionResource, WorkshopResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { Label } from '@/Components/UI/label';
 import { workstationService } from '@/Services/workstationService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({
     workstation,
@@ -22,24 +22,22 @@ export default function ({
     workshops: WorkshopResource[];
     divisions: DivisionResource[];
 }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         name: workstation.name,
         location: workstation.location,
         workshop_id: workstation.workshop_id.toString(),
         division_id: workstation.division_id.toString(),
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const { loading } = useLoading();
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        const redirectToIndex = () => router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
 
-        setLoading(true);
         await workstationService.update(workstation.id, data);
-        setLoading(false);
-        useSuccessToast('Workstation berhasil diubah');
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
+        void useSuccessToast('Workstation berhasil diubah');
+    });
 
     return (
         <>
@@ -62,7 +60,6 @@ export default function ({
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -76,7 +73,6 @@ export default function ({
                                 autoComplete="location"
                                 onChange={e => setData('location', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
@@ -112,7 +108,7 @@ export default function ({
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Ubah Workstation
                         </Button>
                     </form>

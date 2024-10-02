@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\CarriagePanel;
+use App\Models\CarriagePanelComponent;
+use App\Models\CarriageTrainset;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -25,6 +28,33 @@ class TrainsetResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
+            case IntentEnum::WEB_TRAINSET_GET_COMPONENTS->value:
+                $trainset = $this->load(['carriage_trainsets' => ['carriage_panels' => ['carriage_panel_components']]])->findOrFail(request()->route('trainset'));
+
+                $componentQuantities = collect();
+
+                $trainset->carriage_trainsets->each(function (CarriageTrainset $carriageTrainset) use (&$componentQuantities) {
+                    $carriageTrainset->carriage_panels->each(function (CarriagePanel $carriagePanel) use ($carriageTrainset, &$componentQuantities) {
+                        $carriagePanel->carriage_panel_components->each(function (CarriagePanelComponent $component) use ($carriageTrainset, $carriagePanel, &$componentQuantities) {
+                            $totalQty = $carriageTrainset->qty * $carriagePanel->qty * $component->qty;
+                            $componentQuantities->push([
+                                'component_id' => $component->component_id,
+                                'component' => \App\Http\Resources\ComponentResource::make($component->component),
+                                'total_qty' => $totalQty,
+                            ]);
+                        });
+                    });
+                });
+
+                $mergedComponents = $componentQuantities->groupBy('component_id')->map(function ($group) {
+                    return [
+                        'component_id' => $group->first()['component_id'],
+                        'component' => $group->first()['component'],
+                        'total_qty' => $group->sum('total_qty'),
+                    ];
+                })->values();
+
+                return ['components' => $mergedComponents->toArray()];
         }
 
         return [

@@ -1,17 +1,13 @@
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { ProjectResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { ROUTES } from '@/Support/Constants/routes';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { projectService } from '@/Services/projectService';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import ProjectCardView from './Partials/ProjectCardView';
 import ProjectTableView from './Partials/ProjectTableView';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [projectResponse, setProjectResponse] = useState<PaginateResponse<ProjectResource>>();
@@ -19,28 +15,21 @@ export default function () {
         page: 1,
         perPage: 10,
     });
-    const { setLoading } = useLoading();
 
-    const handleSyncProjects = async () => {
-        setLoading(true);
+    const handleSyncProjects = withLoading(async () => {
         const res = await projectService.getAll(filters);
         setProjectResponse(res);
-        setLoading(false);
-    };
+    });
 
     useEffect(() => {
-        handleSyncProjects();
+        void handleSyncProjects();
     }, [filters]);
 
-    const handleProjectDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                await projectService.delete(id);
-                await handleSyncProjects();
-                useSuccessToast('Project deleted successfully');
-            }
-        });
-    };
+    const handleProjectDeletion = withLoading(async (id: number) => {
+        await projectService.delete(id);
+        await handleSyncProjects();
+        void useSuccessToast('Project deleted successfully');
+    });
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -55,7 +44,6 @@ export default function () {
                             <ProjectTableView
                                 projectResponse={projectResponse}
                                 handleProjectDeletion={handleProjectDeletion}
-                                auth={''}
                             ></ProjectTableView>
                         </div>
 
@@ -63,7 +51,6 @@ export default function () {
                             <ProjectCardView
                                 projectResponse={projectResponse}
                                 handleProjectDeletion={handleProjectDeletion}
-                                auth={''}
                             ></ProjectCardView>
                         </div>
                     </>

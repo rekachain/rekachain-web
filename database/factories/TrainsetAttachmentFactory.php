@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\CarriageTrainset;
+use App\Models\Trainset;
+use App\Models\TrainsetAttachment;
 use App\Models\User;
 use App\Models\Workstation;
 use App\Support\Enums\RoleEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,12 +21,14 @@ class TrainsetAttachmentFactory extends Factory {
      * @return array<string, mixed>
      */
     public function definition(): array {
+        $type = fake()->randomElement(TrainsetAttachmentTypeEnum::toArray());
         return [
-            'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
+            'trainset_id' => Trainset::inRandomOrder()->first()->id,
             'source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
             'destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
+            'type' => $type,
             'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
-            'supervisor_id' => User::role(RoleEnum::SUPERVISOR_MEKANIK)->inRandomOrder()->first()->id,
+            'supervisor_id' => User::role($type === TrainsetAttachmentTypeEnum::MEKANIK->value ? RoleEnum::SUPERVISOR_MEKANIK : RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first()->id,
         ];
     }
 }

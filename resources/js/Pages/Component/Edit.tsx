@@ -7,13 +7,12 @@ import { Button } from '@/Components/UI/button';
 import { componentService } from '@/Services/componentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
-import { ComponentResource, ProgressResource } from '../../Support/Interfaces/Resources';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { ComponentResource, ProgressResource } from '@/Support/Interfaces/Resources';
+import { SelectGroup } from '@/Components/UI/select';
 import { Label } from '@/Components/UI/label';
 import { Check, ChevronsUpDown, RefreshCcw } from 'lucide-react';
 import { STYLING } from '@/Support/Constants/styling';
-import { PaginateResponse } from '../../Support/Interfaces/Others';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
@@ -23,7 +22,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover
 import cn from 'mxcn';
 
 export default function ({ component }: { component: ComponentResource }) {
-    console.log(component);
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
@@ -32,7 +30,6 @@ export default function ({ component }: { component: ComponentResource }) {
         progress_id: component.progress_id,
         name: component.name,
     });
-    const { loading, setLoading } = useLoading();
 
     const debouncedSearchProgress = useDebounce(searchProgress, 300);
 
@@ -43,13 +40,13 @@ export default function ({ component }: { component: ComponentResource }) {
     });
 
     useEffect(() => {
-        handleSyncProgress();
+        void handleSyncProgress();
     }, [debouncedSearchProgress]);
 
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await componentService.update(component.id, data);
-        useSuccessToast('Component created successfully');
+        void useSuccessToast('Component updated successfully');
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
     });
 

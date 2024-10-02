@@ -1,6 +1,7 @@
 <?php
 
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,10 +13,11 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('trainset_attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carriage_trainset_id')->constrained('carriage_trainset');
+            $table->foreignId('trainset_id')->constrained();
             $table->foreignId('source_workstation_id')->references('id')->on('workstations')->constrained();
             $table->foreignId('destination_workstation_id')->references('id')->on('workstations')->constrained();
             $table->string('attachment_number')->nullable();
+            $table->enum('type', TrainsetAttachmentTypeEnum::toArray());
             $table->string('qr_code')->nullable()->unique();
             $table->string('qr_path')->nullable()->unique();
             $table->string('elapsed_time')->nullable();

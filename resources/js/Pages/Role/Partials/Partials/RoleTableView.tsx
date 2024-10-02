@@ -1,19 +1,17 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
-import { RoleResource } from '../../../../Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { RoleResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 
 export default function RoleTableView({
     roleResponse,
     handleRoleDeletion,
-    auth,
 }: {
     roleResponse: PaginateResponse<RoleResource>;
     handleRoleDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
     return (
         <>

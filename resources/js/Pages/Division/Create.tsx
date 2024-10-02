@@ -16,7 +16,7 @@ export default function Create() {
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
         await divisionService.create(data);
-        useSuccessToast('Division created successfully');
+        void useSuccessToast('Division created successfully');
         router.visit(route(`${ROUTES.DIVISIONS}.index`));
     });
 

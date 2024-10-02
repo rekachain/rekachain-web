@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PanelAttachmentResource;
 use App\Models\PanelAttachment;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class PanelAttachmentController extends Controller {
      * Display the specified resource.
      */
     public function show(PanelAttachment $panelAttachment) {
-        //
+        return PanelAttachmentResource::make($panelAttachment);
     }
 
     /**

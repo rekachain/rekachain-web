@@ -9,11 +9,9 @@ import { ROUTES } from '@/Support/Constants/routes';
 export default function PanelCardView({
     panelResponse,
     handlePanelDeletion,
-    auth,
 }: {
     panelResponse: PaginateResponse<PanelResource>;
     handlePanelDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
     return (
         <div>

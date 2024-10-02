@@ -1,6 +1,8 @@
+import { ReactNode } from 'react';
+
 interface AlertProps {
     message: string;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 const CustomPresetAlert = ({ message, children }: AlertProps) => {

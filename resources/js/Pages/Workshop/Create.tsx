@@ -4,30 +4,28 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
-import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
-import { DivisionResource, WorkshopResource } from '../../Support/Interfaces/Resources';
+import { DivisionResource, WorkshopResource } from '@/Support/Interfaces/Resources';
 import { workshopService } from '@/Services/workshopService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function ({ workshops, divisions }: { workshops: WorkshopResource[]; divisions: DivisionResource[] }) {
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData } = useForm({
         name: '',
         address: '',
     });
-    const { setLoading } = useLoading();
 
-    const submit: FormEventHandler = async e => {
+    const { loading } = useLoading();
+
+    const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        const redirectToIndex = () => router.visit(route(`${ROUTES.WORKSHOPS}.index`));
 
-        setLoading(true);
         await workshopService.create(data);
-        setLoading(false);
-        useSuccessToast('Workshop berhasil ditambahkan');
-        redirectToIndex();
-    };
+        router.visit(route(`${ROUTES.WORKSHOPS}.index`));
+        void useSuccessToast('Workshop berhasil ditambahkan');
+    });
 
     return (
         <>
@@ -50,7 +48,6 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                                 autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
-                            <InputError message={errors.name} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
@@ -64,10 +61,9 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                                 autoComplete="address"
                                 onChange={e => setData('address', e.target.value)}
                             />
-                            <InputError message={errors.address} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button className="mt-4" disabled={loading}>
                             Tambah Workshop
                         </Button>
                     </form>

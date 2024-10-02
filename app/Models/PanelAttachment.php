@@ -25,7 +25,6 @@ class PanelAttachment extends Model {
         'panel_attachment_id',
         'supervisor_id',
     ];
-
     protected $casts = [
         'status' => PanelAttachmentStatusEnum::class,
     ];
@@ -33,6 +32,20 @@ class PanelAttachment extends Model {
     public function trainset(): HasOneThrough {
         return $this->hasOneThrough(Trainset::class, CarriageTrainset::class, 'id', 'id', 'carriage_trainset_id', 'trainset_id');
     }
+
+    //    public function project(): HasOneThrough {
+    //        return $this->hasOneThrough(
+    //            Project::class,        // The final model we want to access
+    //            Trainset::class,       // The intermediate model
+    //            'id',                  // Foreign key on the intermediate model (Trainset)
+    //            'id',                  // Foreign key on the final model (Project)
+    //            'carriage_panel_id',// Local key on the current model (PanelAttachment)
+    //            'project_id'           // Local key on the intermediate model (Trainset)
+    //        )
+    //            ->join('carriage_trainset', 'trainsets.id', '=', 'carriage_trainset.trainset_id')
+    //            ->join('carriage_panels', 'carriage_trainset.id', '=', 'carriage_panels.carriage_trainset_id')
+    //            ->join('panel_attachments', 'carriage_panels.id', '=', 'panel_attachments.carriage_panel_id');
+    //    }
 
     public function parent(): BelongsTo {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');

@@ -1,56 +1,41 @@
-import { usePage } from '@inertiajs/react';
 import { userService } from '@/Services/userService';
 import { useEffect, useState } from 'react';
-import { UserResource } from '../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { UserResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
 import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
     const [userResponse, setUserResponse] = useState<PaginateResponse<UserResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
-        relations: 'roles',
+        relations: 'roles,workstation,step',
     });
 
-    const { auth } = usePage().props;
-    const { setLoading } = useLoading();
-
-    const syncUsers = async () => {
-        setLoading(true);
-        userService.getAll(filters).then(res => {
-            console.log(res);
-            setUserResponse(res);
-        });
-        setLoading(false);
-    };
+    const syncUsers = withLoading(async () => {
+        const res = await userService.getAll(filters);
+        setUserResponse(res);
+    });
 
     useEffect(() => {
-        console.log('first render, or filters changed');
-        syncUsers();
+        void syncUsers();
     }, [filters]);
 
-    const handleUserDeletion = (id: number) => {
-        const isConfirmed = useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await userService.delete(id);
-                await syncUsers();
-                useSuccessToast('User deleted successfully');
-                setLoading(false);
-            }
-        });
-    };
+    const handleUserDeletion = withLoading(async (id: number) => {
+        await userService.delete(id);
+        await syncUsers();
+        void useSuccessToast('User deleted successfully');
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
+
     // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
 
     // const isDesktopOrLaptop = useMediaQuery({
@@ -61,15 +46,11 @@ export default function () {
             {userResponse && (
                 <>
                     <div className="hidden md:block">
-                        <UserTableView
-                            userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
-                            auth={auth}
-                        />
+                        <UserTableView userResponse={userResponse} handleUserDeletion={handleUserDeletion} />
                     </div>
 
                     <div className="block md:hidden">
-                        <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} auth={auth} />
+                        <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} />
                     </div>
                 </>
             )}
