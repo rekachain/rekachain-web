@@ -50,37 +50,40 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Deskripsi</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {carriageResponse?.data.map(carriage => (
-                        <TableRow key={carriage.id}>
-                            <TableCell>{carriage.type}</TableCell>
-                            <TableCell>{carriage.description}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {carriage.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleCarriageDeletion(carriage.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </TableCell>
+            <div className="hidden md:block">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Nama</TableHead>
+                            <TableHead>Deskripsi</TableHead>
+                            <TableHead></TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {carriageResponse?.data.map(carriage => (
+                            <TableRow key={carriage.id}>
+                                <TableCell>{carriage.type}</TableCell>
+                                <TableCell>{carriage.description}</TableCell>
+                                <TableCell>
+                                    <Link
+                                        className={buttonVariants({ variant: 'link' })}
+                                        href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
+                                    >
+                                        Edit
+                                    </Link>
+                                    {carriage.can_be_deleted && (
+                                        <Button variant="link" onClick={() => handleCarriageDeletion(carriage.id)}>
+                                            Delete
+                                        </Button>
+                                    )}
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
 
+            <div className="block md:hidden"></div>
             <GenericPagination meta={carriageResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
