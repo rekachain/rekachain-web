@@ -1,38 +1,38 @@
 <?php
 
-use Tests\TestCase;
-use App\Models\Role;
-use App\Models\Step;
-use App\Models\User;
-use App\Models\Panel;
-use App\Models\Project;
-use App\Models\WorkDay;
 use App\Models\Carriage;
-use App\Models\Division;
-use App\Models\Progress;
-use App\Models\Trainset;
-use App\Models\Workshop;
-use App\Models\Component;
-use App\Models\Permission;
-use App\Models\RawMaterial;
-use App\Models\SerialPanel;
-use App\Models\WorkDayTime;
-use App\Models\Workstation;
-use App\Models\ProgressStep;
 use App\Models\CarriagePanel;
-use App\Models\PanelMaterial;
-use App\Models\PanelAttachment;
-use App\Support\Enums\RoleEnum;
+use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
+use App\Models\Component;
 use App\Models\ComponentMaterial;
 use App\Models\DetailWorkerPanel;
-use App\Models\TrainsetAttachment;
 use App\Models\DetailWorkerTrainset;
-use App\Support\Enums\PermissionEnum;
-use App\Models\CarriagePanelComponent;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Models\Division;
+use App\Models\Panel;
+use App\Models\PanelAttachment;
+use App\Models\PanelMaterial;
+use App\Models\Permission;
+use App\Models\Progress;
+use App\Models\ProgressStep;
+use App\Models\Project;
+use App\Models\RawMaterial;
+use App\Models\Role;
+use App\Models\SerialPanel;
+use App\Models\Step;
+use App\Models\Trainset;
+use App\Models\TrainsetAttachment;
+use App\Models\User;
+use App\Models\WorkDay;
+use App\Models\WorkDayTime;
+use App\Models\Workshop;
+use App\Models\Workstation;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /*
 |--------------------------------------------------------------------------
@@ -154,7 +154,7 @@ function createWorkerElektrik(): User {
     $user = User::factory(['name' => 'Worker Elektrik'])->create();
     $user->assignRole($role);
 
-
+    return $user;
 }
 
 function createComponent(): Component {
@@ -165,14 +165,14 @@ function createComponent(): Component {
     return $component;
 }
 
-function createCarriagePanelComponent(Progress $progress = null): CarriagePanelComponent {
+function createCarriagePanelComponent(?Progress $progress = null): CarriagePanelComponent {
     createCarriagePanel();
     $component = createComponent();
 
     $attributes = [];
     if ($progress) {
         $attributes['progress_id'] = $progress->id;
-    } else if ($component->progress) {
+    } elseif ($component->progress) {
         $attributes['progress_id'] = $component->progress->id;
     } else {
         $attributes['progress_id'] = createProgress()->id;
@@ -373,7 +373,7 @@ function createDetailWorkerPanel(): DetailWorkerPanel {
     return $detailWorkerPanel;
 }
 
-function createTrainsetAttachment(User $user = null) {
+function createTrainsetAttachment(?User $user = null) {
     createCarriageTrainset();
     createWorkstation(); // source
     createWorkstation(); // destination
@@ -402,7 +402,7 @@ function createDetailWorkerTrainset() {
         'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
         'estimated_time' => 7,
         'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
-        'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value
+        'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value,
     ]);
 
     return $detailWorkerTrainset;

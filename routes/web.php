@@ -1,31 +1,32 @@
 <?php
 
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\StepController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\CarriageController;
-use App\Http\Controllers\DivisionController;
-use App\Http\Controllers\ProgressController;
-use App\Http\Controllers\TrainsetController;
-use App\Http\Controllers\WorkshopController;
-use App\Http\Controllers\ComponentController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RawMaterialController;
-use App\Http\Controllers\WorkDayTimeController;
-use App\Http\Controllers\WorkstationController;
-use App\Http\Controllers\ProgressStepController;
 use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\CarriagePresetController;
-use App\Http\Controllers\PresetTrainsetController;
-use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\CarriageTrainsetController;
+use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ComponentMaterialController;
 use App\Http\Controllers\DetailWorkerPanelController;
 use App\Http\Controllers\DetailWorkerTrainsetController;
+use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\PanelAttachmentController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PresetTrainsetController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProgressStepController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RawMaterialController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StepController;
+use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkDayController;
+use App\Http\Controllers\WorkDayTimeController;
+use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\WorkstationController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,22 +39,16 @@ use App\Http\Controllers\DetailWorkerTrainsetController;
 |
 */
 
-Route::get('/', function () {
-    return redirect(route('dashboard'));
+if (app()->isLocal()) {
+    require __DIR__ . '/test.php';
+}
 
-    //    return Inertia::render('Welcome', [
-    //        'canLogin' => Route::has('login'),
-    //        'canRegister' => Route::has('register'),
-    //        'laravelVersion' => Application::VERSION,
-    //        'phpVersion' => PHP_VERSION,
-    //    ]);
-});
+require __DIR__ . '/auth.php';
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::redirect('/', 'dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::inertia('/dashboard', 'Dashboard')->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -92,30 +87,3 @@ Route::middleware('auth')->group(function () {
         Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
     });
 });
-require __DIR__ . '/auth.php';
-
-Route::get('/buat-proyek', function () {
-    return Inertia::render('CreateProject/CreateProject');
-})->middleware(['auth', 'verified'])->name('buat-proyek');
-Route::get('/buat-trainset', function () {
-    return Inertia::render('CreateProject/DetailTrainset');
-})->middleware(['auth', 'verified'])->name('buat-trainset');
-
-Route::get('/proyek', function () {
-    return Inertia::render('ProjectList');
-})->middleware(['auth', 'verified'])->name('proyek');
-Route::get('/list-trainset', function () {
-    return Inertia::render('CreateProject/CreateTrainset');
-})->middleware(['auth', 'verified'])->name('list-trainset');
-Route::get('/buat-kpm', function () {
-    return Inertia::render('CreateProject/CreateKPM');
-})->middleware(['auth', 'verified'])->name('buat-kpm');
-Route::get('/detail-proyek/{id}', function ($detail_proyek) {
-    return Inertia::render('Detail/DetailProject', ['detail' => $detail_proyek]);
-})->middleware(['auth', 'verified'])->name('detail-proyek');
-Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek, $detail_ts) {
-    return Inertia::render('Detail/DetailTS', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek]);
-})->middleware(['auth', 'verified'])->name('detail-ts');
-Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, $detail_ts, $detail_kereta) {
-    return Inertia::render('Detail/DetailKereta', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek, 'susunanKereta' => $detail_kereta]);
-})->middleware(['auth', 'verified'])->name('detail-kereta');

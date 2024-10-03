@@ -10,6 +10,7 @@ use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     Route::get('/', function (\App\Support\Interfaces\Services\CarriageTrainsetServiceInterface $carriageTrainsetService, \App\Support\Interfaces\Services\TrainsetServiceInterface $trainsetService) {
@@ -51,3 +52,29 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
         Route::resource('steps', StepController::class);
     });
 });
+
+Route::get('/buat-proyek', function () {
+    return Inertia::render('CreateProject/CreateProject');
+})->middleware(['auth', 'verified'])->name('buat-proyek');
+Route::get('/buat-trainset', function () {
+    return Inertia::render('CreateProject/DetailTrainset');
+})->middleware(['auth', 'verified'])->name('buat-trainset');
+
+Route::get('/proyek', function () {
+    return Inertia::render('ProjectList');
+})->middleware(['auth', 'verified'])->name('proyek');
+Route::get('/list-trainset', function () {
+    return Inertia::render('CreateProject/CreateTrainset');
+})->middleware(['auth', 'verified'])->name('list-trainset');
+Route::get('/buat-kpm', function () {
+    return Inertia::render('CreateProject/CreateKPM');
+})->middleware(['auth', 'verified'])->name('buat-kpm');
+Route::get('/detail-proyek/{id}', function ($detail_proyek) {
+    return Inertia::render('Detail/DetailProject', ['detail' => $detail_proyek]);
+})->middleware(['auth', 'verified'])->name('detail-proyek');
+Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek, $detail_ts) {
+    return Inertia::render('Detail/DetailTS', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek]);
+})->middleware(['auth', 'verified'])->name('detail-ts');
+Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, $detail_ts, $detail_kereta) {
+    return Inertia::render('Detail/DetailKereta', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek, 'susunanKereta' => $detail_kereta]);
+})->middleware(['auth', 'verified'])->name('detail-kereta');
