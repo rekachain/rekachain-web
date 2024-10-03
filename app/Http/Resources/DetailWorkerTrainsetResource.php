@@ -11,7 +11,9 @@ class DetailWorkerTrainsetResource extends JsonResource {
             'id' => $this->id,
             'trainset_attachment_id' => $this->trainset_attachment_id,
             'worker_id' => $this->worker_id,
+            'worker' => UserResource::make($this->whenLoaded('worker')),
             'progress_step_id' => $this->progress_step_id,
+            'progress_step' => ProgressStepResource::make($this->whenLoaded('progress_step')),
             'estimated_time' => $this->estimated_time,
             'work_status' => $this->work_status,
             'acceptance_status' => $this->acceptance_status,
@@ -19,7 +21,6 @@ class DetailWorkerTrainsetResource extends JsonResource {
             // 'updated_at' => $this->updated_at->toDateTimeString(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-
         ];
     }
 }
