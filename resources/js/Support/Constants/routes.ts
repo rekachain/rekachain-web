@@ -34,4 +34,5 @@ export const ROUTES = {
 	TRAINSET_ATTACHMENTS: 'trainset-attachments',
 	DETAIL_WORKER_TRAINSETS: 'detail-worker-trainsets',
 	TRAINSET_ATTACHMENT_HANDLERS: 'trainset-attachment-handlers',
+	COMPONENT_MATERIALS: 'component-materials',
 };

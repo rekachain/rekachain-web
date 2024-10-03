@@ -10,11 +10,11 @@ use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
 use Illuminate\Http\Request;
 
 class DetailWorkerTrainsetController extends Controller {
-    public function __construct(protected DetailWorkerTrainsetServiceInterface $detailworkertrainsetService) {}
+    public function __construct(protected DetailWorkerTrainsetServiceInterface $detailWorkerTrainsetService) {}
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = DetailWorkerTrainsetResource::collection($this->detailworkertrainsetService->getAllPaginated($request->query(), $perPage));
+        $data = DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
             return $data;
@@ -29,12 +29,12 @@ class DetailWorkerTrainsetController extends Controller {
 
     public function store(StoreDetailWorkerTrainsetRequest $request) {
         if ($this->ajax()) {
-            return $this->detailworkertrainsetService->create($request->validated());
+            return $this->detailWorkerTrainsetService->create($request->validated());
         }
     }
 
-    public function show(DetailWorkerTrainset $detailworkertrainset) {
-        $data = DetailWorkerTrainsetResource::make($detailworkertrainset);
+    public function show(DetailWorkerTrainset $detail_worker_trainset) {
+        $data = DetailWorkerTrainsetResource::make($detail_worker_trainset);
 
         if ($this->ajax()) {
             return $data;
@@ -43,21 +43,21 @@ class DetailWorkerTrainsetController extends Controller {
         return inertia('DetailWorkerTrainset/Show', compact('data'));
     }
 
-    public function edit(DetailWorkerTrainset $detailworkertrainset) {
-        $data = DetailWorkerTrainsetResource::make($detailworkertrainset);
+    public function edit(DetailWorkerTrainset $detailWorkerTrainset) {
+        $data = DetailWorkerTrainsetResource::make($detailWorkerTrainset);
 
         return inertia('DetailWorkerTrainset/Edit', compact('data'));
     }
 
-    public function update(UpdateDetailWorkerTrainsetRequest $request, DetailWorkerTrainset $detailworkertrainset) {
+    public function update(UpdateDetailWorkerTrainsetRequest $request, DetailWorkerTrainset $detailWorkerTrainset) {
         if ($this->ajax()) {
-            return $this->detailworkertrainsetService->update($detailworkertrainset, $request->validated());
+            return $this->detailWorkerTrainsetService->update($detailWorkerTrainset, $request->validated());
         }
     }
 
-    public function destroy(DetailWorkerTrainset $detailworkertrainset) {
+    public function destroy(DetailWorkerTrainset $detailWorkerTrainset) {
         if ($this->ajax()) {
-            return $this->detailworkertrainsetService->delete($detailworkertrainset);
+            return $this->detailWorkerTrainsetService->delete($detailWorkerTrainset);
         }
     }
 }

@@ -2,9 +2,12 @@
 
 use App\Models\Carriage;
 use App\Models\CarriagePanel;
+use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Models\Component;
+use App\Models\ComponentMaterial;
 use App\Models\DetailWorkerPanel;
+use App\Models\DetailWorkerTrainset;
 use App\Models\Division;
 use App\Models\Panel;
 use App\Models\PanelAttachment;
@@ -18,11 +21,14 @@ use App\Models\Role;
 use App\Models\SerialPanel;
 use App\Models\Step;
 use App\Models\Trainset;
+use App\Models\TrainsetAttachment;
 use App\Models\User;
 use App\Models\WorkDay;
 use App\Models\WorkDayTime;
 use App\Models\Workshop;
 use App\Models\Workstation;
+use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,6 +46,7 @@ use Tests\TestCase;
 */
 
 uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+// uses(TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
@@ -110,12 +117,79 @@ function createSupervisorAssembly(): User {
     return $user;
 }
 
+function createSupervisorMekanik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::SUPERVISOR_MEKANIK]);
+    $user = User::factory(['name' => 'Supervisor Mekanik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createSupervisorElektrik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::SUPERVISOR_ELEKTRIK]);
+    $user = User::factory(['name' => 'Supervisor Elektrik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createWorkerAssembly(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_ASSEMBLY]);
+    $user = User::factory(['name' => 'Worker Assembly'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createWorkerMekanik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_MEKANIK]);
+    $user = User::factory(['name' => 'Worker Mekanik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
+function createWorkerElektrik(): User {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_ELEKTRIK]);
+    $user = User::factory(['name' => 'Worker Elektrik'])->create();
+    $user->assignRole($role);
+
+    return $user;
+}
+
 function createComponent(): Component {
     $component = new Component;
     $component->name = 'Component';
     $component->save();
 
     return $component;
+}
+
+function createCarriagePanelComponent(?Progress $progress = null): CarriagePanelComponent {
+    createCarriagePanel();
+    $component = createComponent();
+
+    $attributes = [];
+    if ($progress) {
+        $attributes['progress_id'] = $progress->id;
+    } elseif ($component->progress) {
+        $attributes['progress_id'] = $component->progress->id;
+    } else {
+        $attributes['progress_id'] = createProgress()->id;
+    }
+
+    $carriagePanelComponent = CarriagePanelComponent::factory()->create($attributes);
+
+    return $carriagePanelComponent;
+}
+
+function createComponentMaterial(): ComponentMaterial {
+    $progress = createProgress();
+    createRawMaterial();
+    createCarriagePanelComponent($progress);
+    $componentMaterial = ComponentMaterial::factory()->create();
+
+    return $componentMaterial;
 }
 
 function createPanelMaterial(): PanelMaterial {
@@ -297,4 +371,39 @@ function createDetailWorkerPanel(): DetailWorkerPanel {
     $detailWorkerPanel = DetailWorkerPanel::factory()->create();
 
     return $detailWorkerPanel;
+}
+
+function createTrainsetAttachment(?User $user = null) {
+    createCarriageTrainset();
+    createWorkstation(); // source
+    createWorkstation(); // destination
+
+    $attributes = [];
+    if ($user) {
+        $attributes['supervisor_id'] = $user->id;
+    }
+
+    $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
+
+    return $trainsetAttachment;
+}
+
+function createDetailWorkerTrainset() {
+    createSupervisorAssembly();
+    $role = Role::firstOrCreate(['name' => 'Supervisor - Elektrik', 'guard_name' => 'web']);
+    $user = User::factory(['name' => 'Supervisor - Elektrik'])->create();
+    $user->assignRole('Supervisor - Elektrik');
+
+    createProgressStep();
+    createTrainsetAttachment($user);
+    $detailWorkerTrainset = DetailWorkerTrainset::create([
+        'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
+        'worker_id' => $user->id,
+        'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
+        'estimated_time' => 7,
+        'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
+        'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value,
+    ]);
+
+    return $detailWorkerTrainset;
 }

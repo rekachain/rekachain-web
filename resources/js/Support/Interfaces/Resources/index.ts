@@ -31,3 +31,4 @@ export * from './ProgressStepResource';
 export * from './TrainsetAttachmentResource';
 export * from './DetailWorkerTrainsetResource';
 export * from './TrainsetAttachmentHandlerResource';
+export * from './ComponentMaterialResource';

@@ -1,122 +1,134 @@
-<!-- route not ready -->
 <?php
 
-// use App\Models\Step;
-// use App\Models\User;
-// use App\Models\SerialPanel;
-// use App\Models\DetailWorkerPanel;
-// use App\Support\Enums\IntentEnum;
-// use Illuminate\Http\UploadedFile;
-// use Illuminate\Support\Facades\Storage;
-// use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
-// use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
+use App\Models\Step;
+use App\Models\User;
+use App\Models\SerialPanel;
+use App\Models\DetailWorkerPanel;
+use App\Support\Enums\IntentEnum;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
-// test('index method returns paginated detail-worker-panels', function () {
+beforeEach(function () {
+    createSupervisorAssembly();
+    createWorkerAssembly();
+});
+
+test('index method returns paginated detail-worker-panels', function () {
+    $user = User::factory()->superAdmin()->create();
+    createDetailWorkerPanel();
+
+    $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=10');
+
+    $response->assertStatus(200)
+        ->assertJsonStructure(['data', 'meta'])
+        ->assertJsonCount(1, 'data');
+});
+
+// Not ready
+// test('create method returns create page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     createDetailWorkerPanel();
 
-//     $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=10');
+//     $response = $this->actingAs($user)->get('/detail-worker-panels/create');
 
 //     $response->assertStatus(200)
-//         ->assertJsonStructure(['data', 'meta'])
-//         ->assertJsonCount(1, 'data');
+//         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerPanel/Create'));
 // });
 
-// // Not ready
-// // test('create method returns create page', function () {
-// //     $user = User::factory()->superAdmin()->create();
+test('store method creates new DetailWorkerPanel', function () {
+    $user = User::factory()->superAdmin()->create();
+    $worker = User::factory()->create();
+    $serial_panel = createSerialPanel();
+    $progress_step = createProgressStep();
+    $DetailWorkerPanelData = [
+        'serial_panel_id' => $serial_panel->id,
+        'worker_id' => $worker->id,
+        'progress_step_id' => $progress_step->id,
+        'estimated_time' => 40,
+        'work_status' => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
+        'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value,
+    ];
 
-// //     $response = $this->actingAs($user)->get('/detail-worker-panels/create');
+    $response = $this->actingAs($user)->postJson('/detail-worker-panels', $DetailWorkerPanelData);
 
-// //     $response->assertStatus(200)
-// //         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerPanel/Create'));
-// // });
+    $response->assertStatus(201)
+        ->assertJsonStructure(['id', 'serial_panel_id', 'worker_id', 'progress_step_id', 'estimated_time', 'work_status', 'acceptance_status']);
+    $this->assertDatabaseHas('detail_worker_panels', $DetailWorkerPanelData);
+});
 
-// test('store method creates new DetailWorkerPanel', function () {
+// test('store method imports detail-worker-panels', function () {
+//     Storage::fake('local');
 //     $user = User::factory()->superAdmin()->create();
-//     User::factory()->create();
-//     createSerialPanel();
-//     createProgressStep();
-//     $DetailWorkerPanelData = [
-//         'serial_panel_id' => SerialPanel::inRandomOrder()->first()->id,
-//         'worker_id' => User::inRandomOrder()->first()->id,
-//         'progress_step_id' => Step::inRandomOrder()->first()->id,
-//         'estimated_time' => 40,
-//         'work_status' => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
-//         'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value,
-//     ];
+//     $file = UploadedFile::fake()->create('detail-worker-panels.xlsx');
 
-//     $response = $this->actingAs($user)->postJson('/detail-worker-panels', $DetailWorkerPanelData);
+//     $response = $this->actingAs($user)->postJson('/detail-worker-panels', [
+//         'intent' => IntentEnum::WEB_DetailWorkerPanel_IMPORT_DetailWorkerPanel->value,
+//         'import_file' => $file,
+//     ]);
 
-//     $response->assertStatus(201)
-//         ->assertJsonStructure(['id', 'serial_panel_id', 'worker_id', 'progress_step_id', 'estimated_time', 'work_status', 'acceptance_status']);
-//     $this->assertDatabaseHas('detail_worker_panels', $DetailWorkerPanelData);
+//     $response->assertStatus(204);
 // });
 
-// // test('store method imports detail-worker-panels', function () {
-// //     Storage::fake('local');
-// //     $user = User::factory()->superAdmin()->create();
-// //     $file = UploadedFile::fake()->create('detail-worker-panels.xlsx');
+test('show method returns DetailWorkerPanel details', function () {
+    $user = User::factory()->superAdmin()->create();
+    $DetailWorkerPanel = createDetailWorkerPanel();
 
-// //     $response = $this->actingAs($user)->postJson('/detail-worker-panels', [
-// //         'intent' => IntentEnum::WEB_DetailWorkerPanel_IMPORT_DetailWorkerPanel->value,
-// //         'import_file' => $file,
-// //     ]);
+    $response = $this->actingAs($user)->getJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 
-// //     $response->assertStatus(204);
-// // });
+    $response->assertStatus(200)
+        ->assertJson([
+            'id' => $DetailWorkerPanel->id,
+            'serial_panel_id' => $DetailWorkerPanel->serial_panel_id,
+            'worker_id' => $DetailWorkerPanel->worker_id,
+            'progress_step_id' => $DetailWorkerPanel->progress_step_id,
+            'estimated_time' => $DetailWorkerPanel->estimated_time,
+            'work_status' => $DetailWorkerPanel->work_status->value,
+            'acceptance_status' => $DetailWorkerPanel->acceptance_status->value,
+        ]);
+});
 
-// test('show method returns DetailWorkerPanel details', function () {
+// Not ready
+// test('edit method returns edit page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
+//     $DetailWorkerPanel = createDetailWorkerPanel();
 
-//     $response = $this->actingAs($user)->getJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
+//     $response = $this->actingAs($user)->get("/detail-worker-panels/{$DetailWorkerPanel->id}/edit");
 
 //     $response->assertStatus(200)
-//         ->assertJson(['id' => $DetailWorkerPanel->id, 'type' => $DetailWorkerPanel->type]);
+//         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerPanel/Edit'));
 // });
 
-// // Not ready
-// // test('edit method returns edit page', function () {
-// //     $user = User::factory()->superAdmin()->create();
-// //     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
+test('update method updates DetailWorkerPanel', function () {
+    $user = User::factory()->superAdmin()->create();
+    $DetailWorkerPanel = createDetailWorkerPanel();
+    $updatedData = [
+        'estimated_time' => 35,
+    ];
 
-// //     $response = $this->actingAs($user)->get("/detail-worker-panels/{$DetailWorkerPanel->id}/edit");
+    $response = $this->actingAs($user)->putJson("/detail-worker-panels/{$DetailWorkerPanel->id}", $updatedData);
 
-// //     $response->assertStatus(200)
-// //         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerPanel/Edit'));
-// // });
+    $response->assertStatus(200)
+        ->assertJson($updatedData);
+    $this->assertDatabaseHas('detail_worker_panels', $updatedData);
+});
 
-// test('update method updates DetailWorkerPanel', function () {
+test('destroy method deletes DetailWorkerPanel', function () {
+    $user = User::factory()->superAdmin()->create();
+    $DetailWorkerPanel = createDetailWorkerPanel();
+
+    $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
+
+    $response->assertStatus(200);
+    $this->assertDatabaseMissing('detail_worker_panels', ['id' => $DetailWorkerPanel->id]);
+});
+
+// test('index method returns import template', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
-//     $updatedData = [
-//         'estimated_time' => 35,
-//     ];
 
-//     $response = $this->actingAs($user)->putJson("/detail-worker-panels/{$DetailWorkerPanel->id}", $updatedData);
+//     $response = $this->actingAs($user)->getJson('/detail-worker-panels?intent=' . IntentEnum::WEB_DetailWorkerPanel_GET_TEMPLATE_IMPORT_DetailWorkerPanel->value);
 
 //     $response->assertStatus(200)
-//         ->assertJson($updatedData);
-//     $this->assertDatabaseHas('detail_worker_panels', $updatedData);
+//         ->assertDownload('detail-worker-panels_template.xlsx');
 // });
-
-// test('destroy method deletes DetailWorkerPanel', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
-
-//     $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
-
-//     $response->assertStatus(200);
-//     $this->assertDatabaseMissing('detail_worker_panels', ['id' => $DetailWorkerPanel->id]);
-// });
-
-// // test('index method returns import template', function () {
-// //     $user = User::factory()->superAdmin()->create();
-
-// //     $response = $this->actingAs($user)->getJson('/detail-worker-panels?intent=' . IntentEnum::WEB_DetailWorkerPanel_GET_TEMPLATE_IMPORT_DetailWorkerPanel->value);
-
-// //     $response->assertStatus(200)
-// //         ->assertDownload('detail-worker-panels_template.xlsx');
-// // });
 
