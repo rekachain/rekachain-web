@@ -29,7 +29,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { progressService } from '@/Services/progressService';
 
-const CreateNewPanelDialog = ({
+const AddNewPanel = ({
     panelResponse,
     setPanelResponse,
     carriageTrainset,
@@ -383,4 +383,4 @@ const CreateNewPanelDialog = ({
     );
 };
 
-export default memo(CreateNewPanelDialog);
+export default memo(AddNewPanel);

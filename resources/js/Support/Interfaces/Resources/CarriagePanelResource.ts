@@ -1,6 +1,7 @@
-import { PanelResource, Resource } from '@/Support/Interfaces/Resources';
+import { PanelResource, ProgressResource, Resource } from '@/Support/Interfaces/Resources';
 import { CarriagePanel } from '@/Support/Interfaces/Models';
 
 export interface CarriagePanelResource extends Resource, CarriagePanel {
     panel: PanelResource;
+    progress: ProgressResource;
 }

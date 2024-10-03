@@ -31,6 +31,7 @@ class CarriagePanelResource extends JsonResource {
         return [
             'id' => $this->id,
             'panel' => new PanelResource($this->whenLoaded('panel')),
+            'progress' => new ProgressResource($this->whenLoaded('progress')),
             'progress_id' => $this->progress_id,
             'carriage_trainset' => new CarriageTrainsetResource($this->whenLoaded('carriage_trainset')),
             'carriage_panel_components' => CarriagePanelComponentResource::collection($this->whenLoaded('carriage_panel_components')),
