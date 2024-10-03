@@ -364,11 +364,11 @@ function createProgressStep(): ProgressStep {
     return $progressStep;
 }
 
-function createDetailWorkerPanel(): DetailWorkerPanel {
+function createDetailWorkerPanel($attributes = []): DetailWorkerPanel {
     User::factory()->create();
     createSerialPanel();
     createProgressStep();
-    $detailWorkerPanel = DetailWorkerPanel::factory()->create();
+    $detailWorkerPanel = DetailWorkerPanel::factory()->create($attributes);
 
     return $detailWorkerPanel;
 }
