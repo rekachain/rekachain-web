@@ -16,11 +16,11 @@ export default function ({
     trainset: TrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    const handleCarriageDeletion = withLoading(async(carriageTrainsetId: number) => {
+    const handleCarriageDeletion = withLoading(async (carriageTrainsetId: number) => {
         await carriageTrainsetService.delete(carriageTrainsetId);
         await handleSyncTrainset();
         void useSuccessToast('Carriage deleted successfully');
-    });
+    }, true);
 
     return (
         <div className="space-y-4">
