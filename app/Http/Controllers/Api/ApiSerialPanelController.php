@@ -29,7 +29,7 @@ class ApiSerialPanelController extends Controller {
     public function show(SerialPanel $serialPanel, Request $request) {
         $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
 
-        return new SerialPanelResource($serialPanel->load('detail_worker_panels.step.progress'));
+        return new SerialPanelResource($serialPanel->load('detail_worker_panels.progress_step.progress'));
     }
 
     /**
