@@ -10,11 +10,11 @@ use App\Support\Interfaces\Services\ProgressStepServiceInterface;
 use Illuminate\Http\Request;
 
 class ProgressStepController extends Controller {
-    public function __construct(protected ProgressStepServiceInterface $progressstepService) {}
+    public function __construct(protected ProgressStepServiceInterface $progressStepService) {}
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = ProgressStepResource::collection($this->progressstepService->getAllPaginated($request->query(), $perPage));
+        $data = ProgressStepResource::collection($this->progressStepService->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
             return $data;
@@ -29,12 +29,12 @@ class ProgressStepController extends Controller {
 
     public function store(StoreProgressStepRequest $request) {
         if ($this->ajax()) {
-            return $this->progressstepService->create($request->validated());
+            return $this->progressStepService->create($request->validated());
         }
     }
 
-    public function show(ProgressStep $progressstep) {
-        $data = ProgressStepResource::make($progressstep);
+    public function show(ProgressStep $progress_step) {
+        $data = ProgressStepResource::make($progress_step);
 
         if ($this->ajax()) {
             return $data;
@@ -43,21 +43,21 @@ class ProgressStepController extends Controller {
         return inertia('ProgressStep/Show', compact('data'));
     }
 
-    public function edit(ProgressStep $progressstep) {
-        $data = ProgressStepResource::make($progressstep);
+    public function edit(ProgressStep $progress_step) {
+        $data = ProgressStepResource::make($progress_step);
 
         return inertia('ProgressStep/Edit', compact('data'));
     }
 
-    public function update(UpdateProgressStepRequest $request, ProgressStep $progressstep) {
+    public function update(UpdateProgressStepRequest $request, ProgressStep $progress_step) {
         if ($this->ajax()) {
-            return $this->progressstepService->update($progressstep, $request->validated());
+            return $this->progressStepService->update($progress_step, $request->validated());
         }
     }
 
-    public function destroy(ProgressStep $progressstep) {
+    public function destroy(ProgressStep $progress_step) {
         if ($this->ajax()) {
-            return $this->progressstepService->delete($progressstep);
+            return $this->progressStepService->delete($progress_step);
         }
     }
 }

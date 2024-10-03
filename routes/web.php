@@ -5,6 +5,9 @@ use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ComponentMaterialController;
+use App\Http\Controllers\DetailWorkerPanelController;
+use App\Http\Controllers\DetailWorkerTrainsetController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\PanelController;
@@ -67,11 +70,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('progress', ProgressController::class);
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
     Route::resource('components', ComponentController::class);
+    Route::resource('component-materials', ComponentMaterialController::class);
     Route::resource('work-days', WorkDayController::class);
     Route::resource('work-day-times', WorkDayTimeController::class);
     Route::resource('steps', StepController::class);
     Route::resource('progress-steps', ProgressStepController::class);
     Route::resource('panel-attachments', PanelAttachmentController::class);
+    Route::resource('detail-worker-panels', DetailWorkerPanelController::class);
+    Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

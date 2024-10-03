@@ -67,9 +67,9 @@ class ApiDetailWorkerPanelController extends Controller {
         $intent = request()->get('intent');
         // return $detailWorkerPanel;
             
-        if ($intent === 'api.accept.assign') {
+        if ($intent === IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER->value) {
             return $this->detailWorkerPanelService->acceptAssign($detailWorkerPanel->id);
-        } else if ($intent === 'api.decline.assign') {
+        } else if ($intent === IntentEnum::API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER->value) {
             return $this->detailWorkerPanelService->declineAssign($detailWorkerPanel->id);
         }
         

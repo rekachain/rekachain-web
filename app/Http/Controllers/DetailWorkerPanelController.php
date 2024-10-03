@@ -10,11 +10,11 @@ use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use Illuminate\Http\Request;
 
 class DetailWorkerPanelController extends Controller {
-    public function __construct(protected DetailWorkerPanelServiceInterface $detailworkerpanelService) {}
+    public function __construct(protected DetailWorkerPanelServiceInterface $detailWorkerPanelService) {}
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = DetailWorkerPanelResource::collection($this->detailworkerpanelService->getAllPaginated($request->query(), $perPage));
+        $data = DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
             return $data;
@@ -29,12 +29,12 @@ class DetailWorkerPanelController extends Controller {
 
     public function store(StoreDetailWorkerPanelRequest $request) {
         if ($this->ajax()) {
-            return $this->detailworkerpanelService->create($request->validated());
+            return $this->detailWorkerPanelService->create($request->validated());
         }
     }
 
-    public function show(DetailWorkerPanel $detailworkerpanel) {
-        $data = DetailWorkerPanelResource::make($detailworkerpanel);
+    public function show(DetailWorkerPanel $detailWorkerPanel) {
+        $data = DetailWorkerPanelResource::make($detailWorkerPanel);
 
         if ($this->ajax()) {
             return $data;
@@ -43,21 +43,21 @@ class DetailWorkerPanelController extends Controller {
         return inertia('DetailWorkerPanel/Show', compact('data'));
     }
 
-    public function edit(DetailWorkerPanel $detailworkerpanel) {
-        $data = DetailWorkerPanelResource::make($detailworkerpanel);
+    public function edit(DetailWorkerPanel $detailWorkerPanel) {
+        $data = DetailWorkerPanelResource::make($detailWorkerPanel);
 
         return inertia('DetailWorkerPanel/Edit', compact('data'));
     }
 
-    public function update(UpdateDetailWorkerPanelRequest $request, DetailWorkerPanel $detailworkerpanel) {
+    public function update(UpdateDetailWorkerPanelRequest $request, DetailWorkerPanel $detailWorkerPanel) {
         if ($this->ajax()) {
-            return $this->detailworkerpanelService->update($detailworkerpanel, $request->validated());
+            return $this->detailWorkerPanelService->update($detailWorkerPanel, $request->validated());
         }
     }
 
-    public function destroy(DetailWorkerPanel $detailworkerpanel) {
+    public function destroy(DetailWorkerPanel $detailWorkerPanel) {
         if ($this->ajax()) {
-            return $this->detailworkerpanelService->delete($detailworkerpanel);
+            return $this->detailWorkerPanelService->delete($detailWorkerPanel);
         }
     }
 }
