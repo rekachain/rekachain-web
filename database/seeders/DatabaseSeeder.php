@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder {
             WorkDaySeeder::class,
             WorkDayTimeSeeder::class,
             CarriagePanelComponentSeeder::class,
-            // ComponentMaterialSeeder::class,
+            ComponentMaterialSeeder::class,
             PanelMaterialSeeder::class,
             PanelAttachmentSeeder::class,
             PanelAttachmentHandlerSeeder::class,

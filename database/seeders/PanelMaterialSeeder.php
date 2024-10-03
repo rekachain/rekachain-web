@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CarriagePanel;
 use App\Models\PanelMaterial;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
@@ -18,7 +19,11 @@ class PanelMaterialSeeder extends Seeder {
         $csvData = $csvReader->getCsvData();
 
         if (!$csvData) {
-            PanelMaterial::factory(30)->create();
+            foreach (CarriagePanel::all() as $carriagePanel) {
+                PanelMaterial::factory(rand(5, 20))->create([
+                    'carriage_panel_id' => $carriagePanel->id
+                ]);
+            }
 
             return;
         }
