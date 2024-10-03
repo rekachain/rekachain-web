@@ -21,7 +21,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { withLoading } from '@/Utils/withLoading';
-import CreateNewPanelDialog from '@/Pages/Project/Trainset/Carriage/Panel/Partials/CreateNewPanelDialog';
+import AddNewPanel from '@/Pages/Project/Trainset/Carriage/Panel/Partials/AddNewPanel';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 
@@ -103,7 +103,7 @@ export default function ({
                     </Suspense>
 
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && panelResponse && (
-                        <CreateNewPanelDialog
+                        <AddNewPanel
                             carriageTrainset={carriageTrainset}
                             handleSyncCarriage={handleSyncCarriage}
                             panelResponse={panelResponse}
