@@ -11,7 +11,7 @@ import {
     DialogTrigger,
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
-import { FormEvent, memo, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { PresetTrainsetResource, TrainsetResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
@@ -38,6 +38,10 @@ const ChangeTrainsetPreset = ({
     const { data, setData } = useForm({
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
     });
+
+    useEffect(() => {
+        setData('preset_trainset_id', trainset.preset_trainset_id ?? 0);
+    }, [trainset]);
 
     const [sourceWorkstations, setSourceWorkstations] = useState<WorkstationResource[]>([]);
     const [destinationWorkstations, setDestinationWorkstations] = useState<WorkstationResource[]>([]);
@@ -565,4 +569,4 @@ const ChangeTrainsetPreset = ({
     );
 };
 
-export default memo(ChangeTrainsetPreset);
+export default ChangeTrainsetPreset;
