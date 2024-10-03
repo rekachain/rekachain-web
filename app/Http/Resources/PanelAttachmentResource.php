@@ -28,6 +28,9 @@ class PanelAttachmentResource extends JsonResource {
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'status' => $this->status,
+                    'supervisor_id' => $this->supervisor_id,
+                    'supervisor_name' => $this->supervisor?->name,
+                    'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
@@ -39,18 +42,16 @@ class PanelAttachmentResource extends JsonResource {
                     'trainset' => new TrainsetResource($this->carriage_panel?->carriage_trainset->trainset),
                     'carriage_trainset' => new CarriageTrainsetResource($this->carriage_panel?->carriage_trainset()->with('carriage')->without('trainset')->first()),
                     'carriage_panel' => new CarriagePanelResource($this->carriage_panel),
-                    'serial_panels' => SerialPanelResource::collection($this->serial_panels),
                     'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
                     'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
-                    'current_step' => $this->current_step,
+                    // 'current_step' => $this->current_step,
                     'elapsed_time' => $this->elapsed_time,
                     'status' => $this->status,
-                    // 'panel_attachment_childs' => PanelAttachmentResource::collection($this->childs),
-                    // 'panel_attachment_parents' => new PanelAttachmentResource($this->parent),
-                    'supervisor' => new UserResource($this->whenLoaded('supervisor')),
+                    'supervisor' => new UserResource($this->supervisor),
                     'panel_attachment_handlers' => PanelAttachmentHandlerResource::collection($this->panel_attachment_handlers),
+                    'serial_panels' => SerialPanelResource::collection($this->serial_panels),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
@@ -98,25 +99,30 @@ class PanelAttachmentResource extends JsonResource {
                     'updated_at' => $this->updated_at,
                     'panel_materials' => $materialQuantities,
                 ];
-        }
 
-        return [
-            'id' => $this->id,
-            'attachment_number' => $this->attachment_number,
-            'carriage_panel' => new CarriagePanelResource($this->whenLoaded('carriage_panel')),
-            'serial_panels' => SerialPanelResource::collection($this->serial_panels),
-            'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
-            'destination_workstation' => new WorkstationResource($this->whenLoaded('destination_workstation')),
-            'qr_code' => $this->qr_code,
-            'qr_path' => $this->qr_path,
-            'current_step' => $this->current_step,
-            'elapsed_time' => $this->elapsed_time,
-            'status' => $this->status,
-            'panel_attachment_id' => $this->panel_attachment_id,
-            'supervisor' => new UserResource($this->whenLoaded('supervisor')),
-            'panel_attachment_handlers' => PanelAttachmentHandlerResource::collection($this->panel_attachment_handlers),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
+            default:
+                return [
+                    'id' => $this->id,
+                    'attachment_number' => $this->attachment_number,
+                    'source_workstation_id' => $this->source_workstation_id,
+                    'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
+                    'destination_workstation_id' => $this->destination_workstation_id,
+                    'destination_workstation' => new WorkstationResource($this->whenLoaded('destination_workstation')),
+                    'carriage_panel_id' => $this->carriage_panel_id,
+                    'carriage_panel' => new CarriagePanelResource($this->whenLoaded('carriage_panel')),
+                    'qr_code' => $this->qr_code,
+                    'qr_path' => $this->qr_path,
+                    'serial_panels' => SerialPanelResource::collection($this->whenLoaded('serial_panels')),
+                    // 'current_step' => $this->current_step,
+                    'elapsed_time' => $this->elapsed_time,
+                    'status' => $this->status,
+                    'panel_attachment_id' => $this->panel_attachment_id,
+                    'supervisor_id' => $this->supervisor_id,
+                    'supervisor' => new UserResource($this->whenLoaded('supervisor')),
+                    'panel_attachment_handlers' => PanelAttachmentHandlerResource::collection($this->whenLoaded('panel_attachment_handlers')),
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                ];
+        }
     }
 }
