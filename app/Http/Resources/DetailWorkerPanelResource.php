@@ -38,17 +38,18 @@ class DetailWorkerPanelResource extends JsonResource {
                     'serial_panel_id' => $this->serial_panel_id,
                     'worker_id' => $this->worker_id,
                     'progress_step_id' => $this->progress_step_id,
-                    ];        
+                ];
+            default:    
+                return [
+                    'worker' => $this->worker,
+                    'estimated_time' => $this->estimated_time,
+                    'work_status' => $this->work_status,
+                    'progress_step_id' => $this->progress_step_id,
+                    'progress_step' => ProgressStepResource::make($this->whenLoaded('progress_step')),
+                    'acceptance_status' => $this->acceptance_status,
+                    'created_at' => $this->created_at->toDateTimeString(),
+                    'updated_at' => $this->updated_at->toDateTimeString(),
+                ];
         }
-        
-        return [
-            'worker' => $this->worker,
-            'step' => $this->step,
-            'estimated_time' => $this->estimated_time,
-            'work_status' => $this->work_status,
-            'acceptance_status' => $this->acceptance_status,
-            'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->updated_at->toDateTimeString(),
-        ];
     }
 }
