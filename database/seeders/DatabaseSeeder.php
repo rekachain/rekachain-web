@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder {
             WorkshopSeeder::class,
             DivisionSeeder::class,
             WorkstationSeeder::class,
+            WorkAspectSeeder::class,
             ProgressSeeder::class,
             StepSeeder::class,
             PermissionSeeder::class,
