@@ -20,7 +20,9 @@ class DetailWorkerPanelRepository extends BaseRepository implements DetailWorker
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['name']);
+        $query = $this->applySearchFilters($query, $searchParams, ['work_status']);
+
+        $query = $this->applyColumnFilters($query, $searchParams, ['work_status','worker_id']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 
