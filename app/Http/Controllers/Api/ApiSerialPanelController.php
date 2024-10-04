@@ -51,7 +51,7 @@ class ApiSerialPanelController extends Controller {
                     abort(403, 'Unauthorized');
                 }
                 
-                return $this->serialPanelService->rejectPanel($serialPanel->id, $request);    
+                return $this->serialPanelService->rejectPanel($serialPanel, $request);    
         }
         
     }

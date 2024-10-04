@@ -31,19 +31,26 @@ enum IntentEnum: string {
     
     case API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS = 'api.detail.worker.panel.get.panel.details';
 
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
-
     case API_DETAIL_WORKER_PANEL_ASSIGN_WORKER = 'api.detail.worker.panel.assign.worker';
     
     case API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER = 'api.detail.worker.panel.accept.assign.worker';
     
     case API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER = 'api.detail.worker.panel.decline.assign.worker';
 
-    case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
+    case API_DETAIL_WORKER_PANELS_BY_STATUS = 'api.detail.worker.panels.by.status';
+
+    case API_DETAIL_WORKER_PANELS_BY_CURRENT_USER = 'api.detail.worker.panels.by.current.user';
+
+    case API_DETAIL_WORKER_PANELS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.panels.by.status.and.current.user';
     
-    case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
+
+
+    // case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
     
-    case API_SERIAL_PANEL_UPDATE_REJECT = 'api.serial.panel.update.reject';
+    // case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
+    
+    case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.manufacture.status';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
