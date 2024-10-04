@@ -44,11 +44,6 @@ enum IntentEnum: string {
     case API_DETAIL_WORKER_PANELS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.panels.by.status.and.current.user';
     
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
-
-
-    // case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
-    
-    // case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
     
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.manufacture.status';
 
