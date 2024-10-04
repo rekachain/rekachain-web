@@ -22,6 +22,7 @@ class Model {
     public string $upperSnake;
     public string $lower;
     public string $kebab;
+    public string $kebabPlural;
 
     public function __construct(string $modelName) {
         $this->name = $modelName;
@@ -32,6 +33,7 @@ class Model {
         $this->upperSnake = Str::upper($this->snake);
         $this->lower = Str::lower($modelName);
         $this->kebab = Str::kebab($modelName);
+        $this->kebabPlural = Str::plural($this->kebab);
     }
 }
 
@@ -132,6 +134,7 @@ class GenerateModelScaffold extends Command {
 
         $this->generateController();
         $this->generateApiController();
+        $this->generateControllerTest();
 
         if ($withFrontend) {
             $this->generateRequiredFiles();
@@ -226,6 +229,22 @@ class GenerateModelScaffold extends Command {
         File::put($apiControllerPath, $apiControllerContent);
 
         $this->info("API Controller created: {$apiControllerPath}");
+    }
+
+    protected function generateControllerTest(): void {
+        $modelNameStudly = self::$model->studly;
+        $controllerTestPath = base_path("tests/Feature/Http/Controllers/{$modelNameStudly}ControllerTest.php");
+
+        if (File::exists($controllerTestPath)) {
+            $this->warn("File already exists, skipping: {$controllerTestPath}");
+
+            return;
+        }
+
+        $controllerTestContent = $this->getControllerTestTemplate();
+        File::put($controllerTestPath, $controllerTestContent);
+
+        $this->info("Controller Test created: {$controllerTestPath}");
     }
 
     protected function handleFrontendScaffolding(): void {
@@ -569,6 +588,94 @@ class GenerateModelScaffold extends Command {
             }
         }
         PHP;
+    }
+
+    protected function getControllerTestTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelRoute = self::$model->kebabPlural;
+
+        return <<<PHP
+    <?php
+
+    use App\Models\User;
+
+    test('index method returns paginated {$modelRoute}', function () {
+        \$user = User::factory()->superAdmin()->create();
+        create{$modelName}();
+
+        \$response = \$this->actingAs(\$user)->getJson('/{$modelRoute}?page=1&perPage=5');
+
+        \$response->assertStatus(200)
+            ->assertJsonStructure(['data', 'meta'])
+            ->assertJsonCount(1, 'data');
+    });
+
+    test('create method returns create page', function () {
+        \$user = User::factory()->superAdmin()->create();
+
+        \$response = \$this->actingAs(\$user)->get('/{$modelRoute}/create');
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Create'));
+    });
+
+    test('store method creates new {$modelName}', function () {
+        \$user = User::factory()->superAdmin()->create();
+        \$data = [
+            'name' => 'Test name',
+        ];
+
+        \$response = \$this->actingAs(\$user)->postJson('/{$modelRoute}', \$data);
+
+        \$response->assertStatus(201)
+            ->assertJsonStructure(['id', 'name']);
+        \$this->assertDatabaseHas('{$modelRoute}', \$data);
+    });
+
+    test('show method returns {$modelName} details', function () {
+        \$user = User::factory()->superAdmin()->create();
+        \$model = create{$modelName}();
+
+        \$response = \$this->actingAs(\$user)->getJson("/{$modelRoute}/{\$model->id}");
+
+        \$response->assertStatus(200)
+            ->assertJson(['id' => \$model->id, 'name' => \$model->name]);
+    });
+
+    test('edit method returns edit page', function () {
+        \$user = User::factory()->superAdmin()->create();
+        \$model = create{$modelName}();
+
+        \$response = \$this->actingAs(\$user)->get("/{$modelRoute}/{\$model->id}/edit");
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Edit'));
+    });
+
+    test('update method updates {$modelName}', function () {
+        \$user = User::factory()->superAdmin()->create();
+        \$model = create{$modelName}();
+        \$updatedData = [
+            'name' => 'Updated name',
+        ];
+
+        \$response = \$this->actingAs(\$user)->putJson("/{$modelRoute}/{\$model->id}", \$updatedData);
+
+        \$response->assertStatus(200)
+            ->assertJson(\$updatedData);
+        \$this->assertDatabaseHas('{$modelRoute}', \$updatedData);
+    });
+
+    test('destroy method deletes {$modelName}', function () {
+        \$user = User::factory()->superAdmin()->create();
+        \$model = create{$modelName}();
+
+        \$response = \$this->actingAs(\$user)->deleteJson("/{$modelRoute}/{\$model->id}");
+
+        \$response->assertStatus(204);
+        \$this->assertDatabaseMissing('{$modelRoute}', ['id' => \$model->id]);
+    });
+    PHP;
     }
 
     protected function getFrontendModelInterfaceTemplate(): string {
