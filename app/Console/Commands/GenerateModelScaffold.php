@@ -120,17 +120,18 @@ class GenerateModelScaffold extends Command {
         foreach ($paths as $key => $path) {
             File::ensureDirectoryExists(dirname($path));
 
-            if (!File::exists($path) && $key !== 'controller') {
+            if (!File::exists($path) && $key !== 'controller' && $key !== 'apiController') {
                 File::put($path, $templates[$key]);
                 $this->info("File created: {$path}");
             } else {
-                if ($key !== 'controller') {
+                if ($key !== 'controller' && $key !== 'apiController') {
                     $this->warn("File already exists, skipping: {$path}");
                 }
             }
         }
 
         $this->generateController();
+        $this->generateApiController();
 
         if ($withFrontend) {
             $this->generateRequiredFiles();
@@ -208,6 +209,23 @@ class GenerateModelScaffold extends Command {
         File::put($controllerPath, $controllerContent);
 
         $this->info("Controller created: {$controllerPath}");
+    }
+
+    protected function generateApiController(): void {
+        $modelNameStudly = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+        $apiControllerPath = app_path("Http/Controllers/Api/Api{$modelNameStudly}Controller.php");
+
+        if (File::exists($apiControllerPath)) {
+            $this->warn("File already exists, skipping: {$apiControllerPath}");
+
+            return;
+        }
+
+        $apiControllerContent = $this->getApiControllerTemplate();
+        File::put($apiControllerPath, $apiControllerContent);
+
+        $this->info("API Controller created: {$apiControllerPath}");
     }
 
     protected function handleFrontendScaffolding(): void {
@@ -428,6 +446,67 @@ class GenerateModelScaffold extends Command {
             }
         }
         PHP;
+    }
+
+    protected function getApiControllerTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+
+        return <<<PHP
+    <?php
+
+    namespace App\Http\Controllers\Api;
+
+    use App\Http\Requests\\{$modelName}\Store{$modelName}Request;
+    use App\Http\Requests\\{$modelName}\Update{$modelName}Request;
+    use App\Http\Resources\\{$modelName}Resource;
+    use App\Models\\{$modelName};
+    use App\Support\Interfaces\Services\\{$modelName}ServiceInterface;
+    use Illuminate\Http\Request;
+
+    class Api{$modelName}Controller extends ApiController {
+        public function __construct(
+            protected {$modelName}ServiceInterface \${$modelNameCamel}Service
+        ) {}
+
+        /**
+         * Display a listing of the resource.
+         */
+        public function index(Request \$request) {
+            \$perPage = request()->get('perPage', 5);
+
+            return {$modelName}Resource::collection(\$this->{$modelNameCamel}Service->getAllPaginated(\$request->query(), \$perPage));
+        }
+
+        /**
+         * Store a newly created resource in storage.
+         */
+        public function store(Store{$modelName}Request \$request) {
+            return \$this->{$modelNameCamel}Service->create(\$request->validated());
+        }
+
+        /**
+         * Display the specified resource.
+         */
+        public function show({$modelName} \${$modelNameCamel}) {
+            return new {$modelName}Resource(\${$modelNameCamel}->load(['roles' => ['division', 'permissions']]));
+        }
+
+        /**
+         * Update the specified resource in storage.
+         */
+        public function update(Update{$modelName}Request \$request, {$modelName} \${$modelNameCamel}) {
+            return \$this->{$modelNameCamel}Service->update(\${$modelNameCamel}, \$request->validated());
+        }
+
+        /**
+         * Remove the specified resource from storage.
+         */
+        public function destroy(Request \$request, {$modelName} \${$modelNameCamel}) {
+            return \$this->{$modelNameCamel}Service->delete(\${$modelNameCamel});
+        }
+    }
+    PHP;
     }
 
     protected function getStoreRequestTemplate(): string {
