@@ -135,6 +135,7 @@ class GenerateModelScaffold extends Command {
         $this->generateController();
         $this->generateApiController();
         $this->generateControllerTest();
+        $this->generateApiControllerTest();
 
         if ($withFrontend) {
             $this->generateRequiredFiles();
@@ -245,6 +246,22 @@ class GenerateModelScaffold extends Command {
         File::put($controllerTestPath, $controllerTestContent);
 
         $this->info("Controller Test created: {$controllerTestPath}");
+    }
+
+    protected function generateApiControllerTest(): void {
+        $modelNameStudly = self::$model->studly;
+        $apiControllerTestPath = base_path("tests/Feature/Http/Controllers/Api/Api{$modelNameStudly}ControllerTest.php");
+
+        if (File::exists($apiControllerTestPath)) {
+            $this->warn("File already exists, skipping: {$apiControllerTestPath}");
+
+            return;
+        }
+
+        $apiControllerTestContent = $this->getApiControllerTestTemplate();
+        File::put($apiControllerTestPath, $apiControllerTestContent);
+
+        $this->info("API Controller Test created: {$apiControllerTestPath}");
     }
 
     protected function handleFrontendScaffolding(): void {
@@ -600,10 +617,9 @@ class GenerateModelScaffold extends Command {
     use App\Models\User;
 
     test('index method returns paginated {$modelRoute}', function () {
-        \$user = User::factory()->superAdmin()->create();
         create{$modelName}();
 
-        \$response = \$this->actingAs(\$user)->getJson('/{$modelRoute}?page=1&perPage=5');
+        \$response = actAsSuperAdmin()->getJson('/{$modelRoute}?page=1&perPage=5');
 
         \$response->assertStatus(200)
             ->assertJsonStructure(['data', 'meta'])
@@ -611,21 +627,19 @@ class GenerateModelScaffold extends Command {
     });
 
     test('create method returns create page', function () {
-        \$user = User::factory()->superAdmin()->create();
 
-        \$response = \$this->actingAs(\$user)->get('/{$modelRoute}/create');
+        \$response = actAsSuperAdmin()->get('/{$modelRoute}/create');
 
         \$response->assertStatus(200)
             ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Create'));
     });
 
     test('store method creates new {$modelName}', function () {
-        \$user = User::factory()->superAdmin()->create();
         \$data = [
             'name' => 'Test name',
         ];
 
-        \$response = \$this->actingAs(\$user)->postJson('/{$modelRoute}', \$data);
+        \$response = actAsSuperAdmin()->postJson('/{$modelRoute}', \$data);
 
         \$response->assertStatus(201)
             ->assertJsonStructure(['id', 'name']);
@@ -633,33 +647,30 @@ class GenerateModelScaffold extends Command {
     });
 
     test('show method returns {$modelName} details', function () {
-        \$user = User::factory()->superAdmin()->create();
         \$model = create{$modelName}();
 
-        \$response = \$this->actingAs(\$user)->getJson("/{$modelRoute}/{\$model->id}");
+        \$response = actAsSuperAdmin()->getJson("/{$modelRoute}/{\$model->id}");
 
         \$response->assertStatus(200)
             ->assertJson(['id' => \$model->id, 'name' => \$model->name]);
     });
 
     test('edit method returns edit page', function () {
-        \$user = User::factory()->superAdmin()->create();
         \$model = create{$modelName}();
 
-        \$response = \$this->actingAs(\$user)->get("/{$modelRoute}/{\$model->id}/edit");
+        \$response = actAsSuperAdmin()->get("/{$modelRoute}/{\$model->id}/edit");
 
         \$response->assertStatus(200)
             ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Edit'));
     });
 
     test('update method updates {$modelName}', function () {
-        \$user = User::factory()->superAdmin()->create();
         \$model = create{$modelName}();
         \$updatedData = [
             'name' => 'Updated name',
         ];
 
-        \$response = \$this->actingAs(\$user)->putJson("/{$modelRoute}/{\$model->id}", \$updatedData);
+        \$response = actAsSuperAdmin()->putJson("/{$modelRoute}/{\$model->id}", \$updatedData);
 
         \$response->assertStatus(200)
             ->assertJson(\$updatedData);
@@ -667,13 +678,94 @@ class GenerateModelScaffold extends Command {
     });
 
     test('destroy method deletes {$modelName}', function () {
-        \$user = User::factory()->superAdmin()->create();
         \$model = create{$modelName}();
 
-        \$response = \$this->actingAs(\$user)->deleteJson("/{$modelRoute}/{\$model->id}");
+        \$response = actAsSuperAdmin()->deleteJson("/{$modelRoute}/{\$model->id}");
 
         \$response->assertStatus(204);
         \$this->assertDatabaseMissing('{$modelRoute}', ['id' => \$model->id]);
+    });
+    PHP;
+    }
+
+    protected function getApiControllerTestTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+        $modelNamePlural = Str::plural($modelNameCamel);
+
+        return <<<PHP
+    <?php
+
+    use App\Models\User;
+
+    test('index method returns paginated {$modelNamePlural}', function () {
+        create{$modelName}();
+
+        \$response = actAsSuperAdmin()->getJson('/api/{$modelNamePlural}?page=1&perPage=5');
+
+        \$response->assertStatus(200)
+            ->assertJsonStructure(['data', 'meta'])
+            ->assertJsonCount(1, 'data');
+    });
+
+    test('create method returns create page', function () {
+
+        \$response = actAsSuperAdmin()->get('/api/{$modelNamePlural}/create');
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Create'));
+    });
+
+    test('store method creates new {$modelNameCamel}', function () {
+        \$data = [
+            'name' => 'Test name',
+        ];
+
+        \$response = actAsSuperAdmin()->postJson('/api/{$modelNamePlural}', \$data);
+
+        \$response->assertStatus(201)
+            ->assertJsonStructure(['id', 'name']);
+        \$this->assertDatabaseHas('{$modelNamePlural}', \$data);
+    });
+
+    test('show method returns {$modelNameCamel} details', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->getJson("/api/{$modelNamePlural}/{\$model->id}");
+
+        \$response->assertStatus(200)
+            ->assertJson(['id' => \$model->id, 'name' => \$model->name]);
+    });
+
+    test('edit method returns edit page', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->get("/api/{$modelNamePlural}/{\$model->id}/edit");
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Edit'));
+    });
+
+    test('update method updates {$modelNameCamel}', function () {
+        \$model = create{$modelName}();
+        \$updatedData = [
+            'name' => 'Updated name',
+        ];
+
+        \$response = actAsSuperAdmin()->putJson("/api/{$modelNamePlural}/{\$model->id}", \$updatedData);
+
+        \$response->assertStatus(200)
+            ->assertJson(\$updatedData);
+        \$this->assertDatabaseHas('{$modelNamePlural}', \$updatedData);
+    });
+
+    test('destroy method deletes {$modelNameCamel}', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->deleteJson("/api/{$modelNamePlural}/{\$model->id}");
+
+        \$response->assertStatus(204);
+        \$this->assertDatabaseMissing('{$modelNamePlural}', ['id' => \$model->id]);
     });
     PHP;
     }
