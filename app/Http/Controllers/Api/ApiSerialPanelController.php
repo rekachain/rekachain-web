@@ -45,7 +45,8 @@ class ApiSerialPanelController extends Controller {
         $intent = request()->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_SERIAL_PANEL_UPDATE_REJECT->value:             
+            case IntentEnum::API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS->value:
+            $status = request()->get('status'); // qc sends status failed
                 if (!$request->user()->hasRole(RoleEnum::QC_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
