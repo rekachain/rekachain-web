@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use File;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Artisan;
 use Str;
 
@@ -168,26 +169,23 @@ class GenerateModelScaffold extends Command {
     }
 
     protected function defineTemplates(): array {
-        $modelNameStudly = self::$model->studly;
-        $modelCamel = self::$model->camel;
         $withFrontend = self::$withFrontend;
-        $modelUpperSnake = self::$model->upperSnake;
 
         $templates = [
-            'repositoryInterface' => $this->getRepositoryInterfaceTemplate($modelNameStudly),
-            'serviceInterface' => $this->getServiceInterfaceTemplate($modelNameStudly),
-            'repository' => $this->getRepositoryTemplate($modelNameStudly),
-            'service' => $this->getServiceTemplate($modelNameStudly),
-            'storeRequest' => $this->getStoreRequestTemplate($modelNameStudly),
-            'updateRequest' => $this->getUpdateRequestTemplate($modelNameStudly),
-            'resource' => $this->getResourceTemplate($modelNameStudly),
+            'repositoryInterface' => $this->getRepositoryInterfaceTemplate(),
+            'serviceInterface' => $this->getServiceInterfaceTemplate(),
+            'repository' => $this->getRepositoryTemplate(),
+            'service' => $this->getServiceTemplate(),
+            'storeRequest' => $this->getStoreRequestTemplate(),
+            'updateRequest' => $this->getUpdateRequestTemplate(),
+            'resource' => $this->getResourceTemplate(),
         ];
 
         if ($withFrontend) {
             $templates = array_merge($templates, [
-                'reactModelInterface' => $this->getFrontendModelInterfaceTemplate($modelNameStudly),
-                'reactResource' => $this->getFrontendResourceTemplate($modelNameStudly),
-                'reactService' => $this->getFrontendServiceTemplate($modelCamel, $modelNameStudly, $modelUpperSnake),
+                'reactModelInterface' => $this->getFrontendModelInterfaceTemplate(),
+                'reactResource' => $this->getFrontendResourceTemplate(),
+                'reactService' => $this->getFrontendServiceTemplate(),
             ]);
         }
 
@@ -273,7 +271,9 @@ class GenerateModelScaffold extends Command {
     }
 
     // Templates for each file type
-    protected function getRepositoryInterfaceTemplate($modelName): string {
+    protected function getRepositoryInterfaceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -285,7 +285,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getServiceInterfaceTemplate($modelName): string {
+    protected function getServiceInterfaceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -297,7 +299,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getRepositoryTemplate($modelName): string {
+    protected function getRepositoryTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -323,6 +327,8 @@ class GenerateModelScaffold extends Command {
 
                 \$query = \$this->applySearchFilters(\$query, \$searchParams, ['name']);
 
+                \$query = \$this->applyColumnFilters(\$query, \$searchParams, ['id']);
+
                 \$query = \$this->applyResolvedRelations(\$query, \$searchParams);
 
                 \$query = \$this->applySorting(\$query, \$searchParams);
@@ -333,7 +339,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getServiceTemplate($modelName): string {
+    protected function getServiceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -351,7 +359,10 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getControllerTemplate($modelName, $modelNameCamel): string {
+    protected function getControllerTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+
         return <<<PHP
         <?php
 
@@ -419,7 +430,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getStoreRequestTemplate($modelName): string {
+    protected function getStoreRequestTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -437,7 +450,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getUpdateRequestTemplate($modelName): string {
+    protected function getUpdateRequestTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -455,7 +470,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getResourceTemplate($modelName): string {
+    protected function getResourceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -475,7 +492,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getFrontendModelInterfaceTemplate($modelName): string {
+    protected function getFrontendModelInterfaceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<TS
         export interface {$modelName} {
             id: number;
@@ -485,7 +504,9 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getFrontendResourceTemplate($modelName): string {
+    protected function getFrontendResourceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<TS
         import { {$modelName} } from '@/Support/Interfaces/Models';
         import { Resource } from '@/Support/Interfaces/Resources';
@@ -494,8 +515,11 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getFrontendServiceTemplate($modelCamel, $modelName, $modelSnakeUpper): string {
-        $routeName = $modelSnakeUpper . 'S';
+    protected function getFrontendServiceTemplate(): string {
+
+        $routeName = self::$model->upperSnake . 'S';
+        $modelName = self::$model->studly;
+        $modelCamel = self::$model->camel;
 
         return <<<TS
         import { ROUTES } from '@/Support/Constants/routes';
@@ -511,6 +535,9 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     protected function appendFrontendModelInterface(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
@@ -522,6 +549,9 @@ class GenerateModelScaffold extends Command {
         File::put($modelInterfacePath, $modelInterfaceContent);
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     protected function appendFrontendResource(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
@@ -533,6 +563,9 @@ class GenerateModelScaffold extends Command {
         File::put($resourceInterfacePath, $resourceInterfaceContent);
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     protected function appendFrontendModelToRoutes(): void {
         $modelUpperSnake = self::$model->upperSnake;
         $modelDashed = self::$model->kebab;
@@ -543,7 +576,7 @@ class GenerateModelScaffold extends Command {
         $routePostfixLower = Str::lower($routePostfix);
 
         // Check if the route is already defined to avoid duplicates
-        if (strpos($routesContent, "{$modelUpperSnake}{$routePostfix}") === false) {
+        if (!str_contains($routesContent, "{$modelUpperSnake}{$routePostfix}")) {
             // Append the new route at the end of the ROUTES object
             $routesContent = str_replace('};', "\t{$modelUpperSnake}{$routePostfix}: '{$modelDashed}{$routePostfixLower}',\n};", $routesContent);
 
