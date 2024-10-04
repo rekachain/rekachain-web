@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Models\SerialPanel;
 use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
@@ -18,6 +19,16 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
         });
 
         return parent::delete($keyOrModel);
+    }
+
+    public function rejectPanel($serialPanel, $request){
+        $data = SerialPanel::find($serialPanel);
+
+        $data->manufacture_status = 'failed';
+        $data->notes = $request->notes;
+        $data->save();
+
+        return 'Panel has been reject';
     }
 
     protected function getRepositoryClass(): string {

@@ -42,6 +42,8 @@ enum IntentEnum: string {
     case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
     
     case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
+    
+    case API_SERIAL_PANEL_UPDATE_REJECT = 'api.serial.panel.update.reject';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
