@@ -57,7 +57,7 @@ class ApiDetailWorkerPanelController extends Controller {
                     abort(400, 'Status not identified');
                 }
                 if (!in_array($status, DetailWorkerPanelWorkStatusEnum::toArray(), true)) {
-                    abort(400, 'Status not included in PanelAttachmentStatusEnum');
+                    abort(400, 'Status not included in DetailWorkerPanelStatusEnum');
                 }
                 // if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                 //     abort(403, 'Unauthorized');
@@ -72,22 +72,6 @@ class ApiDetailWorkerPanelController extends Controller {
                     ]
                 ]), $perPage));
         }
-
-        // if ($intent === IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS->value) {
-        //     $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value]);
-
-        //     return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> request()->user()->id,
-        //     'work_status' => 'in_progress']));
-        // } else if ($intent === IntentEnum::API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE) {
-        //     $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value]);
-
-        //     return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> request()->user()->id,
-        //     'work_status' => 'completed']));
-        // } else {
-        //     $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value]);
-
-        //     return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> request()->user()->id]));
-        // }
     }
 
     /**
@@ -103,13 +87,16 @@ class ApiDetailWorkerPanelController extends Controller {
      * Display the specified resource.
      */
     public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
-        // return $detailWorkerPanel;
         $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
-        
-        return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> request()->user()->id, 'id' => $detailWorkerPanel->id]));
-        // $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value]);
 
-        // return new DetailWorkerPanelResource($serialPanel->load('detail_worker_panels.step.progress'));
+        return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
+            'column_filters' => [
+                'worker_id'=> $request->user()->id,
+                'id' => $detailWorkerPanel->id
+            ]
+        ])));
+        
+        // return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> request()->user()->id, 'id' => $detailWorkerPanel->id]));
     }
 
     /**

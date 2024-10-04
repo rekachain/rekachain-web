@@ -22,7 +22,7 @@ class DetailWorkerPanelRepository extends BaseRepository implements DetailWorker
 
         $query = $this->applySearchFilters($query, $searchParams, ['work_status']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['work_status','worker_id']);
+        $query = $this->applyColumnFilters($query, $searchParams, ['id','work_status','worker_id']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 
