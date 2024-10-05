@@ -46,7 +46,7 @@ export default function ({
                                 )}
                             </TableCell>
                             <TableCell>{carriage_panel.panel.description}</TableCell>
-                            <TableCell>{carriage_panel.panel.progress?.name}</TableCell>
+                            <TableCell>{carriage_panel.progress?.name}</TableCell>
                             <TableCell>
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}
