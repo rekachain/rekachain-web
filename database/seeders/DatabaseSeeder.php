@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder {
             TrainsetAttachmentSeeder::class,
             TrainsetAttachmentHandlerSeeder::class,
             DetailWorkerTrainsetSeeder::class,
+            TrainsetAttachmentComponentSeeder::class,
         ]);
     }
 }

@@ -31,3 +31,4 @@ export * from './DetailWorkerTrainset';
 export * from './TrainsetAttachmentHandler';
 export * from './ComponentMaterial';
 export * from './WorkAspect';
+export * from './TrainsetAttachmentComponent';

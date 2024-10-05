@@ -17,11 +17,12 @@ class CarriagePanelComponentFactory extends Factory {
      * @return array<string, mixed>
      */
     public function definition(): array {
+        $component = Component::inRandomOrder()->first();
         return [
             //
-            'component_id' => Component::inRandomOrder()->first()->id,
+            'component_id' => $component->id,
             'carriage_panel_id' => CarriagePanel::inRandomOrder()->first()->id,
-            'progress_id' => Progress::inRandomOrder()->first()->id,
+            'progress_id' => $component->progress_id,
             'qty' => $this->faker->numberBetween(1, 10),
         ];
     }

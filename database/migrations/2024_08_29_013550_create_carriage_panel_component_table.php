@@ -9,7 +9,7 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('carriage_panel_component', function (Blueprint $table) {
+        Schema::create('carriage_panel_components', function (Blueprint $table) {
             $table->id();
             $table->foreignId('component_id')->constrained();
             $table->foreignId('progress_id')->nullable()->constrained();
