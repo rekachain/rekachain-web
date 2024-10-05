@@ -20,7 +20,7 @@ class PanelMaterialSeeder extends Seeder {
 
         if (!$csvData) {
             foreach (CarriagePanel::all() as $carriagePanel) {
-                PanelMaterial::factory(rand(5, 20))->create([
+                PanelMaterial::factory(rand(5, 10))->create([
                     'carriage_panel_id' => $carriagePanel->id
                 ]);
             }

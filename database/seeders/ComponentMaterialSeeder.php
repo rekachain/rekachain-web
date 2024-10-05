@@ -19,7 +19,7 @@ class ComponentMaterialSeeder extends Seeder
 
         if (!$csvData) {
             foreach (CarriagePanelComponent::all() as $carriagePanelComponent) {
-                ComponentMaterial::factory(rand(10, 30))->create([
+                ComponentMaterial::factory(rand(5, 10))->create([
                     'carriage_panel_component_id' => $carriagePanelComponent->id
                 ]);
             }
