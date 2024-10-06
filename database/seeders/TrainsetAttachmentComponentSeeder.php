@@ -25,7 +25,7 @@ class TrainsetAttachmentComponentSeeder extends Seeder
                                     'carriage_panel_component_id' => $carriagePanelComponent->id,
                                 ],
                                 [
-                                    'total_required' => $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty,
+                                    'total_required' => \DB::raw('IFNULL(total_required, 0) + ' . $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty.''),
                                 ]
                             );
                         }

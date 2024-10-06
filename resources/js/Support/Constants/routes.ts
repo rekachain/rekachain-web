@@ -37,4 +37,5 @@ export const ROUTES = {
 	COMPONENT_MATERIALS: 'component-materials',
 	WORK_ASPECTS: 'work-aspects',
 	TRAINSET_ATTACHMENT_COMPONENTS: 'trainset-attachment-components',
+	FAILED_COMPONENT_MANUFACTURES: 'failed-component-manufactures',
 };

@@ -32,3 +32,4 @@ export * from './TrainsetAttachmentHandler';
 export * from './ComponentMaterial';
 export * from './WorkAspect';
 export * from './TrainsetAttachmentComponent';
+export * from './FailedComponentManufacture';
