@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CarriagePanelComponent extends Model {
     //
@@ -27,5 +28,9 @@ class CarriagePanelComponent extends Model {
 
     public function progress(): BelongsTo {
         return $this->belongsTo(Progress::class);
+    }
+
+    public function component_materials(): HasMany {
+        return $this->hasMany(ComponentMaterial::class);
     }
 }
