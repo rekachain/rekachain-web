@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\CarriagePanel;
 use App\Models\PanelMaterial;
+use App\Models\RawMaterial;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
@@ -20,9 +21,12 @@ class PanelMaterialSeeder extends Seeder {
 
         if (!$csvData) {
             foreach (CarriagePanel::all() as $carriagePanel) {
-                PanelMaterial::factory(rand(5, 10))->create([
-                    'carriage_panel_id' => $carriagePanel->id
-                ]);
+                for($i=0; $i < rand(5,10); $i++) {
+                    PanelMaterial::factory()->create([
+                        'carriage_panel_id' => $carriagePanel->id,
+                        'raw_material_id' => RawMaterial::whereNotIn('id', PanelMaterial::whereCarriagePanelId($carriagePanel->id)->pluck('raw_material_id'))->inRandomOrder()->first()->id,
+                    ]);
+                }
             }
 
             return;
