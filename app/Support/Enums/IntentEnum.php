@@ -33,6 +33,8 @@ enum IntentEnum: string {
 
     case API_DETAIL_WORKER_PANEL_ASSIGN_WORKER = 'api.detail.worker.panel.assign.worker';
     
+    case API_DETAIL_WORKER_PANEL_ACCEPT_PANEL = 'api.detail.worker.accept.panel';
+    
     case API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER = 'api.detail.worker.panel.accept.assign.worker';
     
     case API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER = 'api.detail.worker.panel.decline.assign.worker';
