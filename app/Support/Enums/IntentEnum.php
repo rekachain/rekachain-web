@@ -7,6 +7,14 @@ enum IntentEnum: string {
 
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
+
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER = 'api.trainset.attachment.get.attachments.by.current.user';
+
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS = 'api.trainset.attachment.get.attachments.by.status';
+
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER = 'api.trainset.attachment.get.attachments.by.status.and.current.user';
+
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.trainset.attachment.get.attachment.details';
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS = 'api.trainset.attachment.get.attachment.materials';
