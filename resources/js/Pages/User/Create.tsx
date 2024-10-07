@@ -2,29 +2,52 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { Label } from '@/Components/UI/label';
-import { RoleResource } from '@/Support/Interfaces/Resources';
+import { RoleResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { workstationService } from '@/Services/workstationService';
+import { stepService } from '@/Services/stepService';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 
 export default function (props: { roles: RoleResource[] }) {
-    const { data, setData, progress } = useForm({
+    const { data, setData, progress } = useForm<{
+        nip: string;
+        name: string;
+        email: string;
+        phone_number: string;
+        password: string;
+        role_id: number | undefined;
+        workstation_id: number | undefined;
+        step_id: number | undefined;
+    }>({
         nip: '',
         name: '',
         email: '',
         phone_number: '',
         password: '',
-        role_id: '',
+        role_id: undefined,
+        workstation_id: undefined,
+        step_id: undefined,
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
     const { loading } = useLoading();
+
+    const fetchWorkstations = useCallback(async (filters: { search: string }) => {
+        return await workstationService.getAll(filters).then(response => response.data);
+    }, []);
+
+    const fetchSteps = useCallback(async (filters: { search: string }) => {
+        return await stepService.getAll(filters).then(response => response.data);
+    }, []);
+
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
@@ -34,7 +57,9 @@ export default function (props: { roles: RoleResource[] }) {
         formData.append('email', data.email);
         formData.append('phone_number', data.phone_number);
         formData.append('password', data.password);
-        formData.append('role_id', data.role_id);
+        formData.append('role_id', data.role_id?.toString() ?? '');
+        formData.append('workstation_id', data.workstation_id?.toString() ?? '');
+        formData.append('step_id', data.step_id?.toString() ?? '');
         if (photo) formData.append('image_path', photo);
         await userService.create(formData);
         router.visit(route(`${ROUTES.USERS}.index`));
@@ -66,14 +91,14 @@ export default function (props: { roles: RoleResource[] }) {
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel htmlFor="name" value="Nama" />
                             <Input
-                                id="nama"
+                                id="name"
                                 type="text"
-                                name="nama"
+                                name="name"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="nama"
+                                autoComplete="name"
                                 onChange={e => setData('name', e.target.value)}
                                 required
                             />
@@ -103,6 +128,30 @@ export default function (props: { roles: RoleResource[] }) {
                                 autoComplete="phone_number"
                                 onChange={e => setData('phone_number', e.target.value)}
                                 required
+                            />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="workstation_id" value="Workstation" />
+                            <GenericDataSelector
+                                fetchData={fetchWorkstations}
+                                setSelectedData={id => setData('workstation_id', id)}
+                                selectedDataId={data.workstation_id ?? undefined}
+                                placeholder="Select Workstation"
+                                renderItem={(item: WorkstationResource) => `${item.name} - ${item.location}`} // Customize how to display the item
+                                buttonClassName="mt-1"
+                            />
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="step_id" value="Step" />
+                            <GenericDataSelector
+                                fetchData={fetchSteps}
+                                setSelectedData={id => setData('step_id', id)}
+                                selectedDataId={data.step_id}
+                                placeholder="Select Step"
+                                renderItem={item => item.name}
+                                buttonClassName="mt-1"
                             />
                         </div>
 
@@ -139,7 +188,7 @@ export default function (props: { roles: RoleResource[] }) {
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
                             <h2 className="text-lg font-semibold">Role</h2>
-                            <RadioGroup onValueChange={v => setData('role_id', v)}>
+                            <RadioGroup onValueChange={v => setData('role_id', +v)}>
                                 {props.roles?.map(role => (
                                     <div key={role.id} className="flex items-center space-x-2">
                                         <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />

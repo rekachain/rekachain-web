@@ -2,55 +2,82 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
-import { RoleResource, UserResource } from '@/Support/Interfaces/Resources';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { Label } from '@/Components/UI/label';
+import { RoleResource, UserResource } from '@/Support/Interfaces/Resources';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { workstationService } from '@/Services/workstationService';
+import { stepService } from '@/Services/stepService';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 
-export default function ({ user, roles }: { user: UserResource; roles: RoleResource[] }) {
-    console.log(user, roles);
-    const { data, setData, progress } = useForm({
+export default function EditUser(props: { user: UserResource; roles: RoleResource[] }) {
+    console.log(props);
+    const { user } = props;
+
+    const { data, setData, progress } = useForm<
+        Partial<{
+            nip: string;
+            name: string;
+            email: string;
+            phone_number: string;
+            password: string;
+            role_id: number;
+            workstation_id: number;
+            step_id: number;
+        }>
+    >({
         nip: user.nip,
         name: user.name,
         email: user.email,
-        phone_number: user.phone_number ?? '',
-        password: '',
-        role_id: user.role_id?.toString(),
+        phone_number: user.phone_number,
+        role_id: user.role_id,
+        workstation_id: user.workstation_id,
+        step_id: user.step_id,
     });
 
+    const [photo, setPhoto] = useState<Blob | null>(null);
     const { loading } = useLoading();
 
-    const [photo, setPhoto] = useState<Blob | null>(null);
+    const fetchWorkstations = useCallback(async (filters: { search: string }) => {
+        return await workstationService.getAll(filters).then(response => response.data);
+    }, []);
+
+    const fetchSteps = useCallback(async (filters: { search: string }) => {
+        return await stepService.getAll(filters).then(response => response.data);
+    }, []);
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
         const formData = new FormData();
-        if (data.nip) formData.append('nip', data.nip);
-        if (data.name) formData.append('name', data.name);
-        if (data.phone_number) formData.append('phone_number', data.phone_number);
-        if (data.email) formData.append('email', data.email);
-        if (data.password) formData.append('password', data.password);
-        if (photo) formData.append('image_path', photo);
-        if (data.role_id) formData.append('role_id', data.role_id);
-        await userService.update(user.id, formData);
+        data.nip && formData.append('nip', data.nip);
+        data.name && formData.append('name', data.name);
+        data.email && formData.append('email', data.email);
+        data.phone_number && formData.append('phone_number', data.phone_number);
+        data.password && formData.append('password', data.password); // Only update if password is provided
+        data.role_id && formData.append('role_id', data.role_id.toString());
+        data.workstation_id && formData.append('workstation_id', data.workstation_id.toString());
+        data.step_id && formData.append('step_id', data.step_id.toString());
+        photo && formData.append('image_path', photo);
+
+        await userService.update(user.id, formData); // PUT request to update user
         router.visit(route(`${ROUTES.USERS}.index`));
         void useSuccessToast('User updated successfully');
     });
 
     return (
         <>
-            <Head title="Ubah Staff" />
+            <Head title="Edit Staff" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Staff: {user.name}</h1>
+                        <h1 className="text-page-header my-4">Edit Staff</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
@@ -63,21 +90,22 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 value={data.nip}
                                 className="mt-1"
                                 autoComplete="nip"
-                                placeholder={user.nip}
                                 maxLength={18}
                                 onChange={e => setData('nip', e.target.value)}
+                                required
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel htmlFor="name" value="Nama" />
                             <Input
-                                id="nama"
+                                id="name"
                                 type="text"
-                                name="nama"
+                                name="name"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="nama"
+                                autoComplete="name"
                                 onChange={e => setData('name', e.target.value)}
+                                required
                             />
                         </div>
                         <div className="mt-4">
@@ -87,24 +115,55 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                placeholder={user.email}
                                 className="mt-1"
                                 autoComplete="email"
                                 onChange={e => setData('email', e.target.value)}
+                                required
                             />
                         </div>
+
                         <div className="mt-4">
-                            <InputLabel htmlFor="phone" value="Phone" />
+                            <InputLabel htmlFor="phone_number" value="Nomor Telepon" />
                             <Input
-                                id="phone"
-                                type="tel"
-                                name="phone"
+                                id="phone_number"
+                                type="text"
+                                name="phone_number"
                                 value={data.phone_number}
                                 className="mt-1"
-                                autoComplete="phone"
+                                autoComplete="phone_number"
                                 onChange={e => setData('phone_number', e.target.value)}
+                                required
                             />
                         </div>
+
+                        {/* Persist the selected workstation */}
+                        <div className="mt-4">
+                            <InputLabel htmlFor="workstation_id" value="Workstation" />
+                            <GenericDataSelector
+                                fetchData={fetchWorkstations}
+                                setSelectedData={id => setData('workstation_id', +id)}
+                                selectedDataId={data.workstation_id}
+                                placeholder="Select Workstation"
+                                renderItem={item => `${item.name} - ${item.location}`}
+                                initialSearch={user.workstation?.name}
+                                buttonClassName="mt-1"
+                            />
+                        </div>
+
+                        {/* Persist the selected step */}
+                        <div className="mt-4">
+                            <InputLabel htmlFor="step_id" value="Step" />
+                            <GenericDataSelector
+                                fetchData={fetchSteps}
+                                setSelectedData={id => setData('step_id', +id)}
+                                selectedDataId={data.step_id}
+                                placeholder="Select Step"
+                                renderItem={item => item.name}
+                                initialSearch={user.step?.name}
+                                buttonClassName="mt-1"
+                            />
+                        </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="password" value="Password" />
                             <Input
@@ -115,8 +174,10 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
                                 className="mt-1"
                                 autoComplete="password"
                                 onChange={e => setData('password', e.target.value)}
+                                placeholder="Leave empty to keep current password"
                             />
                         </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="avatar" value="Foto staff" />
                             <Input
@@ -137,24 +198,18 @@ export default function ({ user, roles }: { user: UserResource; roles: RoleResou
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
                             <h2 className="text-lg font-semibold">Role</h2>
-                            <RadioGroup
-                                defaultValue={user.role_id?.toString()}
-                                onValueChange={v => setData('role_id', v)}
-                            >
-                                {roles?.map(role => (
+                            <RadioGroup onValueChange={v => setData('role_id', +v)} value={data.role_id?.toString()}>
+                                {props.roles?.map(role => (
                                     <div key={role.id} className="flex items-center space-x-2">
-                                        <RadioGroupItem
-                                            value={role.id?.toString()}
-                                            id={`role.${role.id?.toString()}`}
-                                        />
-                                        <Label htmlFor={`role.${role.id?.toString()}`}>{role.name}</Label>
+                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
+                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
                                     </div>
                                 ))}
                             </RadioGroup>
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Ubah Staff
+                            Update Staff
                         </Button>
                     </form>
                 </div>

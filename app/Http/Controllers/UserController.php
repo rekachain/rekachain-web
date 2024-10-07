@@ -76,7 +76,7 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
-        $user = new UserResource($user);
+        $user = new UserResource($user->load('roles', 'workstation', 'step'));
         $roles = $this->roleService->getAll();
 
         return inertia('User/Edit', compact('user', 'roles'));
