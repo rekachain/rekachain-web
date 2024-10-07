@@ -7,6 +7,8 @@ enum IntentEnum: string {
 
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
+
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_PROCESS = 'api.panel.attachment.get.attachments.by.process';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_DONE = 'api.panel.attachment.get.attachments.by.done';
@@ -22,21 +24,6 @@ enum IntentEnum: string {
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS = 'api.panel.attachment.get.attachment.serial.number.details';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_PROCESS = 'api.trainset.attachment.get.attachments.by.process';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_DONE = 'api.trainset.attachment.get.attachments.by.done';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.trainset.attachment.get.attachment.details';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR = 'api.trainset.attachment.get.attachment.details.with.qr';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER = 'api.trainset.attachment.get.attachment.serial.number';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS = 'api.trainset.attachment.get.attachment.serial.numbers';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS = 'api.trainset.attachment.get.attachment.serial.number.details';
-
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.trainset.attachment.get.attachment.serial.number.details.with.qr';
 
     case API_DETAIL_WORKER_PANEL_GET_PANELS = 'api.detail.worker.panel.get.panels';
     
@@ -53,22 +40,6 @@ enum IntentEnum: string {
     case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
     
     case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
-
-    // case API_DETAIL_WORKER_PANEL_GET_PANELS = 'api.detail.worker.panel.get.panels';
-    
-    // case API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS = 'api.detail.worker.panel.get.panel.details';
-
-    // case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
-
-    // case API_DETAIL_WORKER_PANEL_ASSIGN_WORKER = 'api.detail.worker.panel.assign.worker';
-    
-    // case API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER = 'api.detail.worker.panel.accept.assign.worker';
-    
-    // case API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER = 'api.detail.worker.panel.decline.assign.worker';
-
-    // case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_PROCESS = 'api.detail.worker.panel.get.detail.by.process';
-    
-    // case API_DETAIL_WORKER_PANEL_GET_DETAIL_BY_DONE = 'api.detail.worker.panel.get.detail.by.done';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
 
