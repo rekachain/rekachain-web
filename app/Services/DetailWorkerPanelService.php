@@ -37,20 +37,10 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
         }                                    
     }
 
-    public function acceptAssign($detailWorkerPanel){
+    public function requestAssign($detailWorkerPanel, $request){
         $detailWorkerPanel = DetailWorkerPanel::find($detailWorkerPanel);
         
-        $detailWorkerPanel->acceptance_status = 'accepted';
-
-        $detailWorkerPanel->save();
-
-        return $detailWorkerPanel;
-    }
-
-    public function declineAssign($detailWorkerPanel){
-        $detailWorkerPanel = DetailWorkerPanel::find($detailWorkerPanel);
-        
-        $detailWorkerPanel->acceptance_status = 'declined';
+        $detailWorkerPanel->acceptance_status = $request->acceptance_status;
 
         $detailWorkerPanel->save();
 
