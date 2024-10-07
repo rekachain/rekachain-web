@@ -29,7 +29,7 @@
         "blank_line_after_opening_tag": true,
         "combine_consecutive_issets": true,
         "combine_consecutive_unsets": true,
-        "explicit_string_variable": true,
+        "explicit_string_variable": false,
         "concat_space": {
             "spacing": "one"
         },

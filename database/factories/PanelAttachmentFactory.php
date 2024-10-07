@@ -21,8 +21,8 @@ class PanelAttachmentFactory extends Factory {
     public function definition(): array {
         return [
             'carriage_panel_id' => CarriagePanel::inRandomOrder()->first()->id,
-            'source_workstation_id' => Workstation::inRandomOrder()->first()->id,
-            'destination_workstation_id' => Workstation::inRandomOrder()->first()->id,
+            'source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
+            'destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
             'attachment_number' => $this->faker->text(10),
             'qr_code' => $this->faker->unique()->text(10),
             'qr_path' => $this->faker->unique()->imageUrl(),

@@ -30,6 +30,7 @@ export default function ({
                         <TableHead>Nama</TableHead>
                         <TableHead>Jumlah</TableHead>
                         <TableHead>Deskripsi</TableHead>
+                        <TableHead>Proses</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -45,6 +46,7 @@ export default function ({
                                 )}
                             </TableCell>
                             <TableCell>{carriage_panel.panel.description}</TableCell>
+                            <TableCell>{carriage_panel.progress?.name}</TableCell>
                             <TableCell>
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Progress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,6 +16,8 @@ class ComponentFactory extends Factory {
      */
     public function definition(): array {
         return [
+            'name' => $this->faker->word(),
+            'progress_id' => Progress::inRandomOrder()->first()->id,
             //
         ];
     }

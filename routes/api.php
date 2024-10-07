@@ -40,7 +40,7 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('panels', ApiPanelController::class);
         Route::apiResource('panel-attachments', ApiPanelAttachmentController::class);
         Route::apiResource('panel-attachment-handlers', ApiPanelAttachmentHandlerController::class);
-        Route::apiResource('serial-panels', ApiSerialPanelController::class)->only(['show']);
+        Route::apiResource('serial-panels', ApiSerialPanelController::class);
         // Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);
         Route::apiResource('components', ApiComponentController::class);
         // Route::apiResource('progress', ApiProgressController::class)->only(['index', 'show']);

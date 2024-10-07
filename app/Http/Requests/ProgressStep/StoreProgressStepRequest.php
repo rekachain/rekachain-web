@@ -7,7 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreProgressStepRequest extends FormRequest {
     public function rules(): array {
         return [
-            // Add your validation rules here
+            'progress_id' => 'required|exists:progress,id',
+            'step_id' => 'required|exists:steps,id',
         ];
     }
 }

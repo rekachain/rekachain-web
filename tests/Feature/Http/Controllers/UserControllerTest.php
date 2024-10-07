@@ -25,11 +25,13 @@ test('create method returns create page', function () {
 
 test('store method creates new User', function () {
     $user = User::factory()->superAdmin()->create();
+    $role = Role::factory()->create();
     $UserData = [
         'name' => 'Test name',
         'nip' => '666',
         'email' => 'test@email.com',
-        'password' => 'password'
+        'password' => 'password',
+        'role_id' => $role->id,
     ];
 
     $response = $this->actingAs($user)->postJson('/users', $UserData);

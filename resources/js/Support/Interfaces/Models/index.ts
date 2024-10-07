@@ -29,3 +29,4 @@ export * from './ProgressStep';
 export * from './TrainsetAttachment';
 export * from './DetailWorkerTrainset';
 export * from './TrainsetAttachmentHandler';
+export * from './ComponentMaterial';

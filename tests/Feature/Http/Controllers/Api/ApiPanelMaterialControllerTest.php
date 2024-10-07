@@ -18,9 +18,9 @@ test('update Panel Material', function () {
     $carriage_panel = createCarriagePanel();
     $raw_material = createRawMaterial();
     $panel_material = createPanelMaterial();
-    dump($carriage_panel->id);
-    dump($raw_material->id);
-    dump($panel_material->id);
+    // dump($carriage_panel->id);
+    // dump($raw_material->id);
+    // dump($panel_material->id);
     actAsSuperAdmin()->put('/api/panel-materials/' . $panel_material->id, [
         'carriage_panel_id' => $carriage_panel->id,
         'panel_material_id' => $raw_material->id,
