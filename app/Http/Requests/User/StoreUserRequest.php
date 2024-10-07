@@ -26,6 +26,8 @@ class StoreUserRequest extends FormRequest {
             'phone_number' => 'nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:15',
             'password' => 'required|string|min:8',
             'role_id' => 'nullable|exists:roles,id',
+            'workstation_id' => 'nullable|exists:workstations,id',
+            'step_id' => 'nullable|exists:steps,id',
         ];
     }
 }

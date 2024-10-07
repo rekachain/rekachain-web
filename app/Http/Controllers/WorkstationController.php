@@ -16,20 +16,19 @@ class WorkstationController extends Controller {
     public function __construct(
         protected WorkstationServiceInterface $workstationService,
         protected WorkshopServiceInterface $workshopService,
-        protected DivisionServiceInterface $divisionService) {}
+        protected DivisionServiceInterface $divisionService
+    ) {
+        //
+    }
 
     public function index(Request $request) {
 
         $request->checkPermissionEnum(PermissionEnum::WORKSTATION_READ);
 
         if ($this->ajax()) {
-            $perPage = request()->get('perPage', 'All');
+            $perPage = request()->get('perPage', 5);
 
-            if ($perPage !== 'All') {
-                return WorkstationResource::collection($this->workstationService->getAllPaginated($request->query(), $perPage));
-            }
-
-            return WorkstationResource::collection($this->workstationService->getAll());
+            return WorkstationResource::collection($this->workstationService->getAllPaginated($request->query(), $perPage));
         }
 
         return inertia('Workstation/Index');
