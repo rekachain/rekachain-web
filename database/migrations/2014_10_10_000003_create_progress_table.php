@@ -12,6 +12,7 @@ return new class extends Migration {
         Schema::create('progress', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->foreignId('work_aspect_id')->constrained();
             $table->timestamps();
         });
     }

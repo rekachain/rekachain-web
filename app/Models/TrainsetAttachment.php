@@ -50,4 +50,8 @@ class TrainsetAttachment extends Model {
     public function supervisor(): BelongsTo {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+    public function trainset_attachment_components(): HasMany {
+        return $this->hasMany(TrainsetAttachmentComponent::class);
+    }
 }

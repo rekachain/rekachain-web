@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use File;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Artisan;
 use Str;
 
@@ -21,6 +22,7 @@ class Model {
     public string $upperSnake;
     public string $lower;
     public string $kebab;
+    public string $kebabPlural;
 
     public function __construct(string $modelName) {
         $this->name = $modelName;
@@ -31,6 +33,7 @@ class Model {
         $this->upperSnake = Str::upper($this->snake);
         $this->lower = Str::lower($modelName);
         $this->kebab = Str::kebab($modelName);
+        $this->kebabPlural = Str::plural($this->kebab);
     }
 }
 
@@ -41,8 +44,13 @@ class GenerateModelScaffold extends Command {
     private static bool $withMigration = false;
     private static bool $withSeeder = false;
     private static bool $withFactory = false;
-    private static bool $withPivot = false;
+    private static bool $withController = false;
+    private static bool $withApiController = false;
+    private static bool $withTest = false;
+    private static bool $asPivot = false;
     private static bool $withFrontend = false;
+    private static array $excluded = [];
+    private static bool $showHelp = false;
 
     /**
      * The name and signature of the console command.
@@ -50,12 +58,17 @@ class GenerateModelScaffold extends Command {
      * @var string
      */
     protected $signature = 'make:scaffold {model : The name of the model}
-                            {--all : Generate seeder, factory, and Frontend structure for the model}
-                            {--migration : Generate a migration for the model}
-                            {--seeder : Generate a seeder for the model}
-                            {--factory : Generate a factory for the model}
-                            {--pivot : Generate a pivot model for the model}
-                            {--frontend : Generate Frontend structure for the model}';
+                            {--a|all : Generate seeder, controller, factory, and Frontend structure for the model (use --exclude for exclude specific files)}
+                            {--m|migration : Generate a migration for the model}
+                            {--s|seeder : Generate a seeder for the model}
+                            {--f|factory : Generate a factory for the model}
+                            {--controller : Generate a controller for the model}
+                            {--api-controller : Generate an API controller for the model}
+                            {--test : Generate a test for the model}
+                            {--p|pivot : Generate a pivot model for the model}
+                            {--frontend : Generate Frontend structure for the model}
+                            {--e|exclude=* : Do not generate files for the specified model}
+                            {--h|help : Display this help message}';
 
     /**
      * The console command description.
@@ -73,14 +86,27 @@ class GenerateModelScaffold extends Command {
         self::$withMigration = $this->option('migration');
         self::$withSeeder = $this->option('seeder');
         self::$withFactory = $this->option('factory');
-        self::$withPivot = $this->option('pivot');
+        self::$withController = $this->option('controller');
+        self::$withApiController = $this->option('api-controller');
+        self::$withTest = $this->option('test');
+        self::$asPivot = $this->option('pivot');
         self::$withFrontend = $this->option('frontend');
+        self::$excluded = $this->option('exclude');
+        self::$showHelp = $this->option('help');
+
+        if (self::$showHelp) {
+            $this->help();
+            return;
+        }
 
         if (self::$withAll) {
-            self::$withMigration = true;
-            self::$withSeeder = true;
-            self::$withFactory = true;
-            self::$withFrontend = true;
+            self::$withMigration = !in_array('migration', self::$excluded);
+            self::$withSeeder = !in_array('seeder', self::$excluded);
+            self::$withFactory = !in_array('factory', self::$excluded);
+            self::$withController = !in_array('controller', self::$excluded);
+            self::$withApiController = !in_array('api-controller', self::$excluded);
+            self::$withTest = !in_array('test', self::$excluded);
+            self::$withFrontend = !in_array('frontend', self::$excluded);
         }
 
         $this->generateModel();
@@ -97,17 +123,17 @@ class GenerateModelScaffold extends Command {
             '--migration' => self::$withMigration,
             '--seed' => self::$withSeeder,
             '--factory' => self::$withFactory,
-            '--pivot' => self::$withPivot,
+            '--pivot' => self::$asPivot,
         ];
 
         $modelName = self::$model->studly;
         $withSeeder = self::$withSeeder;
         $withFactory = self::$withFactory;
-        $withPivot = self::$withPivot;
+        $asPivot = self::$asPivot;
 
         Artisan::call('make:model', $options);
 
-        $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : '') . (self::$withPivot ? ' as pivot' : ''));
+        $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : '') . ($asPivot ? ' as pivot' : ''));
     }
 
     protected function generateFiles(): void {
@@ -119,17 +145,28 @@ class GenerateModelScaffold extends Command {
         foreach ($paths as $key => $path) {
             File::ensureDirectoryExists(dirname($path));
 
-            if (!File::exists($path) && $key !== 'controller') {
+            if (!File::exists($path) && $key !== 'controller' && $key !== 'apiController') {
                 File::put($path, $templates[$key]);
                 $this->info("File created: {$path}");
             } else {
-                if ($key !== 'controller') {
+                if ($key !== 'controller' && $key !== 'apiController') {
                     $this->warn("File already exists, skipping: {$path}");
                 }
             }
         }
 
-        $this->generateController();
+        if (self::$withController) {
+            $this->generateController();
+            if (self::$withTest) {
+                $this->generateControllerTest();
+            }
+        }
+        if (self::$withApiController) {
+            $this->generateApiController();
+            if (self::$withTest) {
+                $this->generateApiControllerTest();
+            }
+        }
 
         if ($withFrontend) {
             $this->generateRequiredFiles();
@@ -168,26 +205,23 @@ class GenerateModelScaffold extends Command {
     }
 
     protected function defineTemplates(): array {
-        $modelNameStudly = self::$model->studly;
-        $modelCamel = self::$model->camel;
         $withFrontend = self::$withFrontend;
-        $modelUpperSnake = self::$model->upperSnake;
 
         $templates = [
-            'repositoryInterface' => $this->getRepositoryInterfaceTemplate($modelNameStudly),
-            'serviceInterface' => $this->getServiceInterfaceTemplate($modelNameStudly),
-            'repository' => $this->getRepositoryTemplate($modelNameStudly),
-            'service' => $this->getServiceTemplate($modelNameStudly),
-            'storeRequest' => $this->getStoreRequestTemplate($modelNameStudly),
-            'updateRequest' => $this->getUpdateRequestTemplate($modelNameStudly),
-            'resource' => $this->getResourceTemplate($modelNameStudly),
+            'repositoryInterface' => $this->getRepositoryInterfaceTemplate(),
+            'serviceInterface' => $this->getServiceInterfaceTemplate(),
+            'repository' => $this->getRepositoryTemplate(),
+            'service' => $this->getServiceTemplate(),
+            'storeRequest' => $this->getStoreRequestTemplate(),
+            'updateRequest' => $this->getUpdateRequestTemplate(),
+            'resource' => $this->getResourceTemplate(),
         ];
 
         if ($withFrontend) {
             $templates = array_merge($templates, [
-                'reactModelInterface' => $this->getFrontendModelInterfaceTemplate($modelNameStudly),
-                'reactResource' => $this->getFrontendResourceTemplate($modelNameStudly),
-                'reactService' => $this->getFrontendServiceTemplate($modelCamel, $modelNameStudly, $modelUpperSnake),
+                'reactModelInterface' => $this->getFrontendModelInterfaceTemplate(),
+                'reactResource' => $this->getFrontendResourceTemplate(),
+                'reactService' => $this->getFrontendServiceTemplate(),
             ]);
         }
 
@@ -210,6 +244,55 @@ class GenerateModelScaffold extends Command {
         File::put($controllerPath, $controllerContent);
 
         $this->info("Controller created: {$controllerPath}");
+    }
+
+    protected function generateApiController(): void {
+        $modelNameStudly = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+        $apiControllerPath = app_path("Http/Controllers/Api/Api{$modelNameStudly}Controller.php");
+
+        if (File::exists($apiControllerPath)) {
+            $this->warn("File already exists, skipping: {$apiControllerPath}");
+
+            return;
+        }
+
+        $apiControllerContent = $this->getApiControllerTemplate();
+        File::put($apiControllerPath, $apiControllerContent);
+
+        $this->info("API Controller created: {$apiControllerPath}");
+    }
+
+    protected function generateControllerTest(): void {
+        $modelNameStudly = self::$model->studly;
+        $controllerTestPath = base_path("tests/Feature/Http/Controllers/{$modelNameStudly}ControllerTest.php");
+
+        if (File::exists($controllerTestPath)) {
+            $this->warn("File already exists, skipping: {$controllerTestPath}");
+
+            return;
+        }
+
+        $controllerTestContent = $this->getControllerTestTemplate();
+        File::put($controllerTestPath, $controllerTestContent);
+
+        $this->info("Controller Test created: {$controllerTestPath}");
+    }
+
+    protected function generateApiControllerTest(): void {
+        $modelNameStudly = self::$model->studly;
+        $apiControllerTestPath = base_path("tests/Feature/Http/Controllers/Api/Api{$modelNameStudly}ControllerTest.php");
+
+        if (File::exists($apiControllerTestPath)) {
+            $this->warn("File already exists, skipping: {$apiControllerTestPath}");
+
+            return;
+        }
+
+        $apiControllerTestContent = $this->getApiControllerTestTemplate();
+        File::put($apiControllerTestPath, $apiControllerTestContent);
+
+        $this->info("API Controller Test created: {$apiControllerTestPath}");
     }
 
     protected function handleFrontendScaffolding(): void {
@@ -273,7 +356,9 @@ class GenerateModelScaffold extends Command {
     }
 
     // Templates for each file type
-    protected function getRepositoryInterfaceTemplate($modelName): string {
+    protected function getRepositoryInterfaceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -285,7 +370,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getServiceInterfaceTemplate($modelName): string {
+    protected function getServiceInterfaceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -297,7 +384,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getRepositoryTemplate($modelName): string {
+    protected function getRepositoryTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -323,6 +412,8 @@ class GenerateModelScaffold extends Command {
 
                 \$query = \$this->applySearchFilters(\$query, \$searchParams, ['name']);
 
+                \$query = \$this->applyColumnFilters(\$query, \$searchParams, ['id']);
+
                 \$query = \$this->applyResolvedRelations(\$query, \$searchParams);
 
                 \$query = \$this->applySorting(\$query, \$searchParams);
@@ -333,7 +424,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getServiceTemplate($modelName): string {
+    protected function getServiceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -351,7 +444,10 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getControllerTemplate($modelName, $modelNameCamel): string {
+    protected function getControllerTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+
         return <<<PHP
         <?php
 
@@ -419,7 +515,70 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getStoreRequestTemplate($modelName): string {
+    protected function getApiControllerTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+
+        return <<<PHP
+    <?php
+
+    namespace App\Http\Controllers\Api;
+
+    use App\Http\Requests\\{$modelName}\Store{$modelName}Request;
+    use App\Http\Requests\\{$modelName}\Update{$modelName}Request;
+    use App\Http\Resources\\{$modelName}Resource;
+    use App\Models\\{$modelName};
+    use App\Support\Interfaces\Services\\{$modelName}ServiceInterface;
+    use Illuminate\Http\Request;
+
+    class Api{$modelName}Controller extends ApiController {
+        public function __construct(
+            protected {$modelName}ServiceInterface \${$modelNameCamel}Service
+        ) {}
+
+        /**
+         * Display a listing of the resource.
+         */
+        public function index(Request \$request) {
+            \$perPage = request()->get('perPage', 5);
+
+            return {$modelName}Resource::collection(\$this->{$modelNameCamel}Service->getAllPaginated(\$request->query(), \$perPage));
+        }
+
+        /**
+         * Store a newly created resource in storage.
+         */
+        public function store(Store{$modelName}Request \$request) {
+            return \$this->{$modelNameCamel}Service->create(\$request->validated());
+        }
+
+        /**
+         * Display the specified resource.
+         */
+        public function show({$modelName} \${$modelNameCamel}) {
+            return new {$modelName}Resource(\${$modelNameCamel}->load(['roles' => ['division', 'permissions']]));
+        }
+
+        /**
+         * Update the specified resource in storage.
+         */
+        public function update(Update{$modelName}Request \$request, {$modelName} \${$modelNameCamel}) {
+            return \$this->{$modelNameCamel}Service->update(\${$modelNameCamel}, \$request->validated());
+        }
+
+        /**
+         * Remove the specified resource from storage.
+         */
+        public function destroy(Request \$request, {$modelName} \${$modelNameCamel}) {
+            return \$this->{$modelNameCamel}Service->delete(\${$modelNameCamel});
+        }
+    }
+    PHP;
+    }
+
+    protected function getStoreRequestTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -437,7 +596,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getUpdateRequestTemplate($modelName): string {
+    protected function getUpdateRequestTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -455,7 +616,9 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getResourceTemplate($modelName): string {
+    protected function getResourceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<PHP
         <?php
 
@@ -475,7 +638,172 @@ class GenerateModelScaffold extends Command {
         PHP;
     }
 
-    protected function getFrontendModelInterfaceTemplate($modelName): string {
+    protected function getControllerTestTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelRoute = self::$model->kebabPlural;
+
+        return <<<PHP
+    <?php
+
+    use App\Models\User;
+
+    test('index method returns paginated {$modelRoute}', function () {
+        create{$modelName}();
+
+        \$response = actAsSuperAdmin()->getJson('/{$modelRoute}?page=1&perPage=5');
+
+        \$response->assertStatus(200)
+            ->assertJsonStructure(['data', 'meta'])
+            ->assertJsonCount(1, 'data');
+    });
+
+    test('create method returns create page', function () {
+
+        \$response = actAsSuperAdmin()->get('/{$modelRoute}/create');
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Create'));
+    });
+
+    test('store method creates new {$modelName}', function () {
+        \$data = [
+            'name' => 'Test name',
+        ];
+
+        \$response = actAsSuperAdmin()->postJson('/{$modelRoute}', \$data);
+
+        \$response->assertStatus(201)
+            ->assertJsonStructure(['id', 'name']);
+        \$this->assertDatabaseHas('{$modelRoute}', \$data);
+    });
+
+    test('show method returns {$modelName} details', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->getJson("/{$modelRoute}/{\$model->id}");
+
+        \$response->assertStatus(200)
+            ->assertJson(['id' => \$model->id, 'name' => \$model->name]);
+    });
+
+    test('edit method returns edit page', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->get("/{$modelRoute}/{\$model->id}/edit");
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Edit'));
+    });
+
+    test('update method updates {$modelName}', function () {
+        \$model = create{$modelName}();
+        \$updatedData = [
+            'name' => 'Updated name',
+        ];
+
+        \$response = actAsSuperAdmin()->putJson("/{$modelRoute}/{\$model->id}", \$updatedData);
+
+        \$response->assertStatus(200)
+            ->assertJson(\$updatedData);
+        \$this->assertDatabaseHas('{$modelRoute}', \$updatedData);
+    });
+
+    test('destroy method deletes {$modelName}', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->deleteJson("/{$modelRoute}/{\$model->id}");
+
+        \$response->assertStatus(204);
+        \$this->assertDatabaseMissing('{$modelRoute}', ['id' => \$model->id]);
+    });
+    PHP;
+    }
+
+    protected function getApiControllerTestTemplate(): string {
+        $modelName = self::$model->studly;
+        $modelNameCamel = self::$model->camel;
+        $modelNamePlural = Str::plural($modelNameCamel);
+
+        return <<<PHP
+    <?php
+
+    use App\Models\User;
+
+    test('index method returns paginated {$modelNamePlural}', function () {
+        create{$modelName}();
+
+        \$response = actAsSuperAdmin()->getJson('/api/{$modelNamePlural}?page=1&perPage=5');
+
+        \$response->assertStatus(200)
+            ->assertJsonStructure(['data', 'meta'])
+            ->assertJsonCount(1, 'data');
+    });
+
+    test('create method returns create page', function () {
+
+        \$response = actAsSuperAdmin()->get('/api/{$modelNamePlural}/create');
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Create'));
+    });
+
+    test('store method creates new {$modelNameCamel}', function () {
+        \$data = [
+            'name' => 'Test name',
+        ];
+
+        \$response = actAsSuperAdmin()->postJson('/api/{$modelNamePlural}', \$data);
+
+        \$response->assertStatus(201)
+            ->assertJsonStructure(['id', 'name']);
+        \$this->assertDatabaseHas('{$modelNamePlural}', \$data);
+    });
+
+    test('show method returns {$modelNameCamel} details', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->getJson("/api/{$modelNamePlural}/{\$model->id}");
+
+        \$response->assertStatus(200)
+            ->assertJson(['id' => \$model->id, 'name' => \$model->name]);
+    });
+
+    test('edit method returns edit page', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->get("/api/{$modelNamePlural}/{\$model->id}/edit");
+
+        \$response->assertStatus(200)
+            ->assertInertia(fn (\$assert) => \$assert->component('{$modelName}/Edit'));
+    });
+
+    test('update method updates {$modelNameCamel}', function () {
+        \$model = create{$modelName}();
+        \$updatedData = [
+            'name' => 'Updated name',
+        ];
+
+        \$response = actAsSuperAdmin()->putJson("/api/{$modelNamePlural}/{\$model->id}", \$updatedData);
+
+        \$response->assertStatus(200)
+            ->assertJson(\$updatedData);
+        \$this->assertDatabaseHas('{$modelNamePlural}', \$updatedData);
+    });
+
+    test('destroy method deletes {$modelNameCamel}', function () {
+        \$model = create{$modelName}();
+
+        \$response = actAsSuperAdmin()->deleteJson("/api/{$modelNamePlural}/{\$model->id}");
+
+        \$response->assertStatus(204);
+        \$this->assertDatabaseMissing('{$modelNamePlural}', ['id' => \$model->id]);
+    });
+    PHP;
+    }
+
+    protected function getFrontendModelInterfaceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<TS
         export interface {$modelName} {
             id: number;
@@ -485,7 +813,9 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getFrontendResourceTemplate($modelName): string {
+    protected function getFrontendResourceTemplate(): string {
+        $modelName = self::$model->studly;
+
         return <<<TS
         import { {$modelName} } from '@/Support/Interfaces/Models';
         import { Resource } from '@/Support/Interfaces/Resources';
@@ -494,8 +824,11 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
-    protected function getFrontendServiceTemplate($modelCamel, $modelName, $modelSnakeUpper): string {
-        $routeName = $modelSnakeUpper . 'S';
+    protected function getFrontendServiceTemplate(): string {
+
+        $routeName = self::$model->upperSnake . 'S';
+        $modelName = self::$model->studly;
+        $modelCamel = self::$model->camel;
 
         return <<<TS
         import { ROUTES } from '@/Support/Constants/routes';
@@ -511,6 +844,9 @@ class GenerateModelScaffold extends Command {
         TS;
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     protected function appendFrontendModelInterface(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
@@ -522,6 +858,9 @@ class GenerateModelScaffold extends Command {
         File::put($modelInterfacePath, $modelInterfaceContent);
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     protected function appendFrontendResource(): void {
         $modelName = self::$model->studly;
         $scriptExtension = self::$frontEndExtensions->value;
@@ -533,6 +872,9 @@ class GenerateModelScaffold extends Command {
         File::put($resourceInterfacePath, $resourceInterfaceContent);
     }
 
+    /**
+     * @throws FileNotFoundException
+     */
     protected function appendFrontendModelToRoutes(): void {
         $modelUpperSnake = self::$model->upperSnake;
         $modelDashed = self::$model->kebab;
@@ -543,7 +885,7 @@ class GenerateModelScaffold extends Command {
         $routePostfixLower = Str::lower($routePostfix);
 
         // Check if the route is already defined to avoid duplicates
-        if (strpos($routesContent, "{$modelUpperSnake}{$routePostfix}") === false) {
+        if (!str_contains($routesContent, "{$modelUpperSnake}{$routePostfix}")) {
             // Append the new route at the end of the ROUTES object
             $routesContent = str_replace('};', "\t{$modelUpperSnake}{$routePostfix}: '{$modelDashed}{$routePostfixLower}',\n};", $routesContent);
 

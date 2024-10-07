@@ -93,14 +93,17 @@ export default function ({
             </div>
         );
     };
+    console.log(meta);
 
     return (
         meta && (
             <Pagination>
-                <PaginationContent>
-                    {meta.links.map(link => (
-                        <ConditionallyRenderPagination key={link.label} link={link} />
-                    ))}
+                <PaginationContent className=" ">
+                    <div className="grid grid-cols-8 md:flex">
+                        {meta.links.map(link => (
+                            <ConditionallyRenderPagination key={link.label} link={link} />
+                        ))}
+                    </div>
                 </PaginationContent>
             </Pagination>
         )

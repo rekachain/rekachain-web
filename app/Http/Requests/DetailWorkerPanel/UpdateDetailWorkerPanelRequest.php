@@ -22,16 +22,7 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
      */
     
     public function rules(): array {
-        $intent = request()->get('intent');
-        switch ($intent) {
-            case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_PANEL->value:
-                
-                return [ 
-                    'serial_panel_id' => 'nullable|exists:serial_panels,id',
-                ];
-            
-        }    
-            
+
         return [
             'serial_panel_id' => 'nullable|exists:serial_panels,id',
             'worker_id' => 'nullable|exists:users,id',
