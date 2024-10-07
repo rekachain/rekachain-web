@@ -7,7 +7,5 @@ use Adobrovolsky97\LaravelRepositoryServicePattern\Services\Contracts\BaseCrudSe
 interface DetailWorkerPanelServiceInterface extends BaseCrudServiceInterface {
     public function assignWorker($request);
     
-    public function acceptAssign($detailWorkerPanel);
-    
-    public function declineAssign($detailWorkerPanel);
-}
+    public function requestAssign($detailWorkerPanel, $request);
+}   
