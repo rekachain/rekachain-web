@@ -1,38 +1,39 @@
 <?php
 
+use Tests\TestCase;
+use App\Models\Role;
+use App\Models\Step;
+use App\Models\User;
+use App\Models\Panel;
+use App\Models\Project;
+use App\Models\WorkDay;
 use App\Models\Carriage;
-use App\Models\CarriagePanel;
-use App\Models\CarriagePanelComponent;
-use App\Models\CarriageTrainset;
+use App\Models\Division;
+use App\Models\Progress;
+use App\Models\Trainset;
+use App\Models\Workshop;
 use App\Models\Component;
+use App\Models\Permission;
+use App\Models\RawMaterial;
+use App\Models\SerialPanel;
+use App\Models\WorkDayTime;
+use App\Models\Workstation;
+use App\Models\ProgressStep;
+use App\Models\CarriagePanel;
+use App\Models\PanelMaterial;
+use App\Models\PanelAttachment;
+use App\Support\Enums\RoleEnum;
+use App\Models\CarriageTrainset;
 use App\Models\ComponentMaterial;
 use App\Models\DetailWorkerPanel;
-use App\Models\DetailWorkerTrainset;
-use App\Models\Division;
-use App\Models\Panel;
-use App\Models\PanelAttachment;
-use App\Models\PanelMaterial;
-use App\Models\Permission;
-use App\Models\Progress;
-use App\Models\ProgressStep;
-use App\Models\Project;
-use App\Models\RawMaterial;
-use App\Models\Role;
-use App\Models\SerialPanel;
-use App\Models\Step;
-use App\Models\Trainset;
 use App\Models\TrainsetAttachment;
-use App\Models\User;
-use App\Models\WorkDay;
-use App\Models\WorkDayTime;
-use App\Models\Workshop;
-use App\Models\Workstation;
-use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Models\DetailWorkerTrainset;
 use App\Support\Enums\PermissionEnum;
-use App\Support\Enums\RoleEnum;
+use App\Models\CarriagePanelComponent;
+use App\Models\TrainsetAttachmentHandler;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 
 /*
 |--------------------------------------------------------------------------
@@ -406,4 +407,24 @@ function createDetailWorkerTrainset() {
     ]);
 
     return $detailWorkerTrainset;
+}
+
+
+function createTrainsetAttachmentHandler() {
+    $rolePPC = Role::firstOrCreate(['name' => 'PPC - Perencanaan', 'guard_name' => 'web']);
+    $userPPC = User::factory(['name' => 'PPC - Perencanaan'])->create();
+    $userPPC->assignRole('PPC - Perencanaan');
+
+    $roleProduksi = Role::firstOrCreate(['name' => 'Supervisor - Elektrik', 'guard_name' => 'web']);
+    $userProduksi = User::factory(['name' => 'Supervisor - Elektrik'])->create();
+    $userProduksi->assignRole('Supervisor - Elektrik');
+
+    $trainsetAttachment = createTrainsetAttachment($userProduksi);
+    $trainsetAttachmentHandler = TrainsetAttachmentHandler::create([
+        'user_id' => $userPPC->id,
+        'trainset_attachment_id' => $trainsetAttachment->id,
+        'handles' => 'prepare',
+    ]);
+
+    return $trainsetAttachmentHandler;
 }
