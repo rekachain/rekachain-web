@@ -7,6 +7,7 @@ function testFileCleanup() {
     // Clean up any generated files before each test
     File::delete(app_path('Models/TestModel.php'));
     File::delete(app_path('Http/Controllers/TestModelController.php'));
+    File::delete(app_path('Http/Controllers/Api/ApiTestModelController.php'));
     File::delete(app_path('Http/Requests/TestModel/StoreTestModelRequest.php'));
     File::delete(app_path('Http/Requests/TestModel/UpdateTestModelRequest.php'));
     File::delete(app_path('Http/Resources/TestModelResource.php'));
@@ -14,6 +15,8 @@ function testFileCleanup() {
     File::delete(app_path('Services/TestModelService.php'));
     File::delete(app_path('Support/Interfaces/Repositories/TestModelRepositoryInterface.php'));
     File::delete(app_path('Support/Interfaces/Services/TestModelServiceInterface.php'));
+    File::delete(base_path('Tests/Feature/Http/Controllers/TestModelControllerTest.php'));
+    File::delete(base_path('Tests/Feature/Http/Controllers/Api/ApiTestModelControllerTest.php'));
     File::delete(database_path('seeders/TestModelSeeder.php'));
     File::delete(database_path('factories/TestModelFactory.php'));
 
@@ -37,6 +40,7 @@ it('can generate a model scaffold without seeder and factory', function () {
 
     expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue();
     expect(File::exists(app_path('Http/Controllers/TestModelController.php')))->toBeTrue();
+    expect(File::exists(app_path('Http/Controllers/Api/ApiTestModelController.php')))->toBeTrue();
     expect(File::exists(app_path('Http/Requests/TestModel/StoreTestModelRequest.php')))->toBeTrue();
     expect(File::exists(app_path('Http/Requests/TestModel/UpdateTestModelRequest.php')))->toBeTrue();
     expect(File::exists(app_path('Http/Resources/TestModelResource.php')))->toBeTrue();
@@ -44,6 +48,8 @@ it('can generate a model scaffold without seeder and factory', function () {
     expect(File::exists(app_path('Services/TestModelService.php')))->toBeTrue();
     expect(File::exists(app_path('Support/Interfaces/Repositories/TestModelRepositoryInterface.php')))->toBeTrue();
     expect(File::exists(app_path('Support/Interfaces/Services/TestModelServiceInterface.php')))->toBeTrue();
+    expect(File::exists(base_path('Tests/Feature/Http/Controllers/TestModelControllerTest.php')))->toBeTrue();
+    expect(File::exists(base_path('Tests/Feature/Http/Controllers/Api/ApiTestModelControllerTest.php')))->toBeTrue();
 });
 
 it('can generate a model scaffold with seeder', function () {
