@@ -22,7 +22,7 @@ class DetailWorkerPanelResource extends JsonResource {
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 return [
                     // 'attachment_number' => $this->attachment_number,
-                    'id_detail_worker' => $this->id,
+                    'id' => $this->id,
                     'panel_name' => PanelResource::make($this->serial_panel->panel_attachment->carriage_panel->panel),
                     'carriage_type' => CarriageResource::make($this->serial_panel->panel_attachment->carriage_panel->carriage_trainset->carriage),
                     'id_project' => $this->serial_panel->panel_attachment->carriage_panel->carriage_trainset->trainset->project,
