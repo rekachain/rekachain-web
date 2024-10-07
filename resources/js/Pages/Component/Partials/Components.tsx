@@ -1,4 +1,3 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { ComponentResource } from '@/Support/Interfaces/Resources';
@@ -11,6 +10,8 @@ import { useConfirmation } from '@/Hooks/useConfirmation';
 import { componentService } from '@/Services/componentService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import ComponentCardView from './Partials/ComponentCardView';
+import ComponentTableView from './Partials/ComponentTableView';
 
 export default function () {
     const [componentResponse, setComponentResponse] = useState<PaginateResponse<ComponentResource>>();
@@ -55,37 +56,22 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Proses Standar</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {componentResponse?.data.map(component => (
-                        <TableRow key={component.id}>
-                            <TableCell>{component.name}</TableCell>
-                            <TableCell>{component.progress?.name}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {component.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleComponentDeletion(component.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
+            {componentResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <ComponentTableView
+                            componentResponse={componentResponse}
+                            handleComponentDeletion={handleComponentDeletion}
+                        ></ComponentTableView>
+                    </div>
+                    <div className="block md:hidden">
+                        <ComponentCardView
+                            componentResponse={componentResponse}
+                            handleComponentDeletion={handleComponentDeletion}
+                        ></ComponentCardView>
+                    </div>
+                </>
+            )}
             <GenericPagination meta={componentResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );

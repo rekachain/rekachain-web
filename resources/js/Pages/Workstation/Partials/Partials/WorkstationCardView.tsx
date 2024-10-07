@@ -22,7 +22,7 @@ export default function WorkstationCardView({
                     duration={300}
                     key={workstation.id}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2">
+                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-4">
                         <div className="flex w-full justify-between items-scenter">
                             <h4 className="font-bold text-xl">{workstation.name}</h4>
                             <div className="text-center">

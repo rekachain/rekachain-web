@@ -1,5 +1,6 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PanelResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -38,13 +39,16 @@ export default function PanelTableView({
                         <p>Jumlah Izin :{panel.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                href=""
+                                className={buttonVariants({ variant: 'link' })}
+                                href={route(`${ROUTES.PANELS}.edit`, panel.id)}
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
                                 Edit
                             </Link>
-                            <Button variant="link">Delete</Button>
+                            <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
+                                Delete
+                            </Button>
                         </div>
                     </div>
                     {/* </div> */}

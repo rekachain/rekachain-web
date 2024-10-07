@@ -30,14 +30,14 @@ export default function PermissionsCardView({
                         <h4 className="font-bold text-xl">{permission.group}</h4>
                         <h4 className="text-md">{permission.name}</h4>
                         <div className="flex items-center justify-end w-full">
-                            <Link
+                            {/* <Link
                                 href=""
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
                                 Edit
                             </Link>
-                            <Button variant="link">Delete</Button>
+                            <Button variant="link">Delete</Button> */}
                         </div>
                     </div>
                 </AnimateIn>

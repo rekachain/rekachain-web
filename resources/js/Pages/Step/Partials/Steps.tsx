@@ -1,4 +1,3 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { StepResource } from '@/Support/Interfaces/Resources';
@@ -9,6 +8,9 @@ import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { useLoading } from '@/Contexts/LoadingContext';
+import StepCardView from './Partials/StepCardView';
+import StepTableView from './Partials/StepTableView';
 import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
@@ -39,39 +41,29 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Proses</TableHead>
-                        <TableHead>Estimasi Manufaktur</TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {stepResponse?.data.map(step => (
-                        <TableRow key={step.id}>
-                            <TableCell>{step.name}</TableCell>
-                            <TableCell>{step.process}</TableCell>
-                            <TableCell>{step.estimated_time}</TableCell>
-                            <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.STEPS}.edit`, step.id)}
-                                >
-                                    Edit
-                                </Link>
-                                {step.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleStepDeletion(step.id)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+            {stepResponse && (
+                <>
+                    <div className="hidden md:block">
+                        <StepTableView
+                            stepResponse={stepResponse}
+                            handleStepDeletion={handleStepDeletion}
+                        ></StepTableView>
+                        {/* <WorkstationTableView
+                    workstationResponse={workstationResponse}
+                    handleWorkstationDeletion={handleWorkstationDeletion}
+                    // auth={auth}
+                ></WorkstationTableView> */}
+                    </div>
 
+                    <div className="block md:hidden">
+                        <StepCardView
+                            stepResponse={stepResponse}
+                            handleStepDeletion={handleStepDeletion}
+                            // auth={auth}
+                        ></StepCardView>
+                    </div>
+                </>
+            )}
             <GenericPagination meta={stepResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );
