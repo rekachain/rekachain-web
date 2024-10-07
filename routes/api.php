@@ -33,6 +33,7 @@ Route::group(['as' => 'api.'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);
+        Route::apiResource('detail-worker-trainsets', ApiDetailWorkerPanelController::class);
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);

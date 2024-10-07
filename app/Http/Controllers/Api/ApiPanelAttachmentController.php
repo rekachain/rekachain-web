@@ -109,11 +109,22 @@ class ApiPanelAttachmentController extends Controller {
      */
     public function show(PanelAttachment $panelAttachment, Request $request) {
         $intent = request()->get('intent');
+        $perPage = request()->get('perPage', 5);
 
         switch ($intent) {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-                return PanelAttachmentResource::collection($this->panelAttachmentService->find(['supervisor_id'=> $request->user()->id, 
-                'id' => $panelAttachment->id]));
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+
+                $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
+        
+                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated(array_merge($request->query(), [
+                    'column_filters' => [
+                        'supervisor_id'=> $request->user()->id,
+                        'id' => $panelAttachment->id
+                    ]
+                ]), $perPage));
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {

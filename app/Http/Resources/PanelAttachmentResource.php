@@ -47,7 +47,7 @@ class PanelAttachmentResource extends JsonResource {
                     'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
-                    // 'current_step' => $this->current_step,
+                    'current_step' => $this->current_step,
                     'elapsed_time' => $this->elapsed_time,
                     'status' => $this->status,
                     'supervisor' => new UserResource($this->supervisor),

@@ -47,11 +47,11 @@ enum IntentEnum: string {
     
     case API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS = 'api.detail.worker.panel.get.panel.details';
 
-    case API_DETAIL_WORKER_PANEL_ASSIGN_WORKER = 'api.detail.worker.panel.assign.worker';
+    CASE API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
+
+    case API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK = 'api.detail.worker.worker.request.work';
     
-    case API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER = 'api.detail.worker.panel.accept.assign.worker';
-    
-    case API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER = 'api.detail.worker.panel.decline.assign.worker';
+    case API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER = 'api.detail.worker.panel.request.assign.worker';
 
     case API_DETAIL_WORKER_PANELS_BY_STATUS = 'api.detail.worker.panels.by.status';
 
@@ -59,6 +59,22 @@ enum IntentEnum: string {
 
     case API_DETAIL_WORKER_PANELS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.panels.by.status.and.current.user';
 
+    case API_DETAIL_WORKER_TRAINSET_GET_TRAINSETS = 'api.detail.worker.trainset.get.trainsets';
+    
+    case API_DETAIL_WORKER_TRAINSET_GET_TRAINSET_DETAILS = 'api.detail.worker.trainset.get.trainset.details';
+
+    case API_DETAIL_WORKER_TRAINSET_WORKER_REQUEST_WORK= 'api.detail.worker.trainset.request.work';
+    
+    case API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER = 'api.detail.worker.trainset.assign.request.worker';
+
+    case API_DETAIL_WORKER_TRAINSETS_BY_STATUS = 'api.detail.worker.trainset.by.status';
+
+    case API_DETAIL_WORKER_TRAINSETS_BY_CURRENT_USER = 'api.detail.worker.trainsets.by.current.user';
+
+    case API_DETAIL_WORKER_TRAINSETS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.trainsets.by.status.and.current.user';
+    
+    case API_DETAIL_WORKER_TRAINSETS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.trainsets.get.all.request.worker';
+    
     case API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS = 'api.detail.worker.trainset.get.work.details';
     
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.manufacture.status';
