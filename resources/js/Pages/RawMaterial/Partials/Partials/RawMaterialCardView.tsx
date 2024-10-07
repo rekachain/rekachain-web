@@ -1,5 +1,6 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -35,13 +36,14 @@ export default function RawMaterialCardView({
                         <h4 className="text-sm w-[80%]">{rawMaterial.description}</h4>
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                href=""
-                                // className={buttonVariants({ variant: 'link' })}
-                                // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
+                                className={buttonVariants({ variant: 'link' })}
+                                href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
                             >
                                 Edit
                             </Link>
-                            <Button variant="link">Delete</Button>
+                            <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
+                                Delete
+                            </Button>
                         </div>
                     </div>
                 </AnimateIn>
