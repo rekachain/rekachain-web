@@ -33,8 +33,34 @@ class ApiTrainsetAttachmentController extends ApiController {
     /**
      * Display the specified resource.
      */
-    public function show(TrainsetAttachment $trainsetAttachment) {
-        return new TrainsetAttachmentResource($trainsetAttachment->load(['roles' => ['division', 'permissions']]));
+    public function show(TrainsetAttachment $trainsetAttachment, Request $request) {
+        $intent = request()->get('intent');
+        $perPage = request()->get('perPage', 5);
+        
+        switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
+                // if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                //     abort(403, 'Unauthorized');
+                // }
+                $request->merge(['intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
+                return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated(array_merge($request->query(), [
+                    'column_filters' => [
+                        'supervisor_id'=> $request->user()->id,
+                        'id' => $trainsetAttachment->id
+                    ]
+                ]), $perPage));
+            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
+            //     $qr = request()->get('qr_code');
+            //     if ($qr) {
+            //         if ($panelAttachment->qr_code == $qr) {
+            //             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
+            //             return new PanelAttachmentResource($panelAttachment);
+            //         }
+            //         abort(400, 'Invalid KPM QR code');
+            //     } else {
+            //         abort(400, 'QR code not identified');
+            //     }
+        }
     }
 
     /**
