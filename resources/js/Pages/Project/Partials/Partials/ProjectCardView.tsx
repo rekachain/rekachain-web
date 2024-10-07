@@ -1,5 +1,6 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -38,13 +39,16 @@ export default function ProjectCardView({
                         <p>Jumlah Izin :{project.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                href=""
+                                className={buttonVariants({ variant: 'link' })}
+                                href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
                                 Edit
                             </Link>
-                            <Button variant="link">Delete</Button>
+                            <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
+                                Delete
+                            </Button>
                         </div>
                     </div>
                     {/* </div> */}

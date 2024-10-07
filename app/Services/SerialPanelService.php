@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
-use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
+use App\Models\SerialPanel;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
+use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
+use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(protected DetailWorkerPanelServiceInterface $detailWorkerPanelService) {
@@ -18,6 +20,16 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
         });
 
         return parent::delete($keyOrModel);
+    }
+
+    public function rejectPanel($serialPanel, $request){
+        $data = SerialPanel::find($serialPanel->id);
+
+        $data->manufacture_status = SerialPanelManufactureStatusEnum::FAILED->value;
+        $data->notes = $request->notes;
+        $data->save();
+        
+        return $serialPanel;
     }
 
     protected function getRepositoryClass(): string {

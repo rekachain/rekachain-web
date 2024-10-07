@@ -13,7 +13,7 @@ export default function () {
             <Head title="Raw Material" />
             <AuthenticatedLayout>
                 <div className="p-4">
-                    <div className="flex gap-5 items-center">
+                    <div className="flex flex-col md:flex-row gap-5 md:items-center">
                         <h1 className="text-page-header my-4">Raw Material</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}

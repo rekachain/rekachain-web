@@ -2,8 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Step;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -31,6 +33,8 @@ class UserFactory extends Factory {
             'email_verified_at' => now(),
             'phone_number' => fake()->optional()->numerify('###########'),
             'password' => static::$password ??= Hash::make('password'),
+            'workstation_id' => Workstation::factory(),
+            'step_id' => Step::factory(),
             'remember_token' => Str::random(10),
         ];
     }
