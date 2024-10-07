@@ -32,3 +32,6 @@ export * from './TrainsetAttachmentResource';
 export * from './DetailWorkerTrainsetResource';
 export * from './TrainsetAttachmentHandlerResource';
 export * from './ComponentMaterialResource';
+export * from './WorkAspectResource';
+export * from './TrainsetAttachmentComponentResource';
+export * from './FailedComponentManufactureResource';
