@@ -25,13 +25,15 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
                                     ->first();
                                     
         if ($progress_step){
-            DetailWorkerPanel::create([
+            $detailWork = DetailWorkerPanel::create([
                 'serial_panel_id' => $request->serial_panel_id,
                 'worker_id' => $request->user()->id,
                 'progress_step_id' => $progress_step->id
             ]);
+
+            return $detailWork;
         } else {
-            return response(['error' => 'Pekerja Tidak Ada']);
+            return abort(400, 'Worker not identified');
         }                                    
     }
 
@@ -42,7 +44,7 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
 
         $detailWorkerPanel->save();
 
-        return 'accepted';
+        return $detailWorkerPanel;
     }
 
     public function declineAssign($detailWorkerPanel){
@@ -52,6 +54,6 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
 
         $detailWorkerPanel->save();
 
-        return 'declined';
+        return $detailWorkerPanel;
     }
 }

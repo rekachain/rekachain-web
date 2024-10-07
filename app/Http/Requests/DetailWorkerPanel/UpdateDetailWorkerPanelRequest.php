@@ -2,12 +2,27 @@
 
 namespace App\Http\Requests\DetailWorkerPanel;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
 class UpdateDetailWorkerPanelRequest extends FormRequest {
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    
     public function rules(): array {
+
         return [
             'serial_panel_id' => 'nullable|exists:serial_panels,id',
             'worker_id' => 'nullable|exists:users,id',

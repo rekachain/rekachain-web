@@ -7,6 +7,7 @@ use App\Support\Enums\RoleEnum;
 use App\Models\DetailWorkerPanel;
 use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DetailWorkerPanel\UpdateDetailWorkerPanelRequest;
 use App\Http\Resources\DetailWorkerPanelResource;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
@@ -71,6 +72,17 @@ class ApiDetailWorkerPanelController extends Controller {
                         'work_status' => $status
                     ]
                 ]), $perPage));
+            case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                ]);
+                
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
+                
         }
     }
 
@@ -78,6 +90,10 @@ class ApiDetailWorkerPanelController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
+        if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_WORKER->value]);
 
         return $this->detailWorkerPanelService->assignWorker($request);
@@ -95,22 +111,28 @@ class ApiDetailWorkerPanelController extends Controller {
                 'id' => $detailWorkerPanel->id
             ]
         ])));
-        
-        // return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->find(['worker_id'=> request()->user()->id, 'id' => $detailWorkerPanel->id]));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DetailWorkerPanel $detailWorkerPanel) {
+    public function update(DetailWorkerPanel $detailWorkerPanel, Request $request) {
         $intent = request()->get('intent');
-        // return $detailWorkerPanel;
-            
-        if ($intent === IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER->value) {
-            return $this->detailWorkerPanelService->acceptAssign($detailWorkerPanel->id);
-        } else if ($intent === IntentEnum::API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER->value) {
-            return $this->detailWorkerPanelService->declineAssign($detailWorkerPanel->id);
-        }
+        switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+
+                return $this->detailWorkerPanelService->acceptAssign($detailWorkerPanel->id);
+
+            case IntentEnum::API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                
+                return $this->detailWorkerPanelService->declineAssign($detailWorkerPanel->id);
+        }    
         
     }
 
