@@ -11,6 +11,8 @@ enum IntentEnum: string {
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS = 'api.trainset.attachment.get.attachment.materials';
 
+    case API_TRAINSET_ATTACHMENT_COMPONENT_GET_COMPONENT_DETAILS = 'api.trainset.attachment.component.get.component.details';
+
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER = 'api.panel.attachment.get.attachments.by.current.user';
@@ -20,6 +22,8 @@ enum IntentEnum: string {
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER = 'api.panel.attachment.get.attachments.by.status.and.current.user';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.panel.attachment.get.attachment.details';
+    
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_MATERIALS = 'api.panel.attachment.get.attachment.details.with.materials';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.details.with.qr';
 
@@ -46,6 +50,8 @@ enum IntentEnum: string {
     case API_DETAIL_WORKER_PANELS_BY_CURRENT_USER = 'api.detail.worker.panels.by.current.user';
 
     case API_DETAIL_WORKER_PANELS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.panels.by.status.and.current.user';
+
+    case API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS = 'api.detail.worker.trainset.get.work.details';
     
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
     
