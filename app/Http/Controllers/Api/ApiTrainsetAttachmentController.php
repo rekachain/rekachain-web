@@ -103,7 +103,6 @@ class ApiTrainsetAttachmentController extends Controller {
                 // if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                 //     abort(403, 'Unauthorized');
                 // }
-
                 $request->merge(['intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated(array_merge($request->query(), [
                     'column_filters' => [
