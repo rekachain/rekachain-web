@@ -72,6 +72,17 @@ class ApiDetailWorkerPanelController extends Controller {
                         'work_status' => $status
                     ]
                 ]), $perPage));
+            case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                ]);
+                
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
+                
         }
     }
 
