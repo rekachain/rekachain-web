@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiCarriageController;
 use App\Http\Controllers\Api\ApiComponentController;
 use App\Http\Controllers\Api\ApiPanelAttachmentController;
-use App\Http\Controllers\Api\ApiTrainsetAttachmentController;
 use App\Http\Controllers\Api\ApiPanelAttachmentHandlerController;
 use App\Http\Controllers\Api\ApiPanelController;
 use App\Http\Controllers\Api\ApiPanelMaterialController;
@@ -40,7 +39,6 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('trainsets', ApiTrainsetController::class);
         Route::apiResource('panels', ApiPanelController::class);
         Route::apiResource('panel-attachments', ApiPanelAttachmentController::class);
-        Route::apiResource('trainset-attachments', ApiTrainsetAttachmentController::class);
         Route::apiResource('panel-attachment-handlers', ApiPanelAttachmentHandlerController::class);
         Route::apiResource('serial-panels', ApiSerialPanelController::class);
         // Route::apiResource('components', ApiComponentController::class)->only(['index', 'show']);

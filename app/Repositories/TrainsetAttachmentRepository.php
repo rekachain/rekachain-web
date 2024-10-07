@@ -22,8 +22,6 @@ class TrainsetAttachmentRepository extends BaseRepository implements TrainsetAtt
 
         $query = $this->applySearchFilters($query, $searchParams, ['name']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['source_workstation_id','destination_workstation_id','status','trainset_attachment_id','supervisor_id','id']);
-
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);
