@@ -11,6 +11,24 @@ class TrainsetAttachmentResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value:
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')),
+                    'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')),
+                    'project' => $this->trainset->project->name,
+                    'trainset' => $this->trainset->name,
+                    'qr_code' => $this->qr_code,
+                    'qr_path' => $this->qr_path,
+                    'status' => $this->status,
+                    'elapsed_time' => $this->elapsed_time,
+                    'supervisor_id' => $this->supervisor_id,
+                    'supervisor_name' => $this->supervisor?->name,
+                    'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
+                    'trainset_attachment_id' => $this->trainset_attachment_id,
+                    'created_at' => $this->created_at->toDateTimeString(),
+                    'updated_at' => $this->updated_at->toDateTimeString(),
+                ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
