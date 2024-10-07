@@ -61,8 +61,6 @@ enum IntentEnum: string {
 
     case API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS = 'api.detail.worker.trainset.get.work.details';
     
-    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
-    
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.manufacture.status';
 
     case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
