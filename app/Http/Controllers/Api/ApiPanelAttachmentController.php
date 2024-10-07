@@ -47,7 +47,18 @@ class ApiPanelAttachmentController extends Controller {
 
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    if (!$request->user()->hasRole([RoleEnum::WORKER_ASSEMBLY, RoleEnum::QC_ASSEMBLY])) {
                     abort(403, 'Unauthorized');
+                }
+                    $request->merge([
+                        'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
+                        'relation_column_filters' => [
+                            'detail_worker_panels' => [
+                                'worker_id' => $request->user()->id
+                            ]
+                        ]
+                    ]);
+                    return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
                 }
 
                 $request->merge([

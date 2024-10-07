@@ -22,6 +22,7 @@ class PanelAttachmentResource extends JsonResource {
                     'attachment_number' => $this->attachment_number,
                     'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
                     'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
+                    'project' => $this->carriage_panel->carriage_trainset->trainset->project->name,
                     'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
                     'panel' => $this->carriage_panel->panel->name,

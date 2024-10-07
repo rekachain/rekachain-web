@@ -33,7 +33,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
-                    ];
+                ];
             case IntentEnum::API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK->value:
                 return [
                     'serial_panel_id' => $this->serial_panel_id,
