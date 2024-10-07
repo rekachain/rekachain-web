@@ -94,7 +94,7 @@ class ApiDetailWorkerPanelController extends Controller {
             abort(403, 'Unauthorized');
         }
 
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_WORKER->value]);
+        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK->value]);
 
         return $this->detailWorkerPanelService->assignWorker($request);
     }
@@ -116,30 +116,15 @@ class ApiDetailWorkerPanelController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(DetailWorkerPanel $detailWorkerPanel, UpdateDetailWorkerPanelRequest $request) {
+    public function update(DetailWorkerPanel $detailWorkerPanel, Request $request) {
         $intent = request()->get('intent');
         switch ($intent) {
-            case
-            IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_PANEL->value:
-                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-                    abort(403, 'Unauthorized');
-                }
-
-                return $this->detailWorkerPanelService->acceptAssign($detailWorkerPanel->id);
-            
-            case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER->value:
+            case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
 
-                return $this->detailWorkerPanelService->acceptAssign($detailWorkerPanel->id);
-
-            case IntentEnum::API_DETAIL_WORKER_PANEL_DECLINE_ASSIGN_WORKER->value:
-                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
-                    abort(403, 'Unauthorized');
-                }
-                
-                return $this->detailWorkerPanelService->declineAssign($detailWorkerPanel->id);
+                return $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
         }    
         
     }

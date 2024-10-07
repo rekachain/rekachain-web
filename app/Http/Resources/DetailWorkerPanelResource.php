@@ -27,14 +27,13 @@ class DetailWorkerPanelResource extends JsonResource {
                     'carriage_type' => CarriageResource::make($this->serial_panel->panel_attachment->carriage_panel->carriage_trainset->carriage),
                     'id_project' => $this->serial_panel->panel_attachment->carriage_panel->carriage_trainset->trainset->project,
                     'worker_desc' => $this->worker,
-                    'step' => $this->worker->step,
                     'no_serial_panel' => $this->serial_panel_id,
                     'attachment_number' => PanelAttachmentResource::make($this->serial_panel->panel_attachment)->without('trainset')->first(),
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
                     ];
-            case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_WORKER->value:
+            case IntentEnum::API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK->value:
                 return [
                     'serial_panel_id' => $this->serial_panel_id,
                     'worker_id' => $this->worker_id,
