@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->integer('estimated_time')->nullable();
             $table->enum('work_status', DetailWorkerPanelWorkStatusEnum::toArray())->default(DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value);
             $table->enum('acceptance_status', DetailWorkerPanelAcceptanceStatusEnum::toArray())->nullable();
-            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

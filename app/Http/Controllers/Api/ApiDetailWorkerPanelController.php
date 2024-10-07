@@ -116,17 +116,9 @@ class ApiDetailWorkerPanelController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(DetailWorkerPanel $detailWorkerPanel, UpdateDetailWorkerPanelRequest $request) {
+    public function update(DetailWorkerPanel $detailWorkerPanel, Request $request) {
         $intent = request()->get('intent');
         switch ($intent) {
-            case
-            IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_PANEL->value:
-                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-                    abort(403, 'Unauthorized');
-                }
-
-                return $this->detailWorkerPanelService->acceptAssign($detailWorkerPanel->id);
-            
             case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_ASSIGN_WORKER->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
