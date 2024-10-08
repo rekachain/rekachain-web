@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Progress extends Model {
@@ -24,5 +25,9 @@ class Progress extends Model {
     }
     public function progress_steps(): HasMany {
         return $this->hasMany(ProgressStep::class);
+    }
+
+    public function work_aspect(): BelongsTo {
+        return $this->belongsTo(WorkAspect::class);
     }
 }

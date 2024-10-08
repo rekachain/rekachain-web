@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder {
             WorkshopSeeder::class,
             DivisionSeeder::class,
             WorkstationSeeder::class,
+            WorkAspectSeeder::class,
             ProgressSeeder::class,
             StepSeeder::class,
             PermissionSeeder::class,
@@ -35,7 +36,7 @@ class DatabaseSeeder extends Seeder {
             WorkDaySeeder::class,
             WorkDayTimeSeeder::class,
             CarriagePanelComponentSeeder::class,
-            // ComponentMaterialSeeder::class,
+            ComponentMaterialSeeder::class,
             PanelMaterialSeeder::class,
             PanelAttachmentSeeder::class,
             PanelAttachmentHandlerSeeder::class,
@@ -43,6 +44,7 @@ class DatabaseSeeder extends Seeder {
             DetailWorkerPanelSeeder::class,
             TrainsetAttachmentSeeder::class,
             TrainsetAttachmentHandlerSeeder::class,
+            TrainsetAttachmentComponentSeeder::class,
             DetailWorkerTrainsetSeeder::class,
         ]);
     }

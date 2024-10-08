@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class CarriagePanelComponent extends Pivot {
+class CarriagePanelComponent extends Model {
     //
     use HasFactory;
-
-    public $incrementing = true;
 
     protected $fillable = [
         'component_id',
@@ -29,5 +28,9 @@ class CarriagePanelComponent extends Pivot {
 
     public function progress(): BelongsTo {
         return $this->belongsTo(Progress::class);
+    }
+
+    public function component_materials(): HasMany {
+        return $this->hasMany(ComponentMaterial::class);
     }
 }

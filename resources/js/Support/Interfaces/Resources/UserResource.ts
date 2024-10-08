@@ -7,6 +7,8 @@ export interface UserResource extends Resource, User {
     role: RoleResource;
     division_id: number;
     division: RoleResource;
+    workstation_id: number;
+    step_id: number;
     workstation?: WorkstationResource;
     step?: StepResource;
 }

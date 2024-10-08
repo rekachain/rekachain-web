@@ -16,6 +16,7 @@ class ProgressFactory extends Factory {
     public function definition(): array {
         return [
             'name' => $this->faker->name(),
+            'work_aspect_id' => \App\Models\WorkAspect::inRandomOrder()->first()->id,
         ];
     }
 }

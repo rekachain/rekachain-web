@@ -44,4 +44,19 @@ trait HandlesFiltering {
 
         return $query;
     }
+
+    public function applyRelationColumnFilters(Builder $query, array $searchParams, array $relationFilterableColumns): Builder {
+        if (isset($searchParams['relation_column_filters'])) {
+            foreach ($searchParams['relation_column_filters'] as $relation => $value) {
+                if (!array_key_exists($relation, $relationFilterableColumns)) continue;
+                $query->whereHas($relation, function ($query) use ($value) {
+                    foreach ($value as $key => $val) {
+                        $query->where($key, $val);
+                    }
+                });
+            }
+            
+        }
+        return $query;
+    }
 }

@@ -22,6 +22,7 @@ class PanelAttachmentResource extends JsonResource {
                     'attachment_number' => $this->attachment_number,
                     'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
                     'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
+                    'project' => $this->carriage_panel->carriage_trainset->trainset->project->name,
                     'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
                     'panel' => $this->carriage_panel->panel->name,
@@ -46,7 +47,7 @@ class PanelAttachmentResource extends JsonResource {
                     'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
-                    // 'current_step' => $this->current_step,
+                    'current_step' => $this->current_step,
                     'elapsed_time' => $this->elapsed_time,
                     'status' => $this->status,
                     'supervisor' => new UserResource($this->supervisor),
@@ -54,6 +55,25 @@ class PanelAttachmentResource extends JsonResource {
                     'serial_panels' => SerialPanelResource::collection($this->serial_panels),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
+                ];
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
+                $panelAttachment = $this->load(['carriage_panel' => ['carriage_trainset', 'panel_materials']]);
+
+                $materials = $panelAttachment->carriage_panel->panel_materials->map(function ($panelMaterial) use ($panelAttachment) {
+                    $totalQty = $panelAttachment->carriage_panel->carriage_trainset->qty * $panelAttachment->carriage_panel->qty * $panelMaterial->qty;
+
+                    return [
+                        'raw_material_id' => $panelMaterial->raw_material_id,
+                        'material_code' => $panelMaterial->raw_material->material_code,
+                        'material_description' => $panelMaterial->raw_material->description,
+                        'total_qty' => $totalQty,
+                    ];
+                });
+
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'total_materials' => $materials->count(),
+                    'materials' => $materials,
                 ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
