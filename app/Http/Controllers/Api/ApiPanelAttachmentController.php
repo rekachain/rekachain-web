@@ -139,6 +139,8 @@ class ApiPanelAttachmentController extends Controller {
                         'id' => $panelAttachment->id
                     ]
                 ]), $perPage));
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
+                return PanelAttachmentResource::make($panelAttachment);
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {

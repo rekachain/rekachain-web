@@ -119,6 +119,8 @@ class ApiTrainsetAttachmentController extends ApiController {
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
+                return TrainsetAttachmentResource::make($trainsetAttachment);
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
