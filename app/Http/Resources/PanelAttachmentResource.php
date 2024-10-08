@@ -75,6 +75,53 @@ class PanelAttachmentResource extends JsonResource {
                     'total_materials' => $materials->count(),
                     'materials' => $materials,
                 ];
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                $panelAttachment = $this->load(['serial_panels'=> ['detail_worker_panels'=>['progress_step']]]);
+
+                $serialPanels = $panelAttachment->serial_panels->map(function ($serialPanel) use ($panelAttachment) {
+                    $steps = collect();
+                    $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
+                        $workers = collect();
+                        $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step->id);
+                        if (!$step) {
+                            $workers->push([
+                                'nip'=>$detailWorkerPanel->worker->nip,
+                                'name'=>$detailWorkerPanel->worker->name,
+                                'started_at'=>$detailWorkerPanel->created_at->toDateTimeString(),
+                            ]);
+                            $steps->push([
+                                'id' => $detailWorkerPanel->progress_step->step->id,
+                                'progress_step_id' => $detailWorkerPanel->progress_step->id,
+                                'step_name'=>$detailWorkerPanel->progress_step->step->name,
+                                'step_process'=>$detailWorkerPanel->progress_step->step->process,
+                                'estimated_time'=>$detailWorkerPanel->progress_step->step->estimated_time,
+                                'workers' => $workers
+                            ]);
+                        } else {
+                            $step['workers']->push([
+                                'nip'=>$detailWorkerPanel->worker->nip,
+                                'name'=>$detailWorkerPanel->worker->name,
+                                'started_at'=>$detailWorkerPanel->created_at->toDateTimeString(),
+                            ]);
+                        }
+                    });
+                    return [
+                        'serial_number' => $serialPanel->id,
+                        'progress' => $serialPanel->detail_worker_panels->first()->progress_step->progress->with('work_aspect')->first(),
+                        'total_steps' => $steps->count(),
+                        'steps' => $steps->sortBy('progress_step_id')->map(function ($step) {
+                            unset($step['id']);
+                            unset($step['progress_step_id']);
+                            return $step;
+                        })->values(),
+                    ];
+                });
+
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'total_progresses' => $serialPanels->count(),
+                    'serial_panels' => $serialPanels,
+                ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
