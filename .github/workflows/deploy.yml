@@ -1,7 +1,9 @@
 name: Deployment to Production Server
 
 on:
-    workflow_dispatch:
+  push:
+    branches:
+      - develop
 
 jobs:
     build-js-production:
