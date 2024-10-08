@@ -1,0 +1,24 @@
+name: Deployment to Production Server
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+    build-js-production:
+        name: Build JavaScript/CSS for Production Server
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/develop'
+        steps:
+            - uses: actions/checkout@v1
+            - name: NPM Build
+              run: |
+                  npm install
+                  npm run build
+            - name: Put build assets in Artifacts
+              uses: actions/upload-artifact@v1
+              with:
+                  name: assets
+                  path: public
+                  retention-days: 3
