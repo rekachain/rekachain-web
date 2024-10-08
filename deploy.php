@@ -8,7 +8,7 @@ require 'contrib/rsync.php';
 
 // Config
 
-set('repository', getenv('REPOSITORY'));
+set('repository', 'git@github.com:rekachain/rekachain-web.git');
 set('keep_releases', 3);
 
 set('rsync_src', function () {
@@ -39,9 +39,9 @@ task('deploy:secrets', function () {
 // Hosts
 
 host('prod')
-    ->set('remote_user', getenv('REMOTE_USER'))
-    ->setHostname(getenv('REMOTE_HOST'))
-    ->set('deploy_path', getenv('DEPLOY_PATH'));
+    ->set('remote_user', 'rekachain')
+    ->setHostname('103.211.26.90')
+    ->set('deploy_path', '/var/www/rekachain.dhanifudin.com');
 
 // Hooks
 
