@@ -42,7 +42,7 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, bcmath
       - name: Composer install
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress
+        run: composer install --no-progress
       - name: Deploy to Production Server
         uses: deployphp/action@v1
         with:
