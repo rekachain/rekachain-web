@@ -22,10 +22,10 @@ class PanelAttachmentRepository extends BaseRepository implements PanelAttachmen
 
         $query = $this->applySearchFilters($query, $searchParams, ['status']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['source_workstation_id','destination_workstation_id','status','panel_attachment_id','supervisor_id','id']);
+        $query = $this->applyColumnFilters($query, $searchParams, ['source_workstation_id', 'destination_workstation_id', 'status', 'panel_attachment_id', 'supervisor_id', 'id']);
 
-        $query = $this->applyRelationColumnFilters($query, $searchParams, ['detail_worker_panels'=>['worker_id']]);
-        
+        $query = $this->applyRelationColumnFilters($query, $searchParams, ['detail_worker_panels' => ['worker_id']]);
+
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);
