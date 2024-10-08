@@ -44,7 +44,16 @@ class ApiTrainsetAttachmentController extends ApiController {
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
-                    abort(403, 'Unauthorized');
+                    if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK, RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
+                        abort(403, 'Unauthorized');
+                    }
+                    $request->merge([
+                        'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
+                        'relation_column_filters' => [
+                            'detail_worker_trainsets' => ['worker_id' => $request->user()->id],
+                        ]
+                    ]);
+                    return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
                 }
 
                 $request->merge([
@@ -55,16 +64,27 @@ class ApiTrainsetAttachmentController extends ApiController {
                 ]);
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER->value:
-                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
-                    abort(403, 'Unauthorized');
-                }
-
                 $status = request()->get('status');
                 if (!$status) {
                     abort(400, 'Status not identified');
                 }
                 if (!in_array($status, TrainsetAttachmentStatusEnum::toArray(), true)) {
                     abort(400, 'Status not included in TrainsetAttachmentStatusEnum');
+                }
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+                    if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK, RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
+                        abort(403, 'Unauthorized');
+                    }
+                    $request->merge([
+                        'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
+                        'column_filters' => [
+                            'status'=>$status,
+                        ],
+                        'relation_column_filters' => [
+                            'detail_worker_trainsets' => ['worker_id' => $request->user()->id],
+                        ]
+                    ]);
+                    return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
                 }
                 $request->merge([
                     'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
@@ -75,6 +95,9 @@ class ApiTrainsetAttachmentController extends ApiController {
                 ]);
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
             default:
+                $request->merge([
+                    'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value
+                ]);
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
         }
 
@@ -92,31 +115,23 @@ class ApiTrainsetAttachmentController extends ApiController {
      */
     public function show(TrainsetAttachment $trainsetAttachment, Request $request) {
         $intent = request()->get('intent');
-        $perPage = request()->get('perPage', 5);
         
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-                // if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
-                //     abort(403, 'Unauthorized');
-                // }
-                $request->merge(['intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
-                return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated(array_merge($request->query(), [
-                    'column_filters' => [
-                        'supervisor_id'=> $request->user()->id,
-                        'id' => $trainsetAttachment->id
-                    ]
-                ]), $perPage));
-            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
-            //     $qr = request()->get('qr_code');
-            //     if ($qr) {
-            //         if ($panelAttachment->qr_code == $qr) {
-            //             $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
-            //             return new PanelAttachmentResource($panelAttachment);
-            //         }
-            //         abort(400, 'Invalid KPM QR code');
-            //     } else {
-            //         abort(400, 'QR code not identified');
-            //     }
+                return TrainsetAttachmentResource::make($trainsetAttachment);
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
+                $qr = request()->get('qr_code');
+                if ($qr) {
+                    if ($trainsetAttachment->qr_code == $qr) {
+                        $request->merge(['intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
+                        return TrainsetAttachmentResource::make($trainsetAttachment);
+                    }
+                    abort(400, 'Invalid KPM QR code');
+                } else {
+                    abort(400, 'QR code not identified');
+                }
+            default:
+                return TrainsetAttachmentResource::make($trainsetAttachment);
         }
     }
 
