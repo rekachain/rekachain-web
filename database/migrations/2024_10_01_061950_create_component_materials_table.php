@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('component_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('carriage_panel_component_id')->constrained('carriage_panel_component');
+            $table->foreignId('carriage_panel_component_id')->constrained();
             $table->foreignId('raw_material_id')->constrained();
             $table->integer('qty');
             $table->timestamps();

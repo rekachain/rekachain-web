@@ -44,8 +44,13 @@ class GenerateModelScaffold extends Command {
     private static bool $withMigration = false;
     private static bool $withSeeder = false;
     private static bool $withFactory = false;
-    private static bool $withPivot = false;
+    private static bool $withController = false;
+    private static bool $withApiController = false;
+    private static bool $withTest = false;
+    private static bool $asPivot = false;
     private static bool $withFrontend = false;
+    private static array $excluded = [];
+    private static bool $showHelp = false;
 
     /**
      * The name and signature of the console command.
@@ -53,12 +58,17 @@ class GenerateModelScaffold extends Command {
      * @var string
      */
     protected $signature = 'make:scaffold {model : The name of the model}
-                            {--all : Generate seeder, factory, and Frontend structure for the model}
-                            {--migration : Generate a migration for the model}
-                            {--seeder : Generate a seeder for the model}
-                            {--factory : Generate a factory for the model}
-                            {--pivot : Generate a pivot model for the model}
-                            {--frontend : Generate Frontend structure for the model}';
+                            {--a|all : Generate seeder, controller, factory, and Frontend structure for the model (use --exclude for exclude specific files)}
+                            {--m|migration : Generate a migration for the model}
+                            {--s|seeder : Generate a seeder for the model}
+                            {--f|factory : Generate a factory for the model}
+                            {--controller : Generate a controller for the model}
+                            {--api-controller : Generate an API controller for the model}
+                            {--test : Generate a test for the model}
+                            {--p|pivot : Generate a pivot model for the model}
+                            {--frontend : Generate Frontend structure for the model}
+                            {--e|exclude=* : Do not generate files for the specified model}
+                            {--h|help : Display this help message}';
 
     /**
      * The console command description.
@@ -76,14 +86,27 @@ class GenerateModelScaffold extends Command {
         self::$withMigration = $this->option('migration');
         self::$withSeeder = $this->option('seeder');
         self::$withFactory = $this->option('factory');
-        self::$withPivot = $this->option('pivot');
+        self::$withController = $this->option('controller');
+        self::$withApiController = $this->option('api-controller');
+        self::$withTest = $this->option('test');
+        self::$asPivot = $this->option('pivot');
         self::$withFrontend = $this->option('frontend');
+        self::$excluded = $this->option('exclude');
+        self::$showHelp = $this->option('help');
+
+        if (self::$showHelp) {
+            $this->help();
+            return;
+        }
 
         if (self::$withAll) {
-            self::$withMigration = true;
-            self::$withSeeder = true;
-            self::$withFactory = true;
-            self::$withFrontend = true;
+            self::$withMigration = !in_array('migration', self::$excluded);
+            self::$withSeeder = !in_array('seeder', self::$excluded);
+            self::$withFactory = !in_array('factory', self::$excluded);
+            self::$withController = !in_array('controller', self::$excluded);
+            self::$withApiController = !in_array('api-controller', self::$excluded);
+            self::$withTest = !in_array('test', self::$excluded);
+            self::$withFrontend = !in_array('frontend', self::$excluded);
         }
 
         $this->generateModel();
@@ -100,17 +123,17 @@ class GenerateModelScaffold extends Command {
             '--migration' => self::$withMigration,
             '--seed' => self::$withSeeder,
             '--factory' => self::$withFactory,
-            '--pivot' => self::$withPivot,
+            '--pivot' => self::$asPivot,
         ];
 
         $modelName = self::$model->studly;
         $withSeeder = self::$withSeeder;
         $withFactory = self::$withFactory;
-        $withPivot = self::$withPivot;
+        $asPivot = self::$asPivot;
 
         Artisan::call('make:model', $options);
 
-        $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : '') . (self::$withPivot ? ' as pivot' : ''));
+        $this->info("Model {$modelName} generated with migration" . ($withSeeder ? ' and seeder' : '') . ($withFactory ? ' and factory' : '') . ($asPivot ? ' as pivot' : ''));
     }
 
     protected function generateFiles(): void {
@@ -132,10 +155,18 @@ class GenerateModelScaffold extends Command {
             }
         }
 
-        $this->generateController();
-        $this->generateApiController();
-        $this->generateControllerTest();
-        $this->generateApiControllerTest();
+        if (self::$withController) {
+            $this->generateController();
+            if (self::$withTest) {
+                $this->generateControllerTest();
+            }
+        }
+        if (self::$withApiController) {
+            $this->generateApiController();
+            if (self::$withTest) {
+                $this->generateApiControllerTest();
+            }
+        }
 
         if ($withFrontend) {
             $this->generateRequiredFiles();

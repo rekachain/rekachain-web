@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\ProgressStep;
-use App\Models\TrainsetAttachment;
+use App\Models\TrainsetAttachmentComponent;
 use App\Models\User;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
@@ -22,7 +22,7 @@ class DetailWorkerTrainsetFactory extends Factory
     public function definition(): array
     {
         return [
-            'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
+            'trainset_attachment_component_id' => TrainsetAttachmentComponent::inRandomOrder()->first()->id,
             'worker_id' => User::inRandomOrder()->first()->id,
             'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
             'estimated_time' => $this->faker->numberBetween(1, 10),
