@@ -77,9 +77,22 @@ class PanelAttachmentResource extends JsonResource {
                     'materials' => $materials,
                 ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                $panelAttachment = $this->load(['carriage_panel'=> ['progress'=>['progress_steps']]]);
+                $panelSteps = $panelAttachment->carriage_panel->progress->progress_steps->map(function ($progressStep) use (&$steps) {
+                    return [
+                        'id' => $progressStep->step->id,
+                        'progress_step_id' => $progressStep->id,
+                        'step_name'=>$progressStep->step->name,
+                        'step_process'=>$progressStep->step->process,
+                        'estimated_time'=>$progressStep->step->estimated_time,
+                        'workers' => collect(),
+                    ];
+                });
+                unset($this->carriage_panel);
+
                 $panelAttachment = $this->load(['serial_panels'=> ['detail_worker_panels'=>['progress_step']]]);
 
-                $serialPanels = $panelAttachment->serial_panels->map(function ($serialPanel) use ($panelAttachment) {
+                $serialPanels = $panelAttachment->serial_panels->map(function ($serialPanel) use ($panelAttachment, $panelSteps) {
                     $steps = collect();
                     $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                         $workers = collect();
@@ -104,6 +117,12 @@ class PanelAttachmentResource extends JsonResource {
                                 'name'=>$detailWorkerPanel->worker->name,
                                 'started_at'=>$detailWorkerPanel->created_at->toDateTimeString(),
                             ]);
+                        }
+                    });
+                    $panelSteps->each(function ($panelStep) use (&$steps) {
+                        $step = $steps->firstWhere('id', $panelStep['id']);
+                        if (!$step) {
+                            $steps->push($panelStep);
                         }
                     });
                     return [
