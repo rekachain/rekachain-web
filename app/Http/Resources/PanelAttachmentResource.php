@@ -127,7 +127,7 @@ class PanelAttachmentResource extends JsonResource {
                     });
                     return [
                         'serial_number' => $serialPanel->id,
-                        'progress' => $serialPanel->detail_worker_panels->first()->progress_step->progress->with('work_aspect')->first(),
+                        'progress' => $serialPanel->detail_worker_panels->first()->progress_step->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
                         'steps' => $steps->sortBy('progress_step_id')->map(function ($step) {
                             unset($step['id']);
