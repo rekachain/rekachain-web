@@ -133,12 +133,7 @@ class ApiPanelAttachmentController extends Controller {
 
                 $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
         
-                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated(array_merge($request->query(), [
-                    'column_filters' => [
-                        'supervisor_id'=> $request->user()->id,
-                        'id' => $panelAttachment->id
-                    ]
-                ]), $perPage));
+                return PanelAttachmentResource::make($panelAttachment);
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
                 return PanelAttachmentResource::make($panelAttachment);
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
@@ -175,8 +170,9 @@ class ApiPanelAttachmentController extends Controller {
                     abort(400, 'Invalid SN QR code');
                 }
                 abort(400, 'QR code not identified');
+            default:
+                return PanelAttachmentResource::make($panelAttachment);
         }
-        abort(404, 'NOTHING TO SHOW🗿');
     }
 
     /**

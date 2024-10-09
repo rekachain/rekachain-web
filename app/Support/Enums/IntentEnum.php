@@ -36,6 +36,8 @@ enum IntentEnum: string {
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.panel.attachment.get.attachment.details';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS = 'api.panel.attachment.get.attachment.materials';
+
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'api.panel.attachment.get.attachment.progress';
     
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_MATERIALS = 'api.panel.attachment.get.attachment.details.with.materials';
 
