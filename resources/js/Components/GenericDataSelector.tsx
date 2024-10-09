@@ -8,6 +8,7 @@ import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/utils';
 
 interface GenericDataSelectorProps<T extends Resource> {
+    id?: string; // ID for the input element
     fetchData: (filters: { search: string }) => Promise<T[]>; // Function to fetch data based on filters
     setSelectedData: (id: number) => void; // Callback to set selected data in the parent component
     placeholder?: string; // Placeholder text for search input
@@ -20,6 +21,7 @@ interface GenericDataSelectorProps<T extends Resource> {
 }
 
 const GenericDataSelector = <T extends Resource>({
+    id,
     fetchData,
     setSelectedData,
     placeholder = 'Select...',
@@ -64,7 +66,7 @@ const GenericDataSelector = <T extends Resource>({
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            <PopoverTrigger asChild>
+            <PopoverTrigger asChild id={id}>
                 <Button
                     variant="outline"
                     role="combobox"

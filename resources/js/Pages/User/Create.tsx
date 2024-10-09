@@ -134,6 +134,7 @@ export default function (props: { roles: RoleResource[] }) {
                         <div className="mt-4">
                             <InputLabel htmlFor="workstation_id" value="Workstation" />
                             <GenericDataSelector
+                                id="workstation_id"
                                 fetchData={fetchWorkstations}
                                 setSelectedData={id => setData('workstation_id', id)}
                                 selectedDataId={data.workstation_id ?? undefined}
@@ -146,6 +147,7 @@ export default function (props: { roles: RoleResource[] }) {
                         <div className="mt-4">
                             <InputLabel htmlFor="step_id" value="Step" />
                             <GenericDataSelector
+                                id="step_id"
                                 fetchData={fetchSteps}
                                 setSelectedData={id => setData('step_id', id)}
                                 selectedDataId={data.step_id}
