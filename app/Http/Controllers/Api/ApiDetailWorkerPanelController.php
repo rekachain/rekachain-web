@@ -117,14 +117,27 @@ class ApiDetailWorkerPanelController extends Controller {
      * Display the specified resource.
      */
     public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
+        $intent = request()->get('intent');
+        switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
+                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
 
-        return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
-            'column_filters' => [
-                'worker_id'=> $request->user()->id,
-                'id' => $detailWorkerPanel->id
-            ]
-        ])));
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
+                    'column_filters' => [
+                        'worker_id'=> $request->user()->id,
+                        'id' => $detailWorkerPanel->id
+                    ]
+                ])));
+            case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ONE_REQUEST_WORKER->value:
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value,
+                    'column_filters' => [
+                        'id'=>$detailWorkerPanel->id,
+                    ],
+                ]);
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query()));      
+        } 
+        
     }
 
     /**
