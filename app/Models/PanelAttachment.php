@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class PanelAttachment extends Model {
     use HasFactory;
@@ -82,5 +83,9 @@ class PanelAttachment extends Model {
 
     public function panel_attachment_handlers(): HasMany {
         return $this->hasMany(PanelAttachmentHandler::class);
+    }
+
+    public function pending_attachment_notes(): MorphMany {
+        return $this->morphMany(PendingAttachmentNote::class, 'pending_attachment_noteable');
     }
 }
