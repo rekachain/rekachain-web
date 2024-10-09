@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('detail_worker_trainsets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('trainset_attachment_id')->constrained();
+            $table->foreignId('trainset_attachment_component_id')->constrained();
             $table->foreignId('worker_id')->constrained('users');
             $table->foreignId('progress_step_id')->constrained();
             $table->integer('estimated_time')->nullable();

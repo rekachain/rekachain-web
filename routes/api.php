@@ -33,11 +33,13 @@ Route::group(['as' => 'api.'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);
+        Route::apiResource('detail-worker-trainsets', ApiDetailWorkerPanelController::class);
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);
         Route::apiResource('trainsets', ApiTrainsetController::class);
         Route::apiResource('panels', ApiPanelController::class);
+        Route::apiResource('trainset-attachments', ApiTrainsetAttachmentController::class);
         Route::apiResource('panel-attachments', ApiPanelAttachmentController::class);
         Route::apiResource('panel-attachment-handlers', ApiPanelAttachmentHandlerController::class);
         Route::apiResource('serial-panels', ApiSerialPanelController::class);

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class PanelAttachment extends Model {
@@ -69,6 +70,10 @@ class PanelAttachment extends Model {
 
     public function serial_panels(): HasMany {
         return $this->hasMany(SerialPanel::class);
+    }
+
+    public function detail_worker_panels(): HasManyThrough {
+        return $this->hasManyThrough(DetailWorkerPanel::class, SerialPanel::class,'panel_attachment_id','serial_panel_id','id','id');
     }
 
     public function supervisor(): BelongsTo {

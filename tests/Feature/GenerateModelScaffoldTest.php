@@ -36,7 +36,7 @@ afterAll(function () {
 });
 
 it('can generate a model scaffold without seeder and factory', function () {
-    Artisan::call('make:scaffold', ['model' => 'TestModel']);
+    Artisan::call('make:scaffold', ['model' => 'TestModel','--controller' => true]);
 
     expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue();
     expect(File::exists(app_path('Http/Controllers/TestModelController.php')))->toBeTrue();

@@ -26,29 +26,28 @@ class DetailWorkerTrainsetSeeder extends Seeder
         $trainsetAttachments = TrainsetAttachment::all();
 
         foreach ($trainsetAttachments as $trainsetAttachment) {
-            foreach ($roles as $role) {
-                $randomCount = rand(1, 5);
-                $users = User::role($role)->inRandomOrder()->take($randomCount)->get();
-                foreach ($users as $user) {
-                    $progress_ids = [];
-                    $trainsets = $trainsetAttachment->trainset->carriage_trainsets()->get();
-                    foreach ($trainsets as $trainset) {
-                        foreach ($trainset->carriage_panels as $carriagePanel) {
-                            foreach ($carriagePanel->carriage_panel_components as $carriagePanelComponent) {
-                                $progress_ids = array_merge($progress_ids, [$carriagePanelComponent->progress_id]);
-                            }
+            $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->get();
+            if (count($trainsetAttachmentComponents) == 0) {
+                continue;
+            }
+            foreach ($trainsetAttachmentComponents as $trainsetAttachmentComponent) {
+                foreach ($roles as $role) {
+                    $randomCount = rand(1, 5);
+                    $users = User::role($role)->inRandomOrder()->take($randomCount)->get();
+                    foreach ($users as $user) {
+                        // $progressStep = ProgressStep::whereIn('progress_id', array_unique($progress_ids))
+                        //     ->whereStepId($user->step->id)->first();
+                        $progressStep = ProgressStep::whereProgressId($trainsetAttachmentComponent->carriage_panel_component->progress_id)
+                            ->whereStepId($user->step->id)->first();
+                        if (!$progressStep) {
+                            continue;
                         }
+                        DetailWorkerTrainset::factory()->create([
+                            'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
+                            'worker_id' => $user->id,
+                            'progress_step_id' => $progressStep->id,
+                        ]);
                     }
-                    $progressStep = ProgressStep::whereIn('progress_id', array_unique($progress_ids))
-                        ->whereStepId($user->step->id)->first();
-                    if (!$progressStep) {
-                        continue;
-                    }
-                    DetailWorkerTrainset::factory()->create([
-                        'trainset_attachment_id' => $trainsetAttachment->id,
-                        'worker_id' => $user->id,
-                        'progress_step_id' => $progressStep->id,
-                    ]);
                 }
             }
         }
