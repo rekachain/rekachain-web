@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Models\PanelAttachment;
+use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface {
     public function __construct(
@@ -30,5 +31,15 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
     protected function getRepositoryClass(): string {
         return PanelAttachmentRepositoryInterface::class;
+    }
+
+    public function confirmKPM($panelAttachment, $request){
+        $panelAttachment = PanelAttachment::find($panelAttachment);
+
+        $panelAttachment->status = $request->status;
+
+        $panelAttachment->save();
+
+        return $panelAttachment;
     }
 }
