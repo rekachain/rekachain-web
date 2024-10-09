@@ -49,6 +49,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'progress_step_id' => $this->progress_step_id,
                     'progress_step' => ProgressStepResource::make($this->whenLoaded('progress_step')),
                     'estimated_time' => $this->estimated_time,
+                    'image_path' => $this->image_path,
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
                     'created_at' => $this->created_at->toDateTimeString(),

@@ -118,6 +118,7 @@ class ApiDetailWorkerPanelController extends Controller {
      */
     public function update(DetailWorkerPanel $detailWorkerPanel, Request $request) {
         $intent = request()->get('intent');
+
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
@@ -125,6 +126,12 @@ class ApiDetailWorkerPanelController extends Controller {
                 }
 
                 return $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
+            case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value: 
+                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+
+                return $this->detailWorkerPanelService->acceptWorkWithImage($detailWorkerPanel->id, $request);
         }    
         
     }

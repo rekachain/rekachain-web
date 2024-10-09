@@ -16,6 +16,7 @@ class DetailWorkerPanel extends Model {
         'progress_step_id',
         'estimated_time',
         'work_status',
+        'image_path',
         'acceptance_status',
     ];
     protected $casts = [
