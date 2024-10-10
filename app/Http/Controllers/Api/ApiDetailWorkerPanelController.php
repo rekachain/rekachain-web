@@ -128,17 +128,8 @@ class ApiDetailWorkerPanelController extends Controller {
                         'worker_id'=> $request->user()->id,
                         'id' => $detailWorkerPanel->id
                     ]
-                ])));
-            case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ONE_REQUEST_WORKER->value:
-                $request->merge([
-                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value,
-                    'column_filters' => [
-                        'id'=>$detailWorkerPanel->id,
-                    ],
-                ]);
-                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query()));      
+                ])));    
         } 
-        
     }
 
     /**
@@ -151,7 +142,15 @@ class ApiDetailWorkerPanelController extends Controller {
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
+
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                ]);
                 
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                ]);
+
                 $data = $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
 
                 return new DetailWorkerPanelResource($data);  
