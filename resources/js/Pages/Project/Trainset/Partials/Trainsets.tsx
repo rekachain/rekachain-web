@@ -59,7 +59,11 @@ export default function ({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                <Button variant="link" disabled={loading} onClick={() => handleTrainsetDeletion(trainset.id)}>
+                                <Button
+                                    variant="link"
+                                    disabled={loading || !trainset.can_be_deleted}
+                                    onClick={() => handleTrainsetDeletion(trainset.id)}
+                                >
                                     Delete
                                 </Button>
                                 <Link

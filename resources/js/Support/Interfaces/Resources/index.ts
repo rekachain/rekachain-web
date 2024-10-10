@@ -35,3 +35,4 @@ export * from './ComponentMaterialResource';
 export * from './WorkAspectResource';
 export * from './TrainsetAttachmentComponentResource';
 export * from './FailedComponentManufactureResource';
+export * from './PendingAttachmentNoteResource';
