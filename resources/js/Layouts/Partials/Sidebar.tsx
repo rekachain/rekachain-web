@@ -7,6 +7,7 @@ import {
     RiContractRightLine,
     RiDivideLine,
     RiExpandRightLine,
+    RiFeedbackLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
@@ -257,6 +258,11 @@ export default function Sidebar() {
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Pengaturan"
                             icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
+                        />
+                        <SidebarLink
+                            routeName={`${ROUTES.FEEDBACKS}.index`}
+                            title="Feedback"
+                            icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
