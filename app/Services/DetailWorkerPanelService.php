@@ -6,35 +6,34 @@ use Throwable;
 use App\Models\User;
 use App\Models\SerialPanel;
 use App\Models\ProgressStep;
-use GuzzleHttp\Promise\Create;
 use App\Models\DetailWorkerPanel;
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\Services\HandlesImages;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 
 class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPanelServiceInterface {
+    use HandlesImages;
+
+    protected string $imagePath = 'detail_worker_panels/acceptWork';
+    
     protected function getRepositoryClass(): string {
         return DetailWorkerPanelRepositoryInterface::class;
     }
 
     public function acceptWorkWithImage($detailWorkerPanel, $request)
     {
-        $detailWorkerPanel = DetailWorkerPanel::find($detailWorkerPanel);
-        
-        if ($request->hasFile('image_path')) {
-    
-            $imagePath = $request->file('image_path')->store('detail_worker_images', 'public');
-    
-            $detailWorkerPanel->image_path = $imagePath;
-        } else {
-            return response()->json(['error' => 'No image uploaded'], 400);
-        }
-    
-        $detailWorkerPanel->work_status = DetailWorkerPanelWorkStatusEnum::COMPLETED;
+        $detailWorkerPanel->work_status = DetailWorkerPanelWorkStatusEnum::COMPLETED->value;
         $detailWorkerPanel->save();
 
         return $detailWorkerPanel;
+    }
+
+    public function update($keyOrModel, array $data): ?Model {
+        $data = $this->handleImageUpload($data, $keyOrModel);
+        return parent::update($keyOrModel, $data);
     }
 
     public function assignWorker($request){
@@ -48,7 +47,8 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
             $detailWork = DetailWorkerPanel::create([
                 'serial_panel_id' => $request->serial_panel_id,
                 'worker_id' => $request->user()->id,
-                'progress_step_id' => $progress_step->id
+                'progress_step_id' => $progress_step->id,
+                'estimated_time' => $step->estimated_time
             ]);
 
             return $detailWork;

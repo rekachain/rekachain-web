@@ -35,4 +35,8 @@ class DetailWorkerPanel extends Model {
     public function progress_step() {
         return $this->belongsTo(ProgressStep::class);
     }
+
+    public function getImageAttribute() {
+        return $this->image_path ? asset('storage/' . $this->image_path) : null;
+    }
 }

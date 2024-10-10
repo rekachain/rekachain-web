@@ -23,10 +23,10 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
     
     public function rules(): array {
         $intent = $this->get('intent');
-
         switch ($intent){
             case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value:
                 return [
+                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
                     'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerPanelAcceptanceStatusEnum::cases(), 'value'))],
                 ];
                 
@@ -37,11 +37,11 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
         }
 
         return [
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'serial_panel_id' => 'nullable|exists:serial_panels,id',
             'worker_id' => 'nullable|exists:users,id',
             'progress_step_id' => 'nullable|exists:progress_steps,id',
             'estimated_time' => 'nullable|integer',
-            'image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'work_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerPanelWorkStatusEnum::cases(), 'value'))],
             'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerPanelAcceptanceStatusEnum::cases(), 'value'))],
             // Add your validation rules here

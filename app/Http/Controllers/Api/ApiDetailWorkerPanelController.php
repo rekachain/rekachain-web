@@ -135,7 +135,7 @@ class ApiDetailWorkerPanelController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DetailWorkerPanel $detailWorkerPanel) {
+    public function update(UpdateDetailWorkerPanelRequest $request, DetailWorkerPanel $detailWorkerPanel) {
         $intent = request()->get('intent');
 
         switch ($intent) {
@@ -148,14 +148,21 @@ class ApiDetailWorkerPanelController extends Controller {
                     'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
                 ]);
                 
+                $data = $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
+                
+                return new DetailWorkerPanelResource($data);  
+            case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value: 
+                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                
                 $request->merge([
-                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value
                 ]);
 
-                $data = $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
+                $this->detailWorkerPanelService->update($detailWorkerPanel , $request->validated());
 
-                return new DetailWorkerPanelResource($data);  
-
+                return $this->detailWorkerPanelService->acceptWorkWithImage($detailWorkerPanel, $request);
         }    
         
     }
