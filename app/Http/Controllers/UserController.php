@@ -9,9 +9,8 @@ use App\Models\User;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\RoleServiceInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
+use Exception;
 use Illuminate\Http\Request;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class UserController extends Controller {
     public function __construct(
@@ -22,30 +21,22 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        cp(PermissionEnum::USER_READ);
 
-        $request->checkPermissionEnum(PermissionEnum::USER_READ);
+        if ($this->ajax()) {
+            $perPage = request()->get('perPage', 5);
 
-        if ($request->user()->can('user-read')) {
-            if ($this->ajax()) {
-                try {
-                    $perPage = request()->get('perPage', 5);
-
-                    return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
-                } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
-                }
-            }
-
-            return inertia('User/Index');
+            return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
         }
 
+        return inertia('User/Index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-
-        $request->checkPermissionEnum(PermissionEnum::USER_CREATE);
+        cp([PermissionEnum::USER_CREATE]);
 
         $roles = $this->roleService->getAll();
 
@@ -56,6 +47,8 @@ class UserController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request) {
+        cp(PermissionEnum::USER_CREATE);
+
         if ($this->ajax()) {
             return $this->userService->create($request->validated());
         }
@@ -65,6 +58,8 @@ class UserController extends Controller {
      * Display the specified resource.
      */
     public function show(User $user) {
+        cp(PermissionEnum::USER_READ);
+
         if ($this->ajax()) {
             return new UserResource($user);
         }
@@ -76,6 +71,8 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
+        cp(PermissionEnum::USER_UPDATE);
+
         $user = new UserResource($user->load('roles', 'workstation', 'step'));
         $roles = $this->roleService->getAll();
 
@@ -86,6 +83,8 @@ class UserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateUserRequest $request, User $user) {
+        cp(PermissionEnum::USER_UPDATE);
+
         if ($this->ajax()) {
             return $this->userService->update($user, $request->validated());
         }
@@ -93,8 +92,12 @@ class UserController extends Controller {
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @throws Exception
      */
     public function destroy(Request $request, User $user) {
+        cp(PermissionEnum::USER_DELETE);
+
         if ($this->ajax()) {
             return $this->userService->delete($user);
         }

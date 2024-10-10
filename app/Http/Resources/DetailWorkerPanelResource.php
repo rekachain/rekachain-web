@@ -8,7 +8,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class DetailWorkerPanelResource extends JsonResource {
     public function toArray($request): array {
         $intent = $request->get('intent');
-
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value:
                 return [
