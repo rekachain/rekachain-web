@@ -143,6 +143,10 @@ class ApiDetailWorkerPanelController extends Controller {
                     abort(403, 'Unauthorized');
                 }
                 
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                ]);
+
                 $data = $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
 
                 return new DetailWorkerPanelResource($data);  
