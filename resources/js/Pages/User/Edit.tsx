@@ -28,8 +28,8 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
             phone_number: string;
             password: string;
             role_id: number;
-            workstation_id: number;
-            step_id: number;
+            workstation_id: number | null;
+            step_id: number | null;
         }>
     >({
         nip: user.nip,
@@ -60,13 +60,12 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         data.name && formData.append('name', data.name);
         data.email && formData.append('email', data.email);
         data.phone_number && formData.append('phone_number', data.phone_number);
-        data.password && formData.append('password', data.password); // Only update if password is provided
+        data.password && formData.append('password', data.password);
         data.role_id && formData.append('role_id', data.role_id.toString());
-        data.workstation_id && formData.append('workstation_id', data.workstation_id.toString());
-        data.step_id && formData.append('step_id', data.step_id.toString());
+        formData.append('workstation_id', data.workstation_id?.toString() ?? '');
+        formData.append('step_id', data.step_id?.toString() ?? '');
         photo && formData.append('image_path', photo);
-
-        await userService.update(user.id, formData); // PUT request to update user
+        await userService.update(user.id, formData);
         router.visit(route(`${ROUTES.USERS}.index`));
         void useSuccessToast('User updated successfully');
     });
@@ -141,12 +140,13 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             <GenericDataSelector
                                 id="workstation_id"
                                 fetchData={fetchWorkstations}
-                                setSelectedData={id => setData('workstation_id', +id)}
+                                setSelectedData={id => setData('workstation_id', id)}
                                 selectedDataId={data.workstation_id}
                                 placeholder="Select Workstation"
                                 renderItem={item => `${item.name} - ${item.location}`}
                                 initialSearch={user.workstation?.name}
                                 buttonClassName="mt-1"
+                                nullable
                             />
                         </div>
 
@@ -155,12 +155,13 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             <GenericDataSelector
                                 id="step_id"
                                 fetchData={fetchSteps}
-                                setSelectedData={id => setData('step_id', +id)}
+                                setSelectedData={id => setData('step_id', id)}
                                 selectedDataId={data.step_id}
                                 placeholder="Select Step"
                                 renderItem={item => item.name}
                                 initialSearch={user.step?.name}
                                 buttonClassName="mt-1"
+                                nullable
                             />
                         </div>
 

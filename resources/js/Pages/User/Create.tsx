@@ -23,18 +23,18 @@ export default function (props: { roles: RoleResource[] }) {
         email: string;
         phone_number: string;
         password: string;
-        role_id: number | undefined;
-        workstation_id: number | undefined;
-        step_id: number | undefined;
+        role_id: number | null;
+        workstation_id: number | null;
+        step_id: number | null;
     }>({
         nip: '',
         name: '',
         email: '',
         phone_number: '',
         password: '',
-        role_id: undefined,
-        workstation_id: undefined,
-        step_id: undefined,
+        role_id: null,
+        workstation_id: null,
+        step_id: null,
     });
 
     const [photo, setPhoto] = useState<Blob | null>(null);
@@ -141,6 +141,7 @@ export default function (props: { roles: RoleResource[] }) {
                                 placeholder="Select Workstation"
                                 renderItem={(item: WorkstationResource) => `${item.name} - ${item.location}`} // Customize how to display the item
                                 buttonClassName="mt-1"
+                                nullable
                             />
                         </div>
 
