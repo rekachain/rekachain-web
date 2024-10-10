@@ -76,6 +76,54 @@ class TrainsetAttachmentResource extends JsonResource {
                     'total_materials' => $materials->count(),
                     'materials' => $materials,
                 ];
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                $trainsetAttachment = $this->load(['trainset_attachment_components'=>['carriage_panel_component'=>['progress'=>['progress_steps']],'detail_worker_trainsets'=>['progress_step','worker']]]);
+                $trainsetComponents = $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($trainsetAttachment) {
+                    $componentSteps = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps->map(function ($progressStep) use ($trainsetAttachment) {
+                        $workers = collect();
+                        $trainsetAttachment->detail_worker_trainsets->map(function ($detailWorkerTrainset) use ($progressStep, &$workers) {
+                            if ($detailWorkerTrainset->progress_step_id === $progressStep->id) {
+                                if (!$workers->firstWhere('nip', $detailWorkerTrainset->worker->nip)) {
+                                    $workers->push([
+                                        'nip'=>$detailWorkerTrainset->worker->nip,
+                                        'name'=>$detailWorkerTrainset->worker->name,
+                                        // 'started_at'=>$detailWorkerTrainset->created_at->toDateTimeString(),
+                                    ]);
+                                }
+                            }
+                        });
+                        return [
+                            // 'step_id' => $progressStep->step->id,
+                            // 'progress_step_id' => $progressStep->id,
+                            'step_name'=>$progressStep->step->name,
+                            'step_process'=>$progressStep->step->process,
+                            'estimated_time'=>$progressStep->step->estimated_time,
+                            'total_workers' => $workers->count(),
+                            'workers' => $workers
+                        ];
+                    });
+                    return [
+                        // 'component_id' => $trainsetAttachmentComponent->carriage_panel_component->component_id,
+                        'component_name' => $trainsetAttachmentComponent->carriage_panel_component->component->name,
+                        'component_required' => $trainsetAttachmentComponent->total_required,
+                        'progress' => [
+                            // 'progress_id' => $trainsetAttachmentComponent->carriage_panel_component->progress_id,
+                            'progress_name' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
+                            'work_aspect' => [
+                                'work_aspect_name' => $trainsetAttachmentComponent->carriage_panel_component->progress->work_aspect->name,
+                                'work_aspect_description' => $trainsetAttachmentComponent->carriage_panel_component->progress->work_aspect->description
+                            ],
+                        ],
+                        'total_steps' => $componentSteps->count(),
+                        'steps' => $componentSteps
+                    ];
+                });
+
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'total_components' => $this->trainset_attachment_components->count(),
+                    'trainset_components' => $trainsetComponents
+                ];
             default:
                 return [
                     'id' => $this->id,
