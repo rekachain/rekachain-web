@@ -178,8 +178,17 @@ class ApiPanelAttachmentController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {
-        //
+    public function update(PanelAttachment $panelAttachment, Request $request) {
+        $intent = request()->get('intent');
+        $status = request()->get('status');
+        switch ($intent) {
+            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                    
+                return $this->panelAttachmentService->confirmKPM($panelAttachment->id, $request);
+        }  
     }
 
     /**
