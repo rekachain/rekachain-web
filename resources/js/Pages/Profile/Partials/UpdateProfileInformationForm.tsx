@@ -9,6 +9,7 @@ import { Label } from '@/Components/UI/label';
 import { FilePond } from 'react-filepond';
 import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { ROUTES } from '@/Support/Constants/routes';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -58,7 +59,7 @@ export default function UpdateProfileInformation({
             formData.append('image_path', data.image_path[0]); // Append the image file
         }
 
-        await window.axios.post(route('profile.update'), formData);
+        await window.axios.post(route(`${ROUTES.PROFILE}.update`), formData);
 
         router.reload();
 

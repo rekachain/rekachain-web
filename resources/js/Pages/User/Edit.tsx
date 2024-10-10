@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback, useState } from 'react';
+import { FormEventHandler, useCallback, useEffect } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
@@ -15,33 +15,43 @@ import { withLoading } from '@/Utils/withLoading';
 import { workstationService } from '@/Services/workstationService';
 import { stepService } from '@/Services/stepService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
+import { FilePond } from 'react-filepond';
 
 export default function EditUser(props: { user: UserResource; roles: RoleResource[] }) {
-    console.log(props);
     const { user } = props;
 
-    const { data, setData, progress } = useForm<
-        Partial<{
-            nip: string;
-            name: string;
-            email: string;
-            phone_number: string;
-            password: string;
-            role_id: number;
-            workstation_id: number | null;
-            step_id: number | null;
-        }>
-    >({
+    const { data, setData } = useForm({
         nip: user.nip,
         name: user.name,
         email: user.email,
         phone_number: user.phone_number,
-        role_id: user.role_id,
-        workstation_id: user.workstation_id,
-        step_id: user.step_id,
+        role_id: user.role_id as number | null,
+        workstation_id: user.workstation_id as number | null,
+        step_id: user.step_id as number | null,
+        image_path: [] as any[],
+        password: '',
     });
 
-    const [photo, setPhoto] = useState<Blob | null>(null);
+    useEffect(() => {
+        if (user.image)
+            setData('image_path', [
+                {
+                    source: user.image,
+                    options: {
+                        type: 'local',
+                        file: {
+                            name: 'User Avatar',
+                            size: null,
+                            type: 'image/jpeg',
+                        },
+                        metadata: {
+                            poster: user.image,
+                        },
+                    },
+                },
+            ]);
+    }, [user.image]);
+
     const { loading } = useLoading();
 
     const fetchWorkstations = useCallback(async (filters: { search: string }) => {
@@ -51,6 +61,13 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
     const fetchSteps = useCallback(async (filters: { search: string }) => {
         return await stepService.getAll(filters).then(response => response.data);
     }, []);
+
+    const handleFileChange = (fileItems: any) => {
+        setData((prevData: any) => ({
+            ...prevData,
+            image_path: fileItems.map((fileItem: any) => fileItem.file),
+        }));
+    };
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
@@ -64,7 +81,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         data.role_id && formData.append('role_id', data.role_id.toString());
         formData.append('workstation_id', data.workstation_id?.toString() ?? '');
         formData.append('step_id', data.step_id?.toString() ?? '');
-        photo && formData.append('image_path', photo);
+        data.image_path.length > 0 && formData.append('image_path', data.image_path[0]);
         await userService.update(user.id, formData);
         router.visit(route(`${ROUTES.USERS}.index`));
         void useSuccessToast('User updated successfully');
@@ -181,20 +198,15 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
 
                         <div className="mt-4">
                             <InputLabel htmlFor="avatar" value="Foto staff" />
-                            <Input
-                                id="avatar"
-                                type="file"
-                                accept=".jpg,.jpeg,.png,.gif,.svg"
-                                name="avatar"
-                                className="mt-1"
-                                autoComplete="avatar"
-                                onChange={e => e.target.files != null && setPhoto(e.target.files?.[0])}
+                            <FilePond
+                                imagePreviewMaxHeight={400}
+                                filePosterMaxHeight={400}
+                                allowMultiple={false}
+                                files={data.image_path}
+                                onupdatefiles={handleFileChange}
+                                labelIdle="Drop files here or click to upload"
+                                allowReplace
                             />
-                            {progress && (
-                                <progress value={progress.percentage} max="100">
-                                    {progress.percentage}%
-                                </progress>
-                            )}
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
