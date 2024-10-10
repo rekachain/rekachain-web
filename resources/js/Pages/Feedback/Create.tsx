@@ -22,7 +22,7 @@ export default function () {
         e.preventDefault();
 
         await feedbackService.create(data);
-        router.visit(route(`${ROUTES.FEEDBACKS}.index`));
+        router.visit(route(`${ROUTES.FEEDBACK}.index`));
         void useSuccessToast('Feedback created successfully');
     });
 

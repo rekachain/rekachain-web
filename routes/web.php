@@ -47,7 +47,7 @@ if (app()->isLocal()) {
 require __DIR__ . '/auth.php';
 
 Route::redirect('/', 'dashboard');
-Route::post('/feedbacks', [FeedbackController::class, 'store'])->name('feedbacks.store');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::middleware('auth')->group(function () {
     Route::inertia('/dashboard', 'Dashboard')->middleware(['verified'])->name('dashboard');
@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('panel-attachments', PanelAttachmentController::class);
     Route::resource('detail-worker-panels', DetailWorkerPanelController::class);
     Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
-    Route::resource('feedbacks', FeedbackController::class)->except(['store']);
+    Route::resource('feedback', FeedbackController::class)->except(['store']);
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');

@@ -29,7 +29,7 @@ export default function () {
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await feedbackService.importData(data.file as File);
-        router.visit(route(`${ROUTES.FEEDBACKS}.index`));
+        router.visit(route(`${ROUTES.FEEDBACK}.index`));
         await useSuccessToast('Data imported successfully');
     });
 

@@ -9,6 +9,7 @@ use App\Models\ComponentMaterial;
 use App\Models\DetailWorkerPanel;
 use App\Models\DetailWorkerTrainset;
 use App\Models\Division;
+use App\Models\Feedback;
 use App\Models\Panel;
 use App\Models\PanelAttachment;
 use App\Models\PanelMaterial;
@@ -406,4 +407,13 @@ function createDetailWorkerTrainset() {
     ]);
 
     return $detailWorkerTrainset;
+}
+
+function createFeedback() {
+    return Feedback::create([
+        'name' => 'Test name',
+        'email' => 'test@example.com',
+        'message' => 'Test message',
+        'rating' => 5,
+    ]);
 }

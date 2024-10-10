@@ -260,7 +260,7 @@ export default function Sidebar() {
                             icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLink
-                            routeName={`${ROUTES.FEEDBACKS}.index`}
+                            routeName={`${ROUTES.FEEDBACK}.index`}
                             title="Feedback"
                             icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
                         />

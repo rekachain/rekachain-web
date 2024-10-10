@@ -55,7 +55,7 @@ export default function FeedbackCardView({
                             <TableCell>
                                 {/*<Link*/}
                                 {/*    className={buttonVariants({ variant: 'link' })}*/}
-                                {/*    href={route(`${ROUTES.FEEDBACKS}.edit`, feedback.id)}*/}
+                                {/*    href={route(`${ROUTES.FEEDBACK}.edit`, feedback.id)}*/}
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}

@@ -45,7 +45,7 @@ export default function FeedbackTableView({
                         <div className="flex items-center justify-end w-full">
                             {/*<Link*/}
                             {/*    className={buttonVariants({ variant: 'link' })}*/}
-                            {/*    href={route(`${ROUTES.FEEDBACKS}.edit`, feedback.id)}*/}
+                            {/*    href={route(`${ROUTES.FEEDBACK}.edit`, feedback.id)}*/}
                             {/*>*/}
                             {/*    Edit*/}
                             {/*</Link>*/}

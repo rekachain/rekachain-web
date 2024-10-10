@@ -22,7 +22,7 @@ export default function ({ feedback }: { feedback: FeedbackResource }) {
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
         await feedbackService.update(feedback.id, data);
-        router.visit(route(`${ROUTES.FEEDBACKS}.index`));
+        router.visit(route(`${ROUTES.FEEDBACK}.index`));
         void useSuccessToast('Feedback deleted successfully');
     });
 

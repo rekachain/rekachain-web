@@ -39,5 +39,5 @@ export const ROUTES = {
     TRAINSET_ATTACHMENT_COMPONENTS: 'trainset-attachment-components',
     FAILED_COMPONENT_MANUFACTURES: 'failed-component-manufactures',
     PENDING_ATTACHMENT_NOTES: 'pending-attachment-notes',
-    FEEDBACKS: 'feedbacks',
+    FEEDBACK: 'feedback',
 };
