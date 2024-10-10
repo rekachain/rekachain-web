@@ -3,18 +3,18 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\TrainsetAttachment;
-use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
+use App\Models\PendingAttachmentNote;
+use App\Support\Interfaces\Repositories\PendingAttachmentNoteRepositoryInterface;
 use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
 use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
 
-class TrainsetAttachmentRepository extends BaseRepository implements TrainsetAttachmentRepositoryInterface {
+class PendingAttachmentNoteRepository extends BaseRepository implements PendingAttachmentNoteRepositoryInterface {
     use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
-        return TrainsetAttachment::class;
+        return PendingAttachmentNote::class;
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
@@ -22,9 +22,7 @@ class TrainsetAttachmentRepository extends BaseRepository implements TrainsetAtt
 
         $query = $this->applySearchFilters($query, $searchParams, ['name']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['supervisor_id','status']);
-
-        $query = $this->applyRelationColumnFilters($query, $searchParams, ['trainsets'=>['status','name'],'detail_worker_trainsets'=>['worker_id']]);
+        $query = $this->applyColumnFilters($query, $searchParams, ['id']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 

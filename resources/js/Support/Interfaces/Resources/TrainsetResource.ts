@@ -6,4 +6,5 @@ export interface TrainsetResource extends Resource, Trainset {
     preset_name: string; // available only in intent: web.project.x
     carriage_trainsets: CarriageTrainsetResource[];
     carriages: CarriageResource[];
+    can_be_deleted: boolean;
 }

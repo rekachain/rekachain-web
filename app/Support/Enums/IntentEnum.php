@@ -17,6 +17,10 @@ enum IntentEnum: string {
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.trainset.attachment.get.attachment.details';
 
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_MATERIALS = 'api.trainset.attachment.get.attachment.details.with.materials';
+
+    case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR = 'api.trainset.attachment.get.attachment.details.with.qr';
+
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS = 'api.trainset.attachment.get.attachment.materials';
 
     case API_TRAINSET_ATTACHMENT_COMPONENT_GET_COMPONENT_DETAILS = 'api.trainset.attachment.component.get.component.details';
@@ -30,6 +34,10 @@ enum IntentEnum: string {
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER = 'api.panel.attachment.get.attachments.by.status.and.current.user';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS = 'api.panel.attachment.get.attachment.details';
+
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS = 'api.panel.attachment.get.attachment.materials';
+
+    case API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'api.panel.attachment.get.attachment.progress';
     
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_MATERIALS = 'api.panel.attachment.get.attachment.details.with.materials';
 
@@ -42,12 +50,14 @@ enum IntentEnum: string {
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS = 'api.panel.attachment.get.attachment.serial.number.details';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
+    
+    case API_PANEL_ATTACHMENT_CONFIRM_KPM = 'api.panel.attachment.confirm.kpm';
 
     case API_DETAIL_WORKER_PANEL_GET_PANELS = 'api.detail.worker.panel.get.panels';
     
     case API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS = 'api.detail.worker.panel.get.panel.details';
 
-    CASE API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
+    case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
     case API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK = 'api.detail.worker.worker.request.work';
     
