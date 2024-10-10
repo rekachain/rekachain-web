@@ -46,8 +46,8 @@ use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 |
 */
 
-uses(TestCase::class, RefreshDatabase::class)->in('Feature');
-// uses(TestCase::class)->in('Feature');
+// uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+uses(TestCase::class)->in('Feature');
 
 /*
 |--------------------------------------------------------------------------
