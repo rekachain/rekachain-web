@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ProgressStep;
 use App\Models\SerialPanel;
 use App\Models\User;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
@@ -18,23 +19,14 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
 
     public function assignWorker(SerialPanel $serialPanel, User $user){
         return DB::transaction(function () use ($serialPanel, $user) {
-            $carriagePanelProgressStepIds = $serialPanel->panel_attachment->carriage_panel->progress->progress_steps->pluck('step_id')->toArray();
-            if (!in_array($user->step->id, $carriagePanelProgressStepIds)) {
-                return $serialPanel->panel_attachment->carriage_panel->progress->name.' does not have '.$user->step->name.' step';
-            }
-            $lastWorkerPanel = $serialPanel->detail_worker_panels()->orderBy('id', 'desc')->first();
-            $lastKey = array_search($lastWorkerPanel?->progress_step->step_id ?? 0, $carriagePanelProgressStepIds);
-            $currentKey = array_search($user->step->id, $carriagePanelProgressStepIds);
-            if ($currentKey < $lastKey || $currentKey - $lastKey > 1) {
-                return $currentKey < $lastKey ? 'Step already done🗿' : 'You are more than 1 step ahead🗿';
-            }
-            return 'assignin🗿';
-            // return $this->detailWorkerPanelService->create([
-            //     'serial_panel_id' => $serialPanel->id,
-            //     'worker_id' => $user->id,
-            //     'progress_step_id' => ProgressStep::where('progress_id', $serialPanel->panel_attachment->carriage_panel->progress_id)->where('step_id', $user->step->id)->first()->id,
-            //     'estimate_time' => $user->step->estimate_time
-            // ]);
+            // $user = auth()->user();
+            $this->detailWorkerPanelService->create([
+                'serial_panel_id' => $serialPanel->id,
+                'worker_id' => $user->id,
+                'progress_step_id' => ProgressStep::where('progress_id', $serialPanel->panel_attachment->carriage_panel->progress_id)->where('step_id', $user->step->id)->first()->id,
+                'estimate_time' => $user->step->estimate_time
+            ]);
+            return true;
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\SerialPanel;
 
+use App\Rules\SerialPanel\SerialPanelAssignWorkerStepValidation;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -34,5 +35,19 @@ class UpdateSerialPanelRequest extends FormRequest {
             'manufacture_status' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:255',
         ];
+    }
+
+    public function withValidator($validator) {
+        $serialPanel = $this->route('serial_panel');
+        $intent = $this->get('intent');
+        $validator->after(function ($validator) use ($intent, $serialPanel) {
+            switch ($intent) {
+                case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
+                    $assignWorkerStepValidation = new SerialPanelAssignWorkerStepValidation();
+                    $assignWorkerStepValidation->validate('serialPanel', $serialPanel, function ($message) use ($validator) {
+                        $validator->errors()->add('Serial Panel Worker Assign', $message);
+                    });
+            }
+        });
     }
 }
