@@ -6,13 +6,15 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PanelAttachmentResource extends JsonResource {
+class PanelAttachmentResource extends JsonResource
+{
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array {
+    public function toArray(Request $request): array
+    {
         $intent = $request->get('intent');
 
         switch ($intent) {
@@ -77,20 +79,20 @@ class PanelAttachmentResource extends JsonResource {
                     'materials' => $materials,
                 ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
-                $panelAttachment = $this->load(['carriage_panel'=> ['progress'=>['progress_steps']]]);
+                $panelAttachment = $this->load(['carriage_panel' => ['progress' => ['progress_steps']]]);
                 $panelSteps = $panelAttachment->carriage_panel->progress->progress_steps->map(function ($progressStep) use (&$steps) {
                     return [
                         'id' => $progressStep->step->id,
                         'progress_step_id' => $progressStep->id,
-                        'step_name'=>$progressStep->step->name,
-                        'step_process'=>$progressStep->step->process,
-                        'estimated_time'=>$progressStep->step->estimated_time,
+                        'step_name' => $progressStep->step->name,
+                        'step_process' => $progressStep->step->process,
+                        'estimated_time' => $progressStep->step->estimated_time,
                         'workers' => collect(),
                     ];
                 });
                 unset($this->carriage_panel);
 
-                $panelAttachment = $this->load(['serial_panels'=> ['detail_worker_panels'=>['progress_step']]]);
+                $panelAttachment = $this->load(['serial_panels' => ['detail_worker_panels' => ['progress_step']]]);
 
                 $serialPanels = $panelAttachment->serial_panels->map(function ($serialPanel) use ($panelAttachment, $panelSteps) {
                     $steps = collect();
@@ -99,23 +101,23 @@ class PanelAttachmentResource extends JsonResource {
                         $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step->id);
                         if (!$step) {
                             $workers->push([
-                                'nip'=>$detailWorkerPanel->worker->nip,
-                                'name'=>$detailWorkerPanel->worker->name,
-                                'started_at'=>$detailWorkerPanel->created_at->toDateTimeString(),
+                                'nip' => $detailWorkerPanel->worker->nip,
+                                'name' => $detailWorkerPanel->worker->name,
+                                'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
                             ]);
                             $steps->push([
                                 'id' => $detailWorkerPanel->progress_step->step->id,
                                 'progress_step_id' => $detailWorkerPanel->progress_step->id,
-                                'step_name'=>$detailWorkerPanel->progress_step->step->name,
-                                'step_process'=>$detailWorkerPanel->progress_step->step->process,
-                                'estimated_time'=>$detailWorkerPanel->progress_step->step->estimated_time,
+                                'step_name' => $detailWorkerPanel->progress_step->step->name,
+                                'step_process' => $detailWorkerPanel->progress_step->step->process,
+                                'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
                                 'workers' => $workers
                             ]);
                         } else {
                             $step['workers']->push([
-                                'nip'=>$detailWorkerPanel->worker->nip,
-                                'name'=>$detailWorkerPanel->worker->name,
-                                'started_at'=>$detailWorkerPanel->created_at->toDateTimeString(),
+                                'nip' => $detailWorkerPanel->worker->nip,
+                                'name' => $detailWorkerPanel->worker->name,
+                                'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
                             ]);
                         }
                     });
@@ -186,10 +188,28 @@ class PanelAttachmentResource extends JsonResource {
                     'updated_at' => $this->updated_at,
                     'panel_materials' => $materialQuantities,
                 ];
-
-            default:
+            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM->value:
                 return [
                     'id' => $this->id,
+                    'attachment_number' => $this->attachment_number,
+                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
+                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
+                    'project' => $this->carriage_panel->carriage_trainset->trainset->project->name,
+                    'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
+                    'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
+                    'panel' => $this->carriage_panel->panel->name,
+                    'qr_code' => $this->qr_code,
+                    'qr_path' => $this->qr_path,
+                    'status' => $this->status,
+                    'supervisor_id' => $this->supervisor_id,
+                    'supervisor_name' => $this->supervisor?->name,
+                    'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
+                    'created_at' => $this->created_at,
+                    'updated_at' => $this->updated_at,
+                ];
+            default:
+                return [
+                    'id' => "$this->id",
                     'attachment_number' => $this->attachment_number,
                     'source_workstation_id' => $this->source_workstation_id,
                     'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
