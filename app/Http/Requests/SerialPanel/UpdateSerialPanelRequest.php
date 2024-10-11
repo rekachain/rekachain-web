@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\SerialPanel;
 
+use App\Models\User;
 use App\Rules\SerialPanel\SerialPanelAssignWorkerStepValidation;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,6 +29,14 @@ class UpdateSerialPanelRequest extends FormRequest {
                     'notes' => 'required|string|max:255'
                 ];
         }
+        if ($this->get('worker_id')) {
+            return [
+                'worker_id' => [
+                    'integer',
+                    'exists:users,id',
+                ],
+            ];
+        }
         return [
             'panel_attachment_id' => 'nullable|string|max:255',
             'qr_code' => 'nullable|string|max:255',
@@ -37,17 +46,27 @@ class UpdateSerialPanelRequest extends FormRequest {
         ];
     }
 
-    public function withValidator($validator) {
+    public function after() {
         $serialPanel = $this->route('serial_panel');
         $intent = $this->get('intent');
-        $validator->after(function ($validator) use ($intent, $serialPanel) {
-            switch ($intent) {
-                case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
-                    $assignWorkerStepValidation = new SerialPanelAssignWorkerStepValidation();
-                    $assignWorkerStepValidation->validate('serialPanel', $serialPanel, function ($message) use ($validator) {
-                        $validator->errors()->add('Serial Panel Worker Assign', $message);
-                    });
-            }
-        });
+
+        switch ($intent) {
+            case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
+                return [
+                    function ($validator) use ($serialPanel) {
+                        $validator->safe()->all();
+                        $userId = $validator->getData()['worker_id'] ?? auth()->user()->id;
+                        $assignWorkerStepValidation = new SerialPanelAssignWorkerStepValidation();
+                        $assignWorkerStepValidation->validate('serialPanel', [
+                            $serialPanel,
+                            User::find($userId),
+                        ], function ($message) use ($validator) {
+                            $validator->errors()->add('Serial Panel Worker Assign', $message);
+                        });
+                    }
+                ];
+            default:
+                return [];
+        }
     }
 }
