@@ -5,7 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use Illuminate\Database\Seeder;
-use Database\Seeders\ComponentMaterialSeeder;
 
 class DatabaseSeeder extends Seeder {
     /**
@@ -46,6 +45,7 @@ class DatabaseSeeder extends Seeder {
             TrainsetAttachmentHandlerSeeder::class,
             TrainsetAttachmentComponentSeeder::class,
             DetailWorkerTrainsetSeeder::class,
+            FeedbackSeeder::class,
         ]);
     }
 }
