@@ -17,9 +17,10 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
         parent::__construct();
     }
 
-    public function assignWorker(SerialPanel $serialPanel, User $user){
-        return DB::transaction(function () use ($serialPanel, $user) {
-            // $user = auth()->user();
+    public function assignWorker(SerialPanel $serialPanel, array $data){
+        return DB::transaction(function () use ($serialPanel, $data) {
+            $userId = $data['worker_id'] ?? auth()->user()->id;
+            $user = User::find($userId);
             $this->detailWorkerPanelService->create([
                 'serial_panel_id' => $serialPanel->id,
                 'worker_id' => $user->id,

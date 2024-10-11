@@ -7,6 +7,6 @@ use App\Models\SerialPanel;
 use App\Models\User;
 
 interface SerialPanelServiceInterface extends BaseCrudServiceInterface {
-    public function assignWorker(SerialPanel $serialPanel, User $user);
+    public function assignWorker(SerialPanel $serialPanel, array $data);
     public function rejectPanel($serialPanel, $request);
 }
