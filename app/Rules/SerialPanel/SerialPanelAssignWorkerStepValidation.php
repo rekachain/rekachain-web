@@ -15,7 +15,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
     public function validate(string $attribute, mixed $value, Closure $fail): void {
         [$serialPanel, $user] = $value;
         // if ($user->hasRole([RoleEnum::QC_ASSEMBLY,RoleEnum::WORKER_ASSEMBLY])) {
-        $carriagePanelProgressStepIds = $serialPanel->panel_attachment->carriage_panel->progress->progress_steps->pluck('step_id')->toArray();
+        $carriagePanelProgressStepIds = $serialPanel->panel_attachment->carriage_panel->progress->progress_steps->pluck('step_id')->toArray(); // TODO: check order of steps insinde progress
         if (!in_array($user->step->id, $carriagePanelProgressStepIds)) {
             $fail(trans_choice(
                 'validation.custom.serial_panel.assign_worker.step_invalid_exception', 0, 
