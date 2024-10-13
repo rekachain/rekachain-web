@@ -197,8 +197,8 @@ return [
         'serial_panel' => [
             'assign_worker' => [
                 'step_invalid_exception' => ':progress does not have :step step',
-                'step_completed_exception' => 'Step :step already done in :progress',
-                'step_ahead_exception' => 'You are more than 1 step ahead of current :progress step🗿',
+                'step_completed_exception' => 'Step :step already completed in :progress',
+                'step_ahead_exception' => 'There is still an under progress step on the current :progress',
             ],
         ],
     ],
