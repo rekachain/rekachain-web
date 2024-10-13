@@ -4,7 +4,8 @@ namespace App\Support\Enums;
 
 use App\Traits\Enums\Arrayable;
 
-enum PanelAttachmentStatusEnum: string {
+enum PanelAttachmentStatusEnum: string
+{
     use Arrayable;
 
     case MATERIAL_IN_TRANSIT = 'material_in_transit';
