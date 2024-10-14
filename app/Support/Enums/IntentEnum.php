@@ -27,6 +27,8 @@ enum IntentEnum: string {
 
     case API_TRAINSET_ATTACHMENT_COMPONENT_GET_COMPONENT_DETAILS = 'api.trainset.attachment.component.get.component.details';
 
+    case API_TRAINSET_ATTACHMENT_ASSIGN_WORKER = 'api.trainset.attachment.assign.worker';
+
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER = 'api.panel.attachment.get.attachments.by.current.user';
