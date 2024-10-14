@@ -22,6 +22,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { useForm } from '@inertiajs/react';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { ScrollArea } from '@/Components/UI/scroll-area';
 
 const ChangeTrainsetPreset = ({
     trainset,
@@ -250,320 +251,328 @@ const ChangeTrainsetPreset = ({
                     <DialogHeader>
                         <DialogTitle>Generate KPM</DialogTitle>
                         <DialogDescription></DialogDescription>
-                        <div className="flex gap-4">
-                            <form onSubmit={handleGenerateAssemblyAttachment} className="flex flex-col gap-4">
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                        <Label>Sumber Workstation</Label>
-                                        <Input
-                                            value={sourceWorkstationFilters.search}
-                                            placeholder="Type a command or search..."
-                                            onInput={e =>
-                                                setSourceWorkstationFilters({
-                                                    ...sourceWorkstationFilters,
-                                                    search: e.currentTarget.value,
-                                                })
-                                            }
-                                        />
-                                        <SelectGroup>
-                                            <Select
-                                                key={generateAssemblyAttachmentData.assembly_source_workstation_id}
-                                                onValueChange={v =>
-                                                    setGenerateAssemblyAttachmentData(
-                                                        'assembly_source_workstation_id',
-                                                        +v,
-                                                    )
+                        <div className="flex gap-4 ">
+                            <ScrollArea className="w-[20rem] sm:w-[30rem] md:w-[50rem] flex flex-col h-[30rem] md:flex-row">
+                                <form onSubmit={handleGenerateAssemblyAttachment} className="flex flex-col gap-4">
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                            <Label>Sumber Workstation</Label>
+                                            <Input
+                                                value={sourceWorkstationFilters.search}
+                                                placeholder="Type a command or search..."
+                                                onInput={e =>
+                                                    setSourceWorkstationFilters({
+                                                        ...sourceWorkstationFilters,
+                                                        search: e.currentTarget.value,
+                                                    })
                                                 }
-                                                value={generateAssemblyAttachmentData.assembly_source_workstation_id.toString()}
-                                            >
-                                                <SelectTrigger id="source-workstation">
-                                                    <SelectValue placeholder="Workstation" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Pilih Workstation
-                                                    </SelectItem>
-                                                    {sourceWorkstations.map(workstation => (
-                                                        <SelectItem
-                                                            key={workstation.id}
-                                                            value={workstation.id.toString()}
-                                                        >
-                                                            {workstation.name} - {workstation.workshop.name}
+                                            />
+                                            <SelectGroup>
+                                                <Select
+                                                    key={generateAssemblyAttachmentData.assembly_source_workstation_id}
+                                                    onValueChange={v =>
+                                                        setGenerateAssemblyAttachmentData(
+                                                            'assembly_source_workstation_id',
+                                                            +v,
+                                                        )
+                                                    }
+                                                    value={generateAssemblyAttachmentData.assembly_source_workstation_id.toString()}
+                                                >
+                                                    <SelectTrigger id="source-workstation">
+                                                        <SelectValue placeholder="Workstation" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Pilih Workstation
                                                         </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </SelectGroup>
+                                                        {sourceWorkstations.map(workstation => (
+                                                            <SelectItem
+                                                                key={workstation.id}
+                                                                value={workstation.id.toString()}
+                                                            >
+                                                                {workstation.name} - {workstation.workshop.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </SelectGroup>
+                                        </div>
+
+                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                            <Label className="mb-2">Tujuan Workstation</Label>
+                                            <Input
+                                                value={destinationWorkstationFilters.search}
+                                                placeholder="Type a command or search..."
+                                                onInput={e =>
+                                                    setDestinationWorkstationFilters({
+                                                        ...destinationWorkstationFilters,
+                                                        search: e.currentTarget.value,
+                                                    })
+                                                }
+                                            />
+
+                                            <SelectGroup>
+                                                <Select
+                                                    key={
+                                                        generateAssemblyAttachmentData.assembly_destination_workstation_id
+                                                    }
+                                                    onValueChange={v =>
+                                                        setGenerateAssemblyAttachmentData(
+                                                            'assembly_destination_workstation_id',
+                                                            +v,
+                                                        )
+                                                    }
+                                                    value={generateAssemblyAttachmentData.assembly_destination_workstation_id.toString()}
+                                                >
+                                                    <SelectTrigger id="destination-workstation">
+                                                        <SelectValue placeholder="Workstation" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Pilih Workstation
+                                                        </SelectItem>
+                                                        {destinationWorkstations.map(workstation => (
+                                                            <SelectItem
+                                                                key={workstation.id}
+                                                                value={workstation.id.toString()}
+                                                            >
+                                                                {workstation.name} - {workstation.workshop.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </SelectGroup>
+                                        </div>
                                     </div>
 
-                                    <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                        <Label className="mb-2">Tujuan Workstation</Label>
-                                        <Input
-                                            value={destinationWorkstationFilters.search}
-                                            placeholder="Type a command or search..."
-                                            onInput={e =>
-                                                setDestinationWorkstationFilters({
-                                                    ...destinationWorkstationFilters,
-                                                    search: e.currentTarget.value,
-                                                })
-                                            }
-                                        />
-
-                                        <SelectGroup>
-                                            <Select
-                                                key={generateAssemblyAttachmentData.assembly_destination_workstation_id}
-                                                onValueChange={v =>
-                                                    setGenerateAssemblyAttachmentData(
-                                                        'assembly_destination_workstation_id',
-                                                        +v,
-                                                    )
+                                    <Button type="submit" disabled={loading}>
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Proses
+                                            </>
+                                        ) : (
+                                            'Generate KPM'
+                                        )}
+                                    </Button>
+                                </form>
+                                <form
+                                    onSubmit={handleGenerateMechanicTrainsetAttachment}
+                                    className="flex flex-col gap-4"
+                                >
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                            <Label>Sumber Workstation</Label>
+                                            <Input
+                                                value={sourceWorkstationFilters.search}
+                                                placeholder="Type a command or search..."
+                                                onInput={e =>
+                                                    setSourceWorkstationFilters({
+                                                        ...sourceWorkstationFilters,
+                                                        search: e.currentTarget.value,
+                                                    })
                                                 }
-                                                value={generateAssemblyAttachmentData.assembly_destination_workstation_id.toString()}
-                                            >
-                                                <SelectTrigger id="destination-workstation">
-                                                    <SelectValue placeholder="Workstation" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Pilih Workstation
-                                                    </SelectItem>
-                                                    {destinationWorkstations.map(workstation => (
-                                                        <SelectItem
-                                                            key={workstation.id}
-                                                            value={workstation.id.toString()}
-                                                        >
-                                                            {workstation.name} - {workstation.workshop.name}
+                                            />
+                                            <SelectGroup>
+                                                <Select
+                                                    key={
+                                                        generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id
+                                                    }
+                                                    onValueChange={v =>
+                                                        setGenerateMechanicTrainsetAttachmentData(
+                                                            'mechanic_source_workstation_id',
+                                                            +v,
+                                                        )
+                                                    }
+                                                    value={generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id.toString()}
+                                                >
+                                                    <SelectTrigger id="source-workstation">
+                                                        <SelectValue placeholder="Workstation" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Pilih Workstation
                                                         </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </SelectGroup>
-                                    </div>
-                                </div>
+                                                        {sourceWorkstations.map(workstation => (
+                                                            <SelectItem
+                                                                key={workstation.id}
+                                                                value={workstation.id.toString()}
+                                                            >
+                                                                {workstation.name} - {workstation.workshop.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </SelectGroup>
+                                        </div>
 
-                                <Button type="submit" disabled={loading}>
-                                    {loading ? (
-                                        <>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Proses
-                                        </>
-                                    ) : (
-                                        'Generate KPM'
-                                    )}
-                                </Button>
-                            </form>
+                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                            <Label className="mb-2">Tujuan Workstation</Label>
+                                            <Input
+                                                value={destinationWorkstationFilters.search}
+                                                placeholder="Type a command or search..."
+                                                onInput={e =>
+                                                    setDestinationWorkstationFilters({
+                                                        ...destinationWorkstationFilters,
+                                                        search: e.currentTarget.value,
+                                                    })
+                                                }
+                                            />
 
-                            <form onSubmit={handleGenerateMechanicTrainsetAttachment} className="flex flex-col gap-4">
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                        <Label>Sumber Workstation</Label>
-                                        <Input
-                                            value={sourceWorkstationFilters.search}
-                                            placeholder="Type a command or search..."
-                                            onInput={e =>
-                                                setSourceWorkstationFilters({
-                                                    ...sourceWorkstationFilters,
-                                                    search: e.currentTarget.value,
-                                                })
-                                            }
-                                        />
-                                        <SelectGroup>
-                                            <Select
-                                                key={
-                                                    generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id
-                                                }
-                                                onValueChange={v =>
-                                                    setGenerateMechanicTrainsetAttachmentData(
-                                                        'mechanic_source_workstation_id',
-                                                        +v,
-                                                    )
-                                                }
-                                                value={generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id.toString()}
-                                            >
-                                                <SelectTrigger id="source-workstation">
-                                                    <SelectValue placeholder="Workstation" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Pilih Workstation
-                                                    </SelectItem>
-                                                    {sourceWorkstations.map(workstation => (
-                                                        <SelectItem
-                                                            key={workstation.id}
-                                                            value={workstation.id.toString()}
-                                                        >
-                                                            {workstation.name} - {workstation.workshop.name}
+                                            <SelectGroup>
+                                                <Select
+                                                    key={
+                                                        generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id
+                                                    }
+                                                    onValueChange={v =>
+                                                        setGenerateMechanicTrainsetAttachmentData(
+                                                            'mechanic_destination_workstation_id',
+                                                            +v,
+                                                        )
+                                                    }
+                                                    value={generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id.toString()}
+                                                >
+                                                    <SelectTrigger id="destination-workstation">
+                                                        <SelectValue placeholder="Workstation" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Pilih Workstation
                                                         </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </SelectGroup>
-                                    </div>
-
-                                    <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                        <Label className="mb-2">Tujuan Workstation</Label>
-                                        <Input
-                                            value={destinationWorkstationFilters.search}
-                                            placeholder="Type a command or search..."
-                                            onInput={e =>
-                                                setDestinationWorkstationFilters({
-                                                    ...destinationWorkstationFilters,
-                                                    search: e.currentTarget.value,
-                                                })
-                                            }
-                                        />
-
-                                        <SelectGroup>
-                                            <Select
-                                                key={
-                                                    generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id
-                                                }
-                                                onValueChange={v =>
-                                                    setGenerateMechanicTrainsetAttachmentData(
-                                                        'mechanic_destination_workstation_id',
-                                                        +v,
-                                                    )
-                                                }
-                                                value={generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id.toString()}
-                                            >
-                                                <SelectTrigger id="destination-workstation">
-                                                    <SelectValue placeholder="Workstation" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Pilih Workstation
-                                                    </SelectItem>
-                                                    {destinationWorkstations.map(workstation => (
-                                                        <SelectItem
-                                                            key={workstation.id}
-                                                            value={workstation.id.toString()}
-                                                        >
-                                                            {workstation.name} - {workstation.workshop.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </SelectGroup>
-                                    </div>
-                                </div>
-
-                                <Button type="submit" disabled={loading}>
-                                    {loading ? (
-                                        <>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Proses
-                                        </>
-                                    ) : (
-                                        'Generate KPM Mekanik'
-                                    )}
-                                </Button>
-                            </form>
-
-                            <form onSubmit={handleGenerateElectricTrainsetAttachment} className="flex flex-col gap-4">
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                        <Label>Sumber Workstation</Label>
-                                        <Input
-                                            value={sourceWorkstationFilters.search}
-                                            placeholder="Type a command or search..."
-                                            onInput={e =>
-                                                setSourceWorkstationFilters({
-                                                    ...sourceWorkstationFilters,
-                                                    search: e.currentTarget.value,
-                                                })
-                                            }
-                                        />
-                                        <SelectGroup>
-                                            <Select
-                                                key={
-                                                    generateElectricTrainsetAttachmentData.electric_source_workstation_id
-                                                }
-                                                onValueChange={v =>
-                                                    setGenerateElectricTrainsetAttachmentData(
-                                                        'electric_source_workstation_id',
-                                                        +v,
-                                                    )
-                                                }
-                                                value={generateElectricTrainsetAttachmentData.electric_source_workstation_id.toString()}
-                                            >
-                                                <SelectTrigger id="source-workstation">
-                                                    <SelectValue placeholder="Workstation" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Pilih Workstation
-                                                    </SelectItem>
-                                                    {sourceWorkstations.map(workstation => (
-                                                        <SelectItem
-                                                            key={workstation.id}
-                                                            value={workstation.id.toString()}
-                                                        >
-                                                            {workstation.name} - {workstation.workshop.name}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </SelectGroup>
+                                                        {destinationWorkstations.map(workstation => (
+                                                            <SelectItem
+                                                                key={workstation.id}
+                                                                value={workstation.id.toString()}
+                                                            >
+                                                                {workstation.name} - {workstation.workshop.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </SelectGroup>
+                                        </div>
                                     </div>
 
-                                    <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                        <Label className="mb-2">Tujuan Workstation</Label>
-                                        <Input
-                                            value={destinationWorkstationFilters.search}
-                                            placeholder="Type a command or search..."
-                                            onInput={e =>
-                                                setDestinationWorkstationFilters({
-                                                    ...destinationWorkstationFilters,
-                                                    search: e.currentTarget.value,
-                                                })
-                                            }
-                                        />
-
-                                        <SelectGroup>
-                                            <Select
-                                                key={
-                                                    generateElectricTrainsetAttachmentData.electric_destination_workstation_id
+                                    <Button type="submit" disabled={loading}>
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Proses
+                                            </>
+                                        ) : (
+                                            'Generate KPM Mekanik'
+                                        )}
+                                    </Button>
+                                </form>
+                                <form
+                                    onSubmit={handleGenerateElectricTrainsetAttachment}
+                                    className="flex flex-col gap-4"
+                                >
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                            <Label>Sumber Workstation</Label>
+                                            <Input
+                                                value={sourceWorkstationFilters.search}
+                                                placeholder="Type a command or search..."
+                                                onInput={e =>
+                                                    setSourceWorkstationFilters({
+                                                        ...sourceWorkstationFilters,
+                                                        search: e.currentTarget.value,
+                                                    })
                                                 }
-                                                onValueChange={v =>
-                                                    setGenerateElectricTrainsetAttachmentData(
-                                                        'electric_destination_workstation_id',
-                                                        +v,
-                                                    )
-                                                }
-                                                value={generateElectricTrainsetAttachmentData.electric_destination_workstation_id.toString()}
-                                            >
-                                                <SelectTrigger id="destination-workstation">
-                                                    <SelectValue placeholder="Workstation" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0" disabled>
-                                                        Pilih Workstation
-                                                    </SelectItem>
-                                                    {destinationWorkstations.map(workstation => (
-                                                        <SelectItem
-                                                            key={workstation.id}
-                                                            value={workstation.id.toString()}
-                                                        >
-                                                            {workstation.name} - {workstation.workshop.name}
+                                            />
+                                            <SelectGroup>
+                                                <Select
+                                                    key={
+                                                        generateElectricTrainsetAttachmentData.electric_source_workstation_id
+                                                    }
+                                                    onValueChange={v =>
+                                                        setGenerateElectricTrainsetAttachmentData(
+                                                            'electric_source_workstation_id',
+                                                            +v,
+                                                        )
+                                                    }
+                                                    value={generateElectricTrainsetAttachmentData.electric_source_workstation_id.toString()}
+                                                >
+                                                    <SelectTrigger id="source-workstation">
+                                                        <SelectValue placeholder="Workstation" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Pilih Workstation
                                                         </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </SelectGroup>
-                                    </div>
-                                </div>
+                                                        {sourceWorkstations.map(workstation => (
+                                                            <SelectItem
+                                                                key={workstation.id}
+                                                                value={workstation.id.toString()}
+                                                            >
+                                                                {workstation.name} - {workstation.workshop.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </SelectGroup>
+                                        </div>
 
-                                <Button type="submit" disabled={loading}>
-                                    {loading ? (
-                                        <>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Proses
-                                        </>
-                                    ) : (
-                                        'Generate KPM Elektrik'
-                                    )}
-                                </Button>
-                            </form>
+                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                            <Label className="mb-2">Tujuan Workstation</Label>
+                                            <Input
+                                                value={destinationWorkstationFilters.search}
+                                                placeholder="Type a command or search..."
+                                                onInput={e =>
+                                                    setDestinationWorkstationFilters({
+                                                        ...destinationWorkstationFilters,
+                                                        search: e.currentTarget.value,
+                                                    })
+                                                }
+                                            />
+
+                                            <SelectGroup>
+                                                <Select
+                                                    key={
+                                                        generateElectricTrainsetAttachmentData.electric_destination_workstation_id
+                                                    }
+                                                    onValueChange={v =>
+                                                        setGenerateElectricTrainsetAttachmentData(
+                                                            'electric_destination_workstation_id',
+                                                            +v,
+                                                        )
+                                                    }
+                                                    value={generateElectricTrainsetAttachmentData.electric_destination_workstation_id.toString()}
+                                                >
+                                                    <SelectTrigger id="destination-workstation">
+                                                        <SelectValue placeholder="Workstation" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0" disabled>
+                                                            Pilih Workstation
+                                                        </SelectItem>
+                                                        {destinationWorkstations.map(workstation => (
+                                                            <SelectItem
+                                                                key={workstation.id}
+                                                                value={workstation.id.toString()}
+                                                            >
+                                                                {workstation.name} - {workstation.workshop.name}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </SelectGroup>
+                                        </div>
+                                    </div>
+
+                                    <Button type="submit" disabled={loading}>
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Proses
+                                            </>
+                                        ) : (
+                                            'Generate KPM Elektrik'
+                                        )}
+                                    </Button>
+                                </form>
+                            </ScrollArea>
                         </div>
                     </DialogHeader>
                 </DialogContent>
