@@ -9,6 +9,6 @@ interface DetailWorkerTrainsetServiceInterface extends BaseCrudServiceInterface 
     
     public function requestAssign($detailWorkerTrainset, $request);
 
-    public function acceptWorkWithImage($detailWorkerTrainset, $request);
+    public function updateAndAcceptWorkWithImage($detailWorkerTrainset, array $data);
     
 }

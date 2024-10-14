@@ -119,9 +119,7 @@ class ApiDetailWorkerTrainsetController extends Controller {
                 // if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
                 //     abort(403, 'Unauthorized');
                 // }
-                $this->detailWorkerTrainsetService->update($detailWorkerTrainset , $request->validated());
-
-                return $this->detailWorkerTrainsetService->acceptWorkWithImage($detailWorkerTrainset, $request);
+                return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());
         }    
         
     }
