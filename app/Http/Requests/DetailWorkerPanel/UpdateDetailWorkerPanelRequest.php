@@ -32,6 +32,7 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
                 
             case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
+                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
                     'image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ];    
         }

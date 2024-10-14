@@ -136,7 +136,7 @@ class ApiDetailWorkerPanelController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateDetailWorkerPanelRequest $request, DetailWorkerPanel $detailWorkerPanel) {
-        $intent = request()->get('intent');
+        $intent = $request->get('intent');
 
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value:
@@ -147,28 +147,14 @@ class ApiDetailWorkerPanelController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
                 ]);
+
                 $data = $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
-                
-                // Convert the $data (DetailWorkerPanel model) to an array
-                $dataArray = $detailWorkerPanel->toArray();
 
-                // The $request object is already an array
-                $requestArray = $request->all(); // Or just use $request->validated() if you're using validation
-
-                // Merge the two arrays
-                $result = array_merge($dataArray, $requestArray);
-                return $result;
-                // Output the combined result
-
-                return new DetailWorkerPanelResource($result);  
+                return (new DetailWorkerPanelResource($data))->toArray($request);  
             case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value: 
                 if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
-                
-                $request->merge([
-                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value
-                ]);
 
                 $this->detailWorkerPanelService->update($detailWorkerPanel , $request->validated());
 
