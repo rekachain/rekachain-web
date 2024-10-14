@@ -9,5 +9,5 @@ interface DetailWorkerPanelServiceInterface extends BaseCrudServiceInterface {
     
     public function requestAssign($detailWorkerPanel, $request);
 
-    public function acceptWorkWithImage($detailWorkerPanel, $request);
+    public function updateAndAcceptWorkWithImage($detailWorkerPanel, array $data);
 }   

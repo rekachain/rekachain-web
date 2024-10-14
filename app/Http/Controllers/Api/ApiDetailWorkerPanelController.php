@@ -156,9 +156,7 @@ class ApiDetailWorkerPanelController extends Controller {
                     abort(403, 'Unauthorized');
                 }
 
-                $this->detailWorkerPanelService->update($detailWorkerPanel , $request->validated());
-
-                return $this->detailWorkerPanelService->acceptWorkWithImage($detailWorkerPanel, $request);
+                return $this->detailWorkerPanelService->updateAndAcceptWorkWithImage($detailWorkerPanel, $request->validated());
         }    
         
     }

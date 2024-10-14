@@ -23,17 +23,18 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
         return DetailWorkerPanelRepositoryInterface::class;
     }
 
-    public function acceptWorkWithImage($detailWorkerPanel, $request)
-    {
+    public function updateAndAcceptWorkWithImage($detailWorkerPanel, array $data): ?Model {
+        // Handle image upload if necessary
+        $data = $this->handleImageUpload($data, $detailWorkerPanel);
+
+        // Update model with new data
+        $detailWorkerPanel = parent::update($detailWorkerPanel, $data);
+
+        // Update work status to COMPLETED
         $detailWorkerPanel->work_status = DetailWorkerPanelWorkStatusEnum::COMPLETED->value;
         $detailWorkerPanel->save();
 
         return $detailWorkerPanel;
-    }
-
-    public function update($keyOrModel, array $data): ?Model {
-        $data = $this->handleImageUpload($data, $keyOrModel);
-        return parent::update($keyOrModel, $data);
     }
 
     public function assignWorker($request){
