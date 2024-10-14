@@ -167,7 +167,7 @@ const ChangeTrainsetPreset = ({
             <form onSubmit={handleChangePreset} className="flex gap-2">
                 <SelectGroup>
                     <Label htmlFor="preset-trainset">Preset</Label>
-                    <div className="flex gap-2">
+                    <div className="md:flex  w-full md:flex-row gap-2 pt-3 ">
                         <Select
                             key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
                             onValueChange={v => setData('preset_trainset_id', +v)}
@@ -196,41 +196,44 @@ const ChangeTrainsetPreset = ({
                             </SelectContent>
                         </Select>
 
-                        <Button
-                            type="submit"
-                            disabled={
-                                loading ||
-                                !data.preset_trainset_id ||
-                                data.preset_trainset_id === trainset.preset_trainset_id
-                            }
-                        >
-                            {loading ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Loading
-                                </>
-                            ) : (
-                                'Ubah Preset'
-                            )}
-                        </Button>
-
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            disabled={
-                                loading || !data.preset_trainset_id || (selectedPreset && selectedPreset.has_trainsets)
-                            }
-                            onClick={handleDeletePresetTrainset}
-                        >
-                            {loading ? (
-                                <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    Loading
-                                </>
-                            ) : (
-                                'Hapus Preset'
-                            )}
-                        </Button>
+                        <div className="flex gap-2 mt-3 md:mt-0 items-center ">
+                            <Button
+                                type="submit"
+                                disabled={
+                                    loading ||
+                                    !data.preset_trainset_id ||
+                                    data.preset_trainset_id === trainset.preset_trainset_id
+                                }
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Loading
+                                    </>
+                                ) : (
+                                    'Ubah Preset'
+                                )}
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                disabled={
+                                    loading ||
+                                    !data.preset_trainset_id ||
+                                    (selectedPreset && selectedPreset.has_trainsets)
+                                }
+                                onClick={handleDeletePresetTrainset}
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Loading
+                                    </>
+                                ) : (
+                                    'Hapus Preset'
+                                )}
+                            </Button>
+                        </div>
                     </div>
                 </SelectGroup>
             </form>
