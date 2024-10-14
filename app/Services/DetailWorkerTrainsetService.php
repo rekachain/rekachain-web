@@ -34,15 +34,12 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
     }
 
     public function updateAndAcceptWorkWithImage($detailWorkerTrainset, array $data): ?Model {
-        // Handle image upload if necessary
+        
         $data = $this->handleImageUpload($data, $detailWorkerTrainset);
 
-        // Update model with new data
-        $detailWorkerTrainset = parent::update($detailWorkerTrainset, $data);
+        $data['work_status'] = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
 
-        // Update work status to COMPLETED
-        $detailWorkerTrainset->work_status = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
-        $detailWorkerTrainset->save();
+        $detailWorkerTrainset = parent::update($detailWorkerTrainset, $data);
 
         return $detailWorkerTrainset;
     }
