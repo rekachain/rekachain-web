@@ -7,5 +7,5 @@ use App\Models\TrainsetAttachment;
 use App\Models\User;
 
 interface TrainsetAttachmentServiceInterface extends BaseCrudServiceInterface {
-    public function assignWorkerToComponent(TrainsetAttachment $trainsetAttachment, array $data);
+    public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data);
 }

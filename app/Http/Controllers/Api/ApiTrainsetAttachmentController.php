@@ -145,7 +145,7 @@ class ApiTrainsetAttachmentController extends ApiController {
 
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
-                return $this->trainsetAttachmentService->assignWorkerToComponent($trainsetAttachment, $request->validated());
+                return $this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated());
             default:
                 return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
         }
