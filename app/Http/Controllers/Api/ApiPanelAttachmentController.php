@@ -191,7 +191,8 @@ class ApiPanelAttachmentController extends Controller
                     abort(403, 'Unauthorized');
                 }
 
-                return $this->panelAttachmentService->confirmKPM($panelAttachment->id, $request);
+                $confirmedKpm = $this->panelAttachmentService->confirmKPM($panelAttachment->id, $request);
+                return PanelAttachmentResource::make($confirmedKpm);
         }
     }
 

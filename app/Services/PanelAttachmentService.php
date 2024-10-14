@@ -46,6 +46,6 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
         $panelAttachment->save();
 
-        return PanelAttachmentResource::make($panelAttachment);
+        return $panelAttachment;
     }
 }
