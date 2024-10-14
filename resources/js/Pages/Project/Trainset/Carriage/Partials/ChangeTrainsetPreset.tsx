@@ -163,7 +163,7 @@ const ChangeTrainsetPreset = ({
         void handleSyncDestinationWorkstations();
     }, [debouncedDestinationWorkstationFilters]);
     return (
-        <div className="flex gap-2 items-center">
+        <div className="flex md:flex-row flex-col  gap-2 md:items-end ">
             <form onSubmit={handleChangePreset} className="flex gap-2">
                 <SelectGroup>
                     <Label htmlFor="preset-trainset">Preset</Label>
@@ -241,7 +241,7 @@ const ChangeTrainsetPreset = ({
             <Dialog>
                 <DialogTrigger
                     className={buttonVariants({
-                        className: 'self-end',
+                        // className: 'self-end',
                     })}
                 >
                     Generate KPM
