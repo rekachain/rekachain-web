@@ -15,6 +15,7 @@ use App\Models\Progress;
 use App\Models\Trainset;
 use App\Models\Workshop;
 use App\Models\Component;
+use App\Models\WorkAspect;
 use App\Models\RawMaterial;
 use App\Models\SerialPanel;
 use App\Models\WorkDayTime;
@@ -86,19 +87,26 @@ class Dummy {
         return $user;
     }
 
+
     public function createComponent(): Component {
-        $component = new Component;
-        $component->name = 'Component';
-        $component->save();
+        $component = Component::inRandomOrder()->first() ?? Component::factory(['name' => 'Test Component'])->create();
 
         return $component;
     }
 
-    public function createCarriagePanelComponent(?Progress $progress = null): CarriagePanelComponent {
-        $this->createCarriagePanel();
-        $component = $this->createComponent();
+    public function createCarriage(): Carriage {
+        $carriage = Carriage::inRandomOrder()->first() ?? Carriage::factory()->create();
 
+        return $carriage;
+    }
+
+    public function createCarriagePanelComponent(?Progress $progress = null): CarriagePanelComponent {
         $attributes = [];
+
+        $attributes['carriage_panel_id'] = $this->createCarriagePanel();
+        $component = $this->createComponent();
+        $attributes['component_id'] = $component->id;
+
         if ($progress) {
             $attributes['progress_id'] = $progress->id;
         } elseif ($component->progress) {
@@ -113,10 +121,14 @@ class Dummy {
     }
 
     public function createComponentMaterial(): ComponentMaterial {
+        $attributes = [];
+
         $progress = $this->createProgress();
-        $this->createRawMaterial();
-        $this->createCarriagePanelComponent($progress);
-        $componentMaterial = ComponentMaterial::factory()->create();
+
+        $attributes['raw_material_id'] = $this->createRawMaterial()->id;
+        $attributes['carriage_panel_component_id'] = $this->createCarriagePanelComponent($progress)->id;
+
+        $componentMaterial = ComponentMaterial::inRandomOrder()->first() ?? ComponentMaterial::factory()->create($attributes);
 
         return $componentMaterial;
     }
@@ -131,15 +143,13 @@ class Dummy {
     }
 
     public function createRawMaterial(): RawMaterial {
-        $rawMaterial = RawMaterial::factory()->create();
+        $rawMaterial = RawMaterial::inRandomOrder()->first() ?? RawMaterial::factory()->create();
 
         return $rawMaterial;
     }
 
     public function createProject(): Project {
-        $project = new Project;
-        $project->name = 'Project';
-        $project->save();
+        $project = Project::inRandomOrder()->first() ?? Project::factory()->create();
 
         return $project;
     }
@@ -147,70 +157,72 @@ class Dummy {
     public function createTrainset(): Trainset {
         $this->createProject();
 
-        $trainset = Trainset::factory()->create();
+        $trainset = Trainset::inRandomOrder()->first() ?? Trainset::factory()->create(['project_id' => $this->createProject()->id]);
 
         return $trainset;
     }
 
-    public function createProgress(): Progress {
-        $progress = Progress::factory()->create();
+    public function createProgress(WorkAspect $workAspect = null): Progress {
+        $progress = Progress::inRandomOrder()->first() ?? Progress::factory()->create($workAspect);
 
         return $progress;
     }
 
+    public function createWorkAspect(): WorkAspect {
+        $workAspect = WorkAspect::inRandomOrder()->first() ?? WorkAspect::factory()->create();
+
+        return $workAspect;
+    }
+
     public function createPanel(): Panel {
         $this->createProgress();
-        $panel = Panel::factory()->create();
+        $panel = Panel::inRandomOrder()->first() ?? Panel::factory()->create();
 
         return $panel;
     }
 
     public function createWorkDay(): WorkDay {
-        $workDay = WorkDay::factory()->create();
+        $workDay = WorkDay::inRandomOrder()->first() ?? WorkDay::factory()->create();
 
         return $workDay;
     }
 
     public function createWorkDayTime(): WorkDayTime {
         $workDay = $this->createWorkDay();
-        $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
+        $workDayTime = WorkDayTime::inRandomOrder()->first() ?? WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
 
         return $workDayTime;
     }
 
     public function createDivision(): Division {
-        $division = new Division;
-        $division->name = 'Test Division';
-        $division->save();
+        $division = Division::inRandomOrder()->first() ?? Division::factory()->create(['name' => 'Test Division']);
 
         return $division;
     }
 
     public function createWorkshop(): Workshop {
-        $workshop = new Workshop;
-        $workshop->name = 'Test Workshop';
-        $workshop->address = 'Test Address';
-        $workshop->save();
+        $workshop = Workshop::inRandomOrder()->first() ?? Workshop::factory()->create(['name' => 'Test Workshop', 'address' => 'Test Address']);
 
         return $workshop;
     }
 
     public function createWorkstation(): Workstation {
+        $attributes = [];
+
         $division = $this->createDivision();
         $workshop = $this->createWorkshop();
-        $workstation = new Workstation;
-        $workstation->name = 'Test Workstation';
-        $workstation->location = 'Test Workstation Location';
-        $workstation->division_id = $division->id;
-        $workstation->workshop_id = $workshop->id;
-        $workstation->save();
+
+        $attributes['workshop_id'] = $workshop->id;
+        $attributes['division_id'] = $division->id;
+
+        $workstation = Workstation::inRandomOrder()->first() ?? Workstation::factory()->create($attributes);
 
         return $workstation;
     }
 
     public function createCarriageTrainset(): CarriageTrainset {
         $trainset = $this->createTrainset();
-        $carriage = Carriage::factory()->create();
+        $carriage = $this->createCarriage();
 
         $carriageTrainset = CarriageTrainset::create([
             'trainset_id' => $trainset->id,
@@ -262,15 +274,18 @@ class Dummy {
     }
 
     public function createStep(): Step {
-        $step = Step::factory()->create();
+        $step = Step::inRandomOrder()->first() ?? Step::factory()->create();
 
         return $step;
     }
 
     public function createProgressStep(): ProgressStep {
-        $this->createProgress();
-        $this->createStep();
-        $progressStep = ProgressStep::factory()->create();
+        $attributes = [];
+
+        $attributes['progress_id'] = $this->createProgress()->id;
+        $attributes['step_id'] = $this->createStep()->id;
+
+        $progressStep = ProgressStep::factory()->create($attributes);
 
         return $progressStep;
     }
