@@ -9,6 +9,7 @@ use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialPanelResource;
 use App\Http\Requests\SerialPanel\UpdateSerialPanelRequest;
+use App\Http\Resources\DetailWorkerPanelResource;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 
 class ApiSerialPanelController extends Controller {

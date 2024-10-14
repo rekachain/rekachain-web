@@ -25,6 +25,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
                     'step'=>$user->step->name
                 ]
             ));
+            return;
         }
 
         $lastWorkerPanel = $serialPanel->detail_worker_panels()->orderBy('id', 'desc')->first();
