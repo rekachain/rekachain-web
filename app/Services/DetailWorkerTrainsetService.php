@@ -2,12 +2,19 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\DetailWorkerTrainset;
-use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
+use App\Traits\Services\HandlesImages;
+use Illuminate\Database\Eloquent\Model;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
+use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 
 class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorkerTrainsetServiceInterface {
+    use HandlesImages;
+
+    protected string $imagePath = 'detail_worker_trainsets/acceptWork';
+    
     protected function getRepositoryClass(): string {
         return DetailWorkerTrainsetRepositoryInterface::class;
     }
@@ -24,5 +31,18 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         $detailWorkerTrainset->save();
 
         return $detailWorkerTrainset;
+    }
+
+    public function acceptWorkWithImage($detailWorkerTrainset, $request)
+    {
+        $detailWorkerTrainset->work_status = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
+        $detailWorkerTrainset->save();
+
+        return $detailWorkerTrainset;
+    }
+
+    public function update($keyOrModel, array $data): ?Model {
+        $data = $this->handleImageUpload($data, $keyOrModel);
+        return parent::update($keyOrModel, $data);
     }
 }
