@@ -3,13 +3,13 @@
 use App\Support\Enums\FeedbackStatusEnum;
 
 test('index method returns paginated feedback', function () {
-    createFeedback();
+    $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->getJson('/api/feedback?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
 test('store method creates new feedback', function () {
@@ -28,7 +28,7 @@ test('store method creates new feedback', function () {
 });
 
 test('show method returns Feedback details', function () {
-    $model = createFeedback();
+    $model = $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->getJson("/api/feedback/{$model->id}");
 
@@ -44,7 +44,7 @@ test('show method returns Feedback details', function () {
 });
 
 // test('update method updates feedback', function () {
-//    $model = createFeedback();
+//    $model = $this->dummy->createFeedback();
 //    $updatedData = [
 //        'name' => 'Updated name',
 //    ];
@@ -57,7 +57,7 @@ test('show method returns Feedback details', function () {
 // });
 
 test('destroy method deletes feedback', function () {
-    $model = createFeedback();
+    $model = $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->deleteJson("/api/feedback/{$model->id}");
 
