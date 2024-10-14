@@ -19,9 +19,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data) {
         $userId = $data['worker_id'] ?? auth()->user()->id;
         $user = User::find($userId);
-        logger($user);
         $trainsetAttachmentComponent = TrainsetAttachmentComponent::find(['carriage_panel_component_id' => $data['carriage_panel_component_id'], 'trainset_attachment_id' => $trainsetAttachment->id])->first();
-        logger($trainsetAttachmentComponent);
         if ($trainsetAttachmentComponent) {
             return DetailWorkerTrainset::create([
                 'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
