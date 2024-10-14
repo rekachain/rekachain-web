@@ -5,45 +5,47 @@ use App\Models\CarriageTrainset;
 use App\Models\Workstation;
 use App\Support\Enums\IntentEnum;
 
-beforeEach(fn() => createSupervisorAssembly());
+beforeEach(fn() => $this->dummy->createSupervisorAssembly());
 
 test('view all panelAttachment', function () {
-    createPanelAttachment();
+    $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->get('/api/panel-attachments')->assertStatus(200);
 });
 
 test('show one panelAttachment', function () {
-    $panelAttachment = createPanelAttachment();
-    actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value)->assertStatus(200);
+    $supervisor = $this->dummy->createSupervisorAssembly();
+    $panelAttachment = $this->dummy->createPanelAttachment();
+    
+    $response = $this->actingAs($supervisor)->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value)->assertStatus(200);
 });
 
 test('show one panelAttachment with QR', function () {
-    $panelAttachment = createPanelAttachment();
+    $panelAttachment = $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value . '&qr_code=' . $panelAttachment->qr_code)->assertStatus(200);
 });
 
 test('show one panelAttachment with invalid QR', function () {
-    $panelAttachment = createPanelAttachment();
+    $panelAttachment = $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value . '&qr_code=' . $panelAttachment->qr_code . '123132')->assertStatus(400);
 });
 
 test('show one panelAttachment with SN', function () {
-    $panelAttachment = createPanelAttachment();
+    $panelAttachment = $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value)->assertStatus(200);
 });
 
 // THE REST IS PENDING
 
 test('store panelAttachment', function () {
-    createCarriagePanel();
-    createCarriageTrainset();
-    createWorkstation();
-    createWorkstation();
+    $carriagePanel = $this->dummy->createCarriagePanel();
+    $carriageTrainset = $this->dummy->createCarriageTrainset();
+    $sourceWorkstation = $this->dummy->createWorkstation();
+    $destinationWorkstation = $this->dummy->createWorkstation();
     actAsSuperAdmin()->post('/api/panel-attachments', [
-        'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
-        'carriage_panel_id' => CarriagePanel::inRandomOrder()->first()->id,
-        'source_workstation_id' => Workstation::inRandomOrder()->first()->id,
-        'destination_workstation_id' => Workstation::inRandomOrder()->first()->id,
+        'carriage_trainset_id' => $carriageTrainset->id,
+        'carriage_panel_id' => $carriagePanel->id,
+        'source_workstation_id' => $sourceWorkstation->id,
+        'destination_workstation_id' => $destinationWorkstation->id,
         'attachment_number' => 1,
         'qr_code' => 'test qr',
         'qr_path' => 'test qr',
@@ -56,13 +58,13 @@ test('store panelAttachment', function () {
 });
 
 test('update panelAttachment', function () {
-    $panelAttachment = createPanelAttachment();
+    $panelAttachment = $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->put('/api/panel-attachments/' . $panelAttachment->id, [
         'status' => 'active',
     ])->assertStatus(200);
 });
 
 test('destroy panelAttachment', function () {
-    $panelAttachment = createPanelAttachment();
+    $panelAttachment = $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->delete('/api/panel-attachments/' . $panelAttachment->id)->assertStatus(200);
 });
