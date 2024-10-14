@@ -71,6 +71,8 @@ enum IntentEnum: string {
 
     case API_DETAIL_WORKER_PANELS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.panels.by.status.and.current.user';
 
+    case API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE = 'api.detail.worker.panel.accept.work.with.image';
+
     case API_DETAIL_WORKER_TRAINSET_GET_TRAINSETS = 'api.detail.worker.trainset.get.trainsets';
     
     case API_DETAIL_WORKER_TRAINSET_GET_TRAINSET_DETAILS = 'api.detail.worker.trainset.get.trainset.details';
