@@ -31,7 +31,7 @@ export default function ({ division }: { division: DivisionResource }) {
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Division: {division.name}</h1>
+                        <h1 className="text-page-header my-4">Ubah Divisi: {division.name}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
@@ -49,7 +49,7 @@ export default function ({ division }: { division: DivisionResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Ubah Division
+                            Ubah Divisi
                         </Button>
                     </form>
                 </div>

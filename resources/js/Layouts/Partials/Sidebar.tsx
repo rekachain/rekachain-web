@@ -170,7 +170,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
-                                title="List Material"
+                                title="List Bahan MentahC"
                                 icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -178,7 +178,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.COMPONENTS}.index`}
-                                title="List Component"
+                                title="List Komponen"
                                 icon={<RiStackLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}

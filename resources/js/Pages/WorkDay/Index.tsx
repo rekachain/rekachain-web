@@ -13,12 +13,12 @@ export default function () {
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">WorkDay</h1>
+                        <h1 className="text-page-header my-4">Tambah Hari Kerja</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.WORK_DAYS}.create`)}
                         >
-                            Tambah WorkDay
+                            Tambah Hari Kerja
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
