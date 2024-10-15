@@ -3,18 +3,18 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
-use App\Models\PendingAttachmentNote;
-use App\Support\Interfaces\Repositories\PendingAttachmentNoteRepositoryInterface;
+use App\Models\Feedback;
+use App\Support\Interfaces\Repositories\FeedbackRepositoryInterface;
 use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
 use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
 
-class PendingAttachmentNoteRepository extends BaseRepository implements PendingAttachmentNoteRepositoryInterface {
+class FeedbackRepository extends BaseRepository implements FeedbackRepositoryInterface {
     use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function getModelClass(): string {
-        return PendingAttachmentNote::class;
+        return Feedback::class;
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
@@ -22,7 +22,7 @@ class PendingAttachmentNoteRepository extends BaseRepository implements PendingA
 
         $query = $this->applySearchFilters($query, $searchParams, ['name']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['id']);
+        $query = $this->applyColumnFilters($query, $searchParams, ['user_id']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 
