@@ -141,7 +141,14 @@ class ApiTrainsetAttachmentController extends ApiController {
      * Update the specified resource in storage.
      */
     public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetAttachment) {
-        return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+        $intent = request()->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+                return $this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated());
+            default:
+                return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+        }
     }
 
     /**

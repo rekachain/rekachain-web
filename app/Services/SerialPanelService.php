@@ -18,17 +18,15 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
     }
 
     public function assignWorker(SerialPanel $serialPanel, array $data){
-        return DB::transaction(function () use ($serialPanel, $data) {
-            $userId = $data['worker_id'] ?? auth()->user()->id;
-            $user = User::find($userId);
-            $this->detailWorkerPanelService->create([
-                'serial_panel_id' => $serialPanel->id,
-                'worker_id' => $user->id,
-                'progress_step_id' => ProgressStep::where('progress_id', $serialPanel->panel_attachment->carriage_panel->progress_id)->where('step_id', $user->step->id)->first()->id,
-                'estimate_time' => $user->step->estimate_time
-            ]);
-            return true;
-        });
+        $userId = $data['worker_id'] ?? auth()->user()->id;
+        $user = User::find($userId);
+        $detailWorkerPanel = $this->detailWorkerPanelService->create([
+            'serial_panel_id' => $serialPanel->id,
+            'worker_id' => $user->id,
+            'progress_step_id' => ProgressStep::where('progress_id', $serialPanel->panel_attachment->carriage_panel->progress_id)->where('step_id', $user->step->id)->first()->id,
+            'estimated_time' => $user->step->estimated_time
+        ]);
+        return $detailWorkerPanel;
     }
 
     public function delete($keyOrModel): bool {
