@@ -141,7 +141,20 @@ class ApiTrainsetAttachmentController extends ApiController {
      * Update the specified resource in storage.
      */
     public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetAttachment) {
-        return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+        $intent = request()->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+                return $this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated());
+            case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_MEKANIK) || !$request->user()->hasRole(RoleEnum::SUPERVISOR_ELEKTRIK)) {
+                    abort(403, __('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                    
+                }
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
+            default:
+                return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+        }
     }
 
     /**

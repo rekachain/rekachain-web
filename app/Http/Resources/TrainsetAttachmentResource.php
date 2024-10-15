@@ -141,6 +141,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     'supervisor_id' => $this->supervisor_id,
                     'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
+                    'trainset_attachment_handler' => TrainsetAttachmentHandlerResource::make($this->whenLoaded('trainset_attachment_handler')),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];

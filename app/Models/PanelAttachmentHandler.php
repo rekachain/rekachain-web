@@ -11,6 +11,7 @@ class PanelAttachmentHandler extends Model {
 
     protected $fillable = [
         'user_id',
+        'handler_name',
         'panel_attachment_id',
         'handles',
     ];

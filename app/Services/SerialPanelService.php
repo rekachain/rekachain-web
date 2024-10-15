@@ -2,16 +2,31 @@
 
 namespace App\Services;
 
+use App\Models\ProgressStep;
 use App\Models\SerialPanel;
+use App\Models\User;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use Illuminate\Support\Facades\DB;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(protected DetailWorkerPanelServiceInterface $detailWorkerPanelService) {
         parent::__construct();
+    }
+
+    public function assignWorker(SerialPanel $serialPanel, array $data){
+        $userId = $data['worker_id'] ?? auth()->user()->id;
+        $user = User::find($userId);
+        $detailWorkerPanel = $this->detailWorkerPanelService->create([
+            'serial_panel_id' => $serialPanel->id,
+            'worker_id' => $user->id,
+            'progress_step_id' => ProgressStep::where('progress_id', $serialPanel->panel_attachment->carriage_panel->progress_id)->where('step_id', $user->step->id)->first()->id,
+            'estimated_time' => $user->step->estimated_time
+        ]);
+        return $detailWorkerPanel;
     }
 
     public function delete($keyOrModel): bool {

@@ -1,12 +1,12 @@
 <?php
 
 test('view all projects', function () {
-    createProject();
+    $this->dummy->createProject();
     actAsSuperAdmin()->get('/api/projects')->assertStatus(200);
 });
 
 test('show one project', function () {
-    $project = createProject();
+    $project = $this->dummy->createProject();
     actAsSuperAdmin()->get('/api/projects/' . $project->id)->assertStatus(200);
 });
 
@@ -19,13 +19,13 @@ test('store project', function () {
 });
 
 test('update project', function () {
-    $project = createProject();
+    $project = $this->dummy->createProject();
     actAsSuperAdmin()->put('/api/projects/' . $project->id, [
         'name' => 'Project',
     ])->assertStatus(200);
 });
 
 test('destroy project', function () {
-    $project = createProject();
+    $project = $this->dummy->createProject();
     actAsSuperAdmin()->delete('/api/projects/' . $project->id)->assertStatus(200);
 });
