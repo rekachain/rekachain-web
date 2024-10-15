@@ -1,87 +1,60 @@
-
 <?php
 
-use App\Models\Role;
-use App\Models\Step;
 use App\Models\User;
-use App\Models\SerialPanel;
-use App\Models\ProgressStep;
-use App\Support\Enums\IntentEnum;
-use Illuminate\Http\UploadedFile;
-use App\Models\TrainsetAttachment;
 use App\Models\DetailWorkerTrainset;
-use Illuminate\Support\Facades\Storage;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 
 beforeEach(function () {
-    createSupervisorMekanik();
-    createSupervisorElektrik();
+    $this->dummy->createSupervisorMekanik();
+    $this->dummy->createSupervisorElektrik();
 });
 
 test('index method returns paginated detail-worker-trainsets', function () {
     $user = User::factory()->superAdmin()->create();
-    $detail = createDetailWorkerTrainset();
+    DetailWorkerTrainset::count() > 4 ?? DetailWorkerTrainset::factory()->count(5)->create();
 
-    $response = $this->actingAs($user)->getJson('/detail-worker-trainsets?page=1&perPage=10');
+    $response = $this->actingAs($user)->getJson('/detail-worker-trainsets?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
-// Not ready
-// test('create method returns create page', function () {
-//     $user = User::factory()->superAdmin()->create();
+test('create method returns create page', function () {
+    $user = User::factory()->superAdmin()->create();
 
-//     $response = $this->actingAs($user)->get('/test/detail-worker-trainsets/create');
+    $response = $this->actingAs($user)->get('/detail-worker-trainsets/create');
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerTrainset/Create'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('DetailWorkerTrainset/Create'));
+});
 
 test('store method creates new DetailWorkerTrainset', function () {
     $user = User::factory()->superAdmin()->create();
+    $userMekanik = $this->dummy->createWorkerMekanik();
+    $progressStep = $this->dummy->createProgressStep();
+    $trainsetAttachment = $this->dummy->createTrainsetAttachment($userMekanik);
 
-    $role = Role::firstOrCreate(['name' => 'Supervisor - Mekanik', 'guard_name' => 'web']);
-    $userMekanik = User::factory(['name' => 'Supervisor - Mekanik'])->create();
-    $userMekanik->assignRole('Supervisor - Mekanik');
-
-    $progress_step = createProgressStep();
-    $trainset_attachment = createTrainsetAttachment($userMekanik);
-
-    $DetailWorkerTrainsetData = [
-        'trainset_attachment_id' => $trainset_attachment->id,
+    $detailWorkerTrainsetData = [
+        'trainset_attachment_id' => $trainsetAttachment->id,
         'worker_id' => $user->id,
-        'progress_step_id' => $progress_step->id,
+        'progress_step_id' => $progressStep->id,
         'estimated_time' => 7,
-        'work_status' => 'in_progress',
-        'acceptance_status' => 'accepted'
+        'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
+        'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value
     ];
 
-    $response = $this->actingAs($user)->postJson('/detail-worker-trainsets', $DetailWorkerTrainsetData);
+    $response = $this->actingAs($user)->postJson('/detail-worker-trainsets', $detailWorkerTrainsetData);
 
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'trainset_attachment_id', 'worker_id', 'progress_step_id', 'estimated_time', 'work_status', 'acceptance_status']);
-    $this->assertDatabaseHas('detail_worker_trainsets', $DetailWorkerTrainsetData);
+    $this->assertDatabaseHas('detail_worker_trainsets', $detailWorkerTrainsetData);
 });
-
-// test('store method imports detail-worker-trainsets', function () {
-//     Storage::fake('local');
-//     $user = User::factory()->superAdmin()->create();
-//     $file = UploadedFile::fake()->create('detail-worker-trainsets.xlsx');
-
-//     $response = $this->actingAs($user)->postJson('/test/detail-worker-trainsets', [
-//         'intent' => IntentEnum::WEB_DetailWorkerTrainset_IMPORT_DetailWorkerTrainset->value,
-//         'import_file' => $file,
-//     ]);
-
-//     $response->assertStatus(204);
-// });
 
 test('show method returns DetailWorkerTrainset details', function () {
     $user = User::factory()->superAdmin()->create();
-    $detailWorkerTrainset = createDetailWorkerTrainset();
+    $detailWorkerTrainset = $this->dummy->createDetailWorkerTrainset();
 
     $response = $this->actingAs($user)->getJson("/detail-worker-trainsets/{$detailWorkerTrainset->id}");
 
@@ -92,27 +65,28 @@ test('show method returns DetailWorkerTrainset details', function () {
             'worker_id' => $detailWorkerTrainset->worker_id,
             'progress_step_id' => $detailWorkerTrainset->progress_step_id,
             'estimated_time' => $detailWorkerTrainset->estimated_time,
-            'work_status' => $detailWorkerTrainset->work_status->value,
-            'acceptance_status' => $detailWorkerTrainset->acceptance_status->value,
+            'work_status' => $detailWorkerTrainset->work_status,
+            'acceptance_status' => $detailWorkerTrainset->acceptance_status,
         ]);
 });
 
-// Not ready
-// test('edit method returns edit page', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $DetailWorkerTrainset = createDetailWorkerTrainset();
+test('edit method returns edit page', function () {
+    $user = User::factory()->superAdmin()->create();
+    $detailWorkerTrainset = $this->dummy->createDetailWorkerTrainset();
 
-//     $response = $this->actingAs($user)->get("/detail-worker-trainsets/{$DetailWorkerTrainset->id}/edit");
+    $response = $this->actingAs($user)->get("/detail-worker-trainsets/{$detailWorkerTrainset->id}/edit");
 
-//     $response->assertStatus(200)
-//         ->assertInertia(fn ($assert) => $assert->component('DetailWorkerTrainset/Edit'));
-// });
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('DetailWorkerTrainset/Edit'));
+});
 
 test('update method updates DetailWorkerTrainset', function () {
     $user = User::factory()->superAdmin()->create();
-    $detailWorkerTrainset = createDetailWorkerTrainset();
+    $detailWorkerTrainset = $this->dummy->createDetailWorkerTrainset();
     $updatedData = [
         'estimated_time' => 35,
+        'work_status' => DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value,
+        'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::REJECTED->value,
     ];
 
     $response = $this->actingAs($user)->putJson("/detail-worker-trainsets/{$detailWorkerTrainset->id}", $updatedData);
@@ -124,20 +98,10 @@ test('update method updates DetailWorkerTrainset', function () {
 
 test('destroy method deletes DetailWorkerTrainset', function () {
     $user = User::factory()->superAdmin()->create();
-    $detailWorkerTrainset = createDetailWorkerTrainset();
+    $detailWorkerTrainset = $this->dummy->createDetailWorkerTrainset();
 
     $response = $this->actingAs($user)->deleteJson("/detail-worker-trainsets/{$detailWorkerTrainset->id}");
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('detail_worker_trainsets', ['id' => $detailWorkerTrainset->id]);
 });
-
-// test('index method returns import template', function () {
-//     $user = User::factory()->superAdmin()->create();
-
-//     $response = $this->actingAs($user)->getJson('/detail-worker-trainsets?intent=' . IntentEnum::WEB_DetailWorkerTrainset_GET_TEMPLATE_IMPORT_DetailWorkerTrainset->value);
-
-//     $response->assertStatus(200)
-//         ->assertDownload('detail-worker-trainsets_template.xlsx');
-// });
-

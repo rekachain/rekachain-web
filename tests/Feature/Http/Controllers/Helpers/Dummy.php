@@ -23,6 +23,8 @@ use App\Models\Workstation;
 use App\Models\ProgressStep;
 use App\Models\CarriagePanel;
 use App\Models\PanelMaterial;
+use App\Models\CarriagePreset;
+use App\Models\PresetTrainset;
 use App\Models\PanelAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Models\CarriageTrainset;
@@ -218,6 +220,26 @@ class Dummy {
         $workstation = Workstation::inRandomOrder()->first() ?? Workstation::factory()->create($attributes);
 
         return $workstation;
+    }
+
+    public function createPresetTrainset(): PresetTrainset {
+        $project = $this->createProject();
+
+        $presetTrainset = PresetTrainset::inRandomOrder()->first() ?? PresetTrainset::factory()->create(['project_id' => $project->id]);
+
+        return $presetTrainset;
+    }
+
+    public function createCarriagePreset(): CarriagePreset {
+        $presetTrainset = $this->createPresetTrainset();
+        $carriage = $this->createCarriage();
+
+        $carriagePreset = CarriagePreset::inRandomOrder()->first() ?? CarriagePreset::factory()->create([
+            'preset_trainset_id' => $presetTrainset->id,
+            'carriage_id' => $carriage->id,
+        ]);
+
+        return $carriagePreset;
     }
 
     public function createCarriageTrainset(): CarriageTrainset {

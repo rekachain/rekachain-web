@@ -7,15 +7,13 @@ use App\Models\DetailWorkerPanel;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\Feature\Http\Controllers\Helpers\Dummy;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
 
 beforeEach(function () {
-    $dummy = new Dummy();
-    $dummy->createSupervisorAssembly();
-    $dummy->createWorkerAssembly();
+    $this->dummy->createSupervisorAssembly();
+    $this->dummy->createWorkerAssembly();
 });
 
 test('index method returns paginated detail-worker-panels', function () {
@@ -39,11 +37,11 @@ test('index method returns paginated detail-worker-panels', function () {
 // });
 
 test('store method creates new DetailWorkerPanel', function () {
-    $dummy = new Dummy();
+
     $user = User::factory()->superAdmin()->create();
     $worker = User::factory()->create();
-    $serial_panel = $dummy->createSerialPanel();
-    $progress_step = $dummy->createProgressStep();
+    $serial_panel = $this->dummy->createSerialPanel();
+    $progress_step = $this->dummy->createProgressStep();
     $DetailWorkerPanelData = [
         'serial_panel_id' => $serial_panel->id,
         'worker_id' => $worker->id,
@@ -60,22 +58,9 @@ test('store method creates new DetailWorkerPanel', function () {
     $this->assertDatabaseHas('detail_worker_panels', $DetailWorkerPanelData);
 });
 
-// test('store method imports detail-worker-panels', function () {
-//     Storage::fake('local');
-//     $user = User::factory()->superAdmin()->create();
-//     $file = UploadedFile::fake()->create('detail-worker-panels.xlsx');
-
-//     $response = $this->actingAs($user)->postJson('/detail-worker-panels', [
-//         'intent' => IntentEnum::WEB_DetailWorkerPanel_IMPORT_DetailWorkerPanel->value,
-//         'import_file' => $file,
-//     ]);
-
-//     $response->assertStatus(204);
-// });
-
 test('show method returns DetailWorkerPanel details', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $dummy->createDetailWorkerPanel();
+    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $this->dummy->createDetailWorkerPanel();
 
     $response = $this->actingAs($user)->getJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 
@@ -94,7 +79,7 @@ test('show method returns DetailWorkerPanel details', function () {
 // Not ready
 // test('edit method returns edit page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $DetailWorkerPanel = $dummy->createDetailWorkerPanel();
+//     $DetailWorkerPanel = $this->dummy->createDetailWorkerPanel();
 
 //     $response = $this->actingAs($user)->get("/detail-worker-panels/{$DetailWorkerPanel->id}/edit");
 
@@ -104,7 +89,7 @@ test('show method returns DetailWorkerPanel details', function () {
 
 test('update method updates DetailWorkerPanel', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $dummy->createDetailWorkerPanel();
+    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $this->dummy->createDetailWorkerPanel();
     $updatedData = [
         'estimated_time' => 35,
     ];
@@ -118,20 +103,10 @@ test('update method updates DetailWorkerPanel', function () {
 
 test('destroy method deletes DetailWorkerPanel', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $dummy->createDetailWorkerPanel();
+    $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('detail_worker_panels', ['id' => $DetailWorkerPanel->id]);
 });
-
-// test('index method returns import template', function () {
-//     $user = User::factory()->superAdmin()->create();
-
-//     $response = $this->actingAs($user)->getJson('/detail-worker-panels?intent=' . IntentEnum::WEB_DetailWorkerPanel_GET_TEMPLATE_IMPORT_DetailWorkerPanel->value);
-
-//     $response->assertStatus(200)
-//         ->assertDownload('detail-worker-panels_template.xlsx');
-// });
-

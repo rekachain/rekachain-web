@@ -3,22 +3,22 @@
 use App\Models\ComponentMaterial;
 use App\Models\User;
 use App\Support\Enums\IntentEnum;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 test('index method returns paginated component-materials', function () {
-    $user = User::factory()->superAdmin()->create();
-    createComponentMaterial();
+    $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->getJson('/component-materials?page=1&perPage=10');
+    ComponentMaterial::count() > 4 ?? ComponentMaterial::factory()->count(5)->create();
+
+    $response = $this->actingAs($user)->getJson('/component-materials?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
+// NOT YET IMPLEMENTED
 // test('create method returns create page', function () {
-//     $user = User::factory()->superAdmin()->create();
+//     $user = User::factory()->create();
 
 //     $response = $this->actingAs($user)->get('/component-materials/create');
 
@@ -26,16 +26,12 @@ test('index method returns paginated component-materials', function () {
 //         ->assertInertia(fn ($assert) => $assert->component('ComponentMaterial/Create'));
 // });
 
-test('store method creates new component', function () {
-    $user = User::factory()->superAdmin()->create();
-    $progress = createProgress();
-    $rawMaterial = createRawMaterial();
-    $carriagePanelComponent = createCarriagePanelComponent($progress);
-
+test('store method creates new component material', function () {
+    $user = User::factory()->create();
     $componentMaterialData = [
-        'carriage_panel_component_id' => $carriagePanelComponent->id,
-        'raw_material_id' => $rawMaterial->id,
-        'qty' => 4,
+        'carriage_panel_component_id' => $this->dummy->createCarriagePanelComponent()->id,
+        'raw_material_id' => $this->dummy->createRawMaterial()->id,
+        'qty' => 5,
     ];
 
     $response = $this->actingAs($user)->postJson('/component-materials', $componentMaterialData);
@@ -45,22 +41,9 @@ test('store method creates new component', function () {
     $this->assertDatabaseHas('component_materials', $componentMaterialData);
 });
 
-// test('store method imports component-materials', function () {
-//     Storage::fake('local');
-//     $user = User::factory()->superAdmin()->create();
-//     $file = UploadedFile::fake()->create('component-materials.xlsx');
-
-//     $response = $this->actingAs($user)->postJson('/component-materials', [
-//         'intent' => IntentEnum::WEB_component_IMPORT_component->value,
-//         'import_file' => $file,
-//     ]);
-
-//     $response->assertStatus(204);
-// });
-
-test('show method returns component details', function () {
-    $user = User::factory()->superAdmin()->create();
-    $componentMaterial = createComponentMaterial();
+test('show method returns component material details', function () {
+    $user = User::factory()->create();
+    $componentMaterial = $this->dummy->createComponentMaterial();
 
     $response = $this->actingAs($user)->getJson("/component-materials/{$componentMaterial->id}");
 
@@ -73,9 +56,10 @@ test('show method returns component details', function () {
         ]);
 });
 
+// NOT YET IMPLEMENTED
 // test('edit method returns edit page', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $componentMaterial = createComponentMaterial();
+//     $user = User::factory()->create();
+//     $componentMaterial = $this->dummy->createComponentMaterial();
 
 //     $response = $this->actingAs($user)->get("/component-materials/{$componentMaterial->id}/edit");
 
@@ -83,11 +67,11 @@ test('show method returns component details', function () {
 //         ->assertInertia(fn ($assert) => $assert->component('ComponentMaterial/Edit'));
 // });
 
-test('update method updates component', function () {
-    $user = User::factory()->superAdmin()->create();
-    $componentMaterial = createComponentMaterial();
+test('update method updates component material', function () {
+    $user = User::factory()->create();
+    $componentMaterial = $this->dummy->createComponentMaterial();
     $updatedData = [
-        'qty' => '999',
+        'qty' => 10,
     ];
 
     $response = $this->actingAs($user)->putJson("/component-materials/{$componentMaterial->id}", $updatedData);
@@ -97,21 +81,12 @@ test('update method updates component', function () {
     $this->assertDatabaseHas('component_materials', $updatedData);
 });
 
-test('destroy method deletes component', function () {
-    $user = User::factory()->superAdmin()->create();
-    $componentMaterial = createComponentMaterial();
+test('destroy method deletes component material', function () {
+    $user = User::factory()->create();
+    $componentMaterial = ComponentMaterial::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/component-materials/{$componentMaterial->id}");
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('component_materials', ['id' => $componentMaterial->id]);
 });
-
-// test('index method returns import template', function () {
-//     $user = User::factory()->superAdmin()->create();
-
-//     $response = $this->actingAs($user)->getJson('/component-materials?intent=' . IntentEnum::WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT->value);
-
-//     $response->assertStatus(200)
-//         ->assertDownload('component_template.xlsx');
-// });

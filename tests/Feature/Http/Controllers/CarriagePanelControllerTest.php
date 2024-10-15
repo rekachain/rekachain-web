@@ -8,10 +8,8 @@ use App\Models\CarriageTrainset;
 
 test('index method returns paginated carriage-panels', function () {
     $user = User::factory()->superAdmin()->create();
-    createProgress();
-    createPanel();
-    createCarriageTrainset();
-    CarriagePanel::factory()->count(5)->create();
+
+    CarriagePanel::count() > 5 ?? CarriagePanel::factory()->count(5)->create();
 
     $response = $this->actingAs($user)->getJson('/carriage-panels?page=1&perPage=5');
 
@@ -31,18 +29,20 @@ test('index method returns paginated carriage-panels', function () {
 
 test('store method creates new carriagePanel', function () {
     $user = User::factory()->superAdmin()->create();
-    createProgress();
-    createPanel();
-    createCarriageTrainset();
+
+    $progress = $this->dummy->createProgress();
+    $panel = $this->dummy->createPanel();
+    $carriageTrainset = $this->dummy->createCarriageTrainset();
+
     $carriagePanelData = [
-        'progress_id' => Progress::inRandomOrder()->first()->id,
-        'carriage_trainset_id' => CarriageTrainset::inRandomOrder()->first()->id,
-        'panel_id' => Panel::inRandomOrder()->first()->id,
+        'progress_id' => $progress->id,
+        'carriage_trainset_id' => $carriageTrainset->id,
+        'panel_id' => $panel->id,
         'qty' => 1,
     ];
-    
+
     $response = $this->actingAs($user)->post('/carriage-panels', $carriagePanelData);
-    
+
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'progress_id', 'carriage_trainset_id', 'panel_id', 'qty']);
     $this->assertDatabaseHas('carriage_panels', $carriagePanelData);
@@ -64,10 +64,8 @@ test('store method creates new carriagePanel', function () {
 
 test('show method returns carriagePanel details', function () {
     $user = User::factory()->superAdmin()->create();
-    createProgress();
-    createPanel();
-    createCarriageTrainset();
-    $carriagePanel = CarriagePanel::factory()->create();
+
+    $carriagePanel = $this->dummy->createCarriagePanel();
 
     $response = $this->actingAs($user)->getJson("/carriage-panels/{$carriagePanel->id}");
 
@@ -93,10 +91,7 @@ test('show method returns carriagePanel details', function () {
 
 test('update method updates carriagePanel', function () {
     $user = User::factory()->superAdmin()->create();
-    createProgress();
-    createPanel();
-    createCarriageTrainset();
-    $carriagePanel = CarriagePanel::factory()->create();
+    $carriagePanel = $this->dummy->createCarriagePanel();
     $updatedData = [
         'qty' => 2,
     ];
@@ -110,10 +105,8 @@ test('update method updates carriagePanel', function () {
 
 test('destroy method deletes carriagePanel', function () {
     $user = User::factory()->superAdmin()->create();
-    createProgress();
-    createPanel();
-    createCarriageTrainset();
-    $carriagePanel = CarriagePanel::factory()->create();
+
+    $carriagePanel = $this->dummy->createCarriagePanel();
 
     $response = $this->actingAs($user)->deleteJson("/carriage-panels/{$carriagePanel->id}");
 
