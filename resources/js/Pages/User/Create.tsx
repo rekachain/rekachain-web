@@ -73,7 +73,6 @@ export default function (props: { roles: RoleResource[] }) {
         await userService.create(formData);
         router.visit(route(`${ROUTES.USERS}.index`));
         void useSuccessToast('User created successfully');
-        // TODO: delete dis
     });
 
     return (
