@@ -175,6 +175,7 @@ return [
     'custom' => [
         'auth' => [
             'unauthorized' => 'You do not have permission to access this application.',
+            'role_exception' => 'The user must have the ":role" role',
         ],
 
         'attribute-name' => [

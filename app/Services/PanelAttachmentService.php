@@ -74,7 +74,7 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
     public function assignSpvAndReceiver(PanelAttachment $panelAttachment, array $data)
     {
-        $panelAttachment->supervisor_id = $data['supervisor_id'];
+        $panelAttachment->supervisor_id = $data['supervisor_id'] ?? auth()->user()->id;
         $attachmentHandler = [
             'handles' => PanelAttachmentHandlerHandlesEnum::RECEIVE->value,
         ];

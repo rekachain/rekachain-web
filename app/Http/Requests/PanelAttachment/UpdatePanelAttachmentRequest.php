@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\PanelAttachment;
 
+use App\Models\User;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePanelAttachmentRequest extends FormRequest {
@@ -25,7 +27,16 @@ class UpdatePanelAttachmentRequest extends FormRequest {
         switch ($intent){
             case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 $arr = [
-                    'supervisor_id' => 'required|integer|exists:users,id',
+                    'supervisor_id' => [
+                        'nullable',
+                        'integer',
+                        'exists:users,id',
+                        function ($attribute, $value, $fail) {
+                            if (!User::find($value)->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                                $fail(__('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+                            }
+                        },
+                    ],
                 ];
                 if ($this->get('receiver_name')) {
                     $arr['receiver_name'] = 'required|string|max:255';
