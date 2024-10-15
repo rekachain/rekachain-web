@@ -15,20 +15,28 @@ class TrainsetAttachmentAssignWorkerStepValidation implements ValidationRule {
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
         [$trainsetAttachment, $carriagePanelComponentId, $user] = $value;
-        $carriagePanelComponent = TrainsetAttachmentComponent::find(['carriage_panel_component_id' => $carriagePanelComponentId, 'trainset_attachment_id' => $trainsetAttachment->id])->first();
-        $carriagePanelComponentProgressStepIds = $carriagePanelComponent->progress->progress_steps->pluck('step_id')->toArray(); // TODO: check order of steps inside progress
+        $trainsetAttachmentComponent = TrainsetAttachmentComponent::find(['carriage_panel_component_id' => $carriagePanelComponentId, 'trainset_attachment_id' => $trainsetAttachment->id])->first();
+
+        if ($trainsetAttachmentComponent->total_fulfilled == $trainsetAttachmentComponent->total_required) {
+            $fail(trans_choice(
+                'validation.custom.trainset_attachment.assign_worker.total_fulfilled_exception', 0, 
+                ['progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name, 'component'=>$trainsetAttachmentComponent->carriage_panel_component->component->name]
+            ));
+        }
+
+        $carriagePanelComponentProgressStepIds = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps->pluck('step_id')->toArray(); // TODO: check order of steps inside progress
         if (!in_array($user->step->id, $carriagePanelComponentProgressStepIds)) {
             $fail(trans_choice(
                 'validation.custom.trainset_attachment.assign_worker.step_invalid_exception', 0, 
                 [
-                    'progress'=>$carriagePanelComponent->progress->name,
+                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
                     'step'=>$user->step->name
                 ]
             ));
             return;
         }
 
-        $lastWorkerTrainset = $carriagePanelComponent->detail_worker_panels()->orderBy('id', 'desc')->first();
+        $lastWorkerTrainset = $trainsetAttachmentComponent->carriage_panel_component->detail_worker_panels()->orderBy('id', 'desc')->first();
         $lastKey = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
         $currentKey = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;
@@ -36,7 +44,7 @@ class TrainsetAttachmentAssignWorkerStepValidation implements ValidationRule {
             $fail(trans_choice(
                 'validation.custom.trainset_attachment.assign_worker.step_completed_exception', 0, 
                 [
-                    'progress'=>$carriagePanelComponent->progress->name, 
+                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name, 
                     'step'=>$user->step->name
                 ]
             ));
@@ -44,7 +52,7 @@ class TrainsetAttachmentAssignWorkerStepValidation implements ValidationRule {
             $fail(trans_choice(
                 'validation.custom.trainset_attachment.assign_worker.step_ahead_exception', 0, 
                 [
-                    'progress'=>$carriagePanelComponent->progress->name, 
+                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name, 
                 ]
             ));
         }

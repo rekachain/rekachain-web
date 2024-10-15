@@ -52,7 +52,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                         $assignWorkerStepValidation = new TrainsetAttachmentAssignWorkerStepValidation();
                         $assignWorkerStepValidation->validate('Trainset Attachment', [
                             $trainsetAttachment,
-                            TrainsetAttachmentComponent::find(['carriage_panel_component_id' => $validator->getData()['carriage_panel_component_id'], 'trainset_attachment_id' => $trainsetAttachment->id])->first(),
+                            $validator->getData()['carriage_panel_component_id'],
                             User::find($userId),
                         ], function ($message) use ($validator) {
                             $validator->errors()->add('Trainset Attachment Worker Assign', $message);
