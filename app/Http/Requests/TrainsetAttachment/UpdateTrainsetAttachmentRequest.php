@@ -6,6 +6,7 @@ use App\Models\TrainsetAttachmentComponent;
 use App\Models\User;
 use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerStepValidation;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTrainsetAttachmentRequest extends FormRequest {
@@ -44,12 +45,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     ],
                 ];
                 if ($this->get('worker_id')) {
-                    $arr = array_merge($arr, [
-                        'worker_id' => [
-                            'integer',
-                            'exists:users,id',
-                        ]
-                    ]);
+                    $arr['worker_id'] = 'required|integer|exists:users,id';
                 }
                 return $arr;
         }
