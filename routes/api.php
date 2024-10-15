@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ApiAuthController;
 use App\Http\Controllers\Api\ApiCarriageController;
 use App\Http\Controllers\Api\ApiComponentController;
 use App\Http\Controllers\Api\ApiDetailWorkerPanelController;
+use App\Http\Controllers\Api\ApiDetailWorkerTrainsetController;
 use App\Http\Controllers\Api\ApiPanelAttachmentController;
 use App\Http\Controllers\Api\ApiPanelAttachmentHandlerController;
 use App\Http\Controllers\Api\ApiPanelController;
@@ -35,7 +36,7 @@ Route::group(['as' => 'api.'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);
-        Route::apiResource('detail-worker-trainsets', ApiDetailWorkerPanelController::class);
+        Route::apiResource('detail-worker-trainsets', ApiDetailWorkerTrainsetController::class);
         Route::apiResource('projects', ApiProjectController::class);
         Route::apiResource('carriages', ApiCarriageController::class);
         Route::apiResource('users', ApiUserController::class);

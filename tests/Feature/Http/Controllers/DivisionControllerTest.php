@@ -10,7 +10,7 @@ test('index method returns paginated divisions', function () {
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(2, 'data');
 });
 
 test('create method returns create page', function () {

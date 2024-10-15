@@ -9,6 +9,7 @@ use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Http\Resources\PanelAttachmentResource;
+use App\Models\AttachmentNote;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface
@@ -38,7 +39,7 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         return PanelAttachmentRepositoryInterface::class;
     }
 
-    public function confirmKPM($panelAttachment, $request)
+    public function confirmKPM($panelAttachment)
     {
         $panelAttachment = PanelAttachment::find($panelAttachment);
 
@@ -46,6 +47,27 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
         $panelAttachment->save();
 
-        return PanelAttachmentResource::make($panelAttachment);
+        return $panelAttachment;
+    }
+
+    public function rejectKPM($panelAttachment, $request)
+    {
+        $note = $request->note;
+
+        $panelAttachment = PanelAttachment::find($panelAttachment);
+
+        $panelAttachment->status = PanelAttachmentStatusEnum::PENDING->value;
+
+        $panelAttachment->attachment_notes()->create(
+            [
+                "note" => $note ? $note : "",
+                "status" => PanelAttachmentStatusEnum::PENDING->value,
+            ]
+        );
+
+
+        $panelAttachment->save();
+
+        return $panelAttachment;
     }
 }

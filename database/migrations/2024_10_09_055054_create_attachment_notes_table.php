@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pending_attachment_notes', function (Blueprint $table) {
+        Schema::create('attachment_notes', function (Blueprint $table) {
             $table->id();
             $table->text('note');
-            $table->morphs('pending_attachment_noteable', 'pending_attachment_noteable');
+            $table->string('status');
+            $table->morphs('attachment_noteable', 'attachment_noteable');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pending_attachment_notes');
+        Schema::dropIfExists('attachment_notes');
     }
 };

@@ -85,12 +85,12 @@ export default function ({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Carriage {carriageTrainset?.carriage.type}</BreadcrumbPage>
+                                    <BreadcrumbPage>Gerbong {carriageTrainset?.carriage.type}</BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex items-center gap-4">
-                            <h1 className="text-page-header my-4">Carriage {carriageTrainset?.carriage.type}</h1>
+                            <h1 className="text-page-header my-4">Gerbong {carriageTrainset?.carriage.type}</h1>
                         </div>
                     </div>
 

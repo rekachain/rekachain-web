@@ -38,6 +38,6 @@ export const ROUTES = {
     WORK_ASPECTS: 'work-aspects',
     TRAINSET_ATTACHMENT_COMPONENTS: 'trainset-attachment-components',
     FAILED_COMPONENT_MANUFACTURES: 'failed-component-manufactures',
-    PENDING_ATTACHMENT_NOTES: 'pending-attachment-notes',
+    ATTACHMENT_NOTES: 'attachment-notes',
     FEEDBACK: 'feedback',
 };

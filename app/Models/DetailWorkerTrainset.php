@@ -20,6 +20,7 @@ class DetailWorkerTrainset extends Model
         'estimated_time',
         'work_status',
         'acceptance_status',
+        'image_path'
     ];
 
     protected $casts = [
@@ -45,5 +46,9 @@ class DetailWorkerTrainset extends Model
     public function progress_step(): BelongsTo
     {
         return $this->belongsTo(ProgressStep::class);
+    }
+
+    public function getImageAttribute() {
+        return $this->image_path ? asset('storage/' . $this->image_path) : null;
     }
 }
