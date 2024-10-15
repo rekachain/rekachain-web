@@ -16,6 +16,25 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                $arr = [
+                    'supervisor_id' => [
+                        'nullable',
+                        'integer',
+                        'exists:users,id',
+                        function ($attribute, $value, $fail) {
+                            if (!User::find($value)->hasRole(RoleEnum::SUPERVISOR_MEKANIK) || !User::find($value)->hasRole(RoleEnum::SUPERVISOR_ELEKTRIK)) {
+                                $fail(__('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' or ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                            }
+                        },
+                    ],
+                ];
+                if ($this->get('receiver_name')) {
+                    $arr['receiver_name'] = 'required|string|max:255';
+                } else {
+                    $arr['receiver_id'] = 'required|integer|exists:users,id';
+                }
+                return $arr;
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
                 $arr = [
                     'carriage_panel_component_id' => [
