@@ -180,7 +180,7 @@ const ChangeTrainsetPreset = ({
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="0" disabled>
-                                    Select Preset
+                                    Pilih Preset
                                 </SelectItem>
                                 {presetTrainset.map(preset => (
                                     <SelectItem key={preset.id} value={preset.id.toString()}>
@@ -245,7 +245,7 @@ const ChangeTrainsetPreset = ({
                         // className: 'self-end',
                     })}
                 >
-                    Generate KPM
+                    Buat KPM
                 </DialogTrigger>
                 <DialogContent className="max-w-fit">
                     <DialogHeader>
