@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
 use App\Http\Resources\DetailWorkerPanelResource;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\SerialPanelResource;
@@ -182,7 +183,7 @@ class ApiPanelAttachmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PanelAttachment $panelAttachment, Request $request)
+    public function update(PanelAttachment $panelAttachment, UpdatePanelAttachmentRequest $request)
     {
         $intent = request()->get('intent');
         switch ($intent) {
@@ -199,6 +200,10 @@ class ApiPanelAttachmentController extends Controller
                 }
                 $rejectedKpm = $this->panelAttachmentService->rejectKpm($panelAttachment->id, $request);
                 return PanelAttachmentResource::make($rejectedKpm);
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                return PanelAttachmentResource::make(($this->panelAttachmentService->assignSpvAndReceiver($panelAttachment, $request->validated())->load('panel_attachment_handlers')));
+            default:
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated()));
         }
     }
 

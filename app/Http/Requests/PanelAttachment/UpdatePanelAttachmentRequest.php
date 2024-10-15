@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\PanelAttachment;
 
+use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePanelAttachmentRequest extends FormRequest {
@@ -9,7 +11,7 @@ class UpdatePanelAttachmentRequest extends FormRequest {
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        return false;
+        return true;
     }
 
     /**
@@ -18,8 +20,32 @@ class UpdatePanelAttachmentRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
+        $intent = $this->get('intent');
+
+        switch ($intent){
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                $arr = [
+                    'supervisor_id' => 'required|integer|exists:users,id',
+                ];
+                if ($this->get('receiver_name')) {
+                    $arr['receiver_name'] = 'required|string|max:255';
+                } else {
+                    $arr['receiver_id'] = 'required|integer|exists:users,id';
+                }
+                return $arr;
+        }
         return [
-            //
+            'carriage_panel_id' => 'nullable|integer|exists:carriage_panels,id',
+            'source_workstation_id' => 'nullable|integer|exists:workstations,id',
+            'destination_workstation_id' => 'nullable|integer|exists:workstations,id',
+            'attachment_number' => 'nullable|string',
+            'qr_code' => 'nullable|string',
+            'qr_path' => 'nullable|string',
+            'current_step' => 'nullable|string',
+            'elapsed_time' => 'nullable|string',
+            'status' => 'nullable|in:' . implode(',', PanelAttachmentStatusEnum::toArray()),
+            'supervisor_id' => 'nullable|integer|exists:users,id',
+            'panel_attachment_id' => 'nullable|integer|exists:panel_attachments,id',
         ];
     }
 }
