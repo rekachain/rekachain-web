@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\TrainsetAttachment;
 
-use App\Models\TrainsetAttachmentComponent;
 use App\Models\User;
-use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerStepValidation;
 use App\Support\Enums\IntentEnum;
+use App\Models\TrainsetAttachmentComponent;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerStepValidation;
 
 class UpdateTrainsetAttachmentRequest extends FormRequest {
     public function authorize(): bool {
@@ -33,6 +34,11 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     ]);
                 }
                 return $arr;
+            case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
+                return [
+                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
+                    'status' => ['nullable', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
+                ];    
         }
         return [
             // Add your validation rules here

@@ -29,4 +29,15 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
             ]);
         }
     }
+
+    public function confirmKPM(TrainsetAttachment $trainsetAttachment, $request)
+    {
+        $trainsetAttachment = TrainsetAttachment::find($trainsetAttachment->id);
+        
+        $trainsetAttachment->status = $request['status'];
+        
+        $trainsetAttachment->save();
+
+        return $trainsetAttachment;
+    }
 }
