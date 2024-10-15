@@ -20,6 +20,7 @@ import { STYLING } from '@/Support/Constants/styling';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useMediaQuery } from 'react-responsive';
 import AddFeedback from '@/Components/AddFeedback';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
 
 export default function Navbar() {
     const isDesktopOrLaptop = useMediaQuery({
@@ -96,6 +97,7 @@ export default function Navbar() {
                         </SheetHeader>
                     </SheetContent>
                 </Sheet>
+                <SetLocalization />
                 <AddFeedback />
                 <Separator orientation="vertical" className="w-[2px]" />
                 <DropdownMenu>
