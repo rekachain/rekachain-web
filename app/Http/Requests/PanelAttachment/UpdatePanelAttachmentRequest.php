@@ -27,7 +27,6 @@ class UpdatePanelAttachmentRequest extends FormRequest {
         switch ($intent){
             case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 return [
-                    'intent' => ['required', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
                     'status' => ['required', 'in:' . implode(',', array_column(PanelAttachmentStatusEnum::cases(), 'value'))],
                 ];  
             case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
