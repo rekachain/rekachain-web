@@ -73,6 +73,7 @@ class ApiDetailWorkerPanelController extends Controller {
                     ]
                 ]), $perPage));
             case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER->value:
+                $acceptance_status = request()->get('acceptance_status');
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
@@ -80,9 +81,22 @@ class ApiDetailWorkerPanelController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
                 ]);
-                
-                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
-                
+                if($acceptance_status == 'all'){
+                    return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
+                } elseif ($acceptance_status == 'pending') {
+                    return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
+                        'column_filters' => [
+                            'acceptance_status' => null
+                        ]
+                    ]), $perPage));
+                }
+                else {
+                    return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
+                        'column_filters' => [
+                            'acceptance_status' => $acceptance_status
+                        ]
+                    ]), $perPage));
+                }     
         }
     }
 

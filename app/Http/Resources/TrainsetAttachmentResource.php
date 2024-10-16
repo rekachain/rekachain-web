@@ -14,8 +14,8 @@ class TrainsetAttachmentResource extends JsonResource {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
-                    'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')),
-                    'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')),
+                    'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')->first()),
+                    'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')->first()),
                     'project' => $this->trainset->project->name,
                     'trainset' => $this->trainset->name,
                     'qr_code' => $this->qr_code,
@@ -23,7 +23,6 @@ class TrainsetAttachmentResource extends JsonResource {
                     'status' => $this->status,
                     'elapsed_time' => $this->elapsed_time,
                     'supervisor_id' => $this->supervisor_id,
-                    'supervisor_name' => $this->supervisor?->name,
                     'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
                     'created_at' => $this->created_at->toDateTimeString(),
@@ -32,9 +31,9 @@ class TrainsetAttachmentResource extends JsonResource {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
-                    'source_workstation' => WorkstationResource::make($this->source_workstation),
-                    'destination_workstation' => WorkstationResource::make($this->destination_workstation),
-                    'trainset' => new TrainsetResource($this->carriage_trainset->trainset),
+                    'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')->first()),
+                    'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')->first()),
+                    'trainset' => new TrainsetResource($this->trainset),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'status' => $this->status,
@@ -57,7 +56,7 @@ class TrainsetAttachmentResource extends JsonResource {
                             $materials->push([
                                 'raw_material_id' => $componentMaterial->raw_material_id,
                                 'material_code' => $componentMaterial->raw_material->material_code,
-                                'material' => $componentMaterial->raw_material->description,
+                                'material_description' => $componentMaterial->raw_material->description,
                                 'total_qty' => $totalQty
                             ]);
                         } else {
@@ -70,11 +69,10 @@ class TrainsetAttachmentResource extends JsonResource {
                         }
                     });
                 });
-                // $materials = $materials->sortBy('raw_material_id');
+                $materials = $materials->sortBy('material_code')->values();
                 return [
                     'attachment_number' => $this->attachment_number,
                     'total_materials' => $materials->count(),
-                    // 'materials' => $materials->sortBy('raw_material_id'),
                     'materials' => $materials,
                 ];
             default:
@@ -92,7 +90,6 @@ class TrainsetAttachmentResource extends JsonResource {
                     'status' => $this->status,
                     'elapsed_time' => $this->elapsed_time,
                     'supervisor_id' => $this->supervisor_id,
-                    'supervisor_name' => $this->supervisor?->name,
                     'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
                     'created_at' => $this->created_at->toDateTimeString(),

@@ -10,6 +10,7 @@ import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import CarriageCardView from './Partials/CarriageCardView';
+import CarriageTableView from './Partials/CarriageTableView';
 
 export default function () {
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
@@ -40,6 +41,10 @@ export default function () {
     return (
         <div className="space-y-4">
             <div className="hidden md:block">
+                <CarriageTableView
+                    carriageResponse={carriageResponse!}
+                    handleCarriageDeletion={handleCarriageDeletion}
+                ></CarriageTableView>
             </div>
 
             <div className="block md:hidden">

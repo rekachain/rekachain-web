@@ -56,6 +56,25 @@ class PanelAttachmentResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
+            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
+                $panelAttachment = $this->load(['carriage_panel' => ['carriage_trainset', 'panel_materials']]);
+
+                $materials = $panelAttachment->carriage_panel->panel_materials->map(function ($panelMaterial) use ($panelAttachment) {
+                    $totalQty = $panelAttachment->carriage_panel->carriage_trainset->qty * $panelAttachment->carriage_panel->qty * $panelMaterial->qty;
+
+                    return [
+                        'raw_material_id' => $panelMaterial->raw_material_id,
+                        'material_code' => $panelMaterial->raw_material->material_code,
+                        'material_description' => $panelMaterial->raw_material->description,
+                        'total_qty' => $totalQty,
+                    ];
+                });
+
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'total_materials' => $materials->count(),
+                    'materials' => $materials,
+                ];
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
