@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\TrainsetAttachment\StoreTrainsetAttachmentRequest;
 use App\Http\Requests\TrainsetAttachment\UpdateTrainsetAttachmentRequest;
+use App\Http\Resources\DetailWorkerTrainsetResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
@@ -148,7 +149,7 @@ class ApiTrainsetAttachmentController extends ApiController {
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
                     abort(403, 'Unauthorized');
                 }
-                return $this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated());
+                return DetailWorkerTrainsetResource::make($this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated()));
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
                     abort(403, 'Unauthorized');
