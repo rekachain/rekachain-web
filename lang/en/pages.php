@@ -13,12 +13,61 @@ return [
             'buttons' => [
                 'create' => 'Create Work Day',
             ],
+            'partials' => [
+                'work_days' => [
+                    'messages' => [
+                        'deleted' => 'Work Day deleted successfully!',
+                    ],
+                    'partials' => [
+                        'work_day_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'start_date' => 'Start Date',
+                                'break_time' => 'Break Time',
+                                'end_date' => 'End Date',
+                            ],
+                        ],
+                        'work_day_card' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'start_date' => 'Start Date',
+                                'break_time' => 'Break Time',
+                                'end_date' => 'End Date',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
         'create' => [
             'title' => 'Create Work Day',
+            'fields' => [
+                'name' => 'Name',
+                'start_date' => 'Start Date',
+                'break_time' => 'Break Time',
+                'end_date' => 'End Date',
+            ],
+            'buttons' => [
+                'submit' => 'Create Work Day',
+            ],
+            'messages' => [
+                'created' => 'Work Day created successfully!',
+            ],
         ],
         'edit' => [
-            'title' => 'Edit Work Day',
+            'title' => 'Edit Work Day :name',
+            'fields' => [
+                'name' => 'Name',
+                'start_date' => 'Start Date',
+                'break_time' => 'Break Time',
+                'end_date' => 'End Date',
+            ],
+            'buttons' => [
+                'submit' => 'Update Work Day',
+            ],
+            'messages' => [
+                'updated' => 'Work Day updated successfully!',
+            ],
         ],
     ],
     'staff_management' => [

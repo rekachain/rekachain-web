@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
@@ -6,6 +6,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkDayResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WDCardView({
     workDayResponse,
@@ -14,6 +15,7 @@ export default function WDCardView({
     workDayResponse: PaginateResponse<WorkDayResource>;
     handleWorkDayDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             {workDayResponse?.data.map(workDay => (
@@ -32,9 +34,15 @@ export default function WDCardView({
                                 </div>
                             </div>
 
-                            <h5 className="  text-sm ">Waktu Mulai : {workDay.start_time}</h5>
+                            <h5 className="text-sm">
+                                {t('pages.work_days.index.partials.work_days.partials.work_day_card.headers.name')} :{' '}
+                                {workDay.start_time}
+                            </h5>
                             <h5 className="  text-sm ">
-                                Waktu Istirahat :
+                                {t(
+                                    'pages.work_days.index.partials.work_days.partials.work_day_card.headers.break_time',
+                                )}
+                                :
                                 {workDay.work_day_times
                                     .filter(time => time.status === WorkDayTimeEnum.BREAK)
                                     .map(time => (
@@ -43,14 +51,17 @@ export default function WDCardView({
                                         </div>
                                     ))}
                             </h5>
-                            <h5 className="  text-sm ">Waktu Selesai : {workDay.end_time}</h5>
+                            <h5 className="  text-sm ">
+                                {t('pages.work_days.index.partials.work_days.partials.work_day_card.headers.end_date')}:{' '}
+                                {workDay.end_time}
+                            </h5>
 
                             <div className="flex items-center justify-end w-full">
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                             Delete
