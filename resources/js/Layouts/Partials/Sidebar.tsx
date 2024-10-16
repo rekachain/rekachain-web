@@ -33,8 +33,10 @@ import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { checkPermission } from '@/Helpers/sidebarHelper';
 import { SidebarProvider } from '@/Contexts/SidebarContext';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Sidebar() {
+    const { t } = useLaravelReactI18n();
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', false);
     const handleSidebarCollapse = () => {
         setSidebarCollapse(!sidebarCollapse);
@@ -79,29 +81,29 @@ export default function Sidebar() {
                             )}
                         </Button>
                     </div>
-                    <SidebarMenu title="GENERAL">
+                    <SidebarMenu title={t('components.sidebar.menus.general')}>
                         <SidebarLink
                             routeName="dashboard"
-                            title="Dashboard"
+                            title={t('components.sidebar.links.dashboard')}
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.WORK_DAYS}.index`}
-                                title="Hari Kerja"
+                                title={t('components.sidebar.links.work_days')}
                                 icon={<RiCalendar2Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                            title="Manajemen Staff"
+                            title={t('components.sidebar.links.staff_management')}
                             icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
                             {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
                                 <SidebarLinkCollapsibleItem
                                     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                                     routeName={`${ROUTES.DIVISIONS}.index`}
-                                    title="Divisi"
+                                    title={t('components.sidebar.links.divisions')}
                                     icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
                                 />
                             )}
@@ -110,7 +112,7 @@ export default function Sidebar() {
                                 <SidebarLinkCollapsibleItem
                                     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                                     routeName={`${ROUTES.WORKSHOPS}.index`}
-                                    title="Workshop"
+                                    title={t('components.sidebar.links.workshops')}
                                     icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
                                 />
                             )}
@@ -119,7 +121,7 @@ export default function Sidebar() {
                                 <SidebarLinkCollapsibleItem
                                     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                                     routeName={`${ROUTES.WORKSTATIONS}.index`}
-                                    title="Workstation"
+                                    title={t('components.sidebar.links.workstations')}
                                     icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
                                 />
                             )}
@@ -128,7 +130,7 @@ export default function Sidebar() {
                                 <SidebarLinkCollapsibleItem
                                     group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
                                     routeName={`${ROUTES.USERS}.index`}
-                                    title="Staff"
+                                    title={t('components.sidebar.links.staff')}
                                     icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
                                 />
                             )}
@@ -136,14 +138,14 @@ export default function Sidebar() {
 
                         <SidebarLinkCollapsible
                             group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
-                            title="Hak Akses"
+                            title={t('components.sidebar.links.access_control')}
                             icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                         >
                             {checkPermission(PERMISSION_ENUM.PERMISSION_READ) && (
                                 <SidebarLinkCollapsibleItem
                                     group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
                                     routeName={`${ROUTES.PERMISSIONS}.index`}
-                                    title="Permissions"
+                                    title={t('components.sidebar.links.permissions')}
                                     icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
                                 />
                             )}
@@ -152,17 +154,17 @@ export default function Sidebar() {
                                 <SidebarLinkCollapsibleItem
                                     group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
                                     routeName={`${ROUTES.ROLES}.index`}
-                                    title="Roles"
+                                    title={t('components.sidebar.links.roles')}
                                     icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
                                 />
                             )}
                         </SidebarLinkCollapsible>
                     </SidebarMenu>
-                    <SidebarMenu title="MANUFAKTUR" bordered>
+                    <SidebarMenu title={t('components.sidebar.menus.manufacturing')} bordered>
                         {checkPermission(PERMISSION_ENUM.STEP_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.STEPS}.index`}
-                                title="List Step"
+                                title={t('components.sidebar.links.steps')}
                                 icon={<RiExpandRightLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -170,7 +172,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
-                                title="List Bahan MentahC"
+                                title={t('components.sidebar.links.raw_materials')}
                                 icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -178,7 +180,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.COMPONENTS}.index`}
-                                title="List Komponen"
+                                title={t('components.sidebar.links.components')}
                                 icon={<RiStackLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -186,7 +188,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.PANELS}.index`}
-                                title="List Panel"
+                                title={t('components.sidebar.links.panels')}
                                 icon={<RiArtboard2Fill size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -194,7 +196,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.PROJECTS}.index`}
-                                title="List Proyek"
+                                title={t('components.sidebar.links.projects')}
                                 icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -202,7 +204,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.CARRIAGES}.index`}
-                                title="List Gerbong"
+                                title={t('components.sidebar.links.carriages')}
                                 icon={<RiCaravanLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -253,20 +255,20 @@ export default function Sidebar() {
                         icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
                     </SidebarMenu>
-                    <SidebarMenu title="SUPPORT" bordered>
+                    <SidebarMenu title={t('components.sidebar.menus.support')} bordered>
                         <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
-                            title="Pengaturan"
+                            title={t('components.sidebar.links.settings')}
                             icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLink
                             routeName={`${ROUTES.FEEDBACK}.index`}
-                            title="Feedback"
+                            title={t('components.sidebar.links.feedback')}
                             icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}
-                            title="Helpdesk"
+                            title={t('components.sidebar.links.helpdesk')}
                             icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLogout />
