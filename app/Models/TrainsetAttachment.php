@@ -53,6 +53,10 @@ class TrainsetAttachment extends Model {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
+    public function trainset_attachment_handlers(): HasMany {
+        return $this->hasMany(TrainsetAttachmentHandler::class);
+    }
+
     public function trainset_attachment_components(): HasMany {
         return $this->hasMany(TrainsetAttachmentComponent::class);
     }
@@ -61,7 +65,7 @@ class TrainsetAttachment extends Model {
         return $this->hasManyThrough(DetailWorkerTrainset::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'trainset_attachment_component_id', 'id', 'id');
     }
 
-    public function pending_attachment_notes(): MorphMany {
-        return $this->morphMany(PendingAttachmentNote::class, 'pending_attachment_noteable');
+    public function attachment_notes(): MorphMany {
+        return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
     }
 }

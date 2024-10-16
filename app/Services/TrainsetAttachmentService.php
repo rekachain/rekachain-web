@@ -31,6 +31,15 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
         }
     }
 
+    public function confirmKPM(TrainsetAttachment $trainsetAttachment, $request)
+    {   
+        $trainsetAttachment->status = $request['status'];
+        
+        $trainsetAttachment->save();
+
+        return $trainsetAttachment;
+    }
+
     public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data) {
         $trainsetAttachment->supervisor_id = $data['supervisor_id'] ?? auth()->user()->id;
         $attachmentHandler = [
