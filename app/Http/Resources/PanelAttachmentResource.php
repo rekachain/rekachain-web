@@ -188,44 +188,6 @@ class PanelAttachmentResource extends JsonResource
                     'updated_at' => $this->updated_at,
                     'panel_materials' => $materialQuantities,
                 ];
-            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM->value:
-                return [
-                    'id' => $this->id,
-                    'attachment_number' => $this->attachment_number,
-                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
-                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
-                    'project' => $this->carriage_panel->carriage_trainset->trainset->project->name,
-                    'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
-                    'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
-                    'panel' => $this->carriage_panel->panel->name,
-                    'qr_code' => $this->qr_code,
-                    'qr_path' => $this->qr_path,
-                    'status' => $this->status,
-                    'supervisor_id' => $this->supervisor_id,
-                    'supervisor_name' => $this->supervisor?->name,
-                    'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
-                ];
-            case IntentEnum::API_PANEL_ATTACHMENT_REJECT_KPM->value:
-                return [
-                    'id' => $this->id,
-                    'attachment_number' => $this->attachment_number,
-                    'source_workstation' => new WorkstationResource($this->source_workstation()->with('workshop', 'division')->first()),
-                    'destination_workstation' => new WorkstationResource($this->destination_workstation()->with('workshop', 'division')->first()),
-                    'project' => $this->carriage_panel->carriage_trainset->trainset->project->name,
-                    'trainset' => $this->carriage_panel->carriage_trainset->trainset->name,
-                    'carriage' => $this->carriage_panel->carriage_trainset->carriage->type,
-                    'panel' => $this->carriage_panel->panel->name,
-                    'qr_code' => $this->qr_code,
-                    'qr_path' => $this->qr_path,
-                    'status' => $this->status,
-                    'supervisor_id' => $this->supervisor_id,
-                    'supervisor_name' => $this->supervisor?->name,
-                    'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
-                ];
             default:
                 return [
                     'id' => "$this->id",
