@@ -20,7 +20,9 @@ class TrainsetAttachmentHandlerRepository extends BaseRepository implements Trai
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['name']);
+        $query = $this->applySearchFilters($query, $searchParams, ['handler_name','handles']);
+
+        $query = $this->applyColumnFilters($query, $searchParams, ['trainset_attachment_id','user_id','handles']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 
