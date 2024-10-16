@@ -1,14 +1,15 @@
 import InputError from '@/Components/InputError';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
-import { FormEventHandler } from 'react';
-import { PageProps } from '../../../Types';
+import { FormEventHandler, useEffect } from 'react';
+import { PageProps } from '@/Types';
 import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
 import { FilePond } from 'react-filepond';
 import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { ROUTES } from '@/Support/Constants/routes';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -21,11 +22,30 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage<PageProps>().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         email: user.email,
         image_path: [] as any[],
     });
+
+    useEffect(() => {
+        setData('image_path', [
+            {
+                source: user.image,
+                options: {
+                    type: 'local',
+                    file: {
+                        name: 'User Avatar',
+                        size: null,
+                        type: 'image/jpeg',
+                    },
+                    metadata: {
+                        poster: user.image,
+                    },
+                },
+            },
+        ]);
+    }, [user.image]);
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
@@ -39,11 +59,11 @@ export default function UpdateProfileInformation({
             formData.append('image_path', data.image_path[0]); // Append the image file
         }
 
-        await window.axios.post(route('profile.update'), formData);
-
-        useSuccessToast('Profile updated successfully.');
+        await window.axios.post(route(`${ROUTES.PROFILE}.update`), formData);
 
         router.reload();
+
+        void useSuccessToast('Profile updated successfully.');
     });
 
     const handleFileChange = (fileItems: any) => {
@@ -97,10 +117,13 @@ export default function UpdateProfileInformation({
                 <div>
                     <Label htmlFor="image_path">Image</Label>
                     <FilePond
+                        imagePreviewMaxHeight={400}
+                        filePosterMaxHeight={400}
                         allowMultiple={false}
                         files={data.image_path}
                         onupdatefiles={handleFileChange}
                         labelIdle="Drop files here or click to upload"
+                        allowReplace
                     />
                     {errors.image_path && `${errors.image_path}`}
                 </div>

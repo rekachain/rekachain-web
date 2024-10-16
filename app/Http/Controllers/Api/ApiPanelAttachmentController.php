@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
 use App\Http\Resources\DetailWorkerPanelResource;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\SerialPanelResource;
@@ -15,7 +16,8 @@ use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use Illuminate\Http\Request;
 
-class ApiPanelAttachmentController extends Controller {
+class ApiPanelAttachmentController extends Controller
+{
     public function __construct(
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected SerialPanelServiceInterface $serialPanelService
@@ -24,7 +26,8 @@ class ApiPanelAttachmentController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $perPage = request()->get('perPage', 5);
         $intent = request()->get('intent');
 
@@ -40,7 +43,7 @@ class ApiPanelAttachmentController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
                     'column_filters' => [
-                        'status'=>$status,
+                        'status' => $status,
                     ],
                 ]);
                 return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
@@ -48,8 +51,8 @@ class ApiPanelAttachmentController extends Controller {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     if (!$request->user()->hasRole([RoleEnum::WORKER_ASSEMBLY, RoleEnum::QC_ASSEMBLY])) {
-                    abort(403, 'Unauthorized');
-                }
+                        abort(403, 'Unauthorized');
+                    }
                     $request->merge([
                         'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
                         'relation_column_filters' => [
@@ -64,7 +67,7 @@ class ApiPanelAttachmentController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
                     'column_filters' => [
-                        'supervisor_id'=> $request->user()->id
+                        'supervisor_id' => $request->user()->id
                     ]
                 ]);
                 return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
@@ -79,7 +82,7 @@ class ApiPanelAttachmentController extends Controller {
                 }
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     if (!$request->user()->hasRole([RoleEnum::WORKER_ASSEMBLY, RoleEnum::QC_ASSEMBLY])) {
-                    abort(403, 'Unauthorized');
+                        abort(403, 'Unauthorized');
                     }
                     $request->merge([
                         'intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value,
@@ -94,34 +97,36 @@ class ApiPanelAttachmentController extends Controller {
                     ]);
                     return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
                 }
-                
+
                 $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
-        
+
                 return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated(array_merge($request->query(), [
                     'column_filters' => [
-                        'supervisor_id'=> $request->user()->id,
+                        'supervisor_id' => $request->user()->id,
                         'status' => $status
                     ]
                 ]), $perPage));
-            
+
             default:
                 $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value]);
-        
-                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(),$perPage));
+
+                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated($request->query(), $perPage));
         }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PanelAttachment $panelAttachment, Request $request) {
+    public function show(PanelAttachment $panelAttachment, Request $request)
+    {
         $intent = request()->get('intent');
         $perPage = request()->get('perPage', 5);
 
@@ -132,13 +137,8 @@ class ApiPanelAttachmentController extends Controller {
                 }
 
                 $request->merge(['intent' => IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
-        
-                return PanelAttachmentResource::collection($this->panelAttachmentService->getAllPaginated(array_merge($request->query(), [
-                    'column_filters' => [
-                        'supervisor_id'=> $request->user()->id,
-                        'id' => $panelAttachment->id
-                    ]
-                ]), $perPage));
+
+                return PanelAttachmentResource::make($panelAttachment);
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
                 return PanelAttachmentResource::make($panelAttachment);
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
@@ -175,21 +175,46 @@ class ApiPanelAttachmentController extends Controller {
                     abort(400, 'Invalid SN QR code');
                 }
                 abort(400, 'QR code not identified');
+            default:
+                return PanelAttachmentResource::make($panelAttachment);
         }
-        abort(404, 'NOTHING TO SHOW🗿');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id) {
-        //
+    public function update(PanelAttachment $panelAttachment, UpdatePanelAttachmentRequest $request)
+    {
+        $intent = request()->get('intent');
+        switch ($intent) {
+            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+
+                $confirmedKpm = $this->panelAttachmentService->confirmKPM($panelAttachment->id);
+                return PanelAttachmentResource::make($confirmedKpm);
+            case IntentEnum::API_PANEL_ATTACHMENT_REJECT_KPM->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                $rejectedKpm = $this->panelAttachmentService->rejectKpm($panelAttachment->id, $request);
+                return PanelAttachmentResource::make($rejectedKpm);
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, __('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+                }
+                return PanelAttachmentResource::make(($this->panelAttachmentService->assignSpvAndReceiver($panelAttachment, $request->validated())->load('panel_attachment_handlers')));
+            default:
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated()));
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
         //
     }
 }

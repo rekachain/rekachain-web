@@ -49,6 +49,12 @@ export default function ProjectCardView({
                             <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
                                 Delete
                             </Button>
+                            <Link
+                                className={buttonVariants({ variant: 'link' })}
+                                href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
+                            >
+                                Trainsets
+                            </Link>
                         </div>
                     </div>
                     {/* </div> */}

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class TrainsetAttachment extends Model {
     use HasFactory;
@@ -58,5 +59,9 @@ class TrainsetAttachment extends Model {
 
     public function detail_worker_trainsets(): HasManyThrough {
         return $this->hasManyThrough(DetailWorkerTrainset::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'trainset_attachment_component_id', 'id', 'id');
+    }
+
+    public function pending_attachment_notes(): MorphMany {
+        return $this->morphMany(PendingAttachmentNote::class, 'pending_attachment_noteable');
     }
 }

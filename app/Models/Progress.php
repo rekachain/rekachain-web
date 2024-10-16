@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Progress extends Model {
     protected $fillable = [
         'name',
+        'work_aspect_id',
     ];
 
     use HasFactory;
@@ -21,7 +22,7 @@ class Progress extends Model {
 
     public function steps(): HasMany {
         return $this->hasMany(Step::class);
-    
+
     }
     public function progress_steps(): HasMany {
         return $this->hasMany(ProgressStep::class);

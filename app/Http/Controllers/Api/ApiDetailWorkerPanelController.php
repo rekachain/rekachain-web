@@ -81,6 +81,7 @@ class ApiDetailWorkerPanelController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
                 ]);
+                
                 if($acceptance_status == 'all'){
                     return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
                 } elseif ($acceptance_status == 'pending') {
@@ -117,28 +118,45 @@ class ApiDetailWorkerPanelController extends Controller {
      * Display the specified resource.
      */
     public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
+        $intent = request()->get('intent');
+        switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
+                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
 
-        return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
-            'column_filters' => [
-                'worker_id'=> $request->user()->id,
-                'id' => $detailWorkerPanel->id
-            ]
-        ])));
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
+                    'column_filters' => [
+                        'worker_id'=> $request->user()->id,
+                        'id' => $detailWorkerPanel->id
+                    ]
+                ])));    
+        } 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DetailWorkerPanel $detailWorkerPanel, Request $request) {
-        $intent = request()->get('intent');
+    public function update(UpdateDetailWorkerPanelRequest $request, DetailWorkerPanel $detailWorkerPanel) {
+        $intent = $request->get('intent');
+
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
 
-                return $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
+                $request->merge([
+                    'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value
+                ]);
+
+                $data = $this->detailWorkerPanelService->requestAssign($detailWorkerPanel->id, $request);
+
+                return (new DetailWorkerPanelResource($data))->toArray($request);  
+            case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value: 
+                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+
+                return $this->detailWorkerPanelService->updateAndAcceptWorkWithImage($detailWorkerPanel, $request->validated());
         }    
         
     }
