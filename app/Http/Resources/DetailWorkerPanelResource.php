@@ -38,6 +38,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'serial_panel_id' => $this->serial_panel_id,
                     'worker_id' => $this->worker_id,
                     'progress_step_id' => $this->progress_step_id,
+                    'acceptance_status' => $this->acceptance_status,
                 ];    
             default:    
                 return [

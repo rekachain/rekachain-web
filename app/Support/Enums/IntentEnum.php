@@ -72,7 +72,7 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
-    case API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK = 'api.detail.worker.worker.request.work';
+    case API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK = 'api.detail.worker.panel.request.work';
 
     case API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER = 'api.detail.worker.panel.request.assign.worker';
 
