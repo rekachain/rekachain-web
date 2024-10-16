@@ -23,7 +23,6 @@ class UpdateProgressRequest extends FormRequest {
 
         return [
             'name' => 'string|max:255',
-            'work_aspect_id' =>  'integer|exists:work_aspects,id',
         ];
     }
 }

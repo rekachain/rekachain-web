@@ -88,12 +88,6 @@ enum PermissionEnum: string {
     case COMPONENT_UPDATE = 'component-update';
     case COMPONENT_DELETE = 'component-delete';
 
-    case FEEDBACK_CREATE = 'feedback-create';
-    case FEEDBACK_READ = 'feedback-read';
-    case FEEDBACK_READ_ALL = 'feedback-read-all';
-    case FEEDBACK_UPDATE = 'feedback-update';
-    case FEEDBACK_DELETE = 'feedback-delete';
-
     /**
      * [Deprecated] Group permissions by first word.
      *

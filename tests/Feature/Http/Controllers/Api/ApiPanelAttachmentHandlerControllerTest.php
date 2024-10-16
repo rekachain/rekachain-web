@@ -5,8 +5,8 @@ use App\Models\User;
 
 test('index method returns panel attachment handlers for given panel attachment id', function () {
     User::factory()->create();
-    $this->dummy->createSupervisorAssembly();
-    $panelAttachment = $this->dummy->createPanelAttachment();
+    createSupervisorAssembly();
+    $panelAttachment = createPanelAttachment();
     $panelAttachmentHandlers = PanelAttachmentHandler::factory()->create([
         'panel_attachment_id' => $panelAttachment->id,
     ]);

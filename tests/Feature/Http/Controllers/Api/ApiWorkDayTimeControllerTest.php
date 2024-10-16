@@ -1,17 +1,17 @@
 <?php
 
 test('view all work day times', function () {
-    $this->dummy->createWorkDayTime();
+    createWorkDayTime();
     actAsSuperAdmin()->get('/api/work-day-times')->assertStatus(200);
 });
 
 test('view work day time', function () {
-    $workDayTime = $this->dummy->createWorkDayTime();
+    $workDayTime = createWorkDayTime();
     actAsSuperAdmin()->get('/api/work-day-times/' . $workDayTime->id)->assertStatus(200);
 });
 
 test('store work day time', function () {
-    $workDay = $this->dummy->createWorkDay();
+    $workDay = createWorkDay();
     actAsSuperAdmin()->post('/api/work-day-times', [
         'work_day_id' => $workDay->id,
         'start_time' => '09:00',
@@ -28,8 +28,8 @@ test('store work day time', function () {
 });
 
 test('update work day time', function () {
-    $workDay = $this->dummy->createWorkDay();
-    $workDayTime = $this->dummy->createWorkDayTime();
+    $workDay = createWorkDay();
+    $workDayTime = createWorkDayTime();
     actAsSuperAdmin()->put('/api/work-day-times/' . $workDayTime->id, [
         'work_day_id' => $workDay->id,
         'start_time' => '09:00',
@@ -46,7 +46,7 @@ test('update work day time', function () {
 });
 
 test('destroy work day time', function () {
-    $workDayTime = $this->dummy->createWorkDayTime();
+    $workDayTime = createWorkDayTime();
     actAsSuperAdmin()->delete('/api/work-day-times/' . $workDayTime->id)->assertStatus(200);
 
     $this->assertDatabaseMissing('work_day_times', [

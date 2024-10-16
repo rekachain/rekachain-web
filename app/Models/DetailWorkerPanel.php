@@ -16,7 +16,6 @@ class DetailWorkerPanel extends Model {
         'progress_step_id',
         'estimated_time',
         'work_status',
-        'image_path',
         'acceptance_status',
     ];
     protected $casts = [
@@ -34,9 +33,5 @@ class DetailWorkerPanel extends Model {
 
     public function progress_step() {
         return $this->belongsTo(ProgressStep::class);
-    }
-
-    public function getImageAttribute() {
-        return $this->image_path ? asset('storage/' . $this->image_path) : null;
     }
 }

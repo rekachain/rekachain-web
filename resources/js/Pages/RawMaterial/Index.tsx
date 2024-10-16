@@ -14,12 +14,12 @@ export default function () {
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex flex-col md:flex-row gap-5 md:items-center">
-                        <h1 className="text-page-header my-4">Bahan Mentah</h1>
+                        <h1 className="text-page-header my-4">Raw Material</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.RAW_MATERIALS}.create`)}
                         >
-                            Tambah Bahan Mentah
+                            Tambah Raw Material
                         </Link>
                         <Import />
                     </div>

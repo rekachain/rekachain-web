@@ -1,17 +1,17 @@
 <?php
 
 test('view all panels', function () {
-    $this->dummy->createPanel();
+    createPanel();
     actAsSuperAdmin()->get('/api/panels')->assertStatus(200);
 });
 
 test('show one panel', function () {
-    $panel = $this->dummy->createPanel();
+    $panel = createPanel();
     actAsSuperAdmin()->get('/api/panels/' . $panel->id)->assertStatus(200);
 });
 
 test('update one panel', function () {
-    $panel = $this->dummy->createPanel();
+    $panel = createPanel();
     actAsSuperAdmin()->put('/api/panels/' . $panel->id, [
         'name' => 'Panel Updated',
     ])->assertStatus(200);
@@ -34,7 +34,7 @@ test('store one panel', function () {
 
 // NOT IMPLEMENTED YET
 // test('destroy one panel', function () {
-//     $panel = $this->dummy->createPanel();
+//     $panel = createPanel();
 //     actAsSuperAdmin()->delete('/api/panels/' . $panel->id)->assertStatus(200);
 //     $this->assertDatabaseMissing('panels', [
 //         'id' => $panel->id,

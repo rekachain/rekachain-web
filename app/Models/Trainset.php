@@ -51,8 +51,4 @@ class Trainset extends Model {
     public function project(): BelongsTo {
         return $this->belongsTo(Project::class);
     }
-
-    public function canBeDeleted(): bool {
-        return $this->status !== TrainsetStatusEnum::PROGRESS;
-    }
 }

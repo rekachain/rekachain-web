@@ -18,16 +18,13 @@ trait HandlesFiltering {
         return $query;
     }
 
-    public function applyColumnFilters(Builder $query, array $searchParams, array $filterableColumns): Builder {
+    public function applyColumnFilters(Builder $query, array $searchParams, array $filterableColumns) : Builder {
         if (isset($searchParams['column_filters'])) {
             foreach ($searchParams['column_filters'] as $key => $value) {
-                if (!in_array($key, $filterableColumns)) {
-                    continue;
-                }
+                if (!in_array($key, $filterableColumns)) continue;
                 $query->where($key, $value);
             }
         }
-
         return $query;
     }
 
@@ -51,18 +48,15 @@ trait HandlesFiltering {
     public function applyRelationColumnFilters(Builder $query, array $searchParams, array $relationFilterableColumns): Builder {
         if (isset($searchParams['relation_column_filters'])) {
             foreach ($searchParams['relation_column_filters'] as $relation => $value) {
-                if (!array_key_exists($relation, $relationFilterableColumns)) {
-                    continue;
-                }
+                if (!array_key_exists($relation, $relationFilterableColumns)) continue;
                 $query->whereHas($relation, function ($query) use ($value) {
                     foreach ($value as $key => $val) {
                         $query->where($key, $val);
                     }
                 });
             }
-
+            
         }
-
         return $query;
     }
 }

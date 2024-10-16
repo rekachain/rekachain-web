@@ -9,7 +9,6 @@ use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialPanelResource;
 use App\Http\Requests\SerialPanel\UpdateSerialPanelRequest;
-use App\Http\Resources\DetailWorkerPanelResource;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 
 class ApiSerialPanelController extends Controller {
@@ -53,10 +52,6 @@ class ApiSerialPanelController extends Controller {
                 }
                 
                 return $this->serialPanelService->rejectPanel($serialPanel, $request);    
-            case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
-                return DetailWorkerPanelResource::make($this->serialPanelService->assignWorker($serialPanel, $request->validated()));
-            default:
-                break;
         }
         
     }

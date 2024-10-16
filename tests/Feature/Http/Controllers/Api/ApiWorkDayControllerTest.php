@@ -1,12 +1,12 @@
 <?php
 
 test('view all work-days', function () {
-    $this->dummy->createWorkDay();
+    createWorkDay();
     actAsSuperAdmin()->get('/api/work-days')->assertStatus(200);
 });
 
 test('view work-day', function () {
-    $workday = $this->dummy->createWorkDay();
+    $workday = createWorkDay();
     actAsSuperAdmin()->get('/api/work-days/' . $workday->id)->assertStatus(200);
 });
 
@@ -21,7 +21,7 @@ test('store work-day', function () {
 });
 
 test('update work-day', function () {
-    $workday = $this->dummy->createWorkDay();
+    $workday = createWorkDay();
     actAsSuperAdmin()->put('/api/work-days/' . $workday->id, [
         'day' => 'Test Day',
     ])->assertStatus(200);
@@ -33,7 +33,7 @@ test('update work-day', function () {
 });
 
 test('destroy work-day', function () {
-    $workday = $this->dummy->createWorkDay();
+    $workday = createWorkDay();
     actAsSuperAdmin()->delete('/api/work-days/' . $workday->id)->assertStatus(200);
     $this->assertDatabaseMissing('work_days', [
         'id' => $workday->id,

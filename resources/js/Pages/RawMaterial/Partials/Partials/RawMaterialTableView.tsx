@@ -21,7 +21,7 @@ export default function RawMaterialTableView({
                         <TableHead>Kode Material</TableHead>
                         <TableHead>Deskripsi</TableHead>
                         <TableHead>Spesifikasi</TableHead>
-                        <TableHead>Unit / Satuan</TableHead>
+                        <TableHead>Unit</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

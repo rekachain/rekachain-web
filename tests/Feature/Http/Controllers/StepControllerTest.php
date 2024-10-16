@@ -14,7 +14,7 @@ test('index method returns paginated steps', function () {
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(6, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
 test('create method returns create page', function () {

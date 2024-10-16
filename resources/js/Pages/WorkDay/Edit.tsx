@@ -51,7 +51,7 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Ubah Hari Kerja
+                            Ubah WorkDay
                         </Button>
                     </form>
                 </div>

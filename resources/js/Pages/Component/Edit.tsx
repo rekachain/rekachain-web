@@ -182,7 +182,7 @@ export default function ({ component }: { component: ComponentResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            Tambah Komponen
+                            Tambah Component
                         </Button>
                     </form>
                 </div>

@@ -191,6 +191,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         });
     }
 
+    public function delete($keyOrModel): bool {
+        $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
+            $this->carriageTrainsetService->delete($carriageTrainset);
+        });
+
+        return parent::delete($keyOrModel);
+    }
+
     public function importData(UploadedFile $file): bool {
         Excel::import(new TrainsetsImport, $file);
 
@@ -422,18 +430,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
         return $attachmentNumber;
 
-    }
-
-    public function delete($keyOrModel): bool {
-        if (!$keyOrModel->canBeDeleted()) {
-            abort(402, __('exception.services.trainset_service.delete.trainset_in_progress_exception'));
-        }
-
-        $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
-            $this->carriageTrainsetService->delete($carriageTrainset);
-        });
-
-        return parent::delete($keyOrModel);
     }
 
     protected function getRepositoryClass(): string {

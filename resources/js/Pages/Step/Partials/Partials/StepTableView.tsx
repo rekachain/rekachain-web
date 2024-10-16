@@ -22,7 +22,7 @@ export default function StepTableView({
                     <TableRow>
                         <TableHead>Nama</TableHead>
                         <TableHead>Proses</TableHead>
-                        <TableHead>Estimasi Manufaktur (Menit)</TableHead>
+                        <TableHead>Estimasi Manufaktur</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

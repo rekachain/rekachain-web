@@ -7,7 +7,6 @@ import {
     RiContractRightLine,
     RiDivideLine,
     RiExpandRightLine,
-    RiFeedbackLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
@@ -170,7 +169,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.RAW_MATERIALS}.index`}
-                                title="List Bahan MentahC"
+                                title="List Material"
                                 icon={<RiInstanceLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -178,7 +177,7 @@ export default function Sidebar() {
                         {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
                             <SidebarLink
                                 routeName={`${ROUTES.COMPONENTS}.index`}
-                                title="List Komponen"
+                                title="List Component"
                                 icon={<RiStackLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
@@ -258,11 +257,6 @@ export default function Sidebar() {
                             routeName={`${ROUTES.PROFILE}.edit`}
                             title="Pengaturan"
                             icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
-                        />
-                        <SidebarLink
-                            routeName={`${ROUTES.FEEDBACK}.index`}
-                            title="Feedback"
-                            icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         <SidebarLink
                             routeName={`${ROUTES.PROFILE}.edit`}

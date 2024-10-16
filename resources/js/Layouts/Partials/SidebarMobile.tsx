@@ -1,7 +1,6 @@
 import {
     RiArtboard2Fill,
     RiBox3Line,
-    RiCalendar2Line,
     RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
@@ -86,12 +85,6 @@ export default function SidebarMobile() {
                                             <div className="flex items-center gap-2">
                                                 <RiHome8Line size={35} />
                                                 <p className="text-base">Dashboard</p>
-                                            </div>
-                                        </Link>
-                                        <Link href={route(`${ROUTES.WORK_DAYS}.index`)} className="mt-5">
-                                            <div className="flex items-center gap-2">
-                                                <RiCalendar2Line size={35} />
-                                                <p className="text-base">Hari Kerja</p>
                                             </div>
                                         </Link>
                                         <Accordion type="single" collapsible>

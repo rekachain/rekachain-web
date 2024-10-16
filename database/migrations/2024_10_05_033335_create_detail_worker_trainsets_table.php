@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('worker_id')->constrained('users');
             $table->foreignId('progress_step_id')->constrained();
             $table->integer('estimated_time')->nullable();
-            $table->string('image_path')->nullable();
             $table->enum('work_status', DetailWorkerTrainsetWorkStatusEnum::toArray())->default(DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value);
             $table->enum('acceptance_status', DetailWorkerTrainsetAcceptanceStatusEnum::toArray())->nullable();
             $table->timestamps();

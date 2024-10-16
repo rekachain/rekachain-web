@@ -14,12 +14,12 @@ export default function () {
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Gerbong</h1>
+                        <h1 className="text-page-header my-4">Carriage</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.CARRIAGES}.create`)}
                         >
-                            Tambah Gerbong
+                            Tambah Carriage
                         </Link>
                         <Import />
                     </div>

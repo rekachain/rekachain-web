@@ -108,18 +108,14 @@ class ApiDetailWorkerTrainsetController extends Controller {
     public function update(DetailWorkerTrainset $detailWorkerTrainset, UpdateDetailWorkerTrainsetRequest $request) {
         $intent = request()->get('intent');
         switch ($intent) {
-            // case
-            // IntentEnum::API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER->value:
-            //     if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-            //         abort(403, 'Unauthorized');
-            //     }
+            case
+            IntentEnum::API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER->value:
+                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
 
-            //     return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset->id, $request);
-            case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value: 
-                // if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-                //     abort(403, 'Unauthorized');
-                // }
-                return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());
+                return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset->id, $request);
+
         }    
         
     }

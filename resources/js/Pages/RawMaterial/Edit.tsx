@@ -35,7 +35,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Bahan Mentah: {rawMaterial.material_code}</h1>
+                        <h1 className="text-page-header my-4">Ubah Raw Material: {rawMaterial.material_code}</h1>
                     </div>
 
                     <form onSubmit={submit}>
@@ -79,7 +79,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="unit" value="Unit / Satuan" />
+                            <InputLabel htmlFor="unit" value="Unit" />
                             <Input
                                 id="unit"
                                 type="text"
@@ -92,7 +92,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Ubah Bahan Mentah
+                            Ubah Raw Material
                         </Button>
                     </form>
                 </div>

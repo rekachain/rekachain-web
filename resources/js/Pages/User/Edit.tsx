@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback, useEffect } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
@@ -15,43 +15,33 @@ import { withLoading } from '@/Utils/withLoading';
 import { workstationService } from '@/Services/workstationService';
 import { stepService } from '@/Services/stepService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
-import { FilePond } from 'react-filepond';
 
 export default function EditUser(props: { user: UserResource; roles: RoleResource[] }) {
+    console.log(props);
     const { user } = props;
 
-    const { data, setData } = useForm({
+    const { data, setData, progress } = useForm<
+        Partial<{
+            nip: string;
+            name: string;
+            email: string;
+            phone_number: string;
+            password: string;
+            role_id: number;
+            workstation_id: number;
+            step_id: number;
+        }>
+    >({
         nip: user.nip,
         name: user.name,
         email: user.email,
         phone_number: user.phone_number,
-        role_id: user.role_id as number | null,
-        workstation_id: user.workstation_id as number | null,
-        step_id: user.step_id as number | null,
-        image_path: [] as any[],
-        password: '',
+        role_id: user.role_id,
+        workstation_id: user.workstation_id,
+        step_id: user.step_id,
     });
 
-    useEffect(() => {
-        if (user.image)
-            setData('image_path', [
-                {
-                    source: user.image,
-                    options: {
-                        type: 'local',
-                        file: {
-                            name: 'User Avatar',
-                            size: null,
-                            type: 'image/jpeg',
-                        },
-                        metadata: {
-                            poster: user.image,
-                        },
-                    },
-                },
-            ]);
-    }, [user.image]);
-
+    const [photo, setPhoto] = useState<Blob | null>(null);
     const { loading } = useLoading();
 
     const fetchWorkstations = useCallback(async (filters: { search: string }) => {
@@ -62,13 +52,6 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         return await stepService.getAll(filters).then(response => response.data);
     }, []);
 
-    const handleFileChange = (fileItems: any) => {
-        setData((prevData: any) => ({
-            ...prevData,
-            image_path: fileItems.map((fileItem: any) => fileItem.file),
-        }));
-    };
-
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
@@ -77,12 +60,13 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         data.name && formData.append('name', data.name);
         data.email && formData.append('email', data.email);
         data.phone_number && formData.append('phone_number', data.phone_number);
-        data.password && formData.append('password', data.password);
+        data.password && formData.append('password', data.password); // Only update if password is provided
         data.role_id && formData.append('role_id', data.role_id.toString());
-        formData.append('workstation_id', data.workstation_id?.toString() ?? '');
-        formData.append('step_id', data.step_id?.toString() ?? '');
-        data.image_path.length > 0 && formData.append('image_path', data.image_path[0]);
-        await userService.update(user.id, formData);
+        data.workstation_id && formData.append('workstation_id', data.workstation_id.toString());
+        data.step_id && formData.append('step_id', data.step_id.toString());
+        photo && formData.append('image_path', photo);
+
+        await userService.update(user.id, formData); // PUT request to update user
         router.visit(route(`${ROUTES.USERS}.index`));
         void useSuccessToast('User updated successfully');
     });
@@ -152,33 +136,31 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             />
                         </div>
 
+                        {/* Persist the selected workstation */}
                         <div className="mt-4">
                             <InputLabel htmlFor="workstation_id" value="Workstation" />
                             <GenericDataSelector
-                                id="workstation_id"
                                 fetchData={fetchWorkstations}
-                                setSelectedData={id => setData('workstation_id', id)}
+                                setSelectedData={id => setData('workstation_id', +id)}
                                 selectedDataId={data.workstation_id}
                                 placeholder="Select Workstation"
                                 renderItem={item => `${item.name} - ${item.location}`}
                                 initialSearch={user.workstation?.name}
                                 buttonClassName="mt-1"
-                                nullable
                             />
                         </div>
 
+                        {/* Persist the selected step */}
                         <div className="mt-4">
                             <InputLabel htmlFor="step_id" value="Step" />
                             <GenericDataSelector
-                                id="step_id"
                                 fetchData={fetchSteps}
-                                setSelectedData={id => setData('step_id', id)}
+                                setSelectedData={id => setData('step_id', +id)}
                                 selectedDataId={data.step_id}
                                 placeholder="Select Step"
                                 renderItem={item => item.name}
                                 initialSearch={user.step?.name}
                                 buttonClassName="mt-1"
-                                nullable
                             />
                         </div>
 
@@ -198,15 +180,20 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
 
                         <div className="mt-4">
                             <InputLabel htmlFor="avatar" value="Foto staff" />
-                            <FilePond
-                                imagePreviewMaxHeight={400}
-                                filePosterMaxHeight={400}
-                                allowMultiple={false}
-                                files={data.image_path}
-                                onupdatefiles={handleFileChange}
-                                labelIdle="Drop files here or click to upload"
-                                allowReplace
+                            <Input
+                                id="avatar"
+                                type="file"
+                                accept=".jpg,.jpeg,.png,.gif,.svg"
+                                name="avatar"
+                                className="mt-1"
+                                autoComplete="avatar"
+                                onChange={e => e.target.files != null && setPhoto(e.target.files?.[0])}
                             />
+                            {progress && (
+                                <progress value={progress.percentage} max="100">
+                                    {progress.percentage}%
+                                </progress>
+                            )}
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">

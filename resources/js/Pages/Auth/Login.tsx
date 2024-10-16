@@ -9,7 +9,6 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import { STYLING } from '@/Support/Constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
-import AddFeedback from '@/Components/AddFeedback';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -29,7 +28,6 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
         post(route('login'));
     };
-
     const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
 
     const changeHtmlClass = () => {
@@ -87,16 +85,13 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 alt="login-form-header"
                                 className="md:mb-10 h-16 object-contain align-content-lg-start"
                             />
-                            <div className="flex">
-                                <Button variant="ghost" size="icon" onClick={handleDarkMode}>
-                                    {darkMode ? (
-                                        <Sun size={STYLING.ICON.SIZE.SMALL} />
-                                    ) : (
-                                        <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
-                                    )}
-                                </Button>
-                                <AddFeedback />
-                            </div>
+                            <Button variant="ghost" size="icon" onClick={handleDarkMode}>
+                                {darkMode ? (
+                                    <Sun size={STYLING.ICON.SIZE.SMALL} />
+                                ) : (
+                                    <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
+                                )}
+                            </Button>
                         </div>
                     </div>
                     <div className="">

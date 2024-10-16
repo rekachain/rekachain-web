@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class PanelAttachment extends Model
-{
+class PanelAttachment extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -32,8 +30,7 @@ class PanelAttachment extends Model
         'status' => PanelAttachmentStatusEnum::class,
     ];
 
-    public function trainset(): HasOneThrough
-    {
+    public function trainset(): HasOneThrough {
         return $this->hasOneThrough(Trainset::class, CarriageTrainset::class, 'id', 'id', 'carriage_trainset_id', 'trainset_id');
     }
 
@@ -51,53 +48,39 @@ class PanelAttachment extends Model
     //            ->join('panel_attachments', 'carriage_panels.id', '=', 'panel_attachments.carriage_panel_id');
     //    }
 
-    public function parent(): BelongsTo
-    {
+    public function parent(): BelongsTo {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
-    public function childs(): HasMany
-    {
+    public function childs(): HasMany {
         return $this->hasMany(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
-    public function source_workstation(): BelongsTo
-    {
+    public function source_workstation(): BelongsTo {
         return $this->belongsTo(Workstation::class, 'source_workstation_id');
     }
 
-    public function destination_workstation(): BelongsTo
-    {
+    public function destination_workstation(): BelongsTo {
         return $this->belongsTo(Workstation::class, 'destination_workstation_id');
     }
 
-    public function carriage_panel(): BelongsTo
-    {
+    public function carriage_panel(): BelongsTo {
         return $this->belongsTo(CarriagePanel::class);
     }
 
-    public function serial_panels(): HasMany
-    {
+    public function serial_panels(): HasMany {
         return $this->hasMany(SerialPanel::class);
     }
 
-    public function detail_worker_panels(): HasManyThrough
-    {
-        return $this->hasManyThrough(DetailWorkerPanel::class, SerialPanel::class, 'panel_attachment_id', 'serial_panel_id', 'id', 'id');
+    public function detail_worker_panels(): HasManyThrough {
+        return $this->hasManyThrough(DetailWorkerPanel::class, SerialPanel::class,'panel_attachment_id','serial_panel_id','id','id');
     }
 
-    public function supervisor(): BelongsTo
-    {
+    public function supervisor(): BelongsTo {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
-    public function panel_attachment_handlers(): HasMany
-    {
+    public function panel_attachment_handlers(): HasMany {
         return $this->hasMany(PanelAttachmentHandler::class);
-    }
-
-    public function attachment_notes(): MorphMany
-    {
-        return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
     }
 }

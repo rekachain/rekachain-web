@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class DetailWorkerPanelResource extends JsonResource {
     public function toArray($request): array {
         $intent = $request->get('intent');
+
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANELS->value:
                 return [
@@ -38,7 +39,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'serial_panel_id' => $this->serial_panel_id,
                     'worker_id' => $this->worker_id,
                     'progress_step_id' => $this->progress_step_id,
-                ];    
+                ];
             default:    
                 return [
                     'id' => $this->id,
@@ -48,7 +49,6 @@ class DetailWorkerPanelResource extends JsonResource {
                     'progress_step_id' => $this->progress_step_id,
                     'progress_step' => ProgressStepResource::make($this->whenLoaded('progress_step')),
                     'estimated_time' => $this->estimated_time,
-                    'image_path' => $this->image_path,
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
                     'created_at' => $this->created_at->toDateTimeString(),

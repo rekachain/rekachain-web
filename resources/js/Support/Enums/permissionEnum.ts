@@ -78,10 +78,4 @@ export enum PERMISSION_ENUM {
     COMPONENT_READ = 'component-read',
     COMPONENT_UPDATE = 'component-update',
     COMPONENT_DELETE = 'component-delete',
-
-    FEEDBACK_CREATE = 'feedback-create',
-    FEEDBACK_READ = 'feedback-read',
-    FEEDBACK_READ_ALL = 'feedback-read-all',
-    FEEDBACK_UPDATE = 'feedback-update',
-    FEEDBACK_DELETE = 'feedback-delete',
 }

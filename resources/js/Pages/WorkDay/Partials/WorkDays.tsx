@@ -1,3 +1,4 @@
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { WorkDayResource } from '@/Support/Interfaces/Resources';
@@ -10,8 +11,6 @@ import { workDayService } from '@/Services/workDayService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { withLoading } from '@/Utils/withLoading';
-import WDCardView from './Partials/WDCardView';
-import WDTableView from './Partials/WDTableView';
 
 export default function () {
     const [workDayResponse, setWorkDayResponse] = useState<PaginateResponse<WorkDayResource>>();
@@ -42,21 +41,49 @@ export default function () {
 
     return (
         <div className="space-y-4">
-            <>
-                <div className="hidden md:block">
-                    <WDTableView
-                        workDayResponse={workDayResponse!}
-                        handleWorkDayDeletion={handleWorkDayDeletion}
-                    ></WDTableView>
-                </div>
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Nama</TableHead>
+                        <TableHead>Waktu Mulai</TableHead>
+                        <TableHead>Waktu Istirahat</TableHead>
+                        <TableHead>Waktu Selesai</TableHead>
+                        <TableHead></TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {workDayResponse?.data.map(workDay => (
+                        <TableRow key={workDay.id}>
+                            <TableCell>{workDay.day}</TableCell>
+                            <TableCell>{workDay.start_time}</TableCell>
+                            <TableCell>
+                                {workDay.work_day_times
+                                    .filter(time => time.status === WorkDayTimeEnum.BREAK)
+                                    .map(time => (
+                                        <div key={time.id}>
+                                            {time.start_time} - {time.end_time}
+                                        </div>
+                                    ))}
+                            </TableCell>
+                            <TableCell>{workDay.end_time}</TableCell>
+                            <TableCell>
+                                <Link
+                                    className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
+                                >
+                                    Edit
+                                </Link>
+                                {workDay.can_be_deleted && (
+                                    <Button variant="link" onClick={() => handleWorkDayDeletion(workDay.id)}>
+                                        Delete
+                                    </Button>
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
 
-                <div className="block md:hidden">
-                    <WDCardView
-                        workDayResponse={workDayResponse!}
-                        handleWorkDayDeletion={handleWorkDayDeletion}
-                    ></WDCardView>
-                </div>
-            </>
             <GenericPagination meta={workDayResponse?.meta} handleChangePage={handlePageChange} />
         </div>
     );

@@ -36,37 +36,40 @@ afterAll(function () {
 });
 
 it('can generate a model scaffold without seeder and factory', function () {
-    Artisan::call('make:scaffold', ['model' => 'TestModel', '--controller' => true]);
+    Artisan::call('make:scaffold', ['model' => 'TestModel','--controller' => true]);
 
-    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue()
-        ->and(File::exists(app_path('Http/Controllers/TestModelController.php')))->toBeTrue()
-        ->and(File::exists(app_path('Http/Requests/TestModel/StoreTestModelRequest.php')))->toBeTrue()
-        ->and(File::exists(app_path('Http/Requests/TestModel/UpdateTestModelRequest.php')))->toBeTrue()
-        ->and(File::exists(app_path('Http/Resources/TestModelResource.php')))->toBeTrue()
-        ->and(File::exists(app_path('Repositories/TestModelRepository.php')))->toBeTrue()
-        ->and(File::exists(app_path('Services/TestModelService.php')))->toBeTrue()
-        ->and(File::exists(app_path('Support/Interfaces/Repositories/TestModelRepositoryInterface.php')))->toBeTrue()
-        ->and(File::exists(app_path('Support/Interfaces/Services/TestModelServiceInterface.php')))->toBeTrue();
+    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue();
+    expect(File::exists(app_path('Http/Controllers/TestModelController.php')))->toBeTrue();
+    expect(File::exists(app_path('Http/Controllers/Api/ApiTestModelController.php')))->toBeTrue();
+    expect(File::exists(app_path('Http/Requests/TestModel/StoreTestModelRequest.php')))->toBeTrue();
+    expect(File::exists(app_path('Http/Requests/TestModel/UpdateTestModelRequest.php')))->toBeTrue();
+    expect(File::exists(app_path('Http/Resources/TestModelResource.php')))->toBeTrue();
+    expect(File::exists(app_path('Repositories/TestModelRepository.php')))->toBeTrue();
+    expect(File::exists(app_path('Services/TestModelService.php')))->toBeTrue();
+    expect(File::exists(app_path('Support/Interfaces/Repositories/TestModelRepositoryInterface.php')))->toBeTrue();
+    expect(File::exists(app_path('Support/Interfaces/Services/TestModelServiceInterface.php')))->toBeTrue();
+    expect(File::exists(base_path('Tests/Feature/Http/Controllers/TestModelControllerTest.php')))->toBeTrue();
+    expect(File::exists(base_path('Tests/Feature/Http/Controllers/Api/ApiTestModelControllerTest.php')))->toBeTrue();
 });
 
 it('can generate a model scaffold with seeder', function () {
     Artisan::call('make:scaffold', ['model' => 'TestModel', '--seeder' => true]);
 
-    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue()
-        ->and(File::exists(database_path('seeders/TestModelSeeder.php')))->toBeTrue();
+    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue();
+    expect(File::exists(database_path('seeders/TestModelSeeder.php')))->toBeTrue();
 });
 
 it('can generate a model scaffold with factory', function () {
     Artisan::call('make:scaffold', ['model' => 'TestModel', '--factory' => true]);
 
-    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue()
-        ->and(File::exists(database_path('factories/TestModelFactory.php')))->toBeTrue();
+    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue();
+    expect(File::exists(database_path('factories/TestModelFactory.php')))->toBeTrue();
 });
 
 it('can generate a model scaffold with seeder and factory', function () {
     Artisan::call('make:scaffold', ['model' => 'TestModel', '--seeder' => true, '--factory' => true]);
 
-    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue()
-        ->and(File::exists(database_path('seeders/TestModelSeeder.php')))->toBeTrue()
-        ->and(File::exists(database_path('factories/TestModelFactory.php')))->toBeTrue();
+    expect(File::exists(app_path('Models/TestModel.php')))->toBeTrue();
+    expect(File::exists(database_path('seeders/TestModelSeeder.php')))->toBeTrue();
+    expect(File::exists(database_path('factories/TestModelFactory.php')))->toBeTrue();
 });

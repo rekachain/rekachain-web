@@ -43,7 +43,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
     });
     return (
         <>
-            <Head title={`Proyek ${project.name}`} />
+            <Head title={`Project ${project.name}`} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -55,13 +55,13 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>Proyek {project.name}</BreadcrumbPage>
+                                        <BreadcrumbPage>Project {project.name}</BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
 
-                            <h1 className="text-page-header my-4">Proyek {project.name}</h1>
-                            <p className="text-page-subheader">Tanggal Inisiasi : {project.initial_date}</p>
+                            <h1 className="text-page-header my-4">Project {project.name}</h1>
+                            <p className="text-page-subheader">Initial Date: {project.initial_date}</p>
                         </div>
 
                         <div className="rounded p-5 bg-background-2">
@@ -92,10 +92,10 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                         {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                Menambahkan Trainset
+                                                Adding Trainset
                                             </>
                                         ) : (
-                                            'Tambah Trainset'
+                                            'Add Trainset'
                                         )}
                                     </Button>
                                 </div>

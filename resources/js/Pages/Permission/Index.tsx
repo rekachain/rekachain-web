@@ -13,7 +13,7 @@ export default function () {
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Perizinan</h1>
+                        <h1 className="text-page-header my-4">Permission</h1>
                         {/*<Link className={buttonVariants({ variant: 'default' })} href={route(`${ROUTES.ROLES}.create`)}>*/}
                         {/*    Tambah Permission*/}
                         {/*</Link>*/}
