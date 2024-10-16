@@ -41,7 +41,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     'supervisor' => UserResource::make($this->supervisor),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
                     'trainset_attachment_components' => TrainsetAttachmentComponentResource::collection($this->trainset_attachment_components),
-                    'pending_attachment_notes' => PendingAttachmentNoteResource::collection($this->pending_attachment_notes),
+                    'attachment_notes' => AttachmentNoteResource::collection($this->attachment_notes),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
@@ -141,7 +141,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     'supervisor_id' => $this->supervisor_id,
                     'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
-                    'trainset_attachment_handler' => TrainsetAttachmentHandlerResource::make($this->whenLoaded('trainset_attachment_handler')),
+                    'trainset_attachment_handlers' => TrainsetAttachmentHandlerResource::collection($this->whenLoaded('trainset_attachment_handlers')),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];

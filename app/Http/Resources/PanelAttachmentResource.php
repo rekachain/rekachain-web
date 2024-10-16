@@ -55,7 +55,7 @@ class PanelAttachmentResource extends JsonResource
                     'supervisor' => new UserResource($this->supervisor),
                     'panel_attachment_handlers' => PanelAttachmentHandlerResource::collection($this->panel_attachment_handlers),
                     'serial_panels' => SerialPanelResource::collection($this->serial_panels),
-                    'pending_attachment_notes' => AttachmentNoteResource::collection($this->pending_attachment_notes),
+                    'attachment_notes' => AttachmentNoteResource::collection($this->attachment_notes),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];

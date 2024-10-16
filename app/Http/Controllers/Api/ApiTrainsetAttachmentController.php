@@ -155,9 +155,8 @@ class ApiTrainsetAttachmentController extends ApiController {
                 }
                 return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());    
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
-                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_MEKANIK) || !$request->user()->hasRole(RoleEnum::SUPERVISOR_ELEKTRIK)) {
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, __('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
-                    
                 }
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
             default:
