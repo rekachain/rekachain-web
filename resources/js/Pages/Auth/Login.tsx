@@ -10,6 +10,7 @@ import { STYLING } from '@/Support/Constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
 import AddFeedback from '@/Components/AddFeedback';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -96,6 +97,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                     )}
                                 </Button>
                                 <AddFeedback />
+                                <SetLocalization />
                             </div>
                         </div>
                     </div>
