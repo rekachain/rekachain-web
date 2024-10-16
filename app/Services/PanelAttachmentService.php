@@ -10,6 +10,7 @@ use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Models\AttachmentNote;
+use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface
@@ -68,6 +69,22 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
         $panelAttachment->save();
 
+        return $panelAttachment;
+    }
+
+    public function assignSpvAndReceiver(PanelAttachment $panelAttachment, array $data)
+    {
+        $panelAttachment->supervisor_id = $data['supervisor_id'] ?? auth()->user()->id;
+        $attachmentHandler = [
+            'handles' => PanelAttachmentHandlerHandlesEnum::RECEIVE->value,
+        ];
+        if (array_key_exists('receiver_name', $data)) {
+            $attachmentHandler['handler_name'] = $data['receiver_name'];
+        } else {
+            $attachmentHandler['user_id'] = $data['receiver_id'];
+        }
+        $panelAttachment->panel_attachment_handlers()->create($attachmentHandler);
+        $panelAttachment->save();
         return $panelAttachment;
     }
 }
