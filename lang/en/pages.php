@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'login' => [
+        'title' => 'Welcome Back!',
+        'fields' => [
+            'nip' => 'Employee ID',
+            'password' => 'Password',
+            'remember' => 'Remember Me',
+        ],
+        'buttons' => [
+            'forgot_password' => 'Forgot Your Password?',
+            'sign_in' => 'Sign In',
+        ],
+    ],
     'dashboard' => [
         'index' => [
             'title' => 'Dashboard',

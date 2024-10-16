@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'login' => [
+        'title' => 'Selamat Datang Kembali!',
+        'fields' => [
+            'nip' => 'NIP',
+            'password' => 'Kata Sandi',
+            'remember' => 'Ingat Saya',
+        ],
+        'buttons' => [
+            'forgot_password' => 'Lupa Kata Sandi?',
+            'sign_in' => 'Masuk',
+        ],
+    ],
     'dashboard' => [
         'index' => [
             'title' => 'Halaman Utama',
