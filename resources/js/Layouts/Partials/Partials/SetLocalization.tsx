@@ -11,7 +11,7 @@ import { STYLING } from '@/Support/Constants/styling';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export const SetLocalization = () => {
-    const { setLocale } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
 
     const changeLocale = (locale: string) => {
         setLocale(locale);
@@ -25,7 +25,7 @@ export const SetLocalization = () => {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuLabel>Language</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('components.navbar.localization.title')}</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => changeLocale('en')}>English</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => changeLocale('id')}>Indonesia</DropdownMenuItem>
             </DropdownMenuContent>
