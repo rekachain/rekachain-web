@@ -193,6 +193,19 @@ class ApiPanelAttachmentController extends Controller
                 }
                 
                 return $this->panelAttachmentService->confirmKPM($panelAttachment, $request->validated());
+            case IntentEnum::API_PANEL_ATTACHMENT_REJECT_KPM->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, 'Unauthorized');
+                }
+                $rejectedKpm = $this->panelAttachmentService->rejectKpm($panelAttachment->id, $request);
+                return PanelAttachmentResource::make($rejectedKpm);
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, __('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+                }
+                return PanelAttachmentResource::make(($this->panelAttachmentService->assignSpvAndReceiver($panelAttachment, $request->validated())->load('panel_attachment_handlers')));
+            default:
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated()));
         }
     }
 

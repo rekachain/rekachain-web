@@ -8,6 +8,7 @@ use App\Models\ProgressStep;
 use App\Models\TrainsetAttachment;
 use App\Models\TrainsetAttachmentComponent;
 use App\Models\User;
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 
@@ -31,13 +32,26 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     }
 
     public function confirmKPM(TrainsetAttachment $trainsetAttachment, $request)
-    {
-        $trainsetAttachment = TrainsetAttachment::find($trainsetAttachment->id);
-        
+    {   
         $trainsetAttachment->status = $request['status'];
         
         $trainsetAttachment->save();
 
+        return $trainsetAttachment;
+    }
+
+    public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data) {
+        $trainsetAttachment->supervisor_id = $data['supervisor_id'] ?? auth()->user()->id;
+        $attachmentHandler = [
+            'handles' => TrainsetAttachmentHandlerHandlesEnum::RECEIVE->value,
+        ];
+        if (array_key_exists('receiver_name', $data)) {
+            $attachmentHandler['handler_name'] = $data['receiver_name'];
+        } else {
+            $attachmentHandler['user_id'] = $data['receiver_id'];
+        }
+        $trainsetAttachment->trainset_attachment_handlers()->create($attachmentHandler);
+        $trainsetAttachment->save();
         return $trainsetAttachment;
     }
 }

@@ -26,6 +26,8 @@ enum IntentEnum: string
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'api.trainset.attachment.get.attachment.progress';
 
+    case API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.trainset.attachment.update.assign.spv.and.receiver';
+
     case API_TRAINSET_ATTACHMENT_COMPONENT_GET_COMPONENT_DETAILS = 'api.trainset.attachment.component.get.component.details';
 
     case API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.trainset.attachment.confirm.kpm.by.spv';
@@ -59,6 +61,10 @@ enum IntentEnum: string
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
 
     case API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.panel.attachment.confirm.kpm.by.spv';
+    
+    case API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.panel.attachment.update.assign.spv.and.receiver';
+
+    case API_PANEL_ATTACHMENT_REJECT_KPM = 'api.panel.attachment.reject.kpm';
 
     case API_DETAIL_WORKER_PANEL_GET_PANELS = 'api.detail.worker.panel.get.panels';
 

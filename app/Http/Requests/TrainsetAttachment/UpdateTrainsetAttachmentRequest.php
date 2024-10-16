@@ -4,7 +4,7 @@ namespace App\Http\Requests\TrainsetAttachment;
 
 use App\Models\User;
 use App\Support\Enums\IntentEnum;
-use App\Models\TrainsetAttachmentComponent;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerStepValidation;
@@ -17,6 +17,25 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                $arr = [
+                    'supervisor_id' => [
+                        'nullable',
+                        'integer',
+                        'exists:users,id',
+                        function ($attribute, $value, $fail) {
+                            if (!User::find($value)->hasRole(RoleEnum::SUPERVISOR_MEKANIK) || !User::find($value)->hasRole(RoleEnum::SUPERVISOR_ELEKTRIK)) {
+                                $fail(__('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                            }
+                        },
+                    ],
+                ];
+                if ($this->get('receiver_name')) {
+                    $arr['receiver_name'] = 'required|string|max:255';
+                } else {
+                    $arr['receiver_id'] = 'required|integer|exists:users,id';
+                }
+                return $arr;
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
                 $arr = [
                     'carriage_panel_component_id' => [
@@ -26,18 +45,13 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     ],
                 ];
                 if ($this->get('worker_id')) {
-                    $arr = array_merge($arr, [
-                        'worker_id' => [
-                            'integer',
-                            'exists:users,id',
-                        ]
-                    ]);
+                    $arr['worker_id'] = 'required|integer|exists:users,id';
                 }
                 return $arr;
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 return [
-                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
-                    'status' => ['nullable', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
+                    'intent' => ['required', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
+                    'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
                 ];    
         }
         return [
