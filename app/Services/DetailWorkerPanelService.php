@@ -60,7 +60,7 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
                 return abort(400, 'Worker not identified');
             }        
         }else {
-            return DetailWorkerPanel::find($check->id);  
+            return $check;  
         } 
         
     }
