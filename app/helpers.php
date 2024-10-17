@@ -12,7 +12,7 @@ if (!function_exists('checkPermissions')) {
      *
      * @throws HttpException
      */
-    function checkPermissions(PermissionEnum|array $permissions): void {
-        PermissionHelper::check($permissions);
+    function checkPermissions(PermissionEnum|array $permissions, bool $returnBool = false, bool $strict = false): ?bool {
+        return PermissionHelper::check($permissions, $returnBool, $strict);
     }
 }
