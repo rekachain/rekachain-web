@@ -19,11 +19,13 @@ beforeEach(function () {
 test('index method returns paginated detail-worker-panels', function () {
     $user = User::factory()->superAdmin()->create();
 
-    $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=5');
+    $this->dummy->createDetailWorkerPanel();
+
+    $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 // Not ready

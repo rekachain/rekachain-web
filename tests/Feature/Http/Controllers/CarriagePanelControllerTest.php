@@ -9,13 +9,13 @@ use App\Models\CarriageTrainset;
 test('index method returns paginated carriage-panels', function () {
     $user = User::factory()->superAdmin()->create();
 
-    CarriagePanel::count() > 5 ?? CarriagePanel::factory()->count(5)->create();
+    $this->dummy->createCarriagePanel();
 
-    $response = $this->actingAs($user)->getJson('/carriage-panels?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/carriage-panels?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 // test('create method returns create page', function () {

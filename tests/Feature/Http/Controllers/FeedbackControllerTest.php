@@ -3,7 +3,7 @@
 use App\Support\Enums\FeedbackStatusEnum;
 
 test('index method returns paginated feedback', function () {
-    createFeedback();
+    $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->getJson('/feedback?page=1&perPage=5');
 
@@ -36,7 +36,7 @@ test('store method creates new Feedback', function () {
 });
 
 test('show method returns Feedback details', function () {
-    $model = createFeedback();
+    $model = $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->getJson("/feedback/{$model->id}");
 
@@ -52,7 +52,7 @@ test('show method returns Feedback details', function () {
 });
 
 test('edit method returns edit page', function () {
-    $model = createFeedback();
+    $model = $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->get("/feedback/{$model->id}/edit");
 
@@ -61,7 +61,7 @@ test('edit method returns edit page', function () {
 });
 
 // test('update method updates Feedback', function () {
-//    $model = createFeedback();
+//    $model = $this->dummy->createFeedback();
 //    $updatedData = [
 //        'name' => 'Updated name',
 //    ];
@@ -74,7 +74,7 @@ test('edit method returns edit page', function () {
 // });
 
 test('destroy method deletes Feedback', function () {
-    $model = createFeedback();
+    $model = $this->dummy->createFeedback();
 
     $response = actAsSuperAdmin()->deleteJson("/feedback/{$model->id}");
 

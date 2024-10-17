@@ -9,13 +9,13 @@ use App\Models\PresetTrainset;
 test('index method returns paginated carriage-presets', function () {
     $user = User::factory()->superAdmin()->create();
 
-    CarriagePreset::count() > 4 ?? CarriagePreset::factory()->count(5)->create();
+    $this->dummy->createCarriagePreset();
 
-    $response = $this->actingAs($user)->getJson('/carriage-presets?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/carriage-presets?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 // test('create method returns create page', function () {

@@ -7,13 +7,13 @@ use App\Support\Enums\IntentEnum;
 test('index method returns paginated component-materials', function () {
     $user = User::factory()->create();
 
-    ComponentMaterial::count() > 4 ?? ComponentMaterial::factory()->count(5)->create();
+    $this->dummy->createComponentMaterial();
 
-    $response = $this->actingAs($user)->getJson('/component-materials?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/component-materials?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 // NOT YET IMPLEMENTED

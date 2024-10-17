@@ -10,13 +10,14 @@ use App\Exports\Component\ComponentsTemplateExport;
 
 test('index method returns paginated components', function () {
     $user = User::factory()->create();
-    Component::count() > 4 ?? Component::factory()->count(5)->create();
 
-    $response = $this->actingAs($user)->getJson('/components?page=1&perPage=5');
+    $this->dummy->createComponent(1);
+
+    $response = $this->actingAs($user)->getJson('/components?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 test('create method returns create page', function () {

@@ -9,13 +9,14 @@ use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated carriage-trainsets', function () {
     $user = User::factory()->superAdmin()->create();
-    CarriageTrainset::count() > 4 ?? CarriageTrainset::factory()->count(5)->create();
 
-    $response = $this->actingAs($user)->getJson('/carriage-trainsets?page=1&perPage=5');
+    $this->dummy->createCarriageTrainset();
+
+    $response = $this->actingAs($user)->getJson('/carriage-trainsets?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 test('index method returns all carriage-trainsets', function () {

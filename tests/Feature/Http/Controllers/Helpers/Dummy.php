@@ -15,6 +15,7 @@ use App\Models\Progress;
 use App\Models\Trainset;
 use App\Models\Workshop;
 use App\Models\Component;
+use App\Models\Permission;
 use App\Models\WorkAspect;
 use App\Models\RawMaterial;
 use App\Models\SerialPanel;
@@ -89,9 +90,20 @@ class Dummy {
         return $user;
     }
 
+    public function createRole(): Role {
+        $role = Role::firstOrCreate(['name' => 'Test Role']);
+
+        return $role;
+    }
+
+    public function createPermission(): Permission {
+        $permission = Permission::firstOrCreate(['name' => 'test-permission', 'guard_name' => 'web']);
+
+        return $permission;
+    }
 
     public function createComponent(): Component {
-        $component = Component::inRandomOrder()->first() ?? Component::factory(['name' => 'Test Component'])->create();
+        $component = Component::firstOrCreate(['name' => 'Test Component']);
 
         return $component;
     }
@@ -165,7 +177,8 @@ class Dummy {
     }
 
     public function createProgress(WorkAspect $workAspect = null): Progress {
-        $progress = Progress::inRandomOrder()->first() ?? Progress::factory()->create($workAspect);
+        $workAspect = $workAspect->id ?? $this->createWorkAspect();
+        $progress = Progress::inRandomOrder()->first() ?? Progress::factory()->create(['work_aspect_id' => $workAspect]);
 
         return $progress;
     }
@@ -196,7 +209,12 @@ class Dummy {
         return $workDayTime;
     }
 
-    public function createDivision(): Division {
+    public function createDivision(String $str = null): Division {
+        if($str = 'create') {
+            $division = Division::factory()->create(['name' => 'Test Division']);
+            return $division;
+        }
+
         $division = Division::inRandomOrder()->first() ?? Division::factory()->create(['name' => 'Test Division']);
 
         return $division;
@@ -208,18 +226,24 @@ class Dummy {
         return $workshop;
     }
 
-    public function createWorkstation(): Workstation {
-        $attributes = [];
+    public function createWorkstation(String $command = null): Workstation {
+        if($command = 'create') {
+            $workstation = Workstation::factory()->create();
 
-        $division = $this->createDivision();
-        $workshop = $this->createWorkshop();
+            return $workstation;
+        } else {
+            $attributes = [];
 
-        $attributes['workshop_id'] = $workshop->id;
-        $attributes['division_id'] = $division->id;
+            $division = $this->createDivision();
+            $workshop = $this->createWorkshop();
 
-        $workstation = Workstation::inRandomOrder()->first() ?? Workstation::factory()->create($attributes);
+            $attributes['workshop_id'] = $workshop->id;
+            $attributes['division_id'] = $division->id;
 
-        return $workstation;
+            $workstation = Workstation::inRandomOrder()->first() ?? Workstation::factory()->create($attributes);
+
+            return $workstation;
+        }
     }
 
     public function createPresetTrainset(): PresetTrainset {
@@ -323,8 +347,8 @@ class Dummy {
 
     public function createTrainsetAttachment(?User $user = null) {
         $this->createCarriageTrainset();
-        $this->createWorkstation(); // source
-        $this->createWorkstation(); // destination
+        $this->createWorkstation('create'); // source
+        $this->createWorkstation('create'); // destination
 
         $attributes = [];
         if ($user) {
