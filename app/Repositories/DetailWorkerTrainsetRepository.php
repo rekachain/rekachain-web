@@ -24,6 +24,8 @@ class DetailWorkerTrainsetRepository extends BaseRepository implements DetailWor
 
         $query = $this->applyColumnFilters($query, $searchParams, ['work_status','worker_id', 'acceptance_status']);
 
+        $query = $this->applyRelationColumnFilters($query, $searchParams, ['trainset_attachment_component' => ['trainset_attachment_id','carriage_panel_component_id']]);
+
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);
