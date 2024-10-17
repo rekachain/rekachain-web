@@ -25,6 +25,13 @@ class UpdatePanelAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
             
         switch ($intent){
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
+                return [
+                    'status' => ['required', 'in:' . implode(',', array_column(PanelAttachmentStatusEnum::cases(), 'value'))],
+                    'note' => [
+                        'required_if:status,' . PanelAttachmentStatusEnum::PENDING->value,
+                    ],
+                ];
             case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 return [
                     'status' => ['required', 'in:' . implode(',', array_column(PanelAttachmentStatusEnum::cases(), 'value'))],
@@ -59,6 +66,9 @@ class UpdatePanelAttachmentRequest extends FormRequest {
             'current_step' => 'nullable|string',
             'elapsed_time' => 'nullable|string',
             'status' => 'nullable|in:' . implode(',', PanelAttachmentStatusEnum::toArray()),
+            'note' => [
+                'required_if:status,' . PanelAttachmentStatusEnum::PENDING->value,
+            ],
             'supervisor_id' => 'nullable|integer|exists:users,id',
             'panel_attachment_id' => 'nullable|integer|exists:panel_attachments,id',
         ];

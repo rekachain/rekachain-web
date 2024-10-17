@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
+use App\Support\Enums\PermissionEnum;
 use Illuminate\Http\Request;
 use App\Models\PanelAttachment;
 use App\Support\Enums\RoleEnum;
@@ -193,6 +195,16 @@ class ApiPanelAttachmentController extends Controller
                 }
                 
                 return $this->panelAttachmentService->confirmKPM($panelAttachment, $request->validated());
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
+                if (!checkPermissions(PermissionEnum::PANEL_ATTACHMENT_UPDATE, true) && !\Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    return response()->json([
+                        'message' => [
+                            __('exception.auth.permission.permission_exception', ['permission' => PermissionEnum::PANEL_ATTACHMENT_UPDATE->value]),
+                            __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value])
+                        ],
+                    ], 403);
+                }
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated())->load('attachment_notes'));
             case IntentEnum::API_PANEL_ATTACHMENT_REJECT_KPM->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
