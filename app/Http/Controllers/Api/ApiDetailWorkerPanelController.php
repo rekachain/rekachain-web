@@ -105,13 +105,15 @@ class ApiDetailWorkerPanelController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-            abort(403, 'Unauthorized');
-        }
-
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK->value]);
-
-        return $this->detailWorkerPanelService->assignWorker($request);
+        $intent = request()->get('intent');
+        switch ($intent) {
+           case IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value:
+            if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                abort(403, 'Unauthorized');
+            }
+            
+            return $this->detailWorkerPanelService->assignWorker($request);
+        }   
     }
 
     /**

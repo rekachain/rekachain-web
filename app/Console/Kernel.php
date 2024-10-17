@@ -10,9 +10,10 @@ class Kernel extends ConsoleKernel {
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void {
-        // $schedule->command('inspire')->hourly();
+        //        $schedule->command('inspire')->everySecond();
         if ($this->app->isLocal()) {
-            $schedule->command('telescope:prune')->daily();
+            $schedule->command('telescope:clear')->hourly();
+            $schedule->command('telescope:prune')->hourly();
         }
     }
 
