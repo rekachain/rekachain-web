@@ -137,7 +137,59 @@ return [
         ],
     ],
     'workshops' => [
-        'title' => 'Bengkel',
+        'index' => [
+            'title' => 'Workshop',
+            'buttons' => [
+                'create' => 'Buat Workshop',
+            ],
+            'partials' => [
+                'workshops' => [
+                    'messages' => [
+                        'deleted' => 'Workshop berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'workshops_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'address' => 'Alamat',
+                            ],
+                        ],
+                        'workshops_card' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'address' => 'Alamat : :address',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Workshop',
+            'fields' => [
+                'name' => 'Nama',
+                'address' => 'Alamat',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Workshop',
+            ],
+            'messages' => [
+                'created' => 'Workshop berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Workshop: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'address' => 'Alamat',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Workshop',
+            ],
+            'messages' => [
+                'updated' => 'Workshop berhasil diperbarui!',
+            ],
+        ],
     ],
     'workstations' => [
         'title' => 'Stasiun Kerja',

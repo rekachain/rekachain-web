@@ -137,7 +137,59 @@ return [
         ],
     ],
     'workshops' => [
-        'title' => 'Workshops',
+        'index' => [
+            'title' => 'Workshops',
+            'buttons' => [
+                'create' => 'Create Workshop',
+            ],
+            'partials' => [
+                'workshops' => [
+                    'messages' => [
+                        'deleted' => 'Workshop deleted successfully!',
+                    ],
+                    'partials' => [
+                        'workshops_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'address' => 'Address',
+                            ],
+                        ],
+                        'workshops_card' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'address' => 'Address : :address',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Workshop',
+            'fields' => [
+                'name' => 'Name',
+                'address' => 'Address',
+            ],
+            'buttons' => [
+                'submit' => 'Create Workshop',
+            ],
+            'messages' => [
+                'created' => 'Workshop created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Workshop: :name',
+            'fields' => [
+                'name' => 'Name',
+                'address' => 'Address',
+            ],
+            'buttons' => [
+                'submit' => 'Update Workshop',
+            ],
+            'messages' => [
+                'updated' => 'Workshop updated successfully!',
+            ],
+        ],
     ],
     'workstations' => [
         'title' => 'Workstations',
