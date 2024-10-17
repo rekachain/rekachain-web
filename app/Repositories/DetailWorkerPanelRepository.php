@@ -24,6 +24,8 @@ class DetailWorkerPanelRepository extends BaseRepository implements DetailWorker
 
         $query = $this->applyColumnFilters($query, $searchParams, ['id','work_status','worker_id', 'acceptance_status']);
 
+        $query = $this->applyRelationColumnFilters($query, $searchParams, ['serial_panel' => ['panel_attachment_id','manufacture_status']]);
+
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);

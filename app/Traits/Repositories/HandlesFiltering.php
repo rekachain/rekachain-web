@@ -54,11 +54,14 @@ trait HandlesFiltering {
                 if (!array_key_exists($relation, $relationFilterableColumns)) {
                     continue;
                 }
-                $query->whereHas($relation, function ($query) use ($value) {
-                    foreach ($value as $key => $val) {
-                        $query->where($key, $val);
+                foreach ($value as $key => $val) {
+                    if (!in_array($key, $relationFilterableColumns[$relation])) {
+                        continue;
                     }
-                });
+                    $query->whereHas($relation, function ($query) use ($key, $val) {
+                        $query->where($key, $val);
+                    });
+                }
             }
 
         }
