@@ -61,7 +61,9 @@ enum IntentEnum: string
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
 
     case API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.panel.attachment.confirm.kpm.by.spv';
-    
+
+    case API_PANEL_ATTACHMENT_UPDATE_ATTACHMENT_STATUS = 'api.panel.attachment.update.attachment.status';
+
     case API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.panel.attachment.update.assign.spv.and.receiver';
 
     case API_PANEL_ATTACHMENT_REJECT_KPM = 'api.panel.attachment.reject.kpm';
@@ -103,7 +105,7 @@ enum IntentEnum: string
     case API_DETAIL_WORKER_TRAINSET_REJECT_WORK = 'api.detail.worker.trainset.reject.work';
 
     case API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE = 'api.detail.worker.trainset.accept.work.with.image';
-    
+
     case API_SERIAL_PANEL_UPDATE_WORKER_PANEL = 'api.serial.panel.update.worker.panel';
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.manufacture.status';

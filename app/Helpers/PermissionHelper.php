@@ -22,31 +22,19 @@ class PermissionHelper {
         // Ensure we work with an array
         $permissions = is_array($permissions) ? $permissions : [$permissions];
 
-        $hasPermission = false;
-
         foreach ($permissions as $permission) {
             if ($user->can($permission->value)) {
                 if (!$strict) {
-                    return true; // If non-strict, return true on first granted permission
+                    return true;
                 }
-                $hasPermission = true;
-            } else {
-                if ($strict) {
-                    if ($returnBool) {
-                        return false; // If strict, return false on first denied permission
-                    }
-                    abort(403, __('exception.auth.permission.permission_exception')); // If strict, abort on first denied permission
+            } elseif ($strict) {
+                if ($returnBool) {
+                    return false;
                 }
+                abort(403, __('exception.auth.permission.permission_exception', ['permission' => $permission->value]));
             }
         }
 
-        if ($strict && !$hasPermission) {
-            if ($returnBool) {
-                return false;
-            }
-            abort(403, __('exception.auth.permission.permission_exception'));
-        }
-
-        return true;
+        return $returnBool ? false : abort(403, __('exception.auth.permission.permission_exception', ['permission' => implode(', ', array_map(fn($perm) => $perm->value, $permissions))]));
     }
 }

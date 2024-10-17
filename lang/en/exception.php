@@ -2,8 +2,12 @@
 
 return [
     'auth' => [
+        'unauthorized' => 'You do not have permission to access this application.',
+        'role' => [
+            'role_exception' => 'The user must have ":role" role',
+        ],
         'permission' => [
-            'permission_exception' => 'Unauthorized',
+            'permission_exception' => 'The user must have ":permission" permission',
         ],
     ],
     'services' => [
