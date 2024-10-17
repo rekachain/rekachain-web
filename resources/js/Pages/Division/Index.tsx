@@ -11,7 +11,7 @@ export default function () {
     const Divisions = lazy(() => import('./Partials/Divisions'));
     return (
         <>
-            <Head title="Division" />
+            <Head title={t('pages.divisions.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
