@@ -25,7 +25,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                         'exists:users,id',
                         function ($attribute, $value, $fail) {
                             if (!User::find($value)->hasRole(RoleEnum::SUPERVISOR_MEKANIK) || !User::find($value)->hasRole(RoleEnum::SUPERVISOR_ELEKTRIK)) {
-                                $fail(__('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                                $fail(__('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                             }
                         },
                     ],

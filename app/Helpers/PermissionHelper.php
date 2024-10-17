@@ -35,7 +35,7 @@ class PermissionHelper {
                     if ($returnBool) {
                         return false; // If strict, return false on first denied permission
                     }
-                    abort(403, __('exception.auth.permission.permission_exception')); // If strict, abort on first denied permission
+                    abort(403, __('exception.auth.permission.permission_exception', ['permission' => $permission->value])); // If strict, abort on first denied permission
                 }
             }
         }

@@ -37,7 +37,7 @@ class UpdatePanelAttachmentRequest extends FormRequest {
                         'exists:users,id',
                         function ($attribute, $value, $fail) {
                             if (!User::find($value)->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
-                                $fail(__('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+                                $fail(__('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
                             }
                         },
                     ],

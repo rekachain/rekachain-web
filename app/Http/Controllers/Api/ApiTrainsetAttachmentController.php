@@ -147,7 +147,7 @@ class ApiTrainsetAttachmentController extends ApiController {
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
-                    abort(403, 'Unauthorized');
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
                 return DetailWorkerTrainsetResource::make($this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated()));
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
@@ -157,7 +157,7 @@ class ApiTrainsetAttachmentController extends ApiController {
                 return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());    
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
-                    abort(403, __('validation.custom.auth.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
             default:
