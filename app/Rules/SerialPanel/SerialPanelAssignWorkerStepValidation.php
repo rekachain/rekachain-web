@@ -16,7 +16,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
         [$serialPanel, $user] = $value;
-        if ($serialPanel->manufacture_status !== SerialPanelManufactureStatusEnum::FAILED->value || $serialPanel->manufacture_status !== SerialPanelManufactureStatusEnum::COMPLETED->value) {
+        if ($serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::FAILED->value || $serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::COMPLETED->value) {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.manufacture_status_exception',
                 [
