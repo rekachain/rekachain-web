@@ -67,7 +67,7 @@ return [
             ],
         ],
         'edit' => [
-            'title' => 'Edit Work Day :name',
+            'title' => 'Edit Work Day: :name',
             'fields' => [
                 'name' => 'Name',
                 'start_date' => 'Start Date',
@@ -86,7 +86,55 @@ return [
         'title' => 'Staff Management',
     ],
     'divisions' => [
-        'title' => 'Divisions',
+        'index' => [
+            'title' => 'Divisions',
+            'buttons' => [
+                'create' => 'Create Division',
+            ],
+            'partials' => [
+                'divisions' => [
+                    'messages' => [
+                        'deleted' => 'Division deleted successfully!',
+                    ],
+                    'partials' => [
+                        'divisions_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                            ],
+                        ],
+                        'divisions_card' => [
+                            'headers' => [
+                                'name' => 'Name',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Division',
+            'fields' => [
+                'name' => 'Name',
+            ],
+            'buttons' => [
+                'submit' => 'Create Division',
+            ],
+            'messages' => [
+                'created' => 'Division created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Division: :name',
+            'fields' => [
+                'name' => 'Name',
+            ],
+            'buttons' => [
+                'submit' => 'Update Division',
+            ],
+            'messages' => [
+                'updated' => 'Division updated successfully!',
+            ],
+        ],
     ],
     'workshops' => [
         'title' => 'Workshops',

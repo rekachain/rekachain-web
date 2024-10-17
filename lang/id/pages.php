@@ -67,7 +67,7 @@ return [
             ],
         ],
         'edit' => [
-            'title' => 'Edit Hari Kerja :name',
+            'title' => 'Edit Hari Kerja: :name',
             'fields' => [
                 'name' => 'Nama',
                 'start_date' => 'Tanggal Mulai',
@@ -86,7 +86,55 @@ return [
         'title' => 'Manajemen Staf',
     ],
     'divisions' => [
-        'title' => 'Divisi',
+        'index' => [
+            'title' => 'Divisi',
+            'buttons' => [
+                'create' => 'Buat Divisi',
+            ],
+            'partials' => [
+                'divisions' => [
+                    'messages' => [
+                        'deleted' => 'Divisi berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'divisions_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                            ],
+                        ],
+                        'divisions_card' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Divisi',
+            'fields' => [
+                'name' => 'Nama',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Divisi',
+            ],
+            'messages' => [
+                'created' => 'Divisi berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Divisi: :name',
+            'fields' => [
+                'name' => 'Nama',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Divisi',
+            ],
+            'messages' => [
+                'updated' => 'Divisi berhasil diperbarui!',
+            ],
+        ],
     ],
     'workshops' => [
         'title' => 'Bengkel',
