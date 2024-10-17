@@ -30,6 +30,8 @@ enum IntentEnum: string
 
     case API_TRAINSET_ATTACHMENT_COMPONENT_GET_COMPONENT_DETAILS = 'api.trainset.attachment.component.get.component.details';
 
+    case API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.trainset.attachment.confirm.kpm.by.spv';
+
     case API_TRAINSET_ATTACHMENT_ASSIGN_WORKER = 'api.trainset.attachment.assign.worker';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
@@ -58,9 +60,9 @@ enum IntentEnum: string
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
 
+    case API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.panel.attachment.confirm.kpm.by.spv';
+    
     case API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.panel.attachment.update.assign.spv.and.receiver';
-
-    case API_PANEL_ATTACHMENT_CONFIRM_KPM = 'api.panel.attachment.confirm.kpm';
 
     case API_PANEL_ATTACHMENT_REJECT_KPM = 'api.panel.attachment.reject.kpm';
 
@@ -70,7 +72,7 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
-    case API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK = 'api.detail.worker.worker.request.work';
+    case API_DETAIL_WORKER_PANEL_STORE_AND_CHECK = 'api.detail.worker.panel.store.and.check';
 
     case API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER = 'api.detail.worker.panel.request.assign.worker';
 

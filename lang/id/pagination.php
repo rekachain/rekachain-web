@@ -19,6 +19,6 @@ return [
     'previous' => 'previous',
     'next' => 'next',
 
-    'previous_label' => 'Previous',
-    'next_label' => 'Next',
+    'previous_label' => 'Sebelumnya',
+    'next_label' => 'Selanjutnya',
 ];

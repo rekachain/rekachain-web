@@ -23,8 +23,12 @@ class UpdatePanelAttachmentRequest extends FormRequest {
      */
     public function rules(): array {
         $intent = $this->get('intent');
-
+            
         switch ($intent){
+            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
+                return [
+                    'status' => ['required', 'in:' . implode(',', array_column(PanelAttachmentStatusEnum::cases(), 'value'))],
+                ];  
             case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 $arr = [
                     'supervisor_id' => [

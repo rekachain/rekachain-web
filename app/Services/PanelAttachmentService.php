@@ -40,12 +40,10 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         return PanelAttachmentRepositoryInterface::class;
     }
 
-    public function confirmKPM($panelAttachment)
-    {
-        $panelAttachment = PanelAttachment::find($panelAttachment);
-
-        $panelAttachment->status = PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value;
-
+    public function confirmKPM(PanelAttachment $panelAttachment, $request)
+    {   
+        $panelAttachment->status = $request['status'];
+        
         $panelAttachment->save();
 
         return $panelAttachment;

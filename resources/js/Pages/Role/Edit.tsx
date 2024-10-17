@@ -52,7 +52,7 @@ export default function (props: {
 
     return (
         <>
-            <Head title="Tambah Role" />
+            <Head title="Ubah Role" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">

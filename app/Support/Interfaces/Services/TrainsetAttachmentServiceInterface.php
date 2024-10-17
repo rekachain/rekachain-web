@@ -8,5 +8,8 @@ use App\Models\User;
 
 interface TrainsetAttachmentServiceInterface extends BaseCrudServiceInterface {
     public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data);
+    
+    public function confirmKPM(TrainsetAttachment $trainsetAttachment, $request);
+
     public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data);
 }
