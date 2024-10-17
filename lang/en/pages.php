@@ -192,7 +192,67 @@ return [
         ],
     ],
     'workstations' => [
-        'title' => 'Workstations',
+        'index' => [
+            'title' => 'Workstation',
+            'buttons' => [
+                'create' => 'Create Workstation',
+            ],
+            'partials' => [
+                'workstations' => [
+                    'messages' => [
+                        'deleted' => 'Workstation deleted successfully!',
+                    ],
+                    'partials' => [
+                        'workstations_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'location' => 'Location',
+                                'workshop' => 'Workshop',
+                                'division' => 'Division',
+                            ],
+                        ],
+                        'workstations_card' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'location' => 'Location: :location',
+                                'workshop' => 'Workshop: :workshop',
+                                'division' => 'Division: :division',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Workstation',
+            'fields' => [
+                'name' => 'Name',
+                'location' => 'Location',
+                'workshop' => 'Workshop',
+                'division' => 'Division',
+            ],
+            'buttons' => [
+                'submit' => 'Create Workstation',
+            ],
+            'messages' => [
+                'created' => 'Workstation created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Workstation: :name',
+            'fields' => [
+                'name' => 'Name',
+                'location' => 'Location',
+                'workshop' => 'Workshop',
+                'division' => 'Division',
+            ],
+            'buttons' => [
+                'submit' => 'Update Workstation',
+            ],
+            'messages' => [
+                'updated' => 'Workstation updated successfully!',
+            ],
+        ],
     ],
     'staff' => [
         'title' => 'Staff',

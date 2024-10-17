@@ -192,7 +192,67 @@ return [
         ],
     ],
     'workstations' => [
-        'title' => 'Stasiun Kerja',
+        'index' => [
+            'title' => 'Workstation',
+            'buttons' => [
+                'create' => 'Buat Workstation',
+            ],
+            'partials' => [
+                'workstations' => [
+                    'messages' => [
+                        'deleted' => 'Workstation berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'workstations_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'location' => 'Lokasi',
+                                'workshop' => 'Workshop',
+                                'division' => 'Divisi',
+                            ],
+                        ],
+                        'workstations_card' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'location' => 'Lokasi: :location',
+                                'workshop' => 'Workshop: :workshop',
+                                'division' => 'Divisi: :division',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Workstation',
+            'fields' => [
+                'name' => 'Nama',
+                'location' => 'Lokasi',
+                'workshop' => 'Workshop',
+                'division' => 'Divisi',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Workstation',
+            ],
+            'messages' => [
+                'created' => 'Workstation berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Workstation: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'location' => 'Lokasi',
+                'workshop' => 'Workshop',
+                'division' => 'Divisi',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Workstation',
+            ],
+            'messages' => [
+                'updated' => 'Workstation berhasil diperbarui!',
+            ],
+        ],
     ],
     'staff' => [
         'title' => 'Staf',

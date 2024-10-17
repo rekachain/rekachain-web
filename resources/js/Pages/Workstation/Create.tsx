@@ -12,8 +12,10 @@ import { workstationService } from '@/Services/workstationService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ workshops, divisions }: { workshops: WorkshopResource[]; divisions: DivisionResource[] }) {
+    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
         location: '',
@@ -28,34 +30,34 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
 
         await workstationService.create(data);
         router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
-        void useSuccessToast('Workstation berhasil ditambahkan');
+        void useSuccessToast(t('pages.workstations.create.messages.created'));
     });
 
     return (
         <>
-            <Head title="Tambah Workstation" />
+            <Head title={t('pages.workstations.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Workstation</h1>
+                        <h1 className="text-page-header my-4">{t('pages.workstations.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel htmlFor="name" value={t('pages.workstations.create.fields.name')} />
                             <Input
-                                id="nama"
+                                id="name"
                                 type="text"
-                                name="nama"
+                                name="name"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="nama"
+                                autoComplete="name"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value="Location" />
+                            <InputLabel htmlFor="location" value={t('pages.workstations.create.fields.location')} />
                             <Input
                                 id="location"
                                 type="text"
@@ -68,7 +70,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">Workshop</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.workstations.create.fields.workshop')}</h2>
                             <RadioGroup onValueChange={v => setData('workshop_id', v)}>
                                 {workshops?.map(workshop => (
                                     <div key={workshop.id} className="flex items-center space-x-2">
@@ -83,7 +85,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">Divisi</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.workstations.create.fields.division')}</h2>
                             <RadioGroup onValueChange={v => setData('division_id', v)}>
                                 {divisions?.map(division => (
                                     <div key={division.id} className="flex items-center space-x-2">
@@ -98,7 +100,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Tambah Workstation
+                            {t('pages.workstations.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>
