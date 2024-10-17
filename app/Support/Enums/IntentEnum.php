@@ -72,6 +72,8 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS = 'api.detail.worker.panel.get.panel.details';
 
+    case API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS = 'api.detail.worker.panel.get.work.details';
+
     case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
     case API_DETAIL_WORKER_PANEL_STORE_AND_CHECK = 'api.detail.worker.panel.store.and.check';
