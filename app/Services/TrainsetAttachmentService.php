@@ -47,11 +47,26 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
 
     public function confirmKPM(TrainsetAttachment $trainsetAttachment, $request)
     {   
-        $trainsetAttachment->status = $request['status'];
+        if ($request['status'] == TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value){
+            $trainsetAttachment->status = TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value;
         
-        $trainsetAttachment->save();
+            $trainsetAttachment->save();
 
-        return $trainsetAttachment;
+            return $trainsetAttachment;
+        }else if ($request['status'] == TrainsetAttachmentStatusEnum::PENDING->value) {
+            $note = $request['note'];
+            
+            $trainsetAttachment->status = TrainsetAttachmentStatusEnum::PENDING->value;
+            
+            $trainsetAttachment->attachment_notes()->create(
+                [
+                    "note" => $note ? $note : "",
+                    "status" => TrainsetAttachmentStatusEnum::PENDING->value,
+                ]
+            );
+            return $trainsetAttachment;
+        }
+        
     }
 
     public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data) {

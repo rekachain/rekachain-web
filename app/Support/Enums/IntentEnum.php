@@ -92,8 +92,6 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_TRAINSET_GET_TRAINSET_DETAILS = 'api.detail.worker.trainset.get.trainset.details';
 
-    case API_DETAIL_WORKER_TRAINSET_WORKER_REQUEST_WORK = 'api.detail.worker.trainset.request.work';
-
     case API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER = 'api.detail.worker.trainset.assign.request.worker';
 
     case API_DETAIL_WORKER_TRAINSETS_BY_STATUS = 'api.detail.worker.trainset.by.status';
@@ -105,6 +103,8 @@ enum IntentEnum: string
     case API_DETAIL_WORKER_TRAINSETS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.trainsets.get.all.request.worker';
 
     case API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS = 'api.detail.worker.trainset.get.work.details';
+
+    case API_DETAIL_WORKER_TRAINSET_REJECT_WORK = 'api.detail.worker.trainset.reject.work';
 
     case API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE = 'api.detail.worker.trainset.accept.work.with.image';
 
