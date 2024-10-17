@@ -254,8 +254,94 @@ return [
             ],
         ],
     ],
-    'staff' => [
-        'title' => 'Staf',
+    'users' => [
+        'index' => [
+            'title' => 'Staf',
+            'buttons' => [
+                'create' => 'Buat Staf',
+            ],
+            'partials' => [
+                'users' => [
+                    'messages' => [
+                        'deleted' => 'Staf berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'users_table' => [
+                            'headers' => [
+                                'nip' => 'NIP',
+                                'name' => 'Nama',
+                                'email' => 'Email',
+                                'phone_number' => 'Nomor Telepon',
+                                'role' => 'Peran',
+                                'workstation' => 'Workstation',
+                                'step' => 'Langkah',
+                                'avatar' => 'Avatar',
+                            ],
+                        ],
+                        'users_card' => [
+                            'headers' => [
+                                'nip' => 'NIP: :nip',
+                                'name' => 'Nama: :name',
+                                'email' => 'Email: :email',
+                                'phone_number' => 'Nomor Telepon: :phone_number',
+                                'role' => 'Peran: :role',
+                                'workstation' => 'Workstation: :workstation',
+                                'step' => 'Langkah: :step',
+                                'avatar' => 'Avatar',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Staf',
+            'fields' => [
+                'nip' => 'NIP',
+                'name' => 'Nama',
+                'email' => 'Email',
+                'phone_number' => 'Nomor Telepon',
+                'password' => 'Kata Sandi',
+                'password_confirmation' => 'Konfirmasi Kata Sandi',
+                'role' => 'Peran',
+                'workstation' => 'Workstation',
+                'workstation_placeholder' => 'Pilih Workstation',
+                'step' => 'Langkah',
+                'step_placeholder' => 'Pilih Langkah',
+                'avatar' => 'Avatar',
+                'avatar_filepond_placeholder' => 'Letakkan file di sini atau klik untuk mengunggah',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Staf',
+            ],
+            'messages' => [
+                'created' => 'Staf berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Staf: :name',
+            'fields' => [
+                'nip' => 'NIP',
+                'name' => 'Nama',
+                'email' => 'Email',
+                'phone_number' => 'Nomor Telepon',
+                'password' => 'Kata Sandi',
+                'password_confirmation' => 'Konfirmasi Kata Sandi',
+                'role' => 'Peran',
+                'workstation' => 'Workstation',
+                'workstation_placeholder' => 'Pilih Workstation',
+                'step' => 'Langkah',
+                'step_placeholder' => 'Pilih Langkah',
+                'avatar' => 'Avatar',
+                'avatar_filepond_placeholder' => 'Letakkan file di sini atau klik untuk mengunggah',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Staf',
+            ],
+            'messages' => [
+                'updated' => 'Staf berhasil diperbarui!',
+            ],
+        ],
     ],
     'access_control' => [
         'title' => 'Kontrol Akses',

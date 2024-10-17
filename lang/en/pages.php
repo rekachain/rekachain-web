@@ -254,8 +254,94 @@ return [
             ],
         ],
     ],
-    'staff' => [
-        'title' => 'Staff',
+    'users' => [
+        'index' => [
+            'title' => 'Staff',
+            'buttons' => [
+                'create' => 'Create Staff',
+            ],
+            'partials' => [
+                'users' => [
+                    'messages' => [
+                        'deleted' => 'Staff deleted successfully!',
+                    ],
+                    'partials' => [
+                        'users_table' => [
+                            'headers' => [
+                                'nip' => 'Employee ID',
+                                'name' => 'Name',
+                                'email' => 'Email',
+                                'phone_number' => 'Phone Number',
+                                'role' => 'Role',
+                                'workstation' => 'Workstation',
+                                'step' => 'Step',
+                                'avatar' => 'Avatar',
+                            ],
+                        ],
+                        'users_card' => [
+                            'headers' => [
+                                'nip' => 'Employee ID: :nip',
+                                'name' => 'Name: :name',
+                                'email' => 'Email: :email',
+                                'phone_number' => 'Phone Number: :phone_number',
+                                'role' => 'Role: :role',
+                                'workstation' => 'Workstation: :workstation',
+                                'step' => 'Step: :step',
+                                'avatar' => 'Avatar',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Staff',
+            'fields' => [
+                'nip' => 'Employee ID',
+                'name' => 'Name',
+                'email' => 'Email',
+                'phone_number' => 'Phone Number',
+                'password' => 'Password',
+                'password_confirmation' => 'Confirm Password',
+                'role' => 'Role',
+                'workstation' => 'Workstation',
+                'workstation_placeholder' => 'Select Workstation',
+                'step' => 'Step',
+                'step_placeholder' => 'Select Step',
+                'avatar' => 'Avatar',
+                'avatar_filepond_placeholder' => 'Drop files here or click to upload',
+            ],
+            'buttons' => [
+                'submit' => 'Create Staff',
+            ],
+            'messages' => [
+                'created' => 'Staff created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Staff: :name',
+            'fields' => [
+                'nip' => 'Employee ID',
+                'name' => 'Name',
+                'email' => 'Email',
+                'phone_number' => 'Phone Number',
+                'password' => 'Password',
+                'password_confirmation' => 'Confirm Password',
+                'role' => 'Role',
+                'workstation' => 'Workstation',
+                'workstation_placeholder' => 'Select Workstation',
+                'step' => 'Step',
+                'step_placeholder' => 'Select Step',
+                'avatar' => 'Avatar',
+                'avatar_filepond_placeholder' => 'Drop files here or click to upload',
+            ],
+            'buttons' => [
+                'submit' => 'Update Staff',
+            ],
+            'messages' => [
+                'updated' => 'Staff updated successfully!',
+            ],
+        ],
     ],
     'access_control' => [
         'title' => 'Access Control',
