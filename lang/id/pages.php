@@ -667,7 +667,76 @@ return [
         ],
     ],
     'panels' => [
-        'title' => 'Daftar Panel',
+        'index' => [
+            'title' => 'Panel',
+            'buttons' => [
+                'create' => 'Buat Panel',
+            ],
+            'partials' => [
+                'panels' => [
+                    'messages' => [
+                        'deleted' => 'Panel berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'panels_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'description' => 'Deskripsi',
+                            ],
+                        ],
+                        'panels_card' => [
+                            'headers' => [
+                                'name' => 'Nama: :name',
+                                'description' => 'Deskripsi: :description',
+                            ],
+                        ],
+                    ],
+                ],
+                'import' => [
+                    'title' => 'Impor Panel',
+                    'description' => 'Impor Panel dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Panel',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Panel',
+                        'processing' => 'Memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Panel berhasil diimpor!',
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Panel',
+            'fields' => [
+                'name' => 'Nama',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Panel',
+            ],
+            'messages' => [
+                'created' => 'Panel berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Panel: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Panel',
+            ],
+            'messages' => [
+                'updated' => 'Panel berhasil diperbarui!',
+            ],
+        ],
     ],
     'projects' => [
         'title' => 'Daftar Proyek',

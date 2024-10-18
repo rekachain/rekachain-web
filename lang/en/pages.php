@@ -667,7 +667,76 @@ return [
         ],
     ],
     'panels' => [
-        'title' => 'List Panels',
+        'index' => [
+            'title' => 'Panel',
+            'buttons' => [
+                'create' => 'Create Panel',
+            ],
+            'partials' => [
+                'panels' => [
+                    'messages' => [
+                        'deleted' => 'Panel deleted successfully!',
+                    ],
+                    'partials' => [
+                        'panels_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'description' => 'Description',
+                            ],
+                        ],
+                        'panels_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'description' => 'Description: :description',
+                            ],
+                        ],
+                    ],
+                ],
+                'import' => [
+                    'title' => 'Import Panel',
+                    'description' => 'Import Panel from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Panel',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Panel',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Panel imported successfully!',
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Panel',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Create Panel',
+            ],
+            'messages' => [
+                'created' => 'Panel created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Panel: :name',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Update Panel',
+            ],
+            'messages' => [
+                'updated' => 'Panel updated successfully!',
+            ],
+        ],
     ],
     'projects' => [
         'title' => 'List Projects',
