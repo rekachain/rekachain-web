@@ -58,12 +58,18 @@ trait HandlesFiltering {
                     if (!in_array($key, $relationFilterableColumns[$relation])) {
                         continue;
                     }
-                    $query->whereHas($relation, function ($query) use ($key, $val) {
-                        $query->where($key, $val);
-                    });
+                    // $query->whereHas($relation, function ($query) use ($key, $val) {
+                    //     $query->where($key, $val);
+                    // });
+                    $relationArray = explode('.', $relation);
+                    $relationQuery = $query;
+                    foreach ($relationArray as $rel) {
+                        $relationQuery = $relationQuery->whereHas($rel, function ($query) use ($key, $val) {
+                            $query->where($key, $val);
+                        });
+                    }
                 }
             }
-
         }
 
         return $query;
