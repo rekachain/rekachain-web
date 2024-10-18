@@ -72,6 +72,8 @@ class ApiDetailWorkerTrainsetController extends Controller {
                         'work_status' => $status
                     ]
                 ]), $perPage));
+            default:
+                return DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated($request->query(), $perPage));
         }
     }
 
@@ -79,27 +81,16 @@ class ApiDetailWorkerTrainsetController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-            abort(403, 'Unauthorized');
-        }
-
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_WORKER_REQUEST_WORK->value]);
-
-        return $this->detailWorkerTrainsetService->requestWork($request);
+        //
     }
 
     /**
      * Display the specified resource.
      */
     public function show(DetailWorkerTrainset $detailWorkerTrainset, Request $request) {
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_TRAINSET_DETAILS->value]);
+        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS->value]);
 
-        return DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated(array_merge($request->query(), [
-            'column_filters' => [
-                'worker_id'=> $request->user()->id,
-                'id' => $detailWorkerTrainset->id
-            ]
-        ])));
+        return DetailWorkerTrainsetResource::make($detailWorkerTrainset->load(['progress_step.progress','progress_step.step']));
     }
 
     /**
@@ -108,17 +99,16 @@ class ApiDetailWorkerTrainsetController extends Controller {
     public function update(DetailWorkerTrainset $detailWorkerTrainset, UpdateDetailWorkerTrainsetRequest $request) {
         $intent = request()->get('intent');
         switch ($intent) {
-            // case
-            // IntentEnum::API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER->value:
-            //     if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-            //         abort(403, 'Unauthorized');
-            //     }
-
-            //     return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset->id, $request);
+            case
+            IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
+                if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
+                    abort(403, 'Unauthorized');
+                }
+                return $this->detailWorkerTrainsetService->rejectWork($detailWorkerTrainset->id, $request);
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value: 
-                // if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-                //     abort(403, 'Unauthorized');
-                // }
+                if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK])) {
+                    abort(403, 'Unauthorized');
+                }
                 return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());
         }    
         

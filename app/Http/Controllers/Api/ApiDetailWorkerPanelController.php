@@ -97,7 +97,9 @@ class ApiDetailWorkerPanelController extends Controller {
                             'acceptance_status' => $acceptance_status
                         ]
                     ]), $perPage));
-                }     
+                }
+            default:
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
         }
     }
 
@@ -124,14 +126,17 @@ class ApiDetailWorkerPanelController extends Controller {
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
-
+                
                 return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
                     'column_filters' => [
-                        'worker_id'=> $request->user()->id,
+                        'worker_id' => $request->user()->id,
                         'id' => $detailWorkerPanel->id
-                    ]
-                ])));    
-        } 
+                        ]
+                    ])));
+            default:
+                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value]);
+                return DetailWorkerPanelResource::make($detailWorkerPanel->load('progress_step.progress', 'progress_step.step'));
+        }
     }
 
     /**

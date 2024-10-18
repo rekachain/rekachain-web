@@ -15,7 +15,7 @@ class TrainsetAttachmentAssignWorkerStepValidation implements ValidationRule {
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void {
         [$trainsetAttachment, $carriagePanelComponentId, $user] = $value;
-        $trainsetAttachmentComponent = TrainsetAttachmentComponent::find(['carriage_panel_component_id' => $carriagePanelComponentId, 'trainset_attachment_id' => $trainsetAttachment->id])->first();
+        $trainsetAttachmentComponent = TrainsetAttachmentComponent::whereCarriagePanelComponentId($carriagePanelComponentId)->whereTrainsetAttachmentId($trainsetAttachment->id)->first();
 
         if ($trainsetAttachmentComponent->total_fulfilled == $trainsetAttachmentComponent->total_required) {
             $fail(__(
@@ -39,7 +39,7 @@ class TrainsetAttachmentAssignWorkerStepValidation implements ValidationRule {
             return;
         }
 
-        $lastWorkerTrainset = $trainsetAttachmentComponent->carriage_panel_component->detail_worker_panels()->orderBy('id', 'desc')->first();
+        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('id', 'desc')->first();
         $lastKey = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
         $currentKey = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;

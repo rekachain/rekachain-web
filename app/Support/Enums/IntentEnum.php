@@ -61,7 +61,9 @@ enum IntentEnum: string
     case API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.panel.attachment.get.attachment.serial.number.details.with.qr';
 
     case API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.panel.attachment.confirm.kpm.by.spv';
-    
+
+    case API_PANEL_ATTACHMENT_UPDATE_ATTACHMENT_STATUS = 'api.panel.attachment.update.attachment.status';
+
     case API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.panel.attachment.update.assign.spv.and.receiver';
 
     case API_PANEL_ATTACHMENT_REJECT_KPM = 'api.panel.attachment.reject.kpm';
@@ -69,6 +71,8 @@ enum IntentEnum: string
     case API_DETAIL_WORKER_PANEL_GET_PANELS = 'api.detail.worker.panel.get.panels';
 
     case API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS = 'api.detail.worker.panel.get.panel.details';
+
+    case API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS = 'api.detail.worker.panel.get.work.details';
 
     case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
@@ -88,8 +92,6 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_TRAINSET_GET_TRAINSET_DETAILS = 'api.detail.worker.trainset.get.trainset.details';
 
-    case API_DETAIL_WORKER_TRAINSET_WORKER_REQUEST_WORK = 'api.detail.worker.trainset.request.work';
-
     case API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER = 'api.detail.worker.trainset.assign.request.worker';
 
     case API_DETAIL_WORKER_TRAINSETS_BY_STATUS = 'api.detail.worker.trainset.by.status';
@@ -102,8 +104,10 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS = 'api.detail.worker.trainset.get.work.details';
 
+    case API_DETAIL_WORKER_TRAINSET_REJECT_WORK = 'api.detail.worker.trainset.reject.work';
+
     case API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE = 'api.detail.worker.trainset.accept.work.with.image';
-    
+
     case API_SERIAL_PANEL_UPDATE_WORKER_PANEL = 'api.serial.panel.update.worker.panel';
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.manufacture.status';

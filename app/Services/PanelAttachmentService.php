@@ -12,6 +12,7 @@ use App\Http\Resources\PanelAttachmentResource;
 use App\Models\AttachmentNote;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use Illuminate\Database\Eloquent\Model;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface
 {
@@ -47,6 +48,21 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         $panelAttachment->save();
 
         return $panelAttachment;
+    }
+
+    public function update($panelAttachment, array $data): ?Model
+    {   
+        if (array_key_exists('note', $data)) {
+            $panelAttachment->attachment_notes()->create(
+                [
+                    "note" => $data['note'],
+                    "status" => $data['status'],
+                ]
+            );
+            unset($data['note']);
+        }
+        
+        return parent::update($panelAttachment, $data);
     }
 
     public function rejectKPM($panelAttachment, $request)

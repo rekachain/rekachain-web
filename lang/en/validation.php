@@ -197,7 +197,7 @@ return [
         ],
         'serial_panel' => [
             'assign_worker' => [
-                'manufacture_status_exception' => 'Panel on :progress is :manufacture_status',
+                'manufacture_status_exception' => 'Manufactiure status of Panel on :progress is :manufacture_status',
                 'step_invalid_exception' => ':progress does not have :step step',
                 'step_completed_exception' => 'Step :step already completed in :progress',
                 'step_ahead_exception' => 'There is still an under progress step on the current :progress',
@@ -206,8 +206,8 @@ return [
         'trainset_attachment' => [
             'assign_worker' => [
                 'step_invalid_exception' => ':progress does not have :step step',
-                'step_completed_exception' => 'Step :step already completed in :progress',
-                'step_ahead_exception' => 'There is still an under progress step on the current :progress',
+                'step_completed_exception' => 'Step :step already completed in :progress progress',
+                'step_ahead_exception' => 'There is still an under progress step on the current :progress progress',
                 'total_fulfilled_exception' => 'Component :component in :progress already fulfilled',
             ],
         ],
