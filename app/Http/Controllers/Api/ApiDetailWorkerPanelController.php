@@ -21,8 +21,33 @@ class ApiDetailWorkerPanelController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        // TODO: use checkPermissions
         $perPage = request()->get('perPage', 5);
         $intent = request()->get('intent');
+        if (array_key_exists('worker_id', request()->get('column_filters') ?? [])) {
+            $workerId = $request->input('column_filters.worker_id');
+            if ($workerId && !\Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {// TODO: use checkPermissions
+                abort(400, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+            } elseif (!$workerId) {
+                $request->merge([
+                    'column_filters' => array_merge(
+                        $request->get('column_filters') ?? [],
+                        [
+                            'worker_id' => \Auth::user()->id,
+                        ]
+                    )
+                ]);
+            }
+        } elseif (!\Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {// TODO: use checkPermissions
+            $request->merge([
+                'column_filters' => array_merge(
+                    $request->get('column_filters') ?? [],
+                    [
+                        'worker_id' => \Auth::user()->id,
+                    ]
+                )
+            ]);
+        }
 
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS->value:
