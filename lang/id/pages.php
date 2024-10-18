@@ -346,8 +346,58 @@ return [
     'access_control' => [
         'title' => 'Kontrol Akses',
     ],
-    'permissions' => [
-        'title' => 'Izin',
+    'permissions' => [ // CRUD Belum diimplementasikan
+        'index' => [
+            'title' => 'Izin',
+            'buttons' => [
+                'create' => 'Buat Izin',
+            ],
+            'partials' => [
+                'permissions' => [
+                    'messages' => [
+                        'deleted' => 'Izin berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'permissions_table' => [
+                            'headers' => [
+                                'group' => 'Grup',
+                                'name' => 'Nama',
+                            ],
+                        ],
+                        'permissions_card' => [
+                            'headers' => [
+                                'group' => 'Grup',
+                                'name' => 'Nama',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Izin',
+            'fields' => [
+                'name' => 'Nama',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Izin',
+            ],
+            'messages' => [
+                'created' => 'Izin berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Izin: :name',
+            'fields' => [
+                'name' => 'Nama',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Izin',
+            ],
+            'messages' => [
+                'updated' => 'Izin berhasil diperbarui!',
+            ],
+        ],
     ],
     'roles' => [
         'title' => 'Peran',

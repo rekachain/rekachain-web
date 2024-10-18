@@ -11,8 +11,10 @@ import PermissionsCardView from './Partials/PermissionsCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -31,7 +33,7 @@ export default function () {
     const handlePermissionResourceDeletion = withLoading(async (id: number) => {
         await permissionService.delete(id);
         await syncPermissionResources();
-        await useSuccessToast('PermissionResource deleted successfully');
+        await useSuccessToast(t('pages.permissions.index.partials.permissions.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {
