@@ -399,8 +399,72 @@ return [
             ],
         ],
     ],
-    'roles' => [
-        'title' => 'Peran',
+    'roles' => [ // Update belum diimplementasikan
+        'index' => [
+            'title' => 'Peranan',
+            'buttons' => [
+                'create' => 'Buat Peran',
+            ],
+            'partials' => [
+                'roles' => [
+                    'messages' => [
+                        'deleted' => 'Peran berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'roles_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'division' => 'Divisi',
+                                'level' => 'Tingkat',
+                                'users_count' => 'Jumlah Pengguna',
+                                'permissions_count' => 'Jumlah Izin',
+                            ],
+                        ],
+                        'roles_card' => [
+                            'headers' => [
+                                'name' => 'Nama: :name',
+                                'division' => 'Divisi: :division',
+                                'level' => 'Tingkat: :level',
+                                'users_count' => 'Jumlah Pengguna: :users_count',
+                                'permissions_count' => 'Jumlah Izin: :permissions_count',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Peran',
+            'fields' => [
+                'name' => 'Nama',
+                'division' => 'Divisi',
+                'division_placeholder' => 'Pilih Divisi',
+                'level' => 'Tingkat',
+                'permissions' => 'Izin',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Peran',
+            ],
+            'messages' => [
+                'created' => 'Peran berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Peran: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'division' => 'Divisi',
+                'division_placeholder' => 'Pilih Divisi',
+                'level' => 'Tingkat',
+                'permissions' => 'Izin',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Peran',
+            ],
+            'messages' => [
+                'updated' => 'Peran berhasil diperbarui!',
+            ],
+        ],
     ],
     'steps' => [
         'title' => 'Daftar Langkah',

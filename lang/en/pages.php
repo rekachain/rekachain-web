@@ -346,7 +346,7 @@ return [
     'access_control' => [
         'title' => 'Access Control',
     ],
-    'permissions' => [ // CRUD Not implemented
+    'permissions' => [ // CRUD not implemented
         'index' => [
             'title' => 'Permission',
             'buttons' => [
@@ -399,8 +399,72 @@ return [
             ],
         ],
     ],
-    'roles' => [
-        'title' => 'Roles',
+    'roles' => [ // Update not implemented
+        'index' => [
+            'title' => 'Role',
+            'buttons' => [
+                'create' => 'Create Role',
+            ],
+            'partials' => [
+                'roles' => [
+                    'messages' => [
+                        'deleted' => 'Role deleted successfully!',
+                    ],
+                    'partials' => [
+                        'roles_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'division' => 'Division',
+                                'level' => 'Level',
+                                'users_count' => 'User Count',
+                                'permissions_count' => 'Permission Count',
+                            ],
+                        ],
+                        'roles_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'division' => 'Division: :division',
+                                'level' => 'Level: :level',
+                                'users_count' => 'User Count: :users_count',
+                                'permissions_count' => 'Permission Count: :permissions_count',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Role',
+            'fields' => [
+                'name' => 'Name',
+                'division' => 'Division',
+                'division_placeholder' => 'Select Division',
+                'level' => 'Level',
+                'permissions' => 'Permissions',
+            ],
+            'buttons' => [
+                'submit' => 'Create Role',
+            ],
+            'messages' => [
+                'created' => 'Role created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Role: :name',
+            'fields' => [
+                'name' => 'Name',
+                'division' => 'Division',
+                'division_placeholder' => 'Select Division',
+                'level' => 'Level',
+                'permissions' => 'Permissions',
+            ],
+            'buttons' => [
+                'submit' => 'Update Role',
+            ],
+            'messages' => [
+                'updated' => 'Role updated successfully!',
+            ],
+        ],
     ],
     'steps' => [
         'title' => 'List Steps',
