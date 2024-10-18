@@ -20,13 +20,15 @@ import { progressService } from '@/Services/progressService';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import cn from 'mxcn';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ component }: { component: ComponentResource }) {
+    const { t } = useLaravelReactI18n();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
     const [searchProgress, setSearchProgress] = useState(component.progress?.name);
-    const { data, setData, post, processing, errors, reset, progress } = useForm({
+    const { data, setData, processing } = useForm({
         progress_id: component.progress_id,
         name: component.name,
     });
@@ -46,24 +48,33 @@ export default function ({ component }: { component: ComponentResource }) {
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await componentService.update(component.id, data);
-        void useSuccessToast('Component updated successfully');
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
+        void useSuccessToast(t('pages.components.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head title="Tambah Component" />
+            <Head
+                title={t('pages.components.edit.title', {
+                    name: component.name,
+                })}
+            />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Component</h1>
+                        <h1 className="text-page-header my-4">
+                            {t('pages.components.edit.title', {
+                                name: component.name,
+                            })}
+                        </h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
+                            {/* TODO: refactor using GenericDataSelector, BUG: existing progress wont show */}
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
+                                    <Label htmlFor="progress">{t('pages.components.edit.fields.progress')}</Label>
                                     <div className="flex gap-2">
                                         <Popover open={open} onOpenChange={setOpen}>
                                             <PopoverTrigger asChild>
@@ -77,7 +88,7 @@ export default function ({ component }: { component: ComponentResource }) {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : 'Pilih progress...'}
+                                                        : t('pages.components.edit.fields.progress')}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -85,10 +96,12 @@ export default function ({ component }: { component: ComponentResource }) {
                                                 <Command>
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
-                                                        placeholder="Cari Progress..."
+                                                        placeholder={t(
+                                                            'pages.components.edit.fields.progress_placeholder',
+                                                        )}
                                                     />
                                                     <CommandList>
-                                                        <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
+                                                        <CommandEmpty>No results found</CommandEmpty>
                                                         <CommandGroup>
                                                             {progressResponse?.data.map(progress => (
                                                                 <CommandItem
@@ -169,20 +182,20 @@ export default function ({ component }: { component: ComponentResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel htmlFor="name" value={t('pages.components.edit.fields.name')} />
                             <Input
-                                id="nama"
+                                id="name"
                                 type="text"
-                                name="nama"
+                                name="name"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="nama"
+                                autoComplete="name"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            Tambah Komponen
+                            {t('pages.components.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

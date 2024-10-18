@@ -610,7 +610,61 @@ return [
         ],
     ],
     'components' => [
-        'title' => 'Daftar Komponen',
+        'index' => [
+            'title' => 'Komponen',
+            'buttons' => [
+                'create' => 'Buat Komponen',
+            ],
+            'partials' => [
+                'components' => [
+                    'messages' => [
+                        'deleted' => 'Komponen berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'components_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'progress' => 'Progres',
+                            ],
+                        ],
+                        'components_card' => [
+                            'headers' => [
+                                'name' => 'Nama: :name',
+                                'progress' => 'Progres: :progress',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Komponen',
+            'fields' => [
+                'name' => 'Nama',
+                'progress' => 'Progres',
+                'progress_placeholder' => 'Pilih Progres',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Komponen',
+            ],
+            'messages' => [
+                'created' => 'Komponen berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Komponen: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'progress' => 'Progres',
+                'progress_placeholder' => 'Pilih Progres',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Komponen',
+            ],
+            'messages' => [
+                'updated' => 'Komponen berhasil diperbarui!',
+            ],
+        ],
     ],
     'panels' => [
         'title' => 'Daftar Panel',

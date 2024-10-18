@@ -610,7 +610,61 @@ return [
         ],
     ],
     'components' => [
-        'title' => 'List Components',
+        'index' => [
+            'title' => 'Component',
+            'buttons' => [
+                'create' => 'Create Component',
+            ],
+            'partials' => [
+                'components' => [
+                    'messages' => [
+                        'deleted' => 'Component deleted successfully!',
+                    ],
+                    'partials' => [
+                        'components_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'progress' => 'Progress',
+                            ],
+                        ],
+                        'components_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'progress' => 'Progress: :progress',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Component',
+            'fields' => [
+                'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+            ],
+            'buttons' => [
+                'submit' => 'Create Component',
+            ],
+            'messages' => [
+                'created' => 'Component created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Component: :name',
+            'fields' => [
+                'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+            ],
+            'buttons' => [
+                'submit' => 'Update Component',
+            ],
+            'messages' => [
+                'updated' => 'Component updated successfully!',
+            ],
+        ],
     ],
     'panels' => [
         'title' => 'List Panels',
