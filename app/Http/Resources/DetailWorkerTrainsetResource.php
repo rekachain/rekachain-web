@@ -24,6 +24,30 @@ class DetailWorkerTrainsetResource extends JsonResource {
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
+            case IntentEnum::API_DETAIL_WORKER_TRAINSETS_GET_ALL_WORK_DETAIL->value:
+                return [
+                    'id' => $this->id,
+                    'trainset_attachment_id' => $this->trainset_attachment_component->trainset_attachment_id,
+                    'attachment_number' => $this->trainset_attachment_component->trainset_attachment->attachment_number,
+                    'trainset_attachment_component_id' => $this->trainset_attachment_component_id,
+                    'carriage_panel_component_id' => $this->trainset_attachment_component->carriage_panel_component_id,
+                    'panel_id' => $this->trainset_attachment_component->carriage_panel_component->carriage_panel->panel_id,
+                    'panel_name' => $this->trainset_attachment_component->carriage_panel_component->carriage_panel->panel->name,
+                    'component_id' => $this->trainset_attachment_component->carriage_panel_component->component_id,
+                    'component_name' => $this->trainset_attachment_component->carriage_panel_component->component->name,
+                    'worker_id' => $this->worker_id,
+                    'worker_name' => $this->worker->name,
+                    'progress_step_id' => $this->progress_step_id,
+                    'progress_name' => $this->progress_step->progress->name,
+                    'work_aspect_name' => $this->progress_step->progress->work_aspect->name,
+                    'step_name' => $this->progress_step->step->name,
+                    'estimated_time' => $this->estimated_time,
+                    'image_path' => $this->image_path,
+                    'work_status' => $this->work_status,
+                    'acceptance_status' => $this->acceptance_status,
+                    'created_at' => $this->created_at->toDateTimeString(),
+                    'updated_at' => $this->updated_at->toDateTimeString(),
+                ];
             default:
                 return [
                     'id' => $this->id,

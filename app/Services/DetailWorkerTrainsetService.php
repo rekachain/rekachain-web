@@ -28,7 +28,6 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
     }
 
     public function requestAssign($detailWorkerTrainset, $request){
-        $detailWorkerTrainset = DetailWorkerTrainset::find($detailWorkerTrainset);
         
         $detailWorkerTrainset->acceptance_status = $request->acceptance_status;
 

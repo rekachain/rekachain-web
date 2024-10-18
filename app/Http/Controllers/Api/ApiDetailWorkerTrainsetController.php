@@ -99,6 +99,11 @@ class ApiDetailWorkerTrainsetController extends Controller {
     public function update(DetailWorkerTrainset $detailWorkerTrainset, UpdateDetailWorkerTrainsetRequest $request) {
         $intent = request()->get('intent');
         switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER->value:
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+                    abort(403, 'Unauthorized');
+                }
+                return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset, $request);
             case
             IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
