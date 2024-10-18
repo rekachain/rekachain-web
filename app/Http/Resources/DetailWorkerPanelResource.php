@@ -40,6 +40,26 @@ class DetailWorkerPanelResource extends JsonResource {
                     'progress_step_id' => $this->progress_step_id,
                     'acceptance_status' => $this->acceptance_status,
                 ];
+            case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_WORK_DETAIL->value:
+                return [
+                    'id' => $this->id,
+                    'panel_attachment_id' => $this->serial_panel->panel_attachment_id,
+                    'attachment_number' => $this->serial_panel->panel_attachment->attachment_number,
+                    'serial_panel_id' => $this->serial_panel_id,
+                    'panel_name' => $this->serial_panel->panel_attachment->carriage_panel->panel->name,
+                    'worker_id' => $this->worker_id,
+                    'worker_name' => $this->worker->name,
+                    'progress_step_id' => $this->progress_step_id,
+                    'progress_name' => $this->progress_step->progress->name,
+                    'work_aspect_name' => $this->progress_step->progress->work_aspect->name,
+                    'step_name' => $this->progress_step->step->name,
+                    'estimated_time' => $this->estimated_time,
+                    'image_path' => $this->image_path,
+                    'work_status' => $this->work_status,
+                    'acceptance_status' => $this->acceptance_status,
+                    'created_at' => $this->created_at->toDateTimeString(),
+                    'updated_at' => $this->updated_at->toDateTimeString(),
+                ];
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value:
                 return [
                     'id' => $this->id,
