@@ -5,6 +5,7 @@ namespace App\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
