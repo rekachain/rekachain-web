@@ -74,6 +74,8 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS = 'api.detail.worker.panel.get.work.details';
 
+    case API_DETAIL_WORKER_PANELS_GET_ALL_WORK_DETAIL = 'api.detail.worker.panels.get.all.work.detail';
+
     case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
     case API_DETAIL_WORKER_PANEL_STORE_AND_CHECK = 'api.detail.worker.panel.store.and.check';
@@ -99,6 +101,8 @@ enum IntentEnum: string
     case API_DETAIL_WORKER_TRAINSETS_BY_CURRENT_USER = 'api.detail.worker.trainsets.by.current.user';
 
     case API_DETAIL_WORKER_TRAINSETS_BY_STATUS_AND_CURRENT_USER = 'api.detail.worker.trainsets.by.status.and.current.user';
+
+    case API_DETAIL_WORKER_TRAINSETS_GET_ALL_WORK_DETAIL = 'api.detail.worker.trainsets.get.all.work.detail';
 
     case API_DETAIL_WORKER_TRAINSETS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.trainsets.get.all.request.worker';
 
