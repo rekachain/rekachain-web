@@ -530,7 +530,84 @@ return [
         ],
     ],
     'raw_materials' => [
-        'title' => 'Daftar Bahan Mentah',
+        'index' => [
+            'title' => 'Bahan Baku',
+            'buttons' => [
+                'create' => 'Buat Bahan Baku',
+            ],
+            'partials' => [
+                'raw_materials' => [
+                    'messages' => [
+                        'deleted' => 'Bahan Baku berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'raw_materials_table' => [
+                            'headers' => [
+                                'material_code' => 'Kode Bahan',
+                                'description' => 'Deskripsi',
+                                'specs' => 'Spesifikasi',
+                                'unit' => 'Satuan',
+                            ],
+                        ],
+                        'raw_materials_card' => [
+                            'headers' => [
+                                'material_code' => 'Kode Bahan: :material_code',
+                                'description' => 'Deskripsi: :description',
+                                'specs' => 'Spesifikasi: :specs',
+                                'unit' => 'Satuan: :unit',
+                            ],
+                        ],
+                    ],
+                ],
+                'import' => [
+                    'title' => 'Impor Bahan Baku',
+                    'description' => 'Impor Bahan Baku dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Bahan Baku',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Bahan Baku',
+                        'processing' => 'Memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Bahan Baku berhasil diimpor!',
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Bahan Baku',
+            'fields' => [
+                'material_code' => 'Kode Bahan',
+                'description' => 'Deskripsi',
+                'specs' => 'Spesifikasi',
+                'unit' => 'Satuan',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Bahan Baku',
+            ],
+            'messages' => [
+                'created' => 'Bahan Baku berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Bahan Baku: :name',
+            'fields' => [
+                'material_code' => 'Kode Bahan',
+                'description' => 'Deskripsi',
+                'specs' => 'Spesifikasi',
+                'unit' => 'Satuan',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Bahan Baku',
+            ],
+            'messages' => [
+                'updated' => 'Bahan Baku berhasil diperbarui!',
+            ],
+        ],
     ],
     'components' => [
         'title' => 'Daftar Komponen',

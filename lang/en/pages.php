@@ -530,7 +530,84 @@ return [
         ],
     ],
     'raw_materials' => [
-        'title' => 'List Raw Materials',
+        'index' => [
+            'title' => 'Raw Material',
+            'buttons' => [
+                'create' => 'Create Raw Material',
+            ],
+            'partials' => [
+                'raw_materials' => [
+                    'messages' => [
+                        'deleted' => 'Raw Material deleted successfully!',
+                    ],
+                    'partials' => [
+                        'raw_materials_table' => [
+                            'headers' => [
+                                'material_code' => 'Material Code',
+                                'description' => 'Description',
+                                'specs' => 'Specs',
+                                'unit' => 'Unit',
+                            ],
+                        ],
+                        'raw_materials_card' => [
+                            'headers' => [
+                                'material_code' => 'Material Code: :material_code',
+                                'description' => 'Description: :description',
+                                'specs' => 'Specs: :specs',
+                                'unit' => 'Unit: :unit',
+                            ],
+                        ],
+                    ],
+                ],
+                'import' => [
+                    'title' => 'Import Raw Material',
+                    'description' => 'Import Raw Material from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Raw Material',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Raw Material',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Raw Material imported successfully!',
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Raw Material',
+            'fields' => [
+                'material_code' => 'Material Code',
+                'description' => 'Description',
+                'specs' => 'Specs',
+                'unit' => 'Unit',
+            ],
+            'buttons' => [
+                'submit' => 'Create Raw Material',
+            ],
+            'messages' => [
+                'created' => 'Raw Material created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Raw Material: :name',
+            'fields' => [
+                'material_code' => 'Material Code',
+                'description' => 'Description',
+                'specs' => 'Specs',
+                'unit' => 'Unit',
+            ],
+            'buttons' => [
+                'submit' => 'Update Raw Material',
+            ],
+            'messages' => [
+                'updated' => 'Raw Material updated successfully!',
+            ],
+        ],
     ],
     'components' => [
         'title' => 'List Components',
