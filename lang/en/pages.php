@@ -467,7 +467,67 @@ return [
         ],
     ],
     'steps' => [
-        'title' => 'List Steps',
+        'index' => [
+            'title' => 'Step',
+            'buttons' => [
+                'create' => 'Create Step',
+            ],
+            'partials' => [
+                'steps' => [
+                    'messages' => [
+                        'deleted' => 'Step deleted successfully!',
+                    ],
+                    'partials' => [
+                        'steps_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'process' => 'Process',
+                                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                            ],
+                        ],
+                        'steps_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'process' => 'Process: :process',
+                                'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Step',
+            'fields' => [
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+                'process' => 'Process',
+                'name' => 'Name',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+            ],
+            'buttons' => [
+                'submit' => 'Create Step',
+            ],
+            'messages' => [
+                'created' => 'Step created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Step: :name',
+            'fields' => [
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+                'process' => 'Process',
+                'name' => 'Name',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+            ],
+            'buttons' => [
+                'submit' => 'Update Step',
+            ],
+            'messages' => [
+                'updated' => 'Step updated successfully!',
+            ],
+        ],
     ],
     'raw_materials' => [
         'title' => 'List Raw Materials',

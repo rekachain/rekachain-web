@@ -9,7 +9,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { ProgressResource } from '@/Support/Interfaces/Resources';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { SelectGroup } from '@/Components/UI/select';
 import { Label } from '@/Components/UI/label';
 import { Check, ChevronsUpDown, RefreshCcw } from 'lucide-react';
 import { STYLING } from '@/Support/Constants/styling';
@@ -21,8 +21,10 @@ import { progressService } from '@/Services/progressService';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import cn from 'mxcn';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
@@ -51,23 +53,25 @@ export default function () {
         event.preventDefault();
         await stepService.create(data);
         router.visit(route(`${ROUTES.STEPS}.index`));
-        void useSuccessToast('Step created successfully');
+        void useSuccessToast(t('pages.steps.create.messages.created'));
     });
 
     return (
         <>
-            <Head title="Tambah Step" />
+            <Head title={t('pages.steps.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Step</h1>
+                        <h1 className="text-page-header my-4">{t('pages.steps.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
+                                    <Label htmlFor="progress">{t('pages.steps.create.fields.process')}</Label>
+                                    {/* TODO: refactor using GenericDataSelector */}
+
                                     {/* <div className="flex gap-4">
                                         <Input
                                             placeholder="Cari progress"
@@ -120,7 +124,7 @@ export default function () {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : 'Pilih progress...'}
+                                                        : t('pages.steps.create.fields.progress')}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -128,10 +132,12 @@ export default function () {
                                                 <Command>
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
-                                                        placeholder="Cari Progress..."
+                                                        placeholder={t(
+                                                            'pages.steps.create.fields.progress_placeholder',
+                                                        )}
                                                     />
                                                     <CommandList>
-                                                        <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
+                                                        <CommandEmpty>No results found</CommandEmpty>
                                                         <CommandGroup>
                                                             {progressResponse?.data.map(progress => (
                                                                 <CommandItem
@@ -174,21 +180,21 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel htmlFor="name" value={t('pages.steps.create.fields.name')} />
                             <Input
-                                id="nama"
+                                id="name"
                                 type="text"
-                                name="nama"
+                                name="name"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="nama"
+                                autoComplete="name"
                                 required
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="process" value="Proses" />
+                            <InputLabel htmlFor="process" value={t('pages.steps.create.fields.process')} />
                             <Input
                                 id="process"
                                 type="text"
@@ -202,7 +208,10 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="estimated_time" value="Estimasi Manufaktur (menit)" />
+                            <InputLabel
+                                htmlFor="estimated_time"
+                                value={t('pages.steps.create.fields.estimated_manufacturing_time')}
+                            />
                             <Input
                                 id="estimated_time"
                                 type="number"
@@ -215,7 +224,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Tambah Step
+                            {t('pages.steps.create.buttons.create')}
                         </Button>
                     </form>
                 </div>

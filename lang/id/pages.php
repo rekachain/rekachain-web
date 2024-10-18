@@ -467,7 +467,67 @@ return [
         ],
     ],
     'steps' => [
-        'title' => 'Daftar Langkah',
+        'index' => [
+            'title' => 'Langkah',
+            'buttons' => [
+                'create' => 'Buat Langkah',
+            ],
+            'partials' => [
+                'steps' => [
+                    'messages' => [
+                        'deleted' => 'Langkah berhasil dihapus!',
+                    ],
+                    'partials' => [
+                        'steps_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'process' => 'Proses',
+                                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+                            ],
+                        ],
+                        'steps_card' => [
+                            'headers' => [
+                                'name' => 'Nama: :name',
+                                'process' => 'Proses: :process',
+                                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan: :estimated_manufacturing_time',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Langkah',
+            'fields' => [
+                'progress' => 'Progres',
+                'progress_placeholder' => 'Pilih Progres',
+                'process' => 'Proses',
+                'name' => 'Nama',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Langkah',
+            ],
+            'messages' => [
+                'created' => 'Langkah berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Langkah: :name',
+            'fields' => [
+                'progress' => 'Progres',
+                'progress_placeholder' => 'Pilih Progres',
+                'process' => 'Proses',
+                'name' => 'Nama',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Langkah',
+            ],
+            'messages' => [
+                'updated' => 'Langkah berhasil diperbarui!',
+            ],
+        ],
     ],
     'raw_materials' => [
         'title' => 'Daftar Bahan Mentah',
