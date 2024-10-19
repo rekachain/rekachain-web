@@ -22,6 +22,10 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface {
 
         $query = $this->applySearchFilters($query, $searchParams, ['name', 'nip', 'email', 'phone_number']);
 
+        $query = $this->applyColumnFilters($query, $searchParams, ['step_id', 'workstation_id']);
+
+        $query = $this->applyRelationColumnFilters($query, $searchParams, ['step' => ['name', 'estimated_time'], 'workstation' => ['workshop_id', 'division_id', 'name']]);
+
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);

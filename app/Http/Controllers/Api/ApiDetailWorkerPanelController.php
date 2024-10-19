@@ -21,8 +21,33 @@ class ApiDetailWorkerPanelController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        // TODO: use checkPermissions
         $perPage = request()->get('perPage', 5);
         $intent = request()->get('intent');
+        if (array_key_exists('worker_id', request()->get('column_filters') ?? [])) {
+            $workerId = $request->input('column_filters.worker_id');
+            if ($workerId && !\Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {// TODO: use checkPermissions
+                abort(400, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+            } elseif (!$workerId) {
+                $request->merge([
+                    'column_filters' => array_merge(
+                        $request->get('column_filters') ?? [],
+                        [
+                            'worker_id' => \Auth::user()->id,
+                        ]
+                    )
+                ]);
+            }
+        } elseif (!\Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {// TODO: use checkPermissions
+            $request->merge([
+                'column_filters' => array_merge(
+                    $request->get('column_filters') ?? [],
+                    [
+                        'worker_id' => \Auth::user()->id,
+                    ]
+                )
+            ]);
+        }
 
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS->value:
@@ -97,7 +122,9 @@ class ApiDetailWorkerPanelController extends Controller {
                             'acceptance_status' => $acceptance_status
                         ]
                     ]), $perPage));
-                }     
+                }
+            default:
+                return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated($request->query(), $perPage));
         }
     }
 
@@ -105,13 +132,15 @@ class ApiDetailWorkerPanelController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-            abort(403, 'Unauthorized');
-        }
-
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK->value]);
-
-        return $this->detailWorkerPanelService->assignWorker($request);
+        $intent = request()->get('intent');
+        switch ($intent) {
+           case IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value:
+            if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                abort(403, 'Unauthorized');
+            }
+            
+            return $this->detailWorkerPanelService->assignWorker($request);
+        }   
     }
 
     /**
@@ -122,14 +151,17 @@ class ApiDetailWorkerPanelController extends Controller {
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
-
+                
                 return DetailWorkerPanelResource::collection($this->detailWorkerPanelService->getAllPaginated(array_merge($request->query(), [
                     'column_filters' => [
-                        'worker_id'=> $request->user()->id,
+                        'worker_id' => $request->user()->id,
                         'id' => $detailWorkerPanel->id
-                    ]
-                ])));    
-        } 
+                        ]
+                    ])));
+            default:
+                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value]);
+                return DetailWorkerPanelResource::make($detailWorkerPanel->load('progress_step.progress', 'progress_step.step'));
+        }
     }
 
     /**

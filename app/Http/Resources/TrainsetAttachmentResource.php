@@ -6,13 +6,16 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TrainsetAttachmentResource extends JsonResource {
-    public function toArray(Request $request): array {
+class TrainsetAttachmentResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
         $intent = $request->get('intent');
 
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
+                    'id' => $this->id,
                     'attachment_number' => $this->attachment_number,
                     'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')->first()),
                     'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')->first()),
@@ -46,8 +49,8 @@ class TrainsetAttachmentResource extends JsonResource {
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components'=>['carriage_panel_component'=>['component_materials']]]);
-                
+                $trainsetAttachment = $this->load(['trainset_attachment_components' => ['carriage_panel_component' => ['component_materials']]]);
+
                 $materials = collect();
                 $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use (&$materials, $trainsetAttachment) {
                     $trainsetAttachmentComponent->carriage_panel_component->component_materials->map(function ($componentMaterial) use (&$materials, $trainsetAttachmentComponent) {
@@ -77,7 +80,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     'materials' => $materials,
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components'=>['carriage_panel_component'=>['progress'=>['progress_steps']],'detail_worker_trainsets'=>['progress_step','worker']]]);
+                $trainsetAttachment = $this->load(['trainset_attachment_components' => ['carriage_panel_component' => ['progress' => ['progress_steps']], 'detail_worker_trainsets' => ['progress_step', 'worker']]]);
                 $trainsetComponents = $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($trainsetAttachment) {
                     $componentSteps = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps->map(function ($progressStep) use ($trainsetAttachment) {
                         $workers = collect();
@@ -85,8 +88,8 @@ class TrainsetAttachmentResource extends JsonResource {
                             if ($detailWorkerTrainset->progress_step_id === $progressStep->id) {
                                 if (!$workers->firstWhere('nip', $detailWorkerTrainset->worker->nip)) {
                                     $workers->push([
-                                        'nip'=>$detailWorkerTrainset->worker->nip,
-                                        'name'=>$detailWorkerTrainset->worker->name,
+                                        'nip' => $detailWorkerTrainset->worker->nip,
+                                        'name' => $detailWorkerTrainset->worker->name,
                                         // 'started_at'=>$detailWorkerTrainset->created_at->toDateTimeString(),
                                     ]);
                                 }
@@ -95,9 +98,9 @@ class TrainsetAttachmentResource extends JsonResource {
                         return [
                             // 'step_id' => $progressStep->step->id,
                             // 'progress_step_id' => $progressStep->id,
-                            'step_name'=>$progressStep->step->name,
-                            'step_process'=>$progressStep->step->process,
-                            'estimated_time'=>$progressStep->step->estimated_time,
+                            'step_name' => $progressStep->step->name,
+                            'step_process' => $progressStep->step->process,
+                            'estimated_time' => $progressStep->step->estimated_time,
                             'total_workers' => $workers->count(),
                             'workers' => $workers
                         ];
