@@ -738,7 +738,7 @@ return [
             ],
         ],
     ],
-    'projects' => [
+    'project' => [
         'index' => [
             'title' => 'Projects',
             'buttons' => [
@@ -773,9 +773,23 @@ return [
                 'updated' => 'Project updated successfully!',
             ],
         ],
-        'trainsets' => [
+        'trainset' => [
             'index' => [
-
+                'title' => 'Trainsets',
+                'initial_date' => 'Initial Date :initial_date',
+                'buttons' => [
+                    'add_trainset' => 'Add Trainset',
+                ],
+                'messages' => [
+                    'trainset_added' => 'Trainset added successfully!',
+                ],
+                'breadcrumbs' => [
+                    'project' => 'Project :project',
+                ],
+                'fields' => [
+                    'trainset_needed_placeholder' => 'Select Trainset Needed',
+                    'trainset_needed_error' => 'Trainset number must be greater than 0',
+                ],
             ],
             'carriage' => [
                 'index' => [
@@ -841,20 +855,44 @@ return [
                 ],
             ],
             'partials' => [
-                'trainset' => [
-
+                'trainsets' => [
+                    'messages' => [
+                        'deleted' => 'Trainset deleted successfully!',
+                    ],
                 ],
                 'custom_preset_alert' => [
 
                 ],
                 'partials' => [
                     'trainset_table' => [
-
+                        'headers' => [
+                            'name' => 'Name',
+                            'trainset_carriage' => 'Trainset Carriage',
+                        ],
+                        'actions' => [
+                            'carriages' => 'Carriages',
+                        ],
                     ],
                     'trainset_card' => [
-
+                        'headers' => [
+                            'name' => 'Name: :name',
+                            'trainset_carriage' => 'Trainset Carriage: :trainset_carriage',
+                        ],
+                        'actions' => [
+                            'carriages' => 'Carriages',
+                        ],
                     ],
-                    'trainset_name',
+                    'trainset_name' => [
+                        'headers' => [
+                            'name' => 'Name',
+                        ],
+                        'fields' => [
+                            'trainset_error' => 'Trainset number must not be empty',
+                        ],
+                        'buttons' => [
+                            'submit' => 'Save',
+                        ],
+                    ],
                 ],
             ],
         ],

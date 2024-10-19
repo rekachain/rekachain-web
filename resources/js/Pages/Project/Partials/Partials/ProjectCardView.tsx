@@ -37,7 +37,7 @@ export default function ProjectCardView({
                             </div>
                         </div>
                         <h4 className="text-base">
-                            {t('pages.projects.partials.partials.project_card.headers.trainset_count', {
+                            {t('pages.project.partials.partials.project_card.headers.trainset_count', {
                                 trainset_count: project.trainset_count,
                             })}
                         </h4>
@@ -59,7 +59,7 @@ export default function ProjectCardView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                             >
-                                {t('pages.projects.partials.partials.project_card.actions.trainsets')}
+                                {t('pages.project.partials.partials.project_card.actions.trainsets')}
                             </Link>
                         </div>
                     </div>

@@ -20,12 +20,10 @@ export default function ProjectTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.projects.partials.partials.project_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.project.partials.partials.project_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.project.partials.partials.project_table.headers.initial_date')}</TableHead>
                         <TableHead>
-                            {t('pages.projects.partials.partials.project_table.headers.initial_date')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.projects.partials.partials.project_table.headers.trainset_count')}
+                            {t('pages.project.partials.partials.project_table.headers.trainset_count')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -52,7 +50,7 @@ export default function ProjectTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                                 >
-                                    {t('pages.projects.partials.partials.project_table.actions.trainsets')}
+                                    {t('pages.project.partials.partials.project_table.actions.trainsets')}
                                 </Link>
                             </TableCell>
                         </TableRow>

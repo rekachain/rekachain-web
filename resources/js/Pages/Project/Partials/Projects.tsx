@@ -30,7 +30,7 @@ export default function () {
     const handleProjectDeletion = withLoading(async (id: number) => {
         await projectService.delete(id);
         await handleSyncProjects();
-        void useSuccessToast(t('pages.projects.partials.projects.messages.deleted'));
+        void useSuccessToast(t('pages.project.partials.projects.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

@@ -27,13 +27,13 @@ export default function ({ project }: { project: ProjectResource }) {
 
         await projectService.update(project.id, data);
         router.visit(route(`${ROUTES.PROJECTS}.index`));
-        void useSuccessToast(t('pages.projects.edit.messages.updated'));
+        void useSuccessToast(t('pages.project.edit.messages.updated'));
     });
 
     return (
         <>
             <Head
-                title={t('pages.projects.edit.title', {
+                title={t('pages.project.edit.title', {
                     name: project.name,
                 })}
             />
@@ -41,7 +41,7 @@ export default function ({ project }: { project: ProjectResource }) {
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.projects.edit.title', {
+                            {t('pages.project.edit.title', {
                                 name: project.name,
                             })}
                         </h1>
@@ -49,7 +49,7 @@ export default function ({ project }: { project: ProjectResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.projects.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.project.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -62,7 +62,7 @@ export default function ({ project }: { project: ProjectResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value={t('pages.projects.edit.fields.initial_date')} />
+                            <InputLabel htmlFor="initial_date" value={t('pages.project.edit.fields.initial_date')} />
                             <Input
                                 id="initial_date"
                                 type="date"
@@ -75,7 +75,7 @@ export default function ({ project }: { project: ProjectResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.projects.edit.buttons.submit')}
+                            {t('pages.project.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

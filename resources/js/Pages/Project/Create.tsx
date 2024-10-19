@@ -36,23 +36,23 @@ export default function () {
 
         const description = getCurrentDate();
 
-        void useSuccessToast(t('pages.projects.create.messages.created'), description);
+        void useSuccessToast(t('pages.project.create.messages.created'), description);
 
         redirectToDetails();
     };
 
     return (
         <>
-            <Head title={t('pages.projects.create.title')} />
+            <Head title={t('pages.project.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.projects.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.project.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.projects.create.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.project.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -68,7 +68,7 @@ export default function () {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="trainset_needed"
-                                value={t('pages.projects.create.fields.trainset_needed')}
+                                value={t('pages.project.create.fields.trainset_needed')}
                             />
                             <Input
                                 id="trainset_needed"
@@ -83,7 +83,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value={t('pages.projects.create.fields.initial_date')} />
+                            <InputLabel htmlFor="initial_date" value={t('pages.project.create.fields.initial_date')} />
                             <Input
                                 id="initial_date"
                                 type="date"
@@ -97,7 +97,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.projects.create.buttons.submit')}
+                            {t('pages.project.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>
