@@ -17,6 +17,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const AddNewTrainsetPreset = ({
     trainset,
@@ -25,6 +26,7 @@ const AddNewTrainsetPreset = ({
     trainset: TrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) => {
+    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         new_carriage_preset_name: '',
     });
@@ -35,7 +37,9 @@ const AddNewTrainsetPreset = ({
         e.preventDefault();
         await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
         await handleSyncTrainset();
-        void useSuccessToast('Preset saved successfully');
+        void useSuccessToast(
+            t('pages.project.trainset.carriage.partials.add_new_trainset_preset.messages.preset_added'),
+        );
     });
 
     return (
@@ -45,15 +49,21 @@ const AddNewTrainsetPreset = ({
                     className: 'w-full',
                 })}
             >
-                Tambahkan Preset
+                {t('pages.project.trainset.carriage.partials.add_new_trainset_preset.buttons.add_new_preset')}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Preset baru</DialogTitle>
+                    <DialogTitle>
+                        {t('pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.title')}
+                    </DialogTitle>
                     <DialogDescription></DialogDescription>
                     <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4">
-                            <Label>Nama Preset</Label>
+                            <Label>
+                                {t(
+                                    'pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.fields.preset_name',
+                                )}
+                            </Label>
                             <div className="flex gap-4">
                                 <Input
                                     type="text"
@@ -64,10 +74,14 @@ const AddNewTrainsetPreset = ({
                                     {loading ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                            Menambahkan preset
+                                            {t(
+                                                'pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.actions.saving',
+                                            )}
                                         </>
                                     ) : (
-                                        'Tambahkan preset'
+                                        t(
+                                            'pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.buttons.submit',
+                                        )
                                     )}
                                 </Button>
                             </div>

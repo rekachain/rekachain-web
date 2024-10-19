@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkstationResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WorkstationCardView({
     workstationResponse,
@@ -13,6 +14,7 @@ export default function WorkstationCardView({
     workstationResponse: PaginateResponse<WorkstationResource>;
     handleWorkstationDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             {workstationResponse?.data.map(workstation => (
@@ -27,23 +29,41 @@ export default function WorkstationCardView({
                             <h4 className="font-bold text-xl">{workstation.name}</h4>
                             <div className="text-center">
                                 <h5 className="font-bold text-md items-center ">
-                                    Divisi:
-                                    {workstation.division.name}
+                                    {t(
+                                        'pages.workstations.index.partials.workstations.partials.workstations_card.headers.division',
+                                        {
+                                            division: workstation.division.name,
+                                        },
+                                    )}
                                 </h5>
                             </div>
                         </div>
 
-                        <h5 className="font-bold text-sm ">Workshop : {workstation.workshop.name}</h5>
-                        <h5 className=" text-sm ">Lokasi : {workstation.location}</h5>
+                        <h5 className="font-bold text-sm ">
+                            {t(
+                                'pages.workstations.index.partials.workstations.partials.workstations_card.headers.workshop',
+                                {
+                                    workshop: workstation.workshop.name,
+                                },
+                            )}
+                        </h5>
+                        <h5 className=" text-sm ">
+                            {t(
+                                'pages.workstations.index.partials.workstations.partials.workstations_card.headers.location',
+                                {
+                                    location: workstation.location,
+                                },
+                            )}
+                        </h5>
                         <div className="flex items-center justify-end w-full">
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>
