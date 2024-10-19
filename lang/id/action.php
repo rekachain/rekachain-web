@@ -19,4 +19,5 @@ return [
     'filter' => 'Saring',
     'clear' => 'Bersihkan',
     'select' => 'Pilih',
+    'loading' => 'Memuat...',
 ];
