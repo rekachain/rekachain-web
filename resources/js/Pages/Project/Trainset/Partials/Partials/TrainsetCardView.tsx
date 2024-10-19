@@ -4,6 +4,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+
 export default function TrainsetCardView({
     project,
     handleTrainsetDeletion,
@@ -16,7 +17,7 @@ export default function TrainsetCardView({
     return (
         <div>
             {project.trainsets.map(trainset => (
-                <div>
+                <div key={trainset.id}>
                     <AnimateIn
                         from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
