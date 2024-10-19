@@ -8,8 +8,10 @@ import { Button } from '@/Components/UI/button';
 import { projectService } from '@/Services/projectService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
         trainset_needed: 0,
@@ -34,23 +36,23 @@ export default function () {
 
         const description = getCurrentDate();
 
-        void useSuccessToast('Proyek berhasil ditambahkan', description);
+        void useSuccessToast(t('pages.projects.create.messages.created'), description);
 
         redirectToDetails();
     };
 
     return (
         <>
-            <Head title="Tambah Proyek" />
+            <Head title={t('pages.projects.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Proyek</h1>
+                        <h1 className="text-page-header my-4">{t('pages.projects.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value="Nama" />
+                            <InputLabel htmlFor="name" value={t('pages.projects.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -64,7 +66,10 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="trainset_needed" value="Jumlah Trainset" />
+                            <InputLabel
+                                htmlFor="trainset_needed"
+                                value={t('pages.projects.create.fields.trainset_needed')}
+                            />
                             <Input
                                 id="trainset_needed"
                                 type="number"
@@ -78,7 +83,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value="Tanggal Mulai" />
+                            <InputLabel htmlFor="initial_date" value={t('pages.projects.create.fields.initial_date')} />
                             <Input
                                 id="initial_date"
                                 type="date"
@@ -92,7 +97,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Tambah Proyek
+                            {t('pages.projects.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>

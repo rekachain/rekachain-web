@@ -739,7 +739,154 @@ return [
         ],
     ],
     'projects' => [
-        'title' => 'List Projects',
+        'index' => [
+            'title' => 'Projects',
+            'buttons' => [
+                'create' => 'Create Project',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Project',
+            'fields' => [
+                'name' => 'Name',
+                'trainset_needed' => 'Trainset Needed',
+                'initial_date' => 'Initial Date',
+            ],
+            'buttons' => [
+                'submit' => 'Create Project',
+            ],
+            'messages' => [
+                'created' => 'Project created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Project: :name',
+            'fields' => [
+                'name' => 'Name',
+                'trainset_needed' => 'Trainset Needed',
+                'initial_date' => 'Initial Date',
+            ],
+            'buttons' => [
+                'submit' => 'Update Project',
+            ],
+            'messages' => [
+                'updated' => 'Project updated successfully!',
+            ],
+        ],
+        'trainsets' => [
+            'index' => [
+
+            ],
+            'carriage' => [
+                'index' => [
+
+                ],
+                'panel' => [
+                    'index' => [
+                    ],
+                    'partials' => [
+                        'carriage_panel_table' => [
+                            'headers' => [
+                                'panel' => 'Panel',
+                                'quantity' => 'Quantity',
+                            ],
+                        ],
+                        'carriage_panel_card' => [
+                            'headers' => [
+                                'panel' => 'Panel: :panel',
+                                'quantity' => 'Quantity: :quantity',
+                            ],
+                        ],
+                    ],
+                    'components' => [
+                        'panel_qty' => [
+
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'change_trainset_preset' => [
+
+                    ],
+                    'carriages' => [
+
+                    ],
+                    'add_new_trainset_preset' => [
+
+                    ],
+                    'add_carriage' => [
+
+                    ],
+                    'partials' => [
+                        'carriage_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'trainset' => 'Trainset',
+                                'quantity' => 'Quantity',
+                            ],
+                        ],
+                        'carriage_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'trainset' => 'Trainset: :trainset',
+                                'quantity' => 'Quantity: :quantity',
+                            ],
+                        ],
+                    ],
+                    'components' => [
+                        'carriage_qty' => [
+
+                        ],
+                    ],
+                ],
+            ],
+            'partials' => [
+                'trainset' => [
+
+                ],
+                'custom_preset_alert' => [
+
+                ],
+                'partials' => [
+                    'trainset_table' => [
+
+                    ],
+                    'trainset_card' => [
+
+                    ],
+                    'trainset_name',
+                ],
+            ],
+        ],
+        'partials' => [
+            'projects' => [
+                'messages' => [
+                    'deleted' => 'Project deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'project_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'initial_date' => 'Initial Date',
+                        'trainset_count' => 'Trainset Count',
+                    ],
+                    'actions' => [
+                        'trainsets' => 'Trainsets',
+                    ],
+                ],
+                'project_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'initial_date' => 'Initial Date: :initial_date',
+                        'trainset_count' => 'Trainset Count: :trainset_count',
+                    ],
+                    'actions' => [
+                        'trainsets' => 'Trainsets',
+                    ],
+                ],
+            ],
+        ],
     ],
     'carriages' => [
         'title' => 'List Carriages',

@@ -5,6 +5,7 @@ import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ProjectTableView({
     projectResponse,
@@ -13,14 +14,19 @@ export default function ProjectTableView({
     projectResponse: PaginateResponse<ProjectResource>;
     handleProjectDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Tanggal Inisiasi</TableHead>
-                        <TableHead>Jumlah Trainset</TableHead>
+                        <TableHead>{t('pages.projects.partials.partials.project_table.headers.name')}</TableHead>
+                        <TableHead>
+                            {t('pages.projects.partials.partials.project_table.headers.initial_date')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.projects.partials.partials.project_table.headers.trainset_count')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -35,18 +41,18 @@ export default function ProjectTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 {project.can_be_deleted && (
                                     <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                                 >
-                                    Trainset
+                                    {t('pages.projects.partials.partials.project_table.actions.trainsets')}
                                 </Link>
                             </TableCell>
                         </TableRow>

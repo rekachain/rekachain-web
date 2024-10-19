@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ProjectCardView({
     projectResponse,
@@ -13,6 +14,7 @@ export default function ProjectCardView({
     projectResponse: PaginateResponse<ProjectResource>;
     handleProjectDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             {projectResponse.data.map(project => (
@@ -34,7 +36,11 @@ export default function ProjectCardView({
                                 </h5>
                             </div>
                         </div>
-                        <h4 className="text-base">Jumlah Trainset : {project.trainset_count}</h4>
+                        <h4 className="text-base">
+                            {t('pages.projects.partials.partials.project_card.headers.trainset_count', {
+                                trainset_count: project.trainset_count,
+                            })}
+                        </h4>
                         {/* <p>Jumlah User :{project.users_count}</p>
                         <p>Jumlah Izin :{project.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">
@@ -44,16 +50,16 @@ export default function ProjectCardView({
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                             >
-                                Trainsets
+                                {t('pages.projects.partials.partials.project_card.actions.trainsets')}
                             </Link>
                         </div>
                     </div>
