@@ -224,7 +224,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.steps.create.buttons.create')}
+                            {t('pages.steps.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>
