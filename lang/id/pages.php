@@ -1077,8 +1077,85 @@ return [
             ],
         ],
     ],
-    'carriages' => [
-        'title' => 'Daftar Gerbong',
+    'carriage' => [
+        'index' => [
+            'title' => 'Gerbong',
+            'buttons' => [
+                'create' => 'Buat Gerbong',
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Gerbong',
+            'fields' => [
+                'type' => 'Tipe',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Gerbong',
+            ],
+            'messages' => [
+                'created' => 'Gerbong berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Gerbong: :name',
+            'fields' => [
+                'type' => 'Tipe',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Gerbong',
+            ],
+            'messages' => [
+                'updated' => 'Gerbong berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'carriages' => [
+                'messages' => [
+                    'deleted' => 'Gerbong berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Gerbong berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Gerbong',
+                    'description' => 'Impor Gerbong dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Gerbong',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Gerbong',
+                        'processing' => 'Memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Gerbong berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Gerbong',
+                ],
+            ],
+            'partials' => [
+                'carriage_table' => [
+                    'headers' => [
+                        'type' => 'Tipe',
+                        'description' => 'Deskripsi',
+                    ],
+                ],
+                'carriage_card' => [
+                    'headers' => [
+                        'type' => 'Tipe: :type',
+                        'description' => 'Deskripsi: :description',
+                    ],
+                ],
+            ],
+        ],
     ],
     'settings' => [
         'title' => 'Pengaturan',

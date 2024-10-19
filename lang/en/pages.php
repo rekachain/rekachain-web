@@ -1077,8 +1077,85 @@ return [
             ],
         ],
     ],
-    'carriages' => [
-        'title' => 'List Carriages',
+    'carriage' => [
+        'index' => [
+            'title' => 'Carriages',
+            'buttons' => [
+                'create' => 'Create Carriage',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Carriage',
+            'fields' => [
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Create Carriage',
+            ],
+            'messages' => [
+                'created' => 'Carriage created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Carriage: :name',
+            'fields' => [
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Update Carriage',
+            ],
+            'messages' => [
+                'updated' => 'Carriage updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'carriages' => [
+                'messages' => [
+                    'deleted' => 'Carriage deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Carriage imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Carriage',
+                    'description' => 'Import Carriage from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Carriage',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Carriage',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Carriage imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Carriage',
+                ],
+            ],
+            'partials' => [
+                'carriage_table' => [
+                    'headers' => [
+                        'type' => 'Type',
+                        'description' => 'Description',
+                    ],
+                ],
+                'carriage_card' => [
+                    'headers' => [
+                        'type' => 'Type: :type',
+                        'description' => 'Description: :description',
+                    ],
+                ],
+            ],
+        ],
     ],
     'settings' => [
         'title' => 'Settings',
