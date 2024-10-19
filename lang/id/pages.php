@@ -738,8 +738,344 @@ return [
             ],
         ],
     ],
-    'projects' => [
-        'title' => 'Daftar Proyek',
+    'project' => [
+        'index' => [
+            'title' => 'Proyek',
+            'buttons' => [
+                'create' => 'Buat Proyek',
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Proyek',
+            'fields' => [
+                'name' => 'Nama',
+                'trainset_needed' => 'Trainset Diperlukan',
+                'initial_date' => 'Tanggal Awal',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Proyek',
+            ],
+            'messages' => [
+                'created' => 'Proyek berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Proyek: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'trainset_needed' => 'Trainset Diperlukan',
+                'initial_date' => 'Tanggal Awal',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Proyek',
+            ],
+            'messages' => [
+                'updated' => 'Proyek berhasil diperbarui!',
+            ],
+        ],
+        'trainset' => [
+            'index' => [
+                'title' => 'Trainset',
+                'initial_date' => 'Tanggal Awal :initial_date',
+                'buttons' => [
+                    'add_trainset' => 'Tambah Trainset',
+                ],
+                'messages' => [
+                    'trainset_added' => 'Trainset berhasil ditambahkan!',
+                ],
+                'breadcrumbs' => [
+                    'project' => 'Proyek :project',
+                ],
+                'fields' => [
+                    'trainset_needed_placeholder' => 'Pilih Trainset Diperlukan',
+                    'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
+                ],
+            ],
+            'carriage' => [
+                'index' => [
+                    'title' => 'Trainset',
+                    'initial_date' => 'Tanggal Awal :initial_date',
+                    'preset' => 'Preset :preset',
+                    'status_in_progress' => 'Status: Dalam Proses',
+                    'new_preset_alert' => 'Anda menggunakan preset kustom, apakah Anda ingin menyimpannya sebagai preset baru?',
+                    'buttons' => [
+                        'add_carriage' => 'Tambah Kereta',
+                    ],
+                    'messages' => [
+                        'carriage_added' => 'Kereta berhasil ditambahkan!',
+                    ],
+                    'breadcrumbs' => [
+                        'project' => 'Proyek :project',
+                        'trainset' => 'Trainset :trainset',
+                    ],
+                    'fields' => [
+                        'trainset_needed_placeholder' => 'Pilih Trainset Diperlukan',
+                        'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
+                    ],
+                ],
+                'panel' => [
+                    'index' => [
+                        'title' => 'Gerbong: :name',
+                        'initial_date' => 'Tanggal Awal :initial_date',
+                        'preset' => 'Preset :preset',
+                        'breadcrumbs' => [
+                            'project' => 'Proyek :project',
+                            'trainset' => 'Trainset :trainset',
+                            'carriage' => 'Gerbong :carriage',
+                        ],
+                    ],
+                    'partials' => [
+                        'panels' => [
+                            'messages' => [
+                                'deleted' => 'Panel berhasil dihapus!',
+                            ],
+                        ],
+                        'add_new_panel' => [
+                            'messages' => [
+                                'panel_added' => 'Panel berhasil ditambahkan!',
+                            ],
+                            'dialogs' => [
+                                'fields' => [
+                                    'progress' => 'Progres',
+                                    'progress_placeholder' => 'Pilih Progres',
+                                    'progress_search' => 'Cari Progres',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                    'panel_search' => 'Cari Panel',
+                                    'new_panel_name' => 'Nama Panel Baru',
+                                    'new_panel_description' => 'Deskripsi Panel Baru',
+                                    'new_panel_qty' => 'Jumlah Panel Baru',
+                                ],
+                                'buttons' => [
+                                    'add_panel' => 'Tambah Panel',
+                                ],
+                            ],
+                            'buttons' => [
+                                'add_new_panel' => 'Tambah Panel Baru',
+                            ],
+                        ],
+                        'components' => [
+                            'panel_qty' => [
+                                'title' => 'Jumlah Panel',
+                                'messages' => [
+                                    'qty_updated' => 'Jumlah panel berhasil diperbarui!',
+                                ],
+                                'buttons' => [
+                                    'update_qty' => 'Perbarui Jumlah',
+                                ],
+                            ],
+                        ],
+                        'partials' => [
+                            'carriage_panel_table' => [
+                                'headers' => [
+                                    'panel' => 'Panel',
+                                    'qty' => 'Jumlah',
+                                    'description' => 'Deskripsi',
+                                    'progress' => 'Progres',
+                                ],
+                            ],
+                            'carriage_panel_card' => [
+                                'headers' => [
+                                    'panel' => 'Panel',
+                                    'qty' => 'Jumlah',
+                                    'description' => 'Deskripsi',
+                                    'progress' => 'Progres',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'change_trainset_preset' => [
+                        'title' => 'Ubah Preset Trainset',
+                        'messages' => [
+                            'changed' => 'Preset berhasil diubah!',
+                            'kpm_generated' => 'KPM berhasil dihasilkan!',
+                            'preset_deleted' => 'Preset berhasil dihapus!',
+                        ],
+                        'fields' => [
+                            'preset_trainset' => 'Preset Trainset',
+                            'preset_trainset_placeholder' => 'Pilih Preset Trainset',
+                        ],
+                        'buttons' => [
+                            'change_preset' => 'Ubah Preset',
+                            'delete_preset' => 'Hapus Preset',
+                            'generate_kpm' => 'Hasilkan KPM',
+                        ],
+                        'dialogs' => [
+                            'generate_kpm_title' => 'Hasilkan KPM',
+                            'fields' => [
+                                'source_workstation' => 'Workstation Sumber',
+                                'source_workstation_search' => 'Cari Workstation Sumber',
+                                'workstation' => 'Pilih Workstation',
+                                'workstation_placeholder' => 'Workstation',
+                                'destination_workstation' => 'Workstation Tujuan',
+                                'destination_workstation_search' => 'Cari Workstation Tujuan',
+                            ],
+                            'buttons' => [
+                                'generate_kpm' => 'Hasilkan KPM',
+                                'generate_mechanic_kpm' => 'Hasilkan KPM Mekanik',
+                                'generate_electric_kpm' => 'Hasilkan KPM Elektrik',
+                            ],
+                        ],
+                    ],
+                    'carriages' => [
+                        'messages' => [
+                            'deleted' => 'Kereta berhasil dihapus!',
+                        ],
+                    ],
+                    'add_new_trainset_preset' => [
+                        'messages' => [
+                            'preset_added' => 'Preset berhasil ditambahkan!',
+                        ],
+                        'buttons' => [
+                            'add_new_preset' => 'Tambah Preset Baru',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Tambah Preset Baru',
+                            'fields' => [
+                                'preset_name' => 'Nama Preset',
+                            ],
+                            'actions' => [
+                                'saving' => 'Menyimpan Preset...',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Simpan Preset',
+                            ],
+                        ],
+                    ],
+                    'add_carriage' => [
+                        'title' => 'Tambah Kereta',
+                        'buttons' => [
+                            'add_carriage' => 'Tambah Kereta',
+                        ],
+                        'messages' => [
+                            'carriage_added' => 'Kereta berhasil ditambahkan!',
+                        ],
+                        'dialogs' => [
+                            'fields' => [
+                                'carriage' => 'Kereta',
+                                'carriage_placeholder' => 'Pilih Kereta',
+                                'carriage_search' => 'Cari Kereta',
+                                'or' => 'Atau',
+                                'new_carriage_qty' => 'Jumlah Kereta Baru',
+                                'new_carriage_type' => 'Tipe Kereta Baru',
+                                'new_carriage_description' => 'Deskripsi Kereta Baru',
+                            ],
+                            'actions' => [
+                                'adding_carriage' => 'Menambahkan Kereta...',
+                            ],
+                            'buttons' => [
+                                'add_carriage' => 'Tambah Kereta',
+                            ],
+                        ],
+                    ],
+                    'partials' => [
+                        'carriage_table' => [
+                            'headers' => [
+                                'type' => 'Tipe',
+                                'qty' => 'Jumlah',
+                                'panels' => 'Panel',
+                            ],
+                            'actions' => [
+                                'panels' => 'Panel',
+                            ],
+                        ],
+                        'carriage_card' => [
+                            'headers' => [
+                                'type' => 'Tipe',
+                                'qty' => 'Jumlah',
+                                'panels' => 'Panel',
+                            ],
+                            'actions' => [
+                                'panels' => 'Panel',
+                            ],
+                        ],
+                    ],
+                    'components' => [
+                        'carriage_qty' => [
+                            'title' => 'Jumlah Kereta',
+                            'messages' => [
+                                'updated' => 'Jumlah kereta berhasil diperbarui!',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Perbarui Jumlah',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'partials' => [
+                'trainsets' => [
+                    'messages' => [
+                        'deleted' => 'Trainset berhasil dihapus!',
+                    ],
+                ],
+                'custom_preset_alert' => [
+
+                ],
+                'partials' => [
+                    'trainset_table' => [
+                        'headers' => [
+                            'name' => 'Nama',
+                            'trainset_carriage' => 'Kereta Trainset',
+                        ],
+                        'actions' => [
+                            'carriages' => 'Trainset',
+                        ],
+                    ],
+                    'trainset_card' => [
+                        'headers' => [
+                            'name' => 'Nama: :name',
+                            'trainset_carriage' => 'Kereta Trainset: :trainset_carriage',
+                        ],
+                        'actions' => [
+                            'carriages' => 'Kereta',
+                        ],
+                    ],
+                    'trainset_name' => [
+                        'headers' => [
+                            'name' => 'Nama',
+                        ],
+                        'fields' => [
+                            'trainset_error' => 'Nomor trainset tidak boleh kosong',
+                        ],
+                        'buttons' => [
+                            'submit' => 'Simpan',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'partials' => [
+            'projects' => [
+                'messages' => [
+                    'deleted' => 'Proyek berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'project_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'initial_date' => 'Tanggal Awal',
+                        'trainset_count' => 'Jumlah Trainset',
+                    ],
+                    'actions' => [
+                        'trainsets' => 'Trainset',
+                    ],
+                ],
+                'project_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'initial_date' => 'Tanggal Awal: :initial_date',
+                        'trainset_count' => 'Jumlah Trainset: :trainset_count',
+                    ],
+                    'actions' => [
+                        'trainsets' => 'Trainset',
+                    ],
+                ],
+            ],
+        ],
     ],
     'carriages' => [
         'title' => 'Daftar Gerbong',
