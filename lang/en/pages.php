@@ -815,24 +815,73 @@ return [
                 ],
                 'panel' => [
                     'index' => [
+                        'title' => 'Carriage: :name',
+                        'initial_date' => 'Initial Date :initial_date',
+                        'preset' => 'Preset :preset',
+                        'breadcrumbs' => [
+                            'project' => 'Project :project',
+                            'trainset' => 'Trainset :trainset',
+                            'carriage' => 'Carriage :carriage',
+                        ],
                     ],
                     'partials' => [
-                        'carriage_panel_table' => [
-                            'headers' => [
-                                'panel' => 'Panel',
-                                'quantity' => 'Quantity',
+                        'panels' => [
+                            'messages' => [
+                                'deleted' => 'Panel deleted successfully!',
                             ],
                         ],
-                        'carriage_panel_card' => [
-                            'headers' => [
-                                'panel' => 'Panel: :panel',
-                                'quantity' => 'Quantity: :quantity',
+                        'add_new_panel' => [
+                            'messages' => [
+                                'panel_added' => 'Panel added successfully!',
+                            ],
+                            'dialogs' => [
+                                'fields' => [
+                                    'progress' => 'Progress',
+                                    'progress_placeholder' => 'Select Progress',
+                                    'progress_search' => 'Search Progress',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                    'panel_search' => 'Search Panel',
+                                    'new_panel_name' => 'New Panel Name',
+                                    'new_panel_description' => 'New Panel Description',
+                                    'new_panel_qty' => 'New Panel Qty',
+                                ],
+                                'buttons' => [
+                                    'add_panel' => 'Add Panel',
+                                ],
+                            ],
+                            'buttons' => [
+                                'add_new_panel' => 'Add New Panel',
                             ],
                         ],
-                    ],
-                    'components' => [
-                        'panel_qty' => [
-
+                        'components' => [
+                            'panel_qty' => [
+                                'title' => 'Panel Quantity',
+                                'messages' => [
+                                    'qty_updated' => 'Panel quantity updated successfully!',
+                                ],
+                                'buttons' => [
+                                    'update_qty' => 'Update Qty',
+                                ],
+                            ],
+                        ],
+                        'partials' => [
+                            'carriage_panel_table' => [
+                                'headers' => [
+                                    'panel' => 'Panel',
+                                    'qty' => 'Qty',
+                                    'description' => 'Description',
+                                    'progress' => 'Progress',
+                                ],
+                            ],
+                            'carriage_panel_card' => [
+                                'headers' => [
+                                    'panel' => 'Panel',
+                                    'qty' => 'Qty',
+                                    'description' => 'Description',
+                                    'progress' => 'Progress',
+                                ],
+                            ],
                         ],
                     ],
                 ],

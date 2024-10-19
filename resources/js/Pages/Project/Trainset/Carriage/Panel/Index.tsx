@@ -22,6 +22,7 @@ import { fetchGenericData } from '@/Helpers/dataManagementHelper';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { withLoading } from '@/Utils/withLoading';
 import AddNewPanel from '@/Pages/Project/Trainset/Carriage/Panel/Partials/AddNewPanel';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 
@@ -34,6 +35,7 @@ export default function ({
     trainset: TrainsetResource;
     carriageTrainset: CarriageTrainsetResource;
 }) {
+    const { t } = useLaravelReactI18n();
     const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
 
@@ -69,7 +71,9 @@ export default function ({
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
-                                        Proyek {project?.name}
+                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.project', {
+                                            project: project?.name,
+                                        })}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
@@ -80,17 +84,27 @@ export default function ({
                                             trainset.id,
                                         ])}
                                     >
-                                        Trainset {trainset?.name}
+                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.trainset', {
+                                            trainset: trainset?.name,
+                                        })}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Gerbong {carriageTrainset?.carriage.type}</BreadcrumbPage>
+                                    <BreadcrumbPage>
+                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.carriage', {
+                                            carriage: carriageTrainset?.carriage.type,
+                                        })}
+                                    </BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex items-center gap-4">
-                            <h1 className="text-page-header my-4">Gerbong {carriageTrainset?.carriage.type}</h1>
+                            <h1 className="text-page-header my-4">
+                                {t('pages.project.trainset.carriage.panel.index.title', {
+                                    name: carriageTrainset?.carriage.type,
+                                })}
+                            </h1>
                         </div>
                     </div>
 
