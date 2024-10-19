@@ -1,3 +1,5 @@
+// TODO: Should be in Components directory
+
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';

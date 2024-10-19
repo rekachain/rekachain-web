@@ -793,7 +793,25 @@ return [
             ],
             'carriage' => [
                 'index' => [
-
+                    'title' => 'Carriages',
+                    'initial_date' => 'Initial Date :initial_date',
+                    'preset' => 'Preset :preset',
+                    'status_in_progress' => 'Status: In Progress',
+                    'new_preset_alert' => 'You are using a custom preset, do you want to save it as a new preset?',
+                    'buttons' => [
+                        'add_carriage' => 'Add Carriage',
+                    ],
+                    'messages' => [
+                        'carriage_added' => 'Carriage added successfully!',
+                    ],
+                    'breadcrumbs' => [
+                        'project' => 'Project :project',
+                        'trainset' => 'Trainset :trainset',
+                    ],
+                    'fields' => [
+                        'trainset_needed_placeholder' => 'Select Trainset Needed',
+                        'trainset_needed_error' => 'Trainset number must be greater than 0',
+                    ],
                 ],
                 'panel' => [
                     'index' => [
@@ -820,36 +838,120 @@ return [
                 ],
                 'partials' => [
                     'change_trainset_preset' => [
-
+                        'title' => 'Change Trainset Preset',
+                        'messages' => [
+                            'changed' => 'Preset changed successfully!',
+                            'kpm_generated' => 'KPM generated successfully!',
+                            'preset_deleted' => 'Preset deleted successfully!',
+                        ],
+                        'fields' => [
+                            'preset_trainset' => 'Preset Trainset',
+                            'preset_trainset_placeholder' => 'Select Preset Trainset',
+                        ],
+                        'buttons' => [
+                            'change_preset' => 'Change Preset',
+                            'delete_preset' => 'Delete Preset',
+                            'generate_kpm' => 'Generate KPM',
+                        ],
+                        'dialogs' => [
+                            'generate_kpm_title' => 'Generate KPM',
+                            'fields' => [
+                                'source_workstation' => 'Source Workstation',
+                                'source_workstation_search' => 'Search Source Workstation',
+                                'workstation' => 'Select Workstation',
+                                'workstation_placeholder' => 'Workstation',
+                                'destination_workstation' => 'Destination Workstation',
+                                'destination_workstation_search' => 'Search Destination Workstation',
+                            ],
+                            'buttons' => [
+                                'generate_kpm' => 'Generate KPM',
+                                'generate_mechanic_kpm' => 'Generate Mechanic KPM',
+                                'generate_electric_kpm' => 'Generate Electric KPM',
+                            ],
+                        ],
                     ],
                     'carriages' => [
-
+                        'messages' => [
+                            'deleted' => 'Carriage deleted successfully!',
+                        ],
                     ],
                     'add_new_trainset_preset' => [
-
+                        'messages' => [
+                            'preset_added' => 'Preset added successfully!',
+                        ],
+                        'buttons' => [
+                            'add_new_preset' => 'Add New Preset',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Add New Preset',
+                            'fields' => [
+                                'preset_name' => 'Preset Name',
+                            ],
+                            'actions' => [
+                                'saving' => 'Saving Preset...',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Save Preset',
+                            ],
+                        ],
                     ],
                     'add_carriage' => [
-
+                        'title' => 'Add Carriage',
+                        'buttons' => [
+                            'add_carriage' => 'Add Carriage',
+                        ],
+                        'messages' => [
+                            'carriage_added' => 'Carriage added successfully!',
+                        ],
+                        'dialogs' => [
+                            'fields' => [
+                                'carriage' => 'Carriage',
+                                'carriage_placeholder' => 'Select Carriage',
+                                'carriage_search' => 'Search Carriage',
+                                'or' => 'Or',
+                                'new_carriage_qty' => 'New Carriage Qty',
+                                'new_carriage_type' => 'New Carriage Type',
+                                'new_carriage_description' => 'New Carriage Description',
+                            ],
+                            'actions' => [
+                                'adding_carriage' => 'Adding Carriage...',
+                            ],
+                            'buttons' => [
+                                'add_carriage' => 'Add Carriage',
+                            ],
+                        ],
                     ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
-                                'name' => 'Name',
-                                'trainset' => 'Trainset',
-                                'quantity' => 'Quantity',
+                                'type' => 'Type',
+                                'qty' => 'Qty',
+                                'panels' => 'Panels',
+                            ],
+                            'actions' => [
+                                'panels' => 'Panels',
                             ],
                         ],
                         'carriage_card' => [
                             'headers' => [
-                                'name' => 'Name: :name',
-                                'trainset' => 'Trainset: :trainset',
-                                'quantity' => 'Quantity: :quantity',
+                                'type' => 'Type',
+                                'qty' => 'Qty',
+                                'panels' => 'Panels',
+                            ],
+                            'actions' => [
+                                'panels' => 'Panels',
                             ],
                         ],
                     ],
                     'components' => [
                         'carriage_qty' => [
-
+                            'title' => 'Carriage Quantity',
+                            'messages' => [
+                                'updated' => 'Carriage quantity updated successfully!',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Update Qty',
+                            ],
                         ],
                     ],
                 ],
