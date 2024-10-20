@@ -1161,7 +1161,44 @@ return [
         'title' => 'Settings',
     ],
     'feedback' => [
-        'title' => 'Feedback',
+        'index' => [
+            'title' => 'Feedback',
+            'buttons' => [
+                'create' => 'Create Feedback',
+            ],
+        ],
+        'partials' => [
+            'feedbacks' => [
+                'messages' => [
+                    'deleted' => 'Feedback deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'feedback_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'rating' => 'Rating',
+                        'message' => 'Message',
+                        'status' => 'Status',
+                    ],
+                    'values' => [
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ],
+                ],
+                'feedback_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'email' => 'Email: :email',
+                        'rating' => 'Rating: :rating',
+                        'message' => 'Message: :message',
+                        'status' => 'Status: :status',
+                    ],
+                ],
+            ],
+        ],
     ],
     'helpdesk' => [
         'title' => 'Helpdesk',

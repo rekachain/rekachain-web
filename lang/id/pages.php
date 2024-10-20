@@ -1161,7 +1161,44 @@ return [
         'title' => 'Pengaturan',
     ],
     'feedback' => [
-        'title' => 'Umpan Balik',
+        'index' => [
+            'title' => 'Umpan Balik',
+            'buttons' => [
+                'create' => 'Buat Umpan Balik',
+            ],
+        ],
+        'partials' => [
+            'feedbacks' => [
+                'messages' => [
+                    'deleted' => 'Umpan Balik berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'feedback_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'email' => 'Email',
+                        'rating' => 'Penilaian',
+                        'message' => 'Pesan',
+                        'status' => 'Status',
+                    ],
+                    'values' => [
+                        'pending' => 'Tertunda',
+                        'approved' => 'Disetujui',
+                        'rejected' => 'Ditolak',
+                    ],
+                ],
+                'feedback_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'email' => 'Email: :email',
+                        'rating' => 'Penilaian: :rating',
+                        'message' => 'Pesan: :message',
+                        'status' => 'Status: :status',
+                    ],
+                ],
+            ],
+        ],
     ],
     'helpdesk' => [
         'title' => 'Helpdesk',
