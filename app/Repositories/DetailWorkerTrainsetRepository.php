@@ -31,6 +31,9 @@ class DetailWorkerTrainsetRepository extends BaseRepository implements DetailWor
             'trainset_attachment_component.trainset_attachment' => [
                 'trainset_id','type'
             ],
+            'trainset_attachment_component.trainset_attachment.trainset' => [
+                'project_id','name'
+            ],
         ]);
 
         $query = $this->applyResolvedRelations($query, $searchParams);

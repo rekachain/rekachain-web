@@ -18,7 +18,7 @@ class TrainsetAttachmentComponentSeeder extends Seeder
             $trainsetAttachment->trainset->carriage_trainsets->each(function ($carriageTrainset) use ($trainsetAttachment, $trainsetAttachmentTypes) {
                 $carriageTrainset->carriage_panels->each(function ($carriagePanel) use ($trainsetAttachment, $carriageTrainset, $trainsetAttachmentTypes) {
                     $carriagePanel->carriage_panel_components->each(function ($carriagePanelComponent) use ($trainsetAttachment, $carriagePanel, $carriageTrainset, $trainsetAttachmentTypes) {
-                        if ($carriagePanelComponent->progress->work_aspect->id == $trainsetAttachmentTypes[$trainsetAttachment->type]) {
+                        if ($carriagePanelComponent->progress->work_aspect->id == $trainsetAttachmentTypes[$trainsetAttachment->type->value]) {
                             TrainsetAttachmentComponent::updateOrCreate(
                                 [
                                     'trainset_attachment_id' => $trainsetAttachment->id,
