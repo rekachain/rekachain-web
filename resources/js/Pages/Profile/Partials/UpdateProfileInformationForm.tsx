@@ -31,22 +31,24 @@ export default function UpdateProfileInformation({
     });
 
     useEffect(() => {
-        setData('image_path', [
-            {
-                source: user.image,
-                options: {
-                    type: 'local',
-                    file: {
-                        name: 'User Avatar',
-                        size: null,
-                        type: 'image/jpeg',
-                    },
-                    metadata: {
-                        poster: user.image,
+        if (user.image) {
+            setData('image_path', [
+                {
+                    source: user.image,
+                    options: {
+                        type: 'local',
+                        file: {
+                            name: 'User Avatar',
+                            size: null,
+                            type: 'image/jpeg',
+                        },
+                        metadata: {
+                            poster: user.image,
+                        },
                     },
                 },
-            },
-        ]);
+            ]);
+        }
     }, [user.image]);
 
     const submit: FormEventHandler = withLoading(async e => {
