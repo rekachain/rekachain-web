@@ -8,8 +8,10 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
 import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardView';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [divisionResponse, setDivisionResponse] = useState<PaginateResponse<DivisionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -28,7 +30,7 @@ export default function () {
     const handleDivisionDeletion = withLoading(async (id: number) => {
         await divisionService.delete(id);
         await syncDivisions();
-        void useSuccessToast('Division deleted successfully');
+        void useSuccessToast(t('pages.divisions.index.partials.divisions.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {
@@ -43,7 +45,6 @@ export default function () {
                         <DivisionTableView
                             divisionResponse={divisionResponse}
                             handleDivisionDeletion={handleDivisionDeletion}
-                            auth={''}
                         />
                     </div>
 
@@ -52,7 +53,6 @@ export default function () {
                             divisionResponse={divisionResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
                             handleDivisionDeletion={handleDivisionDeletion}
-                            auth={''}
                             // auth={auth}
                         />
                     </div>

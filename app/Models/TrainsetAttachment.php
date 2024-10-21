@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +19,7 @@ class TrainsetAttachment extends Model {
         'source_workstation_id',
         'destination_workstation_id',
         'attachment_number',
+        'type',
         'qr_code',
         'qr_path',
         'elapsed_time',
@@ -26,6 +28,7 @@ class TrainsetAttachment extends Model {
         'status',
     ];
     protected $casts = [
+        'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
 

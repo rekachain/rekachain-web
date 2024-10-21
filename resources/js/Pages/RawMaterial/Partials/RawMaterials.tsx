@@ -8,8 +8,10 @@ import RawMaterialCardView from './Partials/RawMaterialCardView';
 import RawMaterialTableView from './Partials/RawMaterialTableView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [rawMaterialResponse, setRawMaterialResponse] = useState<PaginateResponse<RawMaterialResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -27,7 +29,7 @@ export default function () {
     const handleRawMaterialDeletion = withLoading(async (id: number) => {
         await rawMaterialService.delete(id);
         await syncRawMaterials();
-        void useSuccessToast('Raw Material deleted successfully');
+        void useSuccessToast(t('pages.raw_materials.index.partials.raw_materials.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

@@ -5,17 +5,17 @@ import { ComponentResource } from '@/Support/Interfaces/Resources';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     componentResponse,
     handleComponentDeletion,
-    // auth,
 }: {
     componentResponse: PaginateResponse<ComponentResource>;
 
     handleComponentDeletion: (id: number) => void;
-    // auth: any; // sementara
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             {componentResponse?.data.map(component => (
@@ -36,7 +36,11 @@ export default function ({
                                 </h5> */}
                             {/* </div> */}
                         </div>
-                        <p className="text-sm">Proses Standar : {component.progress?.name}</p>
+                        <p className="text-sm">
+                            {t('pages.components.index.partials.components.partials.components_card.headers.progress', {
+                                progress: component.progress?.name ?? '',
+                            })}
+                        </p>
 
                         {/* <h5 className="font-bold text-sm ">Workshop : {component.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {component.location}</h5> */}
@@ -45,10 +49,10 @@ export default function ({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleComponentDeletion(component.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>

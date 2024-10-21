@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RoleResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function RoleTableView({
     roleResponse,
@@ -13,16 +14,25 @@ export default function RoleTableView({
     roleResponse: PaginateResponse<RoleResource>;
     handleRoleDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Divisi</TableHead>
-                        <TableHead>Level</TableHead>
-                        <TableHead>Jumlah User</TableHead>
-                        <TableHead>Jumlah Izin</TableHead>
+                        <TableHead>{t('pages.roles.index.partials.roles.partials.roles_table.headers.name')}</TableHead>
+                        <TableHead>
+                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.division')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.level')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.users_count')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.permissions_count')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -39,11 +49,11 @@ export default function RoleTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.ROLES}.edit`, role.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 {role.users_count <= 0 && (
                                     <Button variant="link" onClick={() => handleRoleDeletion(role.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
                             </TableCell>

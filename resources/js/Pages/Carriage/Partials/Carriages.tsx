@@ -1,9 +1,6 @@
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { CarriageResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { carriageService } from '@/Services/carriageService';
@@ -11,8 +8,10 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import CarriageCardView from './Partials/CarriageCardView';
 import CarriageTableView from './Partials/CarriageTableView';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -31,7 +30,7 @@ export default function () {
     const handleCarriageDeletion = withLoading(async (id: number) => {
         await carriageService.delete(id);
         await syncCarriages();
-        void useSuccessToast('Carriage deleted successfully');
+        void useSuccessToast(t('pages.carriage.partials.carriages.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {
