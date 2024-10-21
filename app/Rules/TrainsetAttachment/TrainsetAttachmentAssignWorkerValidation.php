@@ -39,11 +39,16 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             return;
         }
 
-        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('id', 'desc')->first();
-        $lastKey = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
-        $currentKey = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
+        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('updated_at', 'desc')->first();
+        $lastWorkerIndex = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
+        $currentWorkerIndex = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;
-        if ($currentKey < $lastKey || ($currentKey === $lastKey && $lastWorkerTrainsetCompleted)) {
+        
+        //check if last work is completed but is not fulfilled yet
+        if (array_key_last($carriagePanelComponentProgressStepIds) === $lastWorkerIndex && $lastWorkerTrainsetCompleted) {
+            $lastWorkerIndex = 0;
+        }
+        if ($currentWorkerIndex < $lastWorkerIndex || ($currentWorkerIndex === $lastWorkerIndex && $lastWorkerTrainsetCompleted)) {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_completed_exception',
                 [
@@ -51,7 +56,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                     'step'=>$user->step->name
                 ]
             ));
-        } elseif ($currentKey - $lastKey > 1 || ($currentKey > $lastKey && !$lastWorkerTrainsetCompleted)) {
+        } elseif ($currentWorkerIndex - $lastWorkerIndex > 1 || ($currentWorkerIndex > $lastWorkerIndex && !$lastWorkerTrainsetCompleted)) {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_ahead_exception',
                 [
