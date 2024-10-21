@@ -1203,4 +1203,64 @@ return [
     'helpdesk' => [
         'title' => 'Helpdesk',
     ],
+    'profile' => [
+        'edit' => [
+            'title' => 'Edit Profil',
+        ],
+        'partials' => [
+            'delete_user_form' => [
+                'title' => 'Hapus Akun',
+                'description' => 'Setelah akun Anda dihapus, semua sumber daya dan data akan dihapus secara permanen. Sebelum menghapus akun Anda, harap unduh data atau informasi yang ingin Anda simpan.',
+                'dialogs' => [
+                    'title' => 'Hapus Akun',
+                    'description' => 'Setelah akun Anda dihapus, semua sumber daya dan data akan dihapus secara permanen. Harap masukkan kata sandi Anda untuk mengonfirmasi bahwa Anda ingin menghapus akun Anda secara permanen.',
+                    'fields' => [
+                        'password' => 'Kata Sandi',
+                        'password_placeholder' => 'Masukkan kata sandi Anda',
+                    ],
+                    'buttons' => [
+                        'delete_account' => 'Hapus Akun',
+                    ],
+                ],
+                'buttons' => [
+                    'delete_account' => 'Hapus Akun',
+                ],
+            ],
+            'update_password_form' => [
+                'title' => 'Perbarui Kata Sandi',
+                'description' => 'Pastikan akun Anda menggunakan kata sandi yang panjang dan acak untuk tetap aman.',
+                'fields' => [
+                    'current_password' => 'Kata Sandi Saat Ini',
+                    'password' => 'Kata Sandi',
+                    'password_confirmation' => 'Konfirmasi Kata Sandi',
+                ],
+                'buttons' => [
+                    'submit' => 'Perbarui Kata Sandi',
+                ],
+                'messages' => [
+                    'updated' => 'Kata sandi berhasil diperbarui!',
+                ],
+            ],
+            'update_profile_information_form' => [
+                'title' => 'Perbarui Informasi Profil',
+                'description' => 'Perbarui informasi profil dan alamat email akun Anda.',
+                'fields' => [
+                    'name' => 'Nama',
+                    'email' => 'Email',
+                    'phone_number' => 'Nomor Telepon',
+                    'avatar' => 'Avatar',
+                    'avatar_filepond_placeholder' => 'Letakkan file di sini atau klik untuk mengunggah',
+                ],
+                'buttons' => [
+                    'submit' => 'Perbarui Informasi',
+                    'resend_verification_email' => 'Klik di sini untuk mengirim ulang email verifikasi.',
+                ],
+                'messages' => [
+                    'updated' => 'Informasi profil berhasil diperbarui!',
+                    'verify_email' => 'Alamat email Anda belum diverifikasi.',
+                    'verification_email_sent' => 'Email verifikasi baru telah dikirim ke alamat yang Anda berikan saat pendaftaran.',
+                ],
+            ],
+        ],
+    ],
 ];
