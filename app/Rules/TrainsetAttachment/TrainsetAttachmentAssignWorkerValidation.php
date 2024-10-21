@@ -7,7 +7,7 @@ use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class TrainsetAttachmentAssignWorkerStepValidation implements ValidationRule {
+class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
     /**
      * Run the validation rule.
      *

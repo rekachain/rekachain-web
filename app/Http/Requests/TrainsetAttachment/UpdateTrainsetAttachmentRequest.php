@@ -7,7 +7,7 @@ use App\Support\Enums\IntentEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
-use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerStepValidation;
+use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerValidation;
 
 class UpdateTrainsetAttachmentRequest extends FormRequest {
     public function authorize(): bool {
@@ -69,7 +69,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     function ($validator) use ($trainsetAttachment) {
                         $validator->safe()->all();
                         $userId = $validator->getData()['worker_id'] ?? auth()->user()->id;
-                        $assignWorkerStepValidation = new TrainsetAttachmentAssignWorkerStepValidation();
+                        $assignWorkerStepValidation = new TrainsetAttachmentAssignWorkerValidation();
                         $assignWorkerStepValidation->validate('Trainset Attachment', [
                             $trainsetAttachment,
                             $validator->getData()['carriage_panel_component_id'],
