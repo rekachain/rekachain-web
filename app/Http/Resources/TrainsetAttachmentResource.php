@@ -13,6 +13,29 @@ class TrainsetAttachmentResource extends JsonResource
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
+                $trainsetAttachment = $this->load(['trainset_attachment_components']);
+
+                $components = $trainsetAttachment->trainset_attachment_components->mapToGroups(function ($trainset_attachment_component) {
+                    return [
+                        $trainset_attachment_component->carriage_panel_component->component->id => [
+                            'id' => $trainset_attachment_component->carriage_panel_component->component->id,
+                            'component_name' => $trainset_attachment_component->carriage_panel_component->component->name,
+                            'total_required' => $trainset_attachment_component->total_required,
+                        ]
+                    ];
+                })->map(function ($components) {
+                    return [
+                        'id' => $components->first()['id'],
+                        'component_name' => $components->first()['component_name'],
+                        'total_required' => $components->sum('total_required'),
+                    ];
+                })->values();
+
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'components' => $components
+                ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
                     'id' => $this->id,
@@ -21,6 +44,7 @@ class TrainsetAttachmentResource extends JsonResource
                     'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')->first()),
                     'project' => $this->trainset->project->name,
                     'trainset' => $this->trainset->name,
+                    'type' => $this->type,
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'status' => $this->status,
@@ -37,6 +61,7 @@ class TrainsetAttachmentResource extends JsonResource
                     'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')->first()),
                     'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')->first()),
                     'trainset' => new TrainsetResource($this->trainset),
+                    'type' => $this->type,
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
                     'status' => $this->status,
@@ -133,6 +158,7 @@ class TrainsetAttachmentResource extends JsonResource
                     'attachment_number' => $this->attachment_number,
                     'trainset_id' => $this->trainset_id,
                     'trainset' => new TrainsetResource($this->whenLoaded('trainset')),
+                    'type' => $this->type,
                     'source_workstation_id' => $this->source_workstation_id,
                     'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
                     'destination_workstation_id' => $this->destination_workstation_id,
