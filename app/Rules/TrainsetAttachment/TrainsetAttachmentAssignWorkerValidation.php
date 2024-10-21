@@ -46,7 +46,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
         
         //check if last work is completed but is not fulfilled yet
         if (array_key_last($carriagePanelComponentProgressStepIds) === $lastWorkerIndex && $lastWorkerTrainsetCompleted) {
-            $lastWorkerIndex = 0;
+            $lastWorkerIndex = -1;
         }
         if ($currentWorkerIndex < $lastWorkerIndex || ($currentWorkerIndex === $lastWorkerIndex && $lastWorkerTrainsetCompleted)) {
             $fail(__(
