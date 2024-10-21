@@ -197,20 +197,25 @@ return [
         ],
         'serial_panel' => [
             'assign_worker' => [
-                'manufacture_status_exception' => 'Panel pada :progress adalah :manufacture_status',
-                'step_invalid_exception' => ':Progress tidak memiliki langkah :step',
+                'manufacture_status_exception' => 'Manufaktur pada :progress berstatus :manufacture_status',
+                'step_invalid_exception' => ':progress tidak memiliki langkah :step',
                 'step_completed_exception' => 'Langkah :step sudah selesai di :progress',
                 'step_ahead_exception' => 'Masih ada langkah yang sedang berlangsung pada :progress saat ini',
             ],
         ],
         'trainset_attachment' => [
             'assign_worker' => [
-                'step_invalid_exception' => ':Progress tidak memiliki langkah :step',
+                'step_invalid_exception' => ':progress tidak memiliki langkah :step',
                 'step_completed_exception' => 'Langkah :step sudah selesai di :progress',
                 'step_ahead_exception' => 'Masih ada langkah yang sedang berlangsung pada :progress saat ini',
                 'total_fulfilled_exception' => 'Komponen :component di :progress sudah terpenuhi',
             ],
         ],
+        'detail_worker_trainset' => [
+            'update_worker' => [
+                'field_update_role_exception' => 'Hanya pengguna dengan peran :role yang dapat mengupdate field ":field"',
+            ],
+        ]
     ],
 
     /*

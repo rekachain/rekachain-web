@@ -135,6 +135,8 @@ class ApiDetailWorkerTrainsetController extends Controller {
                     abort(403, 'Unauthorized');
                 }
                 return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());
+            default:
+                return $this->detailWorkerTrainsetService->update($detailWorkerTrainset, $request->validated());
         }    
         
     }

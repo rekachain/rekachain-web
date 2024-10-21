@@ -47,4 +47,9 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
 
         return $detailWorkerTrainset;
     }
+
+    public function update($detailWorkerTrainset, array $data): ?Model {
+        $data = $this->handleImageUpload($data, $detailWorkerTrainset);
+        return parent::update($detailWorkerTrainset, $data);
+    }
 }

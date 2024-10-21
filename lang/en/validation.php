@@ -197,7 +197,7 @@ return [
         ],
         'serial_panel' => [
             'assign_worker' => [
-                'manufacture_status_exception' => 'Manufactiure status of Panel on :progress is :manufacture_status',
+                'manufacture_status_exception' => 'Manufacture status of Panel on :progress is :manufacture_status',
                 'step_invalid_exception' => ':progress does not have :step step',
                 'step_completed_exception' => 'Step :step already completed in :progress',
                 'step_ahead_exception' => 'There is still an under progress step on the current :progress',
@@ -211,6 +211,11 @@ return [
                 'total_fulfilled_exception' => 'Component :component in :progress already fulfilled',
             ],
         ],
+        'detail_worker_trainset' => [
+            'update_worker' => [
+                'field_update_role_exception' => 'Only user with role :role can update ":field" field',
+            ],
+        ]
     ],
 
     /*
