@@ -19,36 +19,11 @@ return [
             'welcome' => 'Selamat datang di Halaman Utama',
         ],
     ],
-    'work_days' => [
+    'work_day' => [
         'index' => [
             'title' => 'Hari Kerja',
             'buttons' => [
                 'create' => 'Buat Hari Kerja',
-            ],
-            'partials' => [
-                'work_days' => [
-                    'messages' => [
-                        'deleted' => 'Hari Kerja berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'work_day_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'start_date' => 'Tanggal Mulai',
-                                'break_time' => 'Waktu Istirahat',
-                                'end_date' => 'Tanggal Selesai',
-                            ],
-                        ],
-                        'work_day_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'start_date' => 'Tanggal Mulai',
-                                'break_time' => 'Waktu Istirahat',
-                                'end_date' => 'Tanggal Selesai',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -81,34 +56,40 @@ return [
                 'updated' => 'Hari Kerja berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'work_days' => [
+                'messages' => [
+                    'deleted' => 'Hari Kerja berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'work_day_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'start_date' => 'Tanggal Mulai',
+                        'break_time' => 'Waktu Istirahat',
+                        'end_date' => 'Tanggal Selesai',
+                    ],
+                ],
+                'work_day_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'start_date' => 'Tanggal Mulai',
+                        'break_time' => 'Waktu Istirahat',
+                        'end_date' => 'Tanggal Selesai',
+                    ],
+                ],
+            ],
+        ],
     ],
     'staff_management' => [
         'title' => 'Manajemen Staf',
     ],
-    'divisions' => [
+    'division' => [
         'index' => [
             'title' => 'Divisi',
             'buttons' => [
                 'create' => 'Buat Divisi',
-            ],
-            'partials' => [
-                'divisions' => [
-                    'messages' => [
-                        'deleted' => 'Divisi berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'divisions_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                            ],
-                        ],
-                        'divisions_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -133,6 +114,25 @@ return [
             ],
             'messages' => [
                 'updated' => 'Divisi berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'divisions' => [
+                'messages' => [
+                    'deleted' => 'Divisi berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'divisions_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                    ],
+                ],
+                'divisions_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                    ],
+                ],
             ],
         ],
     ],
