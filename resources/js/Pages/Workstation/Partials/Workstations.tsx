@@ -31,7 +31,7 @@ export default function () {
     const handleWorkstationDeletion = withLoading(async (id: number) => {
         await workstationService.delete(id);
         await syncWorkstations();
-        void useSuccessToast(t('pages.workstations.index.partials.workstations.messages.deleted'));
+        void useSuccessToast(t('pages.workstation.partials.workstations.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

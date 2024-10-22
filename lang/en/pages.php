@@ -191,36 +191,11 @@ return [
             ],
         ],
     ],
-    'workstations' => [
+    'workstation' => [
         'index' => [
             'title' => 'Workstation',
             'buttons' => [
                 'create' => 'Create Workstation',
-            ],
-            'partials' => [
-                'workstations' => [
-                    'messages' => [
-                        'deleted' => 'Workstation deleted successfully!',
-                    ],
-                    'partials' => [
-                        'workstations_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'location' => 'Location',
-                                'workshop' => 'Workshop',
-                                'division' => 'Division',
-                            ],
-                        ],
-                        'workstations_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'location' => 'Location: :location',
-                                'workshop' => 'Workshop: :workshop',
-                                'division' => 'Division: :division',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -251,6 +226,31 @@ return [
             ],
             'messages' => [
                 'updated' => 'Workstation updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'workstations' => [
+                'messages' => [
+                    'deleted' => 'Workstation deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'workstation_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'location' => 'Location',
+                        'workshop' => 'Workshop',
+                        'division' => 'Division',
+                    ],
+                ],
+                'workstation_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'location' => 'Location: :location',
+                        'workshop' => 'Workshop: :workshop',
+                        'division' => 'Division: :division',
+                    ],
+                ],
             ],
         ],
     ],

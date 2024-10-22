@@ -29,31 +29,22 @@ export default function WorkstationCardView({
                             <h4 className="font-bold text-xl">{workstation.name}</h4>
                             <div className="text-center">
                                 <h5 className="font-bold text-md items-center ">
-                                    {t(
-                                        'pages.workstations.index.partials.workstations.partials.workstations_card.headers.division',
-                                        {
-                                            division: workstation.division.name,
-                                        },
-                                    )}
+                                    {t('pages.workstation.partials.partials.workstation_card.headers.division', {
+                                        division: workstation.division.name,
+                                    })}
                                 </h5>
                             </div>
                         </div>
 
                         <h5 className="font-bold text-sm ">
-                            {t(
-                                'pages.workstations.index.partials.workstations.partials.workstations_card.headers.workshop',
-                                {
-                                    workshop: workstation.workshop.name,
-                                },
-                            )}
+                            {t('pages.workstation.partials.partials.workstation_card.headers.workshop', {
+                                workshop: workstation.workshop.name,
+                            })}
                         </h5>
                         <h5 className=" text-sm ">
-                            {t(
-                                'pages.workstations.index.partials.workstations.partials.workstations_card.headers.location',
-                                {
-                                    location: workstation.location,
-                                },
-                            )}
+                            {t('pages.workstation.partials.partials.workstation_card.headers.location', {
+                                location: workstation.location,
+                            })}
                         </h5>
                         <div className="flex items-center justify-end w-full">
                             <Link

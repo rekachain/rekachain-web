@@ -20,25 +20,15 @@ export default function WorkstationTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
+                        <TableHead>{t('pages.workstation.partials.partials.workstation_table.headers.name')}</TableHead>
                         <TableHead>
-                            {t(
-                                'pages.workstations.index.partials.workstations.partials.workstations_table.headers.name',
-                            )}
+                            {t('pages.workstation.partials.partials.workstation_table.headers.location')}
                         </TableHead>
                         <TableHead>
-                            {t(
-                                'pages.workstations.index.partials.workstations.partials.workstations_table.headers.location',
-                            )}
+                            {t('pages.workstation.partials.partials.workstation_table.headers.workshop')}
                         </TableHead>
                         <TableHead>
-                            {t(
-                                'pages.workstations.index.partials.workstations.partials.workstations_table.headers.workshop',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.workstations.index.partials.workstations.partials.workstations_table.headers.division',
-                            )}
+                            {t('pages.workstation.partials.partials.workstation_table.headers.division')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>

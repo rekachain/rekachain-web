@@ -191,36 +191,11 @@ return [
             ],
         ],
     ],
-    'workstations' => [
+    'workstation' => [
         'index' => [
             'title' => 'Workstation',
             'buttons' => [
                 'create' => 'Buat Workstation',
-            ],
-            'partials' => [
-                'workstations' => [
-                    'messages' => [
-                        'deleted' => 'Workstation berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'workstations_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'location' => 'Lokasi',
-                                'workshop' => 'Workshop',
-                                'division' => 'Divisi',
-                            ],
-                        ],
-                        'workstations_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'location' => 'Lokasi: :location',
-                                'workshop' => 'Workshop: :workshop',
-                                'division' => 'Divisi: :division',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -251,6 +226,31 @@ return [
             ],
             'messages' => [
                 'updated' => 'Workstation berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'workstations' => [
+                'messages' => [
+                    'deleted' => 'Workstation berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'workstation_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'location' => 'Lokasi',
+                        'workshop' => 'Workshop',
+                        'division' => 'Divisi',
+                    ],
+                ],
+                'workstation_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'location' => 'Lokasi: :location',
+                        'workshop' => 'Workshop: :workshop',
+                        'division' => 'Divisi: :division',
+                    ],
+                ],
             ],
         ],
     ],

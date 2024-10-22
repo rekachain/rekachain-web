@@ -30,21 +30,21 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
 
         await workstationService.create(data);
         router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
-        void useSuccessToast(t('pages.workstations.create.messages.created'));
+        void useSuccessToast(t('pages.workstation.create.messages.created'));
     });
 
     return (
         <>
-            <Head title={t('pages.workstations.create.title')} />
+            <Head title={t('pages.workstation.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.workstations.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.workstation.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workstations.create.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.workstation.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -57,7 +57,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value={t('pages.workstations.create.fields.location')} />
+                            <InputLabel htmlFor="location" value={t('pages.workstation.create.fields.location')} />
                             <Input
                                 id="location"
                                 type="text"
@@ -70,7 +70,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstations.create.fields.workshop')}</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.workstation.create.fields.workshop')}</h2>
                             <RadioGroup onValueChange={v => setData('workshop_id', v)}>
                                 {workshops?.map(workshop => (
                                     <div key={workshop.id} className="flex items-center space-x-2">
@@ -85,7 +85,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstations.create.fields.division')}</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.workstation.create.fields.division')}</h2>
                             <RadioGroup onValueChange={v => setData('division_id', v)}>
                                 {divisions?.map(division => (
                                     <div key={division.id} className="flex items-center space-x-2">
@@ -100,7 +100,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.workstations.create.buttons.submit')}
+                            {t('pages.workstation.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>
