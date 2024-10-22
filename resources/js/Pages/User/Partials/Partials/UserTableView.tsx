@@ -26,17 +26,13 @@ export default function ({
             <TableHeader>
                 <TableRow>
                     <TableHead></TableHead>
-                    <TableHead>{t('pages.users.index.partials.users.partials.users_table.headers.nip')}</TableHead>
-                    <TableHead>{t('pages.users.index.partials.users.partials.users_table.headers.name')}</TableHead>
-                    <TableHead>{t('pages.users.index.partials.users.partials.users_table.headers.email')}</TableHead>
-                    <TableHead>
-                        {t('pages.users.index.partials.users.partials.users_table.headers.phone_number')}
-                    </TableHead>
-                    <TableHead>{t('pages.users.index.partials.users.partials.users_table.headers.role')}</TableHead>
-                    <TableHead>
-                        {t('pages.users.index.partials.users.partials.users_table.headers.workstation')}
-                    </TableHead>
-                    <TableHead>{t('pages.users.index.partials.users.partials.users_table.headers.step')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.nip')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.name')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.email')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.phone_number')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.role')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.workstation')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.step')}</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>

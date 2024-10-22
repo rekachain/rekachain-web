@@ -254,44 +254,11 @@ return [
             ],
         ],
     ],
-    'users' => [
+    'user' => [
         'index' => [
             'title' => 'Staf',
             'buttons' => [
                 'create' => 'Buat Staf',
-            ],
-            'partials' => [
-                'users' => [
-                    'messages' => [
-                        'deleted' => 'Staf berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'users_table' => [
-                            'headers' => [
-                                'nip' => 'NIP',
-                                'name' => 'Nama',
-                                'email' => 'Email',
-                                'phone_number' => 'Nomor Telepon',
-                                'role' => 'Peran',
-                                'workstation' => 'Workstation',
-                                'step' => 'Langkah',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                        'users_card' => [
-                            'headers' => [
-                                'nip' => 'NIP: :nip',
-                                'name' => 'Nama: :name',
-                                'email' => 'Email: :email',
-                                'phone_number' => 'Nomor Telepon: :phone_number',
-                                'role' => 'Peran: :role',
-                                'workstation' => 'Workstation: :workstation',
-                                'step' => 'Langkah: :step',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -340,6 +307,39 @@ return [
             ],
             'messages' => [
                 'updated' => 'Staf berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'users' => [
+                'messages' => [
+                    'deleted' => 'Staf berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'user_table' => [
+                    'headers' => [
+                        'nip' => 'NIP',
+                        'name' => 'Nama',
+                        'email' => 'Email',
+                        'phone_number' => 'Nomor Telepon',
+                        'role' => 'Peran',
+                        'workstation' => 'Workstation',
+                        'step' => 'Langkah',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+                'user_card' => [
+                    'headers' => [
+                        'nip' => 'NIP: :nip',
+                        'name' => 'Nama: :name',
+                        'email' => 'Email: :email',
+                        'phone_number' => 'Nomor Telepon: :phone_number',
+                        'role' => 'Peran: :role',
+                        'workstation' => 'Workstation: :workstation',
+                        'step' => 'Langkah: :step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
             ],
         ],
     ],

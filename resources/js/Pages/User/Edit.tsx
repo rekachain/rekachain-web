@@ -90,13 +90,13 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         console.log(parseFormData(formData));
         await userService.update(user.id, formData);
         router.visit(route(`${ROUTES.USERS}.index`));
-        void useSuccessToast(t('pages.users.edit.messages.updated'));
+        void useSuccessToast(t('pages.user.edit.messages.updated'));
     });
 
     return (
         <>
             <Head
-                title={t('pages.users.edit.title', {
+                title={t('pages.user.edit.title', {
                     name: user.name,
                 })}
             />
@@ -104,7 +104,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.users.edit.title', {
+                            {t('pages.user.edit.title', {
                                 name: user.name,
                             })}
                         </h1>
@@ -112,7 +112,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nip" value={t('pages.users.edit.fields.nip')} />
+                            <InputLabel htmlFor="nip" value={t('pages.user.edit.fields.nip')} />
                             <Input
                                 id="nip"
                                 type="number"
@@ -126,7 +126,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.users.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.user.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -139,7 +139,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="email" value={t('pages.users.edit.fields.email')} />
+                            <InputLabel htmlFor="email" value={t('pages.user.edit.fields.email')} />
                             <Input
                                 id="email"
                                 type="email"
@@ -153,7 +153,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="phone_number" value={t('pages.users.edit.fields.phone_number')} />
+                            <InputLabel htmlFor="phone_number" value={t('pages.user.edit.fields.phone_number')} />
                             <Input
                                 id="phone_number"
                                 type="text"
@@ -167,7 +167,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="workstation_id" value={t('pages.users.edit.fields.workstation')} />
+                            <InputLabel htmlFor="workstation_id" value={t('pages.user.edit.fields.workstation')} />
                             <GenericDataSelector
                                 id="workstation_id"
                                 fetchData={fetchWorkstations}
@@ -182,7 +182,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="step_id" value={t('pages.users.edit.fields.step')} />
+                            <InputLabel htmlFor="step_id" value={t('pages.user.edit.fields.step')} />
                             <GenericDataSelector
                                 id="step_id"
                                 fetchData={fetchSteps}
@@ -197,7 +197,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="password" value={t('pages.users.edit.fields.password')} />
+                            <InputLabel htmlFor="password" value={t('pages.user.edit.fields.password')} />
                             <Input
                                 id="password"
                                 type="password"
@@ -211,20 +211,20 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="avatar" value={t('pages.users.edit.fields.avatar')} />
+                            <InputLabel htmlFor="avatar" value={t('pages.user.edit.fields.avatar')} />
                             <FilePond
                                 imagePreviewMaxHeight={400}
                                 filePosterMaxHeight={400}
                                 allowMultiple={false}
                                 files={data.image_path}
                                 onupdatefiles={handleFileChange}
-                                labelIdle={t('pages.users.edit.fields.avatar_filepond_placeholder')}
+                                labelIdle={t('pages.user.edit.fields.avatar_filepond_placeholder')}
                                 allowReplace
                             />
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.users.edit.fields.role')}</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.user.edit.fields.role')}</h2>
                             <RadioGroup onValueChange={v => setData('role_id', +v)} value={data.role_id?.toString()}>
                                 {props.roles?.map(role => (
                                     <div key={role.id} className="flex items-center space-x-2">
@@ -236,7 +236,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.users.edit.buttons.submit')}
+                            {t('pages.user.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>
