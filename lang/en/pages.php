@@ -19,36 +19,11 @@ return [
             'welcome' => 'Welcome to the Dashboard',
         ],
     ],
-    'work_days' => [
+    'work_day' => [
         'index' => [
             'title' => 'Work Days',
             'buttons' => [
                 'create' => 'Create Work Day',
-            ],
-            'partials' => [
-                'work_days' => [
-                    'messages' => [
-                        'deleted' => 'Work Day deleted successfully!',
-                    ],
-                    'partials' => [
-                        'work_day_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'start_date' => 'Start Date',
-                                'break_time' => 'Break Time',
-                                'end_date' => 'End Date',
-                            ],
-                        ],
-                        'work_day_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'start_date' => 'Start Date',
-                                'break_time' => 'Break Time',
-                                'end_date' => 'End Date',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -79,6 +54,31 @@ return [
             ],
             'messages' => [
                 'updated' => 'Work Day updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'work_days' => [
+                'messages' => [
+                    'deleted' => 'Work Day deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'work_day_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'start_date' => 'Start Date',
+                        'break_time' => 'Break Time',
+                        'end_date' => 'End Date',
+                    ],
+                ],
+                'work_day_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'start_date' => 'Start Date',
+                        'break_time' => 'Break Time',
+                        'end_date' => 'End Date',
+                    ],
+                ],
             ],
         ],
     ],

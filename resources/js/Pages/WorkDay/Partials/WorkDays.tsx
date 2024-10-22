@@ -31,7 +31,7 @@ export default function () {
     const handleWorkDayDeletion = withLoading(async (id: number) => {
         await workDayService.delete(id);
         await syncWorkDays();
-        void useSuccessToast(t('pages.work_days.index.partials.work_days.messages.deleted'));
+        void useSuccessToast(t('pages.work_day.partials.work_days.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

@@ -20,18 +20,10 @@ export default function WDTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>
-                            {t('pages.work_days.index.partials.work_days.partials.work_day_table.headers.name')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.work_days.index.partials.work_days.partials.work_day_table.headers.start_date')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.work_days.index.partials.work_days.partials.work_day_table.headers.break_time')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.work_days.index.partials.work_days.partials.work_day_table.headers.end_date')}
-                        </TableHead>
+                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.start_date')}</TableHead>
+                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.break_time')}</TableHead>
+                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.end_date')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
