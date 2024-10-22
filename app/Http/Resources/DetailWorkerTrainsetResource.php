@@ -54,6 +54,7 @@ class DetailWorkerTrainsetResource extends JsonResource {
             default:
                 return [
                     'id' => $this->id,
+                    'trainset_attachment' => TrainsetAttachmentResource::make($this->whenLoaded('trainset_attachment')),
                     'trainset_attachment_component_id' => $this->trainset_attachment_component_id,
                     'trainset_attachment_component' => TrainsetAttachmentComponentResource::make($this->whenLoaded('trainset_attachment_component')),
                     'worker_id' => $this->worker_id,
