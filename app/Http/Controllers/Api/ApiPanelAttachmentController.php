@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
-use App\Support\Enums\PermissionEnum;
 use Illuminate\Http\Request;
 use App\Models\PanelAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Models\DetailWorkerPanel;
 use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
+use App\Support\Enums\PermissionEnum;
 use App\Http\Resources\SerialPanelResource;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Http\Resources\DetailWorkerPanelResource;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Http\Requests\PanelAttachment\StorePanelAttachmentRequest;
 use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 
@@ -119,7 +120,7 @@ class ApiPanelAttachmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePanelAttachmentRequest $request)
     {
         //
     }
