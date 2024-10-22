@@ -12,7 +12,6 @@ use App\Models\PanelAttachment;
 use App\Models\Trainset;
 use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
-use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
@@ -270,7 +269,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     'trainset_id' => $trainset->id,
                     'source_workstation_id' => $sourceWorkstationId,
                     'destination_workstation_id' => $destinationWorkstationId,
-                    'type' => $division === 'mechanic' ? TrainsetAttachmentTypeEnum::MEKANIK : TrainsetAttachmentTypeEnum::ELEKTRIK,
+                    'type' => $division,
                 ]);
 
                 $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
