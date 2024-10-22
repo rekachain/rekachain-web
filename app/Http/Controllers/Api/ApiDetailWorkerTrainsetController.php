@@ -114,9 +114,15 @@ class ApiDetailWorkerTrainsetController extends Controller {
      * Display the specified resource.
      */
     public function show(DetailWorkerTrainset $detailWorkerTrainset, Request $request) {
-        $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS->value]);
+        $intent = request()->get('intent');
 
-        return DetailWorkerTrainsetResource::make($detailWorkerTrainset->load(['progress_step.progress','progress_step.step']));
+        switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_TRAINSETS_GET_ALL_WORK_DETAIL->value:
+                return DetailWorkerTrainsetResource::make($detailWorkerTrainset);
+            default:
+                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS->value]);
+                return DetailWorkerTrainsetResource::make($detailWorkerTrainset->load(['progress_step.progress', 'progress_step.step']));
+        }
     }
 
     /**
