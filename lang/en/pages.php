@@ -364,32 +364,11 @@ return [
     'access_control' => [
         'title' => 'Access Control',
     ],
-    'permissions' => [ // CRUD not implemented
+    'permission' => [ // CRUD not implemented
         'index' => [
             'title' => 'Permission',
             'buttons' => [
                 'create' => 'Create Permission',
-            ],
-            'partials' => [
-                'permissions' => [
-                    'messages' => [
-                        'deleted' => 'Permission deleted successfully!',
-                    ],
-                    'partials' => [
-                        'permissions_table' => [
-                            'headers' => [
-                                'group' => 'Group',
-                                'name' => 'Name',
-                            ],
-                        ],
-                        'permissions_card' => [
-                            'headers' => [
-                                'group' => 'Group',
-                                'name' => 'Name',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -414,6 +393,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Permission updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'permissions' => [
+                'messages' => [
+                    'deleted' => 'Permission deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'permission_table' => [
+                    'headers' => [
+                        'group' => 'Group',
+                        'name' => 'Name',
+                    ],
+                ],
+                'permission_card' => [
+                    'headers' => [
+                        'group' => 'Group',
+                        'name' => 'Name',
+                    ],
+                ],
             ],
         ],
     ],
