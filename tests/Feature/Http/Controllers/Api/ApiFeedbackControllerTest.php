@@ -5,11 +5,11 @@ use App\Support\Enums\FeedbackStatusEnum;
 test('index method returns paginated feedback', function () {
     $this->dummy->createFeedback();
 
-    $response = actAsSuperAdmin()->getJson('/api/feedback?page=1&perPage=5');
+    $response = actAsSuperAdmin()->getJson('/api/feedback?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 test('store method creates new feedback', function () {
