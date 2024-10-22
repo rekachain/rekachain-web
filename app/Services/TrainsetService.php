@@ -10,6 +10,7 @@ use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
+use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\TrainsetStatusEnum;
@@ -38,6 +39,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected SerialPanelServiceInterface $serialPanelService,
         protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
+        protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
         protected CarriagePanelServiceInterface $carriagePanelService,
     ) {
         parent::__construct();
@@ -272,6 +274,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 ]);
 
                 $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
+                $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
 
                 //            $serialPanelIds = $this->generateSerialPanels($trainsetAttachment, $carriageTrainset);
 
