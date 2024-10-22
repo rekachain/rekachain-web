@@ -85,30 +85,11 @@ return [
     'staff_management' => [
         'title' => 'Staff Management',
     ],
-    'divisions' => [
+    'division' => [
         'index' => [
             'title' => 'Divisions',
             'buttons' => [
                 'create' => 'Create Division',
-            ],
-            'partials' => [
-                'divisions' => [
-                    'messages' => [
-                        'deleted' => 'Division deleted successfully!',
-                    ],
-                    'partials' => [
-                        'divisions_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                            ],
-                        ],
-                        'divisions_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -133,6 +114,25 @@ return [
             ],
             'messages' => [
                 'updated' => 'Division updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'divisions' => [
+                'messages' => [
+                    'deleted' => 'Division deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'divisions_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                    ],
+                ],
+                'divisions_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                    ],
+                ],
             ],
         ],
     ],
