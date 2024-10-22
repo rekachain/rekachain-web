@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * Current structure example:
+ * following directory structure
+ *
+ * pages
+ *   - component name
+ *     - fields (for form fields)
+ *     - messages (for flash messages)
+ *     - buttons (for button names)
+ *     - actions (for action names)
+ *     - dialogs (for dialog element)
+ *       - messages (for messages in dialog)
+ *       - buttons (for button names in dialog)
+ *       - actions (for action names in dialog)
+ *   - components (for page components)
+ *   - partials (for page partials)
+ */
+
 return [
     'login' => [
         'title' => 'Welcome Back!',
@@ -254,44 +272,11 @@ return [
             ],
         ],
     ],
-    'users' => [
+    'user' => [
         'index' => [
             'title' => 'Staff',
             'buttons' => [
                 'create' => 'Create Staff',
-            ],
-            'partials' => [
-                'users' => [
-                    'messages' => [
-                        'deleted' => 'Staff deleted successfully!',
-                    ],
-                    'partials' => [
-                        'users_table' => [
-                            'headers' => [
-                                'nip' => 'Employee ID',
-                                'name' => 'Name',
-                                'email' => 'Email',
-                                'phone_number' => 'Phone Number',
-                                'role' => 'Role',
-                                'workstation' => 'Workstation',
-                                'step' => 'Step',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                        'users_card' => [
-                            'headers' => [
-                                'nip' => 'Employee ID: :nip',
-                                'name' => 'Name: :name',
-                                'email' => 'Email: :email',
-                                'phone_number' => 'Phone Number: :phone_number',
-                                'role' => 'Role: :role',
-                                'workstation' => 'Workstation: :workstation',
-                                'step' => 'Step: :step',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -340,6 +325,39 @@ return [
             ],
             'messages' => [
                 'updated' => 'Staff updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'users' => [
+                'messages' => [
+                    'deleted' => 'Staff deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'user_table' => [
+                    'headers' => [
+                        'nip' => 'Employee ID',
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'phone_number' => 'Phone Number',
+                        'role' => 'Role',
+                        'workstation' => 'Workstation',
+                        'step' => 'Step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+                'user_card' => [
+                    'headers' => [
+                        'nip' => 'Employee ID: :nip',
+                        'name' => 'Name: :name',
+                        'email' => 'Email: :email',
+                        'phone_number' => 'Phone Number: :phone_number',
+                        'role' => 'Role: :role',
+                        'workstation' => 'Workstation: :workstation',
+                        'step' => 'Step: :step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
             ],
         ],
     ],
