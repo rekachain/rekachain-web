@@ -33,7 +33,7 @@ export default function WorkshopCardView({
                         </div>
 
                         <h5 className="text-sm">
-                            {t('pages.workshop.partials.partials.workshops_card.headers.address', {
+                            {t('pages.workshop.partials.partials.workshop_card.headers.address', {
                                 address: workshop.address,
                             })}
                         </h5>

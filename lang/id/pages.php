@@ -176,13 +176,13 @@ return [
                 ],
             ],
             'partials' => [
-                'workshops_table' => [
+                'workshop_table' => [
                     'headers' => [
                         'name' => 'Nama',
                         'address' => 'Alamat',
                     ],
                 ],
-                'workshops_card' => [
+                'workshop_card' => [
                     'headers' => [
                         'name' => 'Nama',
                         'address' => 'Alamat : :address',
