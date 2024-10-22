@@ -547,53 +547,11 @@ return [
             ],
         ],
     ],
-    'raw_materials' => [
+    'raw_material' => [
         'index' => [
             'title' => 'Raw Material',
             'buttons' => [
                 'create' => 'Create Raw Material',
-            ],
-            'partials' => [
-                'raw_materials' => [
-                    'messages' => [
-                        'deleted' => 'Raw Material deleted successfully!',
-                    ],
-                    'partials' => [
-                        'raw_materials_table' => [
-                            'headers' => [
-                                'material_code' => 'Material Code',
-                                'description' => 'Description',
-                                'specs' => 'Specs',
-                                'unit' => 'Unit',
-                            ],
-                        ],
-                        'raw_materials_card' => [
-                            'headers' => [
-                                'material_code' => 'Material Code: :material_code',
-                                'description' => 'Description: :description',
-                                'specs' => 'Specs: :specs',
-                                'unit' => 'Unit: :unit',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Import Raw Material',
-                    'description' => 'Import Raw Material from Excel file',
-                    'fields' => [
-                        'download_template' => 'Download Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Import Raw Material',
-                        'download_template' => 'Download',
-                        'submit' => 'Import Raw Material',
-                        'processing' => 'Processing...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Raw Material imported successfully!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -624,6 +582,53 @@ return [
             ],
             'messages' => [
                 'updated' => 'Raw Material updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'raw_materials' => [
+                'messages' => [
+                    'deleted' => 'Raw Material deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'buttons' => [
+                    'import' => 'Import Raw Material',
+                ],
+                'messages' => [
+                    'imported' => 'Raw Material imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Raw Material',
+                    'description' => 'Import Raw Material from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Raw Material',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Raw Material',
+                        'processing' => 'Processing...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'raw_material_table' => [
+                    'headers' => [
+                        'material_code' => 'Material Code',
+                        'description' => 'Description',
+                        'specs' => 'Specs',
+                        'unit' => 'Unit',
+                    ],
+                ],
+                'raw_material_card' => [
+                    'headers' => [
+                        'material_code' => 'Material Code: :material_code',
+                        'description' => 'Description: :description',
+                        'specs' => 'Specs: :specs',
+                        'unit' => 'Unit: :unit',
+                    ],
+                ],
             ],
         ],
     ],

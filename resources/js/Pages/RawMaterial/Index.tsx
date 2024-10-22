@@ -12,16 +12,16 @@ export default function () {
     const RawMaterials = lazy(() => import('./Partials/RawMaterials'));
     return (
         <>
-            <Head title={t('pages.raw_materials.index.title')} />
+            <Head title={t('pages.raw_material.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex flex-col md:flex-row gap-5 md:items-center">
-                        <h1 className="text-page-header my-4">{t('pages.raw_materials.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.raw_material.index.title')}</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.RAW_MATERIALS}.create`)}
                         >
-                            {t('pages.raw_materials.index.buttons.create')}
+                            {t('pages.raw_material.index.buttons.create')}
                         </Link>
                         <Import />
                     </div>

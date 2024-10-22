@@ -21,24 +21,16 @@ export default function RawMaterialTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t(
-                                'pages.raw_materials.index.partials.raw_materials.partials.raw_materials_table.headers.material_code',
-                            )}
+                            {t('pages.raw_material.partials.partials.raw_material_table.headers.material_code')}
                         </TableHead>
                         <TableHead>
-                            {t(
-                                'pages.raw_materials.index.partials.raw_materials.partials.raw_materials_table.headers.description',
-                            )}
+                            {t('pages.raw_material.partials.partials.raw_material_table.headers.description')}
                         </TableHead>
                         <TableHead>
-                            {t(
-                                'pages.raw_materials.index.partials.raw_materials.partials.raw_materials_table.headers.specs',
-                            )}
+                            {t('pages.raw_material.partials.partials.raw_material_table.headers.specs')}
                         </TableHead>
                         <TableHead>
-                            {t(
-                                'pages.raw_materials.index.partials.raw_materials.partials.raw_materials_table.headers.unit',
-                            )}
+                            {t('pages.raw_material.partials.partials.raw_material_table.headers.unit')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>

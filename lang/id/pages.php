@@ -529,53 +529,11 @@ return [
             ],
         ],
     ],
-    'raw_materials' => [
+    'raw_material' => [
         'index' => [
             'title' => 'Bahan Baku',
             'buttons' => [
                 'create' => 'Buat Bahan Baku',
-            ],
-            'partials' => [
-                'raw_materials' => [
-                    'messages' => [
-                        'deleted' => 'Bahan Baku berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'raw_materials_table' => [
-                            'headers' => [
-                                'material_code' => 'Kode Bahan',
-                                'description' => 'Deskripsi',
-                                'specs' => 'Spesifikasi',
-                                'unit' => 'Satuan',
-                            ],
-                        ],
-                        'raw_materials_card' => [
-                            'headers' => [
-                                'material_code' => 'Kode Bahan: :material_code',
-                                'description' => 'Deskripsi: :description',
-                                'specs' => 'Spesifikasi: :specs',
-                                'unit' => 'Satuan: :unit',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Impor Bahan Baku',
-                    'description' => 'Impor Bahan Baku dari file Excel',
-                    'fields' => [
-                        'download_template' => 'Unduh Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Impor Bahan Baku',
-                        'download_template' => 'Unduh',
-                        'submit' => 'Impor Bahan Baku',
-                        'processing' => 'Memproses...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Bahan Baku berhasil diimpor!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -606,6 +564,53 @@ return [
             ],
             'messages' => [
                 'updated' => 'Bahan Baku berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'raw_materials' => [
+                'messages' => [
+                    'deleted' => 'Bahan Baku berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'buttons' => [
+                    'import' => 'Impor Bahan Baku',
+                ],
+                'messages' => [
+                    'imported' => 'Bahan Baku berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Bahan Baku',
+                    'description' => 'Impor Bahan Baku dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Bahan Baku',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Bahan Baku',
+                        'processing' => 'Memproses...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'raw_material_table' => [
+                    'headers' => [
+                        'material_code' => 'Kode Bahan',
+                        'description' => 'Deskripsi',
+                        'specs' => 'Spesifikasi',
+                        'unit' => 'Satuan',
+                    ],
+                ],
+                'raw_material_card' => [
+                    'headers' => [
+                        'material_code' => 'Kode Bahan: :material_code',
+                        'description' => 'Deskripsi: :description',
+                        'specs' => 'Spesifikasi: :specs',
+                        'unit' => 'Satuan: :unit',
+                    ],
+                ],
             ],
         ],
     ],

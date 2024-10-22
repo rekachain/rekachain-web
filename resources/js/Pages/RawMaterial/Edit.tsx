@@ -28,17 +28,17 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
         e.preventDefault();
         await rawMaterialService.update(rawMaterial.id, data);
         router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        void useSuccessToast(t('pages.raw_materials.edit.messages.updated'));
+        void useSuccessToast(t('pages.raw_material.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head title={t('pages.raw_materials.edit.title', { name: rawMaterial.material_code })} />
+            <Head title={t('pages.raw_material.edit.title', { name: rawMaterial.material_code })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.raw_materials.edit.title', { name: rawMaterial.material_code })}
+                            {t('pages.raw_material.edit.title', { name: rawMaterial.material_code })}
                         </h1>
                     </div>
 
@@ -46,7 +46,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="material_code"
-                                value={t('pages.raw_materials.edit.fields.material_code')}
+                                value={t('pages.raw_material.edit.fields.material_code')}
                             />
                             <Input
                                 id="material_code"
@@ -60,10 +60,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel
-                                htmlFor="description"
-                                value={t('pages.raw_materials.edit.fields.description')}
-                            />
+                            <InputLabel htmlFor="description" value={t('pages.raw_material.edit.fields.description')} />
                             <Input
                                 id="description"
                                 type="text"
@@ -76,7 +73,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="specs" value={t('pages.raw_materials.edit.fields.specs')} />
+                            <InputLabel htmlFor="specs" value={t('pages.raw_material.edit.fields.specs')} />
                             <Input
                                 id="specs"
                                 type="text"
@@ -89,7 +86,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="unit" value={t('pages.raw_materials.edit.fields.unit')} />
+                            <InputLabel htmlFor="unit" value={t('pages.raw_material.edit.fields.unit')} />
                             <Input
                                 id="unit"
                                 type="text"
@@ -102,7 +99,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.raw_materials.edit.buttons.submit')}
+                            {t('pages.raw_material.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>
