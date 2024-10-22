@@ -19,7 +19,7 @@ export default function DivisionTableView({
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>{t('pages.division.partials.partials.divisions_table.headers.name')}</TableHead>
+                    <TableHead>{t('pages.division.partials.partials.division_table.headers.name')}</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>

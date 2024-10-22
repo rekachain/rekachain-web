@@ -123,12 +123,12 @@ return [
                 ],
             ],
             'partials' => [
-                'divisions_table' => [
+                'division_table' => [
                     'headers' => [
                         'name' => 'Name',
                     ],
                 ],
-                'divisions_card' => [
+                'division_card' => [
                     'headers' => [
                         'name' => 'Name',
                     ],
