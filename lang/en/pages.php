@@ -136,32 +136,11 @@ return [
             ],
         ],
     ],
-    'workshops' => [
+    'workshop' => [
         'index' => [
             'title' => 'Workshops',
             'buttons' => [
                 'create' => 'Create Workshop',
-            ],
-            'partials' => [
-                'workshops' => [
-                    'messages' => [
-                        'deleted' => 'Workshop deleted successfully!',
-                    ],
-                    'partials' => [
-                        'workshops_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'address' => 'Address',
-                            ],
-                        ],
-                        'workshops_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'address' => 'Address : :address',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -188,6 +167,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Workshop updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'workshops' => [
+                'messages' => [
+                    'deleted' => 'Workshop deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'workshops_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'address' => 'Address',
+                    ],
+                ],
+                'workshops_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'address' => 'Address : :address',
+                    ],
+                ],
             ],
         ],
     ],

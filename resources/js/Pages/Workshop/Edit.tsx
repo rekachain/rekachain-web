@@ -27,13 +27,13 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
 
         await workshopService.update(workshop.id, data);
         router.visit(route(`${ROUTES.WORKSHOPS}.index`));
-        void useSuccessToast(t('pages.workshops.edit.messages.updated'));
+        void useSuccessToast(t('pages.workshop.edit.messages.updated'));
     });
 
     return (
         <>
             <Head
-                title={t('pages.workshops.edit.title', {
+                title={t('pages.workshop.edit.title', {
                     name: workshop.name,
                 })}
             />
@@ -41,7 +41,7 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.workshops.edit.title', {
+                            {t('pages.workshop.edit.title', {
                                 name: workshop.name,
                             })}
                         </h1>
@@ -49,7 +49,7 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workshops.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.workshop.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -62,7 +62,7 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="address" value={t('pages.workshops.edit.fields.address')} />
+                            <InputLabel htmlFor="address" value={t('pages.workshop.edit.fields.address')} />
                             <Input
                                 id="address"
                                 type="text"
@@ -75,7 +75,7 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.workshops.edit.buttons.submit')}
+                            {t('pages.workshop.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

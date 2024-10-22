@@ -21,11 +21,9 @@ export default function WorkshopTableView({
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead>{t('pages.workshop.partials.partials.workshops_table.headers.name')}</TableHead>
                             <TableHead>
-                                {t('pages.workshops.index.partials.workshops.partials.workshops_table.headers.name')}
-                            </TableHead>
-                            <TableHead>
-                                {t('pages.workshops.index.partials.workshops.partials.workshops_table.headers.address')}
+                                {t('pages.workshop.partials.partials.workshops_table.headers.address')}
                             </TableHead>
                             <TableHead></TableHead>
                         </TableRow>

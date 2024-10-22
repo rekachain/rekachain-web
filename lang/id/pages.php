@@ -136,32 +136,11 @@ return [
             ],
         ],
     ],
-    'workshops' => [
+    'workshop' => [
         'index' => [
             'title' => 'Workshop',
             'buttons' => [
                 'create' => 'Buat Workshop',
-            ],
-            'partials' => [
-                'workshops' => [
-                    'messages' => [
-                        'deleted' => 'Workshop berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'workshops_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'address' => 'Alamat',
-                            ],
-                        ],
-                        'workshops_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'address' => 'Alamat : :address',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -188,6 +167,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Workshop berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'workshops' => [
+                'messages' => [
+                    'deleted' => 'Workshop berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'workshops_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'address' => 'Alamat',
+                    ],
+                ],
+                'workshops_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'address' => 'Alamat : :address',
+                    ],
+                ],
             ],
         ],
     ],
