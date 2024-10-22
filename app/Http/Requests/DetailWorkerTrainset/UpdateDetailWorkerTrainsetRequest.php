@@ -14,8 +14,7 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
         switch ($intent){
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
-                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
-                    'image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 ]; 
         }
         
