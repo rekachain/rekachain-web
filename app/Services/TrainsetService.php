@@ -11,6 +11,7 @@ use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
@@ -262,11 +263,12 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $sourceWorkstationId = $data["{$division}_source_workstation_id"];
             $destinationWorkstationId = $data["{$division}_destination_workstation_id"];
 
-            $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
+            // $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
                 $trainsetAttachment = $this->trainsetAttachmentService->create([
-                    'carriage_trainset_id' => $carriageTrainset->id,
+                    'trainset_id' => $trainset->id,
                     'source_workstation_id' => $sourceWorkstationId,
                     'destination_workstation_id' => $destinationWorkstationId,
+                    'type' => $division === 'mechanic' ? TrainsetAttachmentTypeEnum::MEKANIK : TrainsetAttachmentTypeEnum::ELEKTRIK,
                 ]);
 
                 $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
@@ -274,12 +276,12 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 //            $serialPanelIds = $this->generateSerialPanels($trainsetAttachment, $carriageTrainset);
 
                 //            $serialPanelIdsString = implode(',', $serialPanelIds);
-                $qrCode = "KPM:{$trainsetAttachment->attachment_number};P:{$carriageTrainset->trainset->project->name};TS:{$carriageTrainset->trainset->name};;";
+                $qrCode = "KPM:{$trainsetAttachment->attachment_number};P:{$trainset->project->name};TS:{$trainset->name};;";
                 $path = "trainset_attachments/qr_images/{$trainsetAttachment->id}.svg";
                 $this->generateQrCode($qrCode, $path);
 
                 $trainsetAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
-            });
+            // });
             $this->checkGeneratedAttachment($trainset);
             // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
 
@@ -298,7 +300,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
                     $panelAttachment = $this->panelAttachmentService->create([
                         'carriage_panel_id' => $carriagePanel->id,
-                        'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
+                        // 'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
                     ]);
@@ -414,7 +416,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
 
         $numberAttachmentOnTrainset = $this->trainsetAttachmentService->find([
-            'carriage_trainset_id' => $model->carriage_trainset_id,
+            'trainset_id' => $model->trainset_id,
         ])->count();
 
         logger('Number of attachments on trainset: ' . $numberAttachmentOnTrainset);
