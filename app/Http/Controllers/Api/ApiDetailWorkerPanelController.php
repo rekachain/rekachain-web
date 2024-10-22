@@ -7,10 +7,11 @@ use App\Support\Enums\RoleEnum;
 use App\Models\DetailWorkerPanel;
 use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DetailWorkerPanel\UpdateDetailWorkerPanelRequest;
 use App\Http\Resources\DetailWorkerPanelResource;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Http\Requests\DetailWorkerPanel\StoreDetailWorkerPanelRequest;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
+use App\Http\Requests\DetailWorkerPanel\UpdateDetailWorkerPanelRequest;
 
 class ApiDetailWorkerPanelController extends Controller {
     public function __construct(
@@ -131,16 +132,8 @@ class ApiDetailWorkerPanelController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
-        $intent = request()->get('intent');
-        switch ($intent) {
-           case IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value:
-            if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
-                abort(403, 'Unauthorized');
-            }
-            
-            return $this->detailWorkerPanelService->assignWorker($request);
-        }   
+    public function store(StoreDetailWorkerPanelRequest $request) {
+      //
     }
 
     /**
@@ -149,6 +142,8 @@ class ApiDetailWorkerPanelController extends Controller {
     public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
         $intent = request()->get('intent');
         switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value:
+                return DetailWorkerPanelResource::make($detailWorkerPanel->load('progress_step.progress', 'progress_step.step', 'panel_attachment'));
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
                 
@@ -159,8 +154,7 @@ class ApiDetailWorkerPanelController extends Controller {
                         ]
                     ])));
             default:
-                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value]);
-                return DetailWorkerPanelResource::make($detailWorkerPanel->load('progress_step.progress', 'progress_step.step'));
+                return DetailWorkerPanelResource::make($detailWorkerPanel);
         }
     }
 
@@ -184,7 +178,7 @@ class ApiDetailWorkerPanelController extends Controller {
 
                 return (new DetailWorkerPanelResource($data))->toArray($request);  
             case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value: 
-                if (!$request->user()->hasRole(RoleEnum::WORKER_ASSEMBLY)) {
+                if (!$request->user()->hasRole([RoleEnum::WORKER_ASSEMBLY, RoleEnum::QC_ASSEMBLY])) {
                     abort(403, 'Unauthorized');
                 }
 

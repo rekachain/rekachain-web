@@ -22,6 +22,8 @@ class TrainsetAttachmentResource extends JsonResource
                             'id' => $trainset_attachment_component->carriage_panel_component->component->id,
                             'component_name' => $trainset_attachment_component->carriage_panel_component->component->name,
                             'total_required' => $trainset_attachment_component->total_required,
+                            'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
+                            'total_failed' => $trainset_attachment_component->total_failed
                         ]
                     ];
                 })->map(function ($components) {
@@ -29,8 +31,27 @@ class TrainsetAttachmentResource extends JsonResource
                         'id' => $components->first()['id'],
                         'component_name' => $components->first()['component_name'],
                         'total_required' => $components->sum('total_required'),
+                        'total_fulfilled' => $components->sum('total_fulfilled'),
+                        'total_failed' => $components->sum('total_failed')
                     ];
                 })->values();
+
+                return [
+                    'attachment_number' => $this->attachment_number,
+                    'components' => $components
+                ];
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_REQUIRED_COMPONENTS->value:
+                $trainsetAttachment = $this->load(['trainset_attachment_components']);
+                $components = $trainsetAttachment->trainset_attachment_components->filter(function ($trainset_attachment_component) {
+                    return $trainset_attachment_component->total_fulfilled !== $trainset_attachment_component->total_required;
+                })->map(function ($trainset_attachment_component) {
+                    return [
+                        'carriage_panel_component_id' => $trainset_attachment_component->carriage_panel_component_id,
+                        'component' => ComponentResource::make($trainset_attachment_component->carriage_panel_component->component),
+                        'total_required' => $trainset_attachment_component->total_required,
+                        'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
+                    ];
+                })->unique('component')->values();
 
                 return [
                     'attachment_number' => $this->attachment_number,

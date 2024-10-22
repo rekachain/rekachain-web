@@ -14,6 +14,7 @@ class DetailWorkerTrainsetResource extends JsonResource {
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS->value:
                 return [
                     'id' => $this->id,
+                    'trainset_attachment' => TrainsetAttachmentResource::make($this->trainset_attachment),
                     'trainset_attachment_component' => TrainsetAttachmentComponentResource::make($this->trainset_attachment_component),
                     'worker' => UserResource::make($this->worker),
                     'progress_step' => ProgressStepResource::make($this->progress_step),
@@ -53,6 +54,7 @@ class DetailWorkerTrainsetResource extends JsonResource {
             default:
                 return [
                     'id' => $this->id,
+                    'trainset_attachment' => TrainsetAttachmentResource::make($this->whenLoaded('trainset_attachment')),
                     'trainset_attachment_component_id' => $this->trainset_attachment_component_id,
                     'trainset_attachment_component' => TrainsetAttachmentComponentResource::make($this->whenLoaded('trainset_attachment_component')),
                     'worker_id' => $this->worker_id,
