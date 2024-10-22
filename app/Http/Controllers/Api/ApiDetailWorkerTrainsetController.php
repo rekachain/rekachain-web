@@ -117,11 +117,10 @@ class ApiDetailWorkerTrainsetController extends Controller {
         $intent = request()->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_DETAIL_WORKER_TRAINSETS_GET_ALL_WORK_DETAIL->value:
-                return DetailWorkerTrainsetResource::make($detailWorkerTrainset);
-            default:
-                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS->value]);
+            case IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_WORK_DETAILS->value:
                 return DetailWorkerTrainsetResource::make($detailWorkerTrainset->load(['progress_step.progress', 'progress_step.step']));
+            default:
+                return DetailWorkerTrainsetResource::make($detailWorkerTrainset);
         }
     }
 
