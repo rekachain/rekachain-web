@@ -4,13 +4,13 @@ use App\Models\User;
 
 test('index method returns paginated workstations', function () {
     $user = User::factory()->superAdmin()->create();
-    createWorkstation();
+    $this->dummy->createWorkstation();
 
-    $response = $this->actingAs($user)->getJson('/workstations?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/workstations?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(2, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 test('create method returns create page', function () {
@@ -24,8 +24,8 @@ test('create method returns create page', function () {
 
 test('store method creates new workstation', function () {
     $user = User::factory()->superAdmin()->create();
-    $division = createDivision();
-    $workshop = createWorkshop();
+    $division = $this->dummy->createDivision();
+    $workshop = $this->dummy->createWorkshop();
     $workstationData = [
         'name' => 'Test name',
         'location' => 'Test location',
@@ -56,7 +56,7 @@ test('store method creates new workstation', function () {
 
 test('show method returns workstation details', function () {
     $user = User::factory()->superAdmin()->create();
-    $workstation = createWorkstation();
+    $workstation = $this->dummy->createWorkstation();
 
     $response = $this->actingAs($user)->getJson("/workstations/{$workstation->id}");
 
@@ -70,7 +70,7 @@ test('show method returns workstation details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->superAdmin()->create();
-    $workstation = createWorkstation();
+    $workstation = $this->dummy->createWorkstation();
 
     $response = $this->actingAs($user)->get("/workstations/{$workstation->id}/edit");
 
@@ -80,7 +80,7 @@ test('edit method returns edit page', function () {
 
 test('update method updates workstation', function () {
     $user = User::factory()->superAdmin()->create();
-    $workstation = createWorkstation();
+    $workstation = $this->dummy->createWorkstation();
     $updatedData = [
         'name' => 'Updated name',
         'location' => 'Updated location',
@@ -95,7 +95,7 @@ test('update method updates workstation', function () {
 
 test('destroy method deletes workstation', function () {
     $user = User::factory()->superAdmin()->create();
-    $workstation = createWorkstation();
+    $workstation = $this->dummy->createWorkstation();
 
     $response = $this->actingAs($user)->deleteJson("/workstations/{$workstation->id}");
 

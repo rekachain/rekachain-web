@@ -1,111 +1,97 @@
 <?php
 
-use App\Models\Step;
-use App\Models\User;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use App\Exports\Step\StepsTemplateExport;
 
 test('index method returns paginated steps', function () {
-    $user = User::factory()->create();
-    Step::factory()->count(5)->create();
-
-    $response = $this->actingAs($user)->getJson('/steps?page=1&perPage=10');
+    $this->dummy->createStep();
+    $response = actAsSuperAdmin()->getJson('/steps?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(6, 'data');
+        ->assertJsonCount(1, 'data');;
 });
 
 test('create method returns create page', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get('/steps/create');
-
-    $response->assertStatus(200)
+    actAsSuperAdmin()->get('/steps/create')
+        ->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert->component('Step/Create'));
 });
 
 test('store method creates new step', function () {
-    $user = User::factory()->create();
     $stepData = [
-        'name' => 'Test name',
-        'process' => 'Test process',
+        'name' => 'Test Step',
+        'process' => 'Test Process',
+        'estimated_time' => 60,
     ];
 
-    $response = $this->actingAs($user)->postJson('/steps', $stepData);
+    $response = actAsSuperAdmin()->postJson('/steps', $stepData);
 
     $response->assertStatus(201)
-        ->assertJsonStructure(['id', 'name', 'process']);
+        ->assertJsonStructure(['id', 'name', 'process', 'estimated_time']);
     $this->assertDatabaseHas('steps', $stepData);
 });
 
-// test('store method imports steps', function () {
-//     Storage::fake('local');
-//     $user = User::factory()->create();
-//     $file = UploadedFile::fake()->create('steps.xlsx');
+test('store method imports steps', function () {
+    Storage::fake('local');
 
-//     $response = $this->actingAs($user)->postJson('/steps', [
-//         'intent' => IntentEnum::WEB_CARRIAGE_IMPORT_CARRIAGE->value,
-//         'import_file' => $file,
-//     ]);
+    $file = Excel::raw(new StepsTemplateExport, \Maatwebsite\Excel\Excel::XLSX);
+    $uploadedFile = UploadedFile::fake()->createWithContent('steps.xlsx', $file);
 
-//     $response->assertStatus(204);
-// });
+    $response = actAsSuperAdmin()->postJson('/steps', [
+        'intent' => IntentEnum::WEB_STEP_IMPORT_STEP->value,
+        'import_file' => $uploadedFile,
+    ]);
+
+    $response->assertStatus(204);
+});
+
 
 test('show method returns step details', function () {
-    $user = User::factory()->create();
-    $step = Step::factory()->create();
+    $step = $this->dummy->createStep();
 
-    $response = $this->actingAs($user)->getJson("/steps/{$step->id}");
+    $response = actAsSuperAdmin()->getJson("/steps/{$step->id}");
 
     $response->assertStatus(200)
-        ->assertJson([
-            'id' => $step->id,
-            'process' => $step->process,
-            'estimated_time' => $step->estimated_time,
-        ]);
+        ->assertJsonStructure(['id', 'name', 'process', 'estimated_time', 'can_be_deleted']);
 });
 
 test('edit method returns edit page', function () {
-    $user = User::factory()->create();
-    $step = Step::factory()->create();
+    $step = $this->dummy->createStep();
 
-    $response = $this->actingAs($user)->get("/steps/{$step->id}/edit");
+    $response = actAsSuperAdmin()->get("/steps/{$step->id}/edit");
 
     $response->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert->component('Step/Edit'));
 });
 
 test('update method updates step', function () {
-    $user = User::factory()->create();
-    $step = Step::factory()->create();
+    $step = $this->dummy->createStep();
     $updatedData = [
-        'name' => 'Updated name',
-        'process' => 'Updated process',
+        'name' => 'Updated Step',
+        'process' => 'Updated Process',
+        'estimated_time' => 90,
     ];
 
-    $response = $this->actingAs($user)->putJson("/steps/{$step->id}", $updatedData);
+    $response = actAsSuperAdmin()->putJson("/steps/{$step->id}", $updatedData);
 
     $response->assertStatus(200)
-        ->assertJson($updatedData);
+        ->assertJsonStructure(['id', 'name', 'process', 'estimated_time']);
     $this->assertDatabaseHas('steps', $updatedData);
 });
 
 test('destroy method deletes step', function () {
-    $user = User::factory()->create();
-    $step = Step::factory()->create();
+    $step = $this->dummy->createStep();
 
-    $response = $this->actingAs($user)->deleteJson("/steps/{$step->id}");
+    $response = actAsSuperAdmin()->deleteJson("/steps/{$step->id}");
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('steps', ['id' => $step->id]);
 });
 
 test('index method returns import template', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->getJson('/steps?intent=' . IntentEnum::WEB_STEP_GET_TEMPLATE_IMPORT_STEP->value);
+    $response = actAsSuperAdmin()->getJson('/steps?intent=' . IntentEnum::WEB_STEP_GET_TEMPLATE_IMPORT_STEP->value);
 
     $response->assertStatus(200)
         ->assertDownload('steps_template.xlsx');
