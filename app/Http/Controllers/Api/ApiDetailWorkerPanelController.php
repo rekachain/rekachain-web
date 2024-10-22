@@ -149,6 +149,8 @@ class ApiDetailWorkerPanelController extends Controller {
     public function show(DetailWorkerPanel $detailWorkerPanel, Request $request) {
         $intent = request()->get('intent');
         switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value:
+                return DetailWorkerPanelResource::make($detailWorkerPanel->load('progress_step.progress', 'progress_step.step', 'panel_attachment'));
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value]);
                 
@@ -159,8 +161,7 @@ class ApiDetailWorkerPanelController extends Controller {
                         ]
                     ])));
             default:
-                $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value]);
-                return DetailWorkerPanelResource::make($detailWorkerPanel->load('progress_step.progress', 'progress_step.step', 'panel_attachment'));
+                return DetailWorkerPanelResource::make($detailWorkerPanel);
         }
     }
 
