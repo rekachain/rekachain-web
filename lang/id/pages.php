@@ -399,38 +399,11 @@ return [
             ],
         ],
     ],
-    'roles' => [ // Update belum diimplementasikan
+    'role' => [ // Update belum diimplementasikan
         'index' => [
             'title' => 'Peranan',
             'buttons' => [
                 'create' => 'Buat Peran',
-            ],
-            'partials' => [
-                'roles' => [
-                    'messages' => [
-                        'deleted' => 'Peran berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'roles_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'division' => 'Divisi',
-                                'level' => 'Tingkat',
-                                'users_count' => 'Jumlah Pengguna',
-                                'permissions_count' => 'Jumlah Izin',
-                            ],
-                        ],
-                        'roles_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'division' => 'Divisi: :division',
-                                'level' => 'Tingkat: :level',
-                                'users_count' => 'Jumlah Pengguna: :users_count',
-                                'permissions_count' => 'Jumlah Izin: :permissions_count',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -463,6 +436,33 @@ return [
             ],
             'messages' => [
                 'updated' => 'Peran berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'roles' => [
+                'messages' => [
+                    'deleted' => 'Peran berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'role_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'division' => 'Divisi',
+                        'level' => 'Tingkat',
+                        'users_count' => 'Jumlah Pengguna',
+                        'permissions_count' => 'Jumlah Izin',
+                    ],
+                ],
+                'role_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'division' => 'Divisi: :division',
+                        'level' => 'Tingkat: :level',
+                        'users_count' => 'Jumlah Pengguna: :users_count',
+                        'permissions_count' => 'Jumlah Izin: :permissions_count',
+                    ],
+                ],
             ],
         ],
     ],

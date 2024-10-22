@@ -417,38 +417,11 @@ return [
             ],
         ],
     ],
-    'roles' => [ // Update not implemented
+    'role' => [ // Update not implemented
         'index' => [
             'title' => 'Role',
             'buttons' => [
                 'create' => 'Create Role',
-            ],
-            'partials' => [
-                'roles' => [
-                    'messages' => [
-                        'deleted' => 'Role deleted successfully!',
-                    ],
-                    'partials' => [
-                        'roles_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'division' => 'Division',
-                                'level' => 'Level',
-                                'users_count' => 'User Count',
-                                'permissions_count' => 'Permission Count',
-                            ],
-                        ],
-                        'roles_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'division' => 'Division: :division',
-                                'level' => 'Level: :level',
-                                'users_count' => 'User Count: :users_count',
-                                'permissions_count' => 'Permission Count: :permissions_count',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -481,6 +454,33 @@ return [
             ],
             'messages' => [
                 'updated' => 'Role updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'roles' => [
+                'messages' => [
+                    'deleted' => 'Role deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'role_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'division' => 'Division',
+                        'level' => 'Level',
+                        'users_count' => 'User Count',
+                        'permissions_count' => 'Permission Count',
+                    ],
+                ],
+                'role_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'division' => 'Division: :division',
+                        'level' => 'Level: :level',
+                        'users_count' => 'User Count: :users_count',
+                        'permissions_count' => 'Permission Count: :permissions_count',
+                    ],
+                ],
             ],
         ],
     ],

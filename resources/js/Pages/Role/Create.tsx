@@ -39,7 +39,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
             permissions: data.permissions,
         });
         router.visit(route(`${ROUTES.ROLES}.index`));
-        void useSuccessToast(t('pages.roles.create.messages.created'));
+        void useSuccessToast(t('pages.role.create.messages.created'));
     });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
@@ -55,16 +55,16 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
 
     return (
         <>
-            <Head title="Tambah Role" />
+            <Head title={t('pages.role.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.roles.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.role.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.roles.create.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.role.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -78,14 +78,15 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value={t('pages.roles.create.fields.division')} />
+                            <InputLabel htmlFor="division" value={t('pages.role.create.fields.division')} />
+                            {/* TODO: implement GenericDataSelector */}
                             <Select
                                 name="division"
                                 value={data.division_id}
                                 onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('pages.roles.create.fields.division_placeholder')} />
+                                    <SelectValue placeholder={t('pages.role.create.fields.division_placeholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {/*none*/}
@@ -100,7 +101,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="level" value={t('pages.roles.create.fields.level')} />
+                            <InputLabel htmlFor="level" value={t('pages.role.create.fields.level')} />
                             <Input
                                 id="level"
                                 type="text"
@@ -114,7 +115,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-5">
-                            <h1>{t('pages.roles.create.fields.permissions')}</h1>
+                            <h1>{t('pages.role.create.fields.permissions')}</h1>
                             <div className="mt-1">
                                 <div className="flex flex-wrap">
                                     {permissions.map(permission => (
@@ -142,7 +143,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                             </div>
                         </div>
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.roles.create.buttons.submit')}
+                            {t('pages.role.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>
