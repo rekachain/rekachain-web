@@ -4,28 +4,34 @@ namespace App\Services\TrainsetAttachmentComponent;
 
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\TrainsetAttachmentTypeEnum;
+use App\Support\Interfaces\Services\DivisionServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
 use App\Support\Interfaces\Services\WorkAspectServiceInterface;
 
 class TrainsetAttachmentComponentGenerator
 {
     public function __construct(
-        protected WorkAspectServiceInterface $workAspectService,
+        protected DivisionServiceInterface $divisionService,
         protected TrainsetAttachmentComponentServiceInterface $trainsetAttachmentComponentService,
+        protected WorkAspectServiceInterface $workAspectService,
     ) {}
 
     public function generate(TrainsetAttachment $trainsetAttachment)
     {
-        $workAspectName = $trainsetAttachment->type->value === TrainsetAttachmentTypeEnum::MEKANIK
-            ? 'Fabrikasi'
-            : 'Cutting Harness';
+        $division = $this->divisionService->find(['name' => $trainsetAttachment->type->value === TrainsetAttachmentTypeEnum::MECHANIC->value ? 'Mekanik' : 'Elektrik'])->first();
 
-        $workAspect = $this->workAspectService
-            ->find(['name' => $workAspectName])
-            ->first();
+        $workAspects = $this->workAspectService
+            ->find(['division_id' => $division->id]);
 
-        $carriageTrainsets = $trainsetAttachment->trainset->carriage_trainsets;
-        $this->iterateCarriageTrainsets($carriageTrainsets, $trainsetAttachment, $workAspect);
+        $this->iterateWorkAspects($workAspects, $trainsetAttachment);
+    }
+
+    private function iterateWorkAspects($workAspects, $trainsetAttachment)
+    {
+        $workAspects->each(function ($workAspect) use ($trainsetAttachment) {
+            $carriageTrainsets = $trainsetAttachment->trainset->carriage_trainsets;
+            $this->iterateCarriageTrainsets($carriageTrainsets, $trainsetAttachment, $workAspect);
+        });
     }
 
     private function iterateCarriageTrainsets($carriageTrainsets, $trainsetAttachment, $workAspect)
