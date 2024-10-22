@@ -1161,9 +1161,106 @@ return [
         'title' => 'Settings',
     ],
     'feedback' => [
-        'title' => 'Feedback',
+        'index' => [
+            'title' => 'Feedback',
+            'buttons' => [
+                'create' => 'Create Feedback',
+            ],
+        ],
+        'partials' => [
+            'feedbacks' => [
+                'messages' => [
+                    'deleted' => 'Feedback deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'feedback_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'rating' => 'Rating',
+                        'message' => 'Message',
+                        'status' => 'Status',
+                    ],
+                    'values' => [
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ],
+                ],
+                'feedback_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'email' => 'Email: :email',
+                        'rating' => 'Rating: :rating',
+                        'message' => 'Message: :message',
+                        'status' => 'Status: :status',
+                    ],
+                ],
+            ],
+        ],
     ],
     'helpdesk' => [
         'title' => 'Helpdesk',
+    ],
+    'profile' => [
+        'edit' => [
+            'title' => 'Edit Profile',
+        ],
+        'partials' => [
+            'delete_user_form' => [
+                'title' => 'Delete Account',
+                'description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
+                'dialogs' => [
+                    'title' => 'Delete Account',
+                    'description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+                    'fields' => [
+                        'password' => 'Password',
+                        'password_placeholder' => 'Enter your password',
+                    ],
+                    'buttons' => [
+                        'delete_account' => 'Delete Account',
+                    ],
+                ],
+                'buttons' => [
+                    'delete_account' => 'Delete Account',
+                ],
+            ],
+            'update_password_form' => [
+                'title' => 'Update Password',
+                'description' => 'Ensure your account is using a long, random password to stay secure.',
+                'fields' => [
+                    'current_password' => 'Current Password',
+                    'password' => 'Password',
+                    'password_confirmation' => 'Confirm Password',
+                ],
+                'buttons' => [
+                    'submit' => 'Update Password',
+                ],
+                'messages' => [
+                    'updated' => 'Password updated successfully!',
+                ],
+            ],
+            'update_profile_information_form' => [
+                'title' => 'Update Profile Information',
+                'description' => 'Update your account\'s profile information and email address.',
+                'fields' => [
+                    'name' => 'Name',
+                    'email' => 'Email',
+                    'phone_number' => 'Phone Number',
+                    'avatar' => 'Avatar',
+                    'avatar_filepond_placeholder' => 'Drop files here or click to upload',
+                ],
+                'buttons' => [
+                    'submit' => 'Update Information',
+                    'resend_verification_email' => 'Click here to re-send the verification email.',
+                ],
+                'messages' => [
+                    'updated' => 'Profile information updated successfully!',
+                    'verify_email' => 'Your email address is unverified.',
+                    'verification_email_sent' => 'A new verification email has been sent to the address you provided during registration.',
+                ],
+            ],
+        ],
     ],
 ];
