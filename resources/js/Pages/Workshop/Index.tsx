@@ -11,16 +11,16 @@ export default function () {
     const Workshops = lazy(() => import('./Partials/Workshops'));
     return (
         <>
-            <Head title={t('pages.workshops.index.title')} />
+            <Head title={t('pages.workshop.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.workshops.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.workshop.index.title')}</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.WORKSHOPS}.create`)}
                         >
-                            {t('pages.workshops.index.buttons.create')}
+                            {t('pages.workshop.index.buttons.create')}
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

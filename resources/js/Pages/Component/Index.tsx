@@ -11,16 +11,16 @@ export default function () {
     const Components = lazy(() => import('./Partials/Components'));
     return (
         <>
-            <Head title={t('pages.components.index.title')} />
+            <Head title={t('pages.component.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.components.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.component.index.title')}</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.COMPONENTS}.create`)}
                         >
-                            {t('pages.components.index.buttons.create')}
+                            {t('pages.component.index.buttons.create')}
                         </Link>
                         {/*<Import />*/}
                     </div>

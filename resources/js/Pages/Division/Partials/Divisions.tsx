@@ -30,7 +30,7 @@ export default function () {
     const handleDivisionDeletion = withLoading(async (id: number) => {
         await divisionService.delete(id);
         await syncDivisions();
-        void useSuccessToast(t('pages.divisions.index.partials.divisions.messages.deleted'));
+        void useSuccessToast(t('pages.division.partials.divisions.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

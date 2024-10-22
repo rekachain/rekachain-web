@@ -11,16 +11,16 @@ export default function () {
     const Divisions = lazy(() => import('./Partials/Divisions'));
     return (
         <>
-            <Head title={t('pages.divisions.index.title')} />
+            <Head title={t('pages.division.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.divisions.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.division.index.title')}</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.DIVISIONS}.create`)}
                         >
-                            {t('pages.divisions.index.buttons.create')}
+                            {t('pages.division.index.buttons.create')}
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

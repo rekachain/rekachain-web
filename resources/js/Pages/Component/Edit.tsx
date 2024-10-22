@@ -49,13 +49,13 @@ export default function ({ component }: { component: ComponentResource }) {
         event.preventDefault();
         await componentService.update(component.id, data);
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
-        void useSuccessToast(t('pages.components.edit.messages.updated'));
+        void useSuccessToast(t('pages.component.edit.messages.updated'));
     });
 
     return (
         <>
             <Head
-                title={t('pages.components.edit.title', {
+                title={t('pages.component.edit.title', {
                     name: component.name,
                 })}
             />
@@ -63,7 +63,7 @@ export default function ({ component }: { component: ComponentResource }) {
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.components.edit.title', {
+                            {t('pages.component.edit.title', {
                                 name: component.name,
                             })}
                         </h1>
@@ -74,7 +74,7 @@ export default function ({ component }: { component: ComponentResource }) {
                             {/* TODO: refactor using GenericDataSelector, BUG: existing progress wont show */}
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.components.edit.fields.progress')}</Label>
+                                    <Label htmlFor="progress">{t('pages.component.edit.fields.progress')}</Label>
                                     <div className="flex gap-2">
                                         <Popover open={open} onOpenChange={setOpen}>
                                             <PopoverTrigger asChild>
@@ -88,7 +88,7 @@ export default function ({ component }: { component: ComponentResource }) {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : t('pages.components.edit.fields.progress')}
+                                                        : t('pages.component.edit.fields.progress')}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -97,7 +97,7 @@ export default function ({ component }: { component: ComponentResource }) {
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
                                                         placeholder={t(
-                                                            'pages.components.edit.fields.progress_placeholder',
+                                                            'pages.component.edit.fields.progress_placeholder',
                                                         )}
                                                     />
                                                     <CommandList>
@@ -182,7 +182,7 @@ export default function ({ component }: { component: ComponentResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.components.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.component.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -195,7 +195,7 @@ export default function ({ component }: { component: ComponentResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            {t('pages.components.edit.buttons.submit')}
+                            {t('pages.component.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

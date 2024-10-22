@@ -31,7 +31,7 @@ export default function () {
     const handleRoleResourceDeletion = withLoading(async (id: number) => {
         await roleService.delete(id);
         await syncRoleResources();
-        void useSuccessToast(t('pages.roles.index.partials.roles.messages.deleted'));
+        void useSuccessToast(t('pages.role.partials.roles.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

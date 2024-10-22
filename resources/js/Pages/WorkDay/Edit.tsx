@@ -26,23 +26,23 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
 
         await workDayService.update(workDay.id, data);
         router.visit(route(`${ROUTES.WORK_DAYS}.index`));
-        void useSuccessToast(t('pages.work_days.edit.messages.updated'));
+        void useSuccessToast(t('pages.work_day.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head title={t('pages.work_days.edit.title')} />
+            <Head title={t('pages.work_day.edit.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.work_days.edit.title', { name: workDay.day })}
+                            {t('pages.work_day.edit.title', { name: workDay.day })}
                         </h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="type" value={t('pages.work_days.edit.fields.name')} />
+                            <InputLabel htmlFor="type" value={t('pages.work_day.edit.fields.name')} />
                             <Input
                                 id="type"
                                 type="text"
@@ -55,7 +55,7 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.work_days.edit.buttons.submit')}
+                            {t('pages.work_day.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

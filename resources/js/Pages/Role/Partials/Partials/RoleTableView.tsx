@@ -20,19 +20,11 @@ export default function RoleTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.roles.index.partials.roles.partials.roles_table.headers.name')}</TableHead>
-                        <TableHead>
-                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.division')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.level')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.users_count')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.roles.index.partials.roles.partials.roles_table.headers.permissions_count')}
-                        </TableHead>
+                        <TableHead>{t('pages.role.partials.partials.role_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.role.partials.partials.role_table.headers.division')}</TableHead>
+                        <TableHead>{t('pages.role.partials.partials.role_table.headers.level')}</TableHead>
+                        <TableHead>{t('pages.role.partials.partials.role_table.headers.users_count')}</TableHead>
+                        <TableHead>{t('pages.role.partials.partials.role_table.headers.permissions_count')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

@@ -23,24 +23,24 @@ export default function ({ division }: { division: DivisionResource }) {
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
         await divisionService.update(division.id, data);
-        void useSuccessToast(t('pages.divisions.edit.messages.updated'));
+        void useSuccessToast(t('pages.division.edit.messages.updated'));
         router.visit(route(`${ROUTES.DIVISIONS}.index`));
     });
 
     return (
         <>
-            <Head title={t('pages.divisions.edit.title', { name: division.name })} />
+            <Head title={t('pages.division.edit.title', { name: division.name })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.divisions.edit.title', { name: division.name })}
+                            {t('pages.division.edit.title', { name: division.name })}
                         </h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.divisions.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.division.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -53,7 +53,7 @@ export default function ({ division }: { division: DivisionResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.divisions.edit.buttons.submit')}
+                            {t('pages.division.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

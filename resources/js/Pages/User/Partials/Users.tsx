@@ -31,7 +31,7 @@ export default function () {
     const handleUserDeletion = withLoading(async (id: number) => {
         await userService.delete(id);
         await syncUsers();
-        void useSuccessToast(t('pages.users.index.partials.users.messages.deleted'));
+        void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

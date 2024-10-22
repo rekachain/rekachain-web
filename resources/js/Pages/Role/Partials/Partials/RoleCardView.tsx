@@ -32,24 +32,24 @@ export default function RoleCardView({
                                     className="font-bold text-base
                                  items-center "
                                 >
-                                    {t('pages.roles.index.partials.roles.partials.roles_card.headers.division', {
+                                    {t('pages.role.partials.partials.role_card.headers.division', {
                                         division: role?.division?.name ?? '',
                                     })}
                                 </h5>
                             </div>
                         </div>
                         <h4 className="text-base">
-                            {t('pages.roles.index.partials.roles.partials.roles_card.headers.level', {
+                            {t('pages.role.partials.partials.role_card.headers.level', {
                                 level: role?.level ?? '',
                             })}
                         </h4>
                         <p>
-                            {t('pages.roles.index.partials.roles.partials.roles_card.headers.users_count', {
+                            {t('pages.role.partials.partials.role_card.headers.users_count', {
                                 users_count: role?.users_count ?? 0,
                             })}
                         </p>
                         <p>
-                            {t('pages.roles.index.partials.roles.partials.roles_card.headers.permissions_count', {
+                            {t('pages.role.partials.partials.role_card.headers.permissions_count', {
                                 permissions_count: role?.permissions_count ?? 0,
                             })}
                         </p>

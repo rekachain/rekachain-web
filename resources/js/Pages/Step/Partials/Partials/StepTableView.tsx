@@ -22,14 +22,10 @@ export default function StepTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.steps.index.partials.steps.partials.steps_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.step.partials.partials.step_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.step.partials.partials.step_table.headers.process')}</TableHead>
                         <TableHead>
-                            {t('pages.steps.index.partials.steps.partials.steps_table.headers.process')}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.steps.index.partials.steps.partials.steps_table.headers.estimated_manufacturing_time',
-                            )}
+                            {t('pages.step.partials.partials.step_table.headers.estimated_manufacturing_time')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>

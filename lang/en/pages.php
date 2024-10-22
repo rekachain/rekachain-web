@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * Current structure example:
+ * following directory structure
+ *
+ * pages
+ *   - component name
+ *     - fields (for form fields)
+ *     - messages (for flash messages)
+ *     - buttons (for button names)
+ *     - actions (for action names)
+ *     - dialogs (for dialog element)
+ *       - messages (for messages in dialog)
+ *       - buttons (for button names in dialog)
+ *       - actions (for action names in dialog)
+ *   - components (for page components)
+ *   - partials (for page partials)
+ */
+
 return [
     'login' => [
         'title' => 'Welcome Back!',
@@ -19,36 +37,11 @@ return [
             'welcome' => 'Welcome to the Dashboard',
         ],
     ],
-    'work_days' => [
+    'work_day' => [
         'index' => [
             'title' => 'Work Days',
             'buttons' => [
                 'create' => 'Create Work Day',
-            ],
-            'partials' => [
-                'work_days' => [
-                    'messages' => [
-                        'deleted' => 'Work Day deleted successfully!',
-                    ],
-                    'partials' => [
-                        'work_day_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'start_date' => 'Start Date',
-                                'break_time' => 'Break Time',
-                                'end_date' => 'End Date',
-                            ],
-                        ],
-                        'work_day_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'start_date' => 'Start Date',
-                                'break_time' => 'Break Time',
-                                'end_date' => 'End Date',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -81,34 +74,40 @@ return [
                 'updated' => 'Work Day updated successfully!',
             ],
         ],
+        'partials' => [
+            'work_days' => [
+                'messages' => [
+                    'deleted' => 'Work Day deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'work_day_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'start_date' => 'Start Date',
+                        'break_time' => 'Break Time',
+                        'end_date' => 'End Date',
+                    ],
+                ],
+                'work_day_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'start_date' => 'Start Date',
+                        'break_time' => 'Break Time',
+                        'end_date' => 'End Date',
+                    ],
+                ],
+            ],
+        ],
     ],
     'staff_management' => [
         'title' => 'Staff Management',
     ],
-    'divisions' => [
+    'division' => [
         'index' => [
             'title' => 'Divisions',
             'buttons' => [
                 'create' => 'Create Division',
-            ],
-            'partials' => [
-                'divisions' => [
-                    'messages' => [
-                        'deleted' => 'Division deleted successfully!',
-                    ],
-                    'partials' => [
-                        'divisions_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                            ],
-                        ],
-                        'divisions_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -135,33 +134,31 @@ return [
                 'updated' => 'Division updated successfully!',
             ],
         ],
+        'partials' => [
+            'divisions' => [
+                'messages' => [
+                    'deleted' => 'Division deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'division_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                    ],
+                ],
+                'division_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'workshops' => [
+    'workshop' => [
         'index' => [
             'title' => 'Workshops',
             'buttons' => [
                 'create' => 'Create Workshop',
-            ],
-            'partials' => [
-                'workshops' => [
-                    'messages' => [
-                        'deleted' => 'Workshop deleted successfully!',
-                    ],
-                    'partials' => [
-                        'workshops_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'address' => 'Address',
-                            ],
-                        ],
-                        'workshops_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'address' => 'Address : :address',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -190,37 +187,33 @@ return [
                 'updated' => 'Workshop updated successfully!',
             ],
         ],
+        'partials' => [
+            'workshops' => [
+                'messages' => [
+                    'deleted' => 'Workshop deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'workshop_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'address' => 'Address',
+                    ],
+                ],
+                'workshop_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'address' => 'Address : :address',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'workstations' => [
+    'workstation' => [
         'index' => [
             'title' => 'Workstation',
             'buttons' => [
                 'create' => 'Create Workstation',
-            ],
-            'partials' => [
-                'workstations' => [
-                    'messages' => [
-                        'deleted' => 'Workstation deleted successfully!',
-                    ],
-                    'partials' => [
-                        'workstations_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'location' => 'Location',
-                                'workshop' => 'Workshop',
-                                'division' => 'Division',
-                            ],
-                        ],
-                        'workstations_card' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'location' => 'Location: :location',
-                                'workshop' => 'Workshop: :workshop',
-                                'division' => 'Division: :division',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -253,45 +246,37 @@ return [
                 'updated' => 'Workstation updated successfully!',
             ],
         ],
+        'partials' => [
+            'workstations' => [
+                'messages' => [
+                    'deleted' => 'Workstation deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'workstation_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'location' => 'Location',
+                        'workshop' => 'Workshop',
+                        'division' => 'Division',
+                    ],
+                ],
+                'workstation_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'location' => 'Location: :location',
+                        'workshop' => 'Workshop: :workshop',
+                        'division' => 'Division: :division',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'users' => [
+    'user' => [
         'index' => [
             'title' => 'Staff',
             'buttons' => [
                 'create' => 'Create Staff',
-            ],
-            'partials' => [
-                'users' => [
-                    'messages' => [
-                        'deleted' => 'Staff deleted successfully!',
-                    ],
-                    'partials' => [
-                        'users_table' => [
-                            'headers' => [
-                                'nip' => 'Employee ID',
-                                'name' => 'Name',
-                                'email' => 'Email',
-                                'phone_number' => 'Phone Number',
-                                'role' => 'Role',
-                                'workstation' => 'Workstation',
-                                'step' => 'Step',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                        'users_card' => [
-                            'headers' => [
-                                'nip' => 'Employee ID: :nip',
-                                'name' => 'Name: :name',
-                                'email' => 'Email: :email',
-                                'phone_number' => 'Phone Number: :phone_number',
-                                'role' => 'Role: :role',
-                                'workstation' => 'Workstation: :workstation',
-                                'step' => 'Step: :step',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -342,36 +327,48 @@ return [
                 'updated' => 'Staff updated successfully!',
             ],
         ],
+        'partials' => [
+            'users' => [
+                'messages' => [
+                    'deleted' => 'Staff deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'user_table' => [
+                    'headers' => [
+                        'nip' => 'Employee ID',
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'phone_number' => 'Phone Number',
+                        'role' => 'Role',
+                        'workstation' => 'Workstation',
+                        'step' => 'Step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+                'user_card' => [
+                    'headers' => [
+                        'nip' => 'Employee ID: :nip',
+                        'name' => 'Name: :name',
+                        'email' => 'Email: :email',
+                        'phone_number' => 'Phone Number: :phone_number',
+                        'role' => 'Role: :role',
+                        'workstation' => 'Workstation: :workstation',
+                        'step' => 'Step: :step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+            ],
+        ],
     ],
     'access_control' => [
         'title' => 'Access Control',
     ],
-    'permissions' => [ // CRUD not implemented
+    'permission' => [ // CRUD not implemented
         'index' => [
             'title' => 'Permission',
             'buttons' => [
                 'create' => 'Create Permission',
-            ],
-            'partials' => [
-                'permissions' => [
-                    'messages' => [
-                        'deleted' => 'Permission deleted successfully!',
-                    ],
-                    'partials' => [
-                        'permissions_table' => [
-                            'headers' => [
-                                'group' => 'Group',
-                                'name' => 'Name',
-                            ],
-                        ],
-                        'permissions_card' => [
-                            'headers' => [
-                                'group' => 'Group',
-                                'name' => 'Name',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -398,39 +395,33 @@ return [
                 'updated' => 'Permission updated successfully!',
             ],
         ],
+        'partials' => [
+            'permissions' => [
+                'messages' => [
+                    'deleted' => 'Permission deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'permission_table' => [
+                    'headers' => [
+                        'group' => 'Group',
+                        'name' => 'Name',
+                    ],
+                ],
+                'permission_card' => [
+                    'headers' => [
+                        'group' => 'Group',
+                        'name' => 'Name',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'roles' => [ // Update not implemented
+    'role' => [ // Update not implemented
         'index' => [
             'title' => 'Role',
             'buttons' => [
                 'create' => 'Create Role',
-            ],
-            'partials' => [
-                'roles' => [
-                    'messages' => [
-                        'deleted' => 'Role deleted successfully!',
-                    ],
-                    'partials' => [
-                        'roles_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'division' => 'Division',
-                                'level' => 'Level',
-                                'users_count' => 'User Count',
-                                'permissions_count' => 'Permission Count',
-                            ],
-                        ],
-                        'roles_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'division' => 'Division: :division',
-                                'level' => 'Level: :level',
-                                'users_count' => 'User Count: :users_count',
-                                'permissions_count' => 'Permission Count: :permissions_count',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -465,35 +456,39 @@ return [
                 'updated' => 'Role updated successfully!',
             ],
         ],
+        'partials' => [
+            'roles' => [
+                'messages' => [
+                    'deleted' => 'Role deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'role_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'division' => 'Division',
+                        'level' => 'Level',
+                        'users_count' => 'User Count',
+                        'permissions_count' => 'Permission Count',
+                    ],
+                ],
+                'role_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'division' => 'Division: :division',
+                        'level' => 'Level: :level',
+                        'users_count' => 'User Count: :users_count',
+                        'permissions_count' => 'Permission Count: :permissions_count',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'steps' => [
+    'step' => [
         'index' => [
             'title' => 'Step',
             'buttons' => [
                 'create' => 'Create Step',
-            ],
-            'partials' => [
-                'steps' => [
-                    'messages' => [
-                        'deleted' => 'Step deleted successfully!',
-                    ],
-                    'partials' => [
-                        'steps_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'process' => 'Process',
-                                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
-                            ],
-                        ],
-                        'steps_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'process' => 'Process: :process',
-                                'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -519,7 +514,7 @@ return [
                 'progress_placeholder' => 'Select Progress',
                 'process' => 'Process',
                 'name' => 'Name',
-                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Menit)',
             ],
             'buttons' => [
                 'submit' => 'Update Step',
@@ -528,54 +523,35 @@ return [
                 'updated' => 'Step updated successfully!',
             ],
         ],
+        'partials' => [
+            'steps' => [
+                'messages' => [
+                    'deleted' => 'Step deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'step_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'process' => 'Process',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                    ],
+                ],
+                'step_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'process' => 'Process: :process',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'raw_materials' => [
+    'raw_material' => [
         'index' => [
             'title' => 'Raw Material',
             'buttons' => [
                 'create' => 'Create Raw Material',
-            ],
-            'partials' => [
-                'raw_materials' => [
-                    'messages' => [
-                        'deleted' => 'Raw Material deleted successfully!',
-                    ],
-                    'partials' => [
-                        'raw_materials_table' => [
-                            'headers' => [
-                                'material_code' => 'Material Code',
-                                'description' => 'Description',
-                                'specs' => 'Specs',
-                                'unit' => 'Unit',
-                            ],
-                        ],
-                        'raw_materials_card' => [
-                            'headers' => [
-                                'material_code' => 'Material Code: :material_code',
-                                'description' => 'Description: :description',
-                                'specs' => 'Specs: :specs',
-                                'unit' => 'Unit: :unit',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Import Raw Material',
-                    'description' => 'Import Raw Material from Excel file',
-                    'fields' => [
-                        'download_template' => 'Download Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Import Raw Material',
-                        'download_template' => 'Download',
-                        'submit' => 'Import Raw Material',
-                        'processing' => 'Processing...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Raw Material imported successfully!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -608,33 +584,59 @@ return [
                 'updated' => 'Raw Material updated successfully!',
             ],
         ],
+        'partials' => [
+            'raw_materials' => [
+                'messages' => [
+                    'deleted' => 'Raw Material deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'buttons' => [
+                    'import' => 'Import Raw Material',
+                ],
+                'messages' => [
+                    'imported' => 'Raw Material imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Raw Material',
+                    'description' => 'Import Raw Material from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Raw Material',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Raw Material',
+                        'processing' => 'Processing...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'raw_material_table' => [
+                    'headers' => [
+                        'material_code' => 'Material Code',
+                        'description' => 'Description',
+                        'specs' => 'Specs',
+                        'unit' => 'Unit',
+                    ],
+                ],
+                'raw_material_card' => [
+                    'headers' => [
+                        'material_code' => 'Material Code: :material_code',
+                        'description' => 'Description: :description',
+                        'specs' => 'Specs: :specs',
+                        'unit' => 'Unit: :unit',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'components' => [
+    'component' => [
         'index' => [
             'title' => 'Component',
             'buttons' => [
                 'create' => 'Create Component',
-            ],
-            'partials' => [
-                'components' => [
-                    'messages' => [
-                        'deleted' => 'Component deleted successfully!',
-                    ],
-                    'partials' => [
-                        'components_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'progress' => 'Progress',
-                            ],
-                        ],
-                        'components_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'progress' => 'Progress: :progress',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -663,6 +665,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Component updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'components' => [
+                'messages' => [
+                    'deleted' => 'Component deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'component_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'progress' => 'Progress',
+                    ],
+                ],
+                'component_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'progress' => 'Progress: :progress',
+                    ],
+                ],
             ],
         ],
     ],

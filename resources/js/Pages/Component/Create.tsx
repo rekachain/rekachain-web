@@ -51,24 +51,24 @@ export default function () {
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await componentService.create(data);
-        void useSuccessToast(t('pages.components.create.messages.created'));
+        void useSuccessToast(t('pages.component.create.messages.created'));
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
     });
 
     return (
         <>
-            <Head title={t('pages.components.create.title')} />
+            <Head title={t('pages.component.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.components.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.component.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.components.create.fields.progress')}</Label>
+                                    <Label htmlFor="progress">{t('pages.component.create.fields.progress')}</Label>
                                     {/* <div className="flex gap-4">
                                         <Input
                                             placeholder="Cari progress"
@@ -120,7 +120,7 @@ export default function () {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : t('pages.components.create.fields.progress')}
+                                                        : t('pages.component.create.fields.progress')}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -129,7 +129,7 @@ export default function () {
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
                                                         placeholder={t(
-                                                            'pages.components.create.fields.progress_placeholder',
+                                                            'pages.component.create.fields.progress_placeholder',
                                                         )}
                                                     />
                                                     <CommandList>
@@ -176,7 +176,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.components.create.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.component.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -190,7 +190,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            {t('pages.components.create.buttons.submit')}
+                            {t('pages.component.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>

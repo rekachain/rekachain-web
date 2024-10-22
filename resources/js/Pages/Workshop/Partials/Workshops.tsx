@@ -30,7 +30,7 @@ export default function () {
     const handleWorkshopDeletion = withLoading(async (id: number) => {
         await workshopService.delete(id);
         await syncWorkshops();
-        void useSuccessToast(t('pages.workshops.index.partials.workshops.messages.deleted'));
+        void useSuccessToast(t('pages.workshop.partials.workshops.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

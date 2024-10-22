@@ -29,7 +29,7 @@ export default function () {
     const handleRawMaterialDeletion = withLoading(async (id: number) => {
         await rawMaterialService.delete(id);
         await syncRawMaterials();
-        void useSuccessToast(t('pages.raw_materials.index.partials.raw_materials.messages.deleted'));
+        void useSuccessToast(t('pages.raw_material.partials.raw_materials.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

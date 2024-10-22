@@ -19,36 +19,11 @@ return [
             'welcome' => 'Selamat datang di Halaman Utama',
         ],
     ],
-    'work_days' => [
+    'work_day' => [
         'index' => [
             'title' => 'Hari Kerja',
             'buttons' => [
                 'create' => 'Buat Hari Kerja',
-            ],
-            'partials' => [
-                'work_days' => [
-                    'messages' => [
-                        'deleted' => 'Hari Kerja berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'work_day_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'start_date' => 'Tanggal Mulai',
-                                'break_time' => 'Waktu Istirahat',
-                                'end_date' => 'Tanggal Selesai',
-                            ],
-                        ],
-                        'work_day_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'start_date' => 'Tanggal Mulai',
-                                'break_time' => 'Waktu Istirahat',
-                                'end_date' => 'Tanggal Selesai',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -81,34 +56,40 @@ return [
                 'updated' => 'Hari Kerja berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'work_days' => [
+                'messages' => [
+                    'deleted' => 'Hari Kerja berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'work_day_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'start_date' => 'Tanggal Mulai',
+                        'break_time' => 'Waktu Istirahat',
+                        'end_date' => 'Tanggal Selesai',
+                    ],
+                ],
+                'work_day_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'start_date' => 'Tanggal Mulai',
+                        'break_time' => 'Waktu Istirahat',
+                        'end_date' => 'Tanggal Selesai',
+                    ],
+                ],
+            ],
+        ],
     ],
     'staff_management' => [
         'title' => 'Manajemen Staf',
     ],
-    'divisions' => [
+    'division' => [
         'index' => [
             'title' => 'Divisi',
             'buttons' => [
                 'create' => 'Buat Divisi',
-            ],
-            'partials' => [
-                'divisions' => [
-                    'messages' => [
-                        'deleted' => 'Divisi berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'divisions_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                            ],
-                        ],
-                        'divisions_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -135,33 +116,31 @@ return [
                 'updated' => 'Divisi berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'divisions' => [
+                'messages' => [
+                    'deleted' => 'Divisi berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'division_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                    ],
+                ],
+                'division_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'workshops' => [
+    'workshop' => [
         'index' => [
             'title' => 'Workshop',
             'buttons' => [
                 'create' => 'Buat Workshop',
-            ],
-            'partials' => [
-                'workshops' => [
-                    'messages' => [
-                        'deleted' => 'Workshop berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'workshops_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'address' => 'Alamat',
-                            ],
-                        ],
-                        'workshops_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'address' => 'Alamat : :address',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -190,37 +169,33 @@ return [
                 'updated' => 'Workshop berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'workshops' => [
+                'messages' => [
+                    'deleted' => 'Workshop berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'workshop_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'address' => 'Alamat',
+                    ],
+                ],
+                'workshop_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'address' => 'Alamat : :address',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'workstations' => [
+    'workstation' => [
         'index' => [
             'title' => 'Workstation',
             'buttons' => [
                 'create' => 'Buat Workstation',
-            ],
-            'partials' => [
-                'workstations' => [
-                    'messages' => [
-                        'deleted' => 'Workstation berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'workstations_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'location' => 'Lokasi',
-                                'workshop' => 'Workshop',
-                                'division' => 'Divisi',
-                            ],
-                        ],
-                        'workstations_card' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'location' => 'Lokasi: :location',
-                                'workshop' => 'Workshop: :workshop',
-                                'division' => 'Divisi: :division',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -253,45 +228,37 @@ return [
                 'updated' => 'Workstation berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'workstations' => [
+                'messages' => [
+                    'deleted' => 'Workstation berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'workstation_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'location' => 'Lokasi',
+                        'workshop' => 'Workshop',
+                        'division' => 'Divisi',
+                    ],
+                ],
+                'workstation_card' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'location' => 'Lokasi: :location',
+                        'workshop' => 'Workshop: :workshop',
+                        'division' => 'Divisi: :division',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'users' => [
+    'user' => [
         'index' => [
             'title' => 'Staf',
             'buttons' => [
                 'create' => 'Buat Staf',
-            ],
-            'partials' => [
-                'users' => [
-                    'messages' => [
-                        'deleted' => 'Staf berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'users_table' => [
-                            'headers' => [
-                                'nip' => 'NIP',
-                                'name' => 'Nama',
-                                'email' => 'Email',
-                                'phone_number' => 'Nomor Telepon',
-                                'role' => 'Peran',
-                                'workstation' => 'Workstation',
-                                'step' => 'Langkah',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                        'users_card' => [
-                            'headers' => [
-                                'nip' => 'NIP: :nip',
-                                'name' => 'Nama: :name',
-                                'email' => 'Email: :email',
-                                'phone_number' => 'Nomor Telepon: :phone_number',
-                                'role' => 'Peran: :role',
-                                'workstation' => 'Workstation: :workstation',
-                                'step' => 'Langkah: :step',
-                                'avatar' => 'Avatar',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -342,36 +309,48 @@ return [
                 'updated' => 'Staf berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'users' => [
+                'messages' => [
+                    'deleted' => 'Staf berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'user_table' => [
+                    'headers' => [
+                        'nip' => 'NIP',
+                        'name' => 'Nama',
+                        'email' => 'Email',
+                        'phone_number' => 'Nomor Telepon',
+                        'role' => 'Peran',
+                        'workstation' => 'Workstation',
+                        'step' => 'Langkah',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+                'user_card' => [
+                    'headers' => [
+                        'nip' => 'NIP: :nip',
+                        'name' => 'Nama: :name',
+                        'email' => 'Email: :email',
+                        'phone_number' => 'Nomor Telepon: :phone_number',
+                        'role' => 'Peran: :role',
+                        'workstation' => 'Workstation: :workstation',
+                        'step' => 'Langkah: :step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+            ],
+        ],
     ],
     'access_control' => [
         'title' => 'Kontrol Akses',
     ],
-    'permissions' => [ // CRUD Belum diimplementasikan
+    'permission' => [ // CRUD belum diimplementasikan
         'index' => [
             'title' => 'Izin',
             'buttons' => [
                 'create' => 'Buat Izin',
-            ],
-            'partials' => [
-                'permissions' => [
-                    'messages' => [
-                        'deleted' => 'Izin berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'permissions_table' => [
-                            'headers' => [
-                                'group' => 'Grup',
-                                'name' => 'Nama',
-                            ],
-                        ],
-                        'permissions_card' => [
-                            'headers' => [
-                                'group' => 'Grup',
-                                'name' => 'Nama',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -398,39 +377,33 @@ return [
                 'updated' => 'Izin berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'permissions' => [
+                'messages' => [
+                    'deleted' => 'Izin berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'permission_table' => [
+                    'headers' => [
+                        'group' => 'Grup',
+                        'name' => 'Nama',
+                    ],
+                ],
+                'permission_card' => [
+                    'headers' => [
+                        'group' => 'Grup',
+                        'name' => 'Nama',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'roles' => [ // Update belum diimplementasikan
+    'role' => [ // Update belum diimplementasikan
         'index' => [
             'title' => 'Peranan',
             'buttons' => [
                 'create' => 'Buat Peran',
-            ],
-            'partials' => [
-                'roles' => [
-                    'messages' => [
-                        'deleted' => 'Peran berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'roles_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'division' => 'Divisi',
-                                'level' => 'Tingkat',
-                                'users_count' => 'Jumlah Pengguna',
-                                'permissions_count' => 'Jumlah Izin',
-                            ],
-                        ],
-                        'roles_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'division' => 'Divisi: :division',
-                                'level' => 'Tingkat: :level',
-                                'users_count' => 'Jumlah Pengguna: :users_count',
-                                'permissions_count' => 'Jumlah Izin: :permissions_count',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -465,35 +438,39 @@ return [
                 'updated' => 'Peran berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'roles' => [
+                'messages' => [
+                    'deleted' => 'Peran berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'role_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'division' => 'Divisi',
+                        'level' => 'Tingkat',
+                        'users_count' => 'Jumlah Pengguna',
+                        'permissions_count' => 'Jumlah Izin',
+                    ],
+                ],
+                'role_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'division' => 'Divisi: :division',
+                        'level' => 'Tingkat: :level',
+                        'users_count' => 'Jumlah Pengguna: :users_count',
+                        'permissions_count' => 'Jumlah Izin: :permissions_count',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'steps' => [
+    'step' => [
         'index' => [
             'title' => 'Langkah',
             'buttons' => [
                 'create' => 'Buat Langkah',
-            ],
-            'partials' => [
-                'steps' => [
-                    'messages' => [
-                        'deleted' => 'Langkah berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'steps_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'process' => 'Proses',
-                                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
-                            ],
-                        ],
-                        'steps_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'process' => 'Proses: :process',
-                                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan: :estimated_manufacturing_time',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -503,7 +480,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
             ],
             'buttons' => [
                 'submit' => 'Buat Langkah',
@@ -519,7 +496,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Langkah',
@@ -528,54 +505,35 @@ return [
                 'updated' => 'Langkah berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'steps' => [
+                'messages' => [
+                    'deleted' => 'Langkah berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'step_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'process' => 'Proses',
+                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi (Menit)',
+                    ],
+                ],
+                'step_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'process' => 'Proses: :process',
+                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi: :estimated_manufacturing_time',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'raw_materials' => [
+    'raw_material' => [
         'index' => [
             'title' => 'Bahan Baku',
             'buttons' => [
                 'create' => 'Buat Bahan Baku',
-            ],
-            'partials' => [
-                'raw_materials' => [
-                    'messages' => [
-                        'deleted' => 'Bahan Baku berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'raw_materials_table' => [
-                            'headers' => [
-                                'material_code' => 'Kode Bahan',
-                                'description' => 'Deskripsi',
-                                'specs' => 'Spesifikasi',
-                                'unit' => 'Satuan',
-                            ],
-                        ],
-                        'raw_materials_card' => [
-                            'headers' => [
-                                'material_code' => 'Kode Bahan: :material_code',
-                                'description' => 'Deskripsi: :description',
-                                'specs' => 'Spesifikasi: :specs',
-                                'unit' => 'Satuan: :unit',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Impor Bahan Baku',
-                    'description' => 'Impor Bahan Baku dari file Excel',
-                    'fields' => [
-                        'download_template' => 'Unduh Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Impor Bahan Baku',
-                        'download_template' => 'Unduh',
-                        'submit' => 'Impor Bahan Baku',
-                        'processing' => 'Memproses...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Bahan Baku berhasil diimpor!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -608,33 +566,59 @@ return [
                 'updated' => 'Bahan Baku berhasil diperbarui!',
             ],
         ],
+        'partials' => [
+            'raw_materials' => [
+                'messages' => [
+                    'deleted' => 'Bahan Baku berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'buttons' => [
+                    'import' => 'Impor Bahan Baku',
+                ],
+                'messages' => [
+                    'imported' => 'Bahan Baku berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Bahan Baku',
+                    'description' => 'Impor Bahan Baku dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Bahan Baku',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Bahan Baku',
+                        'processing' => 'Memproses...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'raw_material_table' => [
+                    'headers' => [
+                        'material_code' => 'Kode Bahan',
+                        'description' => 'Deskripsi',
+                        'specs' => 'Spesifikasi',
+                        'unit' => 'Satuan',
+                    ],
+                ],
+                'raw_material_card' => [
+                    'headers' => [
+                        'material_code' => 'Kode Bahan: :material_code',
+                        'description' => 'Deskripsi: :description',
+                        'specs' => 'Spesifikasi: :specs',
+                        'unit' => 'Satuan: :unit',
+                    ],
+                ],
+            ],
+        ],
     ],
-    'components' => [
+    'component' => [
         'index' => [
             'title' => 'Komponen',
             'buttons' => [
                 'create' => 'Buat Komponen',
-            ],
-            'partials' => [
-                'components' => [
-                    'messages' => [
-                        'deleted' => 'Komponen berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'components_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'progress' => 'Progres',
-                            ],
-                        ],
-                        'components_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'progress' => 'Progres: :progress',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -663,6 +647,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Komponen berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'components' => [
+                'messages' => [
+                    'deleted' => 'Komponen berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'component_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'progress' => 'Progres',
+                    ],
+                ],
+                'component_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'progress' => 'Progres: :progress',
+                    ],
+                ],
             ],
         ],
     ],

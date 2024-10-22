@@ -38,23 +38,23 @@ export default function ({
 
         await workstationService.update(workstation.id, data);
         router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
-        void useSuccessToast(t('pages.workstations.edit.messages.updated'));
+        void useSuccessToast(t('pages.workstation.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head title={t('pages.workstations.edit.title', { name: workstation.name })} />
+            <Head title={t('pages.workstation.edit.title', { name: workstation.name })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.workstations.edit.title', { name: workstation.name })}
+                            {t('pages.workstation.edit.title', { name: workstation.name })}
                         </h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workstations.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.workstation.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -67,7 +67,7 @@ export default function ({
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value={t('pages.workstations.edit.fields.location')} />
+                            <InputLabel htmlFor="location" value={t('pages.workstation.edit.fields.location')} />
                             <Input
                                 id="location"
                                 type="text"
@@ -80,7 +80,7 @@ export default function ({
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstations.edit.fields.workshop')}</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.workshop')}</h2>
                             <RadioGroup
                                 defaultValue={workstation.workshop_id.toString()}
                                 onValueChange={v => setData('workshop_id', v)}
@@ -95,7 +95,7 @@ export default function ({
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstations.edit.fields.division')}</h2>
+                            <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.division')}</h2>
                             <RadioGroup
                                 defaultValue={workstation.division_id.toString()}
                                 onValueChange={v => setData('division_id', v)}
@@ -113,7 +113,7 @@ export default function ({
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.workstations.edit.buttons.submit')}
+                            {t('pages.workstation.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

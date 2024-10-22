@@ -16,12 +16,8 @@ export default function PermissionsTableView({
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>
-                        {t('pages.permissions.index.partials.permissions.partials.permissions_table.headers.group')}
-                    </TableHead>
-                    <TableHead>
-                        {t('pages.permissions.index.partials.permissions.partials.permissions_table.headers.name')}
-                    </TableHead>
+                    <TableHead>{t('pages.permission.partials.partials.permission_table.headers.group')}</TableHead>
+                    <TableHead>{t('pages.permission.partials.partials.permission_table.headers.name')}</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>

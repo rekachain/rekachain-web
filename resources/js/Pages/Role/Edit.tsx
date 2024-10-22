@@ -38,7 +38,7 @@ export default function (props: {
         e.preventDefault();
         await roleService.update(props.role.id, data);
         router.visit(route(`${ROUTES.ROLES}.index`));
-        void useSuccessToast(t('pages.roles.edit.messages.updated'));
+        void useSuccessToast(t('pages.role.edit.messages.updated'));
     });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
@@ -54,12 +54,12 @@ export default function (props: {
 
     return (
         <>
-            <Head title={t('pages.roles.edit.title', { name: props.role.name })} />
+            <Head title={t('pages.role.edit.title', { name: props.role.name })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.roles.edit.title', { name: props.role.name })}
+                            {t('pages.role.edit.title', { name: props.role.name })}
                         </h1>
                     </div>
 
@@ -67,7 +67,7 @@ export default function (props: {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="name"
-                                value={t('pages.roles.edit.fields.name', { name: props.role.name })}
+                                value={t('pages.role.edit.fields.name', { name: props.role.name })}
                             />
                             <Input
                                 id="name"
@@ -82,7 +82,8 @@ export default function (props: {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value={t('pages.roles.edit.fields.division')} />
+                            <InputLabel htmlFor="division" value={t('pages.role.edit.fields.division')} />
+                            {/* TODO: implement GenericDataSelector */}
                             <Select
                                 name="division"
                                 value={data.division_id}
@@ -90,7 +91,7 @@ export default function (props: {
                             >
                                 <SelectTrigger>
                                     <SelectValue
-                                        placeholder={t('pages.roles.edit.fields.division_placeholder', {
+                                        placeholder={t('pages.role.edit.fields.division_placeholder', {
                                             division: props.role?.division?.name ?? '',
                                         })}
                                     />
@@ -113,7 +114,7 @@ export default function (props: {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="level"
-                                value={t('pages.roles.edit.fields.level', { level: props.role?.level ?? '' })}
+                                value={t('pages.role.edit.fields.level', { level: props.role?.level ?? '' })}
                             />
                             <Input
                                 id="level"
@@ -127,7 +128,7 @@ export default function (props: {
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-5">
-                            <h1>{t('pages.roles.edit.fields.permissions')}</h1>
+                            <h1>{t('pages.role.edit.fields.permissions')}</h1>
                             <div className="mt-1">
                                 <div className="flex flex-wrap">
                                     {permissions.map(permission => (
@@ -157,7 +158,7 @@ export default function (props: {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.roles.edit.buttons.submit')}
+                            {t('pages.role.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

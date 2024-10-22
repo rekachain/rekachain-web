@@ -33,7 +33,9 @@ export default function WorkshopCardView({
                         </div>
 
                         <h5 className="text-sm">
-                            {t('pages.workshops.index.partials.workshops.partials.workshops_card.headers.address')}
+                            {t('pages.workshop.partials.partials.workshop_card.headers.address', {
+                                address: workshop.address,
+                            })}
                         </h5>
 
                         <div className="flex items-center justify-end w-full">
@@ -41,10 +43,10 @@ export default function WorkshopCardView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
                             >
-                                {t('actions.edit')}
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
-                                {t('actions.delete')}
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>

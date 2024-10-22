@@ -32,7 +32,7 @@ export default function StepCardView({
                             <h4 className="font-bold text-base">{step.name}</h4>
                             <div className="text-center">
                                 <h4 className="font-bold text-base">
-                                    {t('pages.steps.index.partials.steps.partials.steps_card.headers.process', {
+                                    {t('pages.step.partials.partials.step_card.headers.process', {
                                         process: step.process,
                                     })}
                                 </h4>
@@ -43,12 +43,9 @@ export default function StepCardView({
                             </div>
                         </div>
                         <p className="text-sm">
-                            {t(
-                                'pages.steps.index.partials.steps.partials.steps_card.headers.estimated_manufacturing_time',
-                                {
-                                    estimated_manufacturing_time: step.estimated_time,
-                                },
-                            )}
+                            {t('pages.step.partials.partials.step_card.headers.estimated_manufacturing_time', {
+                                estimated_manufacturing_time: step.estimated_time,
+                            })}
                         </p>
 
                         {/* <h5 className="font-bold text-sm ">Workshop : {step.workshop.name}</h5>

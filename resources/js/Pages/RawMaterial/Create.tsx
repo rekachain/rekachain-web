@@ -28,23 +28,23 @@ export default function () {
 
         await rawMaterialService.create(data);
         router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        void useSuccessToast(t('pages.raw_materials.create.messages.created'));
+        void useSuccessToast(t('pages.raw_material.create.messages.created'));
     });
 
     return (
         <>
-            <Head title={t('pages.raw_materials.create.title')} />
+            <Head title={t('pages.raw_material.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.raw_materials.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.raw_material.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="material_code"
-                                value={t('pages.raw_materials.create.fields.material_code')}
+                                value={t('pages.raw_material.create.fields.material_code')}
                             />
                             <Input
                                 id="material_code"
@@ -60,7 +60,7 @@ export default function () {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="description"
-                                value={t('pages.raw_materials.create.fields.description')}
+                                value={t('pages.raw_material.create.fields.description')}
                             />
                             <Input
                                 id="description"
@@ -74,7 +74,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="specs" value={t('pages.raw_materials.create.fields.specs')} />
+                            <InputLabel htmlFor="specs" value={t('pages.raw_material.create.fields.specs')} />
                             <Input
                                 id="specs"
                                 type="text"
@@ -87,7 +87,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="unit" value={t('pages.raw_materials.create.fields.unit')} />
+                            <InputLabel htmlFor="unit" value={t('pages.raw_material.create.fields.unit')} />
                             <Input
                                 id="unit"
                                 type="text"
@@ -100,7 +100,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.raw_materials.create.buttons.submit')}
+                            {t('pages.raw_material.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>

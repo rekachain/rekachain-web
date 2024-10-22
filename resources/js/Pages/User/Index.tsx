@@ -17,13 +17,13 @@ export default function () {
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' });
     return (
         <>
-            <Head title={t('pages.users.index.title')} />
+            <Head title={t('pages.user.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-2 md:p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">Staff</h1>
                         <Link className={buttonVariants({ variant: 'default' })} href={route(`${ROUTES.USERS}.create`)}>
-                            {t('pages.users.index.buttons.create')}
+                            {t('pages.user.index.buttons.create')}
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

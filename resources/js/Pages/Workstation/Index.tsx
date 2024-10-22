@@ -11,16 +11,16 @@ export default function () {
     const Workstations = lazy(() => import('./Partials/Workstations'));
     return (
         <>
-            <Head title={t('pages.workstations.index.title')} />
+            <Head title={t('pages.workstation.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.workstations.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.workstation.index.title')}</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.WORKSTATIONS}.create`)}
                         >
-                            {t('pages.workstations.index.buttons.create')}
+                            {t('pages.workstation.index.buttons.create')}
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

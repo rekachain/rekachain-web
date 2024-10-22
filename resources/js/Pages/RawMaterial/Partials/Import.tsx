@@ -33,7 +33,7 @@ export default function () {
         event.preventDefault();
         await rawMaterialService.importData(data.file as File);
         router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        void useSuccessToast(t('pages.raw_materials.index.partials.import.messages.imported'));
+        void useSuccessToast(t('pages.raw_material.partials.import.messages.imported'));
     });
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,22 +44,22 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.raw_materials.index.partials.import.buttons.import')}</Button>
+                <Button variant="tertiary">{t('pages.raw_material.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t('pages.raw_materials.index.partials.import.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.raw_materials.index.partials.import.description')}</DialogDescription>
+                    <DialogTitle>{t('pages.raw_material.partials.import.dialogs.title')}</DialogTitle>
+                    <DialogDescription>{t('pages.raw_material.partials.import.dialogs.description')}</DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.raw_materials.index.partials.import.fields.download_template')}</Label>
+                    <Label>{t('pages.raw_material.partials.import.dialogs.fields.download_template')}</Label>
                     <Button type="button" variant="secondary" onClick={rawMaterialService.downloadImportDataTemplate}>
-                        {t('pages.raw_materials.index.partials.import.buttons.download_template')}
+                        {t('pages.raw_material.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.raw_materials.index.partials.import.fields.file')}</Label>
+                        <Label htmlFor="file">{t('pages.raw_material.partials.import.dialogs.fields.file')}</Label>
                         <Input
                             id="file"
                             type="file"
@@ -70,8 +70,8 @@ export default function () {
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
                             {loading
-                                ? t('pages.raw_materials.index.partials.import.buttons.processing')
-                                : t('pages.raw_materials.index.partials.import.buttons.import')}
+                                ? t('pages.raw_material.partials.import.dialogs.buttons.processing')
+                                : t('pages.raw_material.partials.import.dialogs.buttons.import')}
                         </Button>
                     </DialogFooter>
                 </form>

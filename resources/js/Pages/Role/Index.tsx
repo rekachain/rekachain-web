@@ -11,13 +11,13 @@ export default function () {
     const Roles = lazy(() => import('./Partials/Roles'));
     return (
         <>
-            <Head title={t('pages.roles.index.title')} />
+            <Head title={t('pages.role.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.roles.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.role.index.title')}</h1>
                         <Link className={buttonVariants({ variant: 'default' })} href={route(`${ROUTES.ROLES}.create`)}>
-                            {t('pages.roles.index.buttons.create')}
+                            {t('pages.role.index.buttons.create')}
                         </Link>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
