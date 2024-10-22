@@ -37,7 +37,7 @@ export default function ({
                             {/* </div> */}
                         </div>
                         <p className="text-sm">
-                            {t('pages.components.index.partials.components.partials.components_card.headers.progress', {
+                            {t('pages.component.partials.partials.component_card.headers.progress', {
                                 progress: component.progress?.name ?? '',
                             })}
                         </p>

@@ -614,32 +614,11 @@ return [
             ],
         ],
     ],
-    'components' => [
+    'component' => [
         'index' => [
             'title' => 'Komponen',
             'buttons' => [
                 'create' => 'Buat Komponen',
-            ],
-            'partials' => [
-                'components' => [
-                    'messages' => [
-                        'deleted' => 'Komponen berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'components_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'progress' => 'Progres',
-                            ],
-                        ],
-                        'components_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'progress' => 'Progres: :progress',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -668,6 +647,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Komponen berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'components' => [
+                'messages' => [
+                    'deleted' => 'Komponen berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'component_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'progress' => 'Progres',
+                    ],
+                ],
+                'component_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'progress' => 'Progres: :progress',
+                    ],
+                ],
             ],
         ],
     ],

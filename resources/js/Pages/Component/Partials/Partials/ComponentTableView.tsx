@@ -21,12 +21,8 @@ export default function ComponentTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>
-                            {t('pages.components.index.partials.components.partials.components_table.headers.name')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.components.index.partials.components.partials.components_table.headers.progress')}
-                        </TableHead>
+                        <TableHead>{t('pages.component.partials.partials.component_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.component.partials.partials.component_table.headers.progress')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

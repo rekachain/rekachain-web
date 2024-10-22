@@ -44,7 +44,7 @@ export default function () {
                 setLoading(true);
                 await componentService.delete(id);
                 await syncComponents();
-                void useSuccessToast(t('pages.components.index.partials.components.messages.deleted'));
+                void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
                 setLoading(false);
             }
         });

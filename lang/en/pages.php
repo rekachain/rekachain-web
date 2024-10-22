@@ -632,32 +632,11 @@ return [
             ],
         ],
     ],
-    'components' => [
+    'component' => [
         'index' => [
             'title' => 'Component',
             'buttons' => [
                 'create' => 'Create Component',
-            ],
-            'partials' => [
-                'components' => [
-                    'messages' => [
-                        'deleted' => 'Component deleted successfully!',
-                    ],
-                    'partials' => [
-                        'components_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'progress' => 'Progress',
-                            ],
-                        ],
-                        'components_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'progress' => 'Progress: :progress',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -686,6 +665,27 @@ return [
             ],
             'messages' => [
                 'updated' => 'Component updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'components' => [
+                'messages' => [
+                    'deleted' => 'Component deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'component_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'progress' => 'Progress',
+                    ],
+                ],
+                'component_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'progress' => 'Progress: :progress',
+                    ],
+                ],
             ],
         ],
     ],
