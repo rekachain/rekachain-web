@@ -466,34 +466,11 @@ return [
             ],
         ],
     ],
-    'steps' => [
+    'step' => [
         'index' => [
             'title' => 'Langkah',
             'buttons' => [
                 'create' => 'Buat Langkah',
-            ],
-            'partials' => [
-                'steps' => [
-                    'messages' => [
-                        'deleted' => 'Langkah berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'steps_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'process' => 'Proses',
-                                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
-                            ],
-                        ],
-                        'steps_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'process' => 'Proses: :process',
-                                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan: :estimated_manufacturing_time',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -503,7 +480,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
             ],
             'buttons' => [
                 'submit' => 'Buat Langkah',
@@ -519,13 +496,36 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Pembuatan',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Langkah',
             ],
             'messages' => [
                 'updated' => 'Langkah berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'steps' => [
+                'messages' => [
+                    'deleted' => 'Langkah berhasil dihapus!',
+                ],
+            ],
+            'partials' => [
+                'step_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'process' => 'Proses',
+                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi (Menit)',
+                    ],
+                ],
+                'step_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'process' => 'Proses: :process',
+                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi: :estimated_manufacturing_time',
+                    ],
+                ],
             ],
         ],
     ],

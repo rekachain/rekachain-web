@@ -30,7 +30,7 @@ export default function () {
     const handleStepDeletion = withLoading(async (id: number) => {
         await stepService.delete(id);
         await handleSyncSteps();
-        void useSuccessToast(t('pages.steps.index.partials.steps.messages.deleted'));
+        void useSuccessToast(t('pages.step.partials.steps.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

@@ -54,23 +54,23 @@ export default function ({ step }: { step: StepResource }) {
         event.preventDefault();
         await stepService.update(step.id, data);
         router.visit(route(`${ROUTES.STEPS}.index`));
-        void useSuccessToast(t('pages.steps.edit.messages.updated'));
+        void useSuccessToast(t('pages.step.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head title={t('pages.steps.edit.title', { name: step.name })} />
+            <Head title={t('pages.step.edit.title', { name: step.name })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.steps.edit.title', { name: step.name })}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.step.edit.title', { name: step.name })}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.steps.edit.fields.progress')}</Label>
+                                    <Label htmlFor="progress">{t('pages.step.edit.fields.progress')}</Label>
                                     <div className="flex gap-2">
                                         {/* TODO: refactor using GenericDataSelector, BUG: existing progress wont show */}
                                         <Popover open={open} onOpenChange={setOpen}>
@@ -85,7 +85,7 @@ export default function ({ step }: { step: StepResource }) {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : t('pages.steps.edit.fields.progress')}
+                                                        : t('pages.step.edit.fields.progress')}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -93,7 +93,7 @@ export default function ({ step }: { step: StepResource }) {
                                                 <Command>
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
-                                                        placeholder={t('pages.steps.edit.fields.progress_placeholder')}
+                                                        placeholder={t('pages.step.edit.fields.progress_placeholder')}
                                                     />
                                                     <CommandList>
                                                         <CommandEmpty>No results found</CommandEmpty>
@@ -177,7 +177,7 @@ export default function ({ step }: { step: StepResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.steps.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.step.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -190,7 +190,7 @@ export default function ({ step }: { step: StepResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="process" value={t('pages.steps.edit.fields.process')} />
+                            <InputLabel htmlFor="process" value={t('pages.step.edit.fields.process')} />
                             <Input
                                 id="process"
                                 type="text"
@@ -205,7 +205,7 @@ export default function ({ step }: { step: StepResource }) {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="estimated_time"
-                                value={t('pages.steps.edit.fields.estimated_manufacturing_time')}
+                                value={t('pages.step.edit.fields.estimated_manufacturing_time')}
                             />
                             <Input
                                 id="estimated_time"
@@ -219,7 +219,7 @@ export default function ({ step }: { step: StepResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.steps.edit.buttons.submit')}
+                            {t('pages.step.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

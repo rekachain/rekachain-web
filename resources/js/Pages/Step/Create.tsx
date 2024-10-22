@@ -53,23 +53,23 @@ export default function () {
         event.preventDefault();
         await stepService.create(data);
         router.visit(route(`${ROUTES.STEPS}.index`));
-        void useSuccessToast(t('pages.steps.create.messages.created'));
+        void useSuccessToast(t('pages.step.create.messages.created'));
     });
 
     return (
         <>
-            <Head title={t('pages.steps.create.title')} />
+            <Head title={t('pages.step.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.steps.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.step.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.steps.create.fields.process')}</Label>
+                                    <Label htmlFor="progress">{t('pages.step.create.fields.process')}</Label>
                                     {/* TODO: refactor using GenericDataSelector */}
 
                                     {/* <div className="flex gap-4">
@@ -124,7 +124,7 @@ export default function () {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : t('pages.steps.create.fields.progress')}
+                                                        : t('pages.step.create.fields.progress')}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -132,9 +132,7 @@ export default function () {
                                                 <Command>
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
-                                                        placeholder={t(
-                                                            'pages.steps.create.fields.progress_placeholder',
-                                                        )}
+                                                        placeholder={t('pages.step.create.fields.progress_placeholder')}
                                                     />
                                                     <CommandList>
                                                         <CommandEmpty>No results found</CommandEmpty>
@@ -180,7 +178,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.steps.create.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.step.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -194,7 +192,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="process" value={t('pages.steps.create.fields.process')} />
+                            <InputLabel htmlFor="process" value={t('pages.step.create.fields.process')} />
                             <Input
                                 id="process"
                                 type="text"
@@ -210,7 +208,7 @@ export default function () {
                         <div className="mt-4">
                             <InputLabel
                                 htmlFor="estimated_time"
-                                value={t('pages.steps.create.fields.estimated_manufacturing_time')}
+                                value={t('pages.step.create.fields.estimated_manufacturing_time')}
                             />
                             <Input
                                 id="estimated_time"
@@ -224,7 +222,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.steps.create.buttons.submit')}
+                            {t('pages.step.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>

@@ -484,34 +484,11 @@ return [
             ],
         ],
     ],
-    'steps' => [
+    'step' => [
         'index' => [
             'title' => 'Step',
             'buttons' => [
                 'create' => 'Create Step',
-            ],
-            'partials' => [
-                'steps' => [
-                    'messages' => [
-                        'deleted' => 'Step deleted successfully!',
-                    ],
-                    'partials' => [
-                        'steps_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'process' => 'Process',
-                                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
-                            ],
-                        ],
-                        'steps_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'process' => 'Process: :process',
-                                'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
-                            ],
-                        ],
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -537,13 +514,36 @@ return [
                 'progress_placeholder' => 'Select Progress',
                 'process' => 'Process',
                 'name' => 'Name',
-                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Menit)',
             ],
             'buttons' => [
                 'submit' => 'Update Step',
             ],
             'messages' => [
                 'updated' => 'Step updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'steps' => [
+                'messages' => [
+                    'deleted' => 'Step deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'step_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'process' => 'Process',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                    ],
+                ],
+                'step_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'process' => 'Process: :process',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
+                    ],
+                ],
             ],
         ],
     ],
