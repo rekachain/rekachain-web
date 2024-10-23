@@ -74,4 +74,9 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
 
         return $detailWorkerPanel;
     }
+
+    public function update($detailWorkerPanel, array $data): ?Model {
+        $this->handleImageUpload($data, $detailWorkerPanel);
+        return parent::update($detailWorkerPanel, $data);
+    }
 }
