@@ -53,7 +53,7 @@ class ApiSerialPanelController extends Controller {
                 }
                 
                 return $this->serialPanelService->rejectPanel($serialPanel, $request);    
-            case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
+            case IntentEnum::API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL->value:
                 return DetailWorkerPanelResource::make($this->serialPanelService->assignWorker($serialPanel, $request->validated()));
             default:
                 break;

@@ -148,9 +148,6 @@ class ApiTrainsetAttachmentController extends ApiController {
 
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
-                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
-                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
-                }
                 return DetailWorkerTrainsetResource::make($this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated()));
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {

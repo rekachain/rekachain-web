@@ -8,6 +8,7 @@ use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerValidation;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTrainsetAttachmentRequest extends FormRequest {
     public function authorize(): bool {
@@ -45,6 +46,9 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     ],
                 ];
                 if ($this->get('worker_id')) {
+                    if (!Auth::user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+                        abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                    }
                     $arr['worker_id'] = 'required|integer|exists:users,id';
                 }
                 return $arr;
@@ -52,7 +56,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                 return [
                     'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
                     'note' => ['nullable', 'string', 'max:255'] 
-                ];    
+                ];
         }
         return [
             // Add your validation rules here
