@@ -3,7 +3,7 @@
 namespace App\Http\Requests\SerialPanel;
 
 use App\Models\User;
-use App\Rules\SerialPanel\SerialPanelAssignWorkerStepValidation;
+use App\Rules\SerialPanel\SerialPanelAssignWorkerValidation;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -57,7 +57,7 @@ class UpdateSerialPanelRequest extends FormRequest {
                     function ($validator) use ($serialPanel) {
                         $validator->safe()->all();
                         $userId = $validator->getData()['worker_id'] ?? auth()->user()->id;
-                        $assignWorkerStepValidation = new SerialPanelAssignWorkerStepValidation();
+                        $assignWorkerStepValidation = new SerialPanelAssignWorkerValidation();
                         $assignWorkerStepValidation->validate('serialPanel', [
                             $serialPanel,
                             User::find($userId),

@@ -39,7 +39,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             return;
         }
 
-        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('updated_at', 'desc')->first();
+        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->first();
         $lastWorkerIndex = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
         $currentWorkerIndex = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;
