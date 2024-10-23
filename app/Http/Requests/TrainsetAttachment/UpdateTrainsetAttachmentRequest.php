@@ -37,7 +37,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     $arr['receiver_id'] = 'required|integer|exists:users,id';
                 }
                 return $arr;
-            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 $arr = [
                     'carriage_panel_component_id' => [
                         'required',
@@ -68,7 +68,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 return [
                     function ($validator) use ($trainsetAttachment) {
                         $validator->safe()->all();

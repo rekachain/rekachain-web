@@ -147,7 +147,7 @@ class ApiTrainsetAttachmentController extends ApiController {
         $intent = request()->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 return DetailWorkerTrainsetResource::make($this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated()));
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
@@ -160,7 +160,7 @@ class ApiTrainsetAttachmentController extends ApiController {
                 }
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
             default:
-                return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated()));
         }
     }
 
