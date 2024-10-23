@@ -129,19 +129,18 @@ class ApiDetailWorkerTrainsetController extends Controller {
     public function update(DetailWorkerTrainset $detailWorkerTrainset, UpdateDetailWorkerTrainsetRequest $request) {
         $intent = request()->get('intent');
         switch ($intent) {
-            case
-            IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
-                if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
+            case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
+                if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, 'Unauthorized');
                 }
-                return $this->detailWorkerTrainsetService->rejectWork($detailWorkerTrainset->id, $request);
+                return DetailWorkerTrainsetResource::make($this->detailWorkerTrainsetService->rejectWork($detailWorkerTrainset, $request->validated())->load('failed_component_manufactures'));
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value: 
                 if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK])) {
                     abort(403, 'Unauthorized');
                 }
                 return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());
             default:
-                return $this->detailWorkerTrainsetService->update($detailWorkerTrainset, $request->validated());
+                return DetailWorkerTrainsetResource::make($this->detailWorkerTrainsetService->update($detailWorkerTrainset, $request->validated()));
         }    
         
     }
