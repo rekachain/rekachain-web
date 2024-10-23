@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
          return Inertia::render('Dashboard',['data'=>$data]);
     // return 'Hello World';
 });
-    Route::inertia('/dashboard', 'Dashboard')->middleware(['verified'])->name('dashboard');
+    Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
