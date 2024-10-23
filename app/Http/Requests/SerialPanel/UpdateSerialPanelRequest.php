@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Rules\SerialPanel\SerialPanelAssignWorkerValidation;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\RoleEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +29,8 @@ class UpdateSerialPanelRequest extends FormRequest {
         switch ($intent){
             case IntentEnum::API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS->value:
                 return [
-                    'notes' => 'required|string|max:255'
+                    'manufacture_status' => 'required|in:' . implode(',', SerialPanelManufactureStatusEnum::toArray()),
+                    'notes' => 'required_if:manufacture_status,' . SerialPanelManufactureStatusEnum::FAILED->value . '|string',
                 ];
             case IntentEnum::API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL->value:
                 if ($this->get('worker_id')) {
@@ -47,8 +49,8 @@ class UpdateSerialPanelRequest extends FormRequest {
             'panel_attachment_id' => 'nullable|string|max:255',
             'qr_code' => 'nullable|string|max:255',
             'qr_path'=> 'nullable|string|max:255',
-            'manufacture_status' => 'nullable|string|max:255',
-            'notes' => 'nullable|string|max:255',
+            'manufacture_status' => 'nullable|in:' . implode(',', SerialPanelManufactureStatusEnum::toArray()),
+            'notes' => 'required_if:manufacture_status,' . SerialPanelManufactureStatusEnum::FAILED->value . '|string',
         ];
     }
 
