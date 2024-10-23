@@ -98,26 +98,28 @@ export default function Dashboard({ auth }: PageProps) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
                     <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                        <h2 className="text-xl my-2">Proyek 612</h2>
-                        <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                            <BarChart accessibilityLayer data={chartData}>
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="ts"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                    tickFormatter={value => value.slice(0, 6)}
-                                />
-                                <ChartTooltip content={<ChartTooltipContent />} />
-                                <ChartLegend content={<ChartLegendContent />} />
-                                <Bar dataKey="progress" fill="var(--color-progress)" radius={4} />
-                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                            </BarChart>
-                        </ChartContainer>
-                        <div className="flex w-full mt-2 ">
-                            <div className="bg-red-600 w-[45%]">
+                        <div className="">
+                            <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
+                            <h2 className="text-xl my-2">Proyek 612</h2>
+                            <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
+                                <BarChart accessibilityLayer data={chartData}>
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                        dataKey="ts"
+                                        tickLine={false}
+                                        tickMargin={10}
+                                        axisLine={false}
+                                        tickFormatter={value => value.slice(0, 6)}
+                                    />
+                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                    <ChartLegend content={<ChartLegendContent />} />
+                                    <Bar dataKey="progress" fill="var(--color-progress)" radius={4} />
+                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                </BarChart>
+                            </ChartContainer>
+                        </div>
+                        <div className="flex max-w-full mt-2 ">
+                            <div className="w-1/2">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                                 <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-full">
@@ -144,10 +146,11 @@ export default function Dashboard({ auth }: PageProps) {
                                     </BarChart>
                                 </ChartContainer>
                             </div>
-                            <div className="w-[45%]  ">
+
+                            <div className="w-[35%]  ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel yang ada Assembly</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                                <ChartContainer config={chartConfig} className="h-[300px] w-96">
                                     <BarChart accessibilityLayer data={chartDataPanel}>
                                         <CartesianGrid vertical={false} />
                                         <YAxis type="number" dataKey="done"></YAxis>
