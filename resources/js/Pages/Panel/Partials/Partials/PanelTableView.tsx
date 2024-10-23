@@ -20,12 +20,8 @@ export default function PanelCardView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>
-                            {t('pages.panels.index.partials.panels.partials.panels_table.headers.name')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.panels.index.partials.panels.partials.panels_table.headers.description')}
-                        </TableHead>
+                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.description')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

@@ -671,49 +671,11 @@ return [
             ],
         ],
     ],
-    'panels' => [
+    'panel' => [
         'index' => [
             'title' => 'Panel',
             'buttons' => [
                 'create' => 'Buat Panel',
-            ],
-            'partials' => [
-                'panels' => [
-                    'messages' => [
-                        'deleted' => 'Panel berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'panels_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'description' => 'Deskripsi',
-                            ],
-                        ],
-                        'panels_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'description' => 'Deskripsi: :description',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Impor Panel',
-                    'description' => 'Impor Panel dari file Excel',
-                    'fields' => [
-                        'download_template' => 'Unduh Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Impor Panel',
-                        'download_template' => 'Unduh',
-                        'submit' => 'Impor Panel',
-                        'processing' => 'Memproses...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Panel berhasil diimpor!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -740,6 +702,49 @@ return [
             ],
             'messages' => [
                 'updated' => 'Panel berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'panels' => [
+                'messages' => [
+                    'deleted' => 'Panel berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'title' => 'Impor Panel',
+                'description' => 'Impor Panel dari file Excel',
+                'messages' => [
+                    'imported' => 'Panel berhasil diimpor!',
+                ],
+                'buttons' => [
+                    'import' => 'Impor Panel',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Panel',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Panel',
+                        'processing' => 'Memproses...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'panel_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                    ],
+                ],
+                'panel_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'description' => 'Deskripsi: :description',
+                    ],
+                ],
             ],
         ],
     ],
