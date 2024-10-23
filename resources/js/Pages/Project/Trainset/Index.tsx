@@ -19,12 +19,10 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));
 
 export default function ({ project: initialProject }: { project: ProjectResource }) {
-    const { t } = useLaravelReactI18n();
     const [project, setProject] = useState<ProjectResource>(initialProject);
     const { data, setData, reset } = useForm({
         trainsetNeeded: 0,
@@ -32,22 +30,20 @@ export default function ({ project: initialProject }: { project: ProjectResource
 
     const { loading } = useLoading();
 
-    const handleAddTrainset = withLoading(async e => {
-        e.preventDefault();
+    const handleAddTrainset = withLoading(async () => {
         await projectService.addTrainset(project.id, data.trainsetNeeded);
         await handleSyncProject();
         reset();
-        void useSuccessToast(t('pages.project.trainset.index.messages.trainset_added'));
+        void useSuccessToast('Trainset added successfully');
     });
 
     const handleSyncProject = withLoading(async () => {
         const updatedProject = await projectService.get(initialProject.id);
         setProject(updatedProject);
     });
-
     return (
         <>
-            <Head title={t('pages.project.trainset.index.title', { name: project.name })} />
+            <Head title={`Proyek ${project.name}`} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -59,47 +55,33 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>
-                                            {t('pages.project.trainset.index.breadcrumbs.project', {
-                                                project: project.name,
-                                            })}
-                                        </BreadcrumbPage>
+                                        <BreadcrumbPage>Proyek {project.name}</BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
 
-                            <h1 className="text-page-header my-4">
-                                {t('pages.project.trainset.index.title', { name: project.name })}
-                            </h1>
-                            <p className="text-page-subheader">
-                                {t('pages.project.trainset.index.initial_date', {
-                                    initial_date: project.initial_date,
-                                })}
-                            </p>
+                            <h1 className="text-page-header my-4">Proyek {project.name}</h1>
+                            <p className="text-page-subheader">Tanggal Inisiasi : {project.initial_date}</p>
                         </div>
 
                         <div className="rounded p-5 bg-background-2">
                             <form onSubmit={handleAddTrainset} className="flex flex-col gap-2 group" noValidate>
-                                <Label htmlFor="add-trainset">
-                                    {t('pages.project.trainset.index.buttons.add_trainset')}
-                                </Label>
+                                <Label htmlFor="tambah-trainset">Tambah trainset baru</Label>
                                 <div className="flex gap-2">
                                     <div className="">
                                         <Input
                                             // pattern="^[2-9]\d*$"
-                                            id="add-trainset"
+                                            id="tambah-trainset"
                                             type="number"
                                             className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
                                             min={1}
-                                            placeholder={t(
-                                                'pages.project.trainset.index.fields.trainset_needed_placeholder',
-                                            )}
+                                            placeholder="Add Trainset"
                                             value={data.trainsetNeeded}
                                             onChange={e => setData('trainsetNeeded', +e.target.value)}
                                             required
                                         />
                                         <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                                            {t('pages.project.trainset.index.fields.trainset_needed_error')}
+                                            Jumlah Trainset harus lebih dari 0
                                         </span>
                                     </div>
                                     <Button
@@ -110,10 +92,10 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                         {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                {t('action.loading')}
+                                                Menambahkan Trainset
                                             </>
                                         ) : (
-                                            t('pages.project.trainset.index.buttons.add_trainset')
+                                            'Tambah Trainset'
                                         )}
                                     </Button>
                                 </div>

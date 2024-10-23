@@ -1,9 +1,0 @@
-{
-    "upload": {
-        "type": "php",
-        "files": "lang/en/**.php"
-    },
-    "download": {
-        "files": "lang/${lang}/${file}"
-    }
-}

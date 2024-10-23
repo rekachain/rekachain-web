@@ -8,24 +8,21 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Toaster } from '@/Components/UI/toaster';
 import LoadingOverlay from '@/Components/LoadingOverlay';
 import { LoadingProvider } from '@/Contexts/LoadingContext';
-import { LaravelReactI18nProvider } from 'laravel-react-i18n';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-void createInertiaApp({
+createInertiaApp({
     title: title => `${title} - ${appName}`,
     resolve: name => resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
     setup({ el, App, props }) {
         const root = createRoot(el);
 
         root.render(
-            <LaravelReactI18nProvider locale={'en'} fallbackLocale={'en'} files={import.meta.glob('/lang/*.json')}>
-                <LoadingProvider>
-                    <App {...props} />
-                    <Toaster />
-                    <LoadingOverlay />
-                </LoadingProvider>
-            </LaravelReactI18nProvider>,
+            <LoadingProvider>
+                <App {...props} />
+                <Toaster />
+                <LoadingOverlay />
+            </LoadingProvider>,
         );
     },
     progress: {

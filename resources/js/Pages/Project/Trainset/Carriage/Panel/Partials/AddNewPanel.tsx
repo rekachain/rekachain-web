@@ -28,7 +28,6 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { progressService } from '@/Services/progressService';
 import { Separator } from '@/Components/UI/separator';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const AddNewPanel = ({
     panelResponse,
@@ -46,7 +45,6 @@ const AddNewPanel = ({
     const [openPanel, setOpenPanel] = useState(false);
     const [valuePanel, setValuePanel] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
-    const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
     const { data, setData, reset } = useForm({
@@ -122,7 +120,7 @@ const AddNewPanel = ({
         handleResetProgressSearch();
         await handleSyncCarriage();
         reset();
-        void useSuccessToast(t('pages.project.trainset.carriage.panel.partials.add_new_panel.messages.panel_added'));
+        void useSuccessToast('Panel berhasil ditambahkan');
     });
 
     const handleChangePanel = withLoading(async (v: string) => {
@@ -147,7 +145,7 @@ const AddNewPanel = ({
                     className: 'w-full',
                 })}
             >
-                {t('pages.project.trainset.carriage.panel.partials.add_new_panel.buttons.add_new_panel')}
+                Tambah panel baru
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -155,13 +153,8 @@ const AddNewPanel = ({
                     <DialogDescription></DialogDescription>
                     <form onSubmit={handleAddPanelCarriage} className="flex flex-col gap-4">
                         <div className="flex flex-col bg-background-2 gap-4 p-4">
-                            <Label htmlFor="progress">
-                                {t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress',
-                                )}
-                            </Label>
+                            <Label htmlFor="progress">Progress</Label>
                             <div className="flex gap-2">
-                                {/* TODO: Refactor using GenericDataSelector */}
                                 <Popover open={open} onOpenChange={setOpen}>
                                     <PopoverTrigger asChild id="progress">
                                         <Button
@@ -172,9 +165,7 @@ const AddNewPanel = ({
                                         >
                                             {value
                                                 ? progressResponse?.data.find(progress => progress.name === value)?.name
-                                                : t(
-                                                      'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
-                                                  )}
+                                                : 'Pilih progress...'}
                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
@@ -182,12 +173,10 @@ const AddNewPanel = ({
                                         <Command>
                                             <CommandInput
                                                 onValueChange={e => handleChangeSearchProgressName(e)}
-                                                placeholder={t(
-                                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress_search',
-                                                )}
+                                                placeholder="Cari Progress..."
                                             />
                                             <CommandList>
-                                                <CommandEmpty>No results found</CommandEmpty>
+                                                <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
                                                 <CommandGroup>
                                                     {progressResponse?.data.map(progress => (
                                                         <CommandItem
@@ -220,9 +209,7 @@ const AddNewPanel = ({
                                 </Button>
                             </div>
 
-                            <Label htmlFor="panel">
-                                {t('pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.panel')}
-                            </Label>
+                            <Label htmlFor="panel">Panel </Label>
                             <Popover open={openPanel} onOpenChange={setOpenPanel}>
                                 <PopoverTrigger asChild id="panel">
                                     <Button
@@ -233,9 +220,7 @@ const AddNewPanel = ({
                                     >
                                         {valuePanel
                                             ? panelResponse?.data.find(panel => panel.name === valuePanel)?.name
-                                            : t(
-                                                  'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.panel_placeholder',
-                                              )}
+                                            : 'Pilih panel...'}
                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </PopoverTrigger>
@@ -243,12 +228,10 @@ const AddNewPanel = ({
                                     <Command>
                                         <CommandInput
                                             onValueChange={handleChangeSearchPanelName}
-                                            placeholder={t(
-                                                'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.panel_search',
-                                            )}
+                                            placeholder="Cari Progress..."
                                         />
                                         <CommandList>
-                                            <CommandEmpty>No results found</CommandEmpty>
+                                            <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
                                             <CommandGroup>
                                                 {panelResponse?.data.map(panel => (
                                                     <CommandItem
@@ -282,11 +265,7 @@ const AddNewPanel = ({
 
                         <div className="flex flex-col gap-4 bg-background-2 p-4">
                             <div className="flex flex-col gap-2">
-                                <Label>
-                                    {t(
-                                        'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.new_panel_name',
-                                    )}
-                                </Label>
+                                <Label>Panel</Label>
                                 <Input
                                     type="text"
                                     value={data.new_panel_name}
@@ -295,11 +274,7 @@ const AddNewPanel = ({
                                     required
                                 />
                             </div>
-                            <Label htmlFor="new-panel-description">
-                                {t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.new_panel_description',
-                                )}
-                            </Label>
+                            <Label htmlFor="new-panel-description">Deskripsi Panel</Label>
                             <Textarea
                                 id="new-panel-description"
                                 className="p-2 rounded"
@@ -307,11 +282,7 @@ const AddNewPanel = ({
                                 onChange={handleChangeNewPanelDescription}
                                 disabled={data.new_panel_id !== 0}
                             />
-                            <Label htmlFor="new-panel-qty">
-                                {t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.new_panel_qty',
-                                )}
-                            </Label>
+                            <Label htmlFor="new-panel-qty">Jumlah Panel</Label>
                             <Input
                                 id="new-panel-qty"
                                 type="number"
@@ -326,12 +297,10 @@ const AddNewPanel = ({
                             {loading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t('action.loading')}
+                                    Proses
                                 </>
                             ) : (
-                                t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.buttons.add_panel',
-                                )
+                                'Tambahkan panel'
                             )}
                         </Button>
                     </form>

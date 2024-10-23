@@ -10,10 +10,8 @@ import { divisionService } from '@/Services/divisionService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ division }: { division: DivisionResource }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         id: division.id,
         name: division.name,
@@ -23,37 +21,35 @@ export default function ({ division }: { division: DivisionResource }) {
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
         await divisionService.update(division.id, data);
-        void useSuccessToast(t('pages.division.edit.messages.updated'));
+        void useSuccessToast('Division updated successfully');
         router.visit(route(`${ROUTES.DIVISIONS}.index`));
     });
 
     return (
         <>
-            <Head title={t('pages.division.edit.title', { name: division.name })} />
+            <Head title="Ubah Division" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.division.edit.title', { name: division.name })}
-                        </h1>
+                        <h1 className="text-page-header my-4">Ubah Divisi: {division.name}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.division.edit.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.division.edit.buttons.submit')}
+                            Ubah Divisi
                         </Button>
                     </form>
                 </div>

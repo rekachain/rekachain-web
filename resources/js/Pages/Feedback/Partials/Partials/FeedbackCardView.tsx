@@ -9,7 +9,6 @@ import { STYLING } from '@/Support/Constants/styling';
 import { RoleEnum } from '@/Support/Enums/roleEnum';
 import { checkPermission } from '@/Helpers/sidebarHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function FeedbackTableView({
     feedbackResponse,
@@ -18,7 +17,6 @@ export default function FeedbackTableView({
     feedbackResponse: PaginateResponse<FeedbackResource>;
     handleFeedbackDeletion: (id: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
     const auth = usePage().props.auth;
 
     const allowedToReadAll =
@@ -53,7 +51,7 @@ export default function FeedbackTableView({
                             {/*</Link>*/}
                             {feedback.can_be_deleted && allowedToReadAll && (
                                 <Button variant="link" onClick={() => handleFeedbackDeletion(feedback.id)}>
-                                    {t('action.delete')}
+                                    Delete
                                 </Button>
                             )}
                         </div>

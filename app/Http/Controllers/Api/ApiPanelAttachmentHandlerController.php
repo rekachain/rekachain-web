@@ -4,20 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PanelAttachmentHandlerResource;
-use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
+use App\Models\PanelAttachmentHandler;
 use Illuminate\Http\Request;
 
 class ApiPanelAttachmentHandlerController extends Controller {
-    public function __construct(
-        private PanelAttachmentHandlerServiceInterface $panelAttachmentHandlerService
-    ) {}
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        $perPage = $request->get('perPage', 5);
+        $panelAttachmentId = $request->get('panel_attachment_id');
 
-        return PanelAttachmentHandlerResource::collection($this->panelAttachmentHandlerService->getAllPaginated($request->query(), $perPage));
+        return PanelAttachmentHandlerResource::collection(PanelAttachmentHandler::wherePanelAttachmentId($panelAttachmentId)->get());
     }
 
     /**

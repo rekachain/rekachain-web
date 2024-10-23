@@ -28,8 +28,8 @@ test('store method creates new User', function () {
     $role = Role::factory()->create();
     $UserData = [
         'name' => 'Test name',
-        'nip' => '666' . rand(1000000000, 9999999999),
-        'email' => rand(1000000000, 9999999999) . 'test@email.com',
+        'nip' => '666',
+        'email' => 'test@email.com',
         'password' => 'password',
         'role_id' => $role->id,
     ];

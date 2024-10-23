@@ -33,48 +33,16 @@ class DetailWorkerPanelResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
                 ];
-            case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_WORK_DETAIL->value:
+            case IntentEnum::API_DETAIL_WORKER_PANEL_WORKER_REQUEST_WORK->value:
                 return [
-                    'id' => $this->id,
-                    'panel_attachment_id' => $this->serial_panel->panel_attachment_id,
-                    'attachment_number' => $this->serial_panel->panel_attachment->attachment_number,
                     'serial_panel_id' => $this->serial_panel_id,
-                    'panel_name' => $this->serial_panel->panel_attachment->carriage_panel->panel->name,
-                    'carriage_type' => $this->serial_panel->panel_attachment->carriage_panel->carriage_trainset->carriage->type,
                     'worker_id' => $this->worker_id,
-                    'worker_nip' => $this->worker->nip,
-                    'worker_name' => $this->worker->name,
                     'progress_step_id' => $this->progress_step_id,
-                    'progress_name' => $this->progress_step->progress->name,
-                    'work_aspect_name' => $this->progress_step->progress->work_aspect->name,
-                    'step_name' => $this->progress_step->step->name,
-                    'estimated_time' => $this->estimated_time,
-                    'image_path' => $this->image_path,
-                    'work_status' => $this->work_status,
-                    'acceptance_status' => $this->acceptance_status,
-                    'created_at' => $this->created_at->toDateTimeString(),
-                    'updated_at' => $this->updated_at->toDateTimeString(),
-                ];
-            case IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value:
-                return [
-                    'id' => $this->id,
-                    'panel_attachment' => PanelAttachmentResource::make($this->panel_attachment),
-                    'worker' => UserResource::make($this->worker),
-                    'serial_panel' => SerialPanelResource::make($this->serial_panel),
-                    'progress_step' => ProgressStepResource::make($this->progress_step),
-                    'estimated_time' => $this->estimated_time,
-                    'work_status' => $this->work_status,
-                    'acceptance_status' => $this->acceptance_status,
-                    'image_path' => $this->image_path,
-                    'created_at' => $this->created_at->toDateTimeString(),
-                    'updated_at' => $this->updated_at->toDateTimeString(),
-                ];
+                ];    
             default:    
                 return [
                     'id' => $this->id,
-                    'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
                     'serial_panel_id' => $this->serial_panel_id,
-                    'serial_panel' => SerialPanelResource::make($this->whenLoaded('serial_panel')),
                     'worker_id' => $this->worker_id,
                     'worker' => UserResource::make($this->whenLoaded('worker')),
                     'progress_step_id' => $this->progress_step_id,

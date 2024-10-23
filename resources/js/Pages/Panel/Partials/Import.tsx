@@ -11,16 +11,15 @@ import { Button } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
 import { ChangeEvent, FormEvent } from 'react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
     }>({
@@ -32,7 +31,7 @@ export default function () {
         event.preventDefault();
         await panelService.importData(data.file as File);
         router.visit(route(`${ROUTES.PANELS}.index`));
-        await useSuccessToast(t('pages.panels.index.partials.import.messages.imported'));
+        await useSuccessToast('Data imported successfully');
     });
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,29 +42,27 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.panels.index.partials.import.buttons.import')}</Button>
+                <Button variant="tertiary">Import Data</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t('pages.panels.index.partials.import.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.panels.index.partials.import.description')}</DialogDescription>
+                    <DialogTitle>Import Data</DialogTitle>
+                    <DialogDescription>Import data from a file to populate the table.</DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.panels.index.partials.import.fields.file')}</Label>
+                    <Label>Download Template</Label>
                     <Button
                         type="button"
                         variant="secondary"
                         onClick={panelService.downloadImportDataTemplate}
                         disabled={loading}
                     >
-                        {loading
-                            ? t('pages.panels.index.partials.import.buttons.processing')
-                            : t('pages.panels.index.partials.import.buttons.download_template')}
+                        {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.panels.index.partials.import.fields.file')}</Label>
+                        <Label htmlFor="file">File</Label>
                         <Input
                             id="file"
                             type="file"
@@ -75,9 +72,7 @@ export default function () {
                     </div>
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
-                            {loading
-                                ? t('pages.panels.index.partials.import.buttons.processing')
-                                : t('pages.panels.index.partials.import.buttons.import')}
+                            {loading ? 'Processing' : 'Import'}
                         </Button>
                     </DialogFooter>
                 </form>

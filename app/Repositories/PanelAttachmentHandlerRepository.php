@@ -20,9 +20,7 @@ class PanelAttachmentHandlerRepository extends BaseRepository implements PanelAt
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['handler_name','handles']);
-
-        $query = $this->applyColumnFilters($query, $searchParams, ['panel_attachment_id','user_id','handles']);
+        $query = $this->applySearchFilters($query, $searchParams, ['handles']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 

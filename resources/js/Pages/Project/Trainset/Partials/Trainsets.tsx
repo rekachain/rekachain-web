@@ -1,11 +1,13 @@
 import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Link } from '@inertiajs/react';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { trainsetService } from '@/Services/trainsetService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import TrainsetCardView from './Partials/TrainsetCardView';
 import TrainsetTableView from './Partials/TrainsetTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     project,
@@ -14,13 +16,12 @@ export default function ({
     project: ProjectResource;
     handleSyncProject: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
     const handleTrainsetDeletion = withLoading(async (id: number) => {
         await trainsetService.delete(id);
         await handleSyncProject();
-        void useSuccessToast(t('pages.project.trainset.partials.trainsets.messages.deleted'));
+        void useSuccessToast('Trainset deleted successfully');
     }, true);
 
     return (

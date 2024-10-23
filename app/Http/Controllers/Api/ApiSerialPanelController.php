@@ -9,8 +9,6 @@ use App\Support\Enums\RoleEnum;
 use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialPanelResource;
-use App\Http\Resources\DetailWorkerPanelResource;
-use App\Http\Requests\SerialPanel\StoreSerialPanelRequest;
 use App\Http\Requests\SerialPanel\UpdateSerialPanelRequest;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 
@@ -28,7 +26,7 @@ class ApiSerialPanelController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSerialPanelRequest $request) {
+    public function store(Request $request) {
         //
     }
 

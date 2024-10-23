@@ -1,6 +1,9 @@
+import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { ComponentResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useConfirmation } from '@/Hooks/useConfirmation';
@@ -9,11 +12,8 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { withLoading } from '@/Utils/withLoading';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const [componentResponse, setComponentResponse] = useState<PaginateResponse<ComponentResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -27,12 +27,12 @@ export default function () {
 
     const { setLoading } = useLoading();
 
-    const syncComponents = withLoading(async () => {
+    const syncComponents = async () => {
         setLoading(true);
         const res = await componentService.getAll(filters);
         setComponentResponse(res);
         setLoading(false);
-    });
+    };
 
     useEffect(() => {
         void syncComponents();
@@ -44,7 +44,7 @@ export default function () {
                 setLoading(true);
                 await componentService.delete(id);
                 await syncComponents();
-                void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
+                void useSuccessToast('Component deleted successfully');
                 setLoading(false);
             }
         });

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\TrainsetAttachment\StoreTrainsetAttachmentRequest;
 use App\Http\Requests\TrainsetAttachment\UpdateTrainsetAttachmentRequest;
-use App\Http\Resources\DetailWorkerTrainsetResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
@@ -121,8 +120,6 @@ class ApiTrainsetAttachmentController extends ApiController {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
-                return TrainsetAttachmentResource::make($trainsetAttachment);
-            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');

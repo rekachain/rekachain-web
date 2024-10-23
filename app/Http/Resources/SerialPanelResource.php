@@ -23,8 +23,6 @@ class SerialPanelResource extends JsonResource {
                     'trainset' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
-                    'manufacture_status' => $this->manufacture_status,
-                    'notes' => $this->notes,
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
@@ -49,8 +47,6 @@ class SerialPanelResource extends JsonResource {
                     'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
-                    'manufacture_status' => $this->manufacture_status,
-                    'notes' => $this->notes,
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
@@ -58,12 +54,9 @@ class SerialPanelResource extends JsonResource {
 
         return [
             'serial_number' => $this->id,
-            'panel_attachment_id' => $this->panel_attachment_id,
-            'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
+            // 'panel_attachment_id' => $this->panel_attachment_id,
             'qr_code' => $this->qr_code,
             'qr_path' => $this->qr_path,
-            'manufacture_status' => $this->manufacture_status,
-            'notes' => $this->notes,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

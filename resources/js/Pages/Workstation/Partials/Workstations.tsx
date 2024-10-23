@@ -8,10 +8,8 @@ import WorkstationTableView from './Partials/WorkstationTableView';
 import WorkstationCardView from './Partials/WorkstationCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -31,7 +29,7 @@ export default function () {
     const handleWorkstationDeletion = withLoading(async (id: number) => {
         await workstationService.delete(id);
         await syncWorkstations();
-        void useSuccessToast(t('pages.workstation.partials.workstations.messages.deleted'));
+        void useSuccessToast('Workstation deleted successfully');
     }, true);
 
     const handlePageChange = (page: number) => {

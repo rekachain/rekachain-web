@@ -14,10 +14,8 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from '@/Components/UI/alert-dialog';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full pr-52 md:mr-0 `;
     return (
         <div className=" md:px-4 ">
@@ -46,26 +44,26 @@ export default function () {
                     <div className="hidden md:block">
                         <div className={linkClass}>
                             <RiLogoutBoxRLine size="20" className="" />
-                            <span className="sidebar-item-text ml-2  md:mr-0">
-                                {t('components.sidebar_logout.buttons.logout')}
-                            </span>
+                            <span className="sidebar-item-text ml-2  md:mr-0">Logout</span>
                         </div>
                     </div>
                     <div className=" md:hidden flex  items-center">
                         <RiLogoutBoxRLine size="32" className="" />
-                        <span className="text-base ml-3  md:mr-0">{t('components.sidebar_logout.buttons.logout')}</span>
+                        <span className="text-base ml-3  md:mr-0">Logout</span>
                     </div>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>{t('components.sidebar_logout.title')}</AlertDialogTitle>
-                        <AlertDialogDescription>{t('components.sidebar_logout.description')}</AlertDialogDescription>
+                        <AlertDialogTitle>Apakah anda yakin untuk Logout ? </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Dengan menekan tombol ini anda akan keluar dari website dan harus login kembali.
+                        </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>{t('components.sidebar_logout.buttons.back')}</AlertDialogCancel>
+                        <AlertDialogCancel>Kembali</AlertDialogCancel>
 
                         <Link method="post" href={route(ROUTES.LOGOUT)} as="button">
-                            <AlertDialogAction>{t('components.sidebar_logout.buttons.logout')}</AlertDialogAction>
+                            <AlertDialogAction>Logout</AlertDialogAction>
                         </Link>
                     </AlertDialogFooter>
                 </AlertDialogContent>

@@ -16,10 +16,8 @@ import { workstationService } from '@/Services/workstationService';
 import { stepService } from '@/Services/stepService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { FilePond } from 'react-filepond';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function (props: { roles: RoleResource[] }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData, progress } = useForm<{
         nip: string;
         name: string;
@@ -74,21 +72,21 @@ export default function (props: { roles: RoleResource[] }) {
         if (data.image_path.length > 0) formData.append('image_path', data.image_path[0]);
         await userService.create(formData);
         router.visit(route(`${ROUTES.USERS}.index`));
-        void useSuccessToast(t('pages.user.create.messages.created'));
+        void useSuccessToast('User created successfully');
     });
 
     return (
         <>
-            <Head title={t('pages.user.create.title')} />
+            <Head title="Tambah Staff" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.user.create.title')}</h1>
+                        <h1 className="text-page-header my-4">Tambah Staff</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nip" value={t('pages.user.create.fields.nip')} />
+                            <InputLabel htmlFor="nip" value="NIP" />
                             <Input
                                 id="nip"
                                 type="number"
@@ -102,7 +100,7 @@ export default function (props: { roles: RoleResource[] }) {
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.user.create.fields.name')} />
+                            <InputLabel htmlFor="name" value="Nama" />
                             <Input
                                 id="name"
                                 type="text"
@@ -115,7 +113,7 @@ export default function (props: { roles: RoleResource[] }) {
                             />
                         </div>
                         <div className="mt-4">
-                            <InputLabel htmlFor="email" value={t('pages.user.create.fields.email')} />
+                            <InputLabel htmlFor="email" value="Email" />
                             <Input
                                 id="email"
                                 type="email"
@@ -129,7 +127,7 @@ export default function (props: { roles: RoleResource[] }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="phone_number" value={t('pages.user.create.fields.phone_number')} />
+                            <InputLabel htmlFor="phone_number" value="Nomor Telepon" />
                             <Input
                                 id="phone_number"
                                 type="text"
@@ -143,13 +141,13 @@ export default function (props: { roles: RoleResource[] }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="workstation_id" value={t('pages.user.create.fields.workstation')} />
+                            <InputLabel htmlFor="workstation_id" value="Workstation" />
                             <GenericDataSelector
                                 id="workstation_id"
                                 fetchData={fetchWorkstations}
                                 setSelectedData={id => setData('workstation_id', id)}
                                 selectedDataId={data.workstation_id ?? undefined}
-                                placeholder={t('pages.user.create.fields.workstation_placeholder')}
+                                placeholder="Select Workstation"
                                 renderItem={(item: WorkstationResource) => `${item.name} - ${item.location}`} // Customize how to display the item
                                 buttonClassName="mt-1"
                                 nullable
@@ -157,20 +155,20 @@ export default function (props: { roles: RoleResource[] }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="step_id" value={t('pages.user.create.fields.step')} />
+                            <InputLabel htmlFor="step_id" value="Step" />
                             <GenericDataSelector
                                 id="step_id"
                                 fetchData={fetchSteps}
                                 setSelectedData={id => setData('step_id', id)}
                                 selectedDataId={data.step_id}
-                                placeholder={t('pages.user.create.fields.step_placeholder')}
+                                placeholder="Select Step"
                                 renderItem={item => item.name}
                                 buttonClassName="mt-1"
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="password" value={t('pages.user.create.fields.password')} />
+                            <InputLabel htmlFor="password" value="Password" />
                             <Input
                                 id="password"
                                 type="password"
@@ -183,14 +181,14 @@ export default function (props: { roles: RoleResource[] }) {
                             />
                         </div>
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <InputLabel htmlFor="avatar" value={t('pages.user.create.fields.avatar')} />
+                            <InputLabel htmlFor="avatar" value="Foto staff" />
                             <FilePond
                                 imagePreviewMaxHeight={400}
                                 filePosterMaxHeight={400}
                                 allowMultiple={false}
                                 files={data.image_path}
                                 onupdatefiles={handleFileChange}
-                                labelIdle={t('pages.user.create.fields.avatar_filepond_placeholder')}
+                                labelIdle="Drop files here or click to upload"
                                 allowReplace
                             />
                             {progress && (
@@ -201,7 +199,7 @@ export default function (props: { roles: RoleResource[] }) {
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.user.create.fields.role')}</h2>
+                            <h2 className="text-lg font-semibold">Role</h2>
                             <RadioGroup onValueChange={v => setData('role_id', +v)}>
                                 {props.roles?.map(role => (
                                     <div key={role.id} className="flex items-center space-x-2">
@@ -213,7 +211,7 @@ export default function (props: { roles: RoleResource[] }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.user.create.buttons.submit')}
+                            Tambah Staff
                         </Button>
                     </form>
                 </div>

@@ -7,11 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreTrainsetAttachmentComponentRequest extends FormRequest {
     public function rules(): array {
         return [
-            'trainset_attachment_id' => 'required|exist:trainset_attachment,id',
-            'carriage_panel_component_id' => 'required|carriage_panel_component,id',
-            'total_required' => 'required|integer',
-            'total_fulfilled' => 'nullable|integer',
-            'total_failed' => 'nullable|integer',
+            // Add your validation rules here
         ];
     }
 }

@@ -24,7 +24,6 @@ import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const AddCarriage = ({
     trainset,
@@ -43,7 +42,6 @@ const AddCarriage = ({
     debouncedCarriageFilters: ServiceFilterOptions;
     handleSyncTrainset: () => Promise<void>;
 }) => {
-    const { t } = useLaravelReactI18n();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
 
@@ -85,7 +83,7 @@ const AddCarriage = ({
             data.new_carriage_description,
             data.new_carriage_qty,
         );
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.add_carriage.messages.carriage_added'));
+        void useSuccessToast('Carriage added successfully');
         await handleSyncTrainset();
     });
 
@@ -96,19 +94,16 @@ const AddCarriage = ({
                     className: 'w-full',
                 })}
             >
-                {t('pages.project.trainset.carriage.partials.add_carriage.buttons.add_carriage')}
+                Tambah gerbong baru
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>{data.new_carriage_type}</DialogTitle>
                     <DialogDescription></DialogDescription>
                     <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-4">
-                        {/* TODO: Refactor using GenericDataSelector */}
                         <SelectGroup className="space-y-2">
                             <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                <Label htmlFor="carriage">
-                                    {t('pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.carriage')}
-                                </Label>
+                                <Label htmlFor="carriage">Pilih gerbong yang sudah ada</Label>
                                 {/* <Input
                                                 placeholder="Cari gerbong"
                                                 value={carriageFilters.search}
@@ -161,11 +156,7 @@ const AddCarriage = ({
                                                 aria-expanded={open}
                                                 className="w-full justify-between"
                                             >
-                                                {value
-                                                    ? handleSearchCarriages(carriageResponse)
-                                                    : t(
-                                                          'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.carriage',
-                                                      )}
+                                                {value ? handleSearchCarriages(carriageResponse) : 'Pilih carriage...'}
                                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
@@ -173,12 +164,10 @@ const AddCarriage = ({
                                             <Command>
                                                 <CommandInput
                                                     onValueChange={e => handleChangeSearchCarriageType(e)}
-                                                    placeholder={t(
-                                                        'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.carriage_search',
-                                                    )}
+                                                    placeholder="Cari Gerbong..."
                                                 />
                                                 <CommandList>
-                                                    <CommandEmpty>No Result Found</CommandEmpty>
+                                                    <CommandEmpty>Gerbong tidak ditemukan.</CommandEmpty>
                                                     <CommandGroup>
                                                         {carriageResponse?.data.map(carriage => (
                                                             <CommandItem
@@ -225,29 +214,23 @@ const AddCarriage = ({
                             <div className=" flex-1">
                                 <Separator />
                             </div>
-                            {t('pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.or')}
+                            Atau
                             <div className=" flex-1">
                                 <Separator />
                             </div>
                         </div>
                         <div className="flex flex-col gap-4 bg-background-2 p-4">
-                            <Label>
-                                {t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.new_carriage_type',
-                                )}
-                            </Label>
-                            <Input
-                                type="text"
-                                value={data.new_carriage_type}
-                                onChange={e => setData('new_carriage_type', e.target.value)}
-                                disabled={data.new_carriage_id !== 0}
-                                required
-                            />
-                            <Label htmlFor="new-carriage-description">
-                                {t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.new_carriage_description',
-                                )}
-                            </Label>
+                            <div className="flex flex-col gap-2">
+                                <Label>Tipe Gerbong</Label>
+                                <Input
+                                    type="text"
+                                    value={data.new_carriage_type}
+                                    onChange={e => setData('new_carriage_type', e.target.value)}
+                                    disabled={data.new_carriage_id !== 0}
+                                    required
+                                />
+                            </div>
+                            <Label htmlFor="new-carriage-description">Deskripsi Gerbong</Label>
                             <Textarea
                                 id="new-carriage-description"
                                 className="p-2 rounded"
@@ -255,11 +238,7 @@ const AddCarriage = ({
                                 onChange={e => setData('new_carriage_description', e.target.value)}
                                 disabled={data.new_carriage_id !== 0}
                             />
-                            <Label htmlFor="new-carriage-qty">
-                                {t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.new_carriage_qty',
-                                )}
-                            </Label>
+                            <Label htmlFor="new-carriage-qty">Jumlah Gerbong</Label>
                             <Input
                                 id="new-carriage-qty"
                                 type="number"
@@ -274,12 +253,10 @@ const AddCarriage = ({
                             {loading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.add_carriage.dialogs.actions.adding_carriage',
-                                    )}
+                                    Proses
                                 </>
                             ) : (
-                                t('pages.project.trainset.carriage.partials.add_carriage.dialogs.buttons.add_carriage')
+                                'Tambahkan gerbong'
                             )}
                         </Button>
                     </form>

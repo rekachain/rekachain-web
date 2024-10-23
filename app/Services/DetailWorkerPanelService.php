@@ -35,34 +35,24 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
     }
 
     public function assignWorker($request){
-        $check = DetailWorkerPanel::where('worker_id', $request->user()->id)
-                        ->where('serial_panel_id', $request->serial_panel_id)
-                        ->first();
-        
-        if ($check == null) {
-            $progress = SerialPanel::find($request->serial_panel_id)->panel_attachment->carriage_panel->progress;
-            $step = User::find($request->user()->id)->step;
-            $progress_step = ProgressStep::where('progress_id', $progress->id)
-                                        ->where('step_id', $step->id)
-                                        ->first();
-                                        
-            if ($progress_step){
-                $detailWork = DetailWorkerPanel::create([
-                    'serial_panel_id' => $request->serial_panel_id,
-                    'worker_id' => $request->user()->id,
-                    'acceptance_status' => null,
-                    'progress_step_id' => $progress_step->id,
-                    'estimated_time' => $step->estimated_time
-                ]);
+        $progress = SerialPanel::find($request->serial_panel_id)->panel_attachment->carriage_panel->progress;
+        $step = User::find($request->user()->id)->step;
+        $progress_step = ProgressStep::where('progress_id', $progress->id)
+                                    ->where('step_id', $step->id)
+                                    ->first();
+                                    
+        if ($progress_step){
+            $detailWork = DetailWorkerPanel::create([
+                'serial_panel_id' => $request->serial_panel_id,
+                'worker_id' => $request->user()->id,
+                'progress_step_id' => $progress_step->id,
+                'estimated_time' => $step->estimated_time
+            ]);
 
-                return $detailWork;
-            } else {
-                return abort(400, 'Worker not identified');
-            }        
-        }else {
-            return $check;  
-        } 
-        
+            return $detailWork;
+        } else {
+            return abort(400, 'Worker not identified');
+        }                                    
     }
 
     public function requestAssign($detailWorkerPanel, $request){

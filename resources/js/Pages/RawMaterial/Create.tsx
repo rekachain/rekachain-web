@@ -9,13 +9,11 @@ import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
-    const { data, setData } = useForm({
+    const { data, setData} = useForm({
         name: '',
         material_code: '',
         description: '',
@@ -28,24 +26,21 @@ export default function () {
 
         await rawMaterialService.create(data);
         router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        void useSuccessToast(t('pages.raw_material.create.messages.created'));
+        void useSuccessToast('Raw Material berhasil ditambahkan');
     });
 
     return (
         <>
-            <Head title={t('pages.raw_material.create.title')} />
+            <Head title="Tambah Raw Material" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.raw_material.create.title')}</h1>
+                        <h1 className="text-page-header my-4">Tambah Raw Material</h1>
                     </div>
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel
-                                htmlFor="material_code"
-                                value={t('pages.raw_material.create.fields.material_code')}
-                            />
+                            <InputLabel htmlFor="material_code" value="Kode Material" />
                             <Input
                                 id="material_code"
                                 type="text"
@@ -58,10 +53,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel
-                                htmlFor="description"
-                                value={t('pages.raw_material.create.fields.description')}
-                            />
+                            <InputLabel htmlFor="description" value="Deskripsi" />
                             <Input
                                 id="description"
                                 type="text"
@@ -74,7 +66,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="specs" value={t('pages.raw_material.create.fields.specs')} />
+                            <InputLabel htmlFor="specs" value="Spesifikasi" />
                             <Input
                                 id="specs"
                                 type="text"
@@ -87,7 +79,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="unit" value={t('pages.raw_material.create.fields.unit')} />
+                            <InputLabel htmlFor="unit" value="Unit" />
                             <Input
                                 id="unit"
                                 type="text"
@@ -100,7 +92,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.raw_material.create.buttons.submit')}
+                            Tambah Raw Material
                         </Button>
                     </form>
                 </div>

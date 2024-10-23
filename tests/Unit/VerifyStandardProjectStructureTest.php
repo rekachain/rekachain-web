@@ -288,7 +288,6 @@ test('model should have controllers, form request, resource, service interface, 
     // Exclude certain folders or files
     $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php'];
     $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php'];
-    $excludedServices = ['TrainsetAttachmentComponent'];
     $excludedReactModelInterfaces = ['index.ts'];
     $excludedReactResources = ['index.ts', 'Resource.ts'];
     $excludedReactServices = ['serviceFactory.ts'];
@@ -300,7 +299,7 @@ test('model should have controllers, form request, resource, service interface, 
     $resourceCount = countFilesInDirectory($resourceDir);
     $serviceInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Services');
     $repositoryInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Repositories');
-    $serviceCount = countFilesInDirectory($baseDir . '/app/Services', $excludedServices);
+    $serviceCount = countFilesInDirectory($baseDir . '/app/Services');
     $repositoryCount = countFilesInDirectory($baseDir . '/app/Repositories');
     $reactModelInterfaceCount = countFilesInDirectory($reactModelInterfaceDir, $excludedReactModelInterfaces);
     $reactResourceCount = countFilesInDirectory($reactResourceDir, $excludedReactResources);

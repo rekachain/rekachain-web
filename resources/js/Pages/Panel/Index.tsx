@@ -5,23 +5,21 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import Import from '@/Pages/Panel/Partials/Import';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const Panels = lazy(() => import('./Partials/Panels'));
     return (
         <>
-            <Head title={t('pages.panels.index.title')} />
+            <Head title="Panel" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.panels.index.title')}</h1>
+                        <h1 className="text-page-header my-4">Panel</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.PANELS}.create`)}
                         >
-                            {t('pages.panels.index.buttons.create')}
+                            Tambah Panel
                         </Link>
                         <Import />
                     </div>

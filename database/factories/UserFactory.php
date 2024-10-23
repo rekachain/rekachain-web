@@ -33,8 +33,8 @@ class UserFactory extends Factory {
             'email_verified_at' => now(),
             'phone_number' => fake()->optional()->numerify('###########'),
             'password' => static::$password ??= Hash::make('password'),
-            'workstation_id' => Workstation::inRandomOrder()->first()->id ?? Workstation::factory(),
-            'step_id' => Step::inRandomOrder()->first()->id ?? Step::factory(),
+            'workstation_id' => Workstation::factory(),
+            'step_id' => Step::factory(),
             'remember_token' => Str::random(10),
         ];
     }

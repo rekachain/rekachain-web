@@ -10,8 +10,6 @@ import { STYLING } from '@/Support/Constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
 import AddFeedback from '@/Components/AddFeedback';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -31,8 +29,6 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
         post(route('login'));
     };
-
-    const { t } = useLaravelReactI18n();
 
     const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
 
@@ -100,18 +96,15 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                     )}
                                 </Button>
                                 <AddFeedback />
-                                <SetLocalization />
                             </div>
                         </div>
                     </div>
                     <div className="">
-                        <div className="text-3xl md:text-4xl mb-16 text-center mt-12 sm:mt-0">
-                            {t('pages.login.title')}
-                        </div>
+                        <div className="text-3xl md:text-4xl mb-16 text-center mt-12 sm:mt-0">Welcome Back...</div>
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel htmlFor="nip" value={t('pages.login.fields.nip')} />
+                                <InputLabel htmlFor="nip" value="NIP" />
 
                                 <Input
                                     id="nip"
@@ -128,7 +121,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             </div>
 
                             <div className="mt-4">
-                                <InputLabel htmlFor="password" value={t('pages.login.fields.password')} />
+                                <InputLabel htmlFor="password" value="Password" />
 
                                 <Input
                                     id="password"
@@ -150,9 +143,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                         checked={data.remember}
                                         onChange={e => setData('remember', e.target.checked)}
                                     />
-                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                        {t('pages.login.fields.remember')}
-                                    </span>
+                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
                                 </label>
 
                                 {canResetPassword && (
@@ -160,14 +151,14 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                         href={route('password.request')}
                                         className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                                     >
-                                        {t('pages.login.buttons.forgot_password')}
+                                        Forgot your password?
                                     </Link>
                                 )}
                             </div>
 
                             <div className="flex items-center justify-end mt-4">
                                 <Button className="w-full" disabled={processing}>
-                                    {t('pages.login.buttons.sign_in')}
+                                    SIGN IN
                                 </Button>
                             </div>
                         </form>

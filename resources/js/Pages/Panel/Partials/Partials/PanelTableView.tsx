@@ -1,11 +1,10 @@
-import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { PaginateResponse } from '../../../../Support/Interfaces/Others';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { PanelResource } from '@/Support/Interfaces/Resources';
+import { PanelResource } from '../../../../Support/Interfaces/Resources';
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function PanelCardView({
     panelResponse,
@@ -14,18 +13,13 @@ export default function PanelCardView({
     panelResponse: PaginateResponse<PanelResource>;
     handlePanelDeletion: (id: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>
-                            {t('pages.panels.index.partials.panels.partials.panels_table.headers.name')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.panels.index.partials.panels.partials.panels_table.headers.description')}
-                        </TableHead>
+                        <TableHead>Nama</TableHead>
+                        <TableHead>Deskripsi</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -39,11 +33,11 @@ export default function PanelCardView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PANELS}.edit`, panel.id)}
                                 >
-                                    {t('action.edit')}
+                                    Edit
                                 </Link>
                                 {panel.can_be_deleted && (
                                     <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
-                                        {t('action.delete')}
+                                        Delete
                                     </Button>
                                 )}
                             </TableCell>

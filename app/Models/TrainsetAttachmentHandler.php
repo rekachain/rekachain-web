@@ -12,7 +12,6 @@ class TrainsetAttachmentHandler extends Model
 
     protected $fillable = [
         'user_id',
-        'handler_name',
         'trainset_attachment_id',
         'handles',
     ];

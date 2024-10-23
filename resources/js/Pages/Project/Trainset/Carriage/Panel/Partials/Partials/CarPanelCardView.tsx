@@ -1,10 +1,11 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import { ROUTES } from '@/Support/Constants/routes';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import React from 'react';
 import PanelQty from '../Components/PanelQty';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarPanelCardView({
     trainset,
@@ -17,7 +18,6 @@ export default function CarPanelCardView({
     handleSyncCarriage: () => Promise<void>;
     handlePanelDeletion: (id: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <div>
             <>
@@ -63,7 +63,7 @@ export default function CarPanelCardView({
                                 <div className="flex items-center justify-end w-full">
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>
-                                            {t('action.delete')}
+                                            Delete
                                         </Button>
                                     )}
                                 </div>

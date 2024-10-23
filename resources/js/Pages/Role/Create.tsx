@@ -13,10 +13,8 @@ import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
         division_id: '',
@@ -39,7 +37,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
             permissions: data.permissions,
         });
         router.visit(route(`${ROUTES.ROLES}.index`));
-        void useSuccessToast(t('pages.role.create.messages.created'));
+        void useSuccessToast('Role berhasil ditambahkan');
     });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
@@ -55,38 +53,37 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
 
     return (
         <>
-            <Head title={t('pages.role.create.title')} />
+            <Head title="Tambah Role" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.role.create.title')}</h1>
+                        <h1 className="text-page-header my-4">Tambah Role</h1>
                     </div>
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.role.create.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                                 required
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value={t('pages.role.create.fields.division')} />
-                            {/* TODO: implement GenericDataSelector */}
+                            <InputLabel htmlFor="division" value="Divisi" />
                             <Select
                                 name="division"
                                 value={data.division_id}
                                 onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder={t('pages.role.create.fields.division_placeholder')} />
+                                    <SelectValue placeholder="Pilih divisi" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {/*none*/}
@@ -101,7 +98,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="level" value={t('pages.role.create.fields.level')} />
+                            <InputLabel htmlFor="level" value="Level" />
                             <Input
                                 id="level"
                                 type="text"
@@ -115,7 +112,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-5">
-                            <h1>{t('pages.role.create.fields.permissions')}</h1>
+                            <h1>Permissions</h1>
                             <div className="mt-1">
                                 <div className="flex flex-wrap">
                                     {permissions.map(permission => (
@@ -143,7 +140,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                             </div>
                         </div>
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.role.create.buttons.submit')}
+                            Tambah Role
                         </Button>
                     </form>
                 </div>

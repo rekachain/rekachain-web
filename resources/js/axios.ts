@@ -102,4 +102,3 @@ function handleAxiosError(error: any) {
 window.axios.interceptors.response.use(res => res, handleAxiosError);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.headers.common['Accept-Language'] = 'en';

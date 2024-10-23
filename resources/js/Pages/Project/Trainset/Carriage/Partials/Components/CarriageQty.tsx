@@ -9,7 +9,6 @@ import { FormEvent, useState } from 'react';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     trainset,
@@ -20,7 +19,6 @@ export default function ({
     carriage_trainset: CarriageTrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         carriageQty: carriage_trainset.qty,
     });
@@ -30,14 +28,14 @@ export default function ({
     };
     const { loading } = useLoading();
 
-    const handleEditCarriageQty = withLoading(async (e: FormEvent<HTMLFormElement>) => {
+    const handleEditCarriageQty = withLoading(async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         await trainsetService.updateCarriageTrainset(trainset.id, carriage_trainset.id, {
             qty: data.carriageQty,
         });
         await handleSyncTrainset();
         setIsEditing(false);
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.components.carriage_qty.messages.updated'));
+        void useSuccessToast('Carriage qty updated successfully');
     });
 
     return (
@@ -52,12 +50,10 @@ export default function ({
                         onChange={e => setData('carriageQty', +e.target.value)}
                     />
                     <Button type="submit" disabled={loading}>
-                        {loading
-                            ? t('action.loading')
-                            : t('pages.project.trainset.carriage.partials.components.carriage_qty.buttons.submit')}
+                        {loading ? 'Processing' : 'Save'}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
-                        {t('action.cancel')}
+                        Cancel
                     </Button>
                 </form>
             ) : (

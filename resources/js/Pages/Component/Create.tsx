@@ -20,10 +20,8 @@ import { progressService } from '@/Services/progressService';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import cn from 'mxcn';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
@@ -51,24 +49,24 @@ export default function () {
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await componentService.create(data);
-        void useSuccessToast(t('pages.component.create.messages.created'));
+        void useSuccessToast('Component created successfully');
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
     });
 
     return (
         <>
-            <Head title={t('pages.component.create.title')} />
+            <Head title="Tambah Component" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.component.create.title')}</h1>
+                        <h1 className="text-page-header my-4">Tambah Component</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.component.create.fields.progress')}</Label>
+                                    <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
                                     {/* <div className="flex gap-4">
                                         <Input
                                             placeholder="Cari progress"
@@ -120,7 +118,7 @@ export default function () {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : t('pages.component.create.fields.progress')}
+                                                        : 'Pilih progress...'}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -128,12 +126,10 @@ export default function () {
                                                 <Command>
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
-                                                        placeholder={t(
-                                                            'pages.component.create.fields.progress_placeholder',
-                                                        )}
+                                                        placeholder="Cari Progress..."
                                                     />
                                                     <CommandList>
-                                                        <CommandEmpty>No results found</CommandEmpty>
+                                                        <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
                                                         <CommandGroup>
                                                             {progressResponse?.data.map(progress => (
                                                                 <CommandItem
@@ -176,21 +172,21 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.component.create.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 required
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            {t('pages.component.create.buttons.submit')}
+                            Tambah Component
                         </Button>
                     </form>
                 </div>

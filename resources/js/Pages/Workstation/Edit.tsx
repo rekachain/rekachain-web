@@ -12,7 +12,6 @@ import { workstationService } from '@/Services/workstationService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     workstation,
@@ -23,7 +22,6 @@ export default function ({
     workshops: WorkshopResource[];
     divisions: DivisionResource[];
 }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: workstation.name,
         location: workstation.location,
@@ -38,36 +36,34 @@ export default function ({
 
         await workstationService.update(workstation.id, data);
         router.visit(route(`${ROUTES.WORKSTATIONS}.index`));
-        void useSuccessToast(t('pages.workstation.edit.messages.updated'));
+        void useSuccessToast('Workstation berhasil diubah');
     });
 
     return (
         <>
-            <Head title={t('pages.workstation.edit.title', { name: workstation.name })} />
+            <Head title="Ubah Workstation" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.workstation.edit.title', { name: workstation.name })}
-                        </h1>
+                        <h1 className="text-page-header my-4">Ubah Workstation: {workstation.name}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workstation.edit.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value={t('pages.workstation.edit.fields.location')} />
+                            <InputLabel htmlFor="location" value="Lokasi" />
                             <Input
                                 id="location"
                                 type="text"
@@ -80,7 +76,7 @@ export default function ({
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.workshop')}</h2>
+                            <h2 className="text-lg font-semibold">Workshop</h2>
                             <RadioGroup
                                 defaultValue={workstation.workshop_id.toString()}
                                 onValueChange={v => setData('workshop_id', v)}
@@ -95,7 +91,7 @@ export default function ({
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.division')}</h2>
+                            <h2 className="text-lg font-semibold">Divisi</h2>
                             <RadioGroup
                                 defaultValue={workstation.division_id.toString()}
                                 onValueChange={v => setData('division_id', v)}
@@ -113,7 +109,7 @@ export default function ({
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.workstation.edit.buttons.submit')}
+                            Ubah Workstation
                         </Button>
                     </form>
                 </div>

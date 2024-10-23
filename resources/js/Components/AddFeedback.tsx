@@ -19,11 +19,10 @@ import { feedbackService } from '@/Services/feedbackService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { FeedbackTooltipEnum } from '@/Support/Enums/feedbackTooltipEnum';
 import { STYLING } from '@/Support/Constants/styling';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const AddFeedback = () => {
     const auth = usePage().props.auth;
-    const { t } = useLaravelReactI18n();
+    console.log(auth);
     const { data, setData } = useForm({
         user_id: auth?.user?.id ?? null,
         name: '',
@@ -49,34 +48,36 @@ const AddFeedback = () => {
                 <DialogHeader>
                     <DialogTitle>
                         <RiFeedbackLine className="inline-block w-6 h-6 mr-2" aria-hidden="true" />
-                        {t('components.feedback.title')}
+                        Feedback
                     </DialogTitle>
-                    <DialogDescription>{t('components.feedback.description')} </DialogDescription>
+                    <DialogDescription>
+                        Your feedback is important to us. We value and consider every suggestion and feedback.
+                    </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleAddFeedback}>
                     <div className="grid gap-4 py-4">
                         {!auth.user.id && (
                             <>
-                                <Label htmlFor="name">{t('components.feedback.fields.name')}</Label>
+                                <Label htmlFor="name">Name</Label>
                                 <Input
                                     id="name"
                                     name="name"
-                                    placeholder={t('components.feedback.fields.name_placeholder')}
+                                    placeholder="Your name"
                                     value={data.name}
                                     onChange={e => setData('name', e.target.value)}
                                 />
-                                <Label htmlFor="email">{t('components.feedback.fields.email')}</Label>
+                                <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
                                     name="email"
-                                    placeholder={t('components.feedback.fields.email_placeholder')}
+                                    placeholder="Your email"
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
                                 />
                             </>
                         )}
 
-                        <Label htmlFor="rating">{t('components.feedback.fields.rating')}</Label>
+                        <Label htmlFor="rating">Rating</Label>
                         <Rating
                             SVGclassName={'inline-block'}
                             onClick={(rate: number) => setData('rating', rate)}
@@ -89,17 +90,17 @@ const AddFeedback = () => {
                             emptyColor="gray"
                         />
 
-                        <Label htmlFor="message">{t('components.feedback.fields.message')}</Label>
+                        <Label htmlFor="message">Message</Label>
                         <Input
                             id="message"
                             name="message"
-                            placeholder={t('components.feedback.fields.message_placeholder')}
+                            placeholder="Your feedback"
                             value={data.message}
                             onChange={e => setData('message', e.target.value)}
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit">{t('action.save')}</Button>
+                        <Button type="submit">Save changes</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

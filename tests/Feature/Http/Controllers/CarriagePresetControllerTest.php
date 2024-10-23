@@ -8,14 +8,16 @@ use App\Models\PresetTrainset;
 
 test('index method returns paginated carriage-presets', function () {
     $user = User::factory()->superAdmin()->create();
+    Project::factory()->create();
+    PresetTrainset::factory()->create();
+    Carriage::factory()->create();
+    CarriagePreset::factory()->count(5)->create();
 
-    $this->dummy->createCarriagePreset();
-
-    $response = $this->actingAs($user)->getJson('/carriage-presets?page=1&perPage=1');
+    $response = $this->actingAs($user)->getJson('/carriage-presets?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
 // test('create method returns create page', function () {
@@ -29,13 +31,12 @@ test('index method returns paginated carriage-presets', function () {
 
 test('store method creates new carriagePreset', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $presetTrainset = $this->dummy->createPresetTrainset();
-    $carriage = $this->dummy->createCarriage();
-
+    Project::factory()->create();
+    PresetTrainset::factory()->create();
+    Carriage::factory()->create();
     $carriagePresetData = [
-        'preset_trainset_id' => $presetTrainset->id,
-        'carriage_id' => $carriage->id,
+        'preset_trainset_id' => PresetTrainset::inRandomOrder()->first()->id,
+        'carriage_id' => Carriage::inRandomOrder()->first()->id,
         'qty' => 1,
     ];
 
@@ -62,8 +63,10 @@ test('store method creates new carriagePreset', function () {
 
 test('show method returns carriagePreset details', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $carriagePreset = $this->dummy->createCarriagePreset();
+    Project::factory()->create();
+    PresetTrainset::factory()->create();
+    Carriage::factory()->create();
+    $carriagePreset = CarriagePreset::factory()->create();
 
     $response = $this->actingAs($user)->getJson("/carriage-presets/{$carriagePreset->id}");
 
@@ -88,9 +91,10 @@ test('show method returns carriagePreset details', function () {
 
 test('update method updates carriagePreset', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $carriagePreset = $this->dummy->createCarriagePreset();
-
+    Project::factory()->create();
+    PresetTrainset::factory()->create();
+    Carriage::factory()->create();
+    $carriagePreset = CarriagePreset::factory()->create();
     $updatedData = [
         'qty' => 2,
     ];
@@ -104,8 +108,10 @@ test('update method updates carriagePreset', function () {
 
 test('destroy method deletes carriagePreset', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $carriagePreset = $this->dummy->createCarriagePreset();
+    Project::factory()->create();
+    PresetTrainset::factory()->create();
+    Carriage::factory()->create();
+    $carriagePreset = CarriagePreset::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/carriage-presets/{$carriagePreset->id}");
 

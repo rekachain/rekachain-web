@@ -15,7 +15,6 @@ use App\Models\Progress;
 use App\Models\Trainset;
 use App\Models\Workshop;
 use App\Models\Component;
-use App\Models\Permission;
 use App\Models\WorkAspect;
 use App\Models\RawMaterial;
 use App\Models\SerialPanel;
@@ -24,8 +23,6 @@ use App\Models\Workstation;
 use App\Models\ProgressStep;
 use App\Models\CarriagePanel;
 use App\Models\PanelMaterial;
-use App\Models\CarriagePreset;
-use App\Models\PresetTrainset;
 use App\Models\PanelAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Models\CarriageTrainset;
@@ -35,7 +32,6 @@ use App\Models\TrainsetAttachment;
 use App\Models\DetailWorkerTrainset;
 use App\Models\CarriagePanelComponent;
 use App\Models\TrainsetAttachmentHandler;
-use App\Models\TrainsetAttachmentComponent;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 
@@ -90,25 +86,7 @@ class Dummy {
 
         return $user;
     }
-    public function createQCMekanik(): User {
-        $role = Role::firstOrCreate(['name' => RoleEnum::QC_MEKANIK]);
-        $user = User::factory(['name' => 'QC Mekanik'])->create();
-        $user->assignRole($role);
 
-        return $user;
-    }
-
-    public function createRole(): Role {
-        $role = Role::firstOrCreate(['name' => 'Test Role']);
-
-        return $role;
-    }
-
-    public function createPermission(): Permission {
-        $permission = Permission::firstOrCreate(['name' => 'test-permission', 'guard_name' => 'web']);
-
-        return $permission;
-    }
 
     public function createComponent(): Component {
         $progress = $this->createProgress();
@@ -186,8 +164,7 @@ class Dummy {
     }
 
     public function createProgress(WorkAspect $workAspect = null): Progress {
-        $workAspect = $workAspect->id ?? $this->createWorkAspect();
-        $progress = Progress::inRandomOrder()->first() ?? Progress::factory()->create(['work_aspect_id' => $workAspect]);
+        $progress = Progress::inRandomOrder()->first() ?? Progress::factory()->create($workAspect);
 
         return $progress;
     }
@@ -218,12 +195,7 @@ class Dummy {
         return $workDayTime;
     }
 
-    public function createDivision(String $str = null): Division {
-        if($str = 'create') {
-            $division = Division::factory()->create(['name' => 'Test Division']);
-            return $division;
-        }
-
+    public function createDivision(): Division {
         $division = Division::inRandomOrder()->first() ?? Division::factory()->create(['name' => 'Test Division']);
 
         return $division;
@@ -235,44 +207,18 @@ class Dummy {
         return $workshop;
     }
 
-    public function createWorkstation(String $command = null): Workstation {
-        if($command = 'create') {
-            $workstation = Workstation::factory()->create();
+    public function createWorkstation(): Workstation {
+        $attributes = [];
 
-            return $workstation;
-        } else {
-            $attributes = [];
+        $division = $this->createDivision();
+        $workshop = $this->createWorkshop();
 
-            $division = $this->createDivision();
-            $workshop = $this->createWorkshop();
+        $attributes['workshop_id'] = $workshop->id;
+        $attributes['division_id'] = $division->id;
 
-            $attributes['workshop_id'] = $workshop->id;
-            $attributes['division_id'] = $division->id;
+        $workstation = Workstation::inRandomOrder()->first() ?? Workstation::factory()->create($attributes);
 
-            $workstation = Workstation::inRandomOrder()->first() ?? Workstation::factory()->create($attributes);
-
-            return $workstation;
-        }
-    }
-
-    public function createPresetTrainset(): PresetTrainset {
-        $project = $this->createProject();
-
-        $presetTrainset = PresetTrainset::inRandomOrder()->first() ?? PresetTrainset::factory()->create(['project_id' => $project->id]);
-
-        return $presetTrainset;
-    }
-
-    public function createCarriagePreset(): CarriagePreset {
-        $presetTrainset = $this->createPresetTrainset();
-        $carriage = $this->createCarriage();
-
-        $carriagePreset = CarriagePreset::inRandomOrder()->first() ?? CarriagePreset::factory()->create([
-            'preset_trainset_id' => $presetTrainset->id,
-            'carriage_id' => $carriage->id,
-        ]);
-
-        return $carriagePreset;
+        return $workstation;
     }
 
     public function createCarriageTrainset(): CarriageTrainset {
@@ -349,92 +295,44 @@ class Dummy {
         User::factory()->create();
         $this->createSerialPanel();
         $this->createProgressStep();
-
         $detailWorkerPanel = DetailWorkerPanel::factory()->create($attributes);
 
         return $detailWorkerPanel;
     }
 
-    // public function createTrainsetAttachment(?User $user = null) {
-    //     $this->createCarriageTrainset();
-    //     $this->createWorkstation('create'); // source
-    //     $this->createWorkstation('create'); // destination
-
-    //     $attributes = [];
-    //     if ($user) {
-    //         $attributes['supervisor_id'] = $user->id;
-    //     }
-
-    //     $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
-
-    //     return $trainsetAttachment;
-    // }
-
-    public function createTrainsetAttachment($attributes = []) {
+    public function createTrainsetAttachment(?User $user = null) {
         $this->createCarriageTrainset();
-        $this->createWorkstation('create'); // source
-        $this->createWorkstation('create'); // destination
+        $this->createWorkstation(); // source
+        $this->createWorkstation(); // destination
+
+        $attributes = [];
+        if ($user) {
+            $attributes['supervisor_id'] = $user->id;
+        }
 
         $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
 
         return $trainsetAttachment;
     }
 
-    // public function createDetailWorkerTrainset() {
-    //     $this->createSupervisorAssembly();
-    //     $role = Role::firstOrCreate(['name' => 'Supervisor - Elektrik', 'guard_name' => 'web']);
-    //     $user = User::factory(['name' => 'Supervisor - Elektrik'])->create();
-    //     $user->assignRole('Supervisor - Elektrik');
-
-    //     $this->createProgressStep();
-    //     $this->createTrainsetAttachment($user);
-    //     $this->createCarriagePanelComponent();
-    //     $detailWorkerTrainset = DetailWorkerTrainset::create([
-    //         // 'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
-    //         'trainset_attachment_component_id' => TrainsetAttachmentComponent::factory()->create()->id,
-    //         'worker_id' => $user->id,
-    //         'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
-    //         'estimated_time' => 7,
-    //         'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
-    //         'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value,
-    //     ]);
-
-    //     return $detailWorkerTrainset;
-    // }
-
-
     public function createDetailWorkerTrainset() {
-        if(DetailWorkerTrainset::count() > 0) {
-            $detailWorkerTrainset = DetailWorkerTrainset::inRandomOrder()->first();
+        $this->createSupervisorAssembly();
+        $role = Role::firstOrCreate(['name' => 'Supervisor - Elektrik', 'guard_name' => 'web']);
+        $user = User::factory(['name' => 'Supervisor - Elektrik'])->create();
+        $user->assignRole('Supervisor - Elektrik');
 
-            return $detailWorkerTrainset;
-        } else {
-            $trainsetAttachmentComponent = $this->createTrainsetAttachmentComponent();
-            $progressStep = $this->createProgressStep();
-            $detailWorkerTrainset = DetailWorkerTrainset::factory()->create([
-                'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
-                'progress_step_id' => $progressStep->id,
-            ]);
+        $this->createProgressStep();
+        $this->createTrainsetAttachment($user);
+        $detailWorkerTrainset = DetailWorkerTrainset::create([
+            'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
+            'worker_id' => $user->id,
+            'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
+            'estimated_time' => 7,
+            'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
+            'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value,
+        ]);
 
-            return $detailWorkerTrainset;
-        }
-    }
-
-    public function createTrainsetAttachmentComponent(): TrainsetAttachmentComponent {
-        if (TrainsetAttachmentComponent::count() > 0) {
-            $trainsetAttachmentComponent = TrainsetAttachmentComponent::inRandomOrder()->first();
-            return $trainsetAttachmentComponent;
-        } else {
-            $trainsetAttachmentComponent = TrainsetAttachmentComponent::inRandomOrder()->first() ?? TrainsetAttachmentComponent::create([
-                'trainset_attachment_id' => $this->createTrainsetAttachment()->id,
-                'carriage_panel_component_id' => $this->createCarriagePanelComponent()->id,
-                'total_required' => 5,
-                'total_fulfilled' => 4,
-                'total_failed' => 1,
-            ]);
-            return $trainsetAttachmentComponent;
-
-        }
+        return $detailWorkerTrainset;
     }
 
     public function createFeedback() {
