@@ -89,7 +89,8 @@ class Dummy {
 
 
     public function createComponent(): Component {
-        $component = Component::inRandomOrder()->first() ?? Component::factory(['name' => 'Test Component'])->create();
+        $progress = $this->createProgress();
+        $component = Component::firstOrCreate(['name' => 'Test Component', 'progress_id' => $progress->id]);
 
         return $component;
     }
