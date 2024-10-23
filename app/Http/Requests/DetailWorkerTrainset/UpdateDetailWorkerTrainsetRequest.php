@@ -38,7 +38,7 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest
                 if ($this->get('acceptance_status') && auth()->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     $validator->errors()->add(
                         'Detail Worker Trainset Acceptance',
-                        __('validation.custom.detail_worker_trainset.update_worker.field_update_role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ", " . RoleEnum::SUPERVISOR_MEKANIK->value, 'field' => 'acceptance_status'])
+                        __('validation.custom.detail_worker_trainset.update_worker.field_update_role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ", " . RoleEnum::SUPERVISOR_ELEKTRIK->value, 'field' => 'acceptance_status'])
                     );
                 }
             }
