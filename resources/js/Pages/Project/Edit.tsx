@@ -10,10 +10,8 @@ import { projectService } from '@/Services/projectService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ project }: { project: ProjectResource }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         id: project.id,
         name: project.name,
@@ -27,42 +25,34 @@ export default function ({ project }: { project: ProjectResource }) {
 
         await projectService.update(project.id, data);
         router.visit(route(`${ROUTES.PROJECTS}.index`));
-        void useSuccessToast(t('pages.project.edit.messages.updated'));
+        void useSuccessToast('Proyek berhasil diubah');
     });
 
     return (
         <>
-            <Head
-                title={t('pages.project.edit.title', {
-                    name: project.name,
-                })}
-            />
+            <Head title="Ubah Proyek" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.project.edit.title', {
-                                name: project.name,
-                            })}
-                        </h1>
+                        <h1 className="text-page-header my-4">Ubah Proyek: {project.name}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.project.edit.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value={t('pages.project.edit.fields.initial_date')} />
+                            <InputLabel htmlFor="initial_date" value="Tanggal inisiasi proyek" />
                             <Input
                                 id="initial_date"
                                 type="date"
@@ -75,7 +65,7 @@ export default function ({ project }: { project: ProjectResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.project.edit.buttons.submit')}
+                            Ubah Proyek
                         </Button>
                     </form>
                 </div>

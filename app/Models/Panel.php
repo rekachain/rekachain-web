@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Panel extends Model {
     use HasFactory;
@@ -34,14 +33,7 @@ class Panel extends Model {
         return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
     }
 
-    /**
-     * Currently only used in canBeDeleted method
-     */
-    public function carriage_panel_components(): HasManyThrough {
-        return $this->hasManyThrough(CarriagePanelComponent::class, CarriagePanel::class);
-    }
-
-    public function canBeDeleted(): bool {
-        return $this->carriages()->doesntExist() && $this->carriage_panel_components()->doesntExist();
+    public function canBeDeleted() {
+        return $this->carriages()->doesntExist();
     }
 }

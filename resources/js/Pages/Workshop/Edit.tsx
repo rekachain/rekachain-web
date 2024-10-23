@@ -10,10 +10,8 @@ import { workshopService } from '@/Services/workshopService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ workshop }: { workshop: WorkshopResource }) {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         id: workshop.id,
         name: workshop.name,
@@ -27,42 +25,34 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
 
         await workshopService.update(workshop.id, data);
         router.visit(route(`${ROUTES.WORKSHOPS}.index`));
-        void useSuccessToast(t('pages.workshop.edit.messages.updated'));
+        void useSuccessToast('Workshop berhasil diubah');
     });
 
     return (
         <>
-            <Head
-                title={t('pages.workshop.edit.title', {
-                    name: workshop.name,
-                })}
-            />
+            <Head title="Ubah Workshop" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.workshop.edit.title', {
-                                name: workshop.name,
-                            })}
-                        </h1>
+                        <h1 className="text-page-header my-4">Ubah Workshop: {workshop.name}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workshop.edit.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="address" value={t('pages.workshop.edit.fields.address')} />
+                            <InputLabel htmlFor="address" value="Alamat" />
                             <Input
                                 id="address"
                                 type="text"
@@ -75,7 +65,7 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.workshop.edit.buttons.submit')}
+                            Ubah Workshop
                         </Button>
                     </form>
                 </div>

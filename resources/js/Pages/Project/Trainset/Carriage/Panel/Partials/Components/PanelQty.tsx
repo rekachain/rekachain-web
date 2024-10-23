@@ -9,7 +9,6 @@ import { useLoading } from '@/Contexts/LoadingContext';
 import { FormEvent, useState } from 'react';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     carriage_panel,
@@ -18,9 +17,8 @@ export default function ({
     carriage_panel: CarriagePanelResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
     const [isEditing, setIsEditing] = useState(false);
-    const { data, setData } = useForm({
+    const { data, setData} = useForm({
         panelQty: carriage_panel.qty,
     });
     const { loading } = useLoading();
@@ -36,9 +34,7 @@ export default function ({
         });
         await handleSyncCarriage();
         setIsEditing(false);
-        void useSuccessToast(
-            t('pages.project.trainset.carriage.panel.partials.components.panel_qty.messages.qty_updated'),
-        );
+        void useSuccessToast('Panel qty updated successfully');
     });
 
     return (
@@ -53,14 +49,10 @@ export default function ({
                         onChange={e => setData('panelQty', +e.target.value)}
                     />
                     <Button type="submit" disabled={loading}>
-                        {loading
-                            ? t('action.loading')
-                            : t(
-                                  'pages.project.trainset.carriage.panel.partials.components.panel_qty.buttons.update_qty',
-                              )}
+                        {loading ? 'Processing' : 'Save'}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
-                        {t('action.cancel')}
+                        Cancel
                     </Button>
                 </form>
             ) : (

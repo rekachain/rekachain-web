@@ -8,10 +8,8 @@ import WorkshopTableView from './Partials/WorkshopTableView';
 import WorkshopCardView from './Partials/WorkshopCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const [workshopResponse, setWorkshopResponse] = useState<PaginateResponse<WorkshopResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -30,8 +28,8 @@ export default function () {
     const handleWorkshopDeletion = withLoading(async (id: number) => {
         await workshopService.delete(id);
         await syncWorkshops();
-        void useSuccessToast(t('pages.workshop.partials.workshops.messages.deleted'));
-    }, true);
+        void useSuccessToast('Workshop deleted successfully');
+    });
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });

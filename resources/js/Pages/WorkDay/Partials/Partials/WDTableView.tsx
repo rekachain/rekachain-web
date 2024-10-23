@@ -5,7 +5,6 @@ import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WDTableView({
     workDayResponse,
@@ -14,16 +13,15 @@ export default function WDTableView({
     workDayResponse: PaginateResponse<WorkDayResource>;
     handleWorkDayDeletion: (id: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.name')}</TableHead>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.start_date')}</TableHead>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.break_time')}</TableHead>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.end_date')}</TableHead>
+                        <TableHead>Nama</TableHead>
+                        <TableHead>Waktu Mulai</TableHead>
+                        <TableHead>Waktu Istirahat</TableHead>
+                        <TableHead>Waktu Selesai</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -47,11 +45,11 @@ export default function WDTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
                                 >
-                                    {t('action.edit')}
+                                    Edit
                                 </Link>
                                 {workDay.can_be_deleted && (
                                     <Button variant="link" onClick={() => handleWorkDayDeletion(workDay.id)}>
-                                        {t('action.delete')}
+                                        Delete
                                     </Button>
                                 )}
                             </TableCell>

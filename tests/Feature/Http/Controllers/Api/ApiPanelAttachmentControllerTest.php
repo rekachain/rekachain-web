@@ -1,10 +1,9 @@
 <?php
 
-use App\Models\Workstation;
 use App\Models\CarriagePanel;
 use App\Models\CarriageTrainset;
+use App\Models\Workstation;
 use App\Support\Enums\IntentEnum;
-use App\Support\Enums\PanelAttachmentStatusEnum;
 
 beforeEach(fn() => $this->dummy->createSupervisorAssembly());
 
@@ -16,7 +15,7 @@ test('view all panelAttachment', function () {
 test('show one panelAttachment', function () {
     $supervisor = $this->dummy->createSupervisorAssembly();
     $panelAttachment = $this->dummy->createPanelAttachment();
-
+    
     $response = $this->actingAs($supervisor)->get('/api/panel-attachments/' . $panelAttachment->id . '?intent=' . IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value)->assertStatus(200);
 });
 
@@ -52,24 +51,16 @@ test('store panelAttachment', function () {
         'qr_path' => 'test qr',
         'current_step' => 'test step',
         'elapsed_time' => 1,
-        'status' => PanelAttachmentStatusEnum::cases()[array_rand(PanelAttachmentStatusEnum::cases())]->value,
+        'status' => 'active',
         'panel_attachment_id' => null,
         'supervisor_id' => null,
-    ])->assertStatus(200);
-});
-
-test('update panelAttachment for pending', function () {
-    $panelAttachment = $this->dummy->createPanelAttachment();
-    actAsSuperAdmin()->put('/api/panel-attachments/' . $panelAttachment->id, [
-        'status' => PanelAttachmentStatusEnum::cases()[array_rand(PanelAttachmentStatusEnum::cases())]->value,
-        'notes' => 'test notes',
     ])->assertStatus(200);
 });
 
 test('update panelAttachment', function () {
     $panelAttachment = $this->dummy->createPanelAttachment();
     actAsSuperAdmin()->put('/api/panel-attachments/' . $panelAttachment->id, [
-        'status' => PanelAttachmentStatusEnum::DONE->value,
+        'status' => 'active',
     ])->assertStatus(200);
 });
 

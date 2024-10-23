@@ -10,7 +10,6 @@ use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
-use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
@@ -38,7 +37,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected SerialPanelServiceInterface $serialPanelService,
         protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
-        protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
         protected CarriagePanelServiceInterface $carriagePanelService,
     ) {
         parent::__construct();
@@ -250,8 +248,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $this->generateTrainsetAttachment($trainset, $data);
             $this->generatePanelAttachment($trainset, $data);
 
-            // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
-            $this->checkGeneratedAttachment($trainset);
+            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
             // DB::rollBack();
         });
 
@@ -264,28 +261,26 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $sourceWorkstationId = $data["{$division}_source_workstation_id"];
             $destinationWorkstationId = $data["{$division}_destination_workstation_id"];
 
-            // $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
+            $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
                 $trainsetAttachment = $this->trainsetAttachmentService->create([
-                    'trainset_id' => $trainset->id,
+                    'carriage_trainset_id' => $carriageTrainset->id,
                     'source_workstation_id' => $sourceWorkstationId,
                     'destination_workstation_id' => $destinationWorkstationId,
-                    'type' => $division,
                 ]);
 
                 $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
-                $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
 
                 //            $serialPanelIds = $this->generateSerialPanels($trainsetAttachment, $carriageTrainset);
 
                 //            $serialPanelIdsString = implode(',', $serialPanelIds);
-                $qrCode = "KPM:{$trainsetAttachment->attachment_number};P:{$trainset->project->name};TS:{$trainset->name};;";
+                $qrCode = "KPM:{$trainsetAttachment->attachment_number};P:{$carriageTrainset->trainset->project->name};TS:{$carriageTrainset->trainset->name};;";
                 $path = "trainset_attachments/qr_images/{$trainsetAttachment->id}.svg";
                 $this->generateQrCode($qrCode, $path);
 
                 $trainsetAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
-            // });
-            $this->checkGeneratedAttachment($trainset);
-            // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+            });
+
+            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
 
         });
 
@@ -302,7 +297,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
                     $panelAttachment = $this->panelAttachmentService->create([
                         'carriage_panel_id' => $carriagePanel->id,
-                        // 'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
+                        'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
                     ]);
@@ -335,8 +330,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 });
             });
 
-            // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
-            $this->checkGeneratedAttachment($trainset);
+            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
 
             //            DB::rollBack();
         });
@@ -418,7 +412,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
 
         $numberAttachmentOnTrainset = $this->trainsetAttachmentService->find([
-            'trainset_id' => $model->trainset_id,
+            'carriage_trainset_id' => $model->carriage_trainset_id,
         ])->count();
 
         logger('Number of attachments on trainset: ' . $numberAttachmentOnTrainset);
@@ -428,31 +422,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
         return $attachmentNumber;
 
-    }
-
-    public function checkGeneratedAttachment(Trainset $trainset): void {
-        $totalRequiredAttachment = 2; // base total required trainset attachment in 1 trainset
-        $totalGeneratedAttachment = 0;
-        $carriageTrainsetsIds = $trainset->carriage_trainsets()->pluck('id')->toArray();
-        $carriagePanelsIds = $this->carriagePanelService->find([
-            'carriage_trainset_id', 'in', $carriageTrainsetsIds,
-        ])->pluck('id')->toArray();
-
-        $totalRequiredAttachment += count($carriagePanelsIds);
-
-        $trainsetAttachments = $this->trainsetAttachmentService->find([
-            'trainset_id' => $trainset->id,
-        ]);
-        $totalGeneratedAttachment = $trainsetAttachments->count(); // should be 2
-        
-        $panelAttachments = $this->panelAttachmentService->find([
-            ['carriage_panel_id', 'in', $carriagePanelsIds],
-        ]);
-        $totalGeneratedAttachment += $panelAttachments->count();
-
-        if ($totalGeneratedAttachment == $totalRequiredAttachment) {
-            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
-        }
     }
 
     public function delete($keyOrModel): bool {

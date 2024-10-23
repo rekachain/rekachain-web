@@ -28,15 +28,14 @@ class UpdateSerialPanelRequest extends FormRequest {
                 return [
                     'notes' => 'required|string|max:255'
                 ];
-            case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
-                if ($this->get('worker_id')) {
-                    return [
-                        'worker_id' => [
-                            'integer',
-                            'exists:users,id',
-                        ],
-                    ];
-                }
+        }
+        if ($this->get('worker_id')) {
+            return [
+                'worker_id' => [
+                    'integer',
+                    'exists:users,id',
+                ],
+            ];
         }
         return [
             'panel_attachment_id' => 'nullable|string|max:255',

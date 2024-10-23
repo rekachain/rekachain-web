@@ -5,7 +5,6 @@ import { Button, buttonVariants } from '@/Components/UI/button';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import CarriageQty from '../Components/CarriageQty';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriageTableView({
     trainset,
@@ -16,21 +15,14 @@ export default function CarriageTableView({
     handleCarriageDeletion: (id: number) => void;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>
-                            {t('pages.project.trainset.carriage.partials.partials.carriage_table.headers.type')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.project.trainset.carriage.partials.partials.carriage_table.headers.qty')}
-                        </TableHead>
-                        <TableHead>
-                            {t('pages.project.trainset.carriage.partials.partials.carriage_table.headers.panels')}
-                        </TableHead>
+                        <TableHead>Susunan Kereta</TableHead>
+                        <TableHead>Jumlah</TableHead>
+                        <TableHead>Panel dalam susunan kereta</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -67,7 +59,7 @@ export default function CarriageTableView({
                                 {/*</Link>*/}
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button variant="link" onClick={() => handleCarriageDeletion(carriage_trainset.id)}>
-                                        {t('action.delete')}
+                                        Delete
                                     </Button>
                                 )}
                                 <Link
@@ -78,9 +70,7 @@ export default function CarriageTableView({
                                         carriage_trainset.id,
                                     ])}
                                 >
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.partials.carriage_table.actions.panels',
-                                    )}
+                                    Panel
                                 </Link>
                             </TableCell>
                         </TableRow>

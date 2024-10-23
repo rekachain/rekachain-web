@@ -6,13 +6,14 @@ use App\Models\WorkDayTime;
 
 test('index method returns paginated work-day-times', function () {
     $user = User::factory()->create();
-    $this->dummy->createWorkDayTime();
+    WorkDay::factory()->count(5)->create();
+    WorkDayTime::factory()->count(15)->create();
 
-    $response = $this->actingAs($user)->getJson('/work-day-times?page=1&perPage=1');
+    $response = $this->actingAs($user)->getJson('/work-day-times?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
 // test('create method returns create page', function () {
@@ -26,7 +27,7 @@ test('index method returns paginated work-day-times', function () {
 
 test('store method creates new workDayTime', function () {
     $user = User::factory()->create();
-    $workDay = $this->dummy->createWorkDay();
+    $workDay = createWorkDay();
     $workDayTimeData = [
         'work_day_id' => $workDay->id,
         'start_time' => '09:00',
@@ -57,7 +58,7 @@ test('store method creates new workDayTime', function () {
 
 test('show method returns workDayTime details', function () {
     $user = User::factory()->create();
-    $workDayTime = $this->dummy->createWorkDayTime();
+    $workDayTime = createWorkDayTime();
 
     $response = $this->actingAs($user)->getJson("/work-day-times/{$workDayTime->id}");
 
@@ -82,7 +83,7 @@ test('show method returns workDayTime details', function () {
 
 test('update method updates workDayTime', function () {
     $user = User::factory()->create();
-    $workDayTime = $this->dummy->createWorkDayTime();
+    $workDayTime = createWorkDayTime();
     $updatedData = [
         'work_day_id' => $workDayTime->work_day_id,
         'start_time' => '09:00',
@@ -105,7 +106,7 @@ test('update method updates workDayTime', function () {
 
 test('destroy method deletes workDayTime', function () {
     $user = User::factory()->create();
-    $workDayTime = $this->dummy->createWorkDayTime();
+    $workDayTime = createWorkDayTime();
 
     $response = $this->actingAs($user)->deleteJson("/work-day-times/{$workDayTime->id}");
 

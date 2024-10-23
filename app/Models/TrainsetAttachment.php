@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
-use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +18,6 @@ class TrainsetAttachment extends Model {
         'source_workstation_id',
         'destination_workstation_id',
         'attachment_number',
-        'type',
         'qr_code',
         'qr_path',
         'elapsed_time',
@@ -28,7 +26,6 @@ class TrainsetAttachment extends Model {
         'status',
     ];
     protected $casts = [
-        'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
 
@@ -56,10 +53,6 @@ class TrainsetAttachment extends Model {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
-    public function trainset_attachment_handlers(): HasMany {
-        return $this->hasMany(TrainsetAttachmentHandler::class);
-    }
-
     public function trainset_attachment_components(): HasMany {
         return $this->hasMany(TrainsetAttachmentComponent::class);
     }
@@ -68,7 +61,7 @@ class TrainsetAttachment extends Model {
         return $this->hasManyThrough(DetailWorkerTrainset::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'trainset_attachment_component_id', 'id', 'id');
     }
 
-    public function attachment_notes(): MorphMany {
-        return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
+    public function pending_attachment_notes(): MorphMany {
+        return $this->morphMany(PendingAttachmentNote::class, 'pending_attachment_noteable');
     }
 }

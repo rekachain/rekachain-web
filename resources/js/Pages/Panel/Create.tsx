@@ -3,16 +3,15 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
+import InputError from '@/Components/InputError';
 import { Button } from '@/Components/UI/button';
 import { panelService } from '@/Services/panelService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
         description: '',
@@ -25,47 +24,47 @@ export default function () {
 
         await panelService.create(data);
         router.visit(route(`${ROUTES.PANELS}.index`));
-        void useSuccessToast(t('pages.panels.create.messages.created'));
+        void useSuccessToast('Panel created successfully');
     });
 
     return (
         <>
-            <Head title={t('pages.panels.create.title')} />
+            <Head title="Tambah Panel" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.panels.create.title')}</h1>
+                        <h1 className="text-page-header my-4">Tambah Panel</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.panels.create.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.panels.create.fields.description')} />
+                            <InputLabel htmlFor="deskripsi" value="Deskripsi" />
                             <Input
-                                id="description"
+                                id="deskripsi"
                                 type="text"
-                                name="description"
+                                name="deskripsi"
                                 value={data.description}
                                 className="mt-1"
-                                autoComplete="description"
+                                autoComplete="deskripsi"
                                 onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.panels.create.buttons.submit')}
+                            Tambah Panel
                         </Button>
                     </form>
                 </div>

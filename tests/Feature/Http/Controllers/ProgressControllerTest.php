@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 test('index method returns paginated progress', function () {
     $user = User::factory()->superAdmin()->create();
+    Progress::factory()->count(15)->create();
 
-    $this->dummy->createProgress();
-
-    $response = $this->actingAs($user)->getJson('/progress?page=1&perPage=1');
+    $response = $this->actingAs($user)->getJson('/progress?page=1&perPage=10');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(10, 'data');
 });
 
 // test('create method returns create page', function () {
@@ -29,11 +28,8 @@ test('index method returns paginated progress', function () {
 
 test('store method creates new progress', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $workAspect = $this->dummy->createWorkAspect();
     $progressData = [
         'name' => 'Test name',
-        'work_aspect_id' => $workAspect->id,
     ];
 
     $response = $this->actingAs($user)->postJson('/progress', $progressData);
@@ -58,7 +54,7 @@ test('store method creates new progress', function () {
 
 test('show method returns progress details', function () {
     $user = User::factory()->superAdmin()->create();
-    $progress = $this->dummy->createProgress();
+    $progress = Progress::factory()->create();
 
     $response = $this->actingAs($user)->getJson("/progress/{$progress->id}");
 
@@ -68,7 +64,7 @@ test('show method returns progress details', function () {
 
 // test('edit method returns edit page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $progress = $this->dummy->createProgress();
+//     $progress = Progress::factory()->create();
 
 //     $response = $this->actingAs($user)->get("/progress/{$progress->id}/edit");
 
@@ -78,7 +74,7 @@ test('show method returns progress details', function () {
 
 test('update method updates progress', function () {
     $user = User::factory()->superAdmin()->create();
-    $progress = $this->dummy->createProgress();
+    $progress = Progress::factory()->create();
     $updatedData = [
         'name' => 'Updated name',
     ];
@@ -92,7 +88,7 @@ test('update method updates progress', function () {
 
 test('destroy method deletes progress', function () {
     $user = User::factory()->superAdmin()->create();
-    $progress = $this->dummy->createProgress();
+    $progress = Progress::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/progress/{$progress->id}");
 

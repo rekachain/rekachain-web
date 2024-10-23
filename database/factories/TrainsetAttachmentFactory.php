@@ -28,7 +28,7 @@ class TrainsetAttachmentFactory extends Factory {
             'destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
             'type' => $type,
             'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
-            'supervisor_id' => User::role($type === TrainsetAttachmentTypeEnum::MECHANIC->value ? RoleEnum::SUPERVISOR_MEKANIK : RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first()->id,
+            'supervisor_id' => User::role($type === TrainsetAttachmentTypeEnum::MEKANIK->value ? RoleEnum::SUPERVISOR_MEKANIK : RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first()->id,
         ];
     }
 }

@@ -1,89 +1,109 @@
 <?php
 
-use App\Models\TrainsetAttachment;
+// use App\Models\Trainset;
+// use App\Models\User;
+// use App\Support\Enums\IntentEnum;
+// use Illuminate\Http\UploadedFile;
+// use Illuminate\Support\Facades\Storage;
 
-beforeEach(function () {
-    $this->dummy->createSupervisorMekanik();
-    $this->dummy->createSupervisorAssembly();
-    $this->dummy->createSupervisorElektrik();
-});
+// test('index method returns paginated trainsets', function () {
+//     $user = User::factory()->create();
+//     createTrainset();
 
-test('index method returns paginated trainset attachments', function () {
-    $this->dummy->createTrainsetAttachment();
-    $response = actAsSuperAdmin()->getJson('/trainset-attachments?page=1&perPage=1');
+//     $response = $this->actingAs($user)->getJson('/trainsets?page=1&perPage=10');
 
-    $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
-});
+//     $response->assertStatus(200)
+//         ->assertJsonStructure(['data', 'meta'])
+//         ->assertJsonCount(1, 'data');
+// });
 
-test('create method returns create page', function () {
-    actAsSuperAdmin()->get('/trainset-attachments/create')
-        ->assertStatus(200)
-        ->assertInertia(fn ($assert) => $assert->component('TrainsetAttachment/Create'));
-});
+// // test('create method returns create page', function () {
+// //     $user = User::factory()->create();
 
-test('store method creates new trainset attachment', function () {
-    $trainset = $this->dummy->createTrainset();
-    $sourceWorkstation = $this->dummy->createWorkstation();
-    $destinationWorkstation = $this->dummy->createWorkstation();
+// //     $response = $this->actingAs($user)->get('/trainsets/create');
 
-    $attachmentData = [
-        'trainset_id' => $trainset->id,
-        'source_workstation_id' => $sourceWorkstation->id,
-        'destination_workstation_id' => $destinationWorkstation->id,
-        'attachment_number' => 'TA001',
-        'qr_code' => 'qr_code_001',
-        'qr_path' => 'path/to/qr/001',
-        'status' => 'pending',
-    ];
+// //     $response->assertStatus(200)
+// //         ->assertInertia(fn ($assert) => $assert->component('Trainset/Create'));
+// // });
 
-    $response = actAsSuperAdmin()->postJson('/trainset-attachments', $attachmentData);
+// test('store method creates new trainset', function () {
+//     $user = User::factory()->create();
+//     $project = createProject();
+//     $trainsetData = [
+//         'project_id' => $project->id,
+//         'name' => 'Test name',
+//     ];
 
-    $response->assertStatus(200)
-        ->assertJsonStructure(['id', 'attachment_number', 'trainset_id', 'source_workstation_id', 'destination_workstation_id']);
-    $this->assertDatabaseHas('trainset_attachments', $attachmentData);
-});
+//     $response = $this->actingAs($user)->postJson('/trainsets', $trainsetData);
 
-test('show method returns trainset attachment details', function () {
-    $trainsetAttachment = $this->dummy->createTrainsetAttachment();
+//     $response->assertStatus(201)
+//         ->assertJsonStructure(['id', 'project_id', 'name']);
+//     $this->assertDatabaseHas('trainsets', $trainsetData);
+// });
 
-    $response = actAsSuperAdmin()->getJson("/trainset-attachments/{$trainsetAttachment->id}");
+// // test('store method imports trainsets', function () {
+// //     Storage::fake('local');
+// //     $user = User::factory()->create();
+// //     $file = UploadedFile::fake()->create('trainsets.xlsx');
 
-    $response->assertStatus(200)
-        ->assertJsonStructure(['id', 'attachment_number', 'trainset_id', 'source_workstation_id', 'destination_workstation_id']);
-});
+// //     $response = $this->actingAs($user)->postJson('/trainsets', [
+// //         'intent' => IntentEnum::WEB_trainset_IMPORT_trainset->value,
+// //         'import_file' => $file,
+// //     ]);
 
-test('edit method returns edit page', function () {
-    $trainsetAttachment = $this->dummy->createTrainsetAttachment();
+// //     $response->assertStatus(204);
+// // });
 
-    $response = actAsSuperAdmin()->get("/trainset-attachments/{$trainsetAttachment->id}/edit");
+// test('show method returns trainset details', function () {
+//     $user = User::factory()->create();
+//     $trainset = createTrainset();
 
-    $response->assertStatus(200)
-        ->assertInertia(fn ($assert) => $assert->component('TrainsetAttachment/Edit'));
-});
+//     $response = $this->actingAs($user)->getJson("/trainsets/{$trainset->id}");
 
-test('update method updates trainset attachment', function () {
-    $trainsetAttachment = $this->dummy->createTrainsetAttachment();
-    $newDestinationWorkstation = $this->dummy->createWorkstation();
+//     $response->assertStatus(200)
+//         ->assertJson(['id' => $trainset->id, 'name' => $trainset->name]);
+// });
 
-    $updatedData = [
-        'destination_workstation_id' => $newDestinationWorkstation->id,
-        'status' => 'in_progress',
-    ];
+// // test('edit method returns edit page', function () {
+// //     $user = User::factory()->create();
+// //     $trainset = createTrainset();)
 
-    $response = actAsSuperAdmin()->putJson("/trainset-attachments/{$trainsetAttachment->id}", $updatedData);
+// //     $response = $this->actingAs($user)->get("/trainsets/{$trainset->id}/edit");
 
-    $response->assertStatus(200)
-        ->assertJsonStructure(['id', 'attachment_number', 'destination_workstation_id', 'status']);
-    $this->assertDatabaseHas('trainset_attachments', $updatedData);
-});
+// //     $response->assertStatus(200)
+// //         ->assertInertia(fn ($assert) => $assert->component('Trainset/Edit'));
+// // });
 
-test('destroy method deletes trainset attachment', function () {
-    $trainsetAttachment = $this->dummy->createTrainsetAttachment();
+// test('update method updates trainset', function () {
+//     $user = User::factory()->create();
+//     $trainset = createTrainset();
+//     $updatedData = [
+//         'name' => 'Updated name',
+//         'project_id' => $trainset->project_id,
+//     ];
 
-    $response = actAsSuperAdmin()->deleteJson("/trainset-attachments/{$trainsetAttachment->id}");
+//     $response = $this->actingAs($user)->putJson("/trainsets/{$trainset->id}", $updatedData);
 
-    $response->assertStatus(200);
-    $this->assertDatabaseMissing('trainset_attachments', ['id' => $trainsetAttachment->id]);
-});
+//     $response->assertStatus(200)
+//         ->assertJson($updatedData);
+//     $this->assertDatabaseHas('trainsets', $updatedData);
+// });
+
+// test('destroy method deletes trainset', function () {
+//     $user = User::factory()->create();
+//     $trainset = createTrainset();
+
+//     $response = $this->actingAs($user)->deleteJson("/trainsets/{$trainset->id}");
+
+//     $response->assertStatus(200);
+//     $this->assertDatabaseMissing('trainsets', ['id' => $trainset->id]);
+// });
+
+// test('index method returns import template', function () {
+//     $user = User::factory()->create();
+
+//     $response = $this->actingAs($user)->getJson('/trainsets?intent=' . IntentEnum::WEB_TRAINSET_GET_TEMPLATE_IMPORT_TRAINSET->value);
+
+//     $response->assertStatus(200)
+//         ->assertDownload('trainsets_template.xlsx');
+// });

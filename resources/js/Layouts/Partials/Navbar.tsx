@@ -20,11 +20,8 @@ import { STYLING } from '@/Support/Constants/styling';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useMediaQuery } from 'react-responsive';
 import AddFeedback from '@/Components/AddFeedback';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Navbar() {
-    const { t } = useLaravelReactI18n();
     const isDesktopOrLaptop = useMediaQuery({
         query: '(min-width: 900px)',
     });
@@ -72,7 +69,7 @@ export default function Navbar() {
                 <Input
                     id="search"
                     className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                    placeholder={t('action.search')}
+                    placeholder="Search"
                 />
                 <label htmlFor="search">
                     {isDesktopOrLaptop && (
@@ -94,12 +91,11 @@ export default function Navbar() {
                     </SheetTrigger>
                     <SheetContent>
                         <SheetHeader>
-                            <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
-                            <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                            <SheetTitle>Notifications</SheetTitle>
+                            <SheetDescription>You have no notifications, enjoy your day</SheetDescription>
                         </SheetHeader>
                     </SheetContent>
                 </Sheet>
-                <SetLocalization />
                 <AddFeedback />
                 <Separator orientation="vertical" className="w-[2px]" />
                 <DropdownMenu>
@@ -127,7 +123,7 @@ export default function Navbar() {
                                 href={route(`${ROUTES.PROFILE}.edit`)}
                                 as="button"
                             >
-                                {t('components.navbar.profile.menus.profile')}
+                                Profile
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="p-0">
@@ -137,7 +133,7 @@ export default function Navbar() {
                                 href={route(ROUTES.LOGOUT)}
                                 as="button"
                             >
-                                {t('components.navbar.profile.menus.logout')}
+                                Logout
                             </Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>

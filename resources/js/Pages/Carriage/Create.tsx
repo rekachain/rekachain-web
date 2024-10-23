@@ -9,10 +9,8 @@ import { carriageService } from '@/Services/carriageService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const { data, setData, post, processing, errors, reset, progress } = useForm({
         type: '',
         description: '',
@@ -21,22 +19,22 @@ export default function () {
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
         await carriageService.create(data);
+        void useSuccessToast('Carriage created successfully');
         router.visit(route(`${ROUTES.CARRIAGES}.index`));
-        void useSuccessToast(t('pages.carriage.create.messages.created'));
     });
 
     return (
         <>
-            <Head title={t('pages.carriage.create.title')} />
+            <Head title="Tambah Carriage" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.carriage.create.title')}</h1>
+                        <h1 className="text-page-header my-4">Tambah Carriage</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="type" value={t('pages.carriage.create.fields.type')} />
+                            <InputLabel htmlFor="type" value="Tipe" />
                             <Input
                                 id="type"
                                 type="text"
@@ -50,21 +48,21 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.carriage.create.fields.description')} />
+                            <InputLabel htmlFor="deskripsi" value="Deskripsi" />
                             <Input
-                                id="description"
+                                id="deskripsi"
                                 type="text"
-                                name="description"
+                                name="deskripsi"
                                 value={data.description}
                                 className="mt-1"
-                                autoComplete="description"
+                                autoComplete="deskripsi"
                                 onChange={e => setData('description', e.target.value)}
                             />
                             <InputError message={errors.description} className="mt-2" />
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            {t('pages.carriage.create.buttons.submit')}
+                            Tambah Carriage
                         </Button>
                     </form>
                 </div>

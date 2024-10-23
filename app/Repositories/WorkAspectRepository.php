@@ -22,10 +22,6 @@ class WorkAspectRepository extends BaseRepository implements WorkAspectRepositor
 
         $query = $this->applySearchFilters($query, $searchParams, ['name']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['division_id']);
-
-        $query = $this->applyRelationColumnFilters($query, $searchParams, ['division' => ['name']]);
-
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);

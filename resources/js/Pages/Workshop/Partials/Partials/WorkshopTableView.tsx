@@ -5,7 +5,6 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkshopResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WorkshopTableView({
     workshopResponse,
@@ -14,17 +13,14 @@ export default function WorkshopTableView({
     workshopResponse: PaginateResponse<WorkshopResource>;
     handleWorkshopDeletion: (id: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <div>
             <>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>{t('pages.workshop.partials.partials.workshop_table.headers.name')}</TableHead>
-                            <TableHead>
-                                {t('pages.workshop.partials.partials.workshop_table.headers.address')}
-                            </TableHead>
+                            <TableHead>Nama</TableHead>
+                            <TableHead>Alamat</TableHead>
                             <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
@@ -38,10 +34,10 @@ export default function WorkshopTableView({
                                         className={buttonVariants({ variant: 'link' })}
                                         href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
                                     >
-                                        {t('action.edit')}
+                                        Edit
                                     </Link>
                                     <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
-                                        {t('action.delete')}
+                                        Delete
                                     </Button>
                                 </TableCell>
                             </TableRow>

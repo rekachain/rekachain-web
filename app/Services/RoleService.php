@@ -14,7 +14,7 @@ class RoleService extends BaseCrudService implements RoleServiceInterface {
             app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
         }
 
-        return $this->repository->forceUpdate($keyOrModel, $data);
+        return parent::update($keyOrModel, $data);
     }
 
     protected function getRepositoryClass(): string {

@@ -5,10 +5,8 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import Import from '@/Pages/Carriage/Partials/Import';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const Carriages = lazy(() => import('./Partials/Carriages'));
     return (
         <>
@@ -16,12 +14,12 @@ export default function () {
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.carriage.index.title')}</h1>
+                        <h1 className="text-page-header my-4">Gerbong</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.CARRIAGES}.create`)}
                         >
-                            {t('pages.carriage.index.buttons.create')}
+                            Tambah Gerbong
                         </Link>
                         <Import />
                     </div>

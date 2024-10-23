@@ -7,14 +7,15 @@ use App\Models\Step;
 
 test('index method returns paginated progress-steps', function () {
     $user = User::factory()->superAdmin()->create();
+    Progress::factory()->count(5)->create();
+    Step::factory()->count(5)->create();
+    ProgressStep::factory()->count(15)->create();
 
-    $this->dummy->createProgressStep();
-
-    $response = $this->actingAs($user)->getJson('/progress-steps?page=1&perPage=1');
+    $response = $this->actingAs($user)->getJson('/progress-steps?page=1&perPage=10');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(10, 'data');
 });
 // NOT READY
 // test('create method returns create page', function () {
@@ -28,8 +29,8 @@ test('index method returns paginated progress-steps', function () {
 
 test('store method creates new progress-step', function () {
     $user = User::factory()->superAdmin()->create();
-    $progress = $this->dummy->createProgress();
-    $step = $this->dummy->createStep();
+    $progress = Progress::factory()->create();
+    $step = Step::factory()->create();
     $progressStepData = [
         'progress_id' => $progress->id,
         'step_id' => $step->id,
@@ -44,8 +45,9 @@ test('store method creates new progress-step', function () {
 
 test('show method returns progress-step details', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $progressStep = $this->dummy->createProgressStep();
+    Progress::factory()->create();
+    Step::factory()->create();
+    $progressStep = ProgressStep::factory()->create();
 
     $response = $this->actingAs($user)->getJson("/progress-steps/{$progressStep->id}");
 
@@ -60,7 +62,7 @@ test('show method returns progress-step details', function () {
 // NOT READY
 // test('edit method returns edit page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $progressStep = $this->dummy->createProgressStep();
+//     $progressStep = ProgressStep::factory()->create();
 
 //     $response = $this->actingAs($user)->get("/progress-steps/{$progressStep->id}/edit");
 
@@ -70,9 +72,10 @@ test('show method returns progress-step details', function () {
 
 test('update method updates progress-step', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $progressStep = $this->dummy->createProgressStep();
-    $newStep = $this->dummy->createStep();
+    Progress::factory()->create();
+    Step::factory()->create();
+    $progressStep = ProgressStep::factory()->create();
+    $newStep = Step::factory()->create();
     $updatedData = [
         'step_id' => $newStep->id,
     ];
@@ -86,8 +89,9 @@ test('update method updates progress-step', function () {
 
 test('destroy method deletes progress-step', function () {
     $user = User::factory()->superAdmin()->create();
-
-    $progressStep = $this->dummy->createProgressStep();
+    Progress::factory()->create();
+    Step::factory()->create();
+    $progressStep = ProgressStep::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/progress-steps/{$progressStep->id}");
 

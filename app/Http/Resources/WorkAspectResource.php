@@ -10,8 +10,6 @@ class WorkAspectResource extends JsonResource {
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'division_id' => $this->division_id,
-            'division' => new DivisionResource($this->whenLoaded('division')),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

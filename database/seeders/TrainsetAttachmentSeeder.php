@@ -16,7 +16,7 @@ class TrainsetAttachmentSeeder extends Seeder {
         foreach ($trainsets as $trainset) {
             $attachment = TrainsetAttachment::factory()->create([
                 'trainset_id' => $trainset->id,
-                'type' => TrainsetAttachmentTypeEnum::MECHANIC->value,
+                'type' => TrainsetAttachmentTypeEnum::MEKANIK->value,
             ]);
             $attachmentNumber = $attachment->id . '/PPC/KPM/I/' . date('Y', strtotime($attachment->created_at));
             $attachment->update([
@@ -25,7 +25,7 @@ class TrainsetAttachmentSeeder extends Seeder {
             ]);
             $attachment = TrainsetAttachment::factory()->create([
                 'trainset_id' => $trainset->id,
-                'type' => TrainsetAttachmentTypeEnum::ELECTRIC->value,
+                'type' => TrainsetAttachmentTypeEnum::ELEKTRIK->value,
             ]);
             $attachmentNumber = $attachment->id . '/PPC/KPM/I/' . date('Y', strtotime($attachment->created_at));
             $attachment->update([

@@ -10,10 +10,8 @@ import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ panel }: { panel: PanelResource }) {
-    const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
     const { data, setData } = useForm({
@@ -26,55 +24,47 @@ export default function ({ panel }: { panel: PanelResource }) {
         e.preventDefault();
         await panelService.update(panel.id, data);
         router.visit(route(`${ROUTES.PANELS}.index`));
-        void useSuccessToast(t('pages.panels.edit.messages.updated'));
+        void useSuccessToast('Panel deleted successfully');
     });
 
     return (
         <>
-            <Head
-                title={t('pages.panels.edit.title', {
-                    name: panel.name,
-                })}
-            />
+            <Head title="Ubah Panel" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.panels.edit.title', {
-                                name: panel.name,
-                            })}
-                        </h1>
+                        <h1 className="text-page-header my-4">Ubah Panel: {panel.name}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.panels.edit.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.panels.edit.fields.description')} />
+                            <InputLabel htmlFor="deskripsi" value="Deskripsi" />
                             <Input
-                                id="description"
+                                id="deskripsi"
                                 type="text"
-                                name="description"
+                                name="deskripsi"
                                 value={data.description}
                                 className="mt-1"
-                                autoComplete="description"
+                                autoComplete="deskripsi"
                                 onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.panels.edit.buttons.submit')}
+                            Ubah Panel
                         </Button>
                     </form>
                 </div>

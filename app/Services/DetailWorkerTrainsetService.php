@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\DetailWorkerTrainset;
 use App\Traits\Services\HandlesImages;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\FailedComponentManufacture;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
@@ -20,16 +19,14 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         return DetailWorkerTrainsetRepositoryInterface::class;
     }
 
-    public function rejectWork($detailWorkerTrainset, $request){
-        return FailedComponentManufacture::create([
-            'detail_worker_trainset_id' => $detailWorkerTrainset,
-            'notes' => $request->notes
-        ]);                              
+    public function requestWork($request){
+           //                            
     }
 
     public function requestAssign($detailWorkerTrainset, $request){
+        $detailWorkerTrainset = DetailWorkerTrainset::find($detailWorkerTrainset);
         
-        $detailWorkerTrainset->acceptance_status = $request->acceptance_status;
+        $detailWorkerTrainset->acceptance_status = 'accepted';
 
         $detailWorkerTrainset->save();
 
@@ -45,10 +42,5 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         $detailWorkerTrainset = parent::update($detailWorkerTrainset, $data);
 
         return $detailWorkerTrainset;
-    }
-
-    public function update($detailWorkerTrainset, array $data): ?Model {
-        $data = $this->handleImageUpload($data, $detailWorkerTrainset);
-        return parent::update($detailWorkerTrainset, $data);
     }
 }

@@ -1,17 +1,16 @@
 <?php
 
 use App\Models\User;
-use App\Models\Workshop;
 
 test('index method returns paginated workshops', function () {
     $user = User::factory()->superAdmin()->create();
-    $this->dummy->createWorkshop();
+    createWorkshop();
 
-    $response = $this->actingAs($user)->getJson('/workshops?page=1&perPage=1');
+    $response = $this->actingAs($user)->getJson('/workshops?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(2, 'data');
 });
 
 test('create method returns create page', function () {
@@ -53,7 +52,7 @@ test('store method creates new workshop', function () {
 
 test('show method returns workshop details', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = $this->dummy->createWorkshop();
+    $workshop = createWorkshop();
 
     $response = $this->actingAs($user)->getJson("/workshops/{$workshop->id}");
 
@@ -67,7 +66,7 @@ test('show method returns workshop details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = $this->dummy->createWorkshop();
+    $workshop = createWorkshop();
 
     $response = $this->actingAs($user)->get("/workshops/{$workshop->id}/edit");
 
@@ -77,7 +76,7 @@ test('edit method returns edit page', function () {
 
 test('update method updates workshop', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = $this->dummy->createWorkshop();
+    $workshop = createWorkshop();
     $updatedData = [
         'name' => 'Updated name',
         'address' => 'Updated address',
@@ -92,7 +91,7 @@ test('update method updates workshop', function () {
 
 test('destroy method deletes workshop', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = Workshop::factory()->create();
+    $workshop = createWorkshop();
 
     $response = $this->actingAs($user)->deleteJson("/workshops/{$workshop->id}");
 

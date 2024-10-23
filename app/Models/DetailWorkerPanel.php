@@ -6,7 +6,6 @@ use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class DetailWorkerPanel extends Model {
     use HasFactory;
@@ -27,10 +26,6 @@ class DetailWorkerPanel extends Model {
 
     public function serial_panel() {
         return $this->belongsTo(SerialPanel::class);
-    }
-
-    public function panel_attachment(): HasOneThrough {
-        return $this->hasOneThrough(PanelAttachment::class, SerialPanel::class, 'id', 'id', 'serial_panel_id', 'panel_attachment_id');
     }
 
     public function worker() {

@@ -1,5 +1,3 @@
-// TODO: Should be in Components directory
-
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
@@ -10,15 +8,13 @@ import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { FormEvent, useState } from 'react';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
-    const { t } = useLaravelReactI18n();
-    const { data, setData } = useForm({
+    const { data, setData,  } = useForm({
         trainsetName: trainset.name,
     });
     const [isEditing, setIsEditing] = useState(false);
-    const { loading } = useLoading();
+    const {  loading } = useLoading();
 
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
@@ -46,7 +42,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                             onChange={e => setData('trainsetName', e.target.value)}
                         />
                         <span className="mt-2 text-sm hidden text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                            {t('pages.project.trainset.partials.partials.trainset_name.trainset_error')}
+                            Kode Trainset tidak boleh kosong.
                         </span>
                     </div>
                     <Button
@@ -54,12 +50,10 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                         disabled={loading}
                         className="group-invalid:pointer-events-none group-invalid:opacity-30"
                     >
-                        {loading
-                            ? t('action.loading')
-                            : t('pages.project.trainset.partials.partials.trainset_name.buttons.submit')}
+                        {loading ? 'Processing' : 'Save'}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
-                        {t('action.cancel')}
+                        Cancel
                     </Button>
                 </form>
             ) : (

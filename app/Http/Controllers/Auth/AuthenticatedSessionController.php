@@ -47,7 +47,7 @@ class AuthenticatedSessionController extends Controller {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            abort(403, __('exception.auth.unauthorized'));
+            abort(403, __('validation.custom.auth.unauthorized'));
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);

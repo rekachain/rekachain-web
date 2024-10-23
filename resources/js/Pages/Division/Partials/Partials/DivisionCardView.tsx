@@ -5,16 +5,16 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function DivisionCardView({
     divisionResponse,
     handleDivisionDeletion,
+    // auth,
 }: {
     divisionResponse: PaginateResponse<DivisionResource>;
     handleDivisionDeletion: (id: number) => void;
+    auth: any; // sementara
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <>
             {divisionResponse?.data.map(division => (
@@ -36,13 +36,14 @@ export default function DivisionCardView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
-                                {t('action.edit')}
+                                Edit
                             </Link>
                             <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
-                                {t('action.delete')}
+                                Delete
                             </Button>
                         </div>
                     </div>
+                    {/* </div> */}
                 </AnimateIn>
             ))}
         </>

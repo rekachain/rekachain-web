@@ -8,8 +8,6 @@ use App\Support\Enums\RoleEnum;
 use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SerialPanelResource;
-use App\Http\Resources\DetailWorkerPanelResource;
-use App\Http\Requests\SerialPanel\StoreSerialPanelRequest;
 use App\Http\Requests\SerialPanel\UpdateSerialPanelRequest;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 
@@ -27,7 +25,7 @@ class ApiSerialPanelController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSerialPanelRequest $request) {
+    public function store(Request $request) {
         //
     }
 
@@ -55,7 +53,7 @@ class ApiSerialPanelController extends Controller {
                 
                 return $this->serialPanelService->rejectPanel($serialPanel, $request);    
             case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
-                return DetailWorkerPanelResource::make($this->serialPanelService->assignWorker($serialPanel, $request->validated()));
+                return $this->serialPanelService->assignWorker($serialPanel, $request->validated());
             default:
                 break;
         }

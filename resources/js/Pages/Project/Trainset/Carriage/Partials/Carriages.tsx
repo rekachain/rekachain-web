@@ -1,10 +1,14 @@
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Link } from '@inertiajs/react';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import CarriageQty from '@/Pages/Project/Trainset/Carriage/Partials/Components/CarriageQty';
 import { withLoading } from '@/Utils/withLoading';
 import CarriageCardView from './Partials/CarriageCardView';
 import CarriageTableView from './Partials/CarriageTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     trainset,
@@ -13,11 +17,10 @@ export default function ({
     trainset: TrainsetResource;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
     const handleCarriageDeletion = withLoading(async (carriageTrainsetId: number) => {
         await carriageTrainsetService.delete(carriageTrainsetId);
         await handleSyncTrainset();
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.carriages.messages.deleted'));
+        void useSuccessToast('Carriage deleted successfully');
     }, true);
 
     return (

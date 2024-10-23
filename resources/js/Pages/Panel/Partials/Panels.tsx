@@ -8,10 +8,8 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import PanelCardView from './Partials/PanelCardView';
 import PanelTableView from './Partials/PanelTableView';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<PanelResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -30,8 +28,8 @@ export default function () {
     const handlePanelDeletion = withLoading(async (id: number) => {
         await panelService.delete(id);
         await syncPanels();
-        void useSuccessToast(t('pages.panels.index.partials.panels.messages.deleted'));
-    }, true);
+        void useSuccessToast('Panel deleted successfully');
+    }, true );
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -42,11 +40,17 @@ export default function () {
             {panelResponse && (
                 <>
                     <div className="hidden md:block">
-                        <PanelTableView panelResponse={panelResponse} handlePanelDeletion={handlePanelDeletion} />
+                        <PanelTableView
+                            panelResponse={panelResponse}
+                            handlePanelDeletion={handlePanelDeletion}
+                        />
                     </div>
 
                     <div className="block md:hidden">
-                        <PanelCardView panelResponse={panelResponse} handlePanelDeletion={handlePanelDeletion} />
+                        <PanelCardView
+                            panelResponse={panelResponse}
+                            handlePanelDeletion={handlePanelDeletion}
+                        />
                     </div>
                 </>
             )}

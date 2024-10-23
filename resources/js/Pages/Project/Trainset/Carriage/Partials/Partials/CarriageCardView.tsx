@@ -6,7 +6,6 @@ import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
 import CarriageQty from '../Components/CarriageQty';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriageCardView({
     trainset,
@@ -17,8 +16,6 @@ export default function CarriageCardView({
     handleTrainsetDeletion: (id: number) => void;
     handleSyncTrainset: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
-
     return (
         <div>
             {trainset?.carriage_trainsets?.map(carriage_trainset => (
@@ -37,9 +34,7 @@ export default function CarriageCardView({
                                 </div>
                             </div>
 
-                            <h5 className="text-base">
-                                {t('pages.project.trainset.carriage.partials.partials.carriage_card.headers.qty')} :
-                            </h5>
+                            <h5 className="  text-base ">Jumlah : </h5>
                             <div className="text-sm">
                                 {trainset.status === TrainsetStatusEnum.PROGRESS ? (
                                     <span>{carriage_trainset.qty}</span>
@@ -51,9 +46,7 @@ export default function CarriageCardView({
                                     />
                                 )}
                             </div>
-                            <h5 className="text-base">
-                                {t('pages.project.trainset.carriage.partials.partials.carriage_card.headers.panels')} :
-                            </h5>
+                            <h5 className="  text-base ">Panel dalam susunan kereta : </h5>
                             <div className="text-sm">
                                 {carriage_trainset.carriage_panels?.map(panel => (
                                     <div key={panel.id}>
@@ -92,7 +85,7 @@ export default function CarriageCardView({
                                     // disabled={loading || !trainset.can_be_deleted}
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
                                 >
-                                    {t('action.delete')}
+                                    Delete
                                 </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
@@ -102,9 +95,7 @@ export default function CarriageCardView({
                                         carriage_trainset.id,
                                     ])}
                                 >
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.partials.carriage_card.actions.panels',
-                                    )}
+                                    Panel
                                 </Link>
                                 {/* <Link
                                     className={buttonVariants({ variant: 'link' })}

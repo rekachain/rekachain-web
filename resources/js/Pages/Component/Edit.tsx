@@ -20,15 +20,13 @@ import { progressService } from '@/Services/progressService';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import cn from 'mxcn';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ component }: { component: ComponentResource }) {
-    const { t } = useLaravelReactI18n();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('');
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
     const [searchProgress, setSearchProgress] = useState(component.progress?.name);
-    const { data, setData, processing } = useForm({
+    const { data, setData, post, processing, errors, reset, progress } = useForm({
         progress_id: component.progress_id,
         name: component.name,
     });
@@ -48,33 +46,24 @@ export default function ({ component }: { component: ComponentResource }) {
     const submit: FormEventHandler = withLoading(async event => {
         event.preventDefault();
         await componentService.update(component.id, data);
+        void useSuccessToast('Component updated successfully');
         router.visit(route(`${ROUTES.COMPONENTS}.index`));
-        void useSuccessToast(t('pages.component.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head
-                title={t('pages.component.edit.title', {
-                    name: component.name,
-                })}
-            />
+            <Head title="Tambah Component" />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.component.edit.title', {
-                                name: component.name,
-                            })}
-                        </h1>
+                        <h1 className="text-page-header my-4">Tambah Component</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            {/* TODO: refactor using GenericDataSelector, BUG: existing progress wont show */}
                             <SelectGroup className="space-y-2">
                                 <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.component.edit.fields.progress')}</Label>
+                                    <Label htmlFor="progress">Pilih progress yang sudah ada</Label>
                                     <div className="flex gap-2">
                                         <Popover open={open} onOpenChange={setOpen}>
                                             <PopoverTrigger asChild>
@@ -88,7 +77,7 @@ export default function ({ component }: { component: ComponentResource }) {
                                                         ? progressResponse?.data.find(
                                                               progress => progress.name === value,
                                                           )?.name
-                                                        : t('pages.component.edit.fields.progress')}
+                                                        : 'Pilih progress...'}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
@@ -96,12 +85,10 @@ export default function ({ component }: { component: ComponentResource }) {
                                                 <Command>
                                                     <CommandInput
                                                         onValueChange={e => setSearchProgress(e)}
-                                                        placeholder={t(
-                                                            'pages.component.edit.fields.progress_placeholder',
-                                                        )}
+                                                        placeholder="Cari Progress..."
                                                     />
                                                     <CommandList>
-                                                        <CommandEmpty>No results found</CommandEmpty>
+                                                        <CommandEmpty>Progress tidak ditemukan.</CommandEmpty>
                                                         <CommandGroup>
                                                             {progressResponse?.data.map(progress => (
                                                                 <CommandItem
@@ -182,20 +169,20 @@ export default function ({ component }: { component: ComponentResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.component.edit.fields.name')} />
+                            <InputLabel htmlFor="nama" value="Nama" />
                             <Input
-                                id="name"
+                                id="nama"
                                 type="text"
-                                name="name"
+                                name="nama"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="name"
+                                autoComplete="nama"
                                 onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <Button className="mt-4" disabled={processing}>
-                            {t('pages.component.edit.buttons.submit')}
+                            Tambah Komponen
                         </Button>
                     </form>
                 </div>

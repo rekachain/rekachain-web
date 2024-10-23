@@ -2,7 +2,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PermissionResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function PermissionsTableView({
     permissionResponse,
@@ -11,13 +10,12 @@ export default function PermissionsTableView({
     permissionResponse: PaginateResponse<PermissionResource>;
     handlePermissionDeletion: (id: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
     return (
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>{t('pages.permission.partials.partials.permission_table.headers.group')}</TableHead>
-                    <TableHead>{t('pages.permission.partials.partials.permission_table.headers.name')}</TableHead>
+                    <TableHead>Group</TableHead>
+                    <TableHead>Nama</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
