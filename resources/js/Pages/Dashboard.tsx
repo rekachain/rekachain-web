@@ -15,7 +15,8 @@ import { Line, LineChart } from 'recharts';
 import { YAxis } from 'recharts';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
-export default function Dashboard({ auth }: PageProps) {
+export default function Dashboard({ auth, data }: PageProps) {
+    console.log(data);
     const chartConfig = {
         progress: {
             label: 'Progress',
@@ -65,7 +66,6 @@ export default function Dashboard({ auth }: PageProps) {
     // this is correct
     // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;
 
-
     // SELECT count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id where panel_attachments.status = "done" GROUP BY trainsets.name;
 
     // SELECT panel_attachments.status, count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id GROUP BY trainsets.name, panel_attachments.status;
@@ -111,10 +111,10 @@ export default function Dashboard({ auth }: PageProps) {
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <h2 className="text-xl my-2">Proyek 612</h2>
                             <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                                <BarChart accessibilityLayer data={chartData}>
+                                <BarChart accessibilityLayer data={data['ts']}>
                                     <CartesianGrid vertical={false} />
                                     <XAxis
-                                        dataKey="ts"
+                                        dataKey="name"
                                         tickLine={false}
                                         tickMargin={10}
                                         axisLine={false}
@@ -122,7 +122,7 @@ export default function Dashboard({ auth }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="progress" fill="var(--color-progress)" radius={4} />
+                                    <Bar dataKey="in_progress" fill="var(--color-progress)" radius={4} />
                                     <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                 </BarChart>
                             </ChartContainer>
@@ -132,9 +132,9 @@ export default function Dashboard({ auth }: PageProps) {
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                                 <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-full">
-                                    <BarChart accessibilityLayer data={chartDataWS} layout="vertical">
+                                    <BarChart accessibilityLayer data={data.ws} layout="vertical">
                                         <CartesianGrid vertical={false} />
-                                        <XAxis type="number" dataKey="progress"></XAxis>
+                                        <XAxis type="number" dataKey="in_progress"></XAxis>
                                         <XAxis type="number" dataKey="done"></XAxis>
                                         <YAxis
                                             className=""
@@ -150,7 +150,7 @@ export default function Dashboard({ auth }: PageProps) {
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="progress" fill="var(--color-progress)" radius={4} />
+                                        <Bar dataKey="in_progress" fill="var(--color-progress)" radius={4} />
                                         <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
@@ -160,7 +160,7 @@ export default function Dashboard({ auth }: PageProps) {
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel yang ada Assembly</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-96">
-                                    <BarChart accessibilityLayer data={chartDataPanel}>
+                                    <BarChart accessibilityLayer data={data.panel}>
                                         <CartesianGrid vertical={false} />
                                         <YAxis type="number" dataKey="done"></YAxis>
                                         <XAxis
@@ -172,7 +172,7 @@ export default function Dashboard({ auth }: PageProps) {
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="progress" fill="var(--color-progress)" radius={4} />
+                                        <Bar dataKey="in_progress" fill="var(--color-progress)" radius={4} />
                                         <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
