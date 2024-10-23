@@ -34,8 +34,8 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface {
         return $keyOrModel;
     }
 
-    protected function getModelClass(): string {
-        return Role::class;
+    public function forceUpdate(mixed $keyOrModel, array $data): ?Model {
+        return Role::find($keyOrModel->id)->update($data) ? Role::find($keyOrModel->id) : null;
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
@@ -48,5 +48,9 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface {
         $query = $this->applySorting($query, $searchParams);
 
         return $query;
+    }
+
+    protected function getModelClass(): string {
+        return Role::class;
     }
 }

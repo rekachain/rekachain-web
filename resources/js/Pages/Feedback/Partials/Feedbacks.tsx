@@ -12,8 +12,10 @@ import { checkPermission } from '@/Helpers/sidebarHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { usePage } from '@inertiajs/react';
 import { RoleEnum } from '@/Support/Enums/roleEnum';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [feedbackResponse, setFeedbackResponse] = useState<PaginateResponse<FeedbackResource>>();
     const auth = usePage().props.auth;
     const allowedToReadAll =
@@ -45,7 +47,7 @@ export default function () {
     const handleFeedbackDeletion = withLoading(async (id: number) => {
         await feedbackService.delete(id);
         await syncFeedbacks();
-        void useSuccessToast('Feedback deleted successfully');
+        void useSuccessToast(t('pages.feedback.partials.feedbacks.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

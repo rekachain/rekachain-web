@@ -5,6 +5,7 @@ import TrainsetName from './TrainsetName';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function TrainsetTableView({
     project,
@@ -15,13 +16,18 @@ export default function TrainsetTableView({
     handleTrainsetDeletion: (id: number) => void;
     loading: boolean;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Kode TS</TableHead>
-                        <TableHead>Susunan Kereta</TableHead>
+                        <TableHead>
+                            {t('pages.project.trainset.partials.partials.trainset_table.headers.name')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.project.trainset.partials.partials.trainset_table.headers.trainset_carriage')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -55,7 +61,7 @@ export default function TrainsetTableView({
                                     disabled={loading || !trainset.can_be_deleted}
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
                                 >
-                                    Delete
+                                    {t('action.delete')}
                                 </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
@@ -64,7 +70,7 @@ export default function TrainsetTableView({
                                         trainset.id,
                                     ])}
                                 >
-                                    Carriage
+                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
                                 </Link>
                             </TableCell>
                         </TableRow>

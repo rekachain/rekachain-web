@@ -4,6 +4,8 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+
 export default function TrainsetCardView({
     project,
     handleTrainsetDeletion,
@@ -13,10 +15,11 @@ export default function TrainsetCardView({
     handleTrainsetDeletion: (id: number) => void;
     loading: boolean;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             {project.trainsets.map(trainset => (
-                <div>
+                <div key={trainset.id}>
                     <AnimateIn
                         from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
@@ -31,7 +34,9 @@ export default function TrainsetCardView({
                                 </div>
                             </div>
 
-                            <h5 className="  text-base ">Susunan Kereta : </h5>
+                            <h5 className="text-base">
+                                {t('pages.project.trainset.partials.partials.trainset_table.headers.trainset_carriage')}
+                            </h5>
                             <p className="text-sm">
                                 {trainset.preset_name && `(${trainset.preset_name}) `}
 
@@ -62,7 +67,7 @@ export default function TrainsetCardView({
                                     disabled={loading || !trainset.can_be_deleted}
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
                                 >
-                                    Delete
+                                    {t('action.delete')}
                                 </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
@@ -71,7 +76,7 @@ export default function TrainsetCardView({
                                         trainset.id,
                                     ])}
                                 >
-                                    Carriage
+                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
                                 </Link>
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                             Delete

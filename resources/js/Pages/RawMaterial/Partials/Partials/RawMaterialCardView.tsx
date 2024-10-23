@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function RawMaterialCardView({
     rawMaterialResponse,
@@ -13,6 +14,7 @@ export default function RawMaterialCardView({
     rawMaterialResponse: PaginateResponse<RawMaterialResource>;
     handleRawMaterialDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             {rawMaterialResponse?.data.map(rawMaterial => (
@@ -39,10 +41,10 @@ export default function RawMaterialCardView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>

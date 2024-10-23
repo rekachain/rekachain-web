@@ -4,6 +4,7 @@ namespace App\Http\Requests\Trainset;
 
 use App\Rules\UniquePresetNameInProjectValidation;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTrainsetRequest extends FormRequest {
@@ -63,15 +64,15 @@ class UpdateTrainsetRequest extends FormRequest {
             case IntentEnum::WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS->value:
                 return [
                     'assembly_source_workstation_id' => 'required|integer|exists:workstations,id',
-                    'assembly_destination_workstation_id' => 'required|integer|different:source_workstation_id|exists:workstations,id',
+                    'assembly_destination_workstation_id' => 'required|integer|different:assembly_source_workstation_id|exists:workstations,id',
                 ];
             case IntentEnum::WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS->value:
                 return [
-                    'division' => 'required|in:mechanic,electric',
-                    'mechanic_source_workstation_id' => 'nullable|integer|exists:workstations,id',
-                    'mechanic_destination_workstation_id' => 'nullable|integer|different:mechanic_source_workstation_id|exists:workstations,id',
-                    'electric_source_workstation_id' => 'nullable|integer|exists:workstations,id',
-                    'electric_destination_workstation_id' => 'nullable|integer|different:electric_source_workstation_id|exists:workstations,id',
+                    'division' => 'required|in:'. implode(',', TrainsetAttachmentTypeEnum::toArray()),
+                    'mechanic_source_workstation_id' => 'required_if:division,mechanic|integer|exists:workstations,id',
+                    'mechanic_destination_workstation_id' => 'required_if:division,mechanic|integer|different:mechanic_source_workstation_id|exists:workstations,id',
+                    'electric_source_workstation_id' => 'required_if:division,electric|integer|exists:workstations,id',
+                    'electric_destination_workstation_id' => 'required_if:division,electric|integer|different:electric_source_workstation_id|exists:workstations,id',
                 ];
         }
 

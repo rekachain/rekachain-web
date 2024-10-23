@@ -21,7 +21,7 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        cp(PermissionEnum::USER_READ);
+        checkPermissions(PermissionEnum::USER_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
@@ -36,7 +36,7 @@ class UserController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        cp([PermissionEnum::USER_CREATE]);
+        checkPermissions([PermissionEnum::USER_CREATE]);
 
         $roles = $this->roleService->getAll();
 
@@ -47,7 +47,7 @@ class UserController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request) {
-        cp(PermissionEnum::USER_CREATE);
+        checkPermissions(PermissionEnum::USER_CREATE);
 
         if ($this->ajax()) {
             return $this->userService->create($request->validated());
@@ -58,7 +58,7 @@ class UserController extends Controller {
      * Display the specified resource.
      */
     public function show(User $user) {
-        cp(PermissionEnum::USER_READ);
+        checkPermissions(PermissionEnum::USER_READ);
 
         if ($this->ajax()) {
             return new UserResource($user);
@@ -71,7 +71,7 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
-        cp(PermissionEnum::USER_UPDATE);
+        checkPermissions(PermissionEnum::USER_UPDATE);
 
         $user = new UserResource($user->load('roles', 'workstation', 'step'));
         $roles = $this->roleService->getAll();
@@ -83,7 +83,7 @@ class UserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateUserRequest $request, User $user) {
-        cp(PermissionEnum::USER_UPDATE);
+        checkPermissions(PermissionEnum::USER_UPDATE);
 
         if ($this->ajax()) {
             return $this->userService->update($user, $request->validated());
@@ -96,7 +96,7 @@ class UserController extends Controller {
      * @throws Exception
      */
     public function destroy(Request $request, User $user) {
-        cp(PermissionEnum::USER_DELETE);
+        checkPermissions(PermissionEnum::USER_DELETE);
 
         if ($this->ajax()) {
             return $this->userService->delete($user);

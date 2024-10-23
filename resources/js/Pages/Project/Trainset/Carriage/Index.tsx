@@ -27,6 +27,7 @@ import AddCarriage from '@/Pages/Project/Trainset/Carriage/Partials/AddCarriage'
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useDebounce } from '@uidotdev/usehooks';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/AddNewTrainsetPreset';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -39,6 +40,7 @@ export default function ({
     trainset: TrainsetResource;
     presetTrainsets: PresetTrainsetResource[];
 }) {
+    const { t } = useLaravelReactI18n();
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
     const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
@@ -91,7 +93,11 @@ export default function ({
 
     return (
         <>
-            <Head title={`Project ${trainset.name}`} />
+            <Head
+                title={t('pages.project.trainset.carriage.index.title', {
+                    name: trainset.name,
+                })}
+            />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -104,23 +110,39 @@ export default function ({
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
-                                            Proyek {project?.name}
+                                            {t('pages.project.trainset.carriage.index.breadcrumbs.project', {
+                                                project: project?.name,
+                                            })}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
-                                        <BreadcrumbPage>Trainset {trainset.name}</BreadcrumbPage>
+                                        <BreadcrumbPage>
+                                            {t('pages.project.trainset.carriage.index.breadcrumbs.trainset', {
+                                                trainset: trainset?.name,
+                                            })}
+                                        </BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">Trainset {trainset.name}</h1>
+                            <h1 className="text-page-header my-4">
+                                {t('pages.project.trainset.carriage.index.title', {
+                                    name: trainset.name,
+                                })}
+                            </h1>
                             <div className="flex flex-col gap-2 bg-background-2 p-5 rounded">
                                 {trainset.preset_name && (
-                                    <p className="text-page-subheader">Preset: {trainset.preset_name}</p>
+                                    <p className="text-page-subheader">
+                                        {t('pages.project.trainset.carriage.index.preset', {
+                                            preset: trainset.preset_name,
+                                        })}
+                                    </p>
                                 )}
 
                                 {trainset.status === TrainsetStatusEnum.PROGRESS ? (
-                                    <p className="text-page-subheader">Status: Sedang dikerjakan</p>
+                                    <p className="text-page-subheader">
+                                        {t('pages.project.trainset.carriage.index.status_in_progress')}
+                                    </p>
                                 ) : (
                                     <ChangeTrainsetPreset
                                         trainset={trainset}
@@ -150,7 +172,7 @@ export default function ({
                 </div>
 
                 {isNewPreset() && (
-                    <CustomPresetAlert message="Anda menggunakan preset khusus. Apakah Anda ingin menyimpannya?">
+                    <CustomPresetAlert message={t('pages.project.trainset.carriage.index.new_preset_alert')}>
                         <AddNewTrainsetPreset handleSyncTrainset={handleSyncTrainset} trainset={trainset} />
                     </CustomPresetAlert>
                 )}

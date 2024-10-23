@@ -5,6 +5,7 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriageTableView({
     carriageResponse,
@@ -16,13 +17,16 @@ export default function CarriageTableView({
     handleCarriageDeletion: (id: number) => void;
     // auth: any; // sementara
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Deskripsi</TableHead>
+                        <TableHead>{t('pages.carriage.partials.partials.carriage_table.headers.type')}</TableHead>
+                        <TableHead>
+                            {t('pages.carriage.partials.partials.carriage_table.headers.description')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -36,11 +40,11 @@ export default function CarriageTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 {carriage.can_be_deleted && (
                                     <Button variant="link" onClick={() => handleCarriageDeletion(carriage.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
                             </TableCell>
