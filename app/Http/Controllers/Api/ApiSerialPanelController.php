@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\SerialPanel;
+use App\Support\Enums\PermissionEnum;
 use Illuminate\Http\Request;
 use App\Support\Enums\RoleEnum;
 use App\Support\Enums\IntentEnum;
@@ -46,16 +47,19 @@ class ApiSerialPanelController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS->value:
-            $status = request()->get('status'); // qc sends status failed
-                if (!$request->user()->hasRole(RoleEnum::QC_ASSEMBLY)) {
-                    abort(403, 'Unauthorized');
+                if (!$request->user()->hasRole([RoleEnum::QC_ASSEMBLY, RoleEnum::SUPERVISOR_ASSEMBLY])) {
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::QC_ASSEMBLY->value . ' / ' . RoleEnum::SUPERVISOR_ASSEMBLY->value]));
                 }
                 
-                return $this->serialPanelService->rejectPanel($serialPanel, $request);    
-            case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
-                return $this->serialPanelService->assignWorker($serialPanel, $request->validated());
+                return $this->serialPanelService->update($serialPanel, $request->validated());    
+            case IntentEnum::API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL->value:
+                return DetailWorkerPanelResource::make($this->serialPanelService->assignWorker($serialPanel, $request->validated()));
             default:
-                break;
+                // checkPermissions(PermissionEnum::SERIAL_PANEL_UPDATE);
+                if (!$request->user()->hasRole([RoleEnum::QC_ASSEMBLY, RoleEnum::SUPERVISOR_ASSEMBLY])) {
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::QC_ASSEMBLY->value . ' / ' . RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+                }
+                return $this->serialPanelService->update($serialPanel, $request->validated());
         }
         
     }

@@ -2,11 +2,12 @@
 
 namespace App\Rules\SerialPanel;
 
-use App\Support\Enums\RoleEnum;
+use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class SerialPanelAssignWorkerStepValidation implements ValidationRule {
+class SerialPanelAssignWorkerValidation implements ValidationRule {
     /**
      * Run the validation rule.
      *
@@ -26,7 +27,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
             ));
         }
 
-        $lastWorkerPanel = $serialPanel->detail_worker_panels()->orderBy('id', 'desc')->first();
+        $lastWorkerPanel = $serialPanel->detail_worker_panels()->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->first();
         $lastKey = array_search($lastWorkerPanel?->progress_step->step_id ?? 0, $carriagePanelProgressStepIds);
         $currentKey = array_search($user->step->id, $carriagePanelProgressStepIds);
         if ($currentKey < $lastKey || $currentKey - $lastKey > 1) {
