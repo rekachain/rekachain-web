@@ -39,8 +39,8 @@ class UpdateCarriageTrainsetRequest extends FormRequest {
         }
 
         return [
-            'trainset_id' => 'nullable|integer,exists:trainsets,id',
-            'carriage_id' => 'nullable|integer,exists:carriages,id',
+            'trainset_id' => 'nullable|integer|exists:trainsets,id',
+            'carriage_id' => 'nullable|integer|exists:carriages,id',
             'qty' => 'nullable|integer',
         ];
     }

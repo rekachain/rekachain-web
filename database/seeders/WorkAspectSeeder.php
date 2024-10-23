@@ -17,24 +17,27 @@ class WorkAspectSeeder extends Seeder
         $csvReader = new CsvReader('work_aspect');
         $csvData = $csvReader->getCsvData();
         
+        WorkAspect::factory()->create([
+            'name' => 'Fabrikasi',
+            'division_id' => 1,
+        ]);
+        WorkAspect::factory()->create([
+            'name' => 'Cutting Harness',
+            'division_id' => 2,
+        ]);
+        WorkAspect::factory()->create([
+            'name' => 'Fitting & Koneksi',
+            'division_id' => 3,
+        ]);
+        WorkAspect::factory()->create([
+            'name' => 'Harmonika',
+        ]);
+
         if ($csvData) {
             foreach ($csvData as $data) {
                 WorkAspect::factory()->create($data);
             }
             return;
         }
-
-        WorkAspect::factory()->create([
-            'name' => 'Fabrikasi',
-        ]);
-        WorkAspect::factory()->create([
-            'name' => 'Cutting Harness',
-        ]);
-        WorkAspect::factory()->create([
-            'name' => 'Fitting & Koneksi',
-        ]);
-        WorkAspect::factory()->create([
-            'name' => 'Harmonika',
-        ]);
     }
 }

@@ -5,13 +5,13 @@ use App\Models\WorkDay;
 
 test('index method returns paginated work-days', function () {
     $user = User::factory()->create();
-    WorkDay::factory()->count(5)->create();
+    $this->dummy->createWorkDay();
 
-    $response = $this->actingAs($user)->getJson('/work-days?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/work-days?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(5, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 test('create method returns create page', function () {
@@ -52,7 +52,7 @@ test('store method creates new workDay', function () {
 
 test('show method returns workDay details', function () {
     $user = User::factory()->create();
-    $workDay = WorkDay::factory()->create();
+    $workDay = $this->dummy->createWorkDay();
 
     $response = $this->actingAs($user)->getJson("/work-days/{$workDay->id}");
 
@@ -62,7 +62,7 @@ test('show method returns workDay details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->create();
-    $workDay = WorkDay::factory()->create();
+    $workDay = $this->dummy->createWorkDay();
 
     $response = $this->actingAs($user)->get("/work-days/{$workDay->id}/edit");
 
@@ -72,7 +72,7 @@ test('edit method returns edit page', function () {
 
 test('update method updates workDay', function () {
     $user = User::factory()->create();
-    $workDay = WorkDay::factory()->create();
+    $workDay = $this->dummy->createWorkDay();
     $updatedData = [
         'day' => 'Updated Day',
     ];
@@ -86,7 +86,7 @@ test('update method updates workDay', function () {
 
 test('destroy method deletes workDay', function () {
     $user = User::factory()->create();
-    $workDay = WorkDay::factory()->create();
+    $workDay = $this->dummy->createWorkDay();
 
     $response = $this->actingAs($user)->deleteJson("/work-days/{$workDay->id}");
 

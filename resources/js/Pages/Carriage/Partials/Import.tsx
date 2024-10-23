@@ -11,15 +11,17 @@ import { Button } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { router, useForm } from '@inertiajs/react';
 import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
 import { ChangeEvent, FormEvent } from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
+
     const { data, setData } = useForm<{
         file: File | null;
     }>({
@@ -30,8 +32,8 @@ export default function () {
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await carriageService.importData(data.file as File);
-        void useSuccessToast('Data imported successfully');
         router.visit(route(`${ROUTES.CARRIAGES}.index`));
+        void useSuccessToast(t('pages.carriage.partials.import.messages.imported'));
     });
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -42,23 +44,30 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">Import Data</Button>
+                <Button variant="tertiary">{t('pages.carriage.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Import Data</DialogTitle>
-                    <DialogDescription>Import data from a file to populate the table.</DialogDescription>
+                    <DialogTitle>{t('pages.carriage.partials.import.dialogs.title')}</DialogTitle>
+                    <DialogDescription>{t('pages.carriage.partials.import.dialogs.description')}</DialogDescription>
                 </DialogHeader>
                 {/*Download template button*/}
                 <div className="flex flex-col space-y-4">
-                    <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={carriageService.downloadImportDataTemplate} disabled={loading}>
-                        {loading ? 'Processing' : 'Download'}
+                    <Label>{t('pages.carriage.partials.import.dialogs.fields.download_template')}</Label>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={carriageService.downloadImportDataTemplate}
+                        disabled={loading}
+                    >
+                        {loading
+                            ? t('action.loading')
+                            : t('pages.carriage.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">File</Label>
+                        <Label htmlFor="file">{t('pages.carriage.partials.import.dialogs.fields.file')}</Label>
                         <Input
                             id="file"
                             type="file"
@@ -68,7 +77,7 @@ export default function () {
                     </div>
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
-                            {loading ? 'Processing' : 'Import'}
+                            {loading ? t('action.loading') : t('pages.carriage.partials.import.dialogs.buttons.import')}
                         </Button>
                     </DialogFooter>
                 </form>

@@ -81,29 +81,29 @@ test('view all detail-worker-panels intent get all request worker with pending s
 
 test('store detail-worker-panel', function () {
 
-    $worker =  User::where(['name' => 'Assembly'])->first();
-    $serial_panel = SerialPanel::inRandomOrder()->first();
+    $user = $this->dummy->createWorkerAssembly();
+    $serial_panel = $this->dummy->createSerialPanel();
+    $progress_step = $this->dummy->createProgressStep();
     $DetailWorkerPanelData = [
         'serial_panel_id' => $serial_panel->id,
     ];
 
-    $response = $this->actingAs($worker)->postJson('/api/detail-worker-panels', $DetailWorkerPanelData);
+    $response = $this->actingAs($user)->postJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value, $DetailWorkerPanelData);
 
     $response->assertStatus(201);
 });
 
 test('store detail-worker-panel fails for non-worker role', function () {
 
-    $user = User::factory()->create();
-    $serial_panel = SerialPanel::inRandomOrder()->first() ?? $this->dummy->createSerialPanel();
-    $progress_step = ProgressStep::inRandomOrder()->first() ?? $this->dummy->createProgressStep();
+    $user = $this->dummy->createSupervisorAssembly();
+    $serial_panel = $this->dummy->createSerialPanel();
+    $progress_step = $this->dummy->createProgressStep();
     $DetailWorkerPanelData = [
         'serial_panel_id' => $serial_panel->id,
         'worker_id' => $user->id,
-        'progress_step_id' => $progress_step->id,
     ];
 
-    $response = $this->actingAs($user)->postJson('/api/detail-worker-panels', $DetailWorkerPanelData);
+    $response = $this->actingAs($user)->postJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value, $DetailWorkerPanelData);
 
     $response->assertStatus(403);
 });
@@ -122,11 +122,15 @@ test('show detail-worker-panel with get panel details intent', function () {
 test('update method updates DetailWorkerPanel for assign request worker', function () {
 
     $supervisor = $this->dummy->createSupervisorAssembly();
-    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $this->dummy->createDetailWorkerPanel();
+    $DetailWorkerPanel = $this->dummy->createDetailWorkerPanel();
 
-    $response = $this->actingAs($supervisor)->putJson('/api/detail-worker-panels/' . $DetailWorkerPanel->id . '?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value);
+    $response = $this->actingAs($supervisor)->putJson('/api/detail-worker-panels/' . $DetailWorkerPanel->id, [
+        'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value,
+        'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value,
+    ]);
 
-    $response->assertStatus(200);
+    $response->assertStatus(200)
+        ->assertJsonStructure(['id', 'acceptance_status']);
 });
 
 test('update method fails for non-supervisor role', function () {

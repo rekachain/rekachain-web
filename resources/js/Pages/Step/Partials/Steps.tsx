@@ -1,19 +1,17 @@
-import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { StepResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { ROUTES } from '@/Support/Constants/routes';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import StepCardView from './Partials/StepCardView';
 import StepTableView from './Partials/StepTableView';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [stepResponse, setStepResponse] = useState<PaginateResponse<StepResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -32,7 +30,7 @@ export default function () {
     const handleStepDeletion = withLoading(async (id: number) => {
         await stepService.delete(id);
         await handleSyncSteps();
-        void useSuccessToast('Step deleted successfully');
+        void useSuccessToast(t('pages.step.partials.steps.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

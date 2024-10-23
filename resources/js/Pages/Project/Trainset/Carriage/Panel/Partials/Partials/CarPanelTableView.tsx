@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { Button } from '@/Components/UI/button';
 import PanelQty from '../Components/PanelQty';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarPanelTableView({
     trainset,
@@ -15,15 +16,32 @@ export default function CarPanelTableView({
     handleSyncCarriage: () => Promise<void>;
     handlePanelDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Jumlah</TableHead>
-                        <TableHead>Deskripsi</TableHead>
-                        <TableHead>Proses</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.panel',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.qty',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.description',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.progress',
+                            )}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -50,7 +68,7 @@ export default function CarPanelTableView({
 
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
 

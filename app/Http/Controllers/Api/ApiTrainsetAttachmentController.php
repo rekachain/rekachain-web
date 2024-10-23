@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\TrainsetAttachment\StoreTrainsetAttachmentRequest;
 use App\Http\Requests\TrainsetAttachment\UpdateTrainsetAttachmentRequest;
+use App\Http\Resources\DetailWorkerTrainsetResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
@@ -121,6 +122,8 @@ class ApiTrainsetAttachmentController extends ApiController {
                 return TrainsetAttachmentResource::make($trainsetAttachment);
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
+            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
+                return TrainsetAttachmentResource::make($trainsetAttachment);
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS_WITH_QR->value:
                 $qr = request()->get('qr_code');
                 if ($qr) {
@@ -141,7 +144,27 @@ class ApiTrainsetAttachmentController extends ApiController {
      * Update the specified resource in storage.
      */
     public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetAttachment) {
-        return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+        $intent = request()->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                }
+                return DetailWorkerTrainsetResource::make($this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated()));
+            case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
+                    abort(403, 'Unauthorized');
+                }
+                return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());    
+            case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
+                }
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
+            default:
+                return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+        }
     }
 
     /**
