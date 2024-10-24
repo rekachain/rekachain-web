@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\DetailWorkerPanelResource;
-use App\Http\Resources\PanelAttachmentResource;
-use App\Http\Resources\SerialPanelResource;
-use App\Models\DetailWorkerPanel;
-use App\Models\PanelAttachment;
-use App\Support\Enums\IntentEnum;
-use App\Support\Enums\PanelAttachmentStatusEnum;
-use App\Support\Enums\RoleEnum;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\PanelAttachment;
+use App\Support\Enums\RoleEnum;
+use App\Models\DetailWorkerPanel;
+use App\Support\Enums\IntentEnum;
+use App\Http\Controllers\Controller;
+use App\Support\Enums\PermissionEnum;
+use App\Http\Resources\SerialPanelResource;
+use App\Http\Resources\PanelAttachmentResource;
+use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Http\Resources\DetailWorkerPanelResource;
+use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Http\Requests\PanelAttachment\StorePanelAttachmentRequest;
+use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 
 class ApiPanelAttachmentController extends Controller
 {
@@ -116,7 +120,7 @@ class ApiPanelAttachmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePanelAttachmentRequest $request)
     {
         //
     }
@@ -182,23 +186,39 @@ class ApiPanelAttachmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PanelAttachment $panelAttachment, Request $request)
+    public function update(PanelAttachment $panelAttachment, UpdatePanelAttachmentRequest $request)
     {
         $intent = request()->get('intent');
         switch ($intent) {
-            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM->value:
+            case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
-
-                $confirmedKpm = $this->panelAttachmentService->confirmKPM($panelAttachment->id);
-                return PanelAttachmentResource::make($confirmedKpm);
+                
+                return $this->panelAttachmentService->confirmKPM($panelAttachment, $request->validated());
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
+                if (!checkPermissions(PermissionEnum::PANEL_ATTACHMENT_UPDATE, true) && !\Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    return response()->json([
+                        'message' => [
+                            __('exception.auth.permission.permission_exception', ['permission' => PermissionEnum::PANEL_ATTACHMENT_UPDATE->value]),
+                            __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value])
+                        ],
+                    ], 403);
+                }
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated())->load('attachment_notes'));
             case IntentEnum::API_PANEL_ATTACHMENT_REJECT_KPM->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');
                 }
                 $rejectedKpm = $this->panelAttachmentService->rejectKpm($panelAttachment->id, $request);
                 return PanelAttachmentResource::make($rejectedKpm);
+            case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
+                if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
+                }
+                return PanelAttachmentResource::make(($this->panelAttachmentService->assignSpvAndReceiver($panelAttachment, $request->validated())->load('panel_attachment_handlers')));
+            default:
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated()));
         }
     }
 

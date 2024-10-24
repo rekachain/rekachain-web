@@ -21,3 +21,5 @@ yarn-error.log
 _ide_helper.php
 *.rar
 .phpstorm.meta.php
+lang/php_*.json
+localazy.keys.json

@@ -10,6 +10,7 @@ import { FilePond } from 'react-filepond';
 import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -20,6 +21,7 @@ export default function UpdateProfileInformation({
     status?: string;
     className?: string;
 }) {
+    const { t } = useLaravelReactI18n();
     const user = usePage<PageProps>().props.auth.user;
 
     const { data, setData, errors, processing, recentlySuccessful } = useForm({
@@ -29,41 +31,43 @@ export default function UpdateProfileInformation({
     });
 
     useEffect(() => {
-        setData('image_path', [
-            {
-                source: user.image,
-                options: {
-                    type: 'local',
-                    file: {
-                        name: 'User Avatar',
-                        size: null,
-                        type: 'image/jpeg',
-                    },
-                    metadata: {
-                        poster: user.image,
+        if (user.image) {
+            setData('image_path', [
+                {
+                    source: user.image,
+                    options: {
+                        type: 'local',
+                        file: {
+                            name: 'User Avatar',
+                            size: null,
+                            type: 'image/jpeg',
+                        },
+                        metadata: {
+                            poster: user.image,
+                        },
                     },
                 },
-            },
-        ]);
+            ]);
+        }
     }, [user.image]);
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('_method', 'PATCH'); // Append the method override for Inertia
+        formData.append('_method', 'PATCH');
         formData.append('name', data.name);
         formData.append('email', data.email);
 
         if (data.image_path.length > 0) {
-            formData.append('image_path', data.image_path[0]); // Append the image file
+            formData.append('image_path', data.image_path[0]);
         }
 
         await window.axios.post(route(`${ROUTES.PROFILE}.update`), formData);
 
         router.reload();
 
-        void useSuccessToast('Profile updated successfully.');
+        void useSuccessToast(t('pages.profile.partials.update_profile_information_form.messages.updated'));
     });
 
     const handleFileChange = (fileItems: any) => {
@@ -76,16 +80,20 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium ">Profile Information</h2>
+                <h2 className="text-lg font-medium ">
+                    {t('pages.profile.partials.update_profile_information_form.title')}
+                </h2>
 
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Update your account's profile information and email address.
+                    {t('pages.profile.partials.update_profile_information_form.description')}
                 </p>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-4">
                 <div>
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">
+                        {t('pages.profile.partials.update_profile_information_form.fields.name')}
+                    </Label>
 
                     <Input
                         id="name"
@@ -100,7 +108,9 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">
+                        {t('pages.profile.partials.update_profile_information_form.fields.email')}
+                    </Label>
 
                     <Input
                         id="email"
@@ -115,14 +125,18 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <Label htmlFor="image_path">Image</Label>
+                    <Label htmlFor="image_path">
+                        {t('pages.profile.partials.update_profile_information_form.fields.avatar')}
+                    </Label>
                     <FilePond
                         imagePreviewMaxHeight={400}
                         filePosterMaxHeight={400}
                         allowMultiple={false}
                         files={data.image_path}
                         onupdatefiles={handleFileChange}
-                        labelIdle="Drop files here or click to upload"
+                        labelIdle={t(
+                            'pages.profile.partials.update_profile_information_form.fields.avatar_filepond_placeholder',
+                        )}
                         allowReplace
                     />
                     {errors.image_path && `${errors.image_path}`}
@@ -131,27 +145,33 @@ export default function UpdateProfileInformation({
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                            Your email address is unverified.
+                            {t('pages.profile.partials.update_profile_information_form.messages.verify_email')}
                             <Link
                                 href={route('verification.send')}
                                 method="post"
                                 as="button"
                                 className="underline text-sm hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                             >
-                                Click here to re-send the verification email.
+                                {t(
+                                    'pages.profile.partials.update_profile_information_form.messages.resend_verification_email',
+                                )}
                             </Link>
                         </p>
 
                         {status === 'verification-link-sent' && (
                             <div className="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                                A new verification link has been sent to your email address.
+                                {t(
+                                    'pages.profile.partials.update_profile_information_form.messages.verification_email_sent',
+                                )}
                             </div>
                         )}
                     </div>
                 )}
 
                 <div className="flex items-center gap-4">
-                    <Button disabled={processing}>Save</Button>
+                    <Button disabled={processing}>
+                        {t('pages.profile.partials.update_profile_information_form.buttons.submit')}
+                    </Button>
 
                     <Transition
                         show={recentlySuccessful}
@@ -160,7 +180,9 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm">Saved.</p>
+                        <p className="text-sm">
+                            {t('pages.profile.partials.update_profile_information_form.messages.updated')}
+                        </p>
                     </Transition>
                 </div>
             </form>

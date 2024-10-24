@@ -1,12 +1,10 @@
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import PanelQty from '@/Pages/Project/Trainset/Carriage/Panel/Partials/Components/PanelQty';
-import { Button } from '@/Components/UI/button';
 import { carriagePanelService } from '@/Services/carriagePanelService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { withLoading } from '@/Utils/withLoading';
 import CarPanelCardView from './Partials/CarPanelCardView';
 import CarPanelTableView from './Partials/CarPanelTableView';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     trainset,
@@ -17,10 +15,11 @@ export default function ({
     carriageTrainset: CarriageTrainsetResource;
     handleSyncCarriage: () => Promise<void>;
 }) {
+    const { t } = useLaravelReactI18n();
     const handlePanelDeletion = withLoading(async (carriageCarriageId: number) => {
         await carriagePanelService.delete(carriageCarriageId);
         await handleSyncCarriage();
-        void useSuccessToast('Panel deleted successfully');
+        void useSuccessToast(t('pages.project.trainset.carriage.panel.partials.panels.messages.deleted'));
     }, true);
 
     return (

@@ -1,20 +1,21 @@
 <?php
 
-use App\Models\Carriage;
 use App\Models\User;
+use App\Models\Carriage;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\Carriage\CarriagesTemplateExport;
 
 test('index method returns paginated carriages', function () {
     $user = User::factory()->create();
-    Carriage::factory()->count(15)->create();
+    $this->dummy->createCarriage();
 
-    $response = $this->actingAs($user)->getJson('/carriages?page=1&perPage=10');
+    $response = $this->actingAs($user)->getJson('/carriages?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(10, 'data');
+        ->assertJsonCount(1, 'data');
 });
 
 test('create method returns create page', function () {
@@ -40,18 +41,20 @@ test('store method creates new carriage', function () {
     $this->assertDatabaseHas('carriages', $carriageData);
 });
 
-// test('store method imports carriages', function () {
-//     Storage::fake('local');
-//     $user = User::factory()->create();
-//     $file = UploadedFile::fake()->create('carriages.xlsx');
+test('store method imports carriages', function () {
+    Storage::fake('local');
+    $user = User::factory()->create();
 
-//     $response = $this->actingAs($user)->postJson('/carriages', [
-//         'intent' => IntentEnum::WEB_CARRIAGE_IMPORT_CARRIAGE->value,
-//         'import_file' => $file,
-//     ]);
+    $file = Excel::raw(new CarriagesTemplateExport, \Maatwebsite\Excel\Excel::XLSX);
+    $uploadedFile = UploadedFile::fake()->createWithContent('carriages.xlsx', $file);
 
-//     $response->assertStatus(204);
-// });
+    $response = $this->actingAs($user)->postJson('/carriages', [
+        'intent' => IntentEnum::WEB_CARRIAGE_IMPORT_CARRIAGE->value,
+        'import_file' => $uploadedFile,
+    ]);
+
+    $response->assertStatus(204);
+});
 
 test('show method returns carriage details', function () {
     $user = User::factory()->create();

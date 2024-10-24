@@ -4,7 +4,7 @@ use App\Helpers\PermissionHelper;
 use App\Support\Enums\PermissionEnum;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-if (!function_exists('cp')) {
+if (!function_exists('checkPermissions')) {
     /**
      * Check user permissions.
      *
@@ -12,7 +12,7 @@ if (!function_exists('cp')) {
      *
      * @throws HttpException
      */
-    function cp(PermissionEnum|array $permissions): void {
-        PermissionHelper::check($permissions);
+    function checkPermissions(PermissionEnum|array $permissions, bool $returnBool = false, bool $strict = false): ?bool {
+        return PermissionHelper::check($permissions, $returnBool, $strict);
     }
 }

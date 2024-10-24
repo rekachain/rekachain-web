@@ -8,6 +8,7 @@ import { checkPermission } from '@/Helpers/sidebarHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { usePage } from '@inertiajs/react';
 import { FeedbackStatusEnum } from '@/Support/Enums/feedbackStatusEnum';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function FeedbackCardView({
     feedbackResponse,
@@ -16,6 +17,8 @@ export default function FeedbackCardView({
     feedbackResponse: PaginateResponse<FeedbackResource>;
     handleFeedbackDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
+
     const auth = usePage().props.auth;
 
     const allowedToReadAll =
@@ -26,11 +29,11 @@ export default function FeedbackCardView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Rating</TableHead>
-                        <TableHead>Pesan</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>{t('pages.feedback.partials.partials.feedback_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.feedback.partials.partials.feedback_table.headers.email')}</TableHead>
+                        <TableHead>{t('pages.feedback.partials.partials.feedback_table.headers.rating')}</TableHead>
+                        <TableHead>{t('pages.feedback.partials.partials.feedback_table.headers.message')}</TableHead>
+                        <TableHead>{t('pages.feedback.partials.partials.feedback_table.headers.status')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -43,13 +46,19 @@ export default function FeedbackCardView({
                             <TableCell>{feedback.message}</TableCell>
                             <TableCell>
                                 {feedback.status === FeedbackStatusEnum.PENDING && (
-                                    <span className="text-yellow-500">Pending</span>
+                                    <span className="text-yellow-500">
+                                        {t('pages.feedback.partials.partials.feedback_table.values.pending')}
+                                    </span>
                                 )}
                                 {feedback.status === FeedbackStatusEnum.APPROVED && (
-                                    <span className="text-green-500">Approved</span>
+                                    <span className="text-green-500">
+                                        {t('pages.feedback.partials.partials.feedback_table.values.approved')}
+                                    </span>
                                 )}
                                 {feedback.status === FeedbackStatusEnum.REJECTED && (
-                                    <span className="text-red-500">Rejected</span>
+                                    <span className="text-red-500">
+                                        {t('pages.feedback.partials.partials.feedback_table.values.rejected')}
+                                    </span>
                                 )}
                             </TableCell>
                             <TableCell>
@@ -61,7 +70,7 @@ export default function FeedbackCardView({
                                 {/*</Link>*/}
                                 {feedback.can_be_deleted && allowedToReadAll && (
                                     <Button variant="link" onClick={() => handleFeedbackDeletion(feedback.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
                             </TableCell>

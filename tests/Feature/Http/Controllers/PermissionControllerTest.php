@@ -8,7 +8,7 @@ test('index method returns paginated permissions', function () {
 
     Permission::create(['name' => "user-create", 'guard_name' => 'web']);
 
-    $response = $this->actingAs($user)->getJson('/permissions?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/permissions?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])

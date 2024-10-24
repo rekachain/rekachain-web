@@ -1,3 +1,5 @@
+// TODO: Refactor using GenericDataSelector
+
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { Label } from '@/Components/UI/label';
 import { Button, buttonVariants } from '@/Components/UI/button';
@@ -23,6 +25,7 @@ import { useForm } from '@inertiajs/react';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { ScrollArea } from '@/Components/UI/scroll-area';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const ChangeTrainsetPreset = ({
     trainset,
@@ -35,6 +38,7 @@ const ChangeTrainsetPreset = ({
     handleSyncTrainset: () => Promise<void>;
     handleSyncCarriages: () => Promise<void>;
 }) => {
+    const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
     const { data, setData } = useForm({
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
@@ -85,7 +89,7 @@ const ChangeTrainsetPreset = ({
         e.preventDefault();
         await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
         await handleSyncTrainset();
-        void useSuccessToast('Preset changed successfully');
+        void useSuccessToast(t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.changed'));
     });
 
     const handleSearchDestinationWorkstations = (destinationWorkstations: WorkstationResource[] | undefined) => {
@@ -104,7 +108,9 @@ const ChangeTrainsetPreset = ({
         );
         await handleSyncTrainset();
         await handleSyncCarriages();
-        void useSuccessToast('KPM generated successfully');
+        void useSuccessToast(
+            t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.kpm_generated'),
+        );
     });
 
     const handleGenerateMechanicTrainsetAttachment = withLoading(async e => {
@@ -117,7 +123,9 @@ const ChangeTrainsetPreset = ({
         );
         await handleSyncTrainset();
         await handleSyncCarriages();
-        void useSuccessToast('KPM generated successfully');
+        void useSuccessToast(
+            t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.kpm_generated'),
+        );
     });
 
     const handleGenerateElectricTrainsetAttachment = withLoading(async e => {
@@ -130,7 +138,9 @@ const ChangeTrainsetPreset = ({
         );
         await handleSyncTrainset();
         await handleSyncCarriages();
-        void useSuccessToast('KPM generated successfully');
+        void useSuccessToast(
+            t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.kpm_generated'),
+        );
     });
 
     const handleSyncSourceWorkstations = withLoading(async () => {
@@ -152,7 +162,9 @@ const ChangeTrainsetPreset = ({
 
     const handleDeletePresetTrainset = withLoading(async () => {
         await presetTrainsetService.delete(data.preset_trainset_id);
-        void useSuccessToast('Preset deleted successfully');
+        void useSuccessToast(
+            t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.preset_deleted'),
+        );
         await handleSyncTrainset();
     }, true);
 
@@ -167,7 +179,9 @@ const ChangeTrainsetPreset = ({
         <div className="flex md:flex-row flex-col  gap-2 md:items-end ">
             <form onSubmit={handleChangePreset} className="flex gap-2">
                 <SelectGroup>
-                    <Label htmlFor="preset-trainset">Preset</Label>
+                    <Label htmlFor="preset-trainset">
+                        {t('pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset')}
+                    </Label>
                     <div className="md:flex  w-full md:flex-row gap-2 pt-3 ">
                         <Select
                             key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
@@ -176,11 +190,17 @@ const ChangeTrainsetPreset = ({
                             defaultValue={trainset.preset_trainset_id?.toString()}
                         >
                             <SelectTrigger id="preset-trainset">
-                                <SelectValue placeholder="Preset Trainset" />
+                                <SelectValue
+                                    placeholder={t(
+                                        'pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset_placeholder',
+                                    )}
+                                />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="0" disabled>
-                                    Pilih Preset
+                                    {t(
+                                        'pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset_placeholder',
+                                    )}
                                 </SelectItem>
                                 {presetTrainset.map(preset => (
                                     <SelectItem key={preset.id} value={preset.id.toString()}>
@@ -209,10 +229,12 @@ const ChangeTrainsetPreset = ({
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Loading
+                                        {t('action.loading')}
                                     </>
                                 ) : (
-                                    'Ubah Preset'
+                                    t(
+                                        'pages.project.trainset.carriage.partials.change_trainset_preset.buttons.change_preset',
+                                    )
                                 )}
                             </Button>
                             <Button
@@ -228,10 +250,12 @@ const ChangeTrainsetPreset = ({
                                 {loading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Loading
+                                        {t('action.loading')}
                                     </>
                                 ) : (
-                                    'Hapus Preset'
+                                    t(
+                                        'pages.project.trainset.carriage.partials.change_trainset_preset.buttons.delete_preset',
+                                    )
                                 )}
                             </Button>
                         </div>
@@ -245,21 +269,31 @@ const ChangeTrainsetPreset = ({
                         // className: 'self-end',
                     })}
                 >
-                    Buat KPM
+                    {t('pages.project.trainset.carriage.partials.change_trainset_preset.buttons.generate_kpm')}
                 </DialogTrigger>
                 <DialogContent className="max-w-fit">
                     <DialogHeader>
-                        <DialogTitle>Generate KPM</DialogTitle>
+                        <DialogTitle>
+                            {t(
+                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.generate_kpm_title',
+                            )}
+                        </DialogTitle>
                         <DialogDescription></DialogDescription>
                         <div className="flex gap-4 ">
                             <ScrollArea className="w-[20rem] sm:w-[30rem] md:w-[50rem] flex flex-col h-[30rem] md:flex-row">
                                 <form onSubmit={handleGenerateAssemblyAttachment} className="flex flex-col gap-4">
                                     <div className="flex flex-col gap-4">
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                            <Label>Sumber Workstation</Label>
+                                            <Label>
+                                                {t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation',
+                                                )}
+                                            </Label>
                                             <Input
                                                 value={sourceWorkstationFilters.search}
-                                                placeholder="Type a command or search..."
+                                                placeholder={t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation_search',
+                                                )}
                                                 onInput={e =>
                                                     setSourceWorkstationFilters({
                                                         ...sourceWorkstationFilters,
@@ -279,11 +313,17 @@ const ChangeTrainsetPreset = ({
                                                     value={generateAssemblyAttachmentData.assembly_source_workstation_id.toString()}
                                                 >
                                                     <SelectTrigger id="source-workstation">
-                                                        <SelectValue placeholder="Workstation" />
+                                                        <SelectValue
+                                                            placeholder={t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation_placeholder',
+                                                            )}
+                                                        />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" disabled>
-                                                            Pilih Workstation
+                                                            {t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation',
+                                                            )}
                                                         </SelectItem>
                                                         {sourceWorkstations.map(workstation => (
                                                             <SelectItem
@@ -299,10 +339,16 @@ const ChangeTrainsetPreset = ({
                                         </div>
 
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                            <Label className="mb-2">Tujuan Workstation</Label>
+                                            <Label className="mb-2">
+                                                {t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation',
+                                                )}
+                                            </Label>
                                             <Input
                                                 value={destinationWorkstationFilters.search}
-                                                placeholder="Type a command or search..."
+                                                placeholder={t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation_search',
+                                                )}
                                                 onInput={e =>
                                                     setDestinationWorkstationFilters({
                                                         ...destinationWorkstationFilters,
@@ -325,11 +371,17 @@ const ChangeTrainsetPreset = ({
                                                     value={generateAssemblyAttachmentData.assembly_destination_workstation_id.toString()}
                                                 >
                                                     <SelectTrigger id="destination-workstation">
-                                                        <SelectValue placeholder="Workstation" />
+                                                        <SelectValue
+                                                            placeholder={t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation_placeholder',
+                                                            )}
+                                                        />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" disabled>
-                                                            Pilih Workstation
+                                                            {t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation',
+                                                            )}
                                                         </SelectItem>
                                                         {destinationWorkstations.map(workstation => (
                                                             <SelectItem
@@ -349,10 +401,12 @@ const ChangeTrainsetPreset = ({
                                         {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                Proses
+                                                {t('action.loading')}
                                             </>
                                         ) : (
-                                            'Generate KPM'
+                                            t(
+                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.buttons.generate_kpm',
+                                            )
                                         )}
                                     </Button>
                                 </form>
@@ -362,10 +416,16 @@ const ChangeTrainsetPreset = ({
                                 >
                                     <div className="flex flex-col gap-4">
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                            <Label>Sumber Workstation</Label>
+                                            <Label>
+                                                {t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation',
+                                                )}
+                                            </Label>
                                             <Input
                                                 value={sourceWorkstationFilters.search}
-                                                placeholder="Type a command or search..."
+                                                placeholder={t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation_search',
+                                                )}
                                                 onInput={e =>
                                                     setSourceWorkstationFilters({
                                                         ...sourceWorkstationFilters,
@@ -387,11 +447,17 @@ const ChangeTrainsetPreset = ({
                                                     value={generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id.toString()}
                                                 >
                                                     <SelectTrigger id="source-workstation">
-                                                        <SelectValue placeholder="Workstation" />
+                                                        <SelectValue
+                                                            placeholder={t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation_placeholder',
+                                                            )}
+                                                        />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" disabled>
-                                                            Pilih Workstation
+                                                            {t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation',
+                                                            )}
                                                         </SelectItem>
                                                         {sourceWorkstations.map(workstation => (
                                                             <SelectItem
@@ -407,10 +473,16 @@ const ChangeTrainsetPreset = ({
                                         </div>
 
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                            <Label className="mb-2">Tujuan Workstation</Label>
+                                            <Label className="mb-2">
+                                                {t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation',
+                                                )}
+                                            </Label>
                                             <Input
                                                 value={destinationWorkstationFilters.search}
-                                                placeholder="Type a command or search..."
+                                                placeholder={t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation_search',
+                                                )}
                                                 onInput={e =>
                                                     setDestinationWorkstationFilters({
                                                         ...destinationWorkstationFilters,
@@ -433,11 +505,17 @@ const ChangeTrainsetPreset = ({
                                                     value={generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id.toString()}
                                                 >
                                                     <SelectTrigger id="destination-workstation">
-                                                        <SelectValue placeholder="Workstation" />
+                                                        <SelectValue
+                                                            placeholder={t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation_placeholder',
+                                                            )}
+                                                        />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" disabled>
-                                                            Pilih Workstation
+                                                            {t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation',
+                                                            )}
                                                         </SelectItem>
                                                         {destinationWorkstations.map(workstation => (
                                                             <SelectItem
@@ -457,10 +535,12 @@ const ChangeTrainsetPreset = ({
                                         {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                Proses
+                                                {t('action.loading')}
                                             </>
                                         ) : (
-                                            'Generate KPM Mekanik'
+                                            t(
+                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.buttons.generate_mechanic_kpm',
+                                            )
                                         )}
                                     </Button>
                                 </form>
@@ -470,10 +550,16 @@ const ChangeTrainsetPreset = ({
                                 >
                                     <div className="flex flex-col gap-4">
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                            <Label>Sumber Workstation</Label>
+                                            <Label>
+                                                {t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation',
+                                                )}
+                                            </Label>
                                             <Input
                                                 value={sourceWorkstationFilters.search}
-                                                placeholder="Type a command or search..."
+                                                placeholder={t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation_search',
+                                                )}
                                                 onInput={e =>
                                                     setSourceWorkstationFilters({
                                                         ...sourceWorkstationFilters,
@@ -495,11 +581,17 @@ const ChangeTrainsetPreset = ({
                                                     value={generateElectricTrainsetAttachmentData.electric_source_workstation_id.toString()}
                                                 >
                                                     <SelectTrigger id="source-workstation">
-                                                        <SelectValue placeholder="Workstation" />
+                                                        <SelectValue
+                                                            placeholder={t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation_placeholder',
+                                                            )}
+                                                        />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" disabled>
-                                                            Pilih Workstation
+                                                            {t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation',
+                                                            )}
                                                         </SelectItem>
                                                         {sourceWorkstations.map(workstation => (
                                                             <SelectItem
@@ -515,10 +607,16 @@ const ChangeTrainsetPreset = ({
                                         </div>
 
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
-                                            <Label className="mb-2">Tujuan Workstation</Label>
+                                            <Label className="mb-2">
+                                                {t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation',
+                                                )}
+                                            </Label>
                                             <Input
                                                 value={destinationWorkstationFilters.search}
-                                                placeholder="Type a command or search..."
+                                                placeholder={t(
+                                                    'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation_search',
+                                                )}
                                                 onInput={e =>
                                                     setDestinationWorkstationFilters({
                                                         ...destinationWorkstationFilters,
@@ -541,11 +639,17 @@ const ChangeTrainsetPreset = ({
                                                     value={generateElectricTrainsetAttachmentData.electric_destination_workstation_id.toString()}
                                                 >
                                                     <SelectTrigger id="destination-workstation">
-                                                        <SelectValue placeholder="Workstation" />
+                                                        <SelectValue
+                                                            placeholder={t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation_placeholder',
+                                                            )}
+                                                        />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         <SelectItem value="0" disabled>
-                                                            Pilih Workstation
+                                                            {t(
+                                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.workstation',
+                                                            )}
                                                         </SelectItem>
                                                         {destinationWorkstations.map(workstation => (
                                                             <SelectItem
@@ -565,10 +669,12 @@ const ChangeTrainsetPreset = ({
                                         {loading ? (
                                             <>
                                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                                Proses
+                                                {t('action.loading')}
                                             </>
                                         ) : (
-                                            'Generate KPM Elektrik'
+                                            t(
+                                                'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.buttons.generate_electric_kpm',
+                                            )
                                         )}
                                     </Button>
                                 </form>

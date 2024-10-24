@@ -9,6 +9,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
     const { data, setData } = useForm({
@@ -17,26 +18,28 @@ export default function () {
 
     const { loading } = useLoading();
 
+    const { t } = useLaravelReactI18n();
+
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
 
         await workDayService.create(data);
         router.visit(route(`${ROUTES.WORK_DAYS}.index`));
-        void useSuccessToast('WorkDay created successfully');
+        void useSuccessToast(t('pages.work_day.create.messages.created'));
     });
 
     return (
         <>
-            <Head title="Tambah WorkDay" />
+            <Head title={t('pages.work_day.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah WorkDay</h1>
+                        <h1 className="text-page-header my-4">{t('pages.work_day.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="type" value="Tipe" />
+                            <InputLabel htmlFor="type" value={t('pages.work_day.create.fields.name')} />
                             <Input
                                 id="type"
                                 type="text"
@@ -49,7 +52,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Tambah WorkDay
+                            {t('pages.work_day.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>
