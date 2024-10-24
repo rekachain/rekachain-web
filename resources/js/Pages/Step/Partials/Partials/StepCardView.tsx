@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { StepResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function StepCardView({
     stepResponse,
@@ -16,6 +17,7 @@ export default function StepCardView({
     handleStepDeletion: (id: number) => void;
     // auth: any; // sementara
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             {stepResponse?.data.map(step => (
@@ -29,14 +31,22 @@ export default function StepCardView({
                         <div className="flex w-full justify-between items-scenter">
                             <h4 className="font-bold text-base">{step.name}</h4>
                             <div className="text-center">
-                                <h4 className="font-bold text-base">Proses : {step.name}</h4>
+                                <h4 className="font-bold text-base">
+                                    {t('pages.step.partials.partials.step_card.headers.process', {
+                                        process: step.process,
+                                    })}
+                                </h4>
                                 {/* <h5 className="font-bold text-md items-center ">
                                     Divisi:
                                     {step.division.name}
                                 </h5> */}
                             </div>
                         </div>
-                        <p className="text-sm">Estimasi Manufaktur : {step.estimated_time}</p>
+                        <p className="text-sm">
+                            {t('pages.step.partials.partials.step_card.headers.estimated_manufacturing_time', {
+                                estimated_manufacturing_time: step.estimated_time,
+                            })}
+                        </p>
 
                         {/* <h5 className="font-bold text-sm ">Workshop : {step.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {step.location}</h5> */}
@@ -45,10 +55,10 @@ export default function StepCardView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.STEPS}.edit`, step.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleStepDeletion(step.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>

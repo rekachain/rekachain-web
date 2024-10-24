@@ -82,8 +82,6 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER = 'api.detail.worker.panels.get.all.request.worker';
 
-    case API_DETAIL_WORKER_PANEL_STORE_AND_CHECK = 'api.detail.worker.panel.store.and.check';
-
     case API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER = 'api.detail.worker.panel.request.assign.worker';
 
     case API_DETAIL_WORKER_PANELS_BY_STATUS = 'api.detail.worker.panels.by.status';
@@ -116,7 +114,7 @@ enum IntentEnum: string
 
     case API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE = 'api.detail.worker.trainset.accept.work.with.image';
 
-    case API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL = 'api.serial.panel.update.assign.worker.panel';
+    case API_SERIAL_PANEL_UPDATE_WORKER_PANEL = 'api.serial.panel.update.worker.panel';
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
 

@@ -5,6 +5,7 @@ namespace App\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
@@ -13,7 +14,8 @@ use App\Support\Interfaces\Repositories\UserRepositoryInterface;
 use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 
-class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttachmentServiceInterface {
+class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttachmentServiceInterface
+{
     public function __construct(
         protected DetailWorkerTrainsetRepositoryInterface $detailWorkerTrainsetRepository,
         protected ProgressStepRepositoryInterface $progressStepRepository,
@@ -23,11 +25,13 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     ) {
         parent::__construct();
     }
-    protected function getRepositoryClass(): string {
+    protected function getRepositoryClass(): string
+    {
         return TrainsetAttachmentRepositoryInterface::class;
     }
 
-    public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data) {
+    public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data)
+    {
         $userId = $data['worker_id'] ?? auth()->user()->id;
         $user = $this->userRepositoryInterface->find($userId);
         $trainsetAttachmentComponent = $this->trainsetAttachmentComponentRepository->findFirst(['carriage_panel_component_id' => $data['carriage_panel_component_id'], 'trainset_attachment_id' => $trainsetAttachment->id]);
@@ -46,30 +50,31 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     }
 
     public function confirmKPM(TrainsetAttachment $trainsetAttachment, $request)
-    {   
-        if ($request['status'] == TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value){
+    {
+        if ($request['status'] == TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value) {
             $trainsetAttachment->status = TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value;
-        
+
             $trainsetAttachment->save();
 
             return $trainsetAttachment;
-        }else if ($request['status'] == TrainsetAttachmentStatusEnum::PENDING->value) {
+        } else if ($request['status'] == TrainsetAttachmentStatusEnum::PENDING->value) {
             $note = $request['note'];
-            
+
             $trainsetAttachment->status = TrainsetAttachmentStatusEnum::PENDING->value;
-            
+
             $trainsetAttachment->attachment_notes()->create(
                 [
                     "note" => $note ? $note : "",
                     "status" => TrainsetAttachmentStatusEnum::PENDING->value,
                 ]
             );
+            $trainsetAttachment->save();
             return $trainsetAttachment;
         }
-        
     }
 
-    public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data) {
+    public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data)
+    {
         $trainsetAttachment->supervisor_id = $data['supervisor_id'] ?? auth()->user()->id;
         $attachmentHandler = [
             'handles' => TrainsetAttachmentHandlerHandlesEnum::RECEIVE->value,

@@ -56,6 +56,7 @@
         "react-filepond": "^7.1.2",
         "react-responsive": "^10.0.0",
         "react-simple-star-rating": "^5.1.7",
+        "recharts": "^2.13.0",
         "spinkit": "^2.0.1",
         "sweetalert2": "^11.12.3",
         "sweetalert2-react-content": "^5.0.7",

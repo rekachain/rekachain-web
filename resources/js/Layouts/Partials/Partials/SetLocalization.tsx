@@ -9,14 +9,18 @@ import { Button } from '@/Components/UI/button';
 import { RiTranslate2 } from '@remixicon/react';
 import { STYLING } from '@/Support/Constants/styling';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useLocalStorage } from '@uidotdev/usehooks';
+import { useEffect } from 'react';
 
 export const SetLocalization = () => {
     const { t, setLocale } = useLaravelReactI18n();
+    const [persistedLocale, setPersistedLocale] = useLocalStorage('locale', 'en');
 
-    const changeLocale = (locale: string) => {
-        setLocale(locale);
-        window.axios.defaults.headers['Accept-Language'] = locale;
-    };
+    useEffect(() => {
+        setLocale(persistedLocale);
+        window.axios.defaults.headers['Accept-Language'] = persistedLocale;
+    }, [persistedLocale, setPersistedLocale]);
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -26,8 +30,8 @@ export const SetLocalization = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>{t('components.navbar.localization.title')}</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => changeLocale('en')}>English</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLocale('id')}>Indonesia</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setPersistedLocale('en')}>English</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setPersistedLocale('id')}>Indonesia</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

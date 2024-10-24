@@ -9,8 +9,10 @@ use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateDetailWorkerTrainsetRequest extends FormRequest {
-    public function rules(): array {
+class UpdateDetailWorkerTrainsetRequest extends FormRequest
+{
+    public function rules(): array
+    {
         $intent = $this->get('intent');
         switch ($intent){
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
@@ -20,11 +22,10 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
                 ];
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
-                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
-                    'image_path' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ]; 
+                    'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ];
         }
-        
+
         return [
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'trainset_attachment_id' => 'nullable|exists:trainset_attachments,id',
@@ -37,7 +38,8 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
         ];
     }
 
-    public function after() {
+    public function after()
+    {
         return [
             function ($validator) {
                 if ($this->get('acceptance_status') && !Auth::user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {

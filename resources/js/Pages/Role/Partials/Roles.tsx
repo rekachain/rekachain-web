@@ -8,8 +8,10 @@ import RoleCardView from './Partials/RoleCardView';
 import RoleTableView from './Partials/RoleTableView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [roleResponse, setRoleResponse] = useState<PaginateResponse<RoleResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -29,8 +31,8 @@ export default function () {
     const handleRoleResourceDeletion = withLoading(async (id: number) => {
         await roleService.delete(id);
         await syncRoleResources();
-        void useSuccessToast('Role deleted successfully');
-    });
+        void useSuccessToast(t('pages.role.partials.roles.messages.deleted'));
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });

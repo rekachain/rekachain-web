@@ -6,8 +6,10 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TrainsetAttachmentResource extends JsonResource {
-    public function toArray(Request $request): array {
+class TrainsetAttachmentResource extends JsonResource
+{
+    public function toArray(Request $request): array
+    {
         $intent = $request->get('intent');
 
         switch ($intent) {
@@ -57,6 +59,7 @@ class TrainsetAttachmentResource extends JsonResource {
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
+                    'id' => $this->id,
                     'attachment_number' => $this->attachment_number,
                     'source_workstation' => WorkstationResource::make($this->source_workstation()->with('workshop', 'division')->first()),
                     'destination_workstation' => WorkstationResource::make($this->destination_workstation()->with('workshop', 'division')->first()),
@@ -92,8 +95,8 @@ class TrainsetAttachmentResource extends JsonResource {
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components'=>['carriage_panel_component'=>['component_materials']]]);
-                
+                $trainsetAttachment = $this->load(['trainset_attachment_components' => ['carriage_panel_component' => ['component_materials']]]);
+
                 $materials = collect();
                 $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use (&$materials, $trainsetAttachment) {
                     $trainsetAttachmentComponent->carriage_panel_component->component_materials->map(function ($componentMaterial) use (&$materials, $trainsetAttachmentComponent) {

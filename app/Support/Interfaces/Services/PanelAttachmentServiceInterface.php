@@ -12,4 +12,6 @@ interface PanelAttachmentServiceInterface extends BaseCrudServiceInterface
     public function rejectKPM($panelAttachment, $request);
     
     public function assignSpvAndReceiver(PanelAttachment $panelAttachment, array $data);
+
+    public function showGraph();
 }

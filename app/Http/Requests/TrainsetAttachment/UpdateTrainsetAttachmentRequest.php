@@ -55,7 +55,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 return [
                     'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
-                    'note' => ['nullable', 'string', 'max:255'] 
+                    'note' => ['nullable', 'string', 'max:255']
                 ];
         }
         return [

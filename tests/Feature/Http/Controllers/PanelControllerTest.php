@@ -1,16 +1,17 @@
 <?php
 
-use App\Models\Panel;
 use App\Models\User;
+use App\Models\Panel;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\Panel\PanelsTemplateExport;
 
 test('index method returns paginated panels', function () {
     $user = User::factory()->create();
-    createPanel();
+    $this->dummy->createPanel();
 
-    $response = $this->actingAs($user)->getJson('/panels?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/panels?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
@@ -28,7 +29,7 @@ test('create method returns create page', function () {
 
 test('store method creates new panel', function () {
     $user = User::factory()->create();
-    $progress = createProgress();
+    $progress = $this->dummy->createProgress();
     $panelData = [
         'name' => 'Test name',
         'description' => 'Test description',
@@ -43,22 +44,24 @@ test('store method creates new panel', function () {
 });
 
 // IMPLEMENTED IMPORT PANEL
-// test('store method imports panels', function () {
-//     Storage::fake('local');
-//     $user = User::factory()->create();
-//     $file = UploadedFile::fake()->create('panels.xlsx');
+test('store method imports panels', function () {
+    Storage::fake('local');
+    $user = User::factory()->create();
 
-//     $response = $this->actingAs($user)->postJson('/panels', [
-//         'intent' => IntentEnum::WEB_PANEL_IMPORT_PANEL->value,
-//         'import_file' => $file,
-//     ]);
+    $file = Excel::raw(new PanelsTemplateExport, \Maatwebsite\Excel\Excel::XLSX);
+    $uploadedFile = UploadedFile::fake()->createWithContent('panels.xlsx', $file);
 
-//     $response->assertStatus(204);
-// });
+    $response = $this->actingAs($user)->postJson('/panels', [
+        'intent' => IntentEnum::WEB_PANEL_IMPORT_PANEL->value,
+        'import_file' => $uploadedFile,
+    ]);
+
+    $response->assertStatus(204);
+});
 
 test('show method returns panel details', function () {
     $user = User::factory()->create();
-    $panel = createPanel();
+    $panel = $this->dummy->createPanel();
 
     $response = $this->actingAs($user)->getJson("/panels/{$panel->id}");
 
@@ -73,7 +76,7 @@ test('show method returns panel details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->create();
-    $panel = createPanel();
+    $panel = $this->dummy->createPanel();
 
     $response = $this->actingAs($user)->get("/panels/{$panel->id}/edit");
 
@@ -83,8 +86,8 @@ test('edit method returns edit page', function () {
 
 test('update method updates panel', function () {
     $user = User::factory()->create();
-    $panel = createPanel();
-    $newProgress = createProgress();
+    $panel = $this->dummy->createPanel();
+    $newProgress = $this->dummy->createProgress();
     $updatedData = [
         'name' => 'Updated name',
         'description' => 'Updated description',
@@ -100,7 +103,7 @@ test('update method updates panel', function () {
 
 test('destroy method deletes panel', function () {
     $user = User::factory()->create();
-    $panel = createPanel();
+    $panel = $this->dummy->createPanel();
 
     $response = $this->actingAs($user)->deleteJson("/panels/{$panel->id}");
 

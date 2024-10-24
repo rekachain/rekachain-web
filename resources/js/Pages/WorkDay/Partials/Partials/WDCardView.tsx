@@ -35,14 +35,11 @@ export default function WDCardView({
                             </div>
 
                             <h5 className="text-sm">
-                                {t('pages.work_days.index.partials.work_days.partials.work_day_card.headers.name')} :{' '}
+                                {t('pages.work_day.partials.partials.work_day_card.headers.name')} :{' '}
                                 {workDay.start_time}
                             </h5>
                             <h5 className="  text-sm ">
-                                {t(
-                                    'pages.work_days.index.partials.work_days.partials.work_day_card.headers.break_time',
-                                )}
-                                :
+                                {t('pages.work_day.partials.partials.work_day_card.headers.break_time')}:
                                 {workDay.work_day_times
                                     .filter(time => time.status === WorkDayTimeEnum.BREAK)
                                     .map(time => (
@@ -52,7 +49,7 @@ export default function WDCardView({
                                     ))}
                             </h5>
                             <h5 className="  text-sm ">
-                                {t('pages.work_days.index.partials.work_days.partials.work_day_card.headers.end_date')}:{' '}
+                                {t('pages.work_day.partials.partials.work_day_card.headers.end_date')}:{' '}
                                 {workDay.end_time}
                             </h5>
 

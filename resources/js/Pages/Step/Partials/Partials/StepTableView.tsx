@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function StepTableView({
     stepResponse,
@@ -15,14 +16,17 @@ export default function StepTableView({
     handleStepDeletion: (id: number) => void;
     // auth: any; // sementara
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Proses</TableHead>
-                        <TableHead>Estimasi Manufaktur (Menit)</TableHead>
+                        <TableHead>{t('pages.step.partials.partials.step_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.step.partials.partials.step_table.headers.process')}</TableHead>
+                        <TableHead>
+                            {t('pages.step.partials.partials.step_table.headers.estimated_manufacturing_time')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -37,11 +41,11 @@ export default function StepTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.STEPS}.edit`, step.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 {step.can_be_deleted && (
                                     <Button variant="link" onClick={() => handleStepDeletion(step.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
                             </TableCell>

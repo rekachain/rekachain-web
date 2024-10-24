@@ -46,7 +46,7 @@ class SerialPanelAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_completed_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name, 
+                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
                     'step'=>$user->step->name
                 ]
             ));
@@ -54,7 +54,7 @@ class SerialPanelAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_ahead_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name, 
+                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
                 ]
             ));
         }

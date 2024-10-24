@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Support\Enums\RoleEnum;
-use App\Models\DetailWorkerTrainset;
 use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DetailWorkerTrainset\UpdateDetailWorkerTrainsetRequest;
+use App\Models\DetailWorkerTrainset;
 use App\Http\Resources\DetailWorkerTrainsetResource;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
+use App\Http\Requests\DetailWorkerTrainset\StoreDetailWorkerTrainsetRequest;
+use App\Http\Requests\DetailWorkerTrainset\UpdateDetailWorkerTrainsetRequest;
 
 class ApiDetailWorkerTrainsetController extends Controller {
     public function __construct(
@@ -105,7 +106,7 @@ class ApiDetailWorkerTrainsetController extends Controller {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {
+    public function store(StoreDetailWorkerTrainsetRequest $request) {
         //
     }
 
@@ -129,13 +130,18 @@ class ApiDetailWorkerTrainsetController extends Controller {
     public function update(DetailWorkerTrainset $detailWorkerTrainset, UpdateDetailWorkerTrainsetRequest $request) {
         $intent = request()->get('intent');
         switch ($intent) {
+            case IntentEnum::API_DETAIL_WORKER_TRAINSET_ASSIGN_REQUEST_WORKER->value:
+                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+                    abort(403, 'Unauthorized');
+                }
+                return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset, $request);
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, 'Unauthorized');
                 }
                 return DetailWorkerTrainsetResource::make($this->detailWorkerTrainsetService->rejectWork($detailWorkerTrainset, $request->validated())->load('failed_component_manufactures'));
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value: 
-                if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK])) {
+                if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK,RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
                     abort(403, 'Unauthorized');
                 }
                 return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());

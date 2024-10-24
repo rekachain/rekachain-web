@@ -19,4 +19,5 @@ return [
     'filter' => 'Filter',
     'clear' => 'Clear',
     'select' => 'Select',
+    'loading' => 'Loading...',
 ];

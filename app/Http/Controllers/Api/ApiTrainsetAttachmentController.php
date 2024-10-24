@@ -116,7 +116,7 @@ class ApiTrainsetAttachmentController extends ApiController {
      */
     public function show(TrainsetAttachment $trainsetAttachment, Request $request) {
         $intent = request()->get('intent');
-        
+
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
@@ -153,7 +153,7 @@ class ApiTrainsetAttachmentController extends ApiController {
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
                     abort(403, 'Unauthorized');
                 }
-                return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());    
+                return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
