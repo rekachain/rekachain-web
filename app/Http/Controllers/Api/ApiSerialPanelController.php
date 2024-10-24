@@ -52,10 +52,9 @@ class ApiSerialPanelController extends Controller {
                 if (!$request->user()->hasRole([RoleEnum::QC_ASSEMBLY, RoleEnum::SUPERVISOR_ASSEMBLY])) {
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::QC_ASSEMBLY->value . ' / ' . RoleEnum::SUPERVISOR_ASSEMBLY->value]));
                 }
-
-                return $this->serialPanelService->rejectPanel($serialPanel, $request);
-            case IntentEnum::API_SERIAL_PANEL_UPDATE_WORKER_PANEL->value:
-                return $this->serialPanelService->assignWorker($serialPanel, $request->validated());
+                return $this->serialPanelService->update($serialPanel, $request->validated());    
+            case IntentEnum::API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL->value:
+                return DetailWorkerPanelResource::make($this->serialPanelService->assignWorker($serialPanel, $request->validated()));
             default:
                 // checkPermissions(PermissionEnum::SERIAL_PANEL_UPDATE);
                 if (!$request->user()->hasRole([RoleEnum::QC_ASSEMBLY, RoleEnum::SUPERVISOR_ASSEMBLY])) {
