@@ -1061,15 +1061,17 @@ return [
                             'carriages' => 'Carriages',
                         ],
                     ],
-                    'trainset_name' => [
-                        'headers' => [
-                            'name' => 'Name',
-                        ],
-                        'fields' => [
-                            'trainset_error' => 'Trainset number must not be empty',
-                        ],
-                        'buttons' => [
-                            'submit' => 'Save',
+                    'components' => [
+                        'trainset_name' => [
+                            'headers' => [
+                                'name' => 'Name',
+                            ],
+                            'fields' => [
+                                'trainset_error' => 'Trainset number must not be empty',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Save',
+                            ],
                         ],
                     ],
                 ],

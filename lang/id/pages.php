@@ -1043,15 +1043,17 @@ return [
                             'carriages' => 'Kereta',
                         ],
                     ],
-                    'trainset_name' => [
-                        'headers' => [
-                            'name' => 'Nama',
-                        ],
-                        'fields' => [
-                            'trainset_error' => 'Nomor trainset tidak boleh kosong',
-                        ],
-                        'buttons' => [
-                            'submit' => 'Simpan',
+                    'components' => [
+                        'trainset_name' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                            ],
+                            'fields' => [
+                                'trainset_error' => 'Nomor trainset tidak boleh kosong',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Simpan',
+                            ],
                         ],
                     ],
                 ],

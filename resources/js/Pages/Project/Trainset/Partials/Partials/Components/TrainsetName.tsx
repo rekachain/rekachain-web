@@ -1,5 +1,3 @@
-// TODO: Should be in Components directory
-
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Button } from '@/Components/UI/button';
 import { PencilLine } from 'lucide-react';
@@ -46,7 +44,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                             onChange={e => setData('trainsetName', e.target.value)}
                         />
                         <span className="mt-2 text-sm hidden text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                            {t('pages.project.trainset.partials.partials.trainset_name.trainset_error')}
+                            {t('pages.project.trainset.partials.partials.components.trainset_name.trainset_error')}
                         </span>
                     </div>
                     <Button
@@ -56,7 +54,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                     >
                         {loading
                             ? t('action.loading')
-                            : t('pages.project.trainset.partials.partials.trainset_name.buttons.submit')}
+                            : t('pages.project.trainset.partials.partials.components.trainset_name.buttons.submit')}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
                         {t('action.cancel')}
