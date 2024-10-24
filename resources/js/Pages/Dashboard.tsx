@@ -4,15 +4,19 @@ import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
-
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    LabelList,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    XAxis,
+    YAxis,
+} from 'recharts';
 import { TrendingUp } from 'lucide-react';
-import { Pie, PieChart } from 'recharts';
-
-// import { TrendingUp } from 'lucide-react';
-import { Line, LineChart } from 'recharts';
-
-import { YAxis } from 'recharts';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
 // import { PageProps } from '@/Types';
