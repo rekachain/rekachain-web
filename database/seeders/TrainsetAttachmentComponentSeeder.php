@@ -13,7 +13,7 @@ class TrainsetAttachmentComponentSeeder extends Seeder
      */
     public function run(): void
     {
-        $trainsetAttachmentTypes = ['mekanik'=>'1', 'elektrik'=>'2'];
+        $trainsetAttachmentTypes = ['mechanic'=>'1', 'electric'=>'2'];
         TrainsetAttachment::all()->each(function ($trainsetAttachment) use ($trainsetAttachmentTypes) {
             $trainsetAttachment->trainset->carriage_trainsets->each(function ($carriageTrainset) use ($trainsetAttachment, $trainsetAttachmentTypes) {
                 $carriageTrainset->carriage_panels->each(function ($carriagePanel) use ($trainsetAttachment, $carriageTrainset, $trainsetAttachmentTypes) {

@@ -7,6 +7,6 @@ use App\Traits\Enums\Arrayable;
 enum TrainsetAttachmentTypeEnum: string {
     use Arrayable;
 
-    case MEKANIK = 'mekanik';
-    case ELEKTRIK = 'elektrik';
+    case MECHANIC = 'mechanic';
+    case ELECTRIC = 'electric';
 }

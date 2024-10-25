@@ -111,7 +111,8 @@ class Dummy {
     }
 
     public function createComponent(): Component {
-        $component = Component::firstOrCreate(['name' => 'Test Component']);
+        $progress = $this->createProgress();
+        $component = Component::firstOrCreate(['name' => 'Test Component', 'progress_id' => $progress->id]);
 
         return $component;
     }

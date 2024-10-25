@@ -116,7 +116,7 @@ class ApiTrainsetAttachmentController extends ApiController {
      */
     public function show(TrainsetAttachment $trainsetAttachment, Request $request) {
         $intent = request()->get('intent');
-        
+
         switch ($intent) {
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
@@ -147,23 +147,20 @@ class ApiTrainsetAttachmentController extends ApiController {
         $intent = request()->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
-                if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
-                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
-                }
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 return DetailWorkerTrainsetResource::make($this->trainsetAttachmentService->assignWorker($trainsetAttachment, $request->validated()));
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
                     abort(403, 'Unauthorized');
                 }
-                return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());    
+                return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
             default:
-                return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated()));
         }
     }
 

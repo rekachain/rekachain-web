@@ -19,8 +19,8 @@ class WorkstationFactory extends Factory
     public function definition(): array
     {
         return [
-            'workshop_id' => Workshop::factory(),
-            'division_id' => Division::factory(),
+            'workshop_id' => Workshop::inRandomOrder()->first()->id ?? Workshop::factory(),
+            'division_id' => Division::inRandomOrder()->first()->id ?? Division::factory(),
             'name' => fake()->name(),
             'location' => fake()->address(),
         ];

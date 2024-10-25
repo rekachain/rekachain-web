@@ -3,12 +3,11 @@
 namespace App\Rules\SerialPanel;
 
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
-use App\Support\Enums\RoleEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class SerialPanelAssignWorkerStepValidation implements ValidationRule {
+class SerialPanelAssignWorkerValidation implements ValidationRule {
     /**
      * Run the validation rule.
      *
@@ -39,7 +38,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
             return;
         }
 
-        $lastWorkerPanel = $serialPanel->detail_worker_panels()->orderBy('id', 'desc')->first();
+        $lastWorkerPanel = $serialPanel->detail_worker_panels()->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->first();
         $lastKey = array_search($lastWorkerPanel?->progress_step->step_id ?? 0, $carriagePanelProgressStepIds);
         $currentKey = array_search($user->step->id, $carriagePanelProgressStepIds);
         $lastWorkerPanelCompleted = $lastWorkerPanel ? $lastWorkerPanel->work_status->value === DetailWorkerPanelWorkStatusEnum::COMPLETED->value : false;
@@ -47,7 +46,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_completed_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name, 
+                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
                     'step'=>$user->step->name
                 ]
             ));
@@ -55,7 +54,7 @@ class SerialPanelAssignWorkerStepValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_ahead_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name, 
+                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
                 ]
             ));
         }

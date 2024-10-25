@@ -183,6 +183,8 @@ class ApiDetailWorkerPanelController extends Controller {
                 }
 
                 return $this->detailWorkerPanelService->updateAndAcceptWorkWithImage($detailWorkerPanel, $request->validated());
+            default:
+                return DetailWorkerPanelResource::make($this->detailWorkerPanelService->update($detailWorkerPanel, $request->validated()));
         }    
         
     }

@@ -39,11 +39,11 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             return;
         }
 
-        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('updated_at', 'desc')->first();
+        $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->orderBy('updated_at', 'desc')->orderBy('id', 'desc')->first();
         $lastWorkerIndex = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
         $currentWorkerIndex = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;
-        
+
         //check if last work is completed but is not fulfilled yet
         if (array_key_last($carriagePanelComponentProgressStepIds) === $lastWorkerIndex && $lastWorkerTrainsetCompleted) {
             $lastWorkerIndex = -1;
@@ -52,7 +52,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_completed_exception',
                 [
-                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name, 
+                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
                     'step'=>$user->step->name
                 ]
             ));
@@ -60,7 +60,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_ahead_exception',
                 [
-                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name, 
+                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
                 ]
             ));
         }

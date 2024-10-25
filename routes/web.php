@@ -27,8 +27,8 @@ use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\WorkDayTimeController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
+use App\Models\PanelAttachment;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,7 +50,8 @@ Route::redirect('/', 'dashboard');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::middleware('auth')->group(function () {
-    Route::inertia('/dashboard', 'Dashboard')->middleware(['verified'])->name('dashboard');
+    Route::get('/chart', [PanelAttachmentController::class, 'index']);
+    Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
