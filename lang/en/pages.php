@@ -689,49 +689,11 @@ return [
             ],
         ],
     ],
-    'panels' => [
+    'panel' => [
         'index' => [
             'title' => 'Panel',
             'buttons' => [
                 'create' => 'Create Panel',
-            ],
-            'partials' => [
-                'panels' => [
-                    'messages' => [
-                        'deleted' => 'Panel deleted successfully!',
-                    ],
-                    'partials' => [
-                        'panels_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'description' => 'Description',
-                            ],
-                        ],
-                        'panels_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'description' => 'Description: :description',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Import Panel',
-                    'description' => 'Import Panel from Excel file',
-                    'fields' => [
-                        'download_template' => 'Download Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Import Panel',
-                        'download_template' => 'Download',
-                        'submit' => 'Import Panel',
-                        'processing' => 'Processing...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Panel imported successfully!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -758,6 +720,49 @@ return [
             ],
             'messages' => [
                 'updated' => 'Panel updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'panels' => [
+                'messages' => [
+                    'deleted' => 'Panel deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'title' => 'Import Panel',
+                'description' => 'Import Panel from Excel file',
+                'messages' => [
+                    'imported' => 'Panel imported successfully!',
+                ],
+                'buttons' => [
+                    'import' => 'Import Panel',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Panel',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Panel',
+                        'processing' => 'Processing...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'panel_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                    ],
+                ],
+                'panel_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'description' => 'Description: :description',
+                    ],
+                ],
             ],
         ],
     ],
@@ -1056,15 +1061,17 @@ return [
                             'carriages' => 'Carriages',
                         ],
                     ],
-                    'trainset_name' => [
-                        'headers' => [
-                            'name' => 'Name',
-                        ],
-                        'fields' => [
-                            'trainset_error' => 'Trainset number must not be empty',
-                        ],
-                        'buttons' => [
-                            'submit' => 'Save',
+                    'components' => [
+                        'trainset_name' => [
+                            'headers' => [
+                                'name' => 'Name',
+                            ],
+                            'fields' => [
+                                'trainset_error' => 'Trainset number must not be empty',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Save',
+                            ],
                         ],
                     ],
                 ],

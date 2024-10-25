@@ -30,7 +30,7 @@ export default function () {
     const handlePanelDeletion = withLoading(async (id: number) => {
         await panelService.delete(id);
         await syncPanels();
-        void useSuccessToast(t('pages.panels.index.partials.panels.messages.deleted'));
+        void useSuccessToast(t('pages.panel.partials.panels.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {

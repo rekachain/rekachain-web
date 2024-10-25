@@ -22,7 +22,7 @@ export default function CarPanelCardView({
         <div>
             <>
                 {carriageTrainset?.carriage_panels?.map(carriage_panel => (
-                    <div>
+                    <div key={carriage_panel.id}>
                         <AnimateIn
                             from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"

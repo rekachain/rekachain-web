@@ -25,21 +25,21 @@ export default function () {
 
         await panelService.create(data);
         router.visit(route(`${ROUTES.PANELS}.index`));
-        void useSuccessToast(t('pages.panels.create.messages.created'));
+        void useSuccessToast(t('pages.panel.create.messages.created'));
     });
 
     return (
         <>
-            <Head title={t('pages.panels.create.title')} />
+            <Head title={t('pages.panel.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.panels.create.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.panel.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.panels.create.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.panel.create.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -52,7 +52,7 @@ export default function () {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.panels.create.fields.description')} />
+                            <InputLabel htmlFor="description" value={t('pages.panel.create.fields.description')} />
                             <Input
                                 id="description"
                                 type="text"
@@ -65,7 +65,7 @@ export default function () {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.panels.create.buttons.submit')}
+                            {t('pages.panel.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>

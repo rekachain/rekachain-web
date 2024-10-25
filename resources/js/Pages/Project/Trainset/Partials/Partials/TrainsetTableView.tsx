@@ -1,7 +1,7 @@
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import TrainsetName from './TrainsetName';
+import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/Components/TrainsetName';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
