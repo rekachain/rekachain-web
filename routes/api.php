@@ -19,8 +19,8 @@ use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiWorkDayController;
 use App\Http\Controllers\Api\ApiWorkDayTimeController;
 use App\Http\Controllers\FeedbackController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -33,6 +33,10 @@ use Illuminate\Support\Facades\Route;
 */
 Route::group(['as' => 'api.'], function () {
     Route::post('login', [ApiAuthController::class, 'login'])->name('login');
+    Route::post('upload-project', function (Request $request) {
+        logger($request->all());
+        return response('ok', 200);
+    });
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
     Route::group(['middleware' => 'auth:sanctum'], function () {

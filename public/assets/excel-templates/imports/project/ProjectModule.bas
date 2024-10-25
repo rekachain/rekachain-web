@@ -1,0 +1,111 @@
+Attribute VB_Name = "ProjectModule"
+Sub createTrainsets()
+    Dim wsProyek As Worksheet
+    Dim wsTrainset As Worksheet
+    Dim wsPreset As Worksheet
+    Dim totalTrainset As Long
+    Dim i As Long
+    Dim lastTsNumRow As Long
+    Dim validationRange As Range
+
+    ' Set the worksheets
+    Set wsProyek = ThisWorkbook.Sheets("Proyek") ' Change the sheet name as needed
+    Set wsTrainset = ThisWorkbook.Sheets("Trainset")
+    Set wsPreset = ThisWorkbook.Sheets("Preset Trainset")
+
+    ' Get the end number from cell B6
+    totalTrainset = wsProyek.Range("B6").Value
+
+    ' Find the last row with data in column A
+    lastTsNumRow = wsTrainset.Cells(wsTrainset.Rows.Count, 1).End(xlUp).Row
+
+    ' Clear content in columns A to G starting from the last row
+    If lastTsNumRow >= 4 Then
+        wsTrainset.Range("A4:G" & lastTsNumRow).ClearContents
+        wsTrainset.Range("A4:G" & lastTsNumRow).Validation.Delete
+    End If
+
+    ' Loop to create rows with numbers starting at row 4
+    For i = 1 To totalTrainset
+        wsTrainset.Cells(3 + i, 1).Value = i
+        wsTrainset.Cells(3 + i, 2).Value = "TS" & i
+
+        ' Add data validation to the next cell
+        Set validationRange = wsPreset.Range("B4:B" & wsPreset.Cells(wsPreset.Rows.Count, "B").End(xlUp).Row)
+        With wsTrainset.Cells(3 + i, 3).Validation
+            .Delete ' Remove any existing validation
+            .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+                xlBetween, Formula1:="='Preset Trainset'!" & validationRange.Address
+            .IgnoreBlank = True
+            .InCellDropdown = True
+            .ShowInput = True
+            .ShowError = True
+        End With
+
+        ' Select the first item from the list
+        If validationRange.Cells.Count > 0 Then
+            wsTrainset.Cells(3 + i, 3).Value = validationRange.Cells(1, 1).Value
+        End If
+    Next i
+End Sub
+
+' draft
+Sub SaveAndUpload()
+    Dim wb As Workbook
+    Dim newWb As Workbook
+    Dim newFilePath As String
+    Dim xmlHttp As Object
+    Dim url As String
+    Dim boundary As String
+    Dim fileData As String
+    Dim response As String
+    Dim outputFolderPath As String
+
+    Dim confirmed As VbMsgBoxResult
+    confirmed = MsgBox("This will upload the file to the server. Are you sure?", vbQuestion + vbYesNo, "Confirmation")
+    If confirmed = vbNo Then
+        Exit Sub
+    End If
+
+    ' Set your URL here
+    url = "http://127.0.0.1:8000/api/upload-project"
+
+    ' Set the workbook to the current workbook
+    Set wb = ThisWorkbook
+
+    newFilePath = wb.Path & "\" & Replace(wb.Name, ".xlsm", ".xlsx")
+    ' Save the workbook as .xlsx format
+    Application.DisplayAlerts = False
+    wb.SaveAs newFilePath, FileFormat:=xlOpenXMLWorkbook
+    ' wb.Close
+    Application.DisplayAlerts = True
+
+
+    ' Create an XML HTTP Request object
+    Set xmlHttp = CreateObject("MSXML2.XMLHTTP")
+    xmlHttp.Open "POST", url, False
+
+    ' Create a boundary for the multipart/form-data
+    boundary = "----WebKitFormBoundary" & Format(Now, "yyyymmddhhnnss")
+
+    ' Create the data to send
+    fileData = "--" & boundary & vbCrLf
+    fileData = fileData & "Content-Disposition: form-data; name=""file""; filename=""" & Dir(newFilePath) & """" & vbCrLf
+    fileData = fileData & "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" & vbCrLf & vbCrLf
+    fileData = fileData & CreateObject("Scripting.FileSystemObject").OpenTextFile(newFilePath, 1).ReadAll
+    fileData = fileData & vbCrLf & "--" & boundary & "--"
+
+    ' Set the request headers
+    xmlHttp.setRequestHeader "Content-Type", "multipart/form-data; boundary=" & boundary
+    xmlHttp.setRequestHeader "Content-Length", Len(fileData)
+
+    ' Send the request
+    xmlHttp.Send fileData
+
+    ' Get the response
+    response = xmlHttp.responseText
+
+    MsgBox "File uploaded successfully. Response: " & response
+    ' Delete the created file
+    ' Kill newFilePath
+End Sub
