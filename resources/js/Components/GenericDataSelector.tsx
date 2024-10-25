@@ -8,17 +8,95 @@ import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/utils';
 
 interface GenericDataSelectorProps<T extends Resource> {
-    id?: string; // ID for the input element
-    fetchData: (filters: { search: string }) => Promise<T[]>; // Function to fetch data based on filters
-    setSelectedData: (id: number | null) => void; // Callback to set selected data in the parent component
-    placeholder?: string; // Placeholder text for search input
-    selectedDataId?: number | null; // ID of the currently selected data
-    renderItem: (item: T) => string; // Function to render an item for display
-    initialSearch?: string; // Initial search term, useful for pre-populating the search input, e.g. when editing
-    labelKey?: keyof T; // Dynamic label key for the entity (e.g., 'name', 'location', 'username')
-    buttonClassName?: string; // Optional class name for the button
-    popoverContentClassName?: string; // Optional class name for the popover content
-    nullable?: boolean; // Whether the selector can be cleared
+    /**
+     * ID for the GenericDataSelector component
+     */
+    id?: string;
+
+    /**
+     * Function to fetch data based on filters
+     * This function should accept an object with the search term
+     *
+     * Usage:
+     * fetchData={(filters) => fetchUsers(filters)}
+     * @param filters
+     */
+    fetchData: (filters: { search: string }) => Promise<T[]>;
+
+    /**
+     * Function to set the selected data
+     * This function should accept the ID of the selected data
+     *
+     * Usage:
+     * setSelectedData={(id) => setData({ ...data, progress_id: id })}
+     * @param id
+     */
+    setSelectedData: (id: number | null) => void;
+
+    /**
+     * Placeholder text for the button
+     * Default is 'Select...'
+     */
+    placeholder?: string;
+
+    /**
+     * ID of the currently selected data
+     * If this is set, the label for the selected data will be displayed in the button
+     */
+    selectedDataId?: number | null;
+
+    /**
+     * Function to render each item in the list
+     * This function should return a string to display in the list
+     *
+     * Usage:
+     * renderItem={(item: UserResource) => `${item.name} - ${item.location}`}
+     * @param item
+     */
+    renderItem: (item: T) => string;
+
+    /**
+     * Initial search term
+     * Useful for pre-populating the search input, e.g. when editing
+     */
+    initialSearch?: string;
+
+    /**
+     * Key to use as the label for each item
+     * Default is 'name'
+     * Can be overridden to use a different key
+     *
+     * Dynamic label key for the entity (e.g., 'name', 'location', 'username')
+     */
+    labelKey?: keyof T;
+
+    /**
+     * Optional class name for the button
+     * Useful for custom styling
+     */
+    buttonClassName?: string;
+
+    /**
+     * Optional class name for the popover content
+     * Useful for custom styling
+     */
+    popoverContentClassName?: string;
+
+    /**
+     * Allow the selection to be cleared
+     * If true, a '- Clear Selection -' option will be displayed
+     */
+    nullable?: boolean;
+
+    /**
+     * Custom label function
+     * This function is called to generate the label for each item in the list
+     *
+     * Usage:
+     * customLabel={(item: UserResource) => `${item.name} - ${item.location}`}
+     * @param item
+     */
+    customLabel?: (item: T) => string;
 }
 
 const GenericDataSelector = <T extends Resource>({
@@ -33,6 +111,7 @@ const GenericDataSelector = <T extends Resource>({
     buttonClassName,
     popoverContentClassName,
     nullable,
+    customLabel,
 }: GenericDataSelectorProps<T>) => {
     const [searchTerm, setSearchTerm] = useState(initialSearch ?? '');
     const debouncedSearchTerm = useDebounce(searchTerm, 500); // Debounce the search input
@@ -67,6 +146,9 @@ const GenericDataSelector = <T extends Resource>({
 
     // Type guard to ensure the value is a string or null
     const getLabel = (item: T): string => {
+        if (customLabel) {
+            return customLabel(item);
+        }
         const value = item[labelKey];
         return typeof value === 'string' ? value : 'Select...';
     };
