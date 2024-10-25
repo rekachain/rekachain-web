@@ -1,17 +1,17 @@
 <?php
 
 test('view all trainsets', function () {
-    createTrainset();
+    $this->dummy->createTrainset();
     actAsSuperAdmin()->get('/api/trainsets')->assertStatus(200);
 });
 
 test('view one trainset', function () {
-    $trainset = createTrainset();
+    $trainset = $this->dummy->createTrainset();
     actAsSuperAdmin()->get('/api/trainsets/' . $trainset->id)->assertStatus(200);
 });
 
 test('store trainset', function () {
-    $project = createProject();
+    $project = $this->dummy->createProject();
     actAsSuperAdmin()->post('/api/trainsets', [
         'name' => 'test',
         'project_id' => $project->id,
@@ -19,7 +19,7 @@ test('store trainset', function () {
 });
 
 test('edit trainset', function () {
-    $trainset = createTrainset();
+    $trainset = $this->dummy->createTrainset();
     actAsSuperAdmin()->put('/api/trainsets/' . $trainset->id, [
         'name' => 'test',
     ])->assertStatus(200);
@@ -32,7 +32,7 @@ test('edit trainset', function () {
 
 // NOT IMPLEMENTED YET
 // test('destroy trainset', function () {
-//     $trainset = createTrainset();
+//     $trainset = $this->dummy->createTrainset();
 //     actAsSuperAdmin()->delete('/api/trainsets/' . $trainset->id)->assertStatus(200);
 
 //     $this->assertDatabaseMissing('trainsets', [

@@ -7,23 +7,25 @@ use App\Models\DetailWorkerPanel;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Tests\Feature\Http\Controllers\Helpers\Dummy;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
+
 beforeEach(function () {
-    createSupervisorAssembly();
-    createWorkerAssembly();
+    $dummy = new Dummy();
+    $dummy->createSupervisorAssembly();
+    $dummy->createWorkerAssembly();
 });
 
 test('index method returns paginated detail-worker-panels', function () {
     $user = User::factory()->superAdmin()->create();
-    createDetailWorkerPanel();
 
-    $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=10');
+    $response = $this->actingAs($user)->getJson('/detail-worker-panels?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
-        ->assertJsonCount(1, 'data');
+        ->assertJsonCount(5, 'data');
 });
 
 // Not ready
@@ -37,10 +39,11 @@ test('index method returns paginated detail-worker-panels', function () {
 // });
 
 test('store method creates new DetailWorkerPanel', function () {
+    $dummy = new Dummy();
     $user = User::factory()->superAdmin()->create();
     $worker = User::factory()->create();
-    $serial_panel = createSerialPanel();
-    $progress_step = createProgressStep();
+    $serial_panel = $dummy->createSerialPanel();
+    $progress_step = $dummy->createProgressStep();
     $DetailWorkerPanelData = [
         'serial_panel_id' => $serial_panel->id,
         'worker_id' => $worker->id,
@@ -72,7 +75,7 @@ test('store method creates new DetailWorkerPanel', function () {
 
 test('show method returns DetailWorkerPanel details', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = createDetailWorkerPanel();
+    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $dummy->createDetailWorkerPanel();
 
     $response = $this->actingAs($user)->getJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 
@@ -91,7 +94,7 @@ test('show method returns DetailWorkerPanel details', function () {
 // Not ready
 // test('edit method returns edit page', function () {
 //     $user = User::factory()->superAdmin()->create();
-//     $DetailWorkerPanel = createDetailWorkerPanel();
+//     $DetailWorkerPanel = $dummy->createDetailWorkerPanel();
 
 //     $response = $this->actingAs($user)->get("/detail-worker-panels/{$DetailWorkerPanel->id}/edit");
 
@@ -101,7 +104,7 @@ test('show method returns DetailWorkerPanel details', function () {
 
 test('update method updates DetailWorkerPanel', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = createDetailWorkerPanel();
+    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $dummy->createDetailWorkerPanel();
     $updatedData = [
         'estimated_time' => 35,
     ];
@@ -115,7 +118,7 @@ test('update method updates DetailWorkerPanel', function () {
 
 test('destroy method deletes DetailWorkerPanel', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = createDetailWorkerPanel();
+    $DetailWorkerPanel = DetailWorkerPanel::inRandomOrder()->first() ?? $dummy->createDetailWorkerPanel();
 
     $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 

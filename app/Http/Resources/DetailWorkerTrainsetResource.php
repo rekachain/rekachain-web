@@ -37,6 +37,7 @@ class DetailWorkerTrainsetResource extends JsonResource {
                     'progress_step' => ProgressStepResource::make($this->whenLoaded('progress_step')),
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
+                    'image_path' => $this->image_path,
                     'acceptance_status' => $this->acceptance_status,
                     // 'created_at' => $this->created_at->toDateTimeString(),
                     // 'updated_at' => $this->updated_at->toDateTimeString(),

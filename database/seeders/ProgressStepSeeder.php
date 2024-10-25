@@ -22,7 +22,7 @@ class ProgressStepSeeder extends Seeder {
 
             $progresses = Progress::all();
             foreach ($progresses as $progress) {
-                if (str_contains(strtolower($progress->name), 'fabrikasi')) {
+                if (str_contains(strtolower($progress->name), 'fabrikasi') || $progress->work_aspect_id == 1) {
                     foreach ($mekanikSteps as $step) {
                         ProgressStep::factory()->create([
                             'progress_id' => $progress->id,
@@ -30,7 +30,7 @@ class ProgressStepSeeder extends Seeder {
                         ]);
                     }
                 }
-                if (str_contains(strtolower($progress->name), 'cutting harness')) {
+                if (str_contains(strtolower($progress->name), 'cutting harness') || $progress->work_aspect_id == 2) {
                     foreach ($elektrikSteps as $step) {
                         ProgressStep::factory()->create([
                             'progress_id' => $progress->id,
@@ -38,7 +38,7 @@ class ProgressStepSeeder extends Seeder {
                         ]);
                     }
                 }
-                if (str_contains(strtolower($progress->name), 'fitting & koneksi')) {
+                if (str_contains(strtolower($progress->name), 'fitting & koneksi') || $progress->work_aspect_id == 3) {
                     foreach ($assemblySteps as $step) {
                         ProgressStep::factory()->create([
                             'progress_id' => $progress->id,

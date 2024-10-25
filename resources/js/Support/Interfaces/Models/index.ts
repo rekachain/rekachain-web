@@ -33,3 +33,5 @@ export * from './ComponentMaterial';
 export * from './WorkAspect';
 export * from './TrainsetAttachmentComponent';
 export * from './FailedComponentManufacture';
+export * from './AttachmentNote';
+export * from './Feedback';
