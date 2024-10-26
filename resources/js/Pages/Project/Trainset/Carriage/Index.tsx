@@ -161,11 +161,8 @@ export default function ({
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
                         <AddCarriage
                             trainset={trainset}
-                            carriageResponse={carriageResponse}
                             handleSyncCarriages={handleSyncCarriages}
-                            carriageFilters={carriageFilters}
                             debouncedCarriageFilters={debouncedCarriageFilters}
-                            setCarriageFilters={setCarriageFilters}
                             handleSyncTrainset={handleSyncTrainset}
                         />
                     )}

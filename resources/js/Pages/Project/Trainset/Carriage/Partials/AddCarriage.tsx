@@ -12,9 +12,8 @@ import { Loader2 } from 'lucide-react';
 import { Separator } from '@/Components/UI/separator';
 import { Input } from '@/Components/UI/input';
 import { Textarea } from '@/Components/UI/textarea';
-import { FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import { FormEvent, memo, useCallback, useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { CarriageResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useLoading } from '@/Contexts/LoadingContext';
@@ -27,24 +26,16 @@ import { carriageService } from '@/Services/carriageService';
 
 const AddCarriage = ({
     trainset,
-    carriageResponse,
     handleSyncCarriages,
-    carriageFilters,
-    setCarriageFilters,
     debouncedCarriageFilters,
     handleSyncTrainset,
 }: {
     trainset: TrainsetResource;
-    carriageResponse: PaginateResponse<CarriageResource>;
     handleSyncCarriages: () => void;
-    carriageFilters: ServiceFilterOptions;
-    setCarriageFilters: (e: ServiceFilterOptions) => void;
     debouncedCarriageFilters: ServiceFilterOptions;
     handleSyncTrainset: () => Promise<void>;
 }) => {
     const { t } = useLaravelReactI18n();
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
 
     const { data, setData } = useForm({
         new_carriage_id: null as number | null,
@@ -56,24 +47,9 @@ const AddCarriage = ({
 
     const { loading } = useLoading();
 
-    const handleChangeSearchCarriageType = async (e: string) => {
-        const search = e;
-        setCarriageFilters({ ...carriageFilters, search });
-        // await handleSyncCarriages();
-    };
-
-    const handleSearchCarriages = (carriageResponse: PaginateResponse<CarriageResource> | undefined) => {
-        let carriage = carriageResponse?.data.find(carriage => `${carriage.type} : ${carriage.description}` === value);
-        return `${carriage?.type} : ${carriage?.description}`;
-    };
-
     const fetchCarriages = useCallback(async (filters: ServiceFilterOptions) => {
         return await carriageService.getAll(filters).then(response => response.data);
     }, []);
-
-    const handleResetAddCarriageSelection = () => {
-        setData('new_carriage_id', 0);
-    };
 
     useEffect(() => {
         void handleSyncCarriages();
