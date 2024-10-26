@@ -21,7 +21,7 @@ class PresetTrainsetController extends Controller {
         $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_READ);
 
         if ($this->ajax()) {
-            $perPage = request()->get('perPage', 'All');
+            $perPage = request()->get('perPage', 5);
 
             if ($perPage !== 'All') {
                 return PresetTrainsetResource::collection($this->presetTrainsetService->getAllPaginated($request->query(), $perPage));

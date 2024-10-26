@@ -17,6 +17,7 @@ import { stepService } from '@/Services/stepService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { FilePond } from 'react-filepond';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function (props: { roles: RoleResource[] }) {
     const { t } = useLaravelReactI18n();
@@ -44,11 +45,11 @@ export default function (props: { roles: RoleResource[] }) {
 
     const { loading } = useLoading();
 
-    const fetchWorkstations = useCallback(async (filters: { search: string }) => {
+    const fetchWorkstations = useCallback(async (filters: ServiceFilterOptions) => {
         return await workstationService.getAll(filters).then(response => response.data);
     }, []);
 
-    const fetchSteps = useCallback(async (filters: { search: string }) => {
+    const fetchSteps = useCallback(async (filters: ServiceFilterOptions) => {
         return await stepService.getAll(filters).then(response => response.data);
     }, []);
 

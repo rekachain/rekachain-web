@@ -1,5 +1,5 @@
-import { Resource } from '../Support/Interfaces/Resources';
-import { PaginateResponse } from '../Support/Interfaces/Others';
+import { Resource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 const DEBUG_MODE = true;

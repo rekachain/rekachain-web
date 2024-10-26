@@ -15,6 +15,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { divisionService } from '@/Services/divisionService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
     const { t } = useLaravelReactI18n();
@@ -54,7 +55,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
         }
     };
 
-    const fetchDivisions = useCallback(async (filters: { search: string }) => {
+    const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
         return await divisionService.getAll(filters).then(response => response.data);
     }, []);
 
