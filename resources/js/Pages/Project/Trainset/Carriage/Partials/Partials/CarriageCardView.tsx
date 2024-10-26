@@ -22,7 +22,7 @@ export default function CarriageCardView({
     return (
         <div>
             {trainset?.carriage_trainsets?.map(carriage_trainset => (
-                <div>
+                <div key={carriage_trainset.id}>
                     <AnimateIn
                         from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
