@@ -36,7 +36,7 @@ export default function ({ component }: { component: ComponentResource }) {
         setProgressResponse(res);
     });
 
-    const fetchProgress = useCallback(async (filters: { search: string }) => {
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
         return await progressService.getAll(filters).then(response => response.data);
     }, []);
 

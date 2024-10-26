@@ -50,7 +50,7 @@ export default function ({ step }: { step: StepResource }) {
         void useSuccessToast(t('pages.step.edit.messages.updated'));
     });
 
-    const fetchProgress = useCallback(async (filters: { search: string }) => {
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
         return await progressService.getAll(filters).then(response => response.data);
     }, []);
 

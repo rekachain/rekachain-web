@@ -6,6 +6,7 @@ import { ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/utils';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 interface GenericDataSelectorProps<T extends Resource> {
     /**
@@ -21,7 +22,7 @@ interface GenericDataSelectorProps<T extends Resource> {
      * fetchData={(filters) => fetchUsers(filters)}
      * @param filters
      */
-    fetchData: (filters: { search: string }) => Promise<T[]>;
+    fetchData: (filters: ServiceFilterOptions) => Promise<T[]>;
 
     /**
      * Function to set the selected data

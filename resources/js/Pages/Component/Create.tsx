@@ -38,7 +38,7 @@ export default function () {
         setProgressResponse(res);
     });
 
-    const fetchProgress = useCallback(async (filters: { search: string }) => {
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
         return await progressService.getAll(filters).then(response => response.data);
     }, []);
 

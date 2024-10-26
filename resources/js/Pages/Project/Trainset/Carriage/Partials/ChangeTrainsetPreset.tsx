@@ -13,7 +13,7 @@ import {
     DialogTrigger,
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { PresetTrainsetResource, TrainsetResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
@@ -26,6 +26,7 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { useLoading } from '@/Contexts/LoadingContext';
 import { ScrollArea } from '@/Components/UI/scroll-area';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 
 const ChangeTrainsetPreset = ({
     trainset,
@@ -41,7 +42,7 @@ const ChangeTrainsetPreset = ({
     const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
     const { data, setData } = useForm({
-        preset_trainset_id: trainset.preset_trainset_id ?? 0,
+        preset_trainset_id: trainset.preset_trainset_id as number | null,
     });
 
     useEffect(() => {
@@ -87,9 +88,12 @@ const ChangeTrainsetPreset = ({
 
     const handleChangePreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
-        await handleSyncTrainset();
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.changed'));
+
+        if (data.preset_trainset_id) {
+            await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
+            await handleSyncTrainset();
+            void useSuccessToast(t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.changed'));
+        }
     });
 
     const handleSearchDestinationWorkstations = (destinationWorkstations: WorkstationResource[] | undefined) => {
@@ -98,6 +102,15 @@ const ChangeTrainsetPreset = ({
         );
         return destinationWorkstation?.name;
     };
+
+    const fetchPresetTrainsets = useCallback(async (filters: ServiceFilterOptions) => {
+        return await presetTrainsetService
+            .getAll({
+                ...filters,
+                relations: 'carriage_presets.carriage',
+            })
+            .then(response => response.data);
+    }, []);
 
     const handleGenerateAssemblyAttachment = withLoading(async e => {
         e.preventDefault();
@@ -161,11 +174,13 @@ const ChangeTrainsetPreset = ({
     });
 
     const handleDeletePresetTrainset = withLoading(async () => {
-        await presetTrainsetService.delete(data.preset_trainset_id);
-        void useSuccessToast(
-            t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.preset_deleted'),
-        );
-        await handleSyncTrainset();
+        if (data.preset_trainset_id) {
+            await presetTrainsetService.delete(data.preset_trainset_id);
+            void useSuccessToast(
+                t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.preset_deleted'),
+            );
+            await handleSyncTrainset();
+        }
     }, true);
 
     useEffect(() => {
@@ -179,43 +194,28 @@ const ChangeTrainsetPreset = ({
         <div className="flex md:flex-row flex-col  gap-2 md:items-end ">
             <form onSubmit={handleChangePreset} className="flex gap-2">
                 <SelectGroup>
-                    <Label htmlFor="preset-trainset">
-                        {t('pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset')}
-                    </Label>
                     <div className="md:flex  w-full md:flex-row gap-2 pt-3 ">
-                        <Select
-                            key={data.preset_trainset_id} // Force re-render when preset_trainset_id changes
-                            onValueChange={v => setData('preset_trainset_id', +v)}
-                            value={data.preset_trainset_id?.toString()}
-                            defaultValue={trainset.preset_trainset_id?.toString()}
-                        >
-                            <SelectTrigger id="preset-trainset">
-                                <SelectValue
-                                    placeholder={t(
-                                        'pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset_placeholder',
-                                    )}
-                                />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="0" disabled>
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset_placeholder',
-                                    )}
-                                </SelectItem>
-                                {presetTrainset.map(preset => (
-                                    <SelectItem key={preset.id} value={preset.id.toString()}>
-                                        {preset.name} (
-                                        {preset.carriage_presets.map((c, i) => (
-                                            <span key={c.id}>
-                                                {c.qty} {c.carriage.type}
-                                                {i < preset.carriage_presets!.length - 1 && ' + '}
-                                            </span>
-                                        ))}
-                                        )
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <GenericDataSelector
+                            id="preset-trainset_id"
+                            fetchData={fetchPresetTrainsets}
+                            setSelectedData={id => setData('preset_trainset_id', id)}
+                            selectedDataId={data.preset_trainset_id}
+                            placeholder={t(
+                                'pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset_placeholder',
+                            )}
+                            renderItem={(item: PresetTrainsetResource) => {
+                                return `${item.name} (${item.carriage_presets.map((c, i) => {
+                                    return `${c.qty} ${c.carriage.type}${i < item.carriage_presets!.length - 1 ? ' + ' : ''}`;
+                                })})`;
+                            }}
+                            customLabel={(item: PresetTrainsetResource) => {
+                                return `${item.name} (${item.carriage_presets.map((c, i) => {
+                                    return `${c.qty} ${c.carriage.type}${i < item.carriage_presets!.length - 1 ? ' + ' : ''}`;
+                                })})`;
+                            }}
+                            initialSearch={trainset?.preset_name}
+                            nullable
+                        />
 
                         <div className="flex gap-2 mt-3 md:mt-0 items-center ">
                             <Button

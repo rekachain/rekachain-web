@@ -67,7 +67,7 @@ const AddCarriage = ({
         return `${carriage?.type} : ${carriage?.description}`;
     };
 
-    const fetchCarriages = useCallback(async (filters: { search: string }) => {
+    const fetchCarriages = useCallback(async (filters: ServiceFilterOptions) => {
         return await carriageService.getAll(filters).then(response => response.data);
     }, []);
 
