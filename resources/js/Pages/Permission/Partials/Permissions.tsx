@@ -1,6 +1,6 @@
 import { permissionService } from '@/Services/permissionService';
 import { useEffect, useState } from 'react';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { PermissionResource } from '@/Support/Interfaces/Resources/PermissionResource';

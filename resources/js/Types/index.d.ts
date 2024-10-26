@@ -1,4 +1,4 @@
-import { User } from '../Support/Interfaces/Models';
+import { User } from '@/Support/Interfaces/Models';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 interface AuthenticatedUser extends User {

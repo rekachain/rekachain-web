@@ -1,6 +1,6 @@
 import React from 'react';
-import { CarriageResource } from '../../../../Support/Interfaces/Resources';
-import { PaginateResponse } from '../../../../Support/Interfaces/Others';
+import { CarriageResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Link } from '@inertiajs/react';
