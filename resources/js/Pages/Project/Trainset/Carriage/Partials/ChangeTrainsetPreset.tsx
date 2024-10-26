@@ -194,7 +194,7 @@ const ChangeTrainsetPreset = ({
         <div className="flex md:flex-row flex-col  gap-2 md:items-end ">
             <form onSubmit={handleChangePreset} className="flex gap-2">
                 <SelectGroup>
-                    <div className="md:flex  w-full md:flex-row gap-2 pt-3 ">
+                    <div className="md:flex w-full md:flex-row gap-2">
                         <GenericDataSelector
                             id="preset-trainset_id"
                             fetchData={fetchPresetTrainsets}
