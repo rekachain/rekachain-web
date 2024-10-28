@@ -2,26 +2,40 @@
 
 test('view all progress', function () {
     $this->dummy->createProgress();
-    actAsSuperAdmin()->get('/api/progress')->assertStatus(200);
+    actAsSuperAdmin()->get('/api/progress')->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'created_at',
+                    'updated_at',
+                ],
+            ],
+            'meta',
+        ]);
 });
 
 test('view one progress', function () {
     $progress = $this->dummy->createProgress();
-    actAsSuperAdmin()->get('/api/progress/' . $progress->id)->assertStatus(200);
+    actAsSuperAdmin()->get('/api/progress/' . $progress->id)->assertStatus(200)
+        ->assertJson([
+            'id' => $progress->id,
+            'name' => $progress->name,
+        ]);
 });
 
 test('store one progress', function () {
     $workAspect = $this->dummy->createWorkAspect();
 
-    actAsSuperAdmin()->post('/api/progress', [
+    $progressData = [
         'name' => 'Test Progress',
         'work_aspect_id' => $workAspect->id,
-    ])->assertStatus(201);
+    ];
 
-    $this->assertDatabaseHas('progress', [
-        'name' => 'Test Progress',
-        'work_aspect_id' => $workAspect->id,
-    ]);
+    actAsSuperAdmin()->post('/api/progress', $progressData)->assertStatus(201);
+
+    $this->assertDatabaseHas('progress', $progressData);
 });
 
 test('update one progress', function () {
@@ -29,7 +43,7 @@ test('update one progress', function () {
     $workAspect = $this->dummy->createWorkAspect();
     actAsSuperAdmin()->put('/api/progress/' . $progress->id, [
         'name' => 'Test Progress Updated',
-        'work_aspects' => $workAspect->id,
+        'work_aspect_id' => $workAspect->id,
     ])->assertStatus(200);
 
     $this->assertDatabaseHas('progress', [
