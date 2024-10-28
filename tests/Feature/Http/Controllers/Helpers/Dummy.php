@@ -291,7 +291,7 @@ class Dummy {
 
     public function createCarriagePanel(): CarriagePanel {
         $this->createCarriageTrainset();
-        $progress = $this->createProgress();
+        $progress = $this->createProgressStep()->progress;
         $panel = $this->createPanel();
         $carriagePanel = new CarriagePanel;
         $carriagePanel->carriage_trainset_id = CarriageTrainset::inRandomOrder()->first()->id;
