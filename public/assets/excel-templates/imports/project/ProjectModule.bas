@@ -20,33 +20,33 @@ Sub createTrainsets()
     lastTsNumRow = wsTrainset.Cells(wsTrainset.Rows.Count, 1).End(xlUp).Row
 
     ' Clear content in columns A to G starting from the last row
-    If lastTsNumRow >= 4 Then
-        wsTrainset.Range("A4:G" & lastTsNumRow).ClearContents
-        wsTrainset.Range("A4:G" & lastTsNumRow).Validation.Delete
+    If lastTsNumRow > totalTrainset + 3 Then
+        wsTrainset.Range("A" & totalTrainset + 4 & ":G" & lastTsNumRow).ClearContents
+        wsTrainset.Range("A" & totalTrainset + 4 & ":G" & lastTsNumRow).Validation.Delete
+    Else
+        ' Loop to create rows with numbers starting at row 4
+        For i = lastTsNumRow - 2 To totalTrainset
+            wsTrainset.Cells(3 + i, 1).Value = i
+            wsTrainset.Cells(3 + i, 2).Value = "TS" & i
+
+            ' Add data validation to the next cell
+            Set validationRange = wsPreset.Range("B4:B" & wsPreset.Cells(wsPreset.Rows.Count, "B").End(xlUp).Row)
+            With wsTrainset.Cells(3 + i, 3).Validation
+                .Delete ' Remove any existing validation
+                .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+                    xlBetween, Formula1:="='Preset Trainset'!" & validationRange.Address
+                .IgnoreBlank = True
+                .InCellDropdown = True
+                .ShowInput = True
+                .ShowError = True
+            End With
+
+            ' Select the first item from the list
+            If validationRange.Cells.Count > 0 Then
+                wsTrainset.Cells(3 + i, 3).Value = validationRange.Cells(1, 1).Value
+            End If
+        Next i
     End If
-
-    ' Loop to create rows with numbers starting at row 4
-    For i = 1 To totalTrainset
-        wsTrainset.Cells(3 + i, 1).Value = i
-        wsTrainset.Cells(3 + i, 2).Value = "TS" & i
-
-        ' Add data validation to the next cell
-        Set validationRange = wsPreset.Range("B4:B" & wsPreset.Cells(wsPreset.Rows.Count, "B").End(xlUp).Row)
-        With wsTrainset.Cells(3 + i, 3).Validation
-            .Delete ' Remove any existing validation
-            .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
-                xlBetween, Formula1:="='Preset Trainset'!" & validationRange.Address
-            .IgnoreBlank = True
-            .InCellDropdown = True
-            .ShowInput = True
-            .ShowError = True
-        End With
-
-        ' Select the first item from the list
-        If validationRange.Cells.Count > 0 Then
-            wsTrainset.Cells(3 + i, 3).Value = validationRange.Cells(1, 1).Value
-        End If
-    Next i
 End Sub
 
 ' draft
