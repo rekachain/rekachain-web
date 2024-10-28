@@ -69,4 +69,15 @@ return [
             'message_placeholder' => 'Your feedback message...',
         ],
     ],
+    'generic_data_selector' => [
+        'fields' => [
+            'search_placeholder' => 'Search...',
+            'select_placeholder' => 'Select',
+        ],
+        'actions' => [
+            'clear_selection' => '-- Clear Selection --',
+            'loading' => 'Loading...',
+            'no_results' => 'No results found',
+        ],
+    ],
 ];

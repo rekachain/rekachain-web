@@ -69,4 +69,15 @@ return [
             'message_placeholder' => 'Pesan umpan balik Anda...',
         ],
     ],
+    'generic_data_selector' => [
+        'fields' => [
+            'search_placeholder' => 'Cari...',
+            'select_placeholder' => 'Pilih',
+        ],
+        'actions' => [
+            'clear_selection' => '-- Hapus Pilihan --',
+            'loading' => 'Memuat...',
+            'no_results' => 'Tidak ada hasil yang ditemukan',
+        ],
+    ],
 ];

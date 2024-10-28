@@ -8,7 +8,7 @@ export const carriageTrainsetService = {
     addPanel: async (
         carriageId: number,
         progressId: number,
-        panelId: number,
+        panelId: number | null,
         panelName: string,
         panelDescription: string,
         panelQty: number,
@@ -17,7 +17,7 @@ export const carriageTrainsetService = {
             route(`${ROUTES.CARRIAGE_TRAINSETS}.update`, carriageId),
             {
                 carriage_panel_progress_id: progressId,
-                panel_id: panelId || null,
+                panel_id: panelId,
                 panel_name: panelName,
                 panel_description: panelDescription,
                 carriage_panel_qty: panelQty,

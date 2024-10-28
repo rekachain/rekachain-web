@@ -1,5 +1,3 @@
-// TODO: Refactor using GenericDataSelector
-
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { Label } from '@/Components/UI/label';
 import { Button, buttonVariants } from '@/Components/UI/button';
@@ -289,6 +287,7 @@ const ChangeTrainsetPreset = ({
                                                     'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
+                                            {/* TODO: Refactor using GenericDataSelector */}
                                             <Input
                                                 value={sourceWorkstationFilters.search}
                                                 placeholder={t(
@@ -344,6 +343,7 @@ const ChangeTrainsetPreset = ({
                                                     'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
+                                            {/* TODO: Refactor using GenericDataSelector */}
                                             <Input
                                                 value={destinationWorkstationFilters.search}
                                                 placeholder={t(
@@ -356,7 +356,6 @@ const ChangeTrainsetPreset = ({
                                                     })
                                                 }
                                             />
-
                                             <SelectGroup>
                                                 <Select
                                                     key={
@@ -421,6 +420,7 @@ const ChangeTrainsetPreset = ({
                                                     'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
+                                            {/* TODO: Refactor using GenericDataSelector */}
                                             <Input
                                                 value={sourceWorkstationFilters.search}
                                                 placeholder={t(
@@ -478,6 +478,7 @@ const ChangeTrainsetPreset = ({
                                                     'pages.project.trainset.carriage.partials.change_trainset_preset.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
+                                            {/* TODO: Refactor using GenericDataSelector */}
                                             <Input
                                                 value={destinationWorkstationFilters.search}
                                                 placeholder={t(
@@ -490,7 +491,6 @@ const ChangeTrainsetPreset = ({
                                                     })
                                                 }
                                             />
-
                                             <SelectGroup>
                                                 <Select
                                                     key={

@@ -38,7 +38,7 @@ export default function PanelTableView({
                         </div>
                         <h4 className="text-base">
                             {t('pages.panel.partials.partials.panel_card.headers.description', {
-                                description: panel.description,
+                                description: panel.description ?? '-',
                             })}
                         </h4>
                         {/* <p>Jumlah User :{panel.users_count}</p>
