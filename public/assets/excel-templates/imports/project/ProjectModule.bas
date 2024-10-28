@@ -49,6 +49,32 @@ Sub createTrainsets()
     End If
 End Sub
 
+Sub changeCarriage(changedCell As Range)
+    Dim newValue As String
+    Dim presetSheet As Worksheet
+    Dim foundCell As Range
+    
+    newValue = changedCell.Value
+    Set presetSheet = ThisWorkbook.Sheets("Preset Trainset")
+    
+    ' Find the new value in the Preset sheet
+    Set foundCell = presetSheet.Range("B4:B"&presetSheet.Cells(presetSheet.Rows.Count, "B").End(xlUp).Row).Find(What:=newValue, LookIn:=xlValues, LookAt:=xlWhole)
+    
+    If Not foundCell Is Nothing Then
+        ' // TODO: make this more efficient
+        ' Update columns D, E, F, G in the same row to match the next 4 cells in Preset sheet 
+        With changedCell
+            .Offset(0, 1).Value = foundCell.Offset(0, 1).Value ' Column D
+            .Offset(0, 2).Value = foundCell.Offset(0, 2).Value ' Column E
+            .Offset(0, 3).Value = foundCell.Offset(0, 3).Value ' Column F
+            .Offset(0, 4).Value = foundCell.Offset(0, 4).Value ' Column G
+        End With
+    Else
+        MsgBox "Value not found in Preset sheet."
+    End If
+End Sub
+
+
 ' draft
 Sub SaveAndUpload()
     Dim wb As Workbook
