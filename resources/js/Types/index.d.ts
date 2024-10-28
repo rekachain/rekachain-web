@@ -1,4 +1,4 @@
-import { User } from '../Support/Interfaces/Models';
+import { User } from '@/Support/Interfaces/Models';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 interface AuthenticatedUser extends User {
@@ -12,4 +12,5 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     auth: {
         user: AuthenticatedUser;
     };
+    data: any;
 };

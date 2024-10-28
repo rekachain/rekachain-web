@@ -5,6 +5,7 @@ import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { UserResource } from '@/Support/Interfaces/Resources';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     userResponse,
@@ -13,6 +14,7 @@ export default function ({
     userResponse: PaginateResponse<UserResource>;
     handleUserDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     const { auth } = usePage().props;
 
     const canEditOrDelete = (user: UserResource) => {
@@ -24,13 +26,13 @@ export default function ({
             <TableHeader>
                 <TableRow>
                     <TableHead></TableHead>
-                    <TableHead>NIP</TableHead>
-                    <TableHead>Nama</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>No. Hp</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Workstation</TableHead>
-                    <TableHead>Step</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.nip')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.name')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.email')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.phone_number')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.role')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.workstation')}</TableHead>
+                    <TableHead>{t('pages.user.partials.partials.user_table.headers.step')}</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
@@ -57,10 +59,10 @@ export default function ({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.USERS}.edit`, user.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                    Delete
+                                    {t('action.delete')}
                                 </Button>
                             </TableCell>
                         ) : (

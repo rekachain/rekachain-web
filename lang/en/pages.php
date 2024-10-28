@@ -1,0 +1,1296 @@
+<?php
+
+/**
+ * Current structure example:
+ * following directory structure
+ *
+ * pages
+ *   - component name
+ *     - fields (for form fields)
+ *     - messages (for flash messages)
+ *     - buttons (for button names)
+ *     - actions (for action names)
+ *     - dialogs (for dialog element)
+ *       - messages (for messages in dialog)
+ *       - buttons (for button names in dialog)
+ *       - actions (for action names in dialog)
+ *   - components (for page components)
+ *   - partials (for page partials)
+ */
+
+return [
+    'login' => [
+        'title' => 'Welcome Back!',
+        'fields' => [
+            'nip' => 'Employee ID',
+            'password' => 'Password',
+            'remember' => 'Remember Me',
+        ],
+        'buttons' => [
+            'forgot_password' => 'Forgot Your Password?',
+            'sign_in' => 'Sign In',
+        ],
+    ],
+    'dashboard' => [
+        'index' => [
+            'title' => 'Dashboard',
+            'welcome' => 'Welcome to the Dashboard',
+        ],
+    ],
+    'work_day' => [
+        'index' => [
+            'title' => 'Work Days',
+            'buttons' => [
+                'create' => 'Create Work Day',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Work Day',
+            'fields' => [
+                'name' => 'Name',
+                'start_date' => 'Start Date',
+                'break_time' => 'Break Time',
+                'end_date' => 'End Date',
+            ],
+            'buttons' => [
+                'submit' => 'Create Work Day',
+            ],
+            'messages' => [
+                'created' => 'Work Day created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Work Day: :name',
+            'fields' => [
+                'name' => 'Name',
+                'start_date' => 'Start Date',
+                'break_time' => 'Break Time',
+                'end_date' => 'End Date',
+            ],
+            'buttons' => [
+                'submit' => 'Update Work Day',
+            ],
+            'messages' => [
+                'updated' => 'Work Day updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'work_days' => [
+                'messages' => [
+                    'deleted' => 'Work Day deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'work_day_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'start_date' => 'Start Date',
+                        'break_time' => 'Break Time',
+                        'end_date' => 'End Date',
+                    ],
+                ],
+                'work_day_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'start_date' => 'Start Date',
+                        'break_time' => 'Break Time',
+                        'end_date' => 'End Date',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'staff_management' => [
+        'title' => 'Staff Management',
+    ],
+    'division' => [
+        'index' => [
+            'title' => 'Divisions',
+            'buttons' => [
+                'create' => 'Create Division',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Division',
+            'fields' => [
+                'name' => 'Name',
+            ],
+            'buttons' => [
+                'submit' => 'Create Division',
+            ],
+            'messages' => [
+                'created' => 'Division created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Division: :name',
+            'fields' => [
+                'name' => 'Name',
+            ],
+            'buttons' => [
+                'submit' => 'Update Division',
+            ],
+            'messages' => [
+                'updated' => 'Division updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'divisions' => [
+                'messages' => [
+                    'deleted' => 'Division deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'division_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                    ],
+                ],
+                'division_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'workshop' => [
+        'index' => [
+            'title' => 'Workshops',
+            'buttons' => [
+                'create' => 'Create Workshop',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Workshop',
+            'fields' => [
+                'name' => 'Name',
+                'address' => 'Address',
+            ],
+            'buttons' => [
+                'submit' => 'Create Workshop',
+            ],
+            'messages' => [
+                'created' => 'Workshop created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Workshop: :name',
+            'fields' => [
+                'name' => 'Name',
+                'address' => 'Address',
+            ],
+            'buttons' => [
+                'submit' => 'Update Workshop',
+            ],
+            'messages' => [
+                'updated' => 'Workshop updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'workshops' => [
+                'messages' => [
+                    'deleted' => 'Workshop deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'workshop_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'address' => 'Address',
+                    ],
+                ],
+                'workshop_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'address' => 'Address : :address',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'workstation' => [
+        'index' => [
+            'title' => 'Workstation',
+            'buttons' => [
+                'create' => 'Create Workstation',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Workstation',
+            'fields' => [
+                'name' => 'Name',
+                'location' => 'Location',
+                'workshop' => 'Workshop',
+                'division' => 'Division',
+            ],
+            'buttons' => [
+                'submit' => 'Create Workstation',
+            ],
+            'messages' => [
+                'created' => 'Workstation created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Workstation: :name',
+            'fields' => [
+                'name' => 'Name',
+                'location' => 'Location',
+                'workshop' => 'Workshop',
+                'division' => 'Division',
+            ],
+            'buttons' => [
+                'submit' => 'Update Workstation',
+            ],
+            'messages' => [
+                'updated' => 'Workstation updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'workstations' => [
+                'messages' => [
+                    'deleted' => 'Workstation deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'workstation_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'location' => 'Location',
+                        'workshop' => 'Workshop',
+                        'division' => 'Division',
+                    ],
+                ],
+                'workstation_card' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'location' => 'Location: :location',
+                        'workshop' => 'Workshop: :workshop',
+                        'division' => 'Division: :division',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'user' => [
+        'index' => [
+            'title' => 'Staff',
+            'buttons' => [
+                'create' => 'Create Staff',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Staff',
+            'fields' => [
+                'nip' => 'Employee ID',
+                'name' => 'Name',
+                'email' => 'Email',
+                'phone_number' => 'Phone Number',
+                'password' => 'Password',
+                'password_confirmation' => 'Confirm Password',
+                'role' => 'Role',
+                'workstation' => 'Workstation',
+                'workstation_placeholder' => 'Select Workstation',
+                'step' => 'Step',
+                'step_placeholder' => 'Select Step',
+                'avatar' => 'Avatar',
+                'avatar_filepond_placeholder' => 'Drop files here or click to upload',
+            ],
+            'buttons' => [
+                'submit' => 'Create Staff',
+            ],
+            'messages' => [
+                'created' => 'Staff created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Staff: :name',
+            'fields' => [
+                'nip' => 'Employee ID',
+                'name' => 'Name',
+                'email' => 'Email',
+                'phone_number' => 'Phone Number',
+                'password' => 'Password',
+                'password_confirmation' => 'Confirm Password',
+                'role' => 'Role',
+                'workstation' => 'Workstation',
+                'workstation_placeholder' => 'Select Workstation',
+                'step' => 'Step',
+                'step_placeholder' => 'Select Step',
+                'avatar' => 'Avatar',
+                'avatar_filepond_placeholder' => 'Drop files here or click to upload',
+            ],
+            'buttons' => [
+                'submit' => 'Update Staff',
+            ],
+            'messages' => [
+                'updated' => 'Staff updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'users' => [
+                'messages' => [
+                    'deleted' => 'Staff deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'user_table' => [
+                    'headers' => [
+                        'nip' => 'Employee ID',
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'phone_number' => 'Phone Number',
+                        'role' => 'Role',
+                        'workstation' => 'Workstation',
+                        'step' => 'Step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+                'user_card' => [
+                    'headers' => [
+                        'nip' => 'Employee ID: :nip',
+                        'name' => 'Name: :name',
+                        'email' => 'Email: :email',
+                        'phone_number' => 'Phone Number: :phone_number',
+                        'role' => 'Role: :role',
+                        'workstation' => 'Workstation: :workstation',
+                        'step' => 'Step: :step',
+                        'avatar' => 'Avatar',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'access_control' => [
+        'title' => 'Access Control',
+    ],
+    'permission' => [ // CRUD not implemented
+        'index' => [
+            'title' => 'Permission',
+            'buttons' => [
+                'create' => 'Create Permission',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Permission',
+            'fields' => [
+                'name' => 'Name',
+            ],
+            'buttons' => [
+                'submit' => 'Create Permission',
+            ],
+            'messages' => [
+                'created' => 'Permission created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Permission: :name',
+            'fields' => [
+                'name' => 'Name',
+            ],
+            'buttons' => [
+                'submit' => 'Update Permission',
+            ],
+            'messages' => [
+                'updated' => 'Permission updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'permissions' => [
+                'messages' => [
+                    'deleted' => 'Permission deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'permission_table' => [
+                    'headers' => [
+                        'group' => 'Group',
+                        'name' => 'Name',
+                    ],
+                ],
+                'permission_card' => [
+                    'headers' => [
+                        'group' => 'Group',
+                        'name' => 'Name',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'role' => [ // Update not implemented
+        'index' => [
+            'title' => 'Role',
+            'buttons' => [
+                'create' => 'Create Role',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Role',
+            'fields' => [
+                'name' => 'Name',
+                'division' => 'Division',
+                'division_placeholder' => 'Select Division',
+                'level' => 'Level',
+                'permissions' => 'Permissions',
+            ],
+            'buttons' => [
+                'submit' => 'Create Role',
+            ],
+            'messages' => [
+                'created' => 'Role created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Role: :name',
+            'fields' => [
+                'name' => 'Name',
+                'division' => 'Division',
+                'division_placeholder' => 'Select Division',
+                'level' => 'Level',
+                'permissions' => 'Permissions',
+            ],
+            'buttons' => [
+                'submit' => 'Update Role',
+            ],
+            'messages' => [
+                'updated' => 'Role updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'roles' => [
+                'messages' => [
+                    'deleted' => 'Role deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'role_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'division' => 'Division',
+                        'level' => 'Level',
+                        'users_count' => 'User Count',
+                        'permissions_count' => 'Permission Count',
+                    ],
+                ],
+                'role_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'division' => 'Division: :division',
+                        'level' => 'Level: :level',
+                        'users_count' => 'User Count: :users_count',
+                        'permissions_count' => 'Permission Count: :permissions_count',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'step' => [
+        'index' => [
+            'title' => 'Step',
+            'buttons' => [
+                'create' => 'Create Step',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Step',
+            'fields' => [
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+                'process' => 'Process',
+                'name' => 'Name',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+            ],
+            'buttons' => [
+                'submit' => 'Create Step',
+            ],
+            'messages' => [
+                'created' => 'Step created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Step: :name',
+            'fields' => [
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+                'process' => 'Process',
+                'name' => 'Name',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Menit)',
+            ],
+            'buttons' => [
+                'submit' => 'Update Step',
+            ],
+            'messages' => [
+                'updated' => 'Step updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'steps' => [
+                'messages' => [
+                    'deleted' => 'Step deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'step_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'process' => 'Process',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                    ],
+                ],
+                'step_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'process' => 'Process: :process',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'raw_material' => [
+        'index' => [
+            'title' => 'Raw Material',
+            'buttons' => [
+                'create' => 'Create Raw Material',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Raw Material',
+            'fields' => [
+                'material_code' => 'Material Code',
+                'description' => 'Description',
+                'specs' => 'Specs',
+                'unit' => 'Unit',
+            ],
+            'buttons' => [
+                'submit' => 'Create Raw Material',
+            ],
+            'messages' => [
+                'created' => 'Raw Material created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Raw Material: :name',
+            'fields' => [
+                'material_code' => 'Material Code',
+                'description' => 'Description',
+                'specs' => 'Specs',
+                'unit' => 'Unit',
+            ],
+            'buttons' => [
+                'submit' => 'Update Raw Material',
+            ],
+            'messages' => [
+                'updated' => 'Raw Material updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'raw_materials' => [
+                'messages' => [
+                    'deleted' => 'Raw Material deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'buttons' => [
+                    'import' => 'Import Raw Material',
+                ],
+                'messages' => [
+                    'imported' => 'Raw Material imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Raw Material',
+                    'description' => 'Import Raw Material from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Raw Material',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Raw Material',
+                        'processing' => 'Processing...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'raw_material_table' => [
+                    'headers' => [
+                        'material_code' => 'Material Code',
+                        'description' => 'Description',
+                        'specs' => 'Specs',
+                        'unit' => 'Unit',
+                    ],
+                ],
+                'raw_material_card' => [
+                    'headers' => [
+                        'material_code' => 'Material Code: :material_code',
+                        'description' => 'Description: :description',
+                        'specs' => 'Specs: :specs',
+                        'unit' => 'Unit: :unit',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'component' => [
+        'index' => [
+            'title' => 'Component',
+            'buttons' => [
+                'create' => 'Create Component',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Component',
+            'fields' => [
+                'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+            ],
+            'buttons' => [
+                'submit' => 'Create Component',
+            ],
+            'messages' => [
+                'created' => 'Component created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Component: :name',
+            'fields' => [
+                'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
+            ],
+            'buttons' => [
+                'submit' => 'Update Component',
+            ],
+            'messages' => [
+                'updated' => 'Component updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'components' => [
+                'messages' => [
+                    'deleted' => 'Component deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'component_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'progress' => 'Progress',
+                    ],
+                ],
+                'component_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'progress' => 'Progress: :progress',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'panel' => [
+        'index' => [
+            'title' => 'Panel',
+            'buttons' => [
+                'create' => 'Create Panel',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Panel',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Create Panel',
+            ],
+            'messages' => [
+                'created' => 'Panel created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Panel: :name',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Update Panel',
+            ],
+            'messages' => [
+                'updated' => 'Panel updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'panels' => [
+                'messages' => [
+                    'deleted' => 'Panel deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'title' => 'Import Panel',
+                'description' => 'Import Panel from Excel file',
+                'messages' => [
+                    'imported' => 'Panel imported successfully!',
+                ],
+                'buttons' => [
+                    'import' => 'Import Panel',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Panel',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Panel',
+                        'processing' => 'Processing...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'panel_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                    ],
+                ],
+                'panel_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'description' => 'Description: :description',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'project' => [
+        'index' => [
+            'title' => 'Projects',
+            'buttons' => [
+                'create' => 'Create Project',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Project',
+            'fields' => [
+                'name' => 'Name',
+                'trainset_needed' => 'Trainset Needed',
+                'initial_date' => 'Initial Date',
+            ],
+            'buttons' => [
+                'submit' => 'Create Project',
+            ],
+            'messages' => [
+                'created' => 'Project created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Project: :name',
+            'fields' => [
+                'name' => 'Name',
+                'trainset_needed' => 'Trainset Needed',
+                'initial_date' => 'Initial Date',
+            ],
+            'buttons' => [
+                'submit' => 'Update Project',
+            ],
+            'messages' => [
+                'updated' => 'Project updated successfully!',
+            ],
+        ],
+        'trainset' => [
+            'index' => [
+                'title' => 'Trainsets',
+                'initial_date' => 'Initial Date :initial_date',
+                'buttons' => [
+                    'add_trainset' => 'Add Trainset',
+                ],
+                'messages' => [
+                    'trainset_added' => 'Trainset added successfully!',
+                ],
+                'breadcrumbs' => [
+                    'project' => 'Project :project',
+                ],
+                'fields' => [
+                    'trainset_needed_placeholder' => 'Select Trainset Needed',
+                    'trainset_needed_error' => 'Trainset number must be greater than 0',
+                ],
+            ],
+            'carriage' => [
+                'index' => [
+                    'title' => 'Carriages',
+                    'initial_date' => 'Initial Date :initial_date',
+                    'preset' => 'Preset :preset',
+                    'status_in_progress' => 'Status: In Progress',
+                    'new_preset_alert' => 'You are using a custom preset, do you want to save it as a new preset?',
+                    'buttons' => [
+                        'add_carriage' => 'Add Carriage',
+                    ],
+                    'messages' => [
+                        'carriage_added' => 'Carriage added successfully!',
+                    ],
+                    'breadcrumbs' => [
+                        'project' => 'Project :project',
+                        'trainset' => 'Trainset :trainset',
+                    ],
+                    'fields' => [
+                        'trainset_needed_placeholder' => 'Select Trainset Needed',
+                        'trainset_needed_error' => 'Trainset number must be greater than 0',
+                    ],
+                ],
+                'panel' => [
+                    'index' => [
+                        'title' => 'Carriage: :name',
+                        'initial_date' => 'Initial Date :initial_date',
+                        'preset' => 'Preset :preset',
+                        'breadcrumbs' => [
+                            'project' => 'Project :project',
+                            'trainset' => 'Trainset :trainset',
+                            'carriage' => 'Carriage :carriage',
+                        ],
+                    ],
+                    'partials' => [
+                        'panels' => [
+                            'messages' => [
+                                'deleted' => 'Panel deleted successfully!',
+                            ],
+                        ],
+                        'add_new_panel' => [
+                            'messages' => [
+                                'panel_added' => 'Panel added successfully!',
+                            ],
+                            'dialogs' => [
+                                'fields' => [
+                                    'progress' => 'Progress',
+                                    'progress_placeholder' => 'Select Progress',
+                                    'progress_search' => 'Search Progress',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                    'panel_search' => 'Search Panel',
+                                    'new_panel_name' => 'New Panel Name',
+                                    'new_panel_description' => 'New Panel Description',
+                                    'new_panel_qty' => 'New Panel Qty',
+                                ],
+                                'buttons' => [
+                                    'add_panel' => 'Add Panel',
+                                ],
+                            ],
+                            'buttons' => [
+                                'add_new_panel' => 'Add New Panel',
+                            ],
+                        ],
+                        'components' => [
+                            'panel_qty' => [
+                                'title' => 'Panel Quantity',
+                                'messages' => [
+                                    'qty_updated' => 'Panel quantity updated successfully!',
+                                ],
+                                'buttons' => [
+                                    'update_qty' => 'Update Qty',
+                                ],
+                            ],
+                        ],
+                        'partials' => [
+                            'carriage_panel_table' => [
+                                'headers' => [
+                                    'panel' => 'Panel',
+                                    'qty' => 'Qty',
+                                    'description' => 'Description',
+                                    'progress' => 'Progress',
+                                ],
+                            ],
+                            'carriage_panel_card' => [
+                                'headers' => [
+                                    'panel' => 'Panel',
+                                    'qty' => 'Qty',
+                                    'description' => 'Description',
+                                    'progress' => 'Progress',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'change_trainset_preset' => [
+                        'title' => 'Change Trainset Preset',
+                        'messages' => [
+                            'changed' => 'Preset changed successfully!',
+                            'kpm_generated' => 'KPM generated successfully!',
+                            'preset_deleted' => 'Preset deleted successfully!',
+                        ],
+                        'fields' => [
+                            'preset_trainset' => 'Preset Trainset',
+                            'preset_trainset_placeholder' => 'Select Preset Trainset',
+                        ],
+                        'buttons' => [
+                            'change_preset' => 'Change Preset',
+                            'delete_preset' => 'Delete Preset',
+                            'generate_kpm' => 'Generate KPM',
+                        ],
+                        'dialogs' => [
+                            'generate_kpm_title' => 'Generate KPM',
+                            'fields' => [
+                                'source_workstation' => 'Source Workstation',
+                                'source_workstation_search' => 'Search Source Workstation',
+                                'workstation' => 'Select Workstation',
+                                'workstation_placeholder' => 'Workstation',
+                                'destination_workstation' => 'Destination Workstation',
+                                'destination_workstation_search' => 'Search Destination Workstation',
+                            ],
+                            'buttons' => [
+                                'generate_kpm' => 'Generate KPM',
+                                'generate_mechanic_kpm' => 'Generate Mechanic KPM',
+                                'generate_electric_kpm' => 'Generate Electric KPM',
+                            ],
+                        ],
+                    ],
+                    'carriages' => [
+                        'messages' => [
+                            'deleted' => 'Carriage deleted successfully!',
+                        ],
+                    ],
+                    'add_new_trainset_preset' => [
+                        'messages' => [
+                            'preset_added' => 'Preset added successfully!',
+                        ],
+                        'buttons' => [
+                            'add_new_preset' => 'Add New Preset',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Add New Preset',
+                            'fields' => [
+                                'preset_name' => 'Preset Name',
+                            ],
+                            'actions' => [
+                                'saving' => 'Saving Preset...',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Save Preset',
+                            ],
+                        ],
+                    ],
+                    'add_carriage' => [
+                        'title' => 'Add Carriage',
+                        'buttons' => [
+                            'add_carriage' => 'Add Carriage',
+                        ],
+                        'messages' => [
+                            'carriage_added' => 'Carriage added successfully!',
+                        ],
+                        'dialogs' => [
+                            'fields' => [
+                                'carriage' => 'Carriage',
+                                'carriage_placeholder' => 'Select Carriage',
+                                'carriage_search' => 'Search Carriage',
+                                'or' => 'Or',
+                                'new_carriage_qty' => 'New Carriage Qty',
+                                'new_carriage_type' => 'New Carriage Type',
+                                'new_carriage_description' => 'New Carriage Description',
+                            ],
+                            'actions' => [
+                                'adding_carriage' => 'Adding Carriage...',
+                            ],
+                            'buttons' => [
+                                'add_carriage' => 'Add Carriage',
+                            ],
+                        ],
+                    ],
+                    'partials' => [
+                        'carriage_table' => [
+                            'headers' => [
+                                'type' => 'Type',
+                                'qty' => 'Qty',
+                                'panels' => 'Panels',
+                            ],
+                            'actions' => [
+                                'panels' => 'Panels',
+                            ],
+                        ],
+                        'carriage_card' => [
+                            'headers' => [
+                                'type' => 'Type',
+                                'qty' => 'Qty',
+                                'panels' => 'Panels',
+                            ],
+                            'actions' => [
+                                'panels' => 'Panels',
+                            ],
+                        ],
+                    ],
+                    'components' => [
+                        'carriage_qty' => [
+                            'title' => 'Carriage Quantity',
+                            'messages' => [
+                                'updated' => 'Carriage quantity updated successfully!',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Update Qty',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'partials' => [
+                'trainsets' => [
+                    'messages' => [
+                        'deleted' => 'Trainset deleted successfully!',
+                    ],
+                ],
+                'custom_preset_alert' => [
+
+                ],
+                'partials' => [
+                    'trainset_table' => [
+                        'headers' => [
+                            'name' => 'Name',
+                            'trainset_carriage' => 'Trainset Carriage',
+                        ],
+                        'actions' => [
+                            'carriages' => 'Carriages',
+                        ],
+                    ],
+                    'trainset_card' => [
+                        'headers' => [
+                            'name' => 'Name: :name',
+                            'trainset_carriage' => 'Trainset Carriage: :trainset_carriage',
+                        ],
+                        'actions' => [
+                            'carriages' => 'Carriages',
+                        ],
+                    ],
+                    'components' => [
+                        'trainset_name' => [
+                            'headers' => [
+                                'name' => 'Name',
+                            ],
+                            'fields' => [
+                                'trainset_error' => 'Trainset number must not be empty',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Save',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'partials' => [
+            'projects' => [
+                'messages' => [
+                    'deleted' => 'Project deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'project_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'initial_date' => 'Initial Date',
+                        'trainset_count' => 'Trainset Count',
+                    ],
+                    'actions' => [
+                        'trainsets' => 'Trainsets',
+                    ],
+                ],
+                'project_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'initial_date' => 'Initial Date: :initial_date',
+                        'trainset_count' => 'Trainset Count: :trainset_count',
+                    ],
+                    'actions' => [
+                        'trainsets' => 'Trainsets',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'carriage' => [
+        'index' => [
+            'title' => 'Carriages',
+            'buttons' => [
+                'create' => 'Create Carriage',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Carriage',
+            'fields' => [
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Create Carriage',
+            ],
+            'messages' => [
+                'created' => 'Carriage created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Carriage: :name',
+            'fields' => [
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Update Carriage',
+            ],
+            'messages' => [
+                'updated' => 'Carriage updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'carriages' => [
+                'messages' => [
+                    'deleted' => 'Carriage deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Carriage imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Carriage',
+                    'description' => 'Import Carriage from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Carriage',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Carriage',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Carriage imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Carriage',
+                ],
+            ],
+            'partials' => [
+                'carriage_table' => [
+                    'headers' => [
+                        'type' => 'Type',
+                        'description' => 'Description',
+                    ],
+                ],
+                'carriage_card' => [
+                    'headers' => [
+                        'type' => 'Type: :type',
+                        'description' => 'Description: :description',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'settings' => [
+        'title' => 'Settings',
+    ],
+    'feedback' => [
+        'index' => [
+            'title' => 'Feedback',
+            'buttons' => [
+                'create' => 'Create Feedback',
+            ],
+        ],
+        'partials' => [
+            'feedbacks' => [
+                'messages' => [
+                    'deleted' => 'Feedback deleted successfully!',
+                ],
+            ],
+            'partials' => [
+                'feedback_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'rating' => 'Rating',
+                        'message' => 'Message',
+                        'status' => 'Status',
+                    ],
+                    'values' => [
+                        'pending' => 'Pending',
+                        'approved' => 'Approved',
+                        'rejected' => 'Rejected',
+                    ],
+                ],
+                'feedback_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'email' => 'Email: :email',
+                        'rating' => 'Rating: :rating',
+                        'message' => 'Message: :message',
+                        'status' => 'Status: :status',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'helpdesk' => [
+        'title' => 'Helpdesk',
+    ],
+    'profile' => [
+        'edit' => [
+            'title' => 'Edit Profile',
+        ],
+        'partials' => [
+            'delete_user_form' => [
+                'title' => 'Delete Account',
+                'description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
+                'dialogs' => [
+                    'title' => 'Delete Account',
+                    'description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
+                    'fields' => [
+                        'password' => 'Password',
+                        'password_placeholder' => 'Enter your password',
+                    ],
+                    'buttons' => [
+                        'delete_account' => 'Delete Account',
+                    ],
+                ],
+                'buttons' => [
+                    'delete_account' => 'Delete Account',
+                ],
+            ],
+            'update_password_form' => [
+                'title' => 'Update Password',
+                'description' => 'Ensure your account is using a long, random password to stay secure.',
+                'fields' => [
+                    'current_password' => 'Current Password',
+                    'password' => 'Password',
+                    'password_confirmation' => 'Confirm Password',
+                ],
+                'buttons' => [
+                    'submit' => 'Update Password',
+                ],
+                'messages' => [
+                    'updated' => 'Password updated successfully!',
+                ],
+            ],
+            'update_profile_information_form' => [
+                'title' => 'Update Profile Information',
+                'description' => 'Update your account\'s profile information and email address.',
+                'fields' => [
+                    'name' => 'Name',
+                    'email' => 'Email',
+                    'phone_number' => 'Phone Number',
+                    'avatar' => 'Avatar',
+                    'avatar_filepond_placeholder' => 'Drop files here or click to upload',
+                ],
+                'buttons' => [
+                    'submit' => 'Update Information',
+                    'resend_verification_email' => 'Click here to re-send the verification email.',
+                ],
+                'messages' => [
+                    'updated' => 'Profile information updated successfully!',
+                    'verify_email' => 'Your email address is unverified.',
+                    'verification_email_sent' => 'A new verification email has been sent to the address you provided during registration.',
+                ],
+            ],
+        ],
+    ],
+];

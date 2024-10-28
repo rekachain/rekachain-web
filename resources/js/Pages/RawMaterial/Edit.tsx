@@ -10,8 +10,10 @@ import { rawMaterialService } from '@/Services/rawMaterialService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) {
+    const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
     const { data, setData } = useForm({
@@ -26,21 +28,26 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
         e.preventDefault();
         await rawMaterialService.update(rawMaterial.id, data);
         router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
-        void useSuccessToast('Raw Material berhasil diubah');
+        void useSuccessToast(t('pages.raw_material.edit.messages.updated'));
     });
 
     return (
         <>
-            <Head title="Ubah RawMaterial" />
+            <Head title={t('pages.raw_material.edit.title', { name: rawMaterial.material_code })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Bahan Mentah: {rawMaterial.material_code}</h1>
+                        <h1 className="text-page-header my-4">
+                            {t('pages.raw_material.edit.title', { name: rawMaterial.material_code })}
+                        </h1>
                     </div>
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel htmlFor="material_code" value="Kode Material" />
+                            <InputLabel
+                                htmlFor="material_code"
+                                value={t('pages.raw_material.edit.fields.material_code')}
+                            />
                             <Input
                                 id="material_code"
                                 type="text"
@@ -53,7 +60,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value="Deskripsi" />
+                            <InputLabel htmlFor="description" value={t('pages.raw_material.edit.fields.description')} />
                             <Input
                                 id="description"
                                 type="text"
@@ -66,7 +73,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="specs" value="Spesifikasi" />
+                            <InputLabel htmlFor="specs" value={t('pages.raw_material.edit.fields.specs')} />
                             <Input
                                 id="specs"
                                 type="text"
@@ -79,7 +86,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="unit" value="Unit / Satuan" />
+                            <InputLabel htmlFor="unit" value={t('pages.raw_material.edit.fields.unit')} />
                             <Input
                                 id="unit"
                                 type="text"
@@ -92,7 +99,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Ubah Bahan Mentah
+                            {t('pages.raw_material.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

@@ -4,16 +4,23 @@ import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from 'recharts';
-
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    LabelList,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    XAxis,
+    YAxis,
+} from 'recharts';
 import { TrendingUp } from 'lucide-react';
-import { Pie, PieChart } from 'recharts';
-
-// import { TrendingUp } from 'lucide-react';
-import { Line, LineChart } from 'recharts';
-
-import { YAxis } from 'recharts';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
+
+// import { PageProps } from '@/Types';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Dashboard({ auth, data }: PageProps) {
     console.log(data);
@@ -99,9 +106,11 @@ export default function Dashboard({ auth, data }: PageProps) {
     //     With seperated done and in progress
     // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status ORDER BY `panels`.`name` ASC
 
+    // export default function Dashboard({ auth }: PageProps) {
+    const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
-            <Head title="Dashboard" />
+            <Head title={t('pages.dashboard.index.title')} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
@@ -234,6 +243,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                             </PieChart>
                         </ChartContainer> */}
+                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                            <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                                <div className="p-6 text-gray-900 dark:text-gray-100">
+                                    {t('pages.dashboard.index.welcome')}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

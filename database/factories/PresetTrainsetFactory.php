@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Project;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,7 +17,7 @@ class PresetTrainsetFactory extends Factory {
     public function definition(): array {
         return [
             'name' => $this->faker->name,
-            'project_id' => \App\Models\Project::factory(),
+            'project_id' => Project::inRandomOrder()->first()->id ?? Project::factory(),
         ];
     }
 }

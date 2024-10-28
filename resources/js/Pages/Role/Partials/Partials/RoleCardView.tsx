@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RoleResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function RoleCardView({
     roleResponse,
@@ -13,6 +14,7 @@ export default function RoleCardView({
     roleResponse: PaginateResponse<RoleResource>;
     handleRoleDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             {roleResponse?.data.map(role => (
@@ -30,22 +32,36 @@ export default function RoleCardView({
                                     className="font-bold text-base
                                  items-center "
                                 >
-                                    Divisi : {role.division?.name}
+                                    {t('pages.role.partials.partials.role_card.headers.division', {
+                                        division: role?.division?.name ?? '',
+                                    })}
                                 </h5>
                             </div>
                         </div>
-                        <h4 className="text-base">Level : {role.level}</h4>
-                        <p>Jumlah User :{role.users_count}</p>
-                        <p>Jumlah Izin :{role.permissions_count}</p>
+                        <h4 className="text-base">
+                            {t('pages.role.partials.partials.role_card.headers.level', {
+                                level: role?.level ?? '',
+                            })}
+                        </h4>
+                        <p>
+                            {t('pages.role.partials.partials.role_card.headers.users_count', {
+                                users_count: role?.users_count ?? 0,
+                            })}
+                        </p>
+                        <p>
+                            {t('pages.role.partials.partials.role_card.headers.permissions_count', {
+                                permissions_count: role?.permissions_count ?? 0,
+                            })}
+                        </p>
                         <div className="flex items-center justify-end w-full">
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.ROLES}.edit`, role.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handleRoleDeletion(role.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>

@@ -79,7 +79,7 @@ class RoleController extends Controller {
         $divisions = DivisionResource::collection($this->divisionService->getAll());
 
         return inertia('Role/Edit', [
-            'role' => new RoleResource($role),
+            'role' => new RoleResource($role->load('division')),
             'permissions' => $permissions,
             'divisions' => $divisions,
         ]);

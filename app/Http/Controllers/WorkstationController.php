@@ -23,7 +23,7 @@ class WorkstationController extends Controller {
 
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_READ);
+        checkPermissions([PermissionEnum::WORKSTATION_READ, PermissionEnum::USER_READ]);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
@@ -39,7 +39,7 @@ class WorkstationController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_CREATE);
+        checkPermissions(PermissionEnum::WORKSTATION_CREATE);
 
         // sementara
         $workshops = $this->workshopService->getAll();
@@ -56,7 +56,7 @@ class WorkstationController extends Controller {
      */
     public function store(StoreWorkstationRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_CREATE);
+        checkPermissions(PermissionEnum::WORKSTATION_CREATE);
 
         return new WorkstationResource($this->workstationService->create($request->validated()));
     }
@@ -66,7 +66,7 @@ class WorkstationController extends Controller {
      */
     public function show(Request $request, Workstation $workstation) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_READ);
+        checkPermissions(PermissionEnum::WORKSTATION_READ);
 
         if ($this->ajax()) {
             return new WorkstationResource($workstation);
@@ -80,7 +80,7 @@ class WorkstationController extends Controller {
      */
     public function edit(Request $request, Workstation $workstation) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_UPDATE);
+        checkPermissions(PermissionEnum::WORKSTATION_UPDATE);
 
         // sementara
         $workshops = $this->workshopService->getAll();
@@ -94,7 +94,7 @@ class WorkstationController extends Controller {
      */
     public function update(UpdateWorkstationRequest $request, Workstation $workstation) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_UPDATE);
+        checkPermissions(PermissionEnum::WORKSTATION_UPDATE);
 
         return new WorkstationResource($this->workstationService->update($workstation, $request->validated()));
     }
@@ -103,7 +103,7 @@ class WorkstationController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Workstation $workstation) {
-        $request->checkPermissionEnum(PermissionEnum::WORKSTATION_DELETE);
+        checkPermissions(PermissionEnum::WORKSTATION_DELETE);
 
         $this->workstationService->delete($workstation);
 

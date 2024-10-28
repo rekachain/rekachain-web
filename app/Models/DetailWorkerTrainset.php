@@ -7,6 +7,7 @@ use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class DetailWorkerTrainset extends Model
@@ -50,5 +51,10 @@ class DetailWorkerTrainset extends Model
 
     public function getImageAttribute() {
         return $this->image_path ? asset('storage/' . $this->image_path) : null;
+    }
+
+    public function failed_component_manufactures(): HasMany
+    {
+        return $this->hasMany(FailedComponentManufacture::class);
     }
 }

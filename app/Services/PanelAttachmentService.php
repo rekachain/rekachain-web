@@ -3,14 +3,16 @@
 namespace App\Services;
 
 use App\Models\PanelAttachment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use App\Http\Resources\PanelAttachmentResource;
+use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Http\Resources\PanelAttachmentResource;
-use App\Models\AttachmentNote;
-use App\Support\Enums\PanelAttachmentStatusEnum;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface
 {
@@ -19,6 +21,30 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         protected SerialPanelServiceInterface $serialPanelService,
     ) {
         parent::__construct();
+    }
+
+    public function showGraph(){
+        $ts = DB::select(
+            'SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;'
+        );
+        $ws = DB::select(
+            'SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id GROUP by workshops.name LIMIT 10;'
+        );
+
+        $panel = DB::select(
+            'SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status ORDER BY `panels`.`name` ASC'
+        );
+        // $data = DB::select(
+        //     'SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;'
+        // );
+
+        $data = [
+            'ts' => $ts,
+            'ws' => $ws,
+            'panel' => $panel,
+        ];
+        // dump($data);
+         return $data;
     }
 
     public function delete($keyOrModel): bool
@@ -39,15 +65,28 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         return PanelAttachmentRepositoryInterface::class;
     }
 
-    public function confirmKPM($panelAttachment)
-    {
-        $panelAttachment = PanelAttachment::find($panelAttachment);
-
-        $panelAttachment->status = PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value;
-
+    public function confirmKPM(PanelAttachment $panelAttachment, $request)
+    {   
+        $panelAttachment->status = $request['status'];
+        
         $panelAttachment->save();
 
         return $panelAttachment;
+    }
+
+    public function update($panelAttachment, array $data): ?Model
+    {   
+        if (array_key_exists('note', $data)) {
+            $panelAttachment->attachment_notes()->create(
+                [
+                    "note" => $data['note'],
+                    "status" => $data['status'],
+                ]
+            );
+            unset($data['note']);
+        }
+        
+        return parent::update($panelAttachment, $data);
     }
 
     public function rejectKPM($panelAttachment, $request)
@@ -68,6 +107,22 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
         $panelAttachment->save();
 
+        return $panelAttachment;
+    }
+
+    public function assignSpvAndReceiver(PanelAttachment $panelAttachment, array $data)
+    {
+        $panelAttachment->supervisor_id = $data['supervisor_id'] ?? auth()->user()->id;
+        $attachmentHandler = [
+            'handles' => PanelAttachmentHandlerHandlesEnum::RECEIVE->value,
+        ];
+        if (array_key_exists('receiver_name', $data)) {
+            $attachmentHandler['handler_name'] = $data['receiver_name'];
+        } else {
+            $attachmentHandler['user_id'] = $data['receiver_id'];
+        }
+        $panelAttachment->panel_attachment_handlers()->create($attachmentHandler);
+        $panelAttachment->save();
         return $panelAttachment;
     }
 }

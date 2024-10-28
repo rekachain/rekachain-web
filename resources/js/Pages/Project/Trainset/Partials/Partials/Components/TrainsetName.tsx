@@ -8,13 +8,15 @@ import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { FormEvent, useState } from 'react';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
-    const { data, setData,  } = useForm({
+    const { t } = useLaravelReactI18n();
+    const { data, setData } = useForm({
         trainsetName: trainset.name,
     });
     const [isEditing, setIsEditing] = useState(false);
-    const {  loading } = useLoading();
+    const { loading } = useLoading();
 
     const toggleEditMode = () => {
         setIsEditing(!isEditing);
@@ -42,7 +44,7 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                             onChange={e => setData('trainsetName', e.target.value)}
                         />
                         <span className="mt-2 text-sm hidden text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                            Kode Trainset tidak boleh kosong.
+                            {t('pages.project.trainset.partials.partials.components.trainset_name.trainset_error')}
                         </span>
                     </div>
                     <Button
@@ -50,10 +52,12 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                         disabled={loading}
                         className="group-invalid:pointer-events-none group-invalid:opacity-30"
                     >
-                        {loading ? 'Processing' : 'Save'}
+                        {loading
+                            ? t('action.loading')
+                            : t('pages.project.trainset.partials.partials.components.trainset_name.buttons.submit')}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
-                        Cancel
+                        {t('action.cancel')}
                     </Button>
                 </form>
             ) : (

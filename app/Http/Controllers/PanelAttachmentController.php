@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PanelAttachmentResource;
-use App\Models\PanelAttachment;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Models\PanelAttachment;
+use App\Http\Resources\PanelAttachmentResource;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 
 class PanelAttachmentController extends Controller {
     /**
      * Display a listing of the resource.
      */
+    public function __construct(
+        protected PanelAttachmentServiceInterface $panelAttachmentService,
+    ) {}
+    
     public function index() {
-        //
+        $data = $this->panelAttachmentService->showGraph();
+        return Inertia::render('Dashboard',['data'=>$data]);
     }
 
     /**

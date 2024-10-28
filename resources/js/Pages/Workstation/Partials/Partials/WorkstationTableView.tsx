@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkstationResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WorkstationTableView({
     workstationResponse,
@@ -13,15 +14,22 @@ export default function WorkstationTableView({
     workstationResponse: PaginateResponse<WorkstationResource>;
     handleWorkstationDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Lokasi</TableHead>
-                        <TableHead>Workshop</TableHead>
-                        <TableHead>Divisi</TableHead>
+                        <TableHead>{t('pages.workstation.partials.partials.workstation_table.headers.name')}</TableHead>
+                        <TableHead>
+                            {t('pages.workstation.partials.partials.workstation_table.headers.location')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.workstation.partials.partials.workstation_table.headers.workshop')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.workstation.partials.partials.workstation_table.headers.division')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -38,10 +46,10 @@ export default function WorkstationTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
-                                    Delete
+                                    {t('action.delete')}
                                 </Button>
                             </TableCell>
                         </TableRow>

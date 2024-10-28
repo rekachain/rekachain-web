@@ -5,24 +5,24 @@ import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { ComponentResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ComponentTableView({
     componentResponse,
     handleComponentDeletion,
-    // auth,
 }: {
     componentResponse: PaginateResponse<ComponentResource>;
 
     handleComponentDeletion: (id: number) => void;
-    // auth: any; // sementara
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Nama</TableHead>
-                        <TableHead>Proses Standar</TableHead>
+                        <TableHead>{t('pages.component.partials.partials.component_table.headers.name')}</TableHead>
+                        <TableHead>{t('pages.component.partials.partials.component_table.headers.progress')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -36,11 +36,11 @@ export default function ComponentTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
                                 >
-                                    Edit
+                                    {t('action.edit')}
                                 </Link>
                                 {component.can_be_deleted && (
                                     <Button variant="link" onClick={() => handleComponentDeletion(component.id)}>
-                                        Delete
+                                        {t('action.delete')}
                                     </Button>
                                 )}
                             </TableCell>

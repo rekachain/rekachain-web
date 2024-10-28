@@ -10,7 +10,7 @@ class FailedComponentManufactureResource extends JsonResource {
             'id' => $this->id,
             'detail_worker_trainset_id' => $this->detail_worker_trainset_id,
             'detail_worker_trainset' => DetailWorkerTrainsetResource::make($this->whenLoaded('detail_worker_trainset')),
-            'trainset_attachment_component' => $this->detail_worker_trainset->trainset_attachment_component,
+            'trainset_attachment_component' => TrainsetAttachmentComponentResource::make($this->whenLoaded('detail_worker_trainset.trainset_attachment_component')),
             'notes' => $this->notes,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
