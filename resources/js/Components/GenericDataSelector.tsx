@@ -7,6 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover
 import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/utils';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface GenericDataSelectorProps<T extends Resource> {
     /**
@@ -142,6 +143,7 @@ const GenericDataSelector = <T extends Resource>({
     customSearchPlaceholder,
     onSearchChange,
 }: GenericDataSelectorProps<T>) => {
+    const { t } = useLaravelReactI18n();
     const [searchTerm, setSearchTerm] = useState(initialSearch ?? '');
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const [fetchedData, setFetchedData] = useState<T[]>([]);
@@ -182,7 +184,7 @@ const GenericDataSelector = <T extends Resource>({
             return customLabel(item);
         }
         const value = item[labelKey];
-        return typeof value === 'string' ? value : 'Select...';
+        return typeof value === 'string' ? value : t('components.generic_data_selector.fields.select_placeholder');
     };
 
     const items = data ?? fetchedData;
@@ -199,7 +201,7 @@ const GenericDataSelector = <T extends Resource>({
                     {selectedDataId
                         ? items.find(item => item.id === selectedDataId)
                             ? getLabel(items.find(item => item.id === selectedDataId)!)
-                            : 'Select...'
+                            : t('components.generic_data_selector.fields.select_placeholder')
                         : placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -207,7 +209,9 @@ const GenericDataSelector = <T extends Resource>({
             <PopoverContent className={cn('w-[200px] p-0', popoverContentClassName)}>
                 <Command shouldFilter={false}>
                     <CommandInput
-                        placeholder={customSearchPlaceholder ?? 'Search...'}
+                        placeholder={
+                            customSearchPlaceholder ?? t('components.generic_data_selector.fields.search_placeholder')
+                        }
                         value={searchTerm}
                         onInput={handleSearchChange}
                         className="border-none focus:ring-0"
@@ -215,9 +219,21 @@ const GenericDataSelector = <T extends Resource>({
                     />
                     <CommandList>
                         <CommandGroup>
-                            {nullable && <CommandItem onSelect={handleClearItem}>- Clear Selection -</CommandItem>}
-                            {isFetching && <CommandItem disabled>Loading...</CommandItem>}
-                            {!isFetching && items.length === 0 && <CommandItem disabled>No results found</CommandItem>}
+                            {nullable && (
+                                <CommandItem onSelect={handleClearItem}>
+                                    {t('components.generic_data_selector.actions.clear_selection')}
+                                </CommandItem>
+                            )}
+                            {isFetching && (
+                                <CommandItem disabled>
+                                    {t('components.generic_data_selector.actions.loading')}
+                                </CommandItem>
+                            )}
+                            {!isFetching && items.length === 0 && (
+                                <CommandItem disabled>
+                                    {t('components.generic_data_selector.actions.no_results')}
+                                </CommandItem>
+                            )}
                             {!isFetching &&
                                 items.map(item => (
                                     <CommandItem key={item.id} onSelect={() => handleSelectItem(item.id)}>
