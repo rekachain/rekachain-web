@@ -48,6 +48,7 @@ class DetailWorkerTrainsetResource extends JsonResource {
                     'image_path' => $this->image_path,
                     'work_status' => $this->work_status,
                     'acceptance_status' => $this->acceptance_status,
+                    'failed_component_manufactures' => FailedComponentManufactureResource::collection($this->failed_component_manufactures),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
@@ -65,6 +66,7 @@ class DetailWorkerTrainsetResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'image_path' => $this->image_path,
                     'acceptance_status' => $this->acceptance_status,
+                    'failed_component_manufactures' => FailedComponentManufactureResource::collection($this->whenLoaded('failed_component_manufactures')),
                     // 'created_at' => $this->created_at->toDateTimeString(),
                     // 'updated_at' => $this->updated_at->toDateTimeString(),
                     'created_at' => $this->created_at,

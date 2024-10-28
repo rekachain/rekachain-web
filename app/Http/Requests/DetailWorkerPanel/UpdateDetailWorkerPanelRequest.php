@@ -3,9 +3,11 @@
 namespace App\Http\Requests\DetailWorkerPanel;
 
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateDetailWorkerPanelRequest extends FormRequest {
     /**
@@ -44,6 +46,19 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
             'work_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerPanelWorkStatusEnum::cases(), 'value'))],
             'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerPanelAcceptanceStatusEnum::cases(), 'value'))],
             // Add your validation rules here
+        ];
+    }
+
+    public function after() {
+        return [
+            function ($validator) {
+                if ($this->get('acceptance_status') && !Auth::user()->hasRole([RoleEnum::SUPERVISOR_ASSEMBLY])) {
+                    $validator->errors()->add(
+                        'Detail Worker Panel Acceptance', 
+                        __('validation.custom.detail_worker_trainset.update_worker.field_update_role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value, 'field' => 'acceptance_status'])
+                    );
+                }
+            }
         ];
     }
 }

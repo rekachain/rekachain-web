@@ -37,7 +37,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     $arr['receiver_id'] = 'required|integer|exists:users,id';
                 }
                 return $arr;
-            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 $arr = [
                     'carriage_panel_component_id' => [
                         'required',
@@ -59,7 +59,19 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                 ];
         }
         return [
-            // Add your validation rules here
+            'trainset_id' => 'nullable|integer|exists:trainsets,id',
+            'source_workstation_id' => 'nullable|integer|exists:workstations,id',
+            'destination_workstation_id' => 'nullable|integer|exists:workstations,id',
+            'attachment_number' => 'nullable|string',
+            'qr_code' => 'nullable|string',
+            'qr_path' => 'nullable|string',
+            'elapsed_time' => 'nullable|string',
+            'status' => 'nullable|in:' . implode(',', TrainsetAttachmentStatusEnum::toArray()),
+            'note' => [
+                'required_if:status,' . TrainsetAttachmentStatusEnum::PENDING->value,
+            ],
+            'supervisor_id' => 'nullable|integer|exists:users,id',
+            'trainset_attachment_id' => 'nullable|integer|exists:trainset_attachments,id',
         ];
     }
 
@@ -68,7 +80,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER->value:
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 return [
                     function ($validator) use ($trainsetAttachment) {
                         $validator->safe()->all();
