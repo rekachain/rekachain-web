@@ -46,7 +46,7 @@ class UpdateSerialPanelRequest extends FormRequest {
                 }
         }
         return [
-            'panel_attachment_id' => 'nullable|string|max:255',
+            'panel_attachment_id' => 'nullable|integer',
             'qr_code' => 'nullable|string|max:255',
             'qr_path'=> 'nullable|string|max:255',
             'manufacture_status' => 'nullable|in:' . implode(',', SerialPanelManufactureStatusEnum::toArray()),
