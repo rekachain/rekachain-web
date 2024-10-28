@@ -17,8 +17,7 @@ class PanelAttachmentController extends Controller {
     ) {}
     
     public function index() {
-        $data = $this->panelAttachmentService->showGraph();
-        return Inertia::render('Dashboard',['data'=>$data]);
+        //
     }
 
     /**
