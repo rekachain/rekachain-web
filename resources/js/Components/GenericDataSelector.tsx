@@ -2,7 +2,7 @@ import { ChangeEvent, memo, useEffect, useState } from 'react';
 import { useDebounce } from '@uidotdev/usehooks';
 import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Button } from '@/Components/UI/button';
-import { ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/utils';
@@ -15,6 +15,15 @@ interface GenericDataSelectorProps<T extends Resource> {
     id?: string;
 
     /**
+     * Data to display in the list, e.g. manual state control
+     *
+     * Usage:
+     * const [data, setData] = useState<UserResource[]>([]);
+     * <GenericDataSelector data={data} />
+     */
+    data?: T[];
+
+    /**
      * Function to fetch data based on filters
      * This function should accept an object with the search term
      *
@@ -22,7 +31,7 @@ interface GenericDataSelectorProps<T extends Resource> {
      * fetchData={(filters) => fetchUsers(filters)}
      * @param filters
      */
-    fetchData: (filters: ServiceFilterOptions) => Promise<T[]>;
+    fetchData?: (filters: ServiceFilterOptions) => Promise<T[]>;
 
     /**
      * Function to set the selected data
@@ -33,6 +42,12 @@ interface GenericDataSelectorProps<T extends Resource> {
      * @param id
      */
     setSelectedData: (id: number | null) => void;
+
+    /**
+     * Placeholder text for the search input
+     * Default is 'Search...'
+     */
+    customSearchPlaceholder?: string;
 
     /**
      * Placeholder text for the button
@@ -98,10 +113,21 @@ interface GenericDataSelectorProps<T extends Resource> {
      * @param item
      */
     customLabel?: (item: T) => string;
+
+    /**
+     * Function to call when the search term changes
+     * This function should accept the new search term
+     *
+     * Usage:
+     * onSearchChange={(searchTerm) => console.log(searchTerm)}
+     * @param searchTerm
+     */
+    onSearchChange?: (searchTerm: string) => void;
 }
 
 const GenericDataSelector = <T extends Resource>({
     id,
+    data,
     fetchData,
     setSelectedData,
     placeholder = 'Select...',
@@ -113,26 +139,32 @@ const GenericDataSelector = <T extends Resource>({
     popoverContentClassName,
     nullable,
     customLabel,
+    customSearchPlaceholder,
+    onSearchChange,
 }: GenericDataSelectorProps<T>) => {
     const [searchTerm, setSearchTerm] = useState(initialSearch ?? '');
-    const debouncedSearchTerm = useDebounce(searchTerm, 500); // Debounce the search input
-    const [data, setData] = useState<T[]>([]);
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    const [fetchedData, setFetchedData] = useState<T[]>([]);
     const [openPopover, setOpenPopover] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
 
     useEffect(() => {
-        // Fetch data when search term changes
-        const fetch = async () => {
-            setIsFetching(true);
-            const response = await fetchData({ search: debouncedSearchTerm });
-            setData(response);
-            setIsFetching(false);
-        };
-        void fetch();
-    }, [debouncedSearchTerm, fetchData]);
+        if (fetchData && !data) {
+            const fetch = async () => {
+                setIsFetching(true);
+                const response = await fetchData({ search: debouncedSearchTerm });
+                setFetchedData(response);
+                setIsFetching(false);
+            };
+            void fetch();
+        }
+    }, [debouncedSearchTerm, fetchData, data]);
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
+        if (onSearchChange) {
+            onSearchChange(e.target.value);
+        }
     };
 
     const handleSelectItem = (id: number) => {
@@ -145,7 +177,6 @@ const GenericDataSelector = <T extends Resource>({
         setOpenPopover(false);
     };
 
-    // Type guard to ensure the value is a string or null
     const getLabel = (item: T): string => {
         if (customLabel) {
             return customLabel(item);
@@ -153,6 +184,8 @@ const GenericDataSelector = <T extends Resource>({
         const value = item[labelKey];
         return typeof value === 'string' ? value : 'Select...';
     };
+
+    const items = data ?? fetchedData;
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
@@ -164,8 +197,8 @@ const GenericDataSelector = <T extends Resource>({
                     className={cn('w-full justify-between', buttonClassName)}
                 >
                     {selectedDataId
-                        ? data.find(item => item.id === selectedDataId)
-                            ? getLabel(data.find(item => item.id === selectedDataId)!)
+                        ? items.find(item => item.id === selectedDataId)
+                            ? getLabel(items.find(item => item.id === selectedDataId)!)
                             : 'Select...'
                         : placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -174,7 +207,7 @@ const GenericDataSelector = <T extends Resource>({
             <PopoverContent className={cn('w-[200px] p-0', popoverContentClassName)}>
                 <Command shouldFilter={false}>
                     <CommandInput
-                        placeholder="Search..."
+                        placeholder={customSearchPlaceholder ?? 'Search...'}
                         value={searchTerm}
                         onInput={handleSearchChange}
                         className="border-none focus:ring-0"
@@ -184,10 +217,16 @@ const GenericDataSelector = <T extends Resource>({
                         <CommandGroup>
                             {nullable && <CommandItem onSelect={handleClearItem}>- Clear Selection -</CommandItem>}
                             {isFetching && <CommandItem disabled>Loading...</CommandItem>}
-                            {!isFetching && data.length === 0 && <CommandItem disabled>No results found</CommandItem>}
+                            {!isFetching && items.length === 0 && <CommandItem disabled>No results found</CommandItem>}
                             {!isFetching &&
-                                data.map(item => (
+                                items.map(item => (
                                     <CommandItem key={item.id} onSelect={() => handleSelectItem(item.id)}>
+                                        <Check
+                                            className={cn(
+                                                'mr-2 h-4 w-4',
+                                                selectedDataId === item.id ? 'opacity-100' : 'opacity-0',
+                                            )}
+                                        />
                                         {renderItem(item)}
                                     </CommandItem>
                                 ))}
