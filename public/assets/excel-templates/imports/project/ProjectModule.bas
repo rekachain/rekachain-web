@@ -1,4 +1,41 @@
 Attribute VB_Name = "ProjectModule"
+Function GetUniqueSortedValues(rng As Range) As Variant
+    Dim dict As Object
+    Dim cell As Range
+    Dim values() As Variant
+    Dim i As Integer
+    
+    Set dict = CreateObject("Scripting.Dictionary")
+    
+    For Each cell In rng
+        If Not dict.exists(cell.Value) Then
+            dict.Add cell.Value, Nothing
+        End If
+    Next cell
+    
+    values = dict.Keys
+    ' Sort the values
+    Call BubbleSort(values)
+    
+    GetUniqueSortedValues = values
+End Function
+
+Sub BubbleSort(arr As Variant)
+    Dim temp As Variant
+    Dim i As Integer
+    Dim j As Integer
+    
+    For i = LBound(arr) To UBound(arr) - 1
+        For j = i + 1 To UBound(arr)
+            If arr(i) > arr(j) Then
+                temp = arr(i)
+                arr(i) = arr(j)
+                arr(j) = temp
+            End If
+        Next j
+    Next i
+End Sub
+
 Sub createTrainsets()
     Dim wsProyek As Worksheet
     Dim wsTrainset As Worksheet
@@ -186,6 +223,7 @@ End Sub
 Sub UpdateCarriageValidation(changedCarriageType As Range, oldValue As String)
     Dim wsCarriage As Worksheet
     Dim wsPanel As Worksheet
+    Dim wsComponent As Worksheet
     Dim validationRange As Range
     Dim lastRow As Long
     Dim cell As Range
@@ -193,6 +231,7 @@ Sub UpdateCarriageValidation(changedCarriageType As Range, oldValue As String)
     
     Set wsCarriage = ThisWorkbook.Sheets("Gerbong")
     Set wsPanel = ThisWorkbook.Sheets("Panel")
+    Set wsComponent = ThisWorkbook.Sheets("Komponen")
     
     lastRow = wsCarriage.Cells(wsCarriage.Rows.Count, "A").End(xlUp).Row
     Set validationRange = wsCarriage.Range("A3:A" & lastRow)
@@ -210,11 +249,61 @@ Sub UpdateCarriageValidation(changedCarriageType As Range, oldValue As String)
             .ShowError = True
         End With
     Next cell
-    
+
     ' Update the values in Panel worksheet
     wsPanel.Columns("C").Replace What:=oldValue, Replacement:=changedCarriageType.Value, LookAt:=xlWhole, MatchCase:=False
+    
+    ' Update the validation range in Component worksheet
+    For Each cell In wsComponent.Range("D2:D" & wsPanel.Cells(wsPanel.Rows.Count, "D").End(xlUp).Row)
+        With cell.Validation
+            .Delete ' Remove any existing validation
+            .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+                xlBetween, Formula1:="='Gerbong'!" & validationRange.Address
+            .IgnoreBlank = True
+            .InCellDropdown = True
+            .ShowInput = True
+            .ShowError = True
+        End With
+    Next cell
+
+    ' Update the values in Component worksheet
+    wsComponent.Columns("D").Replace What:=oldValue, Replacement:=changedCarriageType.Value, LookAt:=xlWhole, MatchCase:=False
 End Sub
 
+Sub updatePanelValidation(changedCell As Range, oldValue As String)
+    Dim validationRange As Range
+    Dim lastRow As Long
+    Dim cell As Range
+    Dim wsPanel As Worksheet
+    Dim wsComponent As Worksheet
+    Dim uniqueValues As Variant
+    
+    Set wsPanel = ThisWorkbook.Sheets("Panel")
+    Set wsComponent = ThisWorkbook.Sheets("Komponen")
+    
+    lastRow = wsPanel.Cells(wsPanel.Rows.Count, "A").End(xlUp).Row
+    Set validationRange = wsPanel.Range("A2:A" & lastRow)
+    
+    uniqueValues = GetUniqueSortedValues(validationRange)
+    
+    ' Update validation range in Panel worksheet
+    For Each cell In wsComponent.Range("C2:C" & wsPanel.Cells(wsPanel.Rows.Count, "C").End(xlUp).Row)
+        With cell.Validation
+            .Delete ' Remove any existing validation
+            .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+                xlBetween, Formula1:=Join(uniqueValues, ",")
+            .IgnoreBlank = True
+            .InCellDropdown = True
+            .ShowInput = True
+            .ShowError = True
+        End With
+    Next cell
+
+    ' Update values in Component worksheet if the old value is in the validation range
+    If IsError(Application.Match(oldValue, wsPanel.Range("A3:A" & lastRow), 0)) Then
+        wsComponent.Columns("C").Replace What:=oldValue, Replacement:=changedCell.Value, LookAt:=xlWhole, MatchCase:=False
+    End If
+End Sub
 
 ' draft
 Sub SaveAndUpload()
