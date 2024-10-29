@@ -346,11 +346,11 @@ class Dummy {
     }
 
     public function createDetailWorkerPanel($attributes = []): DetailWorkerPanel {
-        User::factory()->create();
+        $this->createWorkerAssembly();
         $this->createSerialPanel();
         $this->createProgressStep();
 
-        $detailWorkerPanel = DetailWorkerPanel::factory()->create($attributes);
+        $detailWorkerPanel = DetailWorkerPanel::factory()->create();
 
         return $detailWorkerPanel;
     }
