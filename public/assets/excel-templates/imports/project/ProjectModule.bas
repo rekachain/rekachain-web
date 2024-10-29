@@ -49,7 +49,76 @@ Sub createTrainsets()
     End If
 End Sub
 
-Sub changeCarriage(changedCell As Range)
+Sub changeCarriage(target As Range) 
+    Dim tableName As String
+    Dim tableRange As Range
+    Dim typeColumn As Range
+    Dim typeRowCount As Integer
+    Dim lastPresetColumn As Integer
+    Dim lastTrainsetColumn As Integer
+    Dim countPresetCarriages As Integer
+    Dim presetSheet As Worksheet
+    Dim trainsetSheet As Worksheet
+    Dim i As Integer
+    
+    Set tableRange = Worksheets("Gerbong").ListObjects("InitGerbong").Range
+    Set typeColumn = tableRange.Rows(1)
+    If Not typeColumn Is Nothing Then
+        typeRowCount = typeColumn.End(xlDown).Row - typeColumn.Row + 1
+    End If
+    ' changing carriage on preset trainset
+    Set presetSheet = ThisWorkbook.Sheets("Preset Trainset")
+
+    lastPresetColumn = presetSheet.Cells(3, presetSheet.Columns.Count).End(xlToLeft).Column
+    countPresetCarriages = lastPresetColumn - 2
+    
+    presetSheet.Cells(3, lastPresetColumn).ClearContents
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Rows.Count, lastPresetColumn)).UnMerge
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Rows.Count, lastPresetColumn)).ClearFormats
+
+    For i = 1 To typeRowCount - 1
+        presetSheet.Cells(3, i + 2).Value = typeColumn.Rows(i + 1).Value
+        presetSheet.Cells(3, i + 2).HorizontalAlignment = xlCenter
+        presetSheet.Cells(3, i + 2).Borders.LineStyle = xlContinuous
+        presetSheet.Cells(3, i + 2).Borders.Weight = xlThin
+        presetSheet.Cells(3, i + 2).Interior.Color = rgb(142, 169, 219)
+    Next i
+
+    lastPresetColumn = presetSheet.Cells(3, presetSheet.Columns.Count).End(xlToLeft).Column
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Cells(presetSheet.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).HorizontalAlignment = xlCenter
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Cells(presetSheet.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.LineStyle = xlContinuous
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Cells(presetSheet.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.Weight = xlThin
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(2, lastPresetColumn)).Interior.Color = rgb(142, 169, 219)
+    presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(2, lastPresetColumn)).Merge
+
+    ' changing carriage on trainset
+    Set trainsetSheet = ThisWorkbook.Sheets("Trainset")
+
+    lastTrainsetColumn = trainsetSheet.Cells(3, trainsetSheet.Columns.Count).End(xlToLeft).Column
+    countPresetCarriages = lastTrainsetColumn - 3
+    
+    trainsetSheet.Cells(3, lastTrainsetColumn).ClearContents
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Rows.Count, lastTrainsetColumn)).UnMerge
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Rows.Count, lastTrainsetColumn)).ClearFormats
+
+    For i = 1 To typeRowCount - 1
+        trainsetSheet.Cells(3, i + 3).Value = typeColumn.Rows(i + 1).Value
+        trainsetSheet.Cells(3, i + 3).HorizontalAlignment = xlCenter
+        trainsetSheet.Cells(3, i + 3).Borders.LineStyle = xlContinuous
+        trainsetSheet.Cells(3, i + 3).Borders.Weight = xlThin
+        trainsetSheet.Cells(3, i + 3).Interior.Color = rgb(142, 169, 219)
+    Next i
+
+    lastTrainsetColumn = trainsetSheet.Cells(3, trainsetSheet.Columns.Count).End(xlToLeft).Column
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Cells(trainsetSheet.Rows.Count, 1).End(xlUp).Row, lastTrainsetColumn)).HorizontalAlignment = xlCenter
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(2, lastTrainsetColumn)).Merge
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(2, lastTrainsetColumn)).Borders.LineStyle = xlContinuous
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(2, lastTrainsetColumn)).Borders.Weight = xlThin
+    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(2, lastTrainsetColumn)).Interior.Color = rgb(142, 169, 219)
+    
+End Sub
+
+Sub changeCarriagePreset(changedCell As Range)
     Dim newValue As String
     Dim presetSheet As Worksheet
     Dim foundCell As Range
