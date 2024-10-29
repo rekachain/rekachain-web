@@ -47,8 +47,6 @@ test('update assign worker panel', function () {
     $workerAssembly = User::factory(['name' => 'Worker Mekanik', 'step_id' => Step::first()])->create();
     $workerAssembly->assignRole($role);
 
-    dump($serialPanel->panel_attachment->carriage_panel->progress);
-
     $response =  $this->actingAs($user)->putJson('/api/serial-panels/' . $serialPanel->id . '?intent=' . IntentEnum::API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL->value, [
         'worker_id' => $workerAssembly->id
     ])->assertStatus(201)
