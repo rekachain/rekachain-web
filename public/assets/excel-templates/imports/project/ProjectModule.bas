@@ -118,7 +118,7 @@ Sub changeCarriage(target As Range)
     
 End Sub
 
-Sub changeCarriagePreset(changedCell As Range)
+Sub changePresetTrainsetCount(changedCell As Range)
     Dim newValue As String
     Dim presetSheet As Worksheet
     Dim foundCell As Range
@@ -127,7 +127,7 @@ Sub changeCarriagePreset(changedCell As Range)
     Set presetSheet = ThisWorkbook.Sheets("Preset Trainset")
     
     ' Find the new value in the Preset sheet
-    Set foundCell = presetSheet.Range("B4:B"&presetSheet.Cells(presetSheet.Rows.Count, "B").End(xlUp).Row).Find(What:=newValue, LookIn:=xlValues, LookAt:=xlWhole)
+    Set foundCell = presetSheet.Range("B4:B" & presetSheet.Cells(presetSheet.Rows.Count, "B").End(xlUp).Row).Find(What:=newValue, LookIn:=xlValues, LookAt:=xlWhole)
     
     If Not foundCell Is Nothing Then
         ' Determine the number of columns to copy from row 3 of Preset sheet
@@ -140,6 +140,33 @@ Sub changeCarriagePreset(changedCell As Range)
     Else
         MsgBox "Value not found in Preset sheet."
     End If
+End Sub
+
+Sub changePresetTrainset()
+    Dim wsPreset As Worksheet
+    Dim wsTrainset As Worksheet
+    Dim validationRange As Range
+    Dim lastRow As Long
+    Dim i As Long
+
+    Set wsPreset = ThisWorkbook.Sheets("Preset Trainset")
+    Set wsTrainset = ThisWorkbook.Sheets("Trainset")
+
+    lastRow = wsPreset.Cells(wsPreset.Rows.Count, "B").End(xlUp).Row
+    Set validationRange = wsPreset.Range("B4:B" & lastRow)
+
+    For i = 1 To wsTrainset.Cells(wsTrainset.Rows.Count, "C").End(xlUp).Row - 3
+        With wsTrainset.Cells(3 + i, 3).Validation
+            .Delete ' Remove any existing validation
+            .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+                xlBetween, Formula1:="='Preset Trainset'!" & validationRange.Address
+            .IgnoreBlank = True
+            .InCellDropdown = True
+            .ShowInput = True
+            .ShowError = True
+        End With
+        Call changePresetTrainsetCount(wsTrainset.Cells(3 + i, 3))
+    Next i
 End Sub
 
 
