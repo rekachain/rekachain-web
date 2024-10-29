@@ -183,6 +183,38 @@ Sub changePresetTrainset()
     Next i
 End Sub
 
+Sub UpdateCarriageValidation(changedCarriageType As Range, oldValue As String)
+    Dim wsCarriage As Worksheet
+    Dim wsPanel As Worksheet
+    Dim validationRange As Range
+    Dim lastRow As Long
+    Dim cell As Range
+    Dim newValue As String
+    
+    Set wsCarriage = ThisWorkbook.Sheets("Gerbong")
+    Set wsPanel = ThisWorkbook.Sheets("Panel")
+    
+    lastRow = wsCarriage.Cells(wsCarriage.Rows.Count, "A").End(xlUp).Row
+    Set validationRange = wsCarriage.Range("A3:A" & lastRow)
+    
+    
+    ' Update the validation range in Panel worksheet
+    For Each cell In wsPanel.Range("C2:C" & wsPanel.Cells(wsPanel.Rows.Count, "C").End(xlUp).Row)
+        With cell.Validation
+            .Delete ' Remove any existing validation
+            .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
+                xlBetween, Formula1:="='Gerbong'!" & validationRange.Address
+            .IgnoreBlank = True
+            .InCellDropdown = True
+            .ShowInput = True
+            .ShowError = True
+        End With
+    Next cell
+    
+    ' Update the values in Panel worksheet
+    wsPanel.Columns("C").Replace What:=oldValue, Replacement:=changedCarriageType.Value, LookAt:=xlWhole, MatchCase:=False
+End Sub
+
 
 ' draft
 Sub SaveAndUpload()
