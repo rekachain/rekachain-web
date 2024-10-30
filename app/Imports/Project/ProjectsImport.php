@@ -14,11 +14,9 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 class ProjectsImport implements WithMultipleSheets 
 {
     private $project;
-    private $file;
 
-    public function __construct(UploadedFile $file) {
-        $this->file = $file;
-    }
+    public function __construct(public UploadedFile $file) {}
+
     public function sheets(): array 
     {
         return [

@@ -9,12 +9,7 @@ use Maatwebsite\Excel\Concerns\WithMappedCells;
 
 class ProjectSheetImport implements ToModel, WithMappedCells
 {
-    private $parent;
-
-    public function __construct(ProjectsImport $parent) 
-    {
-        $this->parent = $parent;
-    }
+    public function __construct(private ProjectsImport $parent) { }
     
     public function mapping(): array
     {

@@ -10,17 +10,10 @@ use App\Models\Trainset;
 use App\Support\Enums\TrainsetStatusEnum;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class TrainsetSheetImport implements ToCollection
 {
-    private $parent;
-
-    public function __construct(ProjectsImport $parent) 
-    {
-        $this->parent = $parent;
-    }
+    public function __construct(private ProjectsImport $parent) { }
 
     public function collection(Collection $rows)
     {

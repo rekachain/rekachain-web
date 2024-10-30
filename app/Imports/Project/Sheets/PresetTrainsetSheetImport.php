@@ -8,25 +8,16 @@ use App\Models\CarriagePreset;
 use App\Models\PresetTrainset;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithStartRow;
-use Maatwebsite\Excel\Facades\Excel;
 
 class PresetTrainsetSheetImport implements ToCollection
 {
-    private $parent;
-
-    public function __construct(ProjectsImport $parent) 
-    {
-        $this->parent = $parent;
-    }
+    public function __construct(private ProjectsImport $parent) { }
     
     public function collection(Collection $rows)
     {
         // Retrieve the Project instance from the parent import class
         $project = $this->parent->getProject();
-        logger($rows);
+        // logger($rows);
         // [
         //     ["=CONCATENATE(\"Preset Trainset Proyek  \", [1]Proyek!B1)",null,null,null,null,null,null],
         //     ["No.","Nama","Gerbong",null,null,null,null],
