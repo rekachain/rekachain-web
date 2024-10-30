@@ -8,7 +8,23 @@ test('index method returns paginated feedback', function () {
     $response = actAsSuperAdmin()->getJson('/api/feedback?page=1&perPage=1');
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta'])
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'user_id',
+                    'name',
+                    'email',
+                    'message',
+                    'rating',
+                    'status',
+                    'created_at',
+                    'updated_at',
+                    'can_be_deleted',
+                ]
+            ],
+            'meta'
+        ])
         ->assertJsonCount(1, 'data');
 });
 
@@ -43,18 +59,20 @@ test('show method returns Feedback details', function () {
         ]);
 });
 
-// test('update method updates feedback', function () {
-//    $model = $this->dummy->createFeedback();
-//    $updatedData = [
-//        'name' => 'Updated name',
-//    ];
-//
-//    $response = actAsSuperAdmin()->putJson("/api/feedback/{$model->id}", $updatedData);
-//
-//    $response->assertStatus(200)
-//        ->assertJson($updatedData);
-//    $this->assertDatabaseHas('feedback', $updatedData);
-// });
+test('update method updates feedback', function () {
+    $model = $this->dummy->createFeedback();
+    $updatedData = [
+        'name' => 'Updated name',
+        'message' => 'Updated message',
+        'rating' => 4,
+    ];
+
+    $response = actAsSuperAdmin()->putJson("/api/feedback/{$model->id}", $updatedData);
+
+    $response->assertStatus(200)
+        ->assertJson($updatedData);
+    $this->assertDatabaseHas('feedback', $updatedData);
+ });
 
 test('destroy method deletes feedback', function () {
     $model = $this->dummy->createFeedback();
