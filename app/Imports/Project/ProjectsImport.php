@@ -26,7 +26,7 @@ class ProjectsImport implements WithMultipleSheets
             'Gerbong' => new CarriageSheetImport(),
             'Preset Trainset' => new PresetTrainsetSheetImport($this),
             'Trainset' => new TrainsetSheetImport($this),
-            // 'Panel' => new PanelSheetImport(),
+            'Panel' => new PanelSheetImport($this),
             // 'Komponen' => new ComponentSheetImport(),
         ];
     }
