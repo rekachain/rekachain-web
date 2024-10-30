@@ -6,6 +6,8 @@ enum IntentEnum: string
 {
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
 
+    case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';
+
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS = 'api.trainset.attachment.get.attachments';
