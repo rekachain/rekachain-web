@@ -324,7 +324,7 @@ Sub SaveAndUpload()
     End If
 
     ' Set your URL here
-    url = "http://127.0.0.1:8000/api/upload-project"
+    url = "http://127.0.0.1:8000/api/upload-project?intent=api.project.import.project.template"
 
     ' Set the workbook to the current workbook
     Set wb = ThisWorkbook
@@ -339,13 +339,25 @@ Sub SaveAndUpload()
     targetWb.SaveAs newFilePath, FileFormat:=xlOpenXMLWorkbook, Password:="", WriteResPassword:="", _
     ReadOnlyRecommended:=False, CreateBackup:=False, ConflictResolution:=xlLocalSessionChanges
 
-    Application.DisplayAlerts = True
-    Application.ScreenUpdating = True
-
     For Each ws In wb.Worksheets
         ws.Copy after:=targetWb.Sheets(targetWb.Sheets.Count)
     Next ws
 
+    targetWb.Save
+    targetWb.Sheets(targetWb.Sheets.Count).Cells.Validation.Delete
+    targetWb.Sheets("Sheet1").Delete
+
+    Dim sh As Shape
+    For Each sh In targetWb.Sheets("Proyek").Shapes
+        If sh.Name = "SendButton" Then
+            sh.Delete
+            Exit For
+        End If
+    Next sh
+    
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+    
     targetWb.Save
     targetWb.Close
 
@@ -366,14 +378,16 @@ Sub SaveAndUpload()
     ' Set the request headers
     xmlHttp.setRequestHeader "Content-Type", "multipart/form-data; boundary=" & boundary
     xmlHttp.setRequestHeader "Content-Length", Len(fileData)
+    xmlHttp.SetRequestHeader "X-Requested-With", "XMLHttpRequest"
 
     ' Send the request
     xmlHttp.Send fileData
 
     ' Check the response
     If xmlHttp.Status = 200 Then
-        MsgBox "File uploaded successfully! with status: " & xmlHttp.Status, " Success and Response: " & xmlHttp.responseText, vbInformation
+        MsgBox "File uploaded successfully!", vbInformation
     Else
-        MsgBox "File upload failed: " & xmlHttp.Status & " - " & xmlHttp.responseText, vbCritical
+        MsgBox "File upload failed! Please upload manually!" & vbNewLine & "Status: " & xmlHttp.Status & " - " & xmlHttp.responseText, vbCritical
+        wb.FollowHyperlink Address:="http://127.0.0.1:8000"
     End If
 End Sub
