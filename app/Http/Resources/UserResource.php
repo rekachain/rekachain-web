@@ -43,7 +43,6 @@ class UserResource extends JsonResource {
             'step_id' => $this->step_id,
             'workstation' => WorkstationResource::make($this->whenLoaded('workstation')),
             'step' => StepResource::make($this->whenLoaded('step')),
-            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

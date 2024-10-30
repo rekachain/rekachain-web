@@ -44,7 +44,7 @@ export default function StepCardView({
                         </div>
                         <p className="text-sm">
                             {t('pages.step.partials.partials.step_card.headers.estimated_manufacturing_time', {
-                                estimated_manufacturing_time: step?.estimated_time ?? '',
+                                estimated_manufacturing_time: step.estimated_time,
                             })}
                         </p>
 

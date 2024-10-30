@@ -15,7 +15,6 @@ class DivisionResource extends JsonResource {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

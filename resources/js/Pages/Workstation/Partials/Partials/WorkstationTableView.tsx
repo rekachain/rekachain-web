@@ -48,11 +48,9 @@ export default function WorkstationTableView({
                                 >
                                     {t('action.edit')}
                                 </Link>
-                                {workstation.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
+                                    {t('action.delete')}
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}

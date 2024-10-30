@@ -16,7 +16,6 @@ class WorkshopResource extends JsonResource {
             'id' => $this->id,
             'name' => $this->name,
             'address' => $this->address,
-            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

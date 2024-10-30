@@ -38,11 +38,9 @@ export default function DivisionCardView({
                             >
                                 {t('action.edit')}
                             </Link>
-                            {division.can_be_deleted && (
-                                <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
-                                    {t('action.delete')}
-                                </Button>
-                            )}
+                            <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
+                                {t('action.delete')}
+                            </Button>
                         </div>
                     </div>
                 </AnimateIn>

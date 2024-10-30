@@ -18,7 +18,6 @@ class WorkstationResource extends JsonResource {
             'location' => $this->location,
             'workshop' => new WorkshopResource($this->whenLoaded('workshop')),
             'division' => new DivisionResource($this->whenLoaded('division')),
-            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

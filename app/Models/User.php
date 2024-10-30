@@ -4,7 +4,6 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -92,40 +91,7 @@ class User extends Authenticatable {
         return $this->hasOne(Step::class, 'id', 'step_id');
     }
 
-    public function feedbacks(): HasMany {
-        return $this->hasMany(Feedback::class);
-    }
-
-    public function panel_attachment_handlers(): HasMany {
-        return $this->hasMany(PanelAttachmentHandler::class);
-    }
-
-    public function detail_worker_panels(): HasMany {
-        return $this->hasMany(DetailWorkerPanel::class, 'worker_id');
-    }
-
-    public function detail_worker_trainsets(): HasMany {
-        return $this->hasMany(DetailWorkerTrainset::class, 'worker_id');
-    }
-
-    public function panel_attachment_supervisors(): HasMany {
-        return $this->hasMany(PanelAttachment::class, 'supervisor_id');
-    }
-
-    public function trainset_attachment_supervisors(): HasMany {
-        return $this->hasMany(TrainsetAttachment::class, 'supervisor_id');
-    }
-
     public function getImageAttribute() {
         return $this->image_path ? asset('storage/' . $this->image_path) : null;
-    }
-
-    public function canBeDeleted(): bool {
-        return $this->feedbacks->isEmpty() &&
-            $this->panel_attachment_handlers->isEmpty() &&
-            $this->detail_worker_panels->isEmpty() &&
-            $this->detail_worker_trainsets->isEmpty() &&
-            $this->panel_attachment_supervisors->isEmpty() &&
-            $this->trainset_attachment_supervisors->isEmpty();
     }
 }

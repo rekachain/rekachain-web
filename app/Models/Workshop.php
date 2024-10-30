@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Workshop extends Model {
     use HasFactory;
@@ -13,12 +12,4 @@ class Workshop extends Model {
         'name',
         'address',
     ];
-
-    public function workstations(): HasMany {
-        return $this->hasMany(Workstation::class);
-    }
-
-    public function canBeDeleted(): bool {
-        return $this->workstations->isEmpty();
-    }
 }

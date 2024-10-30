@@ -18,7 +18,6 @@ class RawMaterialResource extends JsonResource {
             'description' => $this->description,
             'specs' => $this->specs,
             'unit' => $this->unit,
-            'can_be_deleted' => $this->canBeDeleted(),
         ];
     }
 }

@@ -43,11 +43,9 @@ export default function RawMaterialCardView({
                             >
                                 {t('action.edit')}
                             </Link>
-                            {rawMaterial.can_be_deleted && (
-                                <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
-                                    {t('action.delete')}
-                                </Button>
-                            )}
+                            <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
+                                {t('action.delete')}
+                            </Button>
                         </div>
                     </div>
                 </AnimateIn>

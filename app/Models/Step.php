@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Step extends Model {
     use HasFactory;
@@ -15,14 +15,6 @@ class Step extends Model {
         'estimated_time',
     ];
 
-    public function progress_steps(): HasMany {
-        return $this->hasMany(ProgressStep::class);
-    }
-
-    public function users(): HasMany {
-        return $this->hasMany(User::class);
-    }
-
     // public function user(): BelongsTo {
     //     return $this->belongsTo(User::class);
     // }
@@ -32,6 +24,6 @@ class Step extends Model {
     //    public function detail_worker(): BelongsTo {}
 
     public function canBeDeleted() {
-        return $this->progress_steps->isEmpty() && $this->users->isEmpty();
+        return true;
     }
 }
