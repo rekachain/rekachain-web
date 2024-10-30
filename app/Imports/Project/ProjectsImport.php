@@ -25,7 +25,7 @@ class ProjectsImport implements WithMultipleSheets
             'Preset Trainset' => new PresetTrainsetSheetImport($this),
             'Trainset' => new TrainsetSheetImport($this),
             'Panel' => new PanelSheetImport($this),
-            // 'Komponen' => new ComponentSheetImport(),
+            'Komponen' => new ComponentSheetImport($this),
         ];
     }
 
