@@ -480,7 +480,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi (Menit)',
             ],
             'buttons' => [
                 'submit' => 'Buat Langkah',
@@ -496,7 +496,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi (Menit)',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Langkah',
@@ -523,7 +523,7 @@ return [
                     'headers' => [
                         'name' => 'Nama: :name',
                         'process' => 'Proses: :process',
-                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi: :estimated_manufacturing_time',
+                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi: :estimated_manufacturing_time Menit',
                     ],
                 ],
             ],

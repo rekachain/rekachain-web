@@ -49,9 +49,11 @@ export default function RawMaterialTableView({
                                 >
                                     {t('action.edit')}
                                 </Link>
-                                <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
-                                    {t('action.delete')}
-                                </Button>
+                                {rawMaterial.can_be_deleted && (
+                                    <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
