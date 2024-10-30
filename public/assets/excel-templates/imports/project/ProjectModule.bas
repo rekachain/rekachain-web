@@ -308,7 +308,7 @@ End Sub
 ' draft
 Sub SaveAndUpload()
     Dim wb As Workbook
-    Dim newWb As Workbook
+    Dim targetWb As Workbook
     Dim newFilePath As String
     Dim xmlHttp As Object
     Dim url As String
@@ -328,14 +328,26 @@ Sub SaveAndUpload()
 
     ' Set the workbook to the current workbook
     Set wb = ThisWorkbook
+    Set targetWb = Workbooks.Add
 
     newFilePath = wb.Path & "\" & Replace(wb.Name, ".xlsm", ".xlsx")
-    ' Save the workbook as .xlsx format
-    Application.DisplayAlerts = False
-    wb.SaveAs newFilePath, FileFormat:=xlOpenXMLWorkbook
-    ' wb.Close
-    Application.DisplayAlerts = True
 
+    ' Save the workbook as .xlsx format
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+
+    targetWb.SaveAs newFilePath, FileFormat:=xlOpenXMLWorkbook, Password:="", WriteResPassword:="", _
+    ReadOnlyRecommended:=False, CreateBackup:=False, ConflictResolution:=xlLocalSessionChanges
+
+    Application.DisplayAlerts = True
+    Application.ScreenUpdating = True
+
+    For Each ws In wb.Worksheets
+        ws.Copy after:=targetWb.Sheets(targetWb.Sheets.Count)
+    Next ws
+
+    targetWb.Save
+    targetWb.Close
 
     ' Create an XML HTTP Request object
     Set xmlHttp = CreateObject("MSXML2.XMLHTTP")
@@ -358,10 +370,10 @@ Sub SaveAndUpload()
     ' Send the request
     xmlHttp.Send fileData
 
-    ' Get the response
-    response = xmlHttp.responseText
-
-    MsgBox "File uploaded successfully. Response: " & response
-    ' Delete the created file
-    ' Kill newFilePath
+    ' Check the response
+    If xmlHttp.Status = 200 Then
+        MsgBox "File uploaded successfully! with status: " & xmlHttp.Status, " Success and Response: " & xmlHttp.responseText, vbInformation
+    Else
+        MsgBox "File upload failed: " & xmlHttp.Status & " - " & xmlHttp.responseText, vbCritical
+    End If
 End Sub
