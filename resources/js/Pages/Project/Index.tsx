@@ -5,6 +5,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Import from './Partials/Import';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -22,6 +23,7 @@ export default function () {
                         >
                             {t('pages.project.index.buttons.create')}
                         </Link>
+                        <Import />
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Projects />

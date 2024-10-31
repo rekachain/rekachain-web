@@ -1065,6 +1065,31 @@ return [
                     'deleted' => 'Proyek berhasil dihapus!',
                 ],
             ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Proyek berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Proyek',
+                    'description' => 'Impor Proyek dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Proyek',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Proyek',
+                        'processing' => 'Memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Proyek berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Proyek',
+                ],
+            ],
             'partials' => [
                 'project_table' => [
                     'headers' => [
