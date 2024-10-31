@@ -159,8 +159,12 @@ class Dummy {
     public function createPanelMaterial(): PanelMaterial {
         $this->createRawMaterial();
         $this->createCarriagePanel();
-        $panelMaterial = new PanelMaterial;
-        $panelMaterial->save();
+
+        $panelMaterial = PanelMaterial::inRandomOrder()->first() ?? PanelMaterial::create([
+            'carriage_panel_id' => $this->createCarriagePanel()->id,
+            'raw_material_id' => $this->createRawMaterial()->id,
+            'qty' => 1,
+        ]);
 
         return $panelMaterial;
     }
