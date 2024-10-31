@@ -306,7 +306,7 @@ Sub updatePanelValidation(changedCell As Range, oldValue As String)
 End Sub
 
 ' draft
-Sub SaveAndUpload()
+Sub sendToRekachainApi()
     Dim wb As Workbook
     Dim targetWb As Workbook
     Dim newFilePath As String
@@ -328,38 +328,8 @@ Sub SaveAndUpload()
 
     ' Set the workbook to the current workbook
     Set wb = ThisWorkbook
-    Set targetWb = Workbooks.Add
 
-    newFilePath = wb.Path & "\" & Replace(wb.Name, ".xlsm", ".xlsx")
-
-    ' Save the workbook as .xlsx format
-    Application.ScreenUpdating = False
-    Application.DisplayAlerts = False
-
-    targetWb.SaveAs newFilePath, FileFormat:=xlOpenXMLWorkbook, Password:="", WriteResPassword:="", _
-    ReadOnlyRecommended:=False, CreateBackup:=False, ConflictResolution:=xlLocalSessionChanges
-
-    For Each ws In wb.Worksheets
-        ws.Copy after:=targetWb.Sheets(targetWb.Sheets.Count)
-    Next ws
-
-    targetWb.Save
-    targetWb.Sheets(targetWb.Sheets.Count).Cells.Validation.Delete
-    targetWb.Sheets("Sheet1").Delete
-
-    Dim sh As Shape
-    For Each sh In targetWb.Sheets("Proyek").Shapes
-        If sh.Name = "SendButton" Then
-            sh.Delete
-            Exit For
-        End If
-    Next sh
-    
-    Application.DisplayAlerts = True
-    Application.ScreenUpdating = True
-    
-    targetWb.Save
-    targetWb.Close
+    newFilePath = wb.FullName
 
     ' Create an XML HTTP Request object
     Set xmlHttp = CreateObject("MSXML2.XMLHTTP")
@@ -388,6 +358,6 @@ Sub SaveAndUpload()
         MsgBox "File uploaded successfully!", vbInformation
     Else
         MsgBox "File upload failed! Please upload manually!" & vbNewLine & "Status: " & xmlHttp.Status & " - " & xmlHttp.responseText, vbCritical
-        wb.FollowHyperlink Address:="http://127.0.0.1:8000"
+        wb.FollowHyperlink Address:="http://127.0.0.1:8000/upload-project"
     End If
 End Sub
