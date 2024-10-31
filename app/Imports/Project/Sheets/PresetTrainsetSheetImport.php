@@ -3,7 +3,6 @@
 namespace App\Imports\Project\Sheets;
 
 use App\Imports\Project\ProjectsImport;
-use App\Models\Carriage;
 use App\Models\CarriagePreset;
 use App\Models\PresetTrainset;
 use Illuminate\Support\Collection;
@@ -15,35 +14,32 @@ class PresetTrainsetSheetImport implements ToCollection
     
     public function collection(Collection $rows)
     {
-        // Retrieve the Project instance from the parent import class
         $project = $this->parent->getProject();
-        // logger($rows);        
         $headers = $rows[2]->filter();
         $rows->skip(3)->each(function ($row) use ($project, $headers) {
             if ($row[1] == null || $row[1] == '') {
                 return;
             }
-            // logger($row[1]);
-            // $preset = PresetTrainset::whereProjectId($project->id)->whereName($row[1])->first();
-            // if (!$preset) {
+            
             $preset = PresetTrainset::create([
                 'project_id' => $project->id,
                 'name' => $row[1],
             ]);
-            // }
-            $carriagePreset = [];
+            $this->parent->addPreset($preset);
+
+            $carriagePresetImport = [];
             foreach ($headers as $index => $header) {
-                // logger('index: ' . $index . ' header: ' . $header);
-                $carriagePreset[$header] = $row[$index];
+                $carriagePresetImport[$header] = $row[$index];
             }
-            foreach ($carriagePreset as $key => $value) {
+            
+            foreach ($carriagePresetImport as $key => $value) {
                 if ($value != 0) {
-                    // logger($key.' '.$value);
-                    CarriagePreset::create([
+                    $carriagePreset = CarriagePreset::create([
                         'preset_trainset_id' => $preset->id,
-                        'carriage_id' => Carriage::whereType($key)->first()->id,
+                        'carriage_id' => $this->parent->getCarriages()->firstWhere('type', $key)->id,
                         'qty' => $value
                     ]);
+                    $this->parent->addCarriagePreset($carriagePreset);
                 }
             }
         });

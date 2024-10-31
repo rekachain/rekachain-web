@@ -3,9 +3,6 @@
 namespace App\Imports\Project\Sheets;
 
 use App\Imports\Project\ProjectsImport;
-use App\Models\Carriage;
-use App\Models\CarriagePreset;
-use App\Models\PresetTrainset;
 use App\Models\Trainset;
 use App\Support\Enums\TrainsetStatusEnum;
 use Illuminate\Support\Collection;
@@ -25,17 +22,20 @@ class TrainsetSheetImport implements ToCollection
             if ($row[2] == null || $row[2] == '' || $row[1] == null || $row[1] == '') {
                 return;
             }
+            
             if ($row[2] != 'Custom') {
-                $preset = PresetTrainset::whereProjectId($project->id)->whereName($row[2])->first();
-                $carriagePreset = CarriagePreset::wherePresetTrainsetId($preset->id)->get();
-                // logger($carriagePreset->toArray());
+                $preset = $this->parent->getPresets()->firstWhere('name', $row[2]);
+                $carriagePresets = $this->parent->getCarriagePresets()->where('preset_trainset_id', $preset->id)->all();
+                // logger($carriagePresets);
                 $trainset = Trainset::create([
                     'project_id' => $project->id,
                     'preset_trainset_id' => $preset->id,
                     'name' => $row[1],
                     'status' => TrainsetStatusEnum::DRAFT->value,
                 ]);
-                foreach ($carriagePreset as $key => $value) {
+                $this->parent->addTrainset($trainset);
+
+                foreach ($carriagePresets as $key => $value) {
                     $trainset->carriage_trainsets()->create([
                         'trainset_id' => $trainset->id,
                         'carriage_id' => $value->carriage_id,
@@ -48,17 +48,18 @@ class TrainsetSheetImport implements ToCollection
                     'name' => $row[1],
                     'status' => TrainsetStatusEnum::DRAFT->value,
                 ]);
+                $this->parent->addTrainset($trainset);
+
                 $carriageTrainset = [];
                 foreach ($headers as $index => $header) {
-                    // logger('index: ' . $index . ' header: ' . $header);
                     $carriageTrainset[$header] = $row[$index];
                 }
-                // logger(json_encode($carriageTrainset));
+
                 foreach ($carriageTrainset as $key => $value) {
                     if ($value != 0) {
                         $trainset->carriage_trainsets()->create([
                             'trainset_id' => $trainset->id,
-                            'carriage_id' => Carriage::whereType($key)->first()->id,
+                            'carriage_id' => $this->parent->getCarriages()->firstWhere('type', $key)->id,
                             'qty' => $value,
                         ]);
                     }

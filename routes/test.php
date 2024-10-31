@@ -46,14 +46,14 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     });
 
     Route::group(['as' => '.'], function () {
-        Route::post('/projects/upload-project', [ProjectController::class, 'store'])->name('projects.upload-project');
-        Route::post('/carriage-panels/{carriage_panel}/upload-panel-progress-material', [CarriagePanelController::class, 'update'])->name('carriage-panels.upload-progress-material');
-        Route::post('/carriage-panel-components/{carriage_panel_component}/upload-component-progress-material', [CarriagePanelComponentController::class, 'update'])->name('carriage-panel-components.upload-progress-material');
+        Route::resource('projects', ProjectController::class);
         Route::resource('panels', PanelController::class);
         Route::resource('carriages', CarriageController::class);
+        Route::resource('carriage-panels', CarriagePanelController::class);
         Route::resource('panel-attachments', \App\Http\Controllers\PanelAttachmentController::class);
         Route::resource('trainsets', TrainsetController::class);
         Route::resource('components', ComponentController::class);
+        Route::resource('carriage-panel-components', CarriagePanelComponentController::class);
         Route::resource('progress', ProgressController::class);
         Route::resource('steps', StepController::class);
     });

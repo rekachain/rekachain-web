@@ -3,13 +3,11 @@
 namespace App\Imports\Project\Sheets;
 
 use App\Imports\Project\ProjectsImport;
-use App\Models\Carriage;
 use App\Models\Panel;
-use App\Models\Trainset;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PanelSheetImport extends ProjectsImport implements ToModel, WithHeadingRow 
+class PanelSheetImport extends ProjectsImport implements ToModel, WithHeadingRow
 {
     public function __construct(private ProjectsImport $parent) { }
     
@@ -20,8 +18,10 @@ class PanelSheetImport extends ProjectsImport implements ToModel, WithHeadingRow
             'name' => $row['nama'],
             'description' => $row['deskripsi'],
         ]);
-        $carriage = Carriage::whereType($row['tipe_gerbong'])->first();
-        $trainsets = Trainset::whereProjectId($this->parent->getProject()->id)->get();
+        $this->parent->addPanel($panel);
+
+        $carriage = $this->parent->getCarriages()->firstWhere('type', $row['tipe_gerbong']);
+        $trainsets = $this->parent->getTrainsets();
         $trainsets->each(function ($trainset) use ($panel, $carriage, $row) {
             $carriageTrainsets = $trainset->carriage_trainsets;
             $carriageTrainsets->each(function ($carriageTrainset) use ($panel, $carriage, $row) {
