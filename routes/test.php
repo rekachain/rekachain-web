@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelComponentController;
+use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\TrainsetController;
 use App\Models\CarriagePanel;
@@ -43,6 +46,9 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     });
 
     Route::group(['as' => '.'], function () {
+        Route::post('/projects/upload-project', [ProjectController::class, 'store'])->name('projects.upload-project');
+        Route::post('/carriage-panels/{carriage_panel}/upload-panel-progress-material', [CarriagePanelController::class, 'update'])->name('carriage-panels.upload-progress-material');
+        Route::post('/carriage-panel-components/{carriage_panel_component}/upload-component-progress-material', [CarriagePanelComponentController::class, 'update'])->name('carriage-panel-components.upload-progress-material');
         Route::resource('panels', PanelController::class);
         Route::resource('carriages', CarriageController::class);
         Route::resource('panel-attachments', \App\Http\Controllers\PanelAttachmentController::class);
@@ -51,6 +57,9 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
         Route::resource('progress', ProgressController::class);
         Route::resource('steps', StepController::class);
     });
+    Route::get('csrf-token', function () {
+        return response()->json(['csrf_token' => csrf_token()]);
+    })->name('csrf-token');
 });
 
 Route::get('/buat-proyek', function () {

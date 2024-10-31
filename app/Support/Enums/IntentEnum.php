@@ -128,6 +128,8 @@ enum IntentEnum: string
 
     case WEB_PROJECT_SAVE_TRAINSET_PRESET = 'web.project.save.trainset.preset';
 
+    case WEB_PROJECT_IMPORT_PROJECT_TEMPLATE = 'web.project.import.project.template';
+
     case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';
@@ -135,6 +137,8 @@ enum IntentEnum: string
     case WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET = 'web.trainset.update.carriage.trainset';
 
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
+
+    case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
 

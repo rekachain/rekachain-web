@@ -17,20 +17,7 @@ class PresetTrainsetSheetImport implements ToCollection
     {
         // Retrieve the Project instance from the parent import class
         $project = $this->parent->getProject();
-        // logger($rows);
-        // [
-        //     ["=CONCATENATE(\"Preset Trainset Proyek  \", [1]Proyek!B1)",null,null,null,null,null,null],
-        //     ["No.","Nama","Gerbong",null,null,null,null],
-        //     [null,null,"C","K1","K3","M","P"],
-        //     [1,"Custom",0,0,0,0,0],
-        //     [2,"TSA",0,9,0,1,1],
-        //     [3,"TSB",0,4,5,1,1],
-        //     [4,"TSC",0,0,8,1,1],
-        //     [5,"TSD",0,5,3,1,2],
-        //     [6,"TSE",1,3,2,0,1],
-        //     [null,null,null,null,null,null,null]
-        // ]  
-        
+        // logger($rows);        
         $headers = $rows[2]->filter();
         $rows->skip(3)->each(function ($row) use ($project, $headers) {
             if ($row[1] == null || $row[1] == '') {

@@ -22,9 +22,9 @@ class StoreProjectRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
-            case IntentEnum::API_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
+            case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
                 return [
-                    'file' => 'required|file|mimes:xlsx',
+                    'file' => 'required|file|mimes:xlsx,xlsm',
                 ];
             default:
                 return [

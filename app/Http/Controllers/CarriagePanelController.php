@@ -6,6 +6,7 @@ use App\Http\Requests\CarriagePanel\StoreCarriagePanelRequest;
 use App\Http\Requests\CarriagePanel\UpdateCarriagePanelRequest;
 use App\Http\Resources\CarriagePanelResource;
 use App\Models\CarriagePanel;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use Illuminate\Http\Request;
@@ -83,6 +84,15 @@ class CarriagePanelController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateCarriagePanelRequest $request, CarriagePanel $CarriagePanel) {
+        if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL->value:
+                    return $this->CarriagePanelService->importProgressMaterialData($request->file('file'), $CarriagePanel);
+            }
+            return new CarriagePanelResource($this->CarriagePanelService->update($CarriagePanel, $request->validated()));
+        }
 
         $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_UPDATE);
 
