@@ -33,7 +33,7 @@ class ProgressSheetImport implements ToCollection
                 ]));
             }
         }
-        
+
         $workAspectId = WorkAspect::whereDivisionId(3)->first()->id;
         $progress = Progress::whereWorkAspectId($workAspectId)
             ->whereHas('progress_steps', function ($query) use ($steps) {
@@ -41,7 +41,11 @@ class ProgressSheetImport implements ToCollection
                     ->groupBy('progress_id')
                     ->havingRaw('COUNT(*) = ?', [count($steps)]);
             })
+            ->whereDoesntHave('progress_steps', function ($query) use ($steps) {
+                $query->whereNotIn('step_id', $steps->pluck('id')->toArray());
+            })
             ->first();
+            logger($progress ? $progress->progress_steps : 'No matching progress found');
 
         if (!$progress) {
             $progress = Progress::create([
