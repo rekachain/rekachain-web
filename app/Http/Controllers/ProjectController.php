@@ -59,6 +59,12 @@ class ProjectController extends Controller {
      */
     public function store(StoreProjectRequest $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+    
+            switch ($intent) {
+                case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
+                    return $this->projectService->importProject($request->file('file'));
+            }
             return $this->projectService->create($request->validated());
         }
     }

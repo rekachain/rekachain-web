@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\CarriagePanelComponent;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCarriagePanelComponentRequest extends FormRequest {
@@ -9,7 +10,7 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool {
-        return false;
+        return true;
     }
 
     /**
@@ -18,8 +19,21 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        return [
-            //
-        ];
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL->value:
+                return [
+                    'file' => 'required|file|mimes:xlsx,xlsm',
+                    'work_aspect_id' => 'required|integer|exists:work_aspects,id',
+                ];
+            default:
+                return [
+                    'carriage_panel_id' => 'nullable|integer|exists:carriage_panels,id',
+                    'component_id' => 'nullable|integer|exists:components,id',
+                    'progress_id' => 'nullable|integer|exists:progress,id',
+                    'qty' => 'nullable|integer|min:0',
+                ];
+        }
     }
 }

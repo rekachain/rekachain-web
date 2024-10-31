@@ -12,9 +12,9 @@ return new class extends Migration {
         Schema::create('raw_materials', function (Blueprint $table) {
             $table->id();
             $table->string('material_code')->unique()->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('unit')->nullable();
-            $table->string('specs')->nullable();
+            $table->text('specs')->nullable();
             $table->timestamps();
         });
     }

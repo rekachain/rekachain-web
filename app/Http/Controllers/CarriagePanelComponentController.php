@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CarriagePanelComponent\UpdateCarriagePanelComponentRequest;
 use App\Models\CarriagePanelComponent;
+use App\Support\Enums\IntentEnum;
+use App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface;
 use Illuminate\Http\Request;
 
 class CarriagePanelComponentController extends Controller {
+
+    public function __construct(
+        private CarriagePanelComponentServiceInterface $carriagePanelComponentService
+    ){}
     /**
      * Display a listing of the resource.
      */
@@ -44,8 +51,15 @@ class CarriagePanelComponentController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CarriagePanelComponent $carriagePanelComponent) {
-        //
+    public function update(UpdateCarriagePanelComponentRequest $request, CarriagePanelComponent $carriagePanelComponent) {
+        if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL->value:
+                    return $this->carriagePanelComponentService->importProgressMaterialData($request->file('file'), $carriagePanelComponent, $request->get('work_aspect_id'));
+            }
+        }
     }
 
     /**
