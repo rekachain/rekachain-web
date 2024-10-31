@@ -140,6 +140,8 @@ enum IntentEnum: string
 
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 
+    case WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.component.import.progress.and.material';
+
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
 
     case WEB_PANEL_IMPORT_PANEL = 'web.panel.import.panel';
