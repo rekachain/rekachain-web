@@ -16,21 +16,22 @@ class TrainsetSheetImport implements ToCollection
     {
         // Retrieve the Project instance from the parent import class
         $project = $this->parent->getProject();
-
-        $headers = $rows[2]->filter();
-        $rows->skip(3)->each(function ($row) use ($project, $headers) {
-            if ($row[2] == null || $row[2] == '' || $row[1] == null || $row[1] == '') {
+        $topHeaders = $rows[1];
+        $carTypeHeaders = $rows[2];
+        $rows->skip(3)->each(function ($row) use ($project, $topHeaders, $carTypeHeaders) {
+            $nameColumn = $topHeaders->search('Nama');
+            $presetColumn = $topHeaders->search('Preset');
+            if ($row[$presetColumn] == null || $row[$presetColumn] == '' || $row[$nameColumn] == null || $row[$nameColumn] == '') {
                 return;
             }
             
-            if ($row[2] != 'Custom') {
-                $preset = $this->parent->getPresets()->firstWhere('name', $row[2]);
+            if ($row[$presetColumn] != 'Custom') {
+                $preset = $this->parent->getPresets()->firstWhere('name', $row[$presetColumn]);
                 $carriagePresets = $this->parent->getCarriagePresets()->where('preset_trainset_id', $preset->id)->all();
-                // logger($carriagePresets);
                 $trainset = Trainset::create([
                     'project_id' => $project->id,
                     'preset_trainset_id' => $preset->id,
-                    'name' => $row[1],
+                    'name' => $row[$nameColumn],
                     'status' => TrainsetStatusEnum::DRAFT->value,
                 ]);
                 $this->parent->addTrainset($trainset);
@@ -45,13 +46,13 @@ class TrainsetSheetImport implements ToCollection
             } else {
                 $trainset = Trainset::create([
                     'project_id' => $project->id,
-                    'name' => $row[1],
+                    'name' => $row[$nameColumn],
                     'status' => TrainsetStatusEnum::DRAFT->value,
                 ]);
                 $this->parent->addTrainset($trainset);
 
                 $carriageTrainset = [];
-                foreach ($headers as $index => $header) {
+                foreach ($carTypeHeaders->filter() as $index => $header) {
                     $carriageTrainset[$header] = $row[$index];
                 }
 
