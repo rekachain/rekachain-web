@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
+use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 use App\Imports\Project\ProjectsImport;
 use App\Models\Project;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +16,10 @@ use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
-    public function __construct(protected TrainsetServiceInterface $trainsetService) {
+    public function __construct(
+        protected TrainsetServiceInterface $trainsetService,
+        protected PanelServiceInterface $panelService
+    ) {
         parent::__construct();
     }
 
@@ -39,6 +45,24 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
 
     public function importProject(UploadedFile $file): bool {
         Excel::import(new ProjectsImport($file), $file);
+
+        return true;
+    }
+
+    public function importProjectPanelProgressMaterial(Project $project, UploadedFile $file, int $panelId): bool {
+        $carriagePanels = $project->carriage_panels()->where('panel_id', $panelId)->get();
+        foreach ($carriagePanels as $carriagePanel) {
+            Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel), $file);
+        }
+
+        return true;
+    }
+
+    public function importProjectComponentProgressMaterial(Project $project, UploadedFile $file, int $componentId, int $workAspectId): bool {
+        $carriagePanelComponents = $project->carriage_panel_components()->where('component_id', $componentId)->get();
+        foreach ($carriagePanelComponents as $carriagePanelComponent) {
+            Excel::import(new CarriagePanelComponentProgressMaterialImport($carriagePanelComponent, $workAspectId), $file);
+        }
 
         return true;
     }

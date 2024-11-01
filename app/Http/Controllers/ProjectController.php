@@ -6,6 +6,7 @@ use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\CarriageResource;
 use App\Http\Resources\CarriageTrainsetResource;
+use App\Http\Resources\ComponentResource;
 use App\Http\Resources\PanelResource;
 use App\Http\Resources\PresetTrainsetResource;
 use App\Http\Resources\ProjectResource;
@@ -74,6 +75,14 @@ class ProjectController extends Controller {
      */
     public function show(Request $request, Project $project) {
 
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PROJECT_GET_ALL_PANELS->value:
+                return PanelResource::collection($project->panels); //$project->panels;
+            case IntentEnum::WEB_PROJECT_GET_ALL_COMPONENTS->value:
+                return ComponentResource::collection($project->components); //$project->components;
+        }
         $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
 
         if ($this->ajax()) {
@@ -100,6 +109,10 @@ class ProjectController extends Controller {
         switch ($intent) {
             case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
                 return $this->projectService->addTrainsets($project, $request->validated());
+            case IntentEnum::WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL->value:
+                return $this->projectService->importProjectPanelProgressMaterial($project, $request->file('file'), $request->get('panel_id'));
+            case IntentEnum::WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL->value:
+                return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->get('component_id'), $request->get('work_aspect_id'));
         }
 
         if ($this->ajax()) {
