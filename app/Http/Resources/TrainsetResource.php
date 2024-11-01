@@ -71,6 +71,9 @@ class TrainsetResource extends JsonResource {
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'can_be_deleted' => $this->canBeDeleted(),
+            'has_mechanic_trainset_attachment' => $this->hasMechanicTrainsetAttachment(),
+            'has_electric_trainset_attachment' => $this->hasElectricTrainsetAttachment(),
+            'has_panel_attachment' => $this->hasPanelAttachment(),
         ];
     }
 }
