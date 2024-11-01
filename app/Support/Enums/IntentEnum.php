@@ -122,7 +122,11 @@ enum IntentEnum: string
 
     case WEB_PROJECT_GET_ALL_PANELS = 'web.project.get.all.panels';
 
+    case WEB_PROJECT_GET_ALL_PANELS_WITH_QTY = 'web.project.get.all.panels.with.qty';
+
     case WEB_PROJECT_GET_ALL_COMPONENTS = 'web.project.get.all.components';
+
+    case WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY = 'web.project.get.all.components.with.qty';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
 
