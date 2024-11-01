@@ -160,7 +160,7 @@ class ProjectController extends Controller {
     }
 
     public function panels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
-        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress'], 'carriage']));
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 
