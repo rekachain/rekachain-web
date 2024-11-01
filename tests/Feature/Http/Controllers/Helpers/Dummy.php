@@ -359,30 +359,30 @@ class Dummy {
         return $detailWorkerPanel;
     }
 
-    // public function createTrainsetAttachment(?User $user = null) {
-    //     $this->createCarriageTrainset();
-    //     $this->createWorkstation('create'); // source
-    //     $this->createWorkstation('create'); // destination
-
-    //     $attributes = [];
-    //     if ($user) {
-    //         $attributes['supervisor_id'] = $user->id;
-    //     }
-
-    //     $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
-
-    //     return $trainsetAttachment;
-    // }
-
-    public function createTrainsetAttachment($attributes = []) {
+    public function createTrainsetAttachment(?User $user = null) {
         $this->createCarriageTrainset();
         $this->createWorkstation('create'); // source
         $this->createWorkstation('create'); // destination
+
+        $attributes = [];
+        if ($user) {
+            $attributes['supervisor_id'] = $user->id;
+        }
 
         $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
 
         return $trainsetAttachment;
     }
+
+    // public function createTrainsetAttachment($attributes = []) {
+    //     $this->createCarriageTrainset();
+    //     $this->createWorkstation('create'); // source
+    //     $this->createWorkstation('create'); // destination
+
+    //     $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
+
+    //     return $trainsetAttachment;
+    // }
 
     // public function createDetailWorkerTrainset() {
     //     $this->createSupervisorAssembly();
