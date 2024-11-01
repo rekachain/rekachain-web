@@ -932,20 +932,33 @@ return [
                             'delete_preset' => 'Delete Preset',
                             'generate_kpm' => 'Generate KPM',
                         ],
+                    ],
+                    'generate_attachment' => [
+                        'buttons' => [
+                            'generate_attachment' => 'Generate Attachment',
+                        ],
+                        'messages' => [
+                            'attachment_generated' => 'Attachment generated successfully!',
+                        ],
                         'dialogs' => [
-                            'generate_kpm_title' => 'Generate KPM',
+                            'generate_attachment_title' => 'Generate Attachment',
                             'fields' => [
                                 'source_workstation' => 'Source Workstation',
+                                'source_workstation_placeholder' => 'Select Source Workstation',
                                 'source_workstation_search' => 'Search Source Workstation',
                                 'workstation' => 'Select Workstation',
                                 'workstation_placeholder' => 'Workstation',
                                 'destination_workstation' => 'Destination Workstation',
+                                'destination_workstation_placeholder' => 'Select Destination Workstation',
                                 'destination_workstation_search' => 'Search Destination Workstation',
                             ],
                             'buttons' => [
-                                'generate_kpm' => 'Generate KPM',
-                                'generate_mechanic_kpm' => 'Generate Mechanic KPM',
-                                'generate_electric_kpm' => 'Generate Electric KPM',
+                                'generate_attachment' => 'Generate Attachment',
+                                'generate_mechanic_kpm' => 'Generate Mechanic Attachment',
+                                'generate_electric_kpm' => 'Generate Electric Attachment',
+                                'trainset_attachment_mechanic' => 'Mechanic',
+                                'trainset_attachment_electric' => 'Electric',
+                                'panel_attachment' => 'Panel (Assembly)',
                             ],
                         ],
                     ],

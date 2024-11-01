@@ -28,6 +28,7 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { useDebounce } from '@uidotdev/usehooks';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/AddNewTrainsetPreset';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenerateAttachment from '@/Pages/Project/Trainset/Carriage/Partials/GenerateAttachment';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -139,18 +140,29 @@ export default function ({
                                     </p>
                                 )}
 
-                                {trainset.status === TrainsetStatusEnum.PROGRESS ? (
+                                {trainset.status === TrainsetStatusEnum.PROGRESS && (
                                     <p className="text-page-subheader">
                                         {t('pages.project.trainset.carriage.index.status_in_progress')}
                                     </p>
-                                ) : (
-                                    <ChangeTrainsetPreset
+                                )}
+
+                                <div className="flex md:flex-row flex-col gap-2 md:items-end">
+                                    {trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                                        !trainset.has_mechanic_trainset_attachment &&
+                                        !trainset.has_electric_trainset_attachment &&
+                                        !trainset.has_panel_attachment && (
+                                            <ChangeTrainsetPreset
+                                                trainset={trainset}
+                                                presetTrainset={presetTrainset}
+                                                handleSyncTrainset={handleSyncTrainset}
+                                            />
+                                        )}
+                                    <GenerateAttachment
                                         trainset={trainset}
-                                        presetTrainset={presetTrainset}
                                         handleSyncTrainset={handleSyncTrainset}
                                         handleSyncCarriages={handleSyncCarriages}
                                     />
-                                )}
+                                </div>
                             </div>
                         </div>
                     </div>

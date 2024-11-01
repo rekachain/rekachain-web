@@ -5,7 +5,7 @@ import { Button } from '@/Components/UI/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { Resource } from '@/Support/Interfaces/Resources';
-import { cn } from '@/Lib/utils';
+import { cn } from '@/Lib/Utils';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
