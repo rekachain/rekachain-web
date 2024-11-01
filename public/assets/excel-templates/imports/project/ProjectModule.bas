@@ -287,7 +287,7 @@ Sub updatePanelValidation(changedCell As Range, oldValue As String)
     uniqueValues = GetUniqueSortedValues(validationRange)
     
     ' Update validation range in Panel worksheet
-    For Each cell In wsComponent.Range("C2:C" & wsPanel.Cells(wsPanel.Rows.Count, "C").End(xlUp).Row)
+    For Each cell In wsComponent.Range("C2:C" & wsComponent.Cells(wsComponent.Rows.Count, "C").End(xlUp).Row)
         With cell.Validation
             .Delete ' Remove any existing validation
             .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
