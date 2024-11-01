@@ -20,7 +20,6 @@ use App\Http\Controllers\Api\ApiWorkDayController;
 use App\Http\Controllers\Api\ApiWorkDayTimeController;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes

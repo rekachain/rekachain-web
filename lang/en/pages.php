@@ -899,6 +899,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Qty',
                                     'description' => 'Description',
+                                    'components' => 'Components',
                                     'progress' => 'Progress',
                                 ],
                             ],
@@ -907,6 +908,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Qty',
                                     'description' => 'Description',
+                                    'components' => 'Components',
                                     'progress' => 'Progress',
                                 ],
                             ],
@@ -1094,6 +1096,31 @@ return [
             'projects' => [
                 'messages' => [
                     'deleted' => 'Project deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Project imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Project',
+                    'description' => 'Import Project from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Project',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Project',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Project imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Project',
                 ],
             ],
             'partials' => [
