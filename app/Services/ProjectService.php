@@ -3,11 +3,14 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Imports\Project\ProjectsImport;
 use App\Models\Project;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
     public function __construct(protected TrainsetServiceInterface $trainsetService) {
@@ -32,6 +35,12 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         $this->createTrainsets($project, $data['trainset_needed']);
 
         return $project;
+    }
+
+    public function importProject(UploadedFile $file): bool {
+        Excel::import(new ProjectsImport($file), $file);
+
+        return true;
     }
 
     public function addTrainsets(Project $project, $data): bool {

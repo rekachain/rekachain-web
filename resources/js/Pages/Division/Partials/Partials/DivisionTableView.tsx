@@ -34,9 +34,11 @@ export default function DivisionTableView({
                             >
                                 {t('action.edit')}
                             </Link>
-                            <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
-                                {t('action.delete')}
-                            </Button>
+                            {division.can_be_deleted && (
+                                <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
+                                    {t('action.delete')}
+                                </Button>
+                            )}
                         </TableCell>
                     </TableRow>
                 ))}

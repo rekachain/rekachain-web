@@ -498,7 +498,7 @@ return [
                 'progress_placeholder' => 'Select Progress',
                 'process' => 'Process',
                 'name' => 'Name',
-                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Minutes)',
             ],
             'buttons' => [
                 'submit' => 'Create Step',
@@ -514,7 +514,7 @@ return [
                 'progress_placeholder' => 'Select Progress',
                 'process' => 'Process',
                 'name' => 'Name',
-                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Menit)',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Minutes)',
             ],
             'buttons' => [
                 'submit' => 'Update Step',
@@ -534,14 +534,14 @@ return [
                     'headers' => [
                         'name' => 'Name',
                         'process' => 'Process',
-                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Minutes)',
                     ],
                 ],
                 'step_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
                         'process' => 'Process: :process',
-                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time Minutes',
                     ],
                 ],
             ],
