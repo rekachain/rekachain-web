@@ -40,4 +40,5 @@ export const ROUTES = {
     FAILED_COMPONENT_MANUFACTURES: 'failed-component-manufactures',
     ATTACHMENT_NOTES: 'attachment-notes',
     FEEDBACK: 'feedback',
+	CUSTOM_ATTACHMENT_MATERIALS: 'custom-attachment-materials',
 };

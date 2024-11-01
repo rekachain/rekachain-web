@@ -35,3 +35,4 @@ export * from './TrainsetAttachmentComponent';
 export * from './FailedComponentManufacture';
 export * from './AttachmentNote';
 export * from './Feedback';
+export * from './CustomAttachmentMaterial';

@@ -71,4 +71,8 @@ class TrainsetAttachment extends Model {
     public function attachment_notes(): MorphMany {
         return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
     }
+
+    public function custom_attachment_materials(): MorphMany {
+        return $this->morphMany(CustomAttachmentMaterial::class, 'custom_attachment_materialable');
+    }
 }

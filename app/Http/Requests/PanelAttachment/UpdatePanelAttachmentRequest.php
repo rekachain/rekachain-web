@@ -25,6 +25,11 @@ class UpdatePanelAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
             
         switch ($intent){
+            case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
+                return [
+                    'raw_material_id' => 'required|integer|exists:raw_materials,id',
+                    'qty' => 'required|integer',
+                ];
             case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
                 return [
                     'status' => ['required', 'in:' . implode(',', array_column(PanelAttachmentStatusEnum::cases(), 'value'))],

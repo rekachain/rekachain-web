@@ -51,8 +51,13 @@ class PanelAttachmentController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PanelAttachment $panelAttachment) {
-        //
+    public function update(UpdatePanelAttachmentRequest $request, PanelAttachment $panelAttachment) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
+                return $this->panelAttachmentService->assignCustomAttachmentMaterial($panelAttachment, $request->validated());
+        }
     }
 
     /**

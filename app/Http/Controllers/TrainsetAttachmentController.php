@@ -6,6 +6,7 @@ use App\Http\Requests\TrainsetAttachment\StoreTrainsetAttachmentRequest;
 use App\Http\Requests\TrainsetAttachment\UpdateTrainsetAttachmentRequest;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use Illuminate\Http\Request;
 
@@ -49,9 +50,16 @@ class TrainsetAttachmentController extends Controller {
         return inertia('TrainsetAttachment/Edit', compact('data'));
     }
 
-    public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetattachment) {
+    public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetAttachment) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
+                logger($trainsetAttachment);
+                return $this->trainsetattachmentService->assignCustomAttachmentMaterial($trainsetAttachment, $request->validated());
+        }
         if ($this->ajax()) {
-            return $this->trainsetattachmentService->update($trainsetattachment, $request->validated());
+            return $this->trainsetattachmentService->update($trainsetAttachment, $request->validated());
         }
     }
 
