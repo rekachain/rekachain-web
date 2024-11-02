@@ -30,6 +30,8 @@ class TrainsetResource extends JsonResource {
                     'updated_at' => $this->updated_at,
                 ];
             case IntentEnum::WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+                $carriageId = $request->get('carriage_id');
+                $panelId = $request->get('panel_id');
                 $componentId = $request->get('component_id');
                 if (!$componentId) {
                     return $this->component_materials->load(['carriage_panel_component'])
@@ -60,25 +62,15 @@ class TrainsetResource extends JsonResource {
                     })->sortBy('raw_material.id')->toArray();
                 }
             case IntentEnum::WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY->value:
+                $panelMaterials = $this->panel_materials()->with(['carriage_panel.carriage_trainset']);
                 $carriageId = $request->get('carriage_id');
                 $panelId = $request->get('panel_id');
-                if (!$panelId && !$carriageId) {
-                    return $this->panel_materials->load(['carriage_panel'])
-                    ->groupBy('carriage_panel.panel_id')->map(function ($panels) {
-                        return [
-                            'panel' => PanelResource::make($panels->first()->carriage_panel->panel),
-                            'raw_materials' => $panels->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
-                                return [
-                                    'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
-                                    'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
-                                        return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
-                                    }),
-                                ];
-                            })->sortBy('raw_material.id')->values(),
-                        ];
-                    })->sortBy('panel.id')->toArray();
-                } else if ($panelId && !$carriageId) {
-                    return $this->panel_materials()->where('panel_id', $panelId)->get()
+
+                if ($carriageId) {
+                    $panelMaterials = $panelMaterials->where('carriage_id', $carriageId);
+                }
+                if ($panelId) {
+                    return $panelMaterials->where('panel_id', $panelId)->get()
                         ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
                             return [
                                 'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
@@ -87,31 +79,21 @@ class TrainsetResource extends JsonResource {
                                 }),
                             ];
                     })->sortBy('raw_material.id')->toArray();
-                } else if (!$panelId && $carriageId) {
-                    return $this->panel_materials()->with(['carriage_panel.carriage_trainset'])->where('carriage_id', $carriageId)->get()
-                    ->groupBy('carriage_panel.panel_id')->map(function ($panels) {
-                        return [
-                            'panel' => PanelResource::make($panels->first()->carriage_panel->panel),
-                            'raw_materials' => $panels->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
-                                return [
-                                    'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
-                                    'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
-                                        return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
-                                    }),
-                                ];
-                            })->sortBy('raw_material.id')->values(),
-                        ];
-                    })->sortBy('panel.id')->toArray();
                 } else {
-                    return $this->panel_materials()->with(['carriage_panel.carriage_trainset'])->where('carriage_id', $carriageId)->where('panel_id', $panelId)->get()
-                        ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
-                            return [
-                                'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
-                                'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
-                                    return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
-                                }),
-                            ];
-                    })->sortBy('raw_material.id')->toArray();
+                    return $panelMaterials->get()
+                    ->groupBy('carriage_panel.panel_id')->map(function ($panels) {
+                        return [
+                            'panel' => PanelResource::make($panels->first()->carriage_panel->panel),
+                            'raw_materials' => $panels->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
+                                return [
+                                    'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
+                                    'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
+                                        return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
+                                    }),
+                                ];
+                            })->sortBy('raw_material.id')->values(),
+                        ];
+                    })->sortBy('panel.id')->toArray();
                 }
             case IntentEnum::WEB_TRAINSET_GET_COMPONENTS->value:
                 $trainset = $this->load(['carriage_trainsets' => ['carriage_panels' => ['carriage_panel_components']]])->findOrFail(request()->route('trainset'));
