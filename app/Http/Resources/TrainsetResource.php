@@ -7,6 +7,7 @@ use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Support\Enums\IntentEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -30,28 +31,53 @@ class TrainsetResource extends JsonResource {
                     'updated_at' => $this->updated_at,
                 ];
             case IntentEnum::WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+                $componentMaterials = $this->component_materials()->with(['carriage_panel_component.carriage_panel.carriage_trainset']);
+                $divisionId = $request->get('division_id') ?? 1; // default mechanic
+                $componentMaterials = $componentMaterials->whereHas('carriage_panel_component.progress.work_aspect', function (Builder $query) use ($divisionId) {
+                    $query->where('division_id', $divisionId);
+                });
+                $joinComponents = $request->get('join_components') ?? true;
                 $carriageId = $request->get('carriage_id');
                 $panelId = $request->get('panel_id');
                 $componentId = $request->get('component_id');
+
+                if ($carriageId) {
+                    $componentMaterials = $componentMaterials->where('carriage_id', $carriageId);
+                }
+                if ($panelId) {
+                    $componentMaterials = $componentMaterials->where('panel_id', $panelId);
+                }
                 if (!$componentId) {
-                    return $this->component_materials->load(['carriage_panel_component'])
-                    ->groupBy('carriage_panel_component.component_id')->map(function ($components) {
-                        return [
-                            'component' => ComponentResource::make($components->first()->carriage_panel_component->component),
-                            'raw_materials' => $components->groupBy(['raw_material_id'])->map(function ($componentMaterials) {
+                    if ($joinComponents === true) {
+                        return $componentMaterials->get()
+                            ->groupBy(['raw_material_id'])->map(function ($componentMaterials) {
                                 return [
                                     'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
                                     'total_qty' => $componentMaterials->sum(function ($componentMaterial) {
-                                        return $componentMaterial->qty * $componentMaterial->carriage_panel_component->qty
-                                        * $componentMaterial->carriage_panel_component->carriage_panel->qty
-                                        * $componentMaterial->carriage_panel_component->carriage_panel->carriage_trainset->qty;
+                                        return $componentMaterial->qty * $componentMaterial->carriage_panel_component->carriage_panel->carriage_trainset->qty;
                                     })
                                 ];
-                            })->sortBy('raw_material.id')->values(),
-                        ];
-                    })->sortBy('component.id')->toArray();
+                        })->sortBy('raw_material.id')->toArray();
+                    } else {
+                        return $componentMaterials->get()
+                            ->groupBy('carriage_panel_component.component_id')->map(function ($components) {
+                                return [
+                                    'component' => ComponentResource::make($components->first()->carriage_panel_component->component),
+                                    'raw_materials' => $components->groupBy(['raw_material_id'])->map(function ($componentMaterials) {
+                                        return [
+                                            'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
+                                            'total_qty' => $componentMaterials->sum(function ($componentMaterial) {
+                                                return $componentMaterial->qty * $componentMaterial->carriage_panel_component->qty
+                                                * $componentMaterial->carriage_panel_component->carriage_panel->qty
+                                                * $componentMaterial->carriage_panel_component->carriage_panel->carriage_trainset->qty;
+                                            })
+                                        ];
+                                    })->sortBy('raw_material.id')->values(),
+                                ];
+                        })->sortBy('component.id')->toArray();
+                    }
                 } else {
-                    return $this->component_materials()->where('component_id', $componentId)->get()
+                    return $componentMaterials->where('component_id', $componentId)->get()
                         ->groupBy(['raw_material_id'])->map(function ($componentMaterials) {
                             return [
                                 'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
