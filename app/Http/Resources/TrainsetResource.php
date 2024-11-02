@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Carriage;
 use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
@@ -88,14 +89,19 @@ class TrainsetResource extends JsonResource {
                     })->sortBy('raw_material.id')->toArray();
                 } else if (!$panelId && $carriageId) {
                     return $this->panel_materials()->with(['carriage_panel.carriage_trainset'])->where('carriage_id', $carriageId)->get()
-                        ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
-                            return [
-                                'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
-                                'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
-                                    return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
-                                }),
-                            ];
-                    })->sortBy('raw_material.id')->toArray();
+                    ->groupBy('carriage_panel.panel_id')->map(function ($panels) {
+                        return [
+                            'panel' => PanelResource::make($panels->first()->carriage_panel->panel),
+                            'raw_materials' => $panels->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
+                                return [
+                                    'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
+                                    'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
+                                        return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
+                                    }),
+                                ];
+                            })->sortBy('raw_material.id')->values(),
+                        ];
+                    })->sortBy('panel.id')->toArray();
                 } else {
                     return $this->panel_materials()->with(['carriage_panel.carriage_trainset'])->where('carriage_id', $carriageId)->where('panel_id', $panelId)->get()
                         ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
