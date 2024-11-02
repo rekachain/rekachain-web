@@ -464,8 +464,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         ]);
         $totalGeneratedAttachment += $panelAttachments->count();
 
-        logger("Generated attachment: {$totalGeneratedAttachment} and required attachment: {$totalRequiredAttachment}");
-
         if ($totalGeneratedAttachment == $totalRequiredAttachment) {
             $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
         }
