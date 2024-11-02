@@ -164,6 +164,10 @@ enum IntentEnum: string
 
     case WEB_CARRIAGE_IMPORT_CARRIAGE = 'web.carriage.import.carriage';
 
+    case WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY = 'web.trainset.get.panel.materials.with.qty';
+
+    case WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.get.component.materials.with.qty';
+
     case WEB_TRAINSET_GET_TEMPLATE_IMPORT_TRAINSET = 'web.trainset.get.template.import.trainset';
 
     case WEB_TRAINSET_IMPORT_TRAINSET = 'web.trainset.import.trainset';
