@@ -258,8 +258,8 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         return true;
     }
 
-    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool {
-        DB::transaction(function () use ($trainset, $data) {
+    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool|array {
+        return DB::transaction(function () use ($trainset, $data) {
             $division = $data['division'];
             $sourceWorkstationId = $data["{$division}_source_workstation_id"];
             $destinationWorkstationId = $data["{$division}_destination_workstation_id"];
@@ -273,7 +273,13 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 ]);
 
                 $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
-                $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
+                $generateResult = $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
+
+                if ($generateResult['success'] === false) {
+                    logger('Failed to generate trainset attachment');
+                    DB::rollBack();
+                    return $generateResult;
+                }
 
                 //            $serialPanelIds = $this->generateSerialPanels($trainsetAttachment, $carriageTrainset);
 
@@ -287,22 +293,28 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $this->checkGeneratedAttachment($trainset);
             // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
 
+            return true;
         });
-
-        return true;
     }
 
-    public function generatePanelAttachment(Trainset $trainset, array $data): bool {
-
-        DB::transaction(function () use ($trainset, $data) {
-            $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($data) {
-                $carriageTrainset->carriage_panels()->each(function ($carriagePanel) use ($data) {
+    public function generatePanelAttachment(Trainset $trainset, array $data): bool|array {
+        return DB::transaction(function () use ($trainset, $data) {
+            foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+                foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
+                    if (!$carriagePanel->progress) {
+                        logger('Failed to generate panel attachment');
+                        DB::rollBack();
+                        return [
+                            'status' => false,
+                            'code' => 409,
+                            'message' => __('exception.services.trainset_service.update.generate_panel_attachments.panel_progress_not_identified_exception', ['panel' => $carriagePanel->panel->name]),
+                        ];
+                    }
                     $sourceWorkstationId = $data['assembly_source_workstation_id'];
                     $destinationWorkstationId = $data['assembly_destination_workstation_id'];
 
                     $panelAttachment = $this->panelAttachmentService->create([
                         'carriage_panel_id' => $carriagePanel->id,
-                        // 'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
                     ]);
@@ -319,29 +331,11 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     $panelAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
 
                     logger('Panel Attachment: ' . $panelAttachment);
-                    //                $panelAttachment = $carriagePanel->panel_attachments()->create([
-                    //                    'carriage_panel_id' => $carriagePanel->panel_id,
-                    //                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
-                    //                    // source_workstation?
-                    //                    // dest_workstation?
-                    //                    'qr_path' => 'qr_path', // generate qr code
-                    //                    'current_step' => 0, // get first step
-                    //                    'status' => 'pending', // default status
-                    //                    'panel_attachment_id' => null, // default
-                    //                    'attachment_number' => null, // default
-                    //                    'supervisor_id' => null, // default
-                    //                ]);
-                    //
-                });
-            });
-
-            // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
-            $this->checkGeneratedAttachment($trainset);
-
-            //            DB::rollBack();
+                    $this->checkGeneratedAttachment($trainset);
+                }
+            }
+            return true;
         });
-
-        return true;
     }
 
     private function generateQrCode(string $content, string $path) {

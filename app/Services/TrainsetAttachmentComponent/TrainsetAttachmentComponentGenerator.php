@@ -23,37 +23,52 @@ class TrainsetAttachmentComponentGenerator
         $workAspects = $this->workAspectService
             ->find(['division_id' => $division->id]);
 
-        $this->iterateWorkAspects($workAspects, $trainsetAttachment);
+        return $this->iterateWorkAspects($workAspects, $trainsetAttachment);
     }
 
     private function iterateWorkAspects($workAspects, $trainsetAttachment)
     {
-        $workAspects->each(function ($workAspect) use ($trainsetAttachment) {
+        foreach ($workAspects as $workAspect) {
             $carriageTrainsets = $trainsetAttachment->trainset->carriage_trainsets;
-            $this->iterateCarriageTrainsets($carriageTrainsets, $trainsetAttachment, $workAspect);
-        });
+            $result = $this->iterateCarriageTrainsets($carriageTrainsets, $trainsetAttachment, $workAspect);
+            if ($result['success'] === false) {
+                return $result;
+            }
+        }
+
+        return ['success' => true];
     }
 
     private function iterateCarriageTrainsets($carriageTrainsets, $trainsetAttachment, $workAspect)
     {
-        $carriageTrainsets->each(function ($carriageTrainset) use ($trainsetAttachment, $workAspect) {
+        foreach ($carriageTrainsets as $carriageTrainset) {
             $carriagePanels = $carriageTrainset->carriage_panels;
-            $this->iterateCarriagePanels($carriagePanels, $trainsetAttachment, $carriageTrainset, $workAspect);
-        });
+            $result = $this->iterateCarriagePanels($carriagePanels, $trainsetAttachment, $carriageTrainset, $workAspect);
+            if ($result['success'] === false) {
+                return $result;
+            }
+        }
+
+        return ['success' => true];
     }
 
     private function iterateCarriagePanels($carriagePanels, $trainsetAttachment, $carriageTrainset, $workAspect)
     {
-        $carriagePanels->each(function ($carriagePanel) use ($trainsetAttachment, $carriageTrainset, $workAspect) {
+        foreach ($carriagePanels as $carriagePanel) {
             $carriagePanelComponents = $carriagePanel->carriage_panel_components;
-            $this->iterateCarriagePanelComponents(
+            $result = $this->iterateCarriagePanelComponents(
                 $carriagePanelComponents,
                 $trainsetAttachment,
                 $carriagePanel,
                 $carriageTrainset,
                 $workAspect
             );
-        });
+            if ($result['success'] === false) {
+                return $result;
+            }
+        }
+
+        return ['success' => true];
     }
 
     private function iterateCarriagePanelComponents(
@@ -63,12 +78,18 @@ class TrainsetAttachmentComponentGenerator
         $carriageTrainset,
         $workAspect
     ) {
-        $carriagePanelComponents->each(function ($carriagePanelComponent) use (
-            $trainsetAttachment,
-            $carriagePanel,
-            $carriageTrainset,
-            $workAspect,
-        ) {
+        foreach ($carriagePanelComponents as $carriagePanelComponent) {
+            if (!$carriagePanelComponent->progress) {
+                logger('Carriage panel component ' . $carriagePanelComponent->id . ' has no progress');
+                return [
+                    'success' => false,
+                    'code' => 409,
+                    'message' => __(
+                        'exception.services.trainset_service.update.generate_trainset_attachments.component_progress_not_identified_exception', 
+                        ['component' => $carriagePanelComponent->component->name]
+                    ),
+                ];
+            }
             if ($carriagePanelComponent->progress->work_aspect_id === $workAspect->id) {
                 $this->trainsetAttachmentComponentService->create([
                     'trainset_attachment_id' => $trainsetAttachment->id,
@@ -76,8 +97,8 @@ class TrainsetAttachmentComponentGenerator
                     'total_required' => $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty,
                 ]);
             }
-        });
+        }
+
+        return ['success' => true];
     }
 }
-
-

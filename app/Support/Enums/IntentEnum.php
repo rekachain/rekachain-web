@@ -122,7 +122,11 @@ enum IntentEnum: string
 
     case WEB_PROJECT_GET_ALL_PANELS = 'web.project.get.all.panels';
 
+    case WEB_PROJECT_GET_ALL_PANELS_WITH_QTY = 'web.project.get.all.panels.with.qty';
+
     case WEB_PROJECT_GET_ALL_COMPONENTS = 'web.project.get.all.components';
+
+    case WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY = 'web.project.get.all.components.with.qty';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
 
@@ -181,6 +185,10 @@ enum IntentEnum: string
     case WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS = 'web.trainset.generate.trainset.attachments';
 
     case WEB_TRAINSET_GET_COMPONENTS = 'web.trainset.get.components';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS = 'web.trainset.attachment.get.component.materials';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
 
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
 

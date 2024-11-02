@@ -10,9 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class TrainsetAttachment extends Model {
-    use HasFactory;
+    use HasFactory, HasRelationships;
 
     protected $fillable = [
         'trainset_id',
@@ -58,6 +60,49 @@ class TrainsetAttachment extends Model {
 
     public function trainset_attachment_handlers(): HasMany {
         return $this->hasMany(TrainsetAttachmentHandler::class);
+    }
+
+    public function raw_materials(): HasManyDeep {
+        return $this->hasManyDeep(
+            RawMaterial::class, 
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+                ComponentMaterial::class
+            ], 
+            [
+                'trainset_attachment_id',
+                'id',
+                'carriage_panel_component_id',
+                'id'
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'id',
+                'raw_material_id'
+            ]
+        )->distinct();
+    }
+
+    public function component_materials(): HasManyDeep {
+        return $this->hasManyDeep(
+            ComponentMaterial::class, 
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class
+            ], 
+            [
+                'trainset_attachment_id',
+                'id',
+                'carriage_panel_component_id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'id',
+            ]
+        );
     }
 
     public function trainset_attachment_components(): HasMany {

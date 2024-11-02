@@ -921,6 +921,7 @@ return [
                         ],
                         'messages' => [
                             'attachment_generated' => 'KPM berhasil dibuat!',
+                            'attachment_not_generated' => 'KPM gagal dibuat!',
                         ],
                         'dialogs' => [
                             'generate_attachment_title' => 'Buat KPM',

@@ -939,6 +939,7 @@ return [
                         ],
                         'messages' => [
                             'attachment_generated' => 'Attachment generated successfully!',
+                            'attachment_not_generated' => 'Failed to generate attachment!',
                         ],
                         'dialogs' => [
                             'generate_attachment_title' => 'Generate Attachment',

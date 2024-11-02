@@ -80,8 +80,28 @@ class ProjectController extends Controller {
         switch ($intent) {
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS->value:
                 return PanelResource::collection($project->panels); //$project->panels;
+            case IntentEnum::WEB_PROJECT_GET_ALL_PANELS_WITH_QTY->value:
+                return $project->carriage_panels->groupBy(['panel_id'])->map(function ($carriagePanels) {
+                    return [
+                        'panel' => PanelResource::make($carriagePanels->first()->panel),
+                        'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
+                            return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
+                        }),
+                    ];
+                })->values();
             case IntentEnum::WEB_PROJECT_GET_ALL_COMPONENTS->value:
                 return ComponentResource::collection($project->components); //$project->components;
+            case IntentEnum::WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY->value:
+                return $project->carriage_panel_components
+                ->groupBy(['component_id'])->map(function ($carriagePanelComponents) {
+                    return [
+                        'component' => ComponentResource::make($carriagePanelComponents->first()->component),
+                        'total_qty' => $carriagePanelComponents->sum(function ($carriagePanelComponent) {
+                            return $carriagePanelComponent->qty * $carriagePanelComponent->carriage_panel->qty * $carriagePanelComponent->carriage_panel->carriage_trainset->qty;
+                        }),
+                    ];
+                })->values()
+                ;
         }
         $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
 
