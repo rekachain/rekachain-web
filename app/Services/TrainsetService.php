@@ -2,33 +2,37 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Exports\Trainset\TrainsetsExport;
-use App\Exports\Trainset\TrainsetsTemplateExport;
+use App\Models\Trainset;
 use App\Helpers\NumberHelper;
-use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
-use App\Models\Trainset;
-use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
-use App\Support\Enums\SerialPanelManufactureStatusEnum;
-use App\Support\Enums\TrainsetStatusEnum;
-use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
-use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
-use App\Support\Interfaces\Services\CarriageServiceInterface;
-use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
-use App\Support\Interfaces\Services\SerialPanelServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
-use App\Support\Interfaces\Services\TrainsetServiceInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\PanelAttachmentHandler;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use App\Exports\Trainset\TrainsetsExport;
+use App\Imports\Trainset\TrainsetsImport;
+use App\Models\TrainsetAttachmentHandler;
+use App\Support\Enums\TrainsetStatusEnum;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Exports\Trainset\TrainsetsTemplateExport;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
+use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
+use App\Support\Interfaces\Services\CarriageServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
+use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
+use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
+use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
+use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
+use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
     public function __construct(
@@ -272,6 +276,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     'type' => $division,
                 ]);
 
+                // CREATE TRAINSET ATTACHMENT HANDLER
+                TrainsetAttachmentHandler::create([
+                    'user_id' => auth()->user()->id,
+                    'handler_name' => auth()->user()->name,
+                    'trainset_attachment_id' => $trainsetAttachment->id,
+                    'handles' => TrainsetAttachmentHandlerHandlesEnum::PREPARE->value,
+                ]);
+
                 $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
                 $generateResult = $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
 
@@ -317,6 +329,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                         'carriage_panel_id' => $carriagePanel->id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
+                    ]);
+
+                    // CREATE PANEL ATTACHMENT HANDLER
+                    PanelAttachmentHandler::create([
+                        'user_id' => auth()->user()->id,
+                        'handler_name' => auth()->user()->name,
+                        'panel_attachment_id' => $panelAttachment->id,
+                        'handles' => PanelAttachmentHandlerHandlesEnum::PREPARE->value,
                     ]);
 
                     $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
@@ -438,11 +458,13 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             'trainset_id' => $trainset->id,
         ]);
         $totalGeneratedAttachment = $trainsetAttachments->count(); // should be 2
-        
+
         $panelAttachments = $this->panelAttachmentService->find([
             ['carriage_panel_id', 'in', $carriagePanelsIds],
         ]);
         $totalGeneratedAttachment += $panelAttachments->count();
+
+        logger("Generated attachment: {$totalGeneratedAttachment} and required attachment: {$totalRequiredAttachment}");
 
         if ($totalGeneratedAttachment == $totalRequiredAttachment) {
             $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
