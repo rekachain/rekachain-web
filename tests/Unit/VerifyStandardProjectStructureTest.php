@@ -288,7 +288,7 @@ test('model should have controllers, form request, resource, service interface, 
     // Exclude certain folders or files
     $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php', 'DashboardController.php'];
     $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php'];
-    $excludedServices = ['TrainsetAttachmentComponent'];
+    $excludedServices = ['TrainsetAttachmentComponent', 'DashboardService.php'];
     $excludedReactModelInterfaces = ['index.ts'];
     $excludedReactResources = ['index.ts', 'Resource.ts'];
     $excludedReactServices = ['serviceFactory.ts'];
