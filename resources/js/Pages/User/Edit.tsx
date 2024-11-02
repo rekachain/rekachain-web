@@ -17,7 +17,7 @@ import { stepService } from '@/Services/stepService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { FilePond } from 'react-filepond';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { parseFormData } from '@/Lib/utils';
+import { parseFormData } from '@/Lib/Utils';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function EditUser(props: { user: UserResource; roles: RoleResource[] }) {
