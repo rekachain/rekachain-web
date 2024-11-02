@@ -42,16 +42,7 @@ class TrainsetAttachmentController extends Controller {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS->value:
                 return RawMaterialResource::collection($trainsetAttachment->raw_materials);
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
-                return $trainsetAttachment->component_materials
-                    ->groupBy('raw_material_id')
-                    ->map(fn($componentMaterials) => [
-                        'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
-                        'total_qty' => $componentMaterials->sum(fn($cm) => 
-                            $cm->qty * $cm->carriage_panel_component->qty 
-                            * $cm->carriage_panel_component->carriage_panel->qty 
-                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
-                        ),
-                    ])->sortBy('raw_material.id')->values();
+                return TrainsetAttachmentResource::make($trainsetAttachment);
         }
         $data = TrainsetAttachmentResource::make($trainsetAttachment);
 
