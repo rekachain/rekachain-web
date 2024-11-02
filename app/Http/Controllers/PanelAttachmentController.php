@@ -51,15 +51,7 @@ class PanelAttachmentController extends Controller {
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
                 return RawMaterialResource::collection($panelAttachment->raw_materials);
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
-                return $panelAttachment->panel_materials
-                ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
-                    return [
-                        'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
-                        'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
-                            return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
-                        }),
-                    ];
-                })->values();
+                return PanelAttachmentResource::make($panelAttachment);
         }
         return PanelAttachmentResource::make($panelAttachment);
     }

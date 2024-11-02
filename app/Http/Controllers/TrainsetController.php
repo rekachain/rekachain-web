@@ -68,6 +68,14 @@ class TrainsetController extends Controller {
      */
     public function show(Request $request, Trainset $trainset) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+                    return TrainsetResource::make($trainset);
+                case IntentEnum::WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY->value:
+                    return TrainsetResource::make($trainset);
+            }
             return new TrainsetResource($trainset->load(['carriages' => ['panels']]));
         }
     }
