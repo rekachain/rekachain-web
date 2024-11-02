@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Models\CustomAttachmentMaterial;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
@@ -28,6 +29,16 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     protected function getRepositoryClass(): string
     {
         return TrainsetAttachmentRepositoryInterface::class;
+    }
+
+    public function assignCustomAttachmentMaterial(TrainsetAttachment $trainsetAttachment, array $data): CustomAttachmentMaterial
+    {
+        logger($trainsetAttachment);
+        return $trainsetAttachment->custom_attachment_materials()->updateOrCreate([
+            'raw_material_id' => $data['raw_material_id'],
+        ], [
+            'qty' => $data['qty'],
+        ]);
     }
 
     public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data)

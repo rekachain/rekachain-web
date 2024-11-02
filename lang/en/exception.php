@@ -12,6 +12,14 @@ return [
     ],
     'services' => [
         'trainset_service' => [
+            'update' => [
+                'generate_trainset_attachments' => [
+                    'component_progress_not_identified_exception' => 'Progress is not identified in :component',
+                ],
+                'generate_panel_attachments' => [
+                    'panel_progress_not_identified_exception' => 'Progress is not identified in :panel',
+                ],
+            ],
             'delete' => [
                 'trainset_in_progress_exception' => 'The trainset is currently in progress and cannot be modified.',
             ],

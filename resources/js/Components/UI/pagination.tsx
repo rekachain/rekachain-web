@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
-import { cn } from '@/Lib/utils';
+import { cn } from '@/Lib/Utils';
 import { ButtonProps, buttonVariants } from './button';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 

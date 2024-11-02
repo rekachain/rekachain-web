@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\CustomAttachmentMaterial;
 use App\Models\PanelAttachment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,15 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         protected SerialPanelServiceInterface $serialPanelService,
     ) {
         parent::__construct();
+    }
+
+    public function assignCustomAttachmentMaterial(PanelAttachment $panelAttachment, array $data): CustomAttachmentMaterial
+    {
+        return $panelAttachment->custom_attachment_materials()->updateOrCreate([
+            'raw_material_id' => $data['raw_material_id'],
+        ], [
+            'qty' => $data['qty'],
+        ]);
     }
 
     public function showGraph(){

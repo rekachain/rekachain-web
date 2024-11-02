@@ -18,6 +18,11 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
+                return [
+                    'raw_material_id' => 'required|integer|exists:raw_materials,id',
+                    'qty' => 'required|integer',
+                ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 $arr = [
                     'supervisor_id' => [

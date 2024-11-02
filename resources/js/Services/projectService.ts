@@ -19,4 +19,19 @@ export const projectService = {
             },
         );
     },
+    downloadImportProjectTemplate: async () => {
+        window.location.href = '/assets/excel-templates/imports/project/project-import.xlsm';
+    },
+    importProject: async (file: File) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        return await window.axios.post(route(`${ROUTES.PROJECTS}.store`), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            params: {
+                intent: IntentEnum.WEB_PROJECT_IMPORT_PROJECT_TEMPLATE,
+            },
+        });
+    },
 };

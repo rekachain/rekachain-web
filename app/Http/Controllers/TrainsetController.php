@@ -102,10 +102,12 @@ class TrainsetController extends Controller {
                 return $this->trainsetService->updateCarriageTrainset($trainset, $request->validated());
 
             case IntentEnum::WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS->value:
-                return $this->trainsetService->generatePanelAttachment($trainset, $request->validated());
+                $result = $this->trainsetService->generatePanelAttachment($trainset, $request->validated());
+                return is_array($result) ? response($result, $result['code']) : $result;
 
             case IntentEnum::WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS->value:
-                return $this->trainsetService->generateTrainsetAttachment($trainset, $request->validated());
+                $result = $this->trainsetService->generateTrainsetAttachment($trainset, $request->validated());
+                return is_array($result) ? response($result, $result['code']) : $result;
         }
 
         //        if ($intent === IntentEnum::WEB_PROJECT_CHANGE_TRAINSET_PRESET->value) {

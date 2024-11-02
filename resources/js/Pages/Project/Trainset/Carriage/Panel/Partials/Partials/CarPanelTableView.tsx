@@ -39,6 +39,11 @@ export default function CarPanelTableView({
                         </TableHead>
                         <TableHead>
                             {t(
+                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.components',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
                                 'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.progress',
                             )}
                         </TableHead>
@@ -57,6 +62,15 @@ export default function CarPanelTableView({
                                 )}
                             </TableCell>
                             <TableCell>{carriage_panel.panel.description}</TableCell>
+                            <TableCell>{carriage_panel.carriage_panel_components?.map(
+                                component => (
+                                    <div key={component.id}>
+                                        <span>
+                                            {component.qty} x {component.component.name}
+                                        </span>
+                                    </div>
+                                )
+                            )}</TableCell>
                             <TableCell>{carriage_panel.progress?.name}</TableCell>
                             <TableCell>
                                 {/*<Link*/}

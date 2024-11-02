@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class PanelAttachment extends Model
 {
-    use HasFactory;
+    use HasFactory, HasRelationships;
 
     protected $fillable = [
         'carriage_panel_id',
@@ -96,8 +98,39 @@ class PanelAttachment extends Model
         return $this->hasMany(PanelAttachmentHandler::class);
     }
 
+    public function raw_materials(): HasManyDeep
+    {
+        return $this->hasManyDeep(
+            RawMaterial::class,
+            [
+                CarriagePanel::class,
+                PanelMaterial::class,
+            ],
+            [
+                'id',
+                'carriage_panel_id',
+                'id'
+            ],
+            [
+                'carriage_panel_id',
+                'id',
+                'raw_material_id'
+            ]
+        );
+    }
+
+    public function panel_materials(): HasManyThrough
+    {
+        return $this->hasManyThrough(PanelMaterial::class, CarriagePanel::class, 'id', 'carriage_panel_id', 'carriage_panel_id', 'id');
+    }
+
     public function attachment_notes(): MorphMany
     {
         return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
+    }
+
+    public function custom_attachment_materials(): MorphMany
+    {
+        return $this->morphMany(CustomAttachmentMaterial::class, 'custom_attachment_materialable');
     }
 }

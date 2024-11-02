@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TrainsetAttachment\StoreTrainsetAttachmentRequest;
 use App\Http\Requests\TrainsetAttachment\UpdateTrainsetAttachmentRequest;
+use App\Http\Resources\RawMaterialResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use Illuminate\Http\Request;
 
 class TrainsetAttachmentController extends Controller {
-    public function __construct(protected TrainsetAttachmentServiceInterface $trainsetattachmentService) {}
+    public function __construct(protected TrainsetAttachmentServiceInterface $trainsetAttachmentService) {}
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = TrainsetAttachmentResource::collection($this->trainsetattachmentService->getAllPaginated($request->query(), $perPage));
+        $data = TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
             return $data;
@@ -29,12 +31,29 @@ class TrainsetAttachmentController extends Controller {
 
     public function store(StoreTrainsetAttachmentRequest $request) {
         if ($this->ajax()) {
-            return $this->trainsetattachmentService->create($request->validated());
+            return $this->trainsetAttachmentService->create($request->validated());
         }
     }
 
-    public function show(TrainsetAttachment $trainsetattachment) {
-        $data = TrainsetAttachmentResource::make($trainsetattachment);
+    public function show(Request $request, TrainsetAttachment $trainsetAttachment) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS->value:
+                return RawMaterialResource::collection($trainsetAttachment->raw_materials);
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+                return $trainsetAttachment->component_materials
+                    ->groupBy('raw_material_id')
+                    ->map(fn($componentMaterials) => [
+                        'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
+                        'total_qty' => $componentMaterials->sum(fn($cm) => 
+                            $cm->qty * $cm->carriage_panel_component->qty 
+                            * $cm->carriage_panel_component->carriage_panel->qty 
+                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
+                        ),
+                    ])->sortBy('raw_material.id')->values();
+        }
+        $data = TrainsetAttachmentResource::make($trainsetAttachment);
 
         if ($this->ajax()) {
             return $data;
@@ -43,21 +62,28 @@ class TrainsetAttachmentController extends Controller {
         return inertia('TrainsetAttachment/Show', compact('data'));
     }
 
-    public function edit(TrainsetAttachment $trainsetattachment) {
-        $data = TrainsetAttachmentResource::make($trainsetattachment);
+    public function edit(TrainsetAttachment $trainsetAttachment) {
+        $data = TrainsetAttachmentResource::make($trainsetAttachment);
 
         return inertia('TrainsetAttachment/Edit', compact('data'));
     }
 
-    public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetattachment) {
+    public function update(UpdateTrainsetAttachmentRequest $request, TrainsetAttachment $trainsetAttachment) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
+                logger($trainsetAttachment);
+                return $this->trainsetAttachmentService->assignCustomAttachmentMaterial($trainsetAttachment, $request->validated());
+        }
         if ($this->ajax()) {
-            return $this->trainsetattachmentService->update($trainsetattachment, $request->validated());
+            return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());
         }
     }
 
-    public function destroy(TrainsetAttachment $trainsetattachment) {
+    public function destroy(TrainsetAttachment $trainsetAttachment) {
         if ($this->ajax()) {
-            return $this->trainsetattachmentService->delete($trainsetattachment);
+            return $this->trainsetAttachmentService->delete($trainsetAttachment);
         }
     }
 }

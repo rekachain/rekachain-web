@@ -899,6 +899,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Qty',
                                     'description' => 'Description',
+                                    'components' => 'Components',
                                     'progress' => 'Progress',
                                 ],
                             ],
@@ -907,6 +908,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Qty',
                                     'description' => 'Description',
+                                    'components' => 'Components',
                                     'progress' => 'Progress',
                                 ],
                             ],
@@ -930,20 +932,34 @@ return [
                             'delete_preset' => 'Delete Preset',
                             'generate_kpm' => 'Generate KPM',
                         ],
+                    ],
+                    'generate_attachment' => [
+                        'buttons' => [
+                            'generate_attachment' => 'Generate Attachment',
+                        ],
+                        'messages' => [
+                            'attachment_generated' => 'Attachment generated successfully!',
+                            'attachment_not_generated' => 'Failed to generate attachment!',
+                        ],
                         'dialogs' => [
-                            'generate_kpm_title' => 'Generate KPM',
+                            'generate_attachment_title' => 'Generate Attachment',
                             'fields' => [
                                 'source_workstation' => 'Source Workstation',
+                                'source_workstation_placeholder' => 'Select Source Workstation',
                                 'source_workstation_search' => 'Search Source Workstation',
                                 'workstation' => 'Select Workstation',
                                 'workstation_placeholder' => 'Workstation',
                                 'destination_workstation' => 'Destination Workstation',
+                                'destination_workstation_placeholder' => 'Select Destination Workstation',
                                 'destination_workstation_search' => 'Search Destination Workstation',
                             ],
                             'buttons' => [
-                                'generate_kpm' => 'Generate KPM',
-                                'generate_mechanic_kpm' => 'Generate Mechanic KPM',
-                                'generate_electric_kpm' => 'Generate Electric KPM',
+                                'generate_attachment' => 'Generate Attachment',
+                                'generate_mechanic_kpm' => 'Generate Mechanic Attachment',
+                                'generate_electric_kpm' => 'Generate Electric Attachment',
+                                'trainset_attachment_mechanic' => 'Mechanic',
+                                'trainset_attachment_electric' => 'Electric',
+                                'panel_attachment' => 'Panel (Assembly)',
                             ],
                         ],
                     ],
@@ -1081,6 +1097,31 @@ return [
             'projects' => [
                 'messages' => [
                     'deleted' => 'Project deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Project imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Project',
+                    'description' => 'Import Project from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Project',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Project',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Project imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Project',
                 ],
             ],
             'partials' => [
