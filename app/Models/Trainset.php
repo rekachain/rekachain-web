@@ -55,6 +55,49 @@ class Trainset extends Model {
         return $this->belongsTo(Project::class);
     }
 
+    public function panel_materials(): HasManyDeep {
+        return $this->hasManyDeep(
+            PanelMaterial::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class,
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'carriage_panel_id',
+            ],
+            [
+                'id',
+                'id',
+                'id',
+            ]
+        );
+    }
+
+    public function component_materials(): HasManyDeep {
+        return $this->hasManyDeep(
+            ComponentMaterial::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class,
+                CarriagePanelComponent::class
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'carriage_panel_id',
+                'carriage_panel_component_id',
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id'
+            ]
+        );
+    }
+
     public function trainset_attachments(): HasMany {
         return $this->hasMany(TrainsetAttachment::class);
     }
