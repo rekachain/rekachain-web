@@ -29,7 +29,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/AddNewTrainsetPreset';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -263,7 +263,7 @@ export default function ({
                                 </div>
                             </div>
                         </div> */}
-                        <Table >
+                        <Table>
                             <TableCaption>List Material dalam KPM</TableCaption>
                             <TableHeader>
                                 <TableRow>
