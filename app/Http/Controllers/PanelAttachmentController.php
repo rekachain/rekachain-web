@@ -55,7 +55,7 @@ class PanelAttachmentController extends Controller {
             case IntentEnum::WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT->value:
                 $panelAttachment = PanelAttachmentResource::make($panelAttachment->load('raw_materials'));
 
-                return inertia('Project/Trainset/Carriage/Partials/DocumentPanelAttachment', compact('panelAttachment'));
+                return inertia('PanelAttachment/DocumentPanelAttachment', compact('panelAttachment'));
         }
 
         return PanelAttachmentResource::make($panelAttachment);

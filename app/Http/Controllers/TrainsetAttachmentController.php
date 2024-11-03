@@ -46,7 +46,7 @@ class TrainsetAttachmentController extends Controller {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT->value:
                 $trainsetAttachment = TrainsetAttachmentResource::make($trainsetAttachment->load('raw_materials'));
 
-                return inertia('Project/Trainset/Carriage/Partials/DocumentTrainsetAttachment', compact('trainsetAttachment'));
+                return inertia('TrainsetAttachment/DocumentTrainsetAttachment', compact('trainsetAttachment'));
         }
         $data = TrainsetAttachmentResource::make($trainsetAttachment);
 
