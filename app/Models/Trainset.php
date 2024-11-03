@@ -26,6 +26,10 @@ class Trainset extends Model {
         'status' => TrainsetStatusEnum::class,
     ];
 
+    public function project(): BelongsTo {
+        return $this->belongsTo(Project::class);
+    }
+
     public function carriages(): BelongsToMany {
         return $this
             ->belongsToMany(Carriage::class)
@@ -42,17 +46,28 @@ class Trainset extends Model {
         return $this->hasMany(CarriageTrainset::class);
     }
 
-    public function carriage_panels(): HasManyThrough {
-        return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class, 'trainset_id', 'carriage_trainset_id', 'id', 'id');
+    public function panels(): HasManyDeep {
+        return $this->hasManyDeep(
+            Panel::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'id',
+            ],
+            [
+                'id',
+                'id',
+                'panel_id',
+            ]
+        );
     }
 
-    // public function project_attachments(): HasMany
-    // {
-    //     return $this->hasMany(ProjectAttachment::class, 'id_trainset', 'id');
-    // }
-
-    public function project(): BelongsTo {
-        return $this->belongsTo(Project::class);
+    public function carriage_panels(): HasManyThrough {
+        return $this->hasManyThrough(CarriagePanel::class, CarriageTrainset::class, 'trainset_id', 'carriage_trainset_id', 'id', 'id');
     }
 
     public function panel_materials(): HasManyDeep {
@@ -61,6 +76,49 @@ class Trainset extends Model {
             [
                 CarriageTrainset::class,
                 CarriagePanel::class,
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'carriage_panel_id',
+            ],
+            [
+                'id',
+                'id',
+                'id',
+            ]
+        );
+    }
+
+    public function components(): HasManyDeep {
+        return $this->hasManyDeep(
+            Component::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class,
+                CarriagePanelComponent::class
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'carriage_panel_id',
+                'id',
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'component_id'
+            ]
+        );
+    }
+    
+    public function carriage_panel_components(): HasManyDeep {
+        return $this->hasManyDeep(
+            CarriagePanelComponent::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class
             ],
             [
                 'trainset_id',

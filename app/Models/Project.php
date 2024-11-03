@@ -44,7 +44,7 @@ class Project extends Model {
                 'id',                  // Local key on the CarriageTrainset table
                 'panel_id'             // Local key on the CarriagePanel table
             ]
-        )->distinct();
+        );
     }
 
     public function carriage_panels() : HasManyDeep {
@@ -90,7 +90,7 @@ class Project extends Model {
                 'id',                  // Local key on the CarriagePanel table
                 'component_id'         // Local key on the CarriagePanel table
             ]
-        )->distinct();
+        );
     }
 
     public function carriage_panel_components() : HasManyDeep {

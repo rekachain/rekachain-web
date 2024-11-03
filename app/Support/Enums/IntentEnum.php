@@ -140,6 +140,14 @@ enum IntentEnum: string
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';
 
+    case WEB_TRAINSET_GET_ALL_COMPONENTS = 'web.trainset.get.all.components';
+
+    case WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY = 'web.trainset.get.all.components.with.qty';
+
+    case WEB_TRAINSET_GET_ALL_PANELS = 'web.trainset.get.all.panels';
+
+    case WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY = 'web.trainset.get.all.panels.with.qty';
+
     case WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET = 'web.trainset.update.carriage.trainset';
 
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
