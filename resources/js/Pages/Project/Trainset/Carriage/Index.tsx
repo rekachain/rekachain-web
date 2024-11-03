@@ -201,7 +201,7 @@ export default function ({
                             </div>
                         </div>
                         <hr className="border-black border-[0.5px] mt-5" />
-                        <h1 className="text-xl font-bold">Status Pekrejaan </h1>
+                        <h1 className="text-xl font-bold mt-3">Status Pekerjaan </h1>
                         <div className="grid grid-cols-3">
                             <div className="flex flex-col gap-3 mt-5">
                                 <div className="">
@@ -226,7 +226,7 @@ export default function ({
                             <div className="flex flex-col gap-3 mt-5 text-white items-center"></div>
                         </div>
                         <hr className="border-black border-[0.5px] mt-5" />
-                        <h1 className="text-xl font-bold">List Material </h1>
+                        <h1 className="text-xl font-bold mt-3">List Material </h1>
                         {/* <div className="grid grid-cols-5">
                             <div className="flex flex-col gap-5 mt-5">
                                 <div className="">
@@ -263,15 +263,13 @@ export default function ({
                                 </div>
                             </div>
                         </div> */}
-                        <Table>
+                        <Table >
                             <TableCaption>List Material dalam KPM</TableCaption>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[100px]">Kode Material</TableHead>
+                                    <TableHead className="">Kode Material</TableHead>
                                     <TableHead>Deskripsi</TableHead>
                                     <TableHead>Spesifikasi</TableHead>
-                                    <TableHead className="">Jumlah Diminta</TableHead>
-                                    <TableHead className="">Jumlah Diterima</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -279,8 +277,6 @@ export default function ({
                                     <TableCell className="font-medium">22858OH0000XXG01 </TableCell>
                                     <TableCell>L1lp,L2lp </TableCell>
                                     <TableCell>Indicator Lamp, Green 220VAC </TableCell>
-                                    <TableCell className="">18</TableCell>
-                                    <TableCell className="">18</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
