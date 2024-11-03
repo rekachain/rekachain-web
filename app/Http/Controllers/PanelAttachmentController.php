@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
 use App\Http\Resources\PanelResource;
 use App\Http\Resources\RawMaterialResource;
+use App\Http\Resources\SerialPanelResource;
 use App\Support\Enums\IntentEnum;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -46,19 +47,27 @@ class PanelAttachmentController extends Controller {
      */
     public function show(Request $request, PanelAttachment $panelAttachment) {
         $intent = $request->get('intent');
-        logger($intent);
-
-        switch ($intent) {
-            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL->value:
-                return PanelResource::make($panelAttachment->panel);
-            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
-                return PanelAttachmentResource::make($panelAttachment);
-            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
-                return RawMaterialResource::collection($panelAttachment->raw_materials);
-            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
-                return PanelAttachmentResource::make($panelAttachment);
+        if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL->value:
+                    return PanelResource::make($panelAttachment->panel);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
+                    return PanelAttachmentResource::make($panelAttachment);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS->value:
+                    return SerialPanelResource::collection($panelAttachment->serial_panels);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                    return PanelAttachmentResource::make($panelAttachment);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
+                    return RawMaterialResource::collection($panelAttachment->raw_materials);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
+                    return PanelAttachmentResource::make($panelAttachment);
+                default:
+                    return PanelAttachmentResource::make($panelAttachment);
+            }
         }
-        return PanelAttachmentResource::make($panelAttachment);
+        return inertia('PanelAttachment/Show', [
+            'panelAttachment' => PanelAttachmentResource::make($panelAttachment),
+        ]);
     }
 
     /**

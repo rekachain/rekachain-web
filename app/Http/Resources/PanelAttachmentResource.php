@@ -93,7 +93,7 @@ class PanelAttachmentResource extends JsonResource
                     'total_materials' => $materials->count(),
                     'materials' => $materials,
                 ];
-            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                 $panelAttachment = $this->load(['carriage_panel' => ['progress' => ['progress_steps']]]);
                 $panelSteps = $panelAttachment->carriage_panel->progress->progress_steps->map(function ($progressStep) use (&$steps) {
                     return [
@@ -119,6 +119,8 @@ class PanelAttachmentResource extends JsonResource
                                 'nip' => $detailWorkerPanel->worker->nip,
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
+                                'acceptance_status' => $detailWorkerPanel->acceptance_status,
+                                'work_status' => $detailWorkerPanel->work_status
                             ]);
                             $steps->push([
                                 'id' => $detailWorkerPanel->progress_step->step->id,
@@ -133,6 +135,8 @@ class PanelAttachmentResource extends JsonResource
                                 'nip' => $detailWorkerPanel->worker->nip,
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
+                                'acceptance_status' => $detailWorkerPanel->acceptance_status,
+                                'work_status' => $detailWorkerPanel->work_status
                             ]);
                         }
                     });
@@ -144,21 +148,14 @@ class PanelAttachmentResource extends JsonResource
                     });
                     return [
                         'serial_number' => $serialPanel->id,
-                        'progress' => $serialPanel->detail_worker_panels->first()->progress_step->progress->load('work_aspect'),
+                        'progress' => $this->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
                         'steps' => $steps->sortBy('progress_step_id')->map(function ($step) {
-                            unset($step['id']);
-                            unset($step['progress_step_id']);
                             return $step;
                         })->values(),
                     ];
                 });
-
-                return [
-                    'attachment_number' => $this->attachment_number,
-                    'total_progresses' => $serialPanels->count(),
-                    'serial_panels' => $serialPanels,
-                ];
+                return $serialPanels->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,
