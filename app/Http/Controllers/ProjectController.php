@@ -61,11 +61,12 @@ class ProjectController extends Controller {
     public function store(StoreProjectRequest $request) {
         if ($this->ajax()) {
             $intent = $request->get('intent');
-    
+
             switch ($intent) {
                 case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
                     return $this->projectService->importProject($request->file('file'));
             }
+
             return $this->projectService->create($request->validated());
         }
     }
@@ -79,11 +80,11 @@ class ProjectController extends Controller {
 
         switch ($intent) {
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS->value:
-                return PanelResource::collection($project->panels()->distinct()->get()); //$project->panels;
+                return PanelResource::collection($project->panels()->distinct()->get()); // $project->panels;
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS_WITH_QTY->value:
                 return ProjectResource::make($project);
             case IntentEnum::WEB_PROJECT_GET_ALL_COMPONENTS->value:
-                return ComponentResource::collection($project->components()->distinct()->get()); //$project->components;
+                return ComponentResource::collection($project->components()->distinct()->get()); // $project->components;
             case IntentEnum::WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY->value:
                 return ProjectResource::make($project);
         }
@@ -147,6 +148,13 @@ class ProjectController extends Controller {
         $trainset = new TrainsetResource($trainset->load(['carriages']));
 
         return inertia('Project/Trainset/Show', ['project' => $project, 'trainset' => $trainset]);
+    }
+
+    public function downloadAttachment(Request $request, Project $project, Trainset $trainset) {
+        return inertia('Project/Trainset/Carriage/Partials/DocumentAttachment', [
+            'project' => new ProjectResource($project),
+            'trainset' => new TrainsetResource($trainset),
+        ]);
     }
 
     public function carriages(Request $request, Project $project, Trainset $trainset) {

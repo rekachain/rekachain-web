@@ -31,6 +31,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenerateAttachment from '@/Pages/Project/Trainset/Carriage/Partials/GenerateAttachment';
 
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { buttonVariants } from '@/Components/UI/button';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -171,6 +172,14 @@ export default function ({
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Carriages trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </Suspense>
+
+                    <Link
+                        className={buttonVariants()}
+                        href={route(ROUTES.PROJECTS_TRAINSETS_DOWNLOAD_ATTACHMENT, [trainset.project_id, trainset.id])}
+                        target="_blank"
+                    >
+                        Download Attachment
+                    </Link>
 
                     <div className="">
                         <h1 className="text-xl font-bold">KPM Mekanik</h1>

@@ -12,4 +12,7 @@ export default defineConfig({
         react(),
         i18n(),
     ],
+    optimizeDeps: {
+        include: ['html2canvas', 'jspdf'],
+    },
 });
