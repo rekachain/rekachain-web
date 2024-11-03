@@ -15,20 +15,22 @@ class PresetTrainsetSheetImport implements ToCollection
     public function collection(Collection $rows)
     {
         $project = $this->parent->getProject();
-        $headers = $rows[2]->filter();
-        $rows->skip(3)->each(function ($row) use ($project, $headers) {
-            if ($row[1] == null || $row[1] == '') {
+        $topHeaders = $rows[1];
+        $carTypeHeaders = $rows[2];
+        $rows->skip(3)->each(function ($row) use ($project, $topHeaders, $carTypeHeaders) {
+            $nameColumn = $topHeaders->search('Nama');
+            if ($row[$nameColumn] == null || $row[$nameColumn] == '') {
                 return;
             }
             
             $preset = PresetTrainset::create([
                 'project_id' => $project->id,
-                'name' => $row[1],
+                'name' => $row[$nameColumn],
             ]);
             $this->parent->addPreset($preset);
 
             $carriagePresetImport = [];
-            foreach ($headers as $index => $header) {
+            foreach ($carTypeHeaders->filter() as $index => $header) {
                 $carriagePresetImport[$header] = $row[$index];
             }
             

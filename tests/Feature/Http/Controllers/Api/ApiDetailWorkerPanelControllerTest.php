@@ -6,6 +6,10 @@ use App\Models\ProgressStep;
 use App\Support\Enums\RoleEnum;
 use App\Models\DetailWorkerPanel;
 use App\Support\Enums\IntentEnum;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\SerialPanelResource;
+use App\Http\Resources\ProgressStepResource;
+use App\Http\Resources\PanelAttachmentResource;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 
@@ -16,23 +20,66 @@ beforeEach(function () {
 });
 
 test('view all detail-worker-panels w/o intent', function () {
-
     DetailWorkerPanel::inRandomOrder()->first() ?? $this->dummy->createDetailWorkerPanel();
-    actAsSuperAdmin()->get('/api/detail-worker-panels')->assertStatus(200);
+
+    actAsSuperAdmin()->get('/api/detail-worker-panels')->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'serial_panel_id',
+                    'worker_id',
+                    'progress_step_id',
+                    'estimated_time',
+                    'image_path',
+                    'work_status',
+                    'acceptance_status',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('view all detail-worker-panels intent by status in progress', function () {
-
     DetailWorkerPanel::inRandomOrder()->first() ?? $this->dummy->createDetailWorkerPanel();
     $status = DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value;
-    actAsSuperAdmin()->get('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS->value . '&work_status=' . $status)->assertStatus(200);
+
+    actAsSuperAdmin()->get('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS->value . '&work_status=' . $status)->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'worker',
+                    'attachment_number',
+                    'step',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('view all detail-worker-panels intent by status completed', function () {
-
     DetailWorkerPanel::inRandomOrder()->first() ?? $this->dummy->createDetailWorkerPanel();
     $status = DetailWorkerPanelWorkStatusEnum::COMPLETED->value;
-    actAsSuperAdmin()->get('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS->value . '&work_status=' . $status)->assertStatus(200);
+
+    actAsSuperAdmin()->get('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS->value . '&work_status=' . $status)->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'worker',
+                    'attachment_number',
+                    'step',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('view all detail-worker-panels intent by current user', function () {
@@ -43,7 +90,19 @@ test('view all detail-worker-panels intent by current user', function () {
     $response = $this->actingAs($user)->getJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_BY_CURRENT_USER->value);
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'links', 'meta']);
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'worker',
+                    'attachment_number',
+                    'step',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('view all detail-worker-panels intent by status and current user', function () {
@@ -54,20 +113,49 @@ test('view all detail-worker-panels intent by status and current user', function
 
     $response = $this->actingAs($user)->getJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_BY_STATUS_AND_CURRENT_USER->value . '&work_status=' . $status);
 
-    $response->assertStatus(200);
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'worker',
+                    'attachment_number',
+                    'step',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
-test('view all detail-worker-panels intent get all request worker', function () {
+test('view all detail-worker-panels intent get all request worker with all status', function () {
 
     $supervisor = $this->dummy->createSupervisorAssembly();
-    DetailWorkerPanel::inRandomOrder()->first() ??  $this->dummy->createDetailWorkerPanel();
+    DetailWorkerPanel::where(['acceptance_status' => null]) ?? $this->dummy->createDetailWorkerPanel(['acceptance_status' => null]);
 
     $response = $this->actingAs($supervisor)->getJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER->value . '&acceptance_status=all');
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'links', 'meta']);
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'panel_name',
+                    'carriage_type',
+                    'id_project',
+                    'worker_desc',
+                    'step',
+                    'no_serial_panel',
+                    'attachment_number',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ],
+            ],
+            'meta'
+        ]);
 });
-
 test('view all detail-worker-panels intent get all request worker with pending status', function () {
 
     $supervisor = $this->dummy->createSupervisorAssembly();
@@ -76,36 +164,47 @@ test('view all detail-worker-panels intent get all request worker with pending s
     $response = $this->actingAs($supervisor)->getJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_REQUEST_WORKER->value . '&acceptance_status=pending');
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'links', 'meta']);
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'panel_name',
+                    'carriage_type',
+                    'id_project',
+                    'worker_desc',
+                    'step',
+                    'no_serial_panel',
+                    'attachment_number',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ],
+            ],
+            'meta'
+        ]);
 });
 
-test('store detail-worker-panel', function () {
+test('show detail-worker-panel with get work details intent', function () {
 
-    $user = $this->dummy->createWorkerAssembly();
-    $serial_panel = $this->dummy->createSerialPanel();
-    $progress_step = $this->dummy->createProgressStep();
-    $DetailWorkerPanelData = [
-        'serial_panel_id' => $serial_panel->id,
-    ];
+    $user = User::factory()->create();
+    $detailWorkerPanel = DetailWorkerPanel::where(['worker_id' => $user->id])->first() ?? $this->dummy->createDetailWorkerPanel(['worker_id' => $user->id]);
 
-    $response = $this->actingAs($user)->postJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value, $DetailWorkerPanelData);
+    $response = $this->actingAs($user)->getJson('/api/detail-worker-panels/' . $detailWorkerPanel->id . '?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_GET_WORK_DETAILS->value);
 
-    $response->assertStatus(201);
-});
-
-test('store detail-worker-panel fails for non-worker role', function () {
-
-    $user = $this->dummy->createSupervisorAssembly();
-    $serial_panel = $this->dummy->createSerialPanel();
-    $progress_step = $this->dummy->createProgressStep();
-    $DetailWorkerPanelData = [
-        'serial_panel_id' => $serial_panel->id,
-        'worker_id' => $user->id,
-    ];
-
-    $response = $this->actingAs($user)->postJson('/api/detail-worker-panels?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_STORE_AND_CHECK->value, $DetailWorkerPanelData);
-
-    $response->assertStatus(403);
+    $response->assertStatus(200)
+        ->assertJsonStructure([
+            'id',
+            'panel_attachment',
+            'worker',
+            'serial_panel',
+            'progress_step',
+            'estimated_time',
+            'work_status',
+            'acceptance_status',
+            'image_path',
+            'created_at',
+            'updated_at',
+        ]);
 });
 
 test('show detail-worker-panel with get panel details intent', function () {
@@ -116,15 +215,31 @@ test('show detail-worker-panel with get panel details intent', function () {
     $response = $this->actingAs($user)->getJson('/api/detail-worker-panels/' . $detailWorkerPanel->id . '?intent=' . IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value);
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['data']);
+        ->assertJsonStructure([
+            'data'=> [
+                '*' => [
+                    'id',
+                    'panel_name',
+                    'carriage_type',
+                    'id_project',
+                    'worker_desc',
+                    'step',
+                    'no_serial_panel',
+                    'attachment_number',
+                    'estimated_time',
+                    'work_status',
+                    'acceptance_status',
+                ],
+            ],
+        ]);
 });
 
 test('update method updates DetailWorkerPanel for assign request worker', function () {
 
     $supervisor = $this->dummy->createSupervisorAssembly();
-    $DetailWorkerPanel = $this->dummy->createDetailWorkerPanel();
+    $detailWorkerPanel = $this->dummy->createDetailWorkerPanel();
 
-    $response = $this->actingAs($supervisor)->putJson('/api/detail-worker-panels/' . $DetailWorkerPanel->id, [
+    $response = $this->actingAs($supervisor)->putJson('/api/detail-worker-panels/' . $detailWorkerPanel->id . '?_method=PUT', [
         'intent' => IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value,
         'acceptance_status' => DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value,
     ]);

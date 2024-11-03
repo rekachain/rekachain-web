@@ -37,3 +37,4 @@ export * from './TrainsetAttachmentComponentResource';
 export * from './FailedComponentManufactureResource';
 export * from './AttachmentNoteResource';
 export * from './FeedbackResource';
+export * from './CustomAttachmentMaterialResource';

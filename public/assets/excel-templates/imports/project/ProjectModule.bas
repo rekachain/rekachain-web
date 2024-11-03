@@ -67,7 +67,7 @@ Sub createTrainsets()
             wsTrainset.Cells(3 + i, 2).Value = "TS" & i
 
             ' Add data validation to the next cell
-            Set validationRange = wsPreset.Range("B4:B" & wsPreset.Cells(wsPreset.Rows.Count, "B").End(xlUp).Row)
+            Set validationRange = wsPreset.Range("A4:A" & wsPreset.Cells(wsPreset.Rows.Count, "A").End(xlUp).Row)
             With wsTrainset.Cells(3 + i, 3).Validation
                 .Delete ' Remove any existing validation
                 .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
@@ -95,7 +95,7 @@ Sub changeCarriage(target As Range)
     Dim lastTrainsetColumn As Integer
     Dim countPresetCarriages As Integer
     Dim countTrainsetCarriages As Integer
-    Dim presetSheet As Worksheet
+    Dim wsPreset As Worksheet
     Dim trainsetSheet As Worksheet
     Dim i As Integer
     
@@ -105,34 +105,34 @@ Sub changeCarriage(target As Range)
         typeRowCount = typeColumn.End(xlDown).Row - typeColumn.Row
     End If
     ' changing carriage on preset trainset
-    Set presetSheet = ThisWorkbook.Sheets("Preset Trainset")
+    Set wsPreset = ThisWorkbook.Sheets("Preset Trainset")
 
-    lastPresetColumn = presetSheet.Cells(3, presetSheet.Columns.Count).End(xlToLeft).Column
+    lastPresetColumn = wsPreset.Cells(3, wsPreset.Columns.Count).End(xlToLeft).Column
     countPresetCarriages = lastPresetColumn - 2
 
     If countPresetCarriages > typeRowCount Then
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(3, lastPresetColumn)).UnMerge
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Rows.Count, lastPresetColumn)).ClearFormats
-        presetSheet.Range(presetSheet.Cells(3, typeRowCount + 3), presetSheet.Cells(presetSheet.Rows.Count, lastPresetColumn)).ClearContents
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(3, lastPresetColumn)).UnMerge
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearFormats
+        wsPreset.Range(wsPreset.Cells(3, typeRowCount + 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearContents
     Else
-        presetSheet.Cells(3, lastPresetColumn).ClearContents
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Rows.Count, lastPresetColumn)).UnMerge
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Rows.Count, lastPresetColumn)).ClearFormats
+        wsPreset.Cells(3, lastPresetColumn).ClearContents
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).UnMerge
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearFormats
 
         For i = 1 To typeRowCount
-            presetSheet.Cells(3, i + 2).Value = typeColumn.Rows(i + 1).Value
-            presetSheet.Cells(3, i + 2).HorizontalAlignment = xlCenter
-            presetSheet.Cells(3, i + 2).Borders.LineStyle = xlContinuous
-            presetSheet.Cells(3, i + 2).Borders.Weight = xlThin
-            presetSheet.Cells(3, i + 2).Interior.Color = rgb(142, 169, 219)
+            wsPreset.Cells(3, i + 2).Value = typeColumn.Rows(i + 1).Value
+            wsPreset.Cells(3, i + 2).HorizontalAlignment = xlCenter
+            wsPreset.Cells(3, i + 2).Borders.LineStyle = xlContinuous
+            wsPreset.Cells(3, i + 2).Borders.Weight = xlThin
+            wsPreset.Cells(3, i + 2).Interior.Color = rgb(142, 169, 219)
         Next i
     End If
-        lastPresetColumn = presetSheet.Cells(3, presetSheet.Columns.Count).End(xlToLeft).Column
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Cells(presetSheet.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).HorizontalAlignment = xlCenter
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Cells(presetSheet.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.LineStyle = xlContinuous
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(presetSheet.Cells(presetSheet.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.Weight = xlThin
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(3, lastPresetColumn)).Interior.Color = rgb(142, 169, 219)
-        presetSheet.Range(presetSheet.Cells(2, 3), presetSheet.Cells(2, lastPresetColumn)).Merge
+        lastPresetColumn = wsPreset.Cells(3, wsPreset.Columns.Count).End(xlToLeft).Column
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).HorizontalAlignment = xlCenter
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.LineStyle = xlContinuous
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.Weight = xlThin
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(3, lastPresetColumn)).Interior.Color = rgb(142, 169, 219)
+        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(2, lastPresetColumn)).Merge
     
 
     ' changing carriage on trainset
@@ -171,18 +171,18 @@ End Sub
 
 Sub changePresetTrainsetCount(changedCell As Range)
     Dim newValue As String
-    Dim presetSheet As Worksheet
+    Dim wsPreset As Worksheet
     Dim foundCell As Range
     
     newValue = changedCell.Value
-    Set presetSheet = ThisWorkbook.Sheets("Preset Trainset")
+    Set wsPreset = ThisWorkbook.Sheets("Preset Trainset")
     
     ' Find the new value in the Preset sheet
-    Set foundCell = presetSheet.Range("B4:B" & presetSheet.Cells(presetSheet.Rows.Count, "B").End(xlUp).Row).Find(What:=newValue, LookIn:=xlValues, LookAt:=xlWhole)
+    Set foundCell = wsPreset.Range("A4:A" & wsPreset.Cells(wsPreset.Rows.Count, "A").End(xlUp).Row).Find(What:=newValue, LookIn:=xlValues, LookAt:=xlWhole)
     
-    If Not foundCell Is Nothing Then
+    If Not foundCell Is Nothing And Not newValue = "Custom" Then
         ' Determine the number of columns to copy from row 3 of Preset sheet
-        colCount = Application.WorksheetFunction.CountA(presetSheet.Rows(3))
+        colCount = Application.WorksheetFunction.CountA(wsPreset.Rows(3))
         
         ' Update the cells in the same row to match the columns in row 3 of Preset sheet
         For i = 1 To colCount
@@ -193,18 +193,20 @@ Sub changePresetTrainsetCount(changedCell As Range)
     End If
 End Sub
 
-Sub changePresetTrainset()
+Sub changePresetTrainset(changedCell As Range, oldValue As String)
     Dim wsPreset As Worksheet
     Dim wsTrainset As Worksheet
     Dim validationRange As Range
     Dim lastRow As Long
     Dim i As Long
 
+    ' MsgBox "Value changed: " & oldValue
+
     Set wsPreset = ThisWorkbook.Sheets("Preset Trainset")
     Set wsTrainset = ThisWorkbook.Sheets("Trainset")
 
-    lastRow = wsPreset.Cells(wsPreset.Rows.Count, "B").End(xlUp).Row
-    Set validationRange = wsPreset.Range("B4:B" & lastRow)
+    lastRow = wsPreset.Cells(wsPreset.Rows.Count, "A").End(xlUp).Row
+    Set validationRange = wsPreset.Range("A4:A" & lastRow)
 
     For i = 1 To wsTrainset.Cells(wsTrainset.Rows.Count, "C").End(xlUp).Row - 3
         With wsTrainset.Cells(3 + i, 3).Validation
@@ -216,7 +218,12 @@ Sub changePresetTrainset()
             .ShowInput = True
             .ShowError = True
         End With
-        Call changePresetTrainsetCount(wsTrainset.Cells(3 + i, 3))
+    Next i
+    wsTrainset.Columns("C").Replace What:=oldValue, Replacement:=changedCell.Value, LookAt:=xlWhole, MatchCase:=False
+    For i = 1 To wsTrainset.Cells(wsTrainset.Rows.Count, "C").End(xlUp).Row - 3
+        If Not wsTrainset.Cells(3 + i, 3).Value = "Custom" Then
+            Call changePresetTrainsetCount(wsTrainset.Cells(3 + i, 3))
+        End If
     Next i
 End Sub
 
@@ -287,7 +294,7 @@ Sub updatePanelValidation(changedCell As Range, oldValue As String)
     uniqueValues = GetUniqueSortedValues(validationRange)
     
     ' Update validation range in Panel worksheet
-    For Each cell In wsComponent.Range("C2:C" & wsPanel.Cells(wsPanel.Rows.Count, "C").End(xlUp).Row)
+    For Each cell In wsComponent.Range("C2:C" & wsComponent.Cells(wsComponent.Rows.Count, "C").End(xlUp).Row)
         With cell.Validation
             .Delete ' Remove any existing validation
             .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _

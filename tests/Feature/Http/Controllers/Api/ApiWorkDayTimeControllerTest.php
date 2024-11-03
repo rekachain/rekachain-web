@@ -2,12 +2,31 @@
 
 test('view all work day times', function () {
     $this->dummy->createWorkDayTime();
-    actAsSuperAdmin()->get('/api/work-day-times')->assertStatus(200);
+    actAsSuperAdmin()->get('/api/work-day-times')->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'day',
+                    'start_time',
+                    'end_time',
+                    'status',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('view work day time', function () {
     $workDayTime = $this->dummy->createWorkDayTime();
-    actAsSuperAdmin()->get('/api/work-day-times/' . $workDayTime->id)->assertStatus(200);
+    actAsSuperAdmin()->get('/api/work-day-times/' . $workDayTime->id)->assertStatus(200)
+        ->assertJson([
+            'id' => $workDayTime->id,
+            'day' => $workDayTime->work_day->day,
+            'start_time' => $workDayTime->start_time,
+            'end_time' => $workDayTime->end_time,
+            'status' => $workDayTime->status->value,
+        ]);
 });
 
 test('store work day time', function () {

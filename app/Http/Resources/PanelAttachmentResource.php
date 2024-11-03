@@ -18,6 +18,16 @@ class PanelAttachmentResource extends JsonResource
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
+                return $this->panel_materials
+                ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
+                    return [
+                        'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
+                        'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
+                            return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
+                        }),
+                    ];
+                })->sortBy('raw_material.id')->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
                     'id' => $this->id,

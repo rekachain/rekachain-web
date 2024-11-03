@@ -13,6 +13,17 @@ class TrainsetAttachmentResource extends JsonResource
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+                return $this->component_materials
+                    ->groupBy('raw_material_id')
+                    ->map(fn($componentMaterials) => [
+                        'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
+                        'total_qty' => $componentMaterials->sum(fn($cm) => 
+                            $cm->qty * $cm->carriage_panel_component->qty 
+                            * $cm->carriage_panel_component->carriage_panel->qty 
+                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
+                        ),
+                    ])->sortBy('raw_material.id')->toArray();
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
                 $trainsetAttachment = $this->load(['trainset_attachment_components']);
 
