@@ -8,12 +8,13 @@ import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 const DocumentAttachment = ({
     panelAttachment,
-    title,
+    title = 'KPM Assembly',
 }: {
     panelAttachment: PanelAttachmentResource;
     title: string;
 }) => {
-    const [selectedPanelRawMaterials, setSelectedPanelRawMaterials] = useState<RawMaterialResource[]>([]);
+    const [pageTitle, setPageTitle] = useState<string>(title);
+    const [selectedPanelRawMaterials, setselectedPanelRawMaterials] = useState<RawMaterialResource[]>([]);
 
     const temporaryChangeThemeToLightMode = () => {
         document.documentElement.classList.remove('dark');
@@ -21,23 +22,23 @@ const DocumentAttachment = ({
     };
 
     useEffect(() => {
-        setTimeout(() => {
-            temporaryChangeThemeToLightMode();
-
-            window.onafterprint = () => {
-                history.back();
-            };
-            window.print();
-        }, 500);
-    }, []);
-
-    useEffect(() => {
         panelAttachmentService
             .get(panelAttachment.id, {
                 intent: IntentEnum.WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY,
             })
             .then(response => {
-                setSelectedPanelRawMaterials(response as unknown as RawMaterialResource[]);
+                setselectedPanelRawMaterials(response as unknown as RawMaterialResource[]);
+
+                setPageTitle('KPM Assembly');
+
+                setTimeout(() => {
+                    temporaryChangeThemeToLightMode();
+
+                    window.onafterprint = () => {
+                        history.back();
+                    };
+                    window.print();
+                }, 500);
             });
     }, []);
 
@@ -52,9 +53,9 @@ const DocumentAttachment = ({
     };
     return (
         <>
-            <Head title={'Document Panel Attachment'} />
+            <Head title={pageTitle} />
             <div className="text-black dark:text-white" key={panelAttachment.id}>
-                <h1 className="text-xl font-bold">{title}</h1>
+                <h1 className="text-xl font-bold">{pageTitle}</h1>
                 <div className="grid grid-cols-3">
                     <div className="flex flex-col gap-3 mt-5">
                         <div className="">

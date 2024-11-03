@@ -11,7 +11,7 @@ class TrainsetAttachmentResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
-            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value || IntentEnum::WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT->value:
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
                 $rawMaterials = $this->component_materials
                     ->groupBy('raw_material_id')
                     ->map(fn ($componentMaterials) => [
@@ -201,6 +201,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     'destination_workstation' => new WorkstationResource($this->whenLoaded('destination_workstation')),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
+                    'qr' => $this->qr,
                     'status' => $this->status,
                     'elapsed_time' => $this->elapsed_time,
                     'supervisor_id' => $this->supervisor_id,
