@@ -4,18 +4,7 @@ import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    LabelList,
-    Line,
-    LineChart,
-    Pie,
-    PieChart,
-    XAxis,
-    YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
@@ -34,44 +23,16 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: '#00C3FF',
         },
     } satisfies ChartConfig;
-    const chartData = [
-        { ts: 'TS1', progress: 186, done: 80 },
-        { ts: 'TS2', progress: 86, done: 80 },
-        { ts: 'TS3', progress: 20, done: 50 },
-        { ts: 'TS4', progress: 45, done: 70 },
-        { ts: 'TS5', progress: 12, done: 100 },
-        { ts: 'TS6', progress: 95, done: 60 },
-        { ts: 'TS7', progress: 70, done: 30 },
-        { ts: 'TS8', progress: 110, done: 90 },
-        { ts: 'TS9', progress: 54, done: 40 },
-        { ts: 'TS10', progress: 30, done: 80 },
-        { ts: 'TS11', progress: 22, done: 20 },
-        { ts: 'TS12', progress: 67, done: 50 },
-        { ts: 'TS13', progress: 100, done: 100 },
-        { ts: 'TS14', progress: 45, done: 65 },
-        { ts: 'TS15', progress: 75, done: 75 },
-        { ts: 'TS16', progress: 12, done: 55 },
-        { ts: 'TS17', progress: 88, done: 85 },
-        { ts: 'TS18', progress: 34, done: 10 },
-        { ts: 'TS19', progress: 91, done: 90 },
-        { ts: 'TS20', progress: 67, done: 80 },
-        { ts: 'TS21', progress: 20, done: 30 },
-        { ts: 'TS22', progress: 42, done: 60 },
-        { ts: 'TS23', progress: 99, done: 100 },
-        { ts: 'TS24', progress: 76, done: 50 },
-        { ts: 'TS25', progress: 33, done: 70 },
-        { ts: 'TS26', progress: 54, done: 40 },
-        { ts: 'TS27', progress: 15, done: 20 },
-        { ts: 'TS28', progress: 68, done: 80 },
-        { ts: 'TS29', progress: 90, done: 90 },
-        { ts: 'TS30', progress: 25, done: 50 },
-    ];
     // from panel_attachment get status
     // from carriage panel get carriage_trainset_id
     // from trainset get trainset id
 
+    //  TS
     // this is correct
     // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;
+
+    // new with project ID
+    // SELECT projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name;
 
     // SELECT count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id where panel_attachments.status = "done" GROUP BY trainsets.name;
 
@@ -88,6 +49,11 @@ export default function Dashboard({ auth, data }: PageProps) {
     // this is correct
     // SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id where workshops.id <3 GROUP by workshops.name;
 
+    // Correct with project 612
+    //SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name
+
+    // INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id
+
     // panel attachment source workstation in progress and done
     // workstation id
     // SELECT * FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id;
@@ -100,6 +66,9 @@ export default function Dashboard({ auth, data }: PageProps) {
         { panel: 'Panel PIDS C', progress: 16, done: 80 },
         { panel: 'Panel PIDS D', progress: 18, done: 90 },
     ];
+
+    // Correct with project name
+    // SELECT projects.name, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id GROUP by panels.name,projects.name, panel_attachments.status ORDER BY `panels`.`name` ASC
 
     // SELECT count(panel_attachments.status), panel_attachments.status, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status;
 
@@ -140,21 +109,22 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="w-1/2 ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                                 <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px]  w-full  p-0 mt-4">
+                                <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
                                     <BarChart accessibilityLayer data={data.ws} layout="vertical">
                                         <CartesianGrid vertical={false} />
                                         <XAxis type="number" dataKey="in_progress"></XAxis>
                                         <XAxis type="number" dataKey="done"></XAxis>
                                         <YAxis
+                                            // max={10}
                                             className=""
-                                            dataKey="ts"
+                                            dataKey="name"
                                             type="category"
                                             tickLine={false}
                                             // tickSize={20}
                                             // tickCount={}
                                             // padding={}
-                                            minTickGap={0}
-                                            tickMargin={0}
+                                            // minTickGap={0}
+                                            // tickMargin={1}
                                             axisLine={false}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
@@ -167,15 +137,15 @@ export default function Dashboard({ auth, data }: PageProps) {
 
                             <div className="w-[35%]  ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
-                                <h3 className="text-base">Panel panel yang ada Assembly</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-4">
-                                    <BarChart accessibilityLayer data={data.panel}>
+                                <h3 className="text-base">Panel panel pada WS Assembly</h3>
+                                <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
+                                    <BarChart accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
-                                        <YAxis type="number" dataKey="done"></YAxis>
+                                        <YAxis type="number" dataKey="in_progress"></YAxis>
                                         <XAxis
-                                            dataKey="ts"
+                                            dataKey="name"
                                             tickLine={false}
-                                            tickMargin={10}
+                                            // tickMargin={10}
                                             axisLine={false}
                                             tickFormatter={value => value.slice(0, 6)}
                                         />
