@@ -30,6 +30,29 @@ class TrainsetResource extends JsonResource {
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
+            case IntentEnum::WEB_TRAINSET_GET_ALL_COMPONENTS->value:
+                $divisionId = $request->get('division_id') ?? 1; // default mechanic
+                $components = $this->components()->whereHas('carriage_panel_components.progress.work_aspect', function (Builder $query) use ($divisionId) {
+                    $query->where('division_id', $divisionId);
+                });
+                return $components->get()
+                    ->groupBy(['id'])->map(function ($components) {
+                        return ComponentResource::make($components->first());
+                })->toArray();
+            case IntentEnum::WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY->value:
+                $divisionId = $request->get('division_id') ?? 1; // default mechanic
+                $carriagePanelComponents = $this->carriage_panel_components()->whereHas('progress.work_aspect', function (Builder $query) use ($divisionId) {
+                    $query->where('division_id', $divisionId);
+                });
+                return $carriagePanelComponents->get()
+                    ->groupBy(['component_id'])->map(function ($components) {
+                        return [
+                            'component' => ComponentResource::make($components->first()->component),
+                            'total_qty' => $components->sum(function ($component) {
+                                return $component->qty * $component->carriage_panel->qty * $component->carriage_panel->carriage_trainset->qty;
+                            })
+                        ];
+                })->toArray();
             case IntentEnum::WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY->value:
                 $componentMaterials = $this->component_materials()->with(['carriage_panel_component.carriage_panel.carriage_trainset']);
                 $divisionId = $request->get('division_id') ?? 1; // default mechanic
@@ -87,6 +110,15 @@ class TrainsetResource extends JsonResource {
                             ];
                     })->sortBy('raw_material.id')->toArray();
                 }
+            case IntentEnum::WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY->value:
+                return $this->carriage_panels->groupBy(['panel_id'])->map(function ($carriagePanels) {
+                    return [
+                        'panel' => PanelResource::make($carriagePanels->first()->panel),
+                        'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
+                            return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
+                        }),
+                    ];
+                })->toArray();
             case IntentEnum::WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY->value:
                 $panelMaterials = $this->panel_materials()->with(['carriage_panel.carriage_trainset']);
                 $carriageId = $request->get('carriage_id');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Trainset\StoreTrainsetRequest;
 use App\Http\Requests\Trainset\UpdateTrainsetRequest;
+use App\Http\Resources\PanelResource;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
@@ -71,7 +72,15 @@ class TrainsetController extends Controller {
             $intent = $request->get('intent');
 
             switch ($intent) {
+                case IntentEnum::WEB_TRAINSET_GET_ALL_COMPONENTS->value:
+                    return TrainsetResource::make($trainset);
+                case IntentEnum::WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY->value:
+                    return TrainsetResource::make($trainset);
                 case IntentEnum::WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+                    return TrainsetResource::make($trainset);
+                case IntentEnum::WEB_TRAINSET_GET_ALL_PANELS->value:
+                    return PanelResource::collection($trainset->panels()->distinct()->get());
+                case IntentEnum::WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY->value:
                     return TrainsetResource::make($trainset);
                 case IntentEnum::WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY->value:
                     return TrainsetResource::make($trainset);
