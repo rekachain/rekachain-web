@@ -1,3 +1,4 @@
+<!-- API TRAINSET ATTACHMENT COMPONENT ROUTE NOT SET -->
 <?php
 
 use App\Models\TrainsetAttachmentComponent;
@@ -13,7 +14,21 @@ test('index method returns paginated trainset attachment components', function (
     $response = actAsSuperAdmin()->getJson('/api/trainset-attachment-components?page=1&perPage=5');
 
     $response->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta']);
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'trainset_attachment_id',
+                    'carriage_panel_component_id',
+                    'total_required',
+                    'total_fulfilled',
+                    'total_failed',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('store method creates new trainset attachment component', function () {

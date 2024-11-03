@@ -159,8 +159,12 @@ class Dummy {
     public function createPanelMaterial(): PanelMaterial {
         $this->createRawMaterial();
         $this->createCarriagePanel();
-        $panelMaterial = new PanelMaterial;
-        $panelMaterial->save();
+
+        $panelMaterial = PanelMaterial::inRandomOrder()->first() ?? PanelMaterial::create([
+            'carriage_panel_id' => $this->createCarriagePanel()->id,
+            'raw_material_id' => $this->createRawMaterial()->id,
+            'qty' => 1,
+        ]);
 
         return $panelMaterial;
     }
@@ -291,7 +295,7 @@ class Dummy {
 
     public function createCarriagePanel(): CarriagePanel {
         $this->createCarriageTrainset();
-        $progress = $this->createProgress();
+        $progress = $this->createProgressStep()->progress;
         $panel = $this->createPanel();
         $carriagePanel = new CarriagePanel;
         $carriagePanel->carriage_trainset_id = CarriageTrainset::inRandomOrder()->first()->id;
@@ -346,39 +350,39 @@ class Dummy {
     }
 
     public function createDetailWorkerPanel($attributes = []): DetailWorkerPanel {
-        User::factory()->create();
+        $this->createWorkerAssembly();
         $this->createSerialPanel();
         $this->createProgressStep();
 
-        $detailWorkerPanel = DetailWorkerPanel::factory()->create($attributes);
+        $detailWorkerPanel = DetailWorkerPanel::factory()->create();
 
         return $detailWorkerPanel;
     }
 
-    // public function createTrainsetAttachment(?User $user = null) {
-    //     $this->createCarriageTrainset();
-    //     $this->createWorkstation('create'); // source
-    //     $this->createWorkstation('create'); // destination
-
-    //     $attributes = [];
-    //     if ($user) {
-    //         $attributes['supervisor_id'] = $user->id;
-    //     }
-
-    //     $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
-
-    //     return $trainsetAttachment;
-    // }
-
-    public function createTrainsetAttachment($attributes = []) {
+    public function createTrainsetAttachment(?User $user = null) {
         $this->createCarriageTrainset();
         $this->createWorkstation('create'); // source
         $this->createWorkstation('create'); // destination
+
+        $attributes = [];
+        if ($user) {
+            $attributes['supervisor_id'] = $user->id;
+        }
 
         $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
 
         return $trainsetAttachment;
     }
+
+    // public function createTrainsetAttachment($attributes = []) {
+    //     $this->createCarriageTrainset();
+    //     $this->createWorkstation('create'); // source
+    //     $this->createWorkstation('create'); // destination
+
+    //     $trainsetAttachment = TrainsetAttachment::factory()->create($attributes);
+
+    //     return $trainsetAttachment;
+    // }
 
     // public function createDetailWorkerTrainset() {
     //     $this->createSupervisorAssembly();
