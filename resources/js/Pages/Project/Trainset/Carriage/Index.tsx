@@ -29,6 +29,8 @@ import { useDebounce } from '@uidotdev/usehooks';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/AddNewTrainsetPreset';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
 export default function ({
@@ -225,7 +227,7 @@ export default function ({
                         </div>
                         <hr className="border-black border-[0.5px] mt-5" />
                         <h1 className="text-xl font-bold">List Material </h1>
-                        <div className="grid grid-cols-5">
+                        {/* <div className="grid grid-cols-5">
                             <div className="flex flex-col gap-5 mt-5">
                                 <div className="">
                                     <p className="font-bold">Kode Material:</p>
@@ -260,7 +262,28 @@ export default function ({
                                     <p>18</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
+                        <Table>
+                            <TableCaption>List Material dalam KPM</TableCaption>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[100px]">Kode Material</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
+                                    <TableHead>Spesifikasi</TableHead>
+                                    <TableHead className="">Jumlah Diminta</TableHead>
+                                    <TableHead className="">Jumlah Diterima</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className="font-medium">22858OH0000XXG01 </TableCell>
+                                    <TableCell>L1lp,L2lp </TableCell>
+                                    <TableCell>Indicator Lamp, Green 220VAC </TableCell>
+                                    <TableCell className="">18</TableCell>
+                                    <TableCell className="">18</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
                     </div>
 
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
