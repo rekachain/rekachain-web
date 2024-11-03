@@ -41,6 +41,7 @@ import {
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { buttonVariants } from '@/Components/UI/button';
 import { ScrollArea } from '@/Components/UI/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -180,185 +181,342 @@ export default function ({
                                             <DialogHeader>
                                                 {/* <DialogTitle>Are you absolutely sure?</DialogTitle> */}
                                                 <DialogDescription className="w-full">
-                                                    <ScrollArea className="h-[700px] rounded-md border p-4">
-                                                        <div className="text-black dark:text-white">
-                                                            <h1 className="text-xl font-bold">KPM Mekanik</h1>
-                                                            <div className="grid grid-cols-3">
-                                                                <div className="flex flex-col gap-3 mt-5">
-                                                                    <div className="">
-                                                                        <p className="font-bold">No Lampiran :</p>
-                                                                        <p>3349/PPC/KPM/VI/2024</p>
+                                                    <Tabs defaultValue="mekanik" className="w-full">
+                                                        <TabsList>
+                                                            <TabsTrigger value="mekanik">KPM Mekanik</TabsTrigger>
+                                                            <TabsTrigger value="elektrik">KPM Elektrik</TabsTrigger>
+                                                        </TabsList>
+                                                        <TabsContent value="mekanik">
+                                                            <ScrollArea className="h-[400px] rounded-md border p-4">
+                                                                <div className="text-black dark:text-white">
+                                                                    <h1 className="text-xl font-bold">KPM Mekanik</h1>
+                                                                    <div className="grid grid-cols-3">
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    No Lampiran :
+                                                                                </p>
+                                                                                <p>3349/PPC/KPM/VI/2024</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    No Reservasi :
+                                                                                </p>
+                                                                                <p>-</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Serial Number :
+                                                                                </p>
+                                                                                <p>110-210</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Nomor Referensi :
+                                                                                </p>
+                                                                                <p>-</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">Tanggal :</p>
+                                                                                <p>17-08-2024</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5 text-white items-center">
+                                                                            <div className="">
+                                                                                <img
+                                                                                    src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+                                                                                    alt=""
+                                                                                    width={200}
+                                                                                />
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <button className={buttonVariants()}>
+                                                                                    Cetak QR Code
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div className="">
-                                                                        <p className="font-bold">No Reservasi :</p>
-                                                                        <p>-</p>
+                                                                    <hr className="border-black border-[0.5px] mt-5" />
+                                                                    <h1 className="text-xl font-bold mt-3">
+                                                                        Status Pekerjaan{' '}
+                                                                    </h1>
+                                                                    <div className="grid grid-cols-3">
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Supervisor :
+                                                                                </p>
+                                                                                <p>Chamzal Izal</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Workstation :
+                                                                                </p>
+                                                                                <p>Candi Sewu</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Step 1 Cutting :
+                                                                                </p>
+                                                                                <p>Selesai</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Step 2 Assembly :
+                                                                                </p>
+                                                                                <p>Diproses</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5 text-white items-center"></div>
                                                                     </div>
-                                                                    <div className="">
-                                                                        <p className="font-bold">Serial Number :</p>
-                                                                        <p>110-210</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex flex-col gap-3 mt-5">
-                                                                    <div className="">
-                                                                        <p className="font-bold">Nomor Referensi :</p>
-                                                                        <p>-</p>
-                                                                    </div>
-                                                                    <div className="">
-                                                                        <p className="font-bold">Tanggal :</p>
-                                                                        <p>17-08-2024</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex flex-col gap-3 mt-5 text-white items-center">
-                                                                    <div className="">
-                                                                        <img
-                                                                            src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
-                                                                            alt=""
-                                                                            width={200}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="">
-                                                                        <button className={buttonVariants()}>
-                                                                            Cetak QR Code
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr className="border-black border-[0.5px] mt-5" />
-                                                            <h1 className="text-xl font-bold mt-3">
-                                                                Status Pekerjaan{' '}
-                                                            </h1>
-                                                            <div className="grid grid-cols-3">
-                                                                <div className="flex flex-col gap-3 mt-5">
-                                                                    <div className="">
-                                                                        <p className="font-bold">Supervisor :</p>
-                                                                        <p>Chamzal Izal</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex flex-col gap-3 mt-5">
-                                                                    <div className="">
-                                                                        <p className="font-bold">Workstation :</p>
-                                                                        <p>Candi Sewu</p>
-                                                                    </div>
-                                                                    <div className="">
-                                                                        <p className="font-bold">Step 1 Cutting :</p>
-                                                                        <p>Selesai</p>
-                                                                    </div>
-                                                                    <div className="">
-                                                                        <p className="font-bold">Step 2 Assembly :</p>
-                                                                        <p>Diproses</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="flex flex-col gap-3 mt-5 text-white items-center"></div>
-                                                            </div>
-                                                            <hr className="border-black border-[0.5px] mt-5" />
-                                                            <h1 className="text-xl font-bold mt-3">List Material </h1>
-                                                            {/* <div className="grid grid-cols-5">
-                            <div className="flex flex-col gap-5 mt-5">
-                                <div className="">
-                                    <p className="font-bold">Kode Material:</p>
-                                    <p>22858OH0000XXG01</p>
-                                </div>
-                                <div className="">
-                                    <p className="font-bold">Kode Material:</p>
-                                    <p>22858OH0000XXG01</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5">
-                                <div className="">
-                                    <p className="font-bold">Deskripsi :</p>
-                                    <p>L1lp,L2lp</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5 ">
-                                <div className="">
-                                    <p className="font-bold">Spesifikasi :</p>
-                                    <p>Indicator Lamp, Green 220VAC</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5 ">
-                                <div className="">
-                                    <p className="font-bold">Jumlah Diminta :</p>
-                                    <p>18</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5 ">
-                                <div className="">
-                                    <p className="font-bold">Jumlah Diserahkan :</p>
-                                    <p>18</p>
-                                </div>
-                            </div>
-                        </div> */}
-                                                            <Table>
-                                                                <TableCaption>List Material dalam KPM</TableCaption>
-                                                                <TableHeader>
-                                                                    <TableRow>
-                                                                        <TableHead className="">
-                                                                            Kode Material
-                                                                        </TableHead>
-                                                                        <TableHead>Deskripsi</TableHead>
-                                                                        <TableHead>Spesifikasi</TableHead>
-                                                                    </TableRow>
-                                                                </TableHeader>
-                                                                <TableBody>
-                                                                    <TableRow>
-                                                                        <TableCell className="font-medium">
-                                                                            22858OH0000XXG01{' '}
-                                                                        </TableCell>
-                                                                        <TableCell>L1lp,L2lp </TableCell>
-                                                                        <TableCell>
-                                                                            Indicator Lamp, Green 220VAC{' '}
-                                                                        </TableCell>
-                                                                    </TableRow>
+                                                                    <hr className="border-black border-[0.5px] mt-5" />
+                                                                    <h1 className="text-xl font-bold mt-3">
+                                                                        List Material{' '}
+                                                                    </h1>
+                                                                    <Table>
+                                                                        <TableCaption>
+                                                                            List Material dalam KPM
+                                                                        </TableCaption>
+                                                                        <TableHeader>
+                                                                            <TableRow>
+                                                                                <TableHead className="">
+                                                                                    Kode Material
+                                                                                </TableHead>
+                                                                                <TableHead>Deskripsi</TableHead>
+                                                                                <TableHead>Spesifikasi</TableHead>
+                                                                            </TableRow>
+                                                                        </TableHeader>
+                                                                        <TableBody>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
 
-                                                                    <TableRow>
-                                                                        <TableCell className="font-medium">
-                                                                            22858OH0000XXG01{' '}
-                                                                        </TableCell>
-                                                                        <TableCell>L1lp,L2lp </TableCell>
-                                                                        <TableCell>
-                                                                            Indicator Lamp, Green 220VAC{' '}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell className="font-medium">
-                                                                            22858OH0000XXG01{' '}
-                                                                        </TableCell>
-                                                                        <TableCell>L1lp,L2lp </TableCell>
-                                                                        <TableCell>
-                                                                            Indicator Lamp, Green 220VAC{' '}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell className="font-medium">
-                                                                            22858OH0000XXG01{' '}
-                                                                        </TableCell>
-                                                                        <TableCell>L1lp,L2lp </TableCell>
-                                                                        <TableCell>
-                                                                            Indicator Lamp, Green 220VAC{' '}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell className="font-medium">
-                                                                            22858OH0000XXG01{' '}
-                                                                        </TableCell>
-                                                                        <TableCell>L1lp,L2lp </TableCell>
-                                                                        <TableCell>
-                                                                            Indicator Lamp, Green 220VAC{' '}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                    <TableRow>
-                                                                        <TableCell className="font-medium">
-                                                                            22858OH0000XXG01{' '}
-                                                                        </TableCell>
-                                                                        <TableCell>L1lp,L2lp </TableCell>
-                                                                        <TableCell>
-                                                                            Indicator Lamp, Green 220VAC{' '}
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                </TableBody>
-                                                            </Table>
-                                                        </div>
-                                                    </ScrollArea>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                        </TableBody>
+                                                                    </Table>
+                                                                </div>
+                                                            </ScrollArea>
+                                                        </TabsContent>
+                                                        <TabsContent value="elektrik">
+                                                            <ScrollArea className="h-[400px] rounded-md border p-4">
+                                                                <div className="text-black dark:text-white">
+                                                                    <h1 className="text-xl font-bold">KPM Elektrik</h1>
+                                                                    <div className="grid grid-cols-3">
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    No Lampiran :
+                                                                                </p>
+                                                                                <p>3349/PPC/KPM/VI/2024</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    No Reservasi :
+                                                                                </p>
+                                                                                <p>-</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Serial Number :
+                                                                                </p>
+                                                                                <p>110-210</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Nomor Referensi :
+                                                                                </p>
+                                                                                <p>-</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">Tanggal :</p>
+                                                                                <p>17-08-2024</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5 text-white items-center">
+                                                                            <div className="">
+                                                                                <img
+                                                                                    src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+                                                                                    alt=""
+                                                                                    width={200}
+                                                                                />
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <button className={buttonVariants()}>
+                                                                                    Cetak QR Code
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr className="border-black border-[0.5px] mt-5" />
+                                                                    <h1 className="text-xl font-bold mt-3">
+                                                                        Status Pekerjaan{' '}
+                                                                    </h1>
+                                                                    <div className="grid grid-cols-3">
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Supervisor :
+                                                                                </p>
+                                                                                <p>Chamzal Izal</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5">
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Workstation :
+                                                                                </p>
+                                                                                <p>Candi Sewu</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Step 1 Cutting :
+                                                                                </p>
+                                                                                <p>Selesai</p>
+                                                                            </div>
+                                                                            <div className="">
+                                                                                <p className="font-bold">
+                                                                                    Step 2 Assembly :
+                                                                                </p>
+                                                                                <p>Diproses</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-3 mt-5 text-white items-center"></div>
+                                                                    </div>
+                                                                    <hr className="border-black border-[0.5px] mt-5" />
+                                                                    <h1 className="text-xl font-bold mt-3">
+                                                                        List Material{' '}
+                                                                    </h1>
+                                                                    <Table>
+                                                                        <TableCaption>
+                                                                            List Material dalam KPM
+                                                                        </TableCaption>
+                                                                        <TableHeader>
+                                                                            <TableRow>
+                                                                                <TableHead className="">
+                                                                                    Kode Material
+                                                                                </TableHead>
+                                                                                <TableHead>Deskripsi</TableHead>
+                                                                                <TableHead>Spesifikasi</TableHead>
+                                                                            </TableRow>
+                                                                        </TableHeader>
+                                                                        <TableBody>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                            <TableRow>
+                                                                                <TableCell className="font-medium">
+                                                                                    22858OH0000XXG01{' '}
+                                                                                </TableCell>
+                                                                                <TableCell>L1lp,L2lp </TableCell>
+                                                                                <TableCell>
+                                                                                    Indicator Lamp, Green 220VAC{' '}
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                        </TableBody>
+                                                                    </Table>
+                                                                </div>
+                                                            </ScrollArea>
+                                                        </TabsContent>
+                                                    </Tabs>
                                                 </DialogDescription>
                                             </DialogHeader>
                                         </DialogContent>
