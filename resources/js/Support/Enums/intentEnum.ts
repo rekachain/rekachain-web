@@ -1,4 +1,4 @@
-export const IntentEnum = {
+const intents = {
     WEB_PROJECT_ADD_TRAINSET: 'web.project.add.trainset',
     WEB_PROJECT_CHANGE_TRAINSET_PRESET: 'web.project.change.trainset.preset',
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
@@ -18,5 +18,13 @@ export const IntentEnum = {
     WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS: 'web.trainset.generate.panel.attachments',
     WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS: 'web.trainset.generate.trainset.attachments',
     WEB_TRAINSET_GET_COMPONENTS: 'web.trainset.get.components',
+    WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS: 'web.trainset.attachment.get.component.materials',
+    WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY:
+        'web.trainset.attachment.get.component.materials.with.qty',
+    WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL:
+        'web.trainset.attachment.assign.custom.attachment.material',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
 };
+export const IntentEnum = intents;
+
+export type IntentEnum = (typeof intents)[keyof typeof intents];
