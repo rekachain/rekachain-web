@@ -25,7 +25,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 export default function Dashboard({ auth, data }: PageProps) {
     console.log(data);
     const chartConfig = {
-        progress: {
+        in_progress: {
             label: 'Progress',
             color: '#fd2c59',
         },
@@ -131,16 +131,16 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-progress)" radius={4} />
+                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
                                     <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                 </BarChart>
                             </ChartContainer>
                         </div>
-                        <div className="flex max-w-full mt-2 ">
-                            <div className="w-1/2">
+                        <div className="flex max-w-full mt-2 justify-center gap-10">
+                            <div className="w-1/2 ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                                 <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                                <ChartContainer config={chartConfig} className="h-[300px]  w-full  p-0 mt-4">
                                     <BarChart accessibilityLayer data={data.ws} layout="vertical">
                                         <CartesianGrid vertical={false} />
                                         <XAxis type="number" dataKey="in_progress"></XAxis>
@@ -154,12 +154,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             // tickCount={}
                                             // padding={}
                                             minTickGap={0}
-                                            tickMargin={1}
+                                            tickMargin={0}
                                             axisLine={false}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="in_progress" fill="var(--color-progress)" radius={4} />
+                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
                                         <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
@@ -168,7 +168,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="w-[35%]  ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel yang ada Assembly</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px] w-96">
+                                <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-4">
                                     <BarChart accessibilityLayer data={data.panel}>
                                         <CartesianGrid vertical={false} />
                                         <YAxis type="number" dataKey="done"></YAxis>
@@ -181,7 +181,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="in_progress" fill="var(--color-progress)" radius={4} />
+                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
                                         <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
