@@ -5,6 +5,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const PreviewTrainsetAttachment = ({
     attachment,
@@ -13,6 +14,8 @@ const PreviewTrainsetAttachment = ({
     attachment: TrainsetAttachmentResource;
     title: string;
 }) => {
+    const { t } = useLaravelReactI18n();
+
     const openImageAndPrint = (imageUrl: string) => {
         const newWindow = window.open(imageUrl, '_blank');
         if (newWindow) {
@@ -35,30 +38,51 @@ const PreviewTrainsetAttachment = ({
                 href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
                 target="_blank"
             >
-                Download Attachment
+                {t('pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download')}
             </Link>
             <div className="grid grid-cols-3">
                 <div className="flex flex-col gap-3 mt-5">
                     <div className="">
-                        <p className="font-bold">No Lampiran :</p>
+                        <p className="font-bold">
+                            {' '}
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.attachment_number',
+                            )}
+                        </p>
                         <p>{attachment.attachment_number}</p>
                     </div>
                     <div className="">
-                        <p className="font-bold">No Reservasi :</p>
+                        <p className="font-bold">
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.reservation_number',
+                            )}
+                        </p>
                         <p>-</p>
                     </div>
                     <div className="">
-                        <p className="font-bold">Serial Number :</p>
+                        <p className="font-bold">
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.serial_number',
+                            )}
+                        </p>
                         <p>-</p>
                     </div>
                 </div>
                 <div className="flex flex-col gap-3 mt-5">
                     <div className="">
-                        <p className="font-bold">Nomor Referensi :</p>
+                        <p className="font-bold">
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.reference_number',
+                            )}
+                        </p>
                         <p>-</p>
                     </div>
                     <div className="">
-                        <p className="font-bold">Tanggal :</p>
+                        <p className="font-bold">
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.date',
+                            )}
+                        </p>
                         <p>{attachment.formatted_created_at}</p>
                     </div>
                 </div>
@@ -68,22 +92,52 @@ const PreviewTrainsetAttachment = ({
                             <img src={attachment.qr} alt="QR Code" width={200} />
                         </div>
                         <button className={buttonVariants()} onClick={() => openImageAndPrint(attachment.qr!)}>
-                            Cetak QR Code
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.buttons.print_qr',
+                            )}
                         </button>
                     </div>
                 )}
             </div>
             <Separator className="h-1 my-6" />
-            <h1 className="text-xl font-bold mt-3">List Material</h1>
+            <h1 className="text-xl font-bold mt-3">
+                {t(
+                    'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.material_list',
+                )}
+            </h1>
             <Table>
-                <TableCaption>List Material dalam KPM</TableCaption>
+                <TableCaption>
+                    {t(
+                        'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
+                    )}
+                </TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="">Kode Material</TableHead>
-                        <TableHead>Deskripsi</TableHead>
-                        <TableHead>Spesifikasi</TableHead>
-                        <TableHead>Unit</TableHead>
-                        <TableHead>Jumlah</TableHead>
+                        <TableHead className="">
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.description',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.specs',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.unit',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
+                            )}
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

@@ -1068,6 +1068,43 @@ return [
                             ],
                         ],
                         'preview_trainset_attachment' => [
+                            'buttons' => [
+                                'download' => 'Unduh Lampiran',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Trainset',
+                                'headers' => [
+                                    'attachment_number' => 'Nomor Lampiran',
+                                    'reservation_number' => 'Nomor Reservasi',
+                                    'serial_number' => 'Nomor Seri',
+                                    'reference_number' => 'Nomor Referensi',
+                                    'date' => 'Tanggal',
+                                    'material_list' => 'Daftar Material',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Gerbong',
+                                    'carriage_placeholder' => 'Pilih Gerbong',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Cetak QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Jumlah Total',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran Trainset',
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
