@@ -41,6 +41,26 @@ class TrainsetAttachment extends Model {
     public function childs(): HasMany {
         return $this->hasMany(TrainsetAttachment::class, 'trainset_attachment_id');
     }
+    
+    public function progresses(): HasManyDeep {
+        return $this->hasManyDeep(
+            Progress::class, 
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+            ],
+            [
+                'trainset_attachment_id',
+                'id',
+                'id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'progress_id',
+            ]
+        );
+    }
 
     public function trainset(): BelongsTo {
         return $this->belongsTo(Trainset::class);
@@ -107,6 +127,10 @@ class TrainsetAttachment extends Model {
 
     public function trainset_attachment_components(): HasMany {
         return $this->hasMany(TrainsetAttachmentComponent::class);
+    }
+
+    public function carriage_panel_components(): HasManyThrough {
+        return $this->hasManyThrough(CarriagePanelComponent::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'id', 'id', 'carriage_panel_component_id');
     }
 
     public function detail_worker_trainsets(): HasManyThrough {

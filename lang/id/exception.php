@@ -1,6 +1,15 @@
 <?php
 
 return [
+    'auth' => [
+        'unauthorized' => 'Anda tidak memiliki izin untuk mengakses aplikasi ini.',
+        'role' => [
+            'role_exception' => 'Pengguna harus memiliki peran ":role"',
+        ],
+        'permission' => [
+            'permission_exception' => 'Pengguna harus memiliki izin ":permission"',
+        ],
+    ],
     'services' => [
         'trainset_service' => [
             'update' => [
