@@ -13,6 +13,18 @@ const PreviewTrainsetAttachment = ({
     attachment: TrainsetAttachmentResource;
     title: string;
 }) => {
+    const openImageAndPrint = (imageUrl: string) => {
+        const newWindow = window.open(imageUrl, '_blank');
+        if (newWindow) {
+            newWindow.onload = () => {
+                newWindow.onafterprint = () => {
+                    newWindow.close();
+                };
+                newWindow.print();
+            };
+        }
+    };
+
     return (
         <div className="text-black dark:text-white" key={attachment.id}>
             <h1 className="text-xl font-bold">{title}</h1>
@@ -55,7 +67,9 @@ const PreviewTrainsetAttachment = ({
                         <div className="bg-white p-3">
                             <img src={attachment.qr} alt="QR Code" width={200} />
                         </div>
-                        <button className={buttonVariants()}>Cetak QR Code</button>
+                        <button className={buttonVariants()} onClick={() => openImageAndPrint(attachment.qr!)}>
+                            Cetak QR Code
+                        </button>
                     </div>
                 )}
             </div>
