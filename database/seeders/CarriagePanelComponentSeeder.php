@@ -16,7 +16,7 @@ class CarriagePanelComponentSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-        $csvReader = new CsvReader('carriage_panel_component');
+        $csvReader = new CsvReader('carriage_panel_components');
         $csvData = $csvReader->getCsvData();
 
         // if ($csvData) {
