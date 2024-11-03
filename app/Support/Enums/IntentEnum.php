@@ -205,7 +205,7 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT = 'web.trainset.attachment.download.trainset.attachment';
 
-    case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.trainset.attachment.download.panel.attachment';
+    case WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.panel.attachment.download.panel.attachment';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
 

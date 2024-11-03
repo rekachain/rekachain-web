@@ -7,12 +7,10 @@ import InputLabel from '@/Components/InputLabel';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Link } from '@inertiajs/react';
 
 const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
-    const [forceRenderKey, setForceRenderKey] = useState<number>(0);
-
-    const [panelAttachments, setPanelAttachments] = useState<PanelAttachmentResource[]>([]);
-
     const [attachment, setAttachment] = useState<PanelAttachmentResource>();
 
     const [selectedCarriage, setSelectedCarriage] = useState<number | null>(null);
@@ -54,7 +52,17 @@ const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource })
     return (
         <div className="text-black dark:text-white" key={trainset.id}>
             <h1 className="text-xl font-bold">Panel Attachment</h1>
-
+            {attachment && (
+                <Link
+                    className={buttonVariants({
+                        className: 'my-2',
+                    })}
+                    href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                    target="_blank"
+                >
+                    Download Attachment
+                </Link>
+            )}
             <div className="flex gap-4 mt-4">
                 {trainset?.carriage_trainsets?.length > 0 && (
                     <div className="flex flex-col gap-2">
@@ -136,7 +144,7 @@ const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource })
                     </div>
                     <Separator className="h-1 my-6" />
                     <h1 className="text-xl font-bold mt-3">List Material</h1>
-                    <Table key={forceRenderKey}>
+                    <Table>
                         <TableCaption>List Material dalam KPM</TableCaption>
                         <TableHeader>
                             <TableRow>
