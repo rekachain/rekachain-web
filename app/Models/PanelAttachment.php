@@ -34,6 +34,11 @@ class PanelAttachment extends Model
         'status' => PanelAttachmentStatusEnum::class,
     ];
 
+    public function panel(): HasOneThrough
+    {
+        return $this->hasOneThrough(Panel::class, CarriagePanel::class, 'id', 'id', 'id', 'panel_id');
+    }
+
     public function trainset(): HasOneThrough
     {
         return $this->hasOneThrough(Trainset::class, CarriageTrainset::class, 'id', 'id', 'carriage_trainset_id', 'trainset_id');

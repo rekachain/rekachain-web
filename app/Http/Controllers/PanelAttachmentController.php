@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
+use App\Http\Resources\PanelResource;
 use App\Http\Resources\RawMaterialResource;
 use App\Support\Enums\IntentEnum;
 use Inertia\Inertia;
@@ -48,6 +49,10 @@ class PanelAttachmentController extends Controller {
         logger($intent);
 
         switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL->value:
+                return PanelResource::make($panelAttachment->panel);
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
+                return PanelAttachmentResource::make($panelAttachment);
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
                 return RawMaterialResource::collection($panelAttachment->raw_materials);
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:

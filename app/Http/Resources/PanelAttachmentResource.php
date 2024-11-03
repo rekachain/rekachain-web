@@ -18,6 +18,11 @@ class PanelAttachmentResource extends JsonResource
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
+                return [
+                    'panel' => PanelResource::make($this->carriage_panel->panel),
+                    'total_qty' => $this->carriage_panel->qty * $this->carriage_panel->carriage_trainset->qty,
+                ];
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
                 return $this->panel_materials
                 ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
