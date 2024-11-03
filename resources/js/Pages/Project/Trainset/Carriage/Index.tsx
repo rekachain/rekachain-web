@@ -158,6 +158,111 @@ export default function ({
                         <Carriages trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </Suspense>
 
+                    <div className="">
+                        <h1 className="text-xl font-bold">KPM Mekanik</h1>
+                        <div className="grid grid-cols-3">
+                            <div className="flex flex-col gap-3 mt-5">
+                                <div className="">
+                                    <p className="font-bold">No Lampiran :</p>
+                                    <p>3349/PPC/KPM/VI/2024</p>
+                                </div>
+                                <div className="">
+                                    <p className="font-bold">No Reservasi :</p>
+                                    <p>-</p>
+                                </div>
+                                <div className="">
+                                    <p className="font-bold">Serial Number :</p>
+                                    <p>110-210</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5">
+                                <div className="">
+                                    <p className="font-bold">Nomor Referensi :</p>
+                                    <p>-</p>
+                                </div>
+                                <div className="">
+                                    <p className="font-bold">Tanggal :</p>
+                                    <p>17-08-2024</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5 text-white items-center">
+                                <div className="">
+                                    <img
+                                        src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+                                        alt=""
+                                        width={200}
+                                    />
+                                </div>
+                                <div className="">
+                                    <button className="bg-black p-2 rounded-lg">Cetak QR Code</button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr className="border-black border-[0.5px] mt-5" />
+                        <h1 className="text-xl font-bold">Status Pekrejaan </h1>
+                        <div className="grid grid-cols-3">
+                            <div className="flex flex-col gap-3 mt-5">
+                                <div className="">
+                                    <p className="font-bold">Supervisor :</p>
+                                    <p>Chamzal Izal</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5">
+                                <div className="">
+                                    <p className="font-bold">Workstation :</p>
+                                    <p>Candi Sewu</p>
+                                </div>
+                                <div className="">
+                                    <p className="font-bold">Step 1 Cutting :</p>
+                                    <p>Selesai</p>
+                                </div>
+                                <div className="">
+                                    <p className="font-bold">Step 2 Assembly :</p>
+                                    <p>Diproses</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5 text-white items-center"></div>
+                        </div>
+                        <hr className="border-black border-[0.5px] mt-5" />
+                        <h1 className="text-xl font-bold">List Material </h1>
+                        <div className="grid grid-cols-5">
+                            <div className="flex flex-col gap-5 mt-5">
+                                <div className="">
+                                    <p className="font-bold">Kode Material:</p>
+                                    <p>22858OH0000XXG01</p>
+                                </div>
+                                <div className="">
+                                    <p className="font-bold">Kode Material:</p>
+                                    <p>22858OH0000XXG01</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5">
+                                <div className="">
+                                    <p className="font-bold">Deskripsi :</p>
+                                    <p>L1lp,L2lp</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5 ">
+                                <div className="">
+                                    <p className="font-bold">Spesifikasi :</p>
+                                    <p>Indicator Lamp, Green 220VAC</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5 ">
+                                <div className="">
+                                    <p className="font-bold">Jumlah Diminta :</p>
+                                    <p>18</p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 mt-5 ">
+                                <div className="">
+                                    <p className="font-bold">Jumlah Diserahkan :</p>
+                                    <p>18</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
                         <AddCarriage
                             trainset={trainset}
