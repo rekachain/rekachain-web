@@ -159,7 +159,7 @@ class ProjectController extends Controller {
 
     public function carriages(Request $request, Project $project, Trainset $trainset) {
         $project = new ProjectResource($project);
-        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel'], 'carriage']]));
+        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachment' => ['serial_panels']], 'carriage']]));
         // sementara
         $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriage_presets' => [
             'carriage',

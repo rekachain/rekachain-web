@@ -48,7 +48,7 @@ const PreviewTrainsetAttachment = ({
                 )}
             </div>
             <Separator className="h-1 my-6" />
-            <h1 className="text-xl font-bold mt-3">List Material </h1>
+            <h1 className="text-xl font-bold mt-3">List Material</h1>
             <Table>
                 <TableCaption>List Material dalam KPM</TableCaption>
                 <TableHeader>

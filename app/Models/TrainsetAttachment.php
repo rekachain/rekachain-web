@@ -121,7 +121,7 @@ class TrainsetAttachment extends Model {
         return $this->morphMany(CustomAttachmentMaterial::class, 'custom_attachment_materialable');
     }
 
-    public function getQrAttribute(): string {
-        return asset('storage/' . $this->qr_path);
+    public function getQrAttribute(): ?string {
+        return $this->qr_path ? asset('storage/' . $this->qr_path) : null;
     }
 }

@@ -18,9 +18,9 @@ import { trainsetService } from '@/Services/trainsetService';
 import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
 import { withLoading } from '@/Utils/withLoading';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
-import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import PreviewTrainsetAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Components/PreviewTrainsetAttachment';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import PreviewPanelAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Components/PreviewPanelAttachment';
 
 const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     const [activeTab, setActiveTab] = useState<GenerateAttachmentTabEnum>();
@@ -51,11 +51,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                 setElectricAttachment([...electricAttachment, res]);
             }
         } else if (activeTab === GenerateAttachmentTabEnum.PANEL_ATTACHMENT) {
-            if (assemblyAttachment.length > 0) return;
-            for (const id of assemblyAttachmentIds) {
-                const res = await panelAttachmentService.get(id);
-                setAssemblyAttachment([...assemblyAttachment, res]);
-            }
+            // Already handled in PreviewPanelAttachment
         }
     });
 
@@ -78,15 +74,12 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     useEffect(() => {
         void fetchAttachments();
         void fetchAttachment();
-
-        console.log('mechanicAttachment', mechanicAttachment);
-        console.log('electricAttachment', electricAttachment);
-        console.log('assemblyAttachment', assemblyAttachment);
     }, [activeTab]);
 
     useEffect(() => {
-        void fetchAttachments();
-        setActiveTab(GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC);
+        fetchAttachments().then(() => {
+            setActiveTab(GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC);
+        });
     }, []);
 
     return (
@@ -143,6 +136,11 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                         key={index}
                                     />
                                 ))}
+                            </ScrollArea>
+                        </TabsContent>
+                        <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
+                            <ScrollArea className="h-[400px] rounded-md border p-4">
+                                <PreviewPanelAttachment trainset={trainset} />
                             </ScrollArea>
                         </TabsContent>
                     </Tabs>

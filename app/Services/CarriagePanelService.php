@@ -25,7 +25,7 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
     protected function getRepositoryClass(): string {
         return CarriagePanelRepositoryInterface::class;
     }
-    
+
     public function importProgressMaterialData(UploadedFile $file, CarriagePanel $carriagePanel): bool {
         Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel), $file);
 
@@ -38,9 +38,9 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
      * @throws \Exception
      */
     public function delete($keyOrModel): bool {
-        $keyOrModel->panel_attachments()->each(function ($attachment) {
-            $this->panelAttachmentService->delete($attachment);
-        });
+        //        $keyOrModel->panel_attachment()->each(function ($attachment) {
+        //            $this->panelAttachmentService->delete($attachment);
+        //        });
         $keyOrModel->carriage_panel_components()->each(function ($component) {
             $this->carriagePanelComponentService->delete($component);
         });

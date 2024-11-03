@@ -5,6 +5,10 @@ const intents = {
     WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
+    WEB_TRAINSET_GET_ALL_COMPONENTS: 'web.trainset.get.all.components',
+    WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY: 'web.trainset.get.all.components.with.qty',
+    WEB_TRAINSET_GET_ALL_PANELS: 'web.trainset.get.all.panels',
+    WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY: 'web.trainset.get.all.panels.with.qty',
     WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET: 'web.trainset.update.carriage.trainset',
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
@@ -23,6 +27,7 @@ const intents = {
         'web.trainset.attachment.get.component.materials.with.qty',
     WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL:
         'web.trainset.attachment.assign.custom.attachment.material',
+    WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
 };
 export const IntentEnum = intents;
