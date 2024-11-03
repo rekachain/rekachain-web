@@ -1046,6 +1046,47 @@ return [
                                 'submit' => 'Update Qty',
                             ],
                         ],
+                        'preview_panel_attachment' => [
+                            'buttons' => [
+                                'download' => 'Download Attachment',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Panel Attachment',
+                                'headers' => [
+                                    'attachment_number' => 'Attachment Number',
+                                    'reservation_number' => 'Reservation Number',
+                                    'serial_number' => 'Serial Number',
+                                    'reference_number' => 'Reference Number',
+                                    'date' => 'Date',
+                                    'material_list' => 'Material List',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Print QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_trainset_attachment' => [
+                        ],
                     ],
                 ],
             ],
