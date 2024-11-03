@@ -113,7 +113,7 @@ class PanelAttachmentResource extends JsonResource
                     $steps = collect();
                     $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                         $workers = collect();
-                        $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step->id);
+                        $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
                         if (!$step) {
                             $workers->push([
                                 'nip' => $detailWorkerPanel->worker->nip,
@@ -148,6 +148,7 @@ class PanelAttachmentResource extends JsonResource
                     });
                     return [
                         'serial_number' => $serialPanel->id,
+                        'panel' => PanelResource::make($serialPanel->panel_attachment->carriage_panel->panel),
                         'progress' => $this->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
                         'steps' => $steps->sortBy('progress_step_id')->map(function ($step) {
