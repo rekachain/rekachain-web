@@ -27,6 +27,8 @@ const intents = {
         'web.trainset.attachment.get.component.materials.with.qty',
     WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL:
         'web.trainset.attachment.assign.custom.attachment.material',
+    WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT: 'web.trainset.attachment.download.trainset.attachment',
+    WEB_TRAINSET_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT: 'web.trainset.attachment.download.panel.attachment',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
 };

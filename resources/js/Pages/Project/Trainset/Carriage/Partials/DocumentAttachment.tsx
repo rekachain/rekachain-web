@@ -1,8 +1,16 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { useEffect } from 'react';
 import { Head } from '@inertiajs/react';
+import { Separator } from '@/Components/UI/separator';
+import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 
-const DocumentAttachment = () => {
+const DocumentAttachment = ({
+    trainsetAttachment,
+    title,
+}: {
+    trainsetAttachment: TrainsetAttachmentResource;
+    title: string;
+}) => {
     const temporaryChangeThemeToLightMode = () => {
         document.documentElement.classList.remove('dark');
         document.documentElement.style.colorScheme = 'light';
@@ -12,23 +20,23 @@ const DocumentAttachment = () => {
         setTimeout(() => {
             temporaryChangeThemeToLightMode();
 
-            window.print();
             window.onafterprint = () => {
                 history.back();
             };
+            window.print();
         }, 500);
     }, []);
 
     return (
         <>
             <Head title={'Document Attachment'} />
-            <div className="">
-                <h1 className="text-xl font-bold">KPM Mekanik</h1>
+            <div className="text-black dark:text-white" key={trainsetAttachment.id}>
+                <h1 className="text-xl font-bold">{title}</h1>
                 <div className="grid grid-cols-3">
                     <div className="flex flex-col gap-3 mt-5">
                         <div className="">
                             <p className="font-bold">No Lampiran :</p>
-                            <p>3349/PPC/KPM/VI/2024</p>
+                            <p>{trainsetAttachment.attachment_number}</p>
                         </div>
                         <div className="">
                             <p className="font-bold">No Reservasi :</p>
@@ -36,7 +44,7 @@ const DocumentAttachment = () => {
                         </div>
                         <div className="">
                             <p className="font-bold">Serial Number :</p>
-                            <p>110-210</p>
+                            <p>-</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3 mt-5">
@@ -46,96 +54,35 @@ const DocumentAttachment = () => {
                         </div>
                         <div className="">
                             <p className="font-bold">Tanggal :</p>
-                            <p>17-08-2024</p>
+                            <p>{trainsetAttachment.formatted_created_at}</p>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-3 mt-5 text-white items-center">
-                        <div className="">
-                            <img
-                                src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
-                                alt=""
-                                width={200}
-                            />
+                    {trainsetAttachment?.qr && (
+                        <div className="flex flex-col gap-3 mt-5 text-white items-center">
+                            <img src={trainsetAttachment.qr} alt="QR Code" width={200} />
                         </div>
-                    </div>
+                    )}
                 </div>
-                <hr className="border-black border-[0.5px] mt-5" />
-                <h1 className="text-xl font-bold mt-3">Status Pekerjaan </h1>
-                <div className="grid grid-cols-3">
-                    <div className="flex flex-col gap-3 mt-5">
-                        <div className="">
-                            <p className="font-bold">Supervisor :</p>
-                            <p>Chamzal Izal</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-3 mt-5">
-                        <div className="">
-                            <p className="font-bold">Workstation :</p>
-                            <p>Candi Sewu</p>
-                        </div>
-                        <div className="">
-                            <p className="font-bold">Step 1 Cutting :</p>
-                            <p>Selesai</p>
-                        </div>
-                        <div className="">
-                            <p className="font-bold">Step 2 Assembly :</p>
-                            <p>Diproses</p>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-3 mt-5 text-white items-center"></div>
-                </div>
-                <hr className="border-black border-[0.5px] mt-5" />
-                <h1 className="text-xl font-bold mt-3">List Material </h1>
-                {/* <div className="grid grid-cols-5">
-                            <div className="flex flex-col gap-5 mt-5">
-                                <div className="">
-                                    <p className="font-bold">Kode Material:</p>
-                                    <p>22858OH0000XXG01</p>
-                                </div>
-                                <div className="">
-                                    <p className="font-bold">Kode Material:</p>
-                                    <p>22858OH0000XXG01</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5">
-                                <div className="">
-                                    <p className="font-bold">Deskripsi :</p>
-                                    <p>L1lp,L2lp</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5 ">
-                                <div className="">
-                                    <p className="font-bold">Spesifikasi :</p>
-                                    <p>Indicator Lamp, Green 220VAC</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5 ">
-                                <div className="">
-                                    <p className="font-bold">Jumlah Diminta :</p>
-                                    <p>18</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-3 mt-5 ">
-                                <div className="">
-                                    <p className="font-bold">Jumlah Diserahkan :</p>
-                                    <p>18</p>
-                                </div>
-                            </div>
-                        </div> */}
+                <Separator className="h-1 my-6" />
+                <h1 className="text-xl font-bold mt-3">List Material</h1>
                 <Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead className="">Kode Material</TableHead>
                             <TableHead>Deskripsi</TableHead>
                             <TableHead>Spesifikasi</TableHead>
+                            <TableHead>Unit</TableHead>
+                            <TableHead>Jumlah</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {Array.from({ length: 200 }, (_, index) => (
-                            <TableRow key={index}>
-                                <TableCell className="font-medium">22858OH0000XXG01 </TableCell>
-                                <TableCell>L1lp,L2lp </TableCell>
-                                <TableCell>Indicator Lamp, Green 220VAC </TableCell>
+                        {trainsetAttachment.raw_materials.map(rawMaterial => (
+                            <TableRow key={rawMaterial.id}>
+                                <TableCell className="font-medium">{rawMaterial.material_code}</TableCell>
+                                <TableCell>{rawMaterial.description}</TableCell>
+                                <TableCell>{rawMaterial.specs}</TableCell>
+                                <TableCell>{rawMaterial.unit}</TableCell>
+                                <TableCell>{rawMaterial.total_qty}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

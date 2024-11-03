@@ -2,6 +2,9 @@ import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { buttonVariants } from '@/Components/UI/button';
 import { Separator } from '@/Components/UI/separator';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Link } from '@inertiajs/react';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 const PreviewTrainsetAttachment = ({
     attachment,
@@ -13,6 +16,15 @@ const PreviewTrainsetAttachment = ({
     return (
         <div className="text-black dark:text-white" key={attachment.id}>
             <h1 className="text-xl font-bold">{title}</h1>
+            <Link
+                className={buttonVariants({
+                    className: 'my-2',
+                })}
+                href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
+                target="_blank"
+            >
+                Download Attachment
+            </Link>
             <div className="grid grid-cols-3">
                 <div className="flex flex-col gap-3 mt-5">
                     <div className="">

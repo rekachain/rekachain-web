@@ -2,8 +2,7 @@
 
 namespace App\Support\Enums;
 
-enum IntentEnum: string
-{
+enum IntentEnum: string {
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
 
     case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';
@@ -203,6 +202,10 @@ enum IntentEnum: string
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
 
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
+
+    case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT = 'web.trainset.attachment.download.trainset.attachment';
+
+    case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.trainset.attachment.download.panel.attachment';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
 

@@ -16,6 +16,7 @@ use App\Models\CarriageTrainset;
 use App\Models\Panel;
 use App\Models\Project;
 use App\Models\Trainset;
+use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
@@ -150,13 +151,6 @@ class ProjectController extends Controller {
         return inertia('Project/Trainset/Show', ['project' => $project, 'trainset' => $trainset]);
     }
 
-    public function downloadAttachment(Request $request, Project $project, Trainset $trainset) {
-        return inertia('Project/Trainset/Carriage/Partials/DocumentAttachment', [
-            'project' => new ProjectResource($project),
-            'trainset' => new TrainsetResource($trainset),
-        ]);
-    }
-
     public function carriages(Request $request, Project $project, Trainset $trainset) {
         $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachment' => ['serial_panels']], 'carriage']]));
@@ -176,6 +170,14 @@ class ProjectController extends Controller {
         }
 
         return inertia('Project/Trainset/Carriage/Index', compact('project', 'trainset', 'presetTrainsets'));
+    }
+
+    public function downloadAttachment(Request $request, Project $project, Trainset $trainset, TrainsetAttachment $trainsetAttachment) {
+        $project = new ProjectResource($project);
+        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachment' => ['serial_panels']], 'carriage']]));
+        $trainsetAttachment = $trainsetAttachment->load(['attachment']);
+
+        return inertia('Project/Trainset/Carriage/Partials/DocumentAttachment', compact('project', 'trainset', 'trainsetAttachment'));
     }
 
     public function carriage(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {

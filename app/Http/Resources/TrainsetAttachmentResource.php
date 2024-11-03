@@ -11,7 +11,7 @@ class TrainsetAttachmentResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
-            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value || IntentEnum::WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT->value:
                 $rawMaterials = $this->component_materials
                     ->groupBy('raw_material_id')
                     ->map(fn ($componentMaterials) => [

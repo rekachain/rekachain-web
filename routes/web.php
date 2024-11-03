@@ -90,8 +90,6 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
         Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
-        //  Print trainset attachment route
-        Route::get('/projects/{project}/trainsets/{trainset}/download-attachment', 'downloadAttachment')->name('projects.trainsets.download-attachment');
         Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriages')->name('projects.trainsets.carriage-trainsets.index');
         Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
         Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');

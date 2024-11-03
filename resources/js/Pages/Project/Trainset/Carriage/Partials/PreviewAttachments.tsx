@@ -8,8 +8,6 @@ import {
 } from '@/Components/UI/dialog';
 import { buttonVariants } from '@/Components/UI/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
-import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
 import { ScrollArea } from '@/Components/UI/scroll-area';
 import { PanelAttachmentResource, TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { useEffect, useState } from 'react';
@@ -105,18 +103,6 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>KPM Assembly</TabsTrigger>
                         </TabsList>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                            <Link
-                                className={buttonVariants({
-                                    className: 'my-2',
-                                })}
-                                href={route(ROUTES.PROJECTS_TRAINSETS_DOWNLOAD_ATTACHMENT, [
-                                    trainset.project_id,
-                                    trainset.id,
-                                ])}
-                                target="_blank"
-                            >
-                                Download Attachment
-                            </Link>
                             <ScrollArea className="h-[400px] rounded-md border p-4">
                                 {mechanicAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
