@@ -6,6 +6,7 @@ import { RawMaterialResource, TrainsetAttachmentResource } from '@/Support/Inter
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const DocumentTrainsetAttachment = ({
     trainsetAttachment,
@@ -14,6 +15,7 @@ const DocumentTrainsetAttachment = ({
     trainsetAttachment: TrainsetAttachmentResource;
     title: string;
 }) => {
+    const { t } = useLaravelReactI18n();
     const [pageTitle, setPageTitle] = useState<string>(title);
     const [rawMaterials, setRawMaterials] = useState<RawMaterialResource[]>([]);
 
@@ -31,19 +33,23 @@ const DocumentTrainsetAttachment = ({
                 setRawMaterials(response.raw_materials);
 
                 if (response.type === TrainsetAttachmentTypeEnum.MECHANIC) {
-                    setPageTitle('KPM Mechanic');
+                    setPageTitle(
+                        t('pages.trainset_attachment.document_trainset_attachment.headers.mechanic_attachment'),
+                    );
                 } else if (response.type === TrainsetAttachmentTypeEnum.ELECTRIC) {
-                    setPageTitle('KPM Electric');
+                    setPageTitle(
+                        t('pages.trainset_attachment.document_trainset_attachment.headers.electric_attachment'),
+                    );
                 }
 
-                setTimeout(() => {
-                    temporaryChangeThemeToLightMode();
-
-                    window.onafterprint = () => {
-                        history.back();
-                    };
-                    window.print();
-                }, 500);
+                // setTimeout(() => {
+                //     temporaryChangeThemeToLightMode();
+                //
+                //     window.onafterprint = () => {
+                //         history.back();
+                //     };
+                //     window.print();
+                // }, 500);
             });
     }, []);
 
@@ -55,25 +61,35 @@ const DocumentTrainsetAttachment = ({
                 <div className="grid grid-cols-3">
                     <div className="flex flex-col gap-3 mt-5">
                         <div className="">
-                            <p className="font-bold">No Lampiran :</p>
+                            <p className="font-bold">
+                                {t('pages.trainset_attachment.document_trainset_attachment.headers.attachment_number')}
+                            </p>
                             <p>{trainsetAttachment.attachment_number}</p>
                         </div>
                         <div className="">
-                            <p className="font-bold">No Reservasi :</p>
+                            <p className="font-bold">
+                                {t('pages.trainset_attachment.document_trainset_attachment.headers.reservation_number')}
+                            </p>
                             <p>-</p>
                         </div>
                         <div className="">
-                            <p className="font-bold">Serial Number :</p>
+                            <p className="font-bold">
+                                {t('pages.trainset_attachment.document_trainset_attachment.headers.serial_number')}
+                            </p>
                             <p>-</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3 mt-5">
                         <div className="">
-                            <p className="font-bold">Nomor Referensi :</p>
+                            <p className="font-bold">
+                                {t('pages.trainset_attachment.document_trainset_attachment.headers.reference_number')}
+                            </p>
                             <p>-</p>
                         </div>
                         <div className="">
-                            <p className="font-bold">Tanggal :</p>
+                            <p className="font-bold">
+                                {t('pages.trainset_attachment.document_trainset_attachment.headers.date')}
+                            </p>
                             <p>{trainsetAttachment.formatted_created_at}</p>
                         </div>
                     </div>
@@ -84,15 +100,37 @@ const DocumentTrainsetAttachment = ({
                     )}
                 </div>
                 <Separator className="h-1 my-6" />
-                <h1 className="text-xl font-bold mt-3">List Material</h1>
+                <h1 className="text-xl font-bold mt-3">
+                    {t('pages.trainset_attachment.document_trainset_attachment.headers.material_list')}
+                </h1>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="">Kode Material</TableHead>
-                            <TableHead>Deskripsi</TableHead>
-                            <TableHead>Spesifikasi</TableHead>
-                            <TableHead>Unit</TableHead>
-                            <TableHead>Jumlah</TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.raw_material_table.headers.material_code',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.raw_material_table.headers.description',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.raw_material_table.headers.specs',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.raw_material_table.headers.unit',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.raw_material_table.headers.total_qty',
+                                )}
+                            </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
