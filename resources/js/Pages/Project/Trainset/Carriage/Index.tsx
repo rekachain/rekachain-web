@@ -163,7 +163,9 @@ export default function ({
                                         handleSyncTrainset={handleSyncTrainset}
                                         handleSyncCarriages={handleSyncCarriages}
                                     />
-                                    <PreviewAttachments trainset={trainset} />
+                                    {trainset.has_mechanic_trainset_attachment ||
+                                        trainset.has_electric_trainset_attachment ||
+                                        (trainset.has_panel_attachment && <PreviewAttachments trainset={trainset} />)}
                                 </div>
                             </div>
                         </div>
