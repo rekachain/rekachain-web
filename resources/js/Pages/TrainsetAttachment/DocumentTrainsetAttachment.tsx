@@ -42,14 +42,14 @@ const DocumentTrainsetAttachment = ({
                     );
                 }
 
-                // setTimeout(() => {
-                //     temporaryChangeThemeToLightMode();
-                //
-                //     window.onafterprint = () => {
-                //         history.back();
-                //     };
-                //     window.print();
-                // }, 500);
+                setTimeout(() => {
+                    temporaryChangeThemeToLightMode();
+
+                    window.onafterprint = () => {
+                        history.back();
+                    };
+                    window.print();
+                }, 500);
             });
     }, []);
 

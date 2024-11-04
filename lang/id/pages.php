@@ -1057,7 +1057,7 @@ return [
                                         'description' => 'Deskripsi',
                                         'specs' => 'Spesifikasi',
                                         'unit' => 'Satuan',
-                                        'total_qty' => 'Jumlah Total',
+                                        'total_qty' => 'Total',
                                     ],
                                     'others' => [
                                         'captions' => [
@@ -1096,7 +1096,7 @@ return [
                                         'description' => 'Deskripsi',
                                         'specs' => 'Spesifikasi',
                                         'unit' => 'Satuan',
-                                        'total_qty' => 'Jumlah Total',
+                                        'total_qty' => 'Total',
                                     ],
                                     'others' => [
                                         'captions' => [
@@ -1407,14 +1407,28 @@ return [
                 'date' => 'Tanggal',
                 'material_list' => 'Daftar Material',
             ],
-            'fields' => [
-                'carriage' => 'Gerbong',
-                'carriage_placeholder' => 'Pilih Gerbong',
-                'panel' => 'Panel',
-                'panel_placeholder' => 'Pilih Panel',
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Kode Material',
+                    'description' => 'Deskripsi',
+                    'specs' => 'Spesifikasi',
+                    'unit' => 'Satuan',
+                    'total_qty' => 'Total',
+                ],
             ],
-            'buttons' => [
-                'print_qr' => 'Cetak QR',
+        ],
+    ],
+    'panel_attachment' => [
+        'document_panel_attachment' => [
+            'title' => 'KPM Assembly',
+            'headers' => [
+                'kpm_assembly' => 'KPM Assembly',
+                'attachment_number' => 'Nomor Lampiran',
+                'reservation_number' => 'Nomor Reservasi',
+                'serial_number' => 'Nomor Seri',
+                'reference_number' => 'Nomor Referensi',
+                'date' => 'Tanggal',
+                'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
@@ -1422,12 +1436,7 @@ return [
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Jumlah Total',
-                ],
-                'others' => [
-                    'captions' => [
-                        'list_material_within_attachment' => 'Daftar Material dalam Lampiran Trainset',
-                    ],
+                    'total_qty' => 'Total',
                 ],
             ],
         ],

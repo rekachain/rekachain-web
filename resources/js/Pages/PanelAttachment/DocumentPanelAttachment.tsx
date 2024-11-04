@@ -5,15 +5,17 @@ import { Separator } from '@/Components/UI/separator';
 import { PanelAttachmentResource, RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const DocumentAttachment = ({
     panelAttachment,
-    title = 'KPM Assembly',
+    title,
 }: {
     panelAttachment: PanelAttachmentResource;
-    title: string;
+    title?: string;
 }) => {
-    const [pageTitle, setPageTitle] = useState<string>(title);
+    const { t } = useLaravelReactI18n();
+    const [pageTitle, setPageTitle] = useState<string | undefined>(title);
     const [selectedPanelRawMaterials, setselectedPanelRawMaterials] = useState<RawMaterialResource[]>([]);
 
     const temporaryChangeThemeToLightMode = () => {
@@ -29,7 +31,8 @@ const DocumentAttachment = ({
             .then(response => {
                 setselectedPanelRawMaterials(response as unknown as RawMaterialResource[]);
 
-                setPageTitle('KPM Assembly');
+                if (!pageTitle)
+                    setPageTitle(t('pages.panel_attachment.document_panel_attachment.headers.kpm_assembly'));
 
                 setTimeout(() => {
                     temporaryChangeThemeToLightMode();
@@ -59,25 +62,35 @@ const DocumentAttachment = ({
                 <div className="grid grid-cols-3">
                     <div className="flex flex-col gap-3 mt-5">
                         <div className="">
-                            <p className="font-bold">No Lampiran :</p>
+                            <p className="font-bold">
+                                {t('pages.panel_attachment.document_panel_attachment.headers.attachment_number')}
+                            </p>
                             <p>{panelAttachment.attachment_number}</p>
                         </div>
                         <div className="">
-                            <p className="font-bold">No Reservasi :</p>
+                            <p className="font-bold">
+                                {t('pages.panel_attachment.document_panel_attachment.headers.reservation_number')}
+                            </p>
                             <p>-</p>
                         </div>
                         <div className="">
-                            <p className="font-bold">Serial Number :</p>
+                            <p className="font-bold">
+                                {t('pages.panel_attachment.document_panel_attachment.headers.serial_number')}
+                            </p>
                             <p>{showSerialPanels()}</p>
                         </div>
                     </div>
                     <div className="flex flex-col gap-3 mt-5">
                         <div className="">
-                            <p className="font-bold">Nomor Referensi :</p>
+                            <p className="font-bold">
+                                {t('pages.panel_attachment.document_panel_attachment.headers.reference_number')}
+                            </p>
                             <p>-</p>
                         </div>
                         <div className="">
-                            <p className="font-bold">Tanggal :</p>
+                            <p className="font-bold">
+                                {t('pages.panel_attachment.document_panel_attachment.headers.date')}
+                            </p>
                             <p>{panelAttachment.formatted_created_at}</p>
                         </div>
                     </div>
@@ -88,15 +101,33 @@ const DocumentAttachment = ({
                     )}
                 </div>
                 <Separator className="h-1 my-6" />
-                <h1 className="text-xl font-bold mt-3">List Material</h1>
+                <h1 className="text-xl font-bold mt-3">
+                    {t('pages.panel_attachment.document_panel_attachment.headers.material_list')}
+                </h1>
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="">Kode Material</TableHead>
-                            <TableHead>Deskripsi</TableHead>
-                            <TableHead>Spesifikasi</TableHead>
-                            <TableHead>Unit</TableHead>
-                            <TableHead>Jumlah</TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.panel_attachment.document_panel_attachment.raw_material_table.headers.material_code',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.panel_attachment.document_panel_attachment.raw_material_table.headers.description',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t('pages.panel_attachment.document_panel_attachment.raw_material_table.headers.specs')}
+                            </TableHead>
+                            <TableHead>
+                                {t('pages.panel_attachment.document_panel_attachment.raw_material_table.headers.unit')}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.panel_attachment.document_panel_attachment.raw_material_table.headers.total_qty',
+                                )}
+                            </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
