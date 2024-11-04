@@ -97,8 +97,8 @@ class PanelAttachmentResource extends JsonResource
                 $panelAttachment = $this->load(['carriage_panel' => ['progress' => ['progress_steps']]]);
                 $panelSteps = $panelAttachment->carriage_panel->progress->progress_steps->map(function ($progressStep) use (&$steps) {
                     return [
-                        'id' => $progressStep->step->id,
-                        'progress_step_id' => $progressStep->id,
+                        'step_id' => $progressStep->step->id,
+                        // 'progress_step_id' => $progressStep->id,
                         'step_name' => $progressStep->step->name,
                         'step_process' => $progressStep->step->process,
                         'estimated_time' => $progressStep->step->estimated_time,
@@ -113,7 +113,7 @@ class PanelAttachmentResource extends JsonResource
                     $steps = collect();
                     $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                         $workers = collect();
-                        $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
+                        $step = $steps->firstWhere('step_id', $detailWorkerPanel->progress_step->step_id);
                         if (!$step) {
                             $workers->push([
                                 'nip' => $detailWorkerPanel->worker->nip,
@@ -123,8 +123,8 @@ class PanelAttachmentResource extends JsonResource
                                 'work_status' => $detailWorkerPanel->work_status
                             ]);
                             $steps->push([
-                                'id' => $detailWorkerPanel->progress_step->step->id,
-                                'progress_step_id' => $detailWorkerPanel->progress_step->id,
+                                'step_id' => $detailWorkerPanel->progress_step->step->id,
+                                // 'progress_step_id' => $detailWorkerPanel->progress_step->id,
                                 'step_name' => $detailWorkerPanel->progress_step->step->name,
                                 'step_process' => $detailWorkerPanel->progress_step->step->process,
                                 'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
@@ -141,7 +141,7 @@ class PanelAttachmentResource extends JsonResource
                         }
                     });
                     $panelSteps->each(function ($panelStep) use (&$steps) {
-                        $step = $steps->firstWhere('id', $panelStep['id']);
+                        $step = $steps->firstWhere('step_id', $panelStep['step_id']);
                         if (!$step) {
                             $steps->push($panelStep);
                         }
@@ -151,7 +151,7 @@ class PanelAttachmentResource extends JsonResource
                         'panel' => PanelResource::make($serialPanel->panel_attachment->carriage_panel->panel),
                         'progress' => $this->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
-                        'steps' => $steps->sortBy('progress_step_id')->map(function ($step) {
+                        'steps' => $steps->sortBy('step_id')->map(function ($step) {
                             return $step;
                         })->values(),
                     ];

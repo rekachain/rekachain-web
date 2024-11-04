@@ -6,8 +6,6 @@ use App\Models\TrainsetAttachment;
 use App\Models\User;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
-use App\Support\Enums\RoleEnum;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DetailWorkerTrainsetSeeder extends Seeder
@@ -17,12 +15,6 @@ class DetailWorkerTrainsetSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = [
-            RoleEnum::WORKER_MEKANIK->value,
-            RoleEnum::WORKER_ELEKTRIK->value,
-            RoleEnum::QC_MEKANIK->value,
-            RoleEnum::QC_ELEKTRIK->value,
-        ];
         $trainsetAttachments = TrainsetAttachment::get();
 
         foreach ($trainsetAttachments as $trainsetAttachment) {
