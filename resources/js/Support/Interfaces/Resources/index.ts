@@ -16,7 +16,7 @@ export * from './ProgressResource';
 export * from './CarriageTrainsetResource';
 export * from './ComponentResource';
 export * from './RawMaterialResource';
-
+export * from './ProjectComponentResource';
 export * from './CarriagePanelComponentResource';
 export * from './PanelAttachmentResource';
 export * from './PanelAttachmentHandlerResource';

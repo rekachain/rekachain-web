@@ -150,7 +150,19 @@ class ProjectController extends Controller {
         return inertia('Project/Trainset/Show', ['project' => $project, 'trainset' => $trainset]);
     }
 
-    public function carriages(Request $request, Project $project, Trainset $trainset) {
+    public function components(Request $request, Project $project) {
+        $project = new ProjectResource($project);
+        
+        if ($this->ajax()) {
+            return [
+                'project' => $project,
+            ];
+        }
+
+        return inertia('Project/Component/Index', compact('project'));
+    }
+
+    public function carriage_trainsets(Request $request, Project $project, Trainset $trainset) {
         $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachment' => ['serial_panels']], 'carriage']]));
         // sementara
