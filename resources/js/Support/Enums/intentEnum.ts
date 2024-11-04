@@ -31,6 +31,7 @@ const intents = {
     WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT: 'web.panel.attachment.download.panel.attachment',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
+    WEB_SERIAL_PANEL_DOWNLOAD_ALL_QR_CODES: 'web.serial.panel.download.all.qr.codes', // download all qr codes
 };
 export const IntentEnum = intents;
 

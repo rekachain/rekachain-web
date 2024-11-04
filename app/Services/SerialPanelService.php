@@ -2,15 +2,18 @@
 
 namespace App\Services;
 
+use ZipArchive;
 use App\Models\SerialPanel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
-use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
-use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
+use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(
@@ -51,8 +54,35 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
         $data->manufacture_status = SerialPanelManufactureStatusEnum::FAILED->value;
         $data->notes = $request->notes;
         $data->save();
-        
+
         return $serialPanel;
+    }
+
+    public function exportAllQrCodes(): BinaryFileResponse {
+        $zip = new ZipArchive;
+        $fileName = 'qr_codes.zip';
+        $zip->open(storage_path('app/public/' . $fileName), ZipArchive::CREATE);
+
+        $serialPanels = $this->getAll();
+
+        foreach ($serialPanels as $serialPanel) {
+            // Generate QR code image
+            $qrCode = QrCode::format('png')->size(200)->generate($serialPanel->qr_code);
+            $qrPath = storage_path('app/public/qr-' . $serialPanel->id . '.png');
+            file_put_contents($qrPath, $qrCode);
+
+            // Add QR code image to zip archive
+            $zip->addFile($qrPath, 'qr-' . $serialPanel->id . '.png');
+        }
+
+        $zip->close();
+
+        // Clean up temporary files
+        foreach ($serialPanels as $serialPanel) {
+            unlink(storage_path('app/pubblic/qr-' . $serialPanel->id . '.png'));
+        }
+
+        return response()->download(storage_path('app/public/' . $fileName))->deleteFileAfterSend();
     }
 
     protected function getRepositoryClass(): string {

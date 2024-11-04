@@ -222,4 +222,6 @@ enum IntentEnum: string {
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY = 'web.panel.attachment.get.panel.materials.with.qty';
 
     case WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.panel.attachment.assign.custom.attachment.material';
+
+    case WEB_SERIAL_PANEL_DOWNLOAD_ALL_QR_CODES = 'web.serial.panel.download.all.qr.codes'; // download all qr codes
 }

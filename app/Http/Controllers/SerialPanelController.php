@@ -9,8 +9,17 @@ class SerialPanelController extends Controller {
     /**
      * Display a listing of the resource.
      */
-    public function index() {
-        //
+    public function index(Request $request) {
+        $intent = $request->get('intent');
+        dd($request);
+        switch ($intent) {
+            case IntentEnum::WEB_SERIAL_PANEL_DOWNLOAD_ALL_QR_CODES->value:
+                $this->serialPanelService->exportAllQrCodes($request->file('serial_panel'));
+
+                return response()->noContent();
+        }
+
+        return $this->panelService->getAllPaginated();
     }
 
     /**
