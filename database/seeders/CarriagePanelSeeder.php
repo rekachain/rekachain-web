@@ -21,22 +21,25 @@ class CarriagePanelSeeder extends Seeder {
         if ($csvData) {
             foreach ($csvData as $data) {
                 if (Carriage::whereType($data['car_type'])->exists()) {
-                    if (Panel::whereName($data['panel_name'])->exists()) {
-                        if (Progress::whereId($data['progress_id'])->exists()) {
-                            CarriagePanel::create([
-                                'carriage_trainset_id' => CarriageTrainset::whereTrainsetId(Trainset::whereName($data['trainset'])->first()->id)
-                                                                        ->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)
-                                                                        ->first()->id,
-                                'progress_id' => Progress::whereId($data['progress_id'])->first()->id,
-                                'panel_id' => Panel::whereName($data['panel_name'])->first()->id,
-                            ]);
+                    if (Trainset::whereName($data['trainset'])->exists()) {
+                        if (Panel::whereName($data['panel_name'])->exists()) {
+                            if (Progress::whereId($data['progress_id'])->exists()) {
+                                CarriagePanel::create([
+                                    'carriage_trainset_id' => CarriageTrainset::whereTrainsetId(Trainset::whereName($data['trainset'])->first()->id)
+                                                                            ->whereCarriageId(Carriage::whereType($data['car_type'])->first()->id)
+                                                                            ->first()->id,
+                                    'progress_id' => Progress::whereId($data['progress_id'])->first()->id,
+                                    'panel_id' => Panel::whereName($data['panel_name'])->first()->id,
+                                ]);
+                            }
+
+                            // TODO: create new progress
+
                         }
-
-                        // TODO: create new progress
-
+                        // TODO: create new panel
                     }
 
-                    // TODO: create new panel
+                    // TODO: create new trainset
 
                 }
 
