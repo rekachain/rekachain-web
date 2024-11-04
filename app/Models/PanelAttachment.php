@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class PanelAttachment extends Model
@@ -39,9 +40,22 @@ class PanelAttachment extends Model
         return $this->hasOneThrough(Panel::class, CarriagePanel::class, 'id', 'id', 'id', 'panel_id');
     }
 
-    public function trainset(): HasOneThrough
+    public function trainset(): HasOneDeep
     {
-        return $this->hasOneThrough(Trainset::class, CarriageTrainset::class, 'id', 'id', 'carriage_trainset_id', 'trainset_id');
+        return $this->hasOneDeep(
+            Trainset::class, 
+            [
+                CarriagePanel::class, 
+                CarriageTrainset::class
+            ], [
+                'id',
+                'id', 
+                'id'
+            ], [
+                'carriage_panel_id', 
+                'carriage_trainset_id', 
+                'trainset_id'
+            ]);
     }
 
     public function progress(): HasOneThrough
