@@ -4,6 +4,7 @@ const intents = {
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
     WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
     WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL: 'web.project.import.component.progress.and.material',
+    WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL: 'web.project.import.panel.progress.and.material',
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
     WEB_TRAINSET_GET_ALL_COMPONENTS: 'web.trainset.get.all.components',
@@ -33,6 +34,7 @@ const intents = {
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
     WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY: 'web.project.get.all.components.with.qty',
+    WEB_PROJECT_GET_ALL_PANELS_WITH_QTY: 'web.project.get.all.panels.with.qty',
 };
 export const IntentEnum = intents;
 

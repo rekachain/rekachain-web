@@ -1,6 +1,6 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ProjectComponentResource } from '@/Support/Interfaces/Resources/ProjectComponentResource';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
@@ -42,7 +42,14 @@ export const projectService = {
     getComponents: async (projectId: number): Promise<PaginateResponse<ProjectComponentResource>>  => {
         return await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
             params: {
-                intent: IntentEnum.WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY,
+                intent: IntentEnum.WEB_PROJECT_GET_ALL_PANELS_WITH_QTY,
+            },
+        });
+    },
+    getPanels: async (projectId: number): Promise<PaginateResponse<ProjectPanelResource>>  => {
+        return await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
+            params: {
+                intent: IntentEnum.WEB_PROJECT_GET_ALL_PANELS_WITH_QTY,
             },
         });
     },
@@ -58,6 +65,20 @@ export const projectService = {
             params: {
                 _method: 'PUT',
                 intent: IntentEnum.WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL,
+            },
+        });
+    },
+    importPanelsProgressRawMaterial: async (projectId: number, file: File, panelId: number) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('panel_id', panelId.toString());
+        return await window.axios.post(route(`${ROUTES.PROJECTS}.update`, projectId), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            params: {
+                _method: 'PUT',
+                intent: IntentEnum.WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL,
             },
         });
     }

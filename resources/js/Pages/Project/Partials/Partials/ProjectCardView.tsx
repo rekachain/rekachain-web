@@ -67,6 +67,12 @@ export default function ProjectCardView({
                             >
                                 {'components'}
                             </Link>
+                            <Link
+                                className={buttonVariants({ variant: 'link' })}
+                                href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
+                            >
+                                {'panels'}
+                            </Link>
                         </div>
                     </div>
                     {/* </div> */}

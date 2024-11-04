@@ -58,6 +58,12 @@ export default function ProjectTableView({
                                 >
                                     {'components'}
                                 </Link>
+                                <Link
+                                    className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
+                                >
+                                    {'panels'}
+                                </Link>
                             </TableCell>
                         </TableRow>
                     ))}
