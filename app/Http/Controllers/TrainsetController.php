@@ -85,7 +85,8 @@ class TrainsetController extends Controller {
                 case IntentEnum::WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY->value:
                     return TrainsetResource::make($trainset);
             }
-            return new TrainsetResource($trainset->load(['carriages' => ['panels']]));
+
+            return new TrainsetResource($trainset->load(['carriages', 'trainset_attachments', 'panel_attachments']));
         }
     }
 
@@ -120,10 +121,12 @@ class TrainsetController extends Controller {
 
             case IntentEnum::WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS->value:
                 $result = $this->trainsetService->generatePanelAttachment($trainset, $request->validated());
+
                 return is_array($result) ? response($result, $result['code']) : $result;
 
             case IntentEnum::WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS->value:
                 $result = $this->trainsetService->generateTrainsetAttachment($trainset, $request->validated());
+
                 return is_array($result) ? response($result, $result['code']) : $result;
         }
 

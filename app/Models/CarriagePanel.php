@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class CarriagePanel extends Model {
     use HasFactory;
@@ -41,7 +42,7 @@ class CarriagePanel extends Model {
         return $this->hasMany(PanelMaterial::class);
     }
 
-    public function panel_attachments(): HasMany {
-        return $this->hasMany(PanelAttachment::class);
+    public function panel_attachment(): HasOne {
+        return $this->hasOne(PanelAttachment::class);
     }
 }

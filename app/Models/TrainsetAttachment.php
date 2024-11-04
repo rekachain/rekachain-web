@@ -84,34 +84,34 @@ class TrainsetAttachment extends Model {
 
     public function raw_materials(): HasManyDeep {
         return $this->hasManyDeep(
-            RawMaterial::class, 
+            RawMaterial::class,
             [
                 TrainsetAttachmentComponent::class,
                 CarriagePanelComponent::class,
-                ComponentMaterial::class
-            ], 
+                ComponentMaterial::class,
+            ],
             [
                 'trainset_attachment_id',
                 'id',
                 'carriage_panel_component_id',
-                'id'
+                'id',
             ],
             [
                 'id',
                 'carriage_panel_component_id',
                 'id',
-                'raw_material_id'
+                'raw_material_id',
             ]
         )->distinct();
     }
 
     public function component_materials(): HasManyDeep {
         return $this->hasManyDeep(
-            ComponentMaterial::class, 
+            ComponentMaterial::class,
             [
                 TrainsetAttachmentComponent::class,
-                CarriagePanelComponent::class
-            ], 
+                CarriagePanelComponent::class,
+            ],
             [
                 'trainset_attachment_id',
                 'id',
@@ -143,5 +143,9 @@ class TrainsetAttachment extends Model {
 
     public function custom_attachment_materials(): MorphMany {
         return $this->morphMany(CustomAttachmentMaterial::class, 'custom_attachment_materialable');
+    }
+
+    public function getQrAttribute(): ?string {
+        return $this->qr_path ? asset('storage/' . $this->qr_path) : null;
     }
 }

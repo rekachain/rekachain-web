@@ -1,16 +1,20 @@
 import { Resource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { AxiosRequestConfig } from 'axios';
 
 const DEBUG_MODE = true;
 
 export function serviceFactory<T extends Resource>(baseRoute: string) {
     return {
-        getAll: async (filters: ServiceFilterOptions = {}): Promise<PaginateResponse<T>> => {
+        getAll: async (
+            filters: ServiceFilterOptions = {},
+            config: AxiosRequestConfig = {},
+        ): Promise<PaginateResponse<T>> => {
             const url = route(`${baseRoute}.index`);
 
             try {
-                const res = await window.axios.get(url, { params: filters });
+                const res = await window.axios.get(url, { params: filters, ...config });
 
                 if (DEBUG_MODE)
                     console.log(`Fetched resources from ${url} with filters:`, filters, 'and got:', res.data);
@@ -22,11 +26,11 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        get: async (id: number): Promise<T> => {
+        get: async (id: number, filters: ServiceFilterOptions = {}, config: AxiosRequestConfig = {}): Promise<T> => {
             const url = route(`${baseRoute}.show`, id);
 
             try {
-                const res = await window.axios.get(url);
+                const res = await window.axios.get(url, { params: filters, ...config });
 
                 if (DEBUG_MODE) console.log(`Fetched resource from ${url} and got:`, res.data);
 

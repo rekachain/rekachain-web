@@ -25,14 +25,14 @@ class PanelAttachmentResource extends JsonResource
                 ];
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
                 return $this->panel_materials
-                ->groupBy(['raw_material_id'])->map(function ($panelMaterials) {
-                    return [
-                        'raw_material' => RawMaterialResource::make($panelMaterials->first()->raw_material),
+                    ->groupBy(['raw_material_id'])
+                    ->map(fn ($panelMaterials) => [
+                        ...RawMaterialResource::make($panelMaterials->first()->raw_material)->toArray($request),
                         'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
                             return $panelMaterial->qty * $panelMaterial->carriage_panel->carriage_trainset->qty;
                         }),
-                    ];
-                })->sortBy('raw_material.id')->toArray();
+                    ])->sortBy('raw_material.id')->toArray();
+
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
                     'id' => $this->id,
@@ -203,7 +203,7 @@ class PanelAttachmentResource extends JsonResource
                 ];
             default:
                 return [
-                    'id' => "$this->id",
+                    'id' => $this->id,
                     'attachment_number' => $this->attachment_number,
                     'source_workstation_id' => $this->source_workstation_id,
                     'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
@@ -213,7 +213,9 @@ class PanelAttachmentResource extends JsonResource
                     'carriage_panel' => new CarriagePanelResource($this->whenLoaded('carriage_panel')),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
+                    'qr' => $this->qr,
                     'serial_panels' => SerialPanelResource::collection($this->whenLoaded('serial_panels')),
+                    'serial_numbers' => $this->serial_panels->pluck('id'),
                     // 'current_step' => $this->current_step,
                     'elapsed_time' => $this->elapsed_time,
                     'status' => $this->status,
@@ -224,6 +226,8 @@ class PanelAttachmentResource extends JsonResource
                     'attachment_notes' => AttachmentNoteResource::collection($this->whenLoaded('attachment_notes')),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
+                    'formatted_created_at' => $this->created_at->format('d F Y'),
+                    'formatted_updated_at' => $this->updated_at->format('d F Y'),
                 ];
         }
     }

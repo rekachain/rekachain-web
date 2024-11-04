@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
-class PanelAttachment extends Model
-{
+class PanelAttachment extends Model {
     use HasFactory, HasRelationships;
 
     protected $fillable = [
@@ -34,68 +33,55 @@ class PanelAttachment extends Model
         'status' => PanelAttachmentStatusEnum::class,
     ];
 
-    public function panel(): HasOneThrough
-    {
+    public function panel(): HasOneThrough {
         return $this->hasOneThrough(Panel::class, CarriagePanel::class, 'id', 'id', 'id', 'panel_id');
     }
 
-    public function trainset(): HasOneThrough
-    {
+    public function trainset(): HasOneThrough {
         return $this->hasOneThrough(Trainset::class, CarriageTrainset::class, 'id', 'id', 'carriage_trainset_id', 'trainset_id');
     }
 
-    public function progress(): HasOneThrough
-    {
+    public function progress(): HasOneThrough {
         return $this->hasOneThrough(Progress::class, CarriagePanel::class, 'id', 'id', 'carriage_panel_id', 'progress_id');
     }
 
-    public function parent(): BelongsTo
-    {
+    public function parent(): BelongsTo {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
-    public function childs(): HasMany
-    {
+    public function childs(): HasMany {
         return $this->hasMany(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
-    public function source_workstation(): BelongsTo
-    {
+    public function source_workstation(): BelongsTo {
         return $this->belongsTo(Workstation::class, 'source_workstation_id');
     }
 
-    public function destination_workstation(): BelongsTo
-    {
+    public function destination_workstation(): BelongsTo {
         return $this->belongsTo(Workstation::class, 'destination_workstation_id');
     }
 
-    public function carriage_panel(): BelongsTo
-    {
+    public function carriage_panel(): BelongsTo {
         return $this->belongsTo(CarriagePanel::class);
     }
 
-    public function serial_panels(): HasMany
-    {
+    public function serial_panels(): HasMany {
         return $this->hasMany(SerialPanel::class);
     }
 
-    public function detail_worker_panels(): HasManyThrough
-    {
+    public function detail_worker_panels(): HasManyThrough {
         return $this->hasManyThrough(DetailWorkerPanel::class, SerialPanel::class, 'panel_attachment_id', 'serial_panel_id', 'id', 'id');
     }
 
-    public function supervisor(): BelongsTo
-    {
+    public function supervisor(): BelongsTo {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
-    public function panel_attachment_handlers(): HasMany
-    {
+    public function panel_attachment_handlers(): HasMany {
         return $this->hasMany(PanelAttachmentHandler::class);
     }
 
-    public function raw_materials(): HasManyDeep
-    {
+    public function raw_materials(): HasManyDeep {
         return $this->hasManyDeep(
             RawMaterial::class,
             [
@@ -105,28 +91,29 @@ class PanelAttachment extends Model
             [
                 'id',
                 'carriage_panel_id',
-                'id'
+                'id',
             ],
             [
                 'carriage_panel_id',
                 'id',
-                'raw_material_id'
+                'raw_material_id',
             ]
         );
     }
 
-    public function panel_materials(): HasManyThrough
-    {
+    public function panel_materials(): HasManyThrough {
         return $this->hasManyThrough(PanelMaterial::class, CarriagePanel::class, 'id', 'carriage_panel_id', 'carriage_panel_id', 'id');
     }
 
-    public function attachment_notes(): MorphMany
-    {
+    public function attachment_notes(): MorphMany {
         return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
     }
 
-    public function custom_attachment_materials(): MorphMany
-    {
+    public function custom_attachment_materials(): MorphMany {
         return $this->morphMany(CustomAttachmentMaterial::class, 'custom_attachment_materialable');
+    }
+
+    public function getQrAttribute(): ?string {
+        return $this->qr_path ? asset('storage/' . $this->qr_path) : null;
     }
 }

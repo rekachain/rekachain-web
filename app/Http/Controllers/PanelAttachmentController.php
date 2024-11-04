@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
+use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\PanelResource;
 use App\Http\Resources\RawMaterialResource;
 use App\Http\Resources\SerialPanelResource;
-use App\Support\Enums\IntentEnum;
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Models\PanelAttachment;
-use App\Http\Resources\PanelAttachmentResource;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
+use Illuminate\Http\Request;
 
 class PanelAttachmentController extends Controller {
     /**
@@ -20,9 +19,10 @@ class PanelAttachmentController extends Controller {
     public function __construct(
         protected PanelAttachmentServiceInterface $panelAttachmentService,
     ) {}
-    
+
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
+
         return PanelAttachmentResource::collection(
             $this->panelAttachmentService->getAllPaginated($request->query(), $perPage)
         );
@@ -47,6 +47,7 @@ class PanelAttachmentController extends Controller {
      */
     public function show(Request $request, PanelAttachment $panelAttachment) {
         $intent = $request->get('intent');
+
         if ($this->ajax()) {
             switch ($intent) {
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL->value:
@@ -65,6 +66,14 @@ class PanelAttachmentController extends Controller {
                     return PanelAttachmentResource::make($panelAttachment);
             }
         }
+
+        switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT->value:
+                $panelAttachment = PanelAttachmentResource::make($panelAttachment->load('raw_materials'));
+
+                return inertia('PanelAttachment/DocumentPanelAttachment', compact('panelAttachment'));
+        }
+
         return inertia('PanelAttachment/Show', [
             'panelAttachment' => PanelAttachmentResource::make($panelAttachment),
         ]);

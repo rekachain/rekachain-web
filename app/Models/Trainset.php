@@ -51,7 +51,7 @@ class Trainset extends Model {
             Panel::class,
             [
                 CarriageTrainset::class,
-                CarriagePanel::class
+                CarriagePanel::class,
             ],
             [
                 'trainset_id',
@@ -96,7 +96,7 @@ class Trainset extends Model {
             [
                 CarriageTrainset::class,
                 CarriagePanel::class,
-                CarriagePanelComponent::class
+                CarriagePanelComponent::class,
             ],
             [
                 'trainset_id',
@@ -108,17 +108,17 @@ class Trainset extends Model {
                 'id',
                 'id',
                 'id',
-                'component_id'
+                'component_id',
             ]
         );
     }
-    
+
     public function carriage_panel_components(): HasManyDeep {
         return $this->hasManyDeep(
             CarriagePanelComponent::class,
             [
                 CarriageTrainset::class,
-                CarriagePanel::class
+                CarriagePanel::class,
             ],
             [
                 'trainset_id',
@@ -139,7 +139,7 @@ class Trainset extends Model {
             [
                 CarriageTrainset::class,
                 CarriagePanel::class,
-                CarriagePanelComponent::class
+                CarriagePanelComponent::class,
             ],
             [
                 'trainset_id',
@@ -151,7 +151,7 @@ class Trainset extends Model {
                 'id',
                 'id',
                 'id',
-                'id'
+                'id',
             ]
         );
     }

@@ -45,6 +45,10 @@ class TrainsetAttachmentController extends Controller {
                 return RawMaterialResource::collection($trainsetAttachment->raw_materials);
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT->value:
+                $trainsetAttachment = TrainsetAttachmentResource::make($trainsetAttachment->load('raw_materials'));
+
+                return inertia('TrainsetAttachment/DocumentTrainsetAttachment', compact('trainsetAttachment'));
         }
         $data = TrainsetAttachmentResource::make($trainsetAttachment);
 
@@ -67,6 +71,7 @@ class TrainsetAttachmentController extends Controller {
         switch ($intent) {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 logger($trainsetAttachment);
+
                 return $this->trainsetAttachmentService->assignCustomAttachmentMaterial($trainsetAttachment, $request->validated());
         }
         if ($this->ajax()) {
