@@ -1046,6 +1046,84 @@ return [
                                 'submit' => 'Update Qty',
                             ],
                         ],
+                        'preview_panel_attachment' => [
+                            'buttons' => [
+                                'download' => 'Download Attachment',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Panel Attachment',
+                                'headers' => [
+                                    'attachment_number' => 'Attachment Number',
+                                    'reservation_number' => 'Reservation Number',
+                                    'serial_number' => 'Serial Number',
+                                    'reference_number' => 'Reference Number',
+                                    'date' => 'Date',
+                                    'material_list' => 'Material List',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Print QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_trainset_attachment' => [
+                            'buttons' => [
+                                'download' => 'Download Attachment',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Trainset Attachment',
+                                'headers' => [
+                                    'attachment_number' => 'Attachment Number',
+                                    'reservation_number' => 'Reservation Number',
+                                    'serial_number' => 'Serial Number',
+                                    'reference_number' => 'Reference Number',
+                                    'date' => 'Date',
+                                    'material_list' => 'Material List',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Print QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Trainset Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -1330,6 +1408,53 @@ return [
                     'updated' => 'Profile information updated successfully!',
                     'verify_email' => 'Your email address is unverified.',
                     'verification_email_sent' => 'A new verification email has been sent to the address you provided during registration.',
+                ],
+            ],
+        ],
+    ],
+    'trainset_attachment' => [
+        'document_trainset_attachment' => [
+            'title' => 'Trainset Attachment',
+            'headers' => [
+                'mechanic_attachment' => 'Mechanic Attachment',
+                'electric_attachment' => 'Electric Attachment',
+                'attachment_number' => 'Attachment Number',
+                'reservation_number' => 'Reservation Number',
+                'serial_number' => 'Serial Number',
+                'reference_number' => 'Reference Number',
+                'date' => 'Date',
+                'material_list' => 'Material List',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Material Code',
+                    'description' => 'Description',
+                    'specs' => 'Specs',
+                    'unit' => 'Unit',
+                    'total_qty' => 'Total Qty',
+                ],
+            ],
+        ],
+    ],
+    'panel_attachment' => [
+        'document_panel_attachment' => [
+            'title' => 'Trainset Attachment',
+            'headers' => [
+                'kpm_assembly' => 'Assembly Attachment',
+                'attachment_number' => 'Attachment Number',
+                'reservation_number' => 'Reservation Number',
+                'serial_number' => 'Serial Number',
+                'reference_number' => 'Reference Number',
+                'date' => 'Date',
+                'material_list' => 'Material List',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Material Code',
+                    'description' => 'Description',
+                    'specs' => 'Specs',
+                    'unit' => 'Unit',
+                    'total_qty' => 'Total Qty',
                 ],
             ],
         ],

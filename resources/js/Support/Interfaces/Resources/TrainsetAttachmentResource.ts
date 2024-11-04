@@ -1,4 +1,9 @@
-import { Resource } from '@/Support/Interfaces/Resources';
+import { RawMaterialResource, Resource } from '@/Support/Interfaces/Resources';
 import { TrainsetAttachment } from '@/Support/Interfaces/Models';
 
-export interface TrainsetAttachmentResource extends Resource, TrainsetAttachment {}
+export interface TrainsetAttachmentResource extends Resource, TrainsetAttachment {
+    qr?: string;
+    formatted_created_at: string;
+    formatted_updated_at: string;
+    raw_materials: RawMaterialResource[];
+}
