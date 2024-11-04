@@ -39,6 +39,8 @@ class TrainsetAttachmentController extends Controller {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                return TrainsetAttachmentResource::make($trainsetAttachment);
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS->value:
                 return RawMaterialResource::collection($trainsetAttachment->raw_materials);
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:

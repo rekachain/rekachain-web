@@ -45,8 +45,8 @@ class TrainsetAttachmentResource extends JsonResource {
                     'updated_at' => $this->updated_at->toDateTimeString(),
                     'formatted_created_at' => $this->created_at->format('d F Y'),
                     'formatted_updated_at' => $this->updated_at->format('d F Y'),
-
                 ];
+
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
                 $trainsetAttachment = $this->load(['trainset_attachment_components']);
 
@@ -161,33 +161,73 @@ class TrainsetAttachmentResource extends JsonResource {
                     'total_materials' => $materials->count(),
                     'materials' => $materials,
                 ];
-            case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components' => ['carriage_panel_component' => ['progress' => ['progress_steps']], 'detail_worker_trainsets' => ['worker']]]);
-                $progress = $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) {
-                    return [
-                        'progress_id' => $trainsetAttachmentComponent->carriage_panel_component->progress_id,
-                        'progress_name' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
-                        'total_steps' => $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps->count(),
-                        'progress_steps' => $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps->map(function ($progressStep) {
-                            return [
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                $progresses = $this->progresses()->distinct()->get();
+                $componentSteps = collect();
+                $progresses->map(function ($progress) use (&$componentSteps) {
+                    $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
+                        $step = $componentSteps->firstWhere('id', $progressStep->step_id);
+                        if (!$step) {
+                            $componentSteps->push([
                                 'id' => $progressStep->step_id,
+                                'progress_step_id' => $progressStep->id,
                                 'step_name' => $progressStep->step->name,
-                            ];
-                        }),
-                    ];
-                })->groupBy('progress_id')->map(function ($component) {
-                    return [
-                        'progress_id' => $component->first()['progress_id'],
-                        'progress_name' => $component->first()['progress_name'],
-                        'total_steps' => $component->first()['total_steps'],
-                        'progress_steps' => $component->first()['progress_steps'],
-                    ];
-                })->values();
+                                'step_process' => $progressStep->step->process,
+                                'estimated_time' => $progressStep->step->estimated_time,
+                                'workers' => collect(),
+                            ]);
+                        }
+                    });
+                });
+                // return $steps->toArray();
+                $trainsetAttachmentComponents = $this->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($componentSteps) {
+                    $steps = collect();
+                    $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
+                        $workers = collect();
+                        $step = $steps->firstWhere('id', $detailWorkerTrainset->progress_step->step_id);
+                        if (!$step) {
+                            $workers->push([
+                                'nip' => $detailWorkerTrainset->worker->nip,
+                                'name' => $detailWorkerTrainset->worker->name,
+                                'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
+                                'acceptance_status' => $detailWorkerTrainset->acceptance_status,
+                                'work_status' => $detailWorkerTrainset->work_status,
+                            ]);
+                            $steps->push([
+                                'id' => $detailWorkerTrainset->progress_step->step_id,
+                                'progress_step_id' => $detailWorkerTrainset->progress_step->id,
+                                'step_name' => $detailWorkerTrainset->progress_step->step->name,
+                                'step_process' => $detailWorkerTrainset->progress_step->step->process,
+                                'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
+                                'workers' => $workers,
+                            ]);
+                        } else {
+                            $step['workers']->push([
+                                'nip' => $detailWorkerTrainset->worker->nip,
+                                'name' => $detailWorkerTrainset->worker->name,
+                                'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
+                                'acceptance_status' => $detailWorkerTrainset->acceptance_status,
+                                'work_status' => $detailWorkerTrainset->work_status,
+                            ]);
+                        }
+                    });
+                    $componentSteps->each(function ($componentStep) use (&$steps) {
+                        $step = $steps->firstWhere('id', $componentStep['id']);
+                        if (!$step) {
+                            $steps->push($componentStep);
+                        }
+                    });
 
-                return [
-                    'attachment_number' => $this->attachment_number,
-                    'progress' => $progress,
-                ];
+                    return [
+                        'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                        'component' => ComponentResource::make($trainsetAttachmentComponent->carriage_panel_component->component),
+                        'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
+                        'total_steps' => $steps->count(),
+                        'steps' => $steps->sortBy('progress_step_id')->map(fn ($step) => $step)->values(),
+                    ];
+                });
+
+                return $trainsetAttachmentComponents->toArray();
             default:
                 return [
                     'id' => $this->id,

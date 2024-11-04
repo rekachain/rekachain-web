@@ -6,16 +6,23 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PanelAttachmentResource extends JsonResource {
+class PanelAttachmentResource extends JsonResource
+{
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array {
+    public function toArray(Request $request): array
+    {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
+                return [
+                    'panel' => PanelResource::make($this->carriage_panel->panel),
+                    'total_qty' => $this->carriage_panel->qty * $this->carriage_panel->carriage_trainset->qty,
+                ];
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
                 return $this->panel_materials
                     ->groupBy(['raw_material_id'])
@@ -86,7 +93,7 @@ class PanelAttachmentResource extends JsonResource {
                     'total_materials' => $materials->count(),
                     'materials' => $materials,
                 ];
-            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+            case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                 $panelAttachment = $this->load(['carriage_panel' => ['progress' => ['progress_steps']]]);
                 $panelSteps = $panelAttachment->carriage_panel->progress->progress_steps->map(function ($progressStep) use (&$steps) {
                     return [
@@ -102,16 +109,18 @@ class PanelAttachmentResource extends JsonResource {
 
                 $panelAttachment = $this->load(['serial_panels' => ['detail_worker_panels' => ['progress_step']]]);
 
-                $serialPanels = $panelAttachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
+                $serialPanels = $panelAttachment->serial_panels->map(function ($serialPanel) use ($panelAttachment, $panelSteps) {
                     $steps = collect();
                     $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                         $workers = collect();
-                        $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step->id);
+                        $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
                         if (!$step) {
                             $workers->push([
                                 'nip' => $detailWorkerPanel->worker->nip,
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
+                                'acceptance_status' => $detailWorkerPanel->acceptance_status,
+                                'work_status' => $detailWorkerPanel->work_status
                             ]);
                             $steps->push([
                                 'id' => $detailWorkerPanel->progress_step->step->id,
@@ -119,13 +128,15 @@ class PanelAttachmentResource extends JsonResource {
                                 'step_name' => $detailWorkerPanel->progress_step->step->name,
                                 'step_process' => $detailWorkerPanel->progress_step->step->process,
                                 'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
-                                'workers' => $workers,
+                                'workers' => $workers
                             ]);
                         } else {
                             $step['workers']->push([
                                 'nip' => $detailWorkerPanel->worker->nip,
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
+                                'acceptance_status' => $detailWorkerPanel->acceptance_status,
+                                'work_status' => $detailWorkerPanel->work_status
                             ]);
                         }
                     });
@@ -135,24 +146,17 @@ class PanelAttachmentResource extends JsonResource {
                             $steps->push($panelStep);
                         }
                     });
-
                     return [
                         'serial_number' => $serialPanel->id,
-                        'progress' => $serialPanel->detail_worker_panels->first()->progress_step->progress->load('work_aspect'),
+                        'panel' => PanelResource::make($serialPanel->panel_attachment->carriage_panel->panel),
+                        'progress' => $this->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
                         'steps' => $steps->sortBy('progress_step_id')->map(function ($step) {
-                            unset($step['id'], $step['progress_step_id']);
-
                             return $step;
                         })->values(),
                     ];
                 });
-
-                return [
-                    'attachment_number' => $this->attachment_number,
-                    'total_progresses' => $serialPanels->count(),
-                    'serial_panels' => $serialPanels,
-                ];
+                return $serialPanels->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'attachment_number' => $this->attachment_number,

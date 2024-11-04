@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -22,6 +23,10 @@ class Project extends Model {
 
     public function preset_trainsets() {
         return $this->hasMany(PresetTrainset::class);
+    }
+
+    public function carriage_trainsets() : HasManyThrough {
+        return $this->hasManyThrough(CarriageTrainset::class, Trainset::class);
     }
 
     public function panels() : HasManyDeep {

@@ -197,11 +197,21 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_GET_COMPONENTS = 'web.trainset.get.components';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.trainset.attachment.get.attachment.progress';
+
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS = 'web.trainset.attachment.get.component.materials';
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
 
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
+
+    case WEB_PANEL_ATTACHMENT_GET_PANEL = 'web.panel.attachment.get.panel';
+
+    case WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS = 'web.panel.attachment.get.serial.panels';
+
+    case WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.panel.attachment.get.attachment.progress';
+
+    case WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY = 'web.panel.attachment.get.panel.with.qty';
 
     case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT = 'web.trainset.attachment.download.trainset.attachment';
 
