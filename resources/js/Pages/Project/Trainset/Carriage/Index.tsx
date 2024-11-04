@@ -29,6 +29,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/AddNewTrainsetPreset';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenerateAttachment from '@/Pages/Project/Trainset/Carriage/Partials/GenerateAttachment';
+import PreviewAttachments from '@/Pages/Project/Trainset/Carriage/Partials/PreviewAttachments';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -162,6 +163,9 @@ export default function ({
                                         handleSyncTrainset={handleSyncTrainset}
                                         handleSyncCarriages={handleSyncCarriages}
                                     />
+                                    {(trainset.has_mechanic_trainset_attachment ||
+                                        trainset.has_electric_trainset_attachment ||
+                                        trainset.has_panel_attachment) && <PreviewAttachments trainset={trainset} />}
                                 </div>
                             </div>
                         </div>

@@ -1,36 +1,136 @@
 <?php
 
-use App\Models\TrainsetAttachment;
-use App\Support\Enums\IntentEnum;
-use App\Support\Enums\TrainsetAttachmentStatusEnum;
-use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\RoleEnum;
+use App\Support\Enums\IntentEnum;
+use App\Models\TrainsetAttachment;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\TrainsetResource;
+use App\Http\Resources\WorkstationResource;
+use App\Http\Resources\AttachmentNoteResource;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Http\Resources\TrainsetAttachmentComponentResource;
 
 beforeEach(function () {
     $this->dummy->createSupervisorMekanik();
     $this->dummy->createSupervisorElektrik();
 });
 
-test('index returns paginated trainset attachments', function () {
+test('index returns paginated trainset attachments w/o intent', function () {
     $this->dummy->createTrainsetAttachment();
     actAsSuperAdmin()->getJson('/api/trainset-attachments')
         ->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta']);
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'attachment_number',
+                    'source_workstation',
+                    'destination_workstation',
+                    'project',
+                    'trainset',
+                    'type',
+                    'qr_code',
+                    'qr_path',
+                    'status',
+                    'elapsed_time',
+                    'supervisor_id',
+                    'trainset_attachment_id',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
-test('index returns trainset attachments by status', function () {
+test('index returns paginated trainset attachments get attachments', function () {
+    $this->dummy->createTrainsetAttachment();
+    actAsSuperAdmin()->getJson('/api/trainset-attachments', [
+        'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value
+    ])->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'attachment_number',
+                    'source_workstation',
+                    'destination_workstation',
+                    'project',
+                    'trainset',
+                    'type',
+                    'qr_code',
+                    'qr_path',
+                    'status',
+                    'elapsed_time',
+                    'supervisor_id',
+                    'trainset_attachment_id',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
+});
+
+test('index returns trainset attachments get attachments by status', function () {
     $this->dummy->createTrainsetAttachment(['status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value]);
-    actAsSuperAdmin()->getJson('/api/trainset-attachments?intent=' . IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS->value . '&status=' . TrainsetAttachmentStatusEnum::IN_PROGRESS->value)
-        ->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta']);
+    actAsSuperAdmin()->getJson('http://127.0.0.1/api/trainset-attachments', [
+        'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS->value,
+        'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value
+    ])->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'attachment_number',
+                    'source_workstation',
+                    'destination_workstation',
+                    'project',
+                    'trainset',
+                    'type',
+                    'qr_code',
+                    'qr_path',
+                    'status',
+                    'elapsed_time',
+                    'supervisor_id',
+                    'trainset_attachment_id',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('index returns trainset attachments by current user', function () {
     $supervisor = $this->dummy->createSupervisorMekanik();
     $this->dummy->createTrainsetAttachment(['supervisor_id' => $supervisor->id]);
-    $this->actingAs($supervisor)->getJson('/api/trainset-attachments?intent=' . IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value)
-        ->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta']);
+    $this->actingAs($supervisor)->getJson('/api/trainset-attachments', [
+        'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value
+    ])->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'attachment_number',
+                    'source_workstation',
+                    'destination_workstation',
+                    'project',
+                    'trainset',
+                    'type',
+                    'qr_code',
+                    'qr_path',
+                    'status',
+                    'elapsed_time',
+                    'supervisor_id',
+                    'trainset_attachment_id',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('index returns trainset attachments by status and current user', function () {
@@ -39,9 +139,32 @@ test('index returns trainset attachments by status and current user', function (
         'supervisor_id' => $supervisor->id,
         'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value
     ]);
-    $this->actingAs($supervisor)->getJson('/api/trainset-attachments?intent=' . IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER->value . '&status=' . TrainsetAttachmentStatusEnum::IN_PROGRESS->value)
-        ->assertStatus(200)
-        ->assertJsonStructure(['data', 'meta']);
+    $this->actingAs($supervisor)->getJson('http://127.0.0.1/api/trainset-attachments', [
+        'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER->value,
+        'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value
+    ])->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'attachment_number',
+                    'source_workstation',
+                    'destination_workstation',
+                    'project',
+                    'trainset',
+                    'type',
+                    'qr_code',
+                    'qr_path',
+                    'status',
+                    'elapsed_time',
+                    'supervisor_id',
+                    'trainset_attachment_id',
+                    'created_at',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('store creates new trainset attachment', function () {
@@ -53,7 +176,7 @@ test('store creates new trainset attachment', function () {
         'trainset_id' => $trainset->id,
         'source_workstation_id' => $sourceWorkstation->id,
         'destination_workstation_id' => $destinationWorkstation->id,
-        'type' => TrainsetAttachmentTypeEnum::MEKANIK->value,
+        'type' => TrainsetAttachmentTypeEnum::MECHANIC->value,
         'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
     ])
         ->assertStatus(201)
@@ -63,8 +186,18 @@ test('store creates new trainset attachment', function () {
 test('show returns trainset attachment details', function () {
     $trainsetAttachment = $this->dummy->createTrainsetAttachment();
     actAsSuperAdmin()->getJson("/api/trainset-attachments/{$trainsetAttachment->id}?intent=" . IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value)
-        ->assertStatus(200);
-        // ->assertJsonStructure(['id', 'attachment_number', 'trainset', 'source_workstation', 'destination_workstation', 'status']);
+        ->assertStatus(200)
+        ->assertJson([
+            'attachment_number' => $trainsetAttachment->attachment_number,
+            'type' => $trainsetAttachment->type->value,
+            'qr_code' => $trainsetAttachment->qr_code,
+            'qr_path' => $trainsetAttachment->qr_path,
+            'status' => $trainsetAttachment->status->value,
+            'elapsed_time' => $trainsetAttachment->elapsed_time,
+            'trainset_attachment_id' => $trainsetAttachment->trainset_attachment_id,
+            'created_at' => $trainsetAttachment->created_at->toDateTimeString(),
+            'updated_at' => $trainsetAttachment->updated_at->toDateTimeString(),
+        ]);
 });
 
 test('show returns trainset attachment materials', function () {

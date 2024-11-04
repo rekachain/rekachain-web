@@ -1028,6 +1028,84 @@ return [
                                 'submit' => 'Perbarui Jumlah',
                             ],
                         ],
+                        'preview_panel_attachment' => [
+                            'buttons' => [
+                                'download' => 'Unduh Lampiran',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Panel',
+                                'headers' => [
+                                    'attachment_number' => 'Nomor Lampiran',
+                                    'reservation_number' => 'Nomor Reservasi',
+                                    'serial_number' => 'Nomor Seri',
+                                    'reference_number' => 'Nomor Referensi',
+                                    'date' => 'Tanggal',
+                                    'material_list' => 'Daftar Material',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Gerbong',
+                                    'carriage_placeholder' => 'Pilih Gerbong',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Cetak QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Total',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_trainset_attachment' => [
+                            'buttons' => [
+                                'download' => 'Unduh Lampiran',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Trainset',
+                                'headers' => [
+                                    'attachment_number' => 'Nomor Lampiran',
+                                    'reservation_number' => 'Nomor Reservasi',
+                                    'serial_number' => 'Nomor Seri',
+                                    'reference_number' => 'Nomor Referensi',
+                                    'date' => 'Tanggal',
+                                    'material_list' => 'Daftar Material',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Gerbong',
+                                    'carriage_placeholder' => 'Pilih Gerbong',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Cetak QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Total',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran Trainset',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -1312,6 +1390,53 @@ return [
                     'updated' => 'Informasi profil berhasil diperbarui!',
                     'verify_email' => 'Alamat email Anda belum diverifikasi.',
                     'verification_email_sent' => 'Email verifikasi baru telah dikirim ke alamat yang Anda berikan saat pendaftaran.',
+                ],
+            ],
+        ],
+    ],
+    'trainset_attachment' => [
+        'document_trainset_attachment' => [
+            'title' => 'Lampiran Trainset',
+            'headers' => [
+                'mechanic_attachment' => 'Lampiran Mekanik',
+                'electric_attachment' => 'Lampiran Elektrik',
+                'attachment_number' => 'Nomor Lampiran',
+                'reservation_number' => 'Nomor Reservasi',
+                'serial_number' => 'Nomor Seri',
+                'reference_number' => 'Nomor Referensi',
+                'date' => 'Tanggal',
+                'material_list' => 'Daftar Material',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Kode Material',
+                    'description' => 'Deskripsi',
+                    'specs' => 'Spesifikasi',
+                    'unit' => 'Satuan',
+                    'total_qty' => 'Total',
+                ],
+            ],
+        ],
+    ],
+    'panel_attachment' => [
+        'document_panel_attachment' => [
+            'title' => 'KPM Assembly',
+            'headers' => [
+                'kpm_assembly' => 'KPM Assembly',
+                'attachment_number' => 'Nomor Lampiran',
+                'reservation_number' => 'Nomor Reservasi',
+                'serial_number' => 'Nomor Seri',
+                'reference_number' => 'Nomor Referensi',
+                'date' => 'Tanggal',
+                'material_list' => 'Daftar Material',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Kode Material',
+                    'description' => 'Deskripsi',
+                    'specs' => 'Spesifikasi',
+                    'unit' => 'Satuan',
+                    'total_qty' => 'Total',
                 ],
             ],
         ],

@@ -30,9 +30,15 @@ class Panel extends Model {
         return $this->hasMany(Component::class);
     }
 
-    public function carriage_panels(): BelongsToMany {
-        return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
+    // public function carriage_panels(): BelongsToMany {
+    //     return $this->belongsToMany(CarriagePanel::class)->withPivot(['progress_id', 'carriage_id', 'panel_id'])->withTimestamps();
+    // }
+
+    // Temporary because belongsToMany return table carriage_panel_panel🗿
+    public function carriage_panels(): HasMany {
+        return $this->hasMany(CarriagePanel::class);
     }
+    
 
     /**
      * Currently only used in canBeDeleted method

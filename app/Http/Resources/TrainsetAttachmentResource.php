@@ -6,24 +6,47 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TrainsetAttachmentResource extends JsonResource
-{
-    public function toArray(Request $request): array
-    {
+class TrainsetAttachmentResource extends JsonResource {
+    public function toArray(Request $request): array {
         $intent = $request->get('intent');
 
         switch ($intent) {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
-                return $this->component_materials
+                $rawMaterials = $this->component_materials
                     ->groupBy('raw_material_id')
-                    ->map(fn($componentMaterials) => [
-                        'raw_material' => RawMaterialResource::make($componentMaterials->first()->raw_material),
-                        'total_qty' => $componentMaterials->sum(fn($cm) => 
-                            $cm->qty * $cm->carriage_panel_component->qty 
-                            * $cm->carriage_panel_component->carriage_panel->qty 
+                    ->map(fn ($componentMaterials) => [
+                        ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                        'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
+                            * $cm->carriage_panel_component->carriage_panel->qty
                             * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
                         ),
                     ])->sortBy('raw_material.id')->toArray();
+
+                return [
+                    'id' => $this->id,
+                    'attachment_number' => $this->attachment_number,
+                    'trainset_id' => $this->trainset_id,
+                    'trainset' => new TrainsetResource($this->whenLoaded('trainset')),
+                    'type' => $this->type,
+                    'source_workstation_id' => $this->source_workstation_id,
+                    'source_workstation' => new WorkstationResource($this->whenLoaded('source_workstation')),
+                    'destination_workstation_id' => $this->destination_workstation_id,
+                    'destination_workstation' => new WorkstationResource($this->whenLoaded('destination_workstation')),
+                    'qr_code' => $this->qr_code,
+                    'qr_path' => $this->qr_path,
+                    'qr' => $this->qr,
+                    'status' => $this->status,
+                    'elapsed_time' => $this->elapsed_time,
+                    'supervisor_id' => $this->supervisor_id,
+                    'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
+                    'trainset_attachment_id' => $this->trainset_attachment_id,
+                    'raw_materials' => $rawMaterials,
+                    'created_at' => $this->created_at->toDateTimeString(),
+                    'updated_at' => $this->updated_at->toDateTimeString(),
+                    'formatted_created_at' => $this->created_at->format('d F Y'),
+                    'formatted_updated_at' => $this->updated_at->format('d F Y'),
+                ];
+
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
                 $trainsetAttachment = $this->load(['trainset_attachment_components']);
 
@@ -34,8 +57,8 @@ class TrainsetAttachmentResource extends JsonResource
                             'component_name' => $trainset_attachment_component->carriage_panel_component->component->name,
                             'total_required' => $trainset_attachment_component->total_required,
                             'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
-                            'total_failed' => $trainset_attachment_component->total_failed
-                        ]
+                            'total_failed' => $trainset_attachment_component->total_failed,
+                        ],
                     ];
                 })->map(function ($components) {
                     return [
@@ -43,13 +66,13 @@ class TrainsetAttachmentResource extends JsonResource
                         'component_name' => $components->first()['component_name'],
                         'total_required' => $components->sum('total_required'),
                         'total_fulfilled' => $components->sum('total_fulfilled'),
-                        'total_failed' => $components->sum('total_failed')
+                        'total_failed' => $components->sum('total_failed'),
                     ];
                 })->values();
 
                 return [
                     'attachment_number' => $this->attachment_number,
-                    'components' => $components
+                    'components' => $components,
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_REQUIRED_COMPONENTS->value:
                 $trainsetAttachment = $this->load(['trainset_attachment_components']);
@@ -66,7 +89,7 @@ class TrainsetAttachmentResource extends JsonResource
 
                 return [
                     'attachment_number' => $this->attachment_number,
-                    'components' => $components
+                    'components' => $components,
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value:
                 return [
@@ -109,7 +132,7 @@ class TrainsetAttachmentResource extends JsonResource
                 $trainsetAttachment = $this->load(['trainset_attachment_components' => ['carriage_panel_component' => ['component_materials']]]);
 
                 $materials = collect();
-                $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use (&$materials, $trainsetAttachment) {
+                $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use (&$materials) {
                     $trainsetAttachmentComponent->carriage_panel_component->component_materials->map(function ($componentMaterial) use (&$materials, $trainsetAttachmentComponent) {
                         $totalQty = $trainsetAttachmentComponent->total_required * $componentMaterial->qty;
                         $material = $materials->firstWhere('raw_material_id', $componentMaterial->raw_material_id);
@@ -118,19 +141,21 @@ class TrainsetAttachmentResource extends JsonResource
                                 'raw_material_id' => $componentMaterial->raw_material_id,
                                 'material_code' => $componentMaterial->raw_material->material_code,
                                 'material_description' => $componentMaterial->raw_material->description,
-                                'total_qty' => $totalQty
+                                'total_qty' => $totalQty,
                             ]);
                         } else {
                             $materials->transform(function ($item) use ($totalQty, $componentMaterial) {
                                 if ($item['raw_material_id'] === $componentMaterial->raw_material_id) {
                                     $item['total_qty'] += $totalQty;
                                 }
+
                                 return $item;
                             });
                         }
                     });
                 });
                 $materials = $materials->sortBy('material_code')->values();
+
                 return [
                     'attachment_number' => $this->attachment_number,
                     'total_materials' => $materials->count(),
@@ -165,7 +190,7 @@ class TrainsetAttachmentResource extends JsonResource
                                 'name' => $detailWorkerTrainset->worker->name,
                                 'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
                                 'acceptance_status' => $detailWorkerTrainset->acceptance_status,
-                                'work_status' => $detailWorkerTrainset->work_status
+                                'work_status' => $detailWorkerTrainset->work_status,
                             ]);
                             $steps->push([
                                 'step_id' => $detailWorkerTrainset->progress_step->step_id,
@@ -173,7 +198,7 @@ class TrainsetAttachmentResource extends JsonResource
                                 'step_name' => $detailWorkerTrainset->progress_step->step->name,
                                 'step_process' => $detailWorkerTrainset->progress_step->step->process,
                                 'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
-                                'workers' => $workers
+                                'workers' => $workers,
                             ]);
                         } else {
                             $step['workers']->push([
@@ -181,7 +206,7 @@ class TrainsetAttachmentResource extends JsonResource
                                 'name' => $detailWorkerTrainset->worker->name,
                                 'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
                                 'acceptance_status' => $detailWorkerTrainset->acceptance_status,
-                                'work_status' => $detailWorkerTrainset->work_status
+                                'work_status' => $detailWorkerTrainset->work_status,
                             ]);
                         }
                     });
@@ -191,6 +216,7 @@ class TrainsetAttachmentResource extends JsonResource
                             $steps->push($componentStep);
                         }
                     });
+
                     return [
                         'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
                         'component' => ComponentResource::make($trainsetAttachmentComponent->carriage_panel_component->component),
@@ -199,6 +225,7 @@ class TrainsetAttachmentResource extends JsonResource
                         'steps' => $steps->sortBy('step_id')->map(fn($step) => $step)->values(),
                     ];
                 });
+
                 return $trainsetAttachmentComponents->toArray();
             default:
                 return [
@@ -213,14 +240,18 @@ class TrainsetAttachmentResource extends JsonResource
                     'destination_workstation' => new WorkstationResource($this->whenLoaded('destination_workstation')),
                     'qr_code' => $this->qr_code,
                     'qr_path' => $this->qr_path,
+                    'qr' => $this->qr,
                     'status' => $this->status,
                     'elapsed_time' => $this->elapsed_time,
                     'supervisor_id' => $this->supervisor_id,
                     'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
                     'trainset_attachment_handlers' => TrainsetAttachmentHandlerResource::collection($this->whenLoaded('trainset_attachment_handlers')),
+                    'raw_materials' => RawMaterialResource::collection($this->whenLoaded('raw_materials')),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
+                    'formatted_created_at' => $this->created_at->format('d F Y'),
+                    'formatted_updated_at' => $this->updated_at->format('d F Y'),
                 ];
         }
     }
