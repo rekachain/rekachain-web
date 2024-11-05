@@ -7,6 +7,8 @@ use App\Models\PanelAttachment;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
+use Illuminate\Support\Facades\DB;
+
 
 class DashboardService {
     public function __construct(

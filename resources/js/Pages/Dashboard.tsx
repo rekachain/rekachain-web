@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
@@ -21,10 +21,12 @@ const project = [
     {
         value: '612',
         label: '612',
+        link: '/dashboard/612',
     },
     {
         value: 'krl_kci',
         label: 'KRL KCI',
+        link: '/dashboard/KRL KCI',
     },
 ];
 
@@ -129,24 +131,28 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
                                                 <CommandGroup>
                                                     {project.map(framework => (
-                                                        <CommandItem
-                                                            key={framework.value}
-                                                            value={framework.value}
-                                                            onSelect={currentValue => {
-                                                                setValue(currentValue === value ? '' : currentValue);
-                                                                setOpen(false);
-                                                            }}
-                                                        >
-                                                            <Check
-                                                                className={cn(
-                                                                    'mr-2 h-4 w-4',
-                                                                    value === framework.value
-                                                                        ? 'opacity-100'
-                                                                        : 'opacity-0',
-                                                                )}
-                                                            />
-                                                            {framework.label}
-                                                        </CommandItem>
+                                                        <Link href={framework.link}>
+                                                            <CommandItem
+                                                                key={framework.value}
+                                                                value={framework.value}
+                                                                onSelect={currentValue => {
+                                                                    setValue(
+                                                                        currentValue === value ? '' : currentValue,
+                                                                    );
+                                                                    setOpen(false);
+                                                                }}
+                                                            >
+                                                                <Check
+                                                                    className={cn(
+                                                                        'mr-2 h-4 w-4',
+                                                                        value === framework.value
+                                                                            ? 'opacity-100'
+                                                                            : 'opacity-0',
+                                                                    )}
+                                                                />
+                                                                {framework.label}
+                                                            </CommandItem>
+                                                        </Link>
                                                     ))}
                                                 </CommandGroup>
                                             </CommandList>
