@@ -5,13 +5,32 @@ import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
-import { TrendingUp } from 'lucide-react';
+import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
+import { cn } from '@/Lib/Utils';
+import { Button } from '@/Components/UI/button';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { useState } from 'react';
+
+const project = [
+    {
+        value: '612',
+        label: '612',
+    },
+    {
+        value: 'krl_kci',
+        label: 'KRL KCI',
+    },
+];
+
 export default function Dashboard({ auth, data }: PageProps) {
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
     console.log(data);
     const chartConfig = {
         in_progress: {
@@ -87,7 +106,54 @@ export default function Dashboard({ auth, data }: PageProps) {
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
                         <div className="">
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                            <h2 className="text-xl my-2">Proyek 612</h2>
+                            <div className="flex justify-between w-full items-center">
+                                <h2 className="text-xl my-2">Proyek 612</h2>
+                                <Popover open={open} onOpenChange={setOpen}>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            aria-expanded={open}
+                                            className="w-[200px] justify-between"
+                                        >
+                                            {value
+                                                ? project.find(framework => framework.value === value)?.label
+                                                : 'Pilih Proyek'}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-[200px] p-0">
+                                        <Command>
+                                            <CommandInput placeholder="Cari Projek..." />
+                                            <CommandList>
+                                                <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
+                                                <CommandGroup>
+                                                    {project.map(framework => (
+                                                        <CommandItem
+                                                            key={framework.value}
+                                                            value={framework.value}
+                                                            onSelect={currentValue => {
+                                                                setValue(currentValue === value ? '' : currentValue);
+                                                                setOpen(false);
+                                                            }}
+                                                        >
+                                                            <Check
+                                                                className={cn(
+                                                                    'mr-2 h-4 w-4',
+                                                                    value === framework.value
+                                                                        ? 'opacity-100'
+                                                                        : 'opacity-0',
+                                                                )}
+                                                            />
+                                                            {framework.label}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
                             <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['ts']}>
                                     <CartesianGrid vertical={false} />
