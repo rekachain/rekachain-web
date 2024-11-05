@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ProjectComponentResource, ProjectPanelResource, ProjectResource, WorkAspectResource } from '@/Support/Interfaces/Resources';
+import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { withLoading } from '@/Utils/withLoading';
@@ -35,10 +31,8 @@ export default function ({
     const { setLoading } = useLoading();
 
     const syncPanels = withLoading(async () => {
-        setLoading(true);
         const res = await projectService.getPanels(project.id);
         setPanelResponse(res);
-        setLoading(false);
     });
 
     useEffect(() => {
@@ -50,16 +44,10 @@ export default function ({
             {panelResponse && (
                 <>
                     <div className="hidden md:block">
-                        <PanelTableView
-                            project={project}
-                            panelResponse={panelResponse}
-                        ></PanelTableView>
+                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
                     </div>
                     <div className="block md:hidden">
-                        <PanelCardView
-                            project={project}
-                            panelResponse={panelResponse}
-                        ></PanelCardView>
+                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
                     </div>
                 </>
             )}

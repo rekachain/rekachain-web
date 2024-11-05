@@ -812,6 +812,7 @@ return [
                     'trainset_added' => 'Trainset added successfully!',
                 ],
                 'breadcrumbs' => [
+                    'home' => 'Home',
                     'project' => 'Project :project',
                 ],
                 'fields' => [
@@ -833,6 +834,7 @@ return [
                         'carriage_added' => 'Carriage added successfully!',
                     ],
                     'breadcrumbs' => [
+                        'home' => 'Home',
                         'project' => 'Project :project',
                         'trainset' => 'Trainset :trainset',
                     ],
@@ -847,6 +849,7 @@ return [
                         'initial_date' => 'Initial Date :initial_date',
                         'preset' => 'Preset :preset',
                         'breadcrumbs' => [
+                            'home' => 'Home',
                             'project' => 'Project :project',
                             'trainset' => 'Trainset :trainset',
                             'carriage' => 'Carriage :carriage',
@@ -1171,6 +1174,121 @@ return [
                 ],
             ],
         ],
+        'panel' => [
+            'index' => [
+                'title' => 'Panels',
+                'initial_date' => 'Initial Date :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Home',
+                    'project' => 'Project :project',
+                    'panels' => 'Panels',
+                ],
+            ],
+            'partials' => [
+                'panels' => [
+                    'messages' => [
+                        'deleted' => 'Panel deleted successfully!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Import Panel',
+                    ],
+                    'messages' => [
+                        'imported' => 'Panel imported successfully!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Import Panel',
+                        'description' => 'Import progress and raw material data of :panel_name on Project :project_name.',
+                        'fields' => [
+                            'download_template' => 'Download Template',
+                            'file' => 'File',
+                        ],
+                        'buttons' => [
+                            'import' => 'Import Panel',
+                            'download_template' => 'Download',
+                            'submit' => 'Import Panel',
+                            'processing' => 'Processing...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'panel_table' => [
+                        'headers' => [
+                            'name' => 'Name',
+                            'description' => 'Description',
+                            'total_qty' => 'Total Qty',
+                        ],
+                    ],
+                    'panel_card' => [
+                        'headers' => [
+                            'name' => 'Name: :name',
+                            'description' => 'Description: :description',
+                            'total_qty' => 'Total Qty: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'components' => [
+            'index' => [
+                'title' => 'Components',
+                'initial_date' => 'Initial Date :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Home',
+                    'project' => 'Project :project',
+                    'components' => 'Components',
+                ],
+            ],
+            'partials' => [
+                'components' => [
+                    'messages' => [
+                        'deleted' => 'Component deleted successfully!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Import Component',
+                    ],
+                    'messages' => [
+                        'imported' => 'Component imported successfully!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Import Component',
+                        'description' => 'Import progress and raw material data of :component_name on Project :project_name.',
+                        'fields' => [
+                            'download_template' => 'Download Template',
+                            'file' => 'File',
+                            'work_aspect' => 'Work Aspect',
+                        ],
+                        'buttons' => [
+                            'import' => 'Import Component',
+                            'download_template' => 'Download',
+                            'submit' => 'Import Component',
+                            'processing' => 'Processing...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'component_table' => [
+                        'headers' => [
+                            'name' => 'Name',
+                            'description' => 'Description',
+                            'total_qty' => 'Total Qty',
+                        ],
+                    ],
+                    'component_card' => [
+                        'headers' => [
+                            'name' => 'Name: :name',
+                            'description' => 'Description: :description',
+                            'total_qty' => 'Total Qty: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
         'partials' => [
             'projects' => [
                 'messages' => [
@@ -1211,6 +1329,8 @@ return [
                     ],
                     'actions' => [
                         'trainsets' => 'Trainsets',
+                        'components' => 'Components',
+                        'panels' => 'Panels',
                     ],
                 ],
                 'project_card' => [
@@ -1221,6 +1341,8 @@ return [
                     ],
                     'actions' => [
                         'trainsets' => 'Trainsets',
+                        'components' => 'Components',
+                        'panels' => 'Panels',
                     ],
                 ],
             ],

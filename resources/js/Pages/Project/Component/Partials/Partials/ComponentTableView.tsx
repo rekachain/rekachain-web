@@ -17,24 +17,24 @@ export default function ComponentTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.component.partials.partials.component_table.headers.name')}</TableHead>
-                        <TableHead>Deskripsi</TableHead>
-                        <TableHead>Total Qty</TableHead>
+                        <TableHead>
+                            {t('pages.project.components.partials.partials.component_table.headers.name')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.project.components.partials.partials.component_table.headers.description')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.project.components.partials.partials.component_table.headers.total_qty')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {componentResponse?.data.map((data) => (
+                    {componentResponse?.data.map(data => (
                         <TableRow key={data.component.id}>
-                            <TableCell>
-                                {data.component.name}
-                            </TableCell>
-                            <TableCell>
-                                {data.component.description}
-                            </TableCell>
-                            <TableCell>
-                                {data.total_qty}
-                            </TableCell>
+                            <TableCell>{data.component.name}</TableCell>
+                            <TableCell>{data.component.description}</TableCell>
+                            <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
                                 <Import project={project} component={data.component} />
                             </TableCell>

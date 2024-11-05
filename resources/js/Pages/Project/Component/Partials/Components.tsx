@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ProjectComponentResource, ProjectResource, WorkAspectResource } from '@/Support/Interfaces/Resources';
+import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useConfirmation } from '@/Hooks/useConfirmation';
 import { componentService } from '@/Services/componentService';
@@ -35,11 +34,8 @@ export default function ({
     const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
-        setLoading(true);
         const res = await projectService.getComponents(project.id);
-        console.log(res);
         setComponentResponse(res);
-        setLoading(false);
     });
 
     useEffect(() => {
@@ -73,10 +69,7 @@ export default function ({
                         ></ComponentTableView>
                     </div>
                     <div className="block md:hidden">
-                        <ComponentCardView
-                            project={project}
-                            componentResponse={componentResponse}
-                        ></ComponentCardView>
+                        <ComponentCardView project={project} componentResponse={componentResponse}></ComponentCardView>
                     </div>
                 </>
             )}
