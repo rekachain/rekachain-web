@@ -7,7 +7,13 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { projectService } from '@/Services/projectService';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/Components/UI/breadcrumb';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from '@/Components/UI/breadcrumb';
 
 export default function ({ project: initialProject }: { project: ProjectResource }) {
     const { t } = useLaravelReactI18n();
@@ -20,7 +26,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
     const Panels = lazy(() => import('./Partials/Panels'));
     return (
         <>
-            <Head title={t('pages.panel.index.title')} />
+            <Head title={t('pages.project.panel.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -28,19 +34,27 @@ export default function ({ project: initialProject }: { project: ProjectResource
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
-                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>Home</Link>
+                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>
+                                            {t('pages.project.panel.index.breadcrumbs.home')}
+                                        </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
-                                            {t('pages.project.trainset.index.breadcrumbs.project', {
+                                            {t('pages.project.panel.index.breadcrumbs.project', {
                                                 project: project.name,
                                             })}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
+                                    <BreadcrumbSeparator />
+                                    <BreadcrumbItem>
+                                        <BreadcrumbPage>
+                                            {t('pages.project.panel.index.breadcrumbs.panels')}
+                                        </BreadcrumbPage>
+                                    </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">{t('pages.panel.index.title')}</h1>
+                            <h1 className="text-page-header my-4">{t('pages.project.panel.index.title')}</h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
