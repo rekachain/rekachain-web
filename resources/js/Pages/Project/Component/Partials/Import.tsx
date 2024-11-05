@@ -15,7 +15,7 @@ import { router, useForm } from '@inertiajs/react';
 import { componentService } from '@/Services/componentService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { ChangeEvent, FormEvent, useCallback } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { withLoading } from '@/Utils/withLoading';
 import { projectService } from '@/Services/projectService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
@@ -32,8 +32,16 @@ export default function ({ project, component }: { project: any, component: any 
         component_id: component.id,
         work_aspect_id: null,
     });
-    const { loading } = useLoading();
+    
+    const [filters, setFilters] = useState<ServiceFilterOptions>({
+        column_filters: {
+            division_id: [
+                1,2
+            ],
+        },
+    });
 
+    const { loading } = useLoading();
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -42,9 +50,10 @@ export default function ({ project, component }: { project: any, component: any 
         await useSuccessToast('Data imported successfully');
         router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
-    const fetchWorkstations = useCallback(async (filters: ServiceFilterOptions) => {
+    const fetchWorkAspects = useCallback(async () => {
         return await workAspectService
             .getAll({
+                ...filters,
                 relations: 'division',
             })
             .then(response => response.data);
@@ -75,7 +84,7 @@ export default function ({ project, component }: { project: any, component: any 
                     <Label htmlFor="work_aspect_id">Work Aspect</Label>
                     <GenericDataSelector
                         id="work_aspect_id"
-                        fetchData={fetchWorkstations}
+                        fetchData={fetchWorkAspects}
                         setSelectedData={id => setData('work_aspect_id',id)
                         }
                         selectedDataId={
