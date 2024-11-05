@@ -1,6 +1,6 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { ProjectCarriageResource, ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ProjectComponentResource } from '@/Support/Interfaces/Resources/ProjectComponentResource';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
@@ -41,6 +41,20 @@ export const projectService = {
                 intent: IntentEnum.WEB_PROJECT_IMPORT_PROJECT_TEMPLATE,
             },
         });
+    },
+    getCarriages: async (
+        projectId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectCarriageResource>> => {
+        const response = await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
+            params: {
+                intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY,
+                ...filters,
+                ...config,
+            },
+        });
+        return response.data;
     },
     getComponents: async (
         projectId: number,
