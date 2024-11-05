@@ -79,6 +79,10 @@ class ProjectController extends Controller {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGES->value:
+                return CarriageResource::collection($project->carriages()->distinct()->get());
+            case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY->value:
+                return ProjectResource::make($project);
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS->value:
                 return PanelResource::collection($project->panels()->distinct()->get()); // $project->panels;
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS_WITH_QTY->value:
@@ -148,6 +152,39 @@ class ProjectController extends Controller {
         $trainset = new TrainsetResource($trainset->load(['carriages']));
 
         return inertia('Project/Trainset/Show', ['project' => $project, 'trainset' => $trainset]);
+    }
+
+    public function carriages(Request $request, Project $project) {
+        $project = new ProjectResource($project);
+
+        if ($this->ajax()) {
+            return [
+                'project' => $project,
+            ];
+        }
+
+        return inertia('Project/Carriage/Index', compact('project'));
+    }
+
+    public function carriage_components(Request $request, Project $project, Carriage $carriage) {
+        $intent = $request->get('intent');
+        if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS->value:
+                    return ComponentResource::collection($project->components()->whereCarriageId($carriage->id)->distinct()->get());
+                case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY->value:
+                    return ProjectResource::make($project)->setProjectCarriage($carriage);
+            }
+            return [
+                'project' => new ProjectResource($project),
+                'carriage' => new CarriageResource($carriage),
+            ];
+        }
+        $project = new ProjectResource($project);
+        $carriage = new CarriageResource($carriage);
+
+
+        return inertia('Project/Carriage/Component/Index', compact('project', 'carriage'));
     }
 
     public function components(Request $request, Project $project) {

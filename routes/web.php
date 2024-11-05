@@ -91,6 +91,9 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
+        Route::get('/projects/{project}/carriages', 'carriages')->name('projects.carriages.index');
+        Route::get('/projects/{project}/carriages/{carriage}', 'carriage_components')->name('projects.carriages.components.index');
+        Route::get('/projects/{project}/carriages/{carriage}/components', 'carriage_components')->name('projects.carriages.components.index');
         Route::get('/projects/{project}/components', 'components')->name('projects.components.index');
         Route::get('/projects/{project}/panels', 'panels')->name('projects.panels.index');
         Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');

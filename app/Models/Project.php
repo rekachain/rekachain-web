@@ -17,6 +17,30 @@ class Project extends Model {
         'initial_date',
     ];
 
+    public function carriages(): HasManyDeep {
+        return $this->hasManyDeep(
+            Carriage::class, // The final target model is Carriage itself
+            [
+                Trainset::class,
+                CarriageTrainset::class,
+            ],
+            [
+                'project_id',
+                'trainset_id',
+                'id',
+            ],
+            [
+                'id',
+                'id',
+                'carriage_id',
+            ]
+        );
+    }
+
+    public function carriage_components(Carriage $carriage) {
+        return $this->carriage_panel_components()->whereCarriageId($carriage->id);
+    }
+
     public function trainsets(): HasMany {
         return $this->hasMany(Trainset::class);
     }
