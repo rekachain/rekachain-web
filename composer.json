@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/laravel-collection-macros": "^7.12",
         "spatie/laravel-permission": "^6.9",
         "staudenmeir/eloquent-has-many-deep": "^1.7",
         "tightenco/ziggy": "^2.0"
