@@ -9,7 +9,7 @@ import {
 import { buttonVariants } from '@/Components/UI/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import { PanelAttachmentResource, TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { useEffect, useState } from 'react';
 import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
 import { trainsetService } from '@/Services/trainsetService';
@@ -29,7 +29,6 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
 
     const [mechanicAttachment, setMechanicAttachment] = useState<TrainsetAttachmentResource[]>([]);
     const [electricAttachment, setElectricAttachment] = useState<TrainsetAttachmentResource[]>([]);
-    const [assemblyAttachment, setAssemblyAttachment] = useState<PanelAttachmentResource[]>([]);
 
     const fetchAttachment = withLoading(async () => {
         if (activeTab === GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC) {

@@ -12,14 +12,14 @@ use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Support\Interfaces\Services\UserServiceInterface;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(
         protected DetailWorkerPanelRepositoryInterface $detailWorkerPanelRepository,
         protected ProgressStepRepositoryInterface $progressStepRepository,
-        protected UserRepositoryInterface $userRepositoryInterface,
+        protected UserServiceInterface $userService,
+        protected UserRepositoryInterface $userRepository,
         protected DetailWorkerPanelServiceInterface $detailWorkerPanelService
     ) {
         parent::__construct();
@@ -27,7 +27,7 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
 
     public function assignWorker(SerialPanel $serialPanel, array $data){
         $userId = $data['worker_id'] ?? auth()->user()->id;
-        $user = $this->userRepositoryInterface->find($userId);
+        $user = $this->userService->find(['id' => $userId])->first();
         $workerPanel = $this->detailWorkerPanelRepository->findFirst(['serial_panel_id' => $serialPanel->id, 'worker_id' => $user->id]);
         if ($workerPanel) {
             return $workerPanel;
