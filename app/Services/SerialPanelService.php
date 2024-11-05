@@ -4,8 +4,10 @@ namespace App\Services;
 
 use ZipArchive;
 use App\Models\SerialPanel;
+use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
@@ -13,6 +15,7 @@ use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\Services\UserServiceInterface;
+use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(
@@ -66,23 +69,23 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
         $serialPanels = $this->getAll();
 
         foreach ($serialPanels as $serialPanel) {
-            // Generate QR code image
-            $qrCode = QrCode::format('png')->size(200)->generate($serialPanel->qr_code);
-            $qrPath = storage_path('app/public/qr-' . $serialPanel->id . '.png');
-            file_put_contents($qrPath, $qrCode);
+            // Generate QR code image using public disk
+            $qrCode = QrCode::format('svg')->size(200)->generate($serialPanel->qr_code);
+            $qrPath = storage_path('app/public/qr-' . $serialPanel->id . '.svg');
+            Storage::disk('public')->put('qr-' . $serialPanel->id . '.svg', $qrCode);
 
             // Add QR code image to zip archive
-            $zip->addFile($qrPath, 'qr-' . $serialPanel->id . '.png');
+            $zip->addFile($qrPath, 'qr-' . $serialPanel->id . '.svg');
         }
 
         $zip->close();
 
-        // Clean up temporary files
+        // Clean up temporary files using public disk
         foreach ($serialPanels as $serialPanel) {
-            unlink(storage_path('app/pubblic/qr-' . $serialPanel->id . '.png'));
+            Storage::disk('public')->delete('qr-' . $serialPanel->id . '.svg');
         }
 
-        return response()->download(storage_path('app/public/' . $fileName))->deleteFileAfterSend();
+        return response()->download(storage_path('app/public/' . $fileName));
     }
 
     protected function getRepositoryClass(): string {
