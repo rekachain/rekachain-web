@@ -35,7 +35,9 @@ class ProjectResource extends JsonResource {
                                 return $carriagePanelComponent->qty * $carriagePanelComponent->carriage_panel->qty * $carriagePanelComponent->carriage_panel->carriage_trainset->qty;
                             }),
                         ];
-                    })->toArray();
+                    })
+                    ->paginate($request->get('pageSize', $request->get('per_page', 10)))
+                    ->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
                     'id' => $this->id,

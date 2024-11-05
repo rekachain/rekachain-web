@@ -42,12 +42,19 @@ export const projectService = {
             },
         });
     },
-    getComponents: async (projectId: number): Promise<PaginateResponse<ProjectComponentResource>> => {
-        return await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
+    getComponents: async (
+        projectId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectComponentResource>> => {
+        const response = await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
             params: {
                 intent: IntentEnum.WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY,
+                ...filters,
+                ...config,
             },
         });
+        return response.data;
     },
     getPanels: async (
         projectId: number,
