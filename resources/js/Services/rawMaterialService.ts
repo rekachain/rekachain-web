@@ -1,6 +1,6 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { RawMaterialResource } from '../Support/Interfaces/Resources';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export const rawMaterialService = {

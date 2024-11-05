@@ -32,7 +32,7 @@ export default function () {
         event.preventDefault();
         await panelService.importData(data.file as File);
         router.visit(route(`${ROUTES.PANELS}.index`));
-        await useSuccessToast(t('pages.panels.index.partials.import.messages.imported'));
+        await useSuccessToast(t('pages.panel.partials.import.messages.imported'));
     });
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,15 +43,15 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.panels.index.partials.import.buttons.import')}</Button>
+                <Button variant="tertiary">{t('pages.panel.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t('pages.panels.index.partials.import.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.panels.index.partials.import.description')}</DialogDescription>
+                    <DialogTitle>{t('pages.panel.partials.import.title')}</DialogTitle>
+                    <DialogDescription>{t('pages.panel.partials.import.description')}</DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.panels.index.partials.import.fields.file')}</Label>
+                    <Label>{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
                     <Button
                         type="button"
                         variant="secondary"
@@ -59,13 +59,13 @@ export default function () {
                         disabled={loading}
                     >
                         {loading
-                            ? t('pages.panels.index.partials.import.buttons.processing')
-                            : t('pages.panels.index.partials.import.buttons.download_template')}
+                            ? t('pages.panel.partials.import.dialogs.buttons.processing')
+                            : t('pages.panel.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.panels.index.partials.import.fields.file')}</Label>
+                        <Label htmlFor="file">{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
                         <Input
                             id="file"
                             type="file"
@@ -76,8 +76,8 @@ export default function () {
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
                             {loading
-                                ? t('pages.panels.index.partials.import.buttons.processing')
-                                : t('pages.panels.index.partials.import.buttons.import')}
+                                ? t('pages.panel.partials.import.dialogs.buttons.processing')
+                                : t('pages.panel.partials.import.dialogs.buttons.import')}
                         </Button>
                     </DialogFooter>
                 </form>

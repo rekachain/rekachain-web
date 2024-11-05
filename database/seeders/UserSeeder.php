@@ -140,30 +140,42 @@ class UserSeeder extends Seeder {
 
         $qcAssembly->assignRole('QC - Assembly');
 
-        User::factory(10)->create()->each(function ($user) use ($workerMekanikSteps) {
-            $user->assignRole('Worker - Mekanik');
-            $user->update(['step_id' => Step::whereIn('id', $workerMekanikSteps)->inRandomOrder()->first()->id]);
-        });
-        User::factory(10)->create()->each(function ($user) use ($workerElektrikSteps) {
-            $user->assignRole('Worker - Elektrik');
-            $user->update(['step_id' => Step::whereIn('id', $workerElektrikSteps)->inRandomOrder()->first()->id]);
-        });
-        User::factory(10)->create()->each(function ($user) use ($workerAssemblySteps) {
-            $user->assignRole('Worker - Assembly');
-            $user->update(['step_id' => Step::whereIn('id', $workerAssemblySteps)->inRandomOrder()->first()->id]);
-        });
-        User::factory(10)->create()->each(function ($user) use ($qcMekanikSteps) {
-            $user->assignRole('QC - Mekanik');
-            $user->update(['step_id' => Step::whereIn('id', $qcMekanikSteps)->inRandomOrder()->first()->id]);
-        });
-        User::factory(10)->create()->each(function ($user) use ($qcElektrikSteps) {
-            $user->assignRole('QC - Elektrik');
-            $user->update(['step_id' => Step::whereIn('id', $qcElektrikSteps)->inRandomOrder()->first()->id]);
-        });
-        User::factory(10)->create()->each(function ($user) use ($qcAssemblySteps) {
-            $user->assignRole('QC - Assembly');
-            $user->update(['step_id' => Step::whereIn('id', $qcAssemblySteps)->inRandomOrder()->first()->id]);
-        });
+        foreach ($workerMekanikSteps as $step) {
+            User::factory(rand(1,5))->create()->each(function ($user) use ($step) {
+                $user->assignRole('Worker - Mekanik');
+                $user->update(['step_id' => $step]);
+            });
+        }
+        foreach ($workerElektrikSteps as $step) {
+            User::factory(rand(1,5))->create()->each(function ($user) use ($step) {
+                $user->assignRole('Worker - Elektrik');
+                $user->update(['step_id' => $step]);
+            });
+        }
+        foreach ($workerAssemblySteps as $step) {
+            User::factory(rand(1,5))->create()->each(function ($user) use ($step) {
+                $user->assignRole('Worker - Assembly');
+                $user->update(['step_id' => $step]);
+            });
+        }
+        foreach ($qcMekanikSteps as $step) {
+            User::factory(rand(1,3))->create()->each(function ($user) use ($step) {
+                $user->assignRole('QC - Mekanik');
+                $user->update(['step_id' => $step]);
+            });
+        }
+        foreach ($qcElektrikSteps as $step) {
+            User::factory(rand(1,3))->create()->each(function ($user) use ($step) {
+                $user->assignRole('QC - Elektrik');
+                $user->update(['step_id' => $step]);
+            });
+        }
+        foreach ($qcAssemblySteps as $step) {
+            User::factory(rand(1,3))->create()->each(function ($user) use ($step) {
+                $user->assignRole('QC - Assembly');
+                $user->update(['step_id' => $step]);
+            });
+        }
 
     }
 }

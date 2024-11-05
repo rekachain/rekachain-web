@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\DetailWorkerPanel;
 use App\Models\PanelAttachment;
-use App\Models\ProgressStep;
 use App\Models\User;
-use App\Support\Enums\RoleEnum;
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
@@ -25,28 +25,36 @@ class DetailWorkerPanelSeeder extends Seeder {
         //     return;
         // }
 
-        $roles = [
-            RoleEnum::WORKER_ASSEMBLY->value,
-            RoleEnum::QC_ASSEMBLY->value,
-        ];
 
-        PanelAttachment::all()->each(function (PanelAttachment $panelAttachment) use ($roles) {
-            $serialPanels = $panelAttachment->serial_panels()->get();
-            foreach ($serialPanels as $serialPanel) {
-                foreach ($roles as $role) {
-                    $randomCount = rand(1, 5);
-                    $users = User::role($role)->inRandomOrder()->take($randomCount)->get();
-                    foreach ($users as $user) {
-                        $progressStep = ProgressStep::whereProgressId($panelAttachment->carriage_panel->progress->id)
-                            ->whereStepId($user->step->id)->first();
-                        if (!$progressStep) {
-                            continue;
+        PanelAttachment::all()->each(function (PanelAttachment $panelAttachment) {
+            $serialPanelsCount = $panelAttachment->serial_panels()->count();
+            $serialPanels = $panelAttachment->serial_panels()->limit(rand(1, $serialPanelsCount))->get();
+            foreach ($serialPanels as $key => $serialPanel) {
+                $workStatus = DetailWorkerPanelWorkStatusEnum::COMPLETED->value;
+                $acceptanceStatus = DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value;
+                $progressStepsCount = $panelAttachment->carriage_panel->progress->progress_steps()->count();
+                $progressSteps = $panelAttachment->carriage_panel->progress->progress_steps()->limit(rand(1, $progressStepsCount))->get();
+                foreach ($progressSteps as $key => $progressStep) {
+                    if ($key == $progressSteps->count() - 1) {
+                        $workStatus = array_rand([
+                            DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
+                            DetailWorkerPanelWorkStatusEnum::COMPLETED->value => DetailWorkerPanelWorkStatusEnum::COMPLETED->value,
+                        ]);
+                        $acceptanceStatus = $workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value ? DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value : null;
+                        if($workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value && $progressSteps->count() == $progressStepsCount) {
+                            $serialPanel->update([
+                                'manufacture_status' => SerialPanelManufactureStatusEnum::COMPLETED->value
+                            ]);
                         }
-                        
-                        DetailWorkerPanel::factory()->create([
-                            'serial_panel_id' => $serialPanel->id,
+                    }
+                    $users = User::whereStepId($progressStep->step_id)->inRandomOrder()->take(rand(1, 3))->get();
+                    foreach ($users as $user) {
+                        $serialPanel->detail_worker_panels()->create([
                             'worker_id' => $user->id,
-                            'progress_step_id' => $progressStep->id
+                            'progress_step_id' => $progressStep->id,
+                            'estimated_time' => $progressStep->step->estimated_time,
+                            'work_status' => $workStatus,
+                            'acceptance_status' => $acceptanceStatus
                         ]);
                     }
                 }

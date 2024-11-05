@@ -78,6 +78,8 @@ class ComponentController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Component $component) {
+        $component = $component->load('progress');
+
         return inertia('Component/Edit', compact('component'));
     }
 

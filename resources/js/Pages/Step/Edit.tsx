@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import { stepService } from '@/Services/stepService';
@@ -9,18 +9,11 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { ProgressResource, StepResource } from '@/Support/Interfaces/Resources';
-import { SelectGroup } from '@/Components/UI/select';
-import { Label } from '@/Components/UI/label';
-import { Check, ChevronsUpDown, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { progressService } from '@/Services/progressService';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import cn from 'mxcn';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({ step }: { step: StepResource }) {
@@ -30,7 +23,7 @@ export default function ({ step }: { step: StepResource }) {
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProgressResource>>();
     const [searchProgress, setSearchProgress] = useState(step.progress?.name);
     const { data, setData } = useForm({
-        progress_id: step.progress_id,
+        progress_id: step.progress_id as number | null,
         name: step.name,
         estimated_time: step.estimated_time ?? 0,
         process: step.process,
@@ -57,6 +50,10 @@ export default function ({ step }: { step: StepResource }) {
         void useSuccessToast(t('pages.step.edit.messages.updated'));
     });
 
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
+        return await progressService.getAll(filters).then(response => response.data);
+    }, []);
+
     return (
         <>
             <Head title={t('pages.step.edit.title', { name: step.name })} />
@@ -67,114 +64,19 @@ export default function ({ step }: { step: StepResource }) {
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <SelectGroup className="space-y-2">
-                                <div className="flex flex-col bg-background-2 gap-4 p-4">
-                                    <Label htmlFor="progress">{t('pages.step.edit.fields.progress')}</Label>
-                                    <div className="flex gap-2">
-                                        {/* TODO: refactor using GenericDataSelector, BUG: existing progress wont show */}
-                                        <Popover open={open} onOpenChange={setOpen}>
-                                            <PopoverTrigger asChild>
-                                                <Button
-                                                    variant="outline"
-                                                    role="combobox"
-                                                    aria-expanded={open}
-                                                    className="w-full justify-between"
-                                                >
-                                                    {value
-                                                        ? progressResponse?.data.find(
-                                                              progress => progress.name === value,
-                                                          )?.name
-                                                        : t('pages.step.edit.fields.progress')}
-                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-full p-0">
-                                                <Command>
-                                                    <CommandInput
-                                                        onValueChange={e => setSearchProgress(e)}
-                                                        placeholder={t('pages.step.edit.fields.progress_placeholder')}
-                                                    />
-                                                    <CommandList>
-                                                        <CommandEmpty>No results found</CommandEmpty>
-                                                        <CommandGroup>
-                                                            {progressResponse?.data.map(progress => (
-                                                                <CommandItem
-                                                                    key={progress.name}
-                                                                    value={progress.name}
-                                                                    onSelect={currentValue => {
-                                                                        setData('progress_id', +progress.id);
-                                                                        setValue(
-                                                                            currentValue === value ? '' : currentValue,
-                                                                        );
-                                                                        setOpen(false);
-                                                                    }}
-                                                                >
-                                                                    <Check
-                                                                        className={cn(
-                                                                            'mr-2 h-4 w-4',
-                                                                            value === progress.name
-                                                                                ? 'opacity-100'
-                                                                                : 'opacity-0',
-                                                                        )}
-                                                                    />
-                                                                    {progress.name}
-                                                                </CommandItem>
-                                                            ))}
-                                                        </CommandGroup>
-                                                    </CommandList>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <Button
-                                            type="button"
-                                            variant="ghost"
-                                            onClick={setSearchProgress.bind(null, '')}
-                                        >
-                                            <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
-                                        </Button>
-                                    </div>
-                                    {/* <div className="flex gap-4">
-                                        <Input
-                                            placeholder="Cari progress"
-                                            value={searchProgress}
-                                            onChange={e => setSearchProgress(e.target.value)}
-                                            disabled={loading}
-                                        />
-                                        <Button
-                                            type="button"
-                                            variant="ghost"
-                                            onClick={setSearchProgress.bind(null, '')}
-                                        >
-                                            <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
-                                        </Button>
-                                    </div>
-                                    <div className="flex gap-4">
-                                        <Select
-                                            key={data.progress_id} // Force re-render when progress_id changes
-                                            onValueChange={v => setData('progress_id', +v)}
-                                            value={data.progress_id?.toString()}
-                                            disabled={loading}
-                                        >
-                                            <SelectTrigger id="progress">
-                                                <SelectValue placeholder="progress" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="0" defaultChecked disabled>
-                                                    {loading ? 'Loading' : 'Pilih progress'}
-                                                </SelectItem>
-                                                {progressResponse?.data.map(progress => (
-                                                    <SelectItem key={progress.id} value={progress.id.toString()}>
-                                                        {progress.name}
-                                                        <br />
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div> */}
-                                </div>
-                            </SelectGroup>
-                        </div>
+                        {/*<div className="mt-4">*/}
+                        {/*    <GenericDataSelector*/}
+                        {/*        id="workstation_id"*/}
+                        {/*        fetchData={fetchProgress}*/}
+                        {/*        setSelectedData={id => setData('progress_id', id)}*/}
+                        {/*        selectedDataId={data.progress_id}*/}
+                        {/*        placeholder={t('pages.step.edit.fields.progress_placeholder')}*/}
+                        {/*        renderItem={item => item.name}*/}
+                        {/*        initialSearch={step.progress?.name}*/}
+                        {/*        buttonClassName="mt-1"*/}
+                        {/*        nullable*/}
+                        {/*    />*/}
+                        {/*</div>*/}
 
                         <div className="mt-4">
                             <InputLabel htmlFor="name" value={t('pages.step.edit.fields.name')} />

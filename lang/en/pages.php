@@ -498,7 +498,7 @@ return [
                 'progress_placeholder' => 'Select Progress',
                 'process' => 'Process',
                 'name' => 'Name',
-                'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Minutes)',
             ],
             'buttons' => [
                 'submit' => 'Create Step',
@@ -514,7 +514,7 @@ return [
                 'progress_placeholder' => 'Select Progress',
                 'process' => 'Process',
                 'name' => 'Name',
-                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Menit)',
+                'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Minutes)',
             ],
             'buttons' => [
                 'submit' => 'Update Step',
@@ -534,14 +534,14 @@ return [
                     'headers' => [
                         'name' => 'Name',
                         'process' => 'Process',
-                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time (Minutes)',
                     ],
                 ],
                 'step_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
                         'process' => 'Process: :process',
-                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time',
+                        'estimated_manufacturing_time' => 'Estimated Manufacturing Time: :estimated_manufacturing_time Minutes',
                     ],
                 ],
             ],
@@ -689,49 +689,11 @@ return [
             ],
         ],
     ],
-    'panels' => [
+    'panel' => [
         'index' => [
             'title' => 'Panel',
             'buttons' => [
                 'create' => 'Create Panel',
-            ],
-            'partials' => [
-                'panels' => [
-                    'messages' => [
-                        'deleted' => 'Panel deleted successfully!',
-                    ],
-                    'partials' => [
-                        'panels_table' => [
-                            'headers' => [
-                                'name' => 'Name',
-                                'description' => 'Description',
-                            ],
-                        ],
-                        'panels_card' => [
-                            'headers' => [
-                                'name' => 'Name: :name',
-                                'description' => 'Description: :description',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Import Panel',
-                    'description' => 'Import Panel from Excel file',
-                    'fields' => [
-                        'download_template' => 'Download Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Import Panel',
-                        'download_template' => 'Download',
-                        'submit' => 'Import Panel',
-                        'processing' => 'Processing...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Panel imported successfully!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -758,6 +720,49 @@ return [
             ],
             'messages' => [
                 'updated' => 'Panel updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'panels' => [
+                'messages' => [
+                    'deleted' => 'Panel deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'title' => 'Import Panel',
+                'description' => 'Import Panel from Excel file',
+                'messages' => [
+                    'imported' => 'Panel imported successfully!',
+                ],
+                'buttons' => [
+                    'import' => 'Import Panel',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Panel',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Panel',
+                        'processing' => 'Processing...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'panel_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                    ],
+                ],
+                'panel_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'description' => 'Description: :description',
+                    ],
+                ],
             ],
         ],
     ],
@@ -894,6 +899,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Qty',
                                     'description' => 'Description',
+                                    'components' => 'Components',
                                     'progress' => 'Progress',
                                 ],
                             ],
@@ -902,6 +908,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Qty',
                                     'description' => 'Description',
+                                    'components' => 'Components',
                                     'progress' => 'Progress',
                                 ],
                             ],
@@ -925,20 +932,34 @@ return [
                             'delete_preset' => 'Delete Preset',
                             'generate_kpm' => 'Generate KPM',
                         ],
+                    ],
+                    'generate_attachment' => [
+                        'buttons' => [
+                            'generate_attachment' => 'Generate Attachment',
+                        ],
+                        'messages' => [
+                            'attachment_generated' => 'Attachment generated successfully!',
+                            'attachment_not_generated' => 'Failed to generate attachment!',
+                        ],
                         'dialogs' => [
-                            'generate_kpm_title' => 'Generate KPM',
+                            'generate_attachment_title' => 'Generate Attachment',
                             'fields' => [
                                 'source_workstation' => 'Source Workstation',
+                                'source_workstation_placeholder' => 'Select Source Workstation',
                                 'source_workstation_search' => 'Search Source Workstation',
                                 'workstation' => 'Select Workstation',
                                 'workstation_placeholder' => 'Workstation',
                                 'destination_workstation' => 'Destination Workstation',
+                                'destination_workstation_placeholder' => 'Select Destination Workstation',
                                 'destination_workstation_search' => 'Search Destination Workstation',
                             ],
                             'buttons' => [
-                                'generate_kpm' => 'Generate KPM',
-                                'generate_mechanic_kpm' => 'Generate Mechanic KPM',
-                                'generate_electric_kpm' => 'Generate Electric KPM',
+                                'generate_attachment' => 'Generate Attachment',
+                                'generate_mechanic_kpm' => 'Generate Mechanic Attachment',
+                                'generate_electric_kpm' => 'Generate Electric Attachment',
+                                'trainset_attachment_mechanic' => 'Mechanic',
+                                'trainset_attachment_electric' => 'Electric',
+                                'panel_attachment' => 'Panel (Assembly)',
                             ],
                         ],
                     ],
@@ -1025,6 +1046,84 @@ return [
                                 'submit' => 'Update Qty',
                             ],
                         ],
+                        'preview_panel_attachment' => [
+                            'buttons' => [
+                                'download' => 'Download Attachment',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Panel Attachment',
+                                'headers' => [
+                                    'attachment_number' => 'Attachment Number',
+                                    'reservation_number' => 'Reservation Number',
+                                    'serial_number' => 'Serial Number',
+                                    'reference_number' => 'Reference Number',
+                                    'date' => 'Date',
+                                    'material_list' => 'Material List',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Print QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_trainset_attachment' => [
+                            'buttons' => [
+                                'download' => 'Download Attachment',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Trainset Attachment',
+                                'headers' => [
+                                    'attachment_number' => 'Attachment Number',
+                                    'reservation_number' => 'Reservation Number',
+                                    'serial_number' => 'Serial Number',
+                                    'reference_number' => 'Reference Number',
+                                    'date' => 'Date',
+                                    'material_list' => 'Material List',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Print QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Trainset Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -1056,15 +1155,17 @@ return [
                             'carriages' => 'Carriages',
                         ],
                     ],
-                    'trainset_name' => [
-                        'headers' => [
-                            'name' => 'Name',
-                        ],
-                        'fields' => [
-                            'trainset_error' => 'Trainset number must not be empty',
-                        ],
-                        'buttons' => [
-                            'submit' => 'Save',
+                    'components' => [
+                        'trainset_name' => [
+                            'headers' => [
+                                'name' => 'Name',
+                            ],
+                            'fields' => [
+                                'trainset_error' => 'Trainset number must not be empty',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Save',
+                            ],
                         ],
                     ],
                 ],
@@ -1074,6 +1175,31 @@ return [
             'projects' => [
                 'messages' => [
                     'deleted' => 'Project deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Project imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Project',
+                    'description' => 'Import Project from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Project',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Project',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Project imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Project',
                 ],
             ],
             'partials' => [
@@ -1282,6 +1408,53 @@ return [
                     'updated' => 'Profile information updated successfully!',
                     'verify_email' => 'Your email address is unverified.',
                     'verification_email_sent' => 'A new verification email has been sent to the address you provided during registration.',
+                ],
+            ],
+        ],
+    ],
+    'trainset_attachment' => [
+        'document_trainset_attachment' => [
+            'title' => 'Trainset Attachment',
+            'headers' => [
+                'mechanic_attachment' => 'Mechanic Attachment',
+                'electric_attachment' => 'Electric Attachment',
+                'attachment_number' => 'Attachment Number',
+                'reservation_number' => 'Reservation Number',
+                'serial_number' => 'Serial Number',
+                'reference_number' => 'Reference Number',
+                'date' => 'Date',
+                'material_list' => 'Material List',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Material Code',
+                    'description' => 'Description',
+                    'specs' => 'Specs',
+                    'unit' => 'Unit',
+                    'total_qty' => 'Total Qty',
+                ],
+            ],
+        ],
+    ],
+    'panel_attachment' => [
+        'document_panel_attachment' => [
+            'title' => 'Trainset Attachment',
+            'headers' => [
+                'kpm_assembly' => 'Assembly Attachment',
+                'attachment_number' => 'Attachment Number',
+                'reservation_number' => 'Reservation Number',
+                'serial_number' => 'Serial Number',
+                'reference_number' => 'Reference Number',
+                'date' => 'Date',
+                'material_list' => 'Material List',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Material Code',
+                    'description' => 'Description',
+                    'specs' => 'Specs',
+                    'unit' => 'Unit',
+                    'total_qty' => 'Total Qty',
                 ],
             ],
         ],

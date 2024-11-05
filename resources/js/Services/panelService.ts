@@ -1,6 +1,6 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { PanelResource } from '../Support/Interfaces/Resources';
+import { PanelResource } from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export const panelService = {

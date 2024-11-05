@@ -26,13 +26,13 @@ export default function ({ panel }: { panel: PanelResource }) {
         e.preventDefault();
         await panelService.update(panel.id, data);
         router.visit(route(`${ROUTES.PANELS}.index`));
-        void useSuccessToast(t('pages.panels.edit.messages.updated'));
+        void useSuccessToast(t('pages.panel.edit.messages.updated'));
     });
 
     return (
         <>
             <Head
-                title={t('pages.panels.edit.title', {
+                title={t('pages.panel.edit.title', {
                     name: panel.name,
                 })}
             />
@@ -40,7 +40,7 @@ export default function ({ panel }: { panel: PanelResource }) {
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">
-                            {t('pages.panels.edit.title', {
+                            {t('pages.panel.edit.title', {
                                 name: panel.name,
                             })}
                         </h1>
@@ -48,7 +48,7 @@ export default function ({ panel }: { panel: PanelResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.panels.edit.fields.name')} />
+                            <InputLabel htmlFor="name" value={t('pages.panel.edit.fields.name')} />
                             <Input
                                 id="name"
                                 type="text"
@@ -61,7 +61,7 @@ export default function ({ panel }: { panel: PanelResource }) {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.panels.edit.fields.description')} />
+                            <InputLabel htmlFor="description" value={t('pages.panel.edit.fields.description')} />
                             <Input
                                 id="description"
                                 type="text"
@@ -74,7 +74,7 @@ export default function ({ panel }: { panel: PanelResource }) {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            {t('pages.panels.edit.buttons.submit')}
+                            {t('pages.panel.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

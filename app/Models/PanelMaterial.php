@@ -20,6 +20,6 @@ class PanelMaterial extends Model {
     }
 
     public function carriage_panel(): BelongsTo {
-        return $this->belongsTo(Panel::class);
+        return $this->belongsTo(CarriagePanel::class);
     }
 }

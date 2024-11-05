@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Project;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProjectRequest extends FormRequest {
@@ -18,10 +19,19 @@ class StoreProjectRequest extends FormRequest {
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array {
-        return [
-            'name' => 'required',
-            'trainset_needed' => 'required|numeric|min:0', // used only to create needed trainsets
-            'initial_date' => 'required|date',
-        ];
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
+                return [
+                    'file' => 'required|file|mimes:xlsx,xlsm',
+                ];
+            default:
+                return [
+                    'name' => 'required',
+                    'trainset_needed' => 'required|numeric|min:0',
+                    'initial_date' => 'required|date',
+                ];
+        }
     }
 }

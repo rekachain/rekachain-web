@@ -12,16 +12,16 @@ export default function () {
     const Panels = lazy(() => import('./Partials/Panels'));
     return (
         <>
-            <Head title={t('pages.panels.index.title')} />
+            <Head title={t('pages.panel.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.panels.index.title')}</h1>
+                        <h1 className="text-page-header my-4">{t('pages.panel.index.title')}</h1>
                         <Link
                             className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.PANELS}.create`)}
                         >
-                            {t('pages.panels.index.buttons.create')}
+                            {t('pages.panel.index.buttons.create')}
                         </Link>
                         <Import />
                     </div>

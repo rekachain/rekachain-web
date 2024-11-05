@@ -6,6 +6,7 @@ use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ComponentMaterialController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailWorkerPanelController;
 use App\Http\Controllers\DetailWorkerTrainsetController;
 use App\Http\Controllers\DivisionController;
@@ -21,14 +22,16 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StepController;
+use App\Http\Controllers\TrainsetAttachmentController;
 use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkAspectController;
 use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\WorkDayTimeController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
-use App\Models\PanelAttachment;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -50,12 +53,12 @@ Route::redirect('/', 'dashboard');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/chart', [PanelAttachmentController::class, 'index']);
-    Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
+    // Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('divisions', DivisionController::class);
     Route::resource('workshops', WorkshopController::class);
     Route::resource('workstations', WorkstationController::class);
@@ -64,6 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('trainsets', TrainsetController::class);
+    Route::resource('trainset-attachments', TrainsetAttachmentController::class);
+    Route::resource('panel-attachments', PanelAttachmentController::class);
     Route::resource('raw-materials', RawMaterialController::class);
     Route::resource('carriages', CarriageController::class);
     Route::resource('carriage-presets', CarriagePresetController::class);
@@ -74,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
     Route::resource('components', ComponentController::class);
     Route::resource('component-materials', ComponentMaterialController::class);
+    Route::resource('work-aspects', WorkAspectController::class);
     Route::resource('work-days', WorkDayController::class);
     Route::resource('work-day-times', WorkDayTimeController::class);
     Route::resource('steps', StepController::class);
@@ -85,9 +91,11 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(ProjectController::class)->group(function () {
         Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
+        Route::get('/projects/{project}/components', 'components')->name('projects.components.index');
+        Route::get('/projects/{project}/panels', 'panels')->name('projects.panels.index');
         Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriages')->name('projects.trainsets.carriage-trainsets.index');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriage_trainsets')->name('projects.trainsets.carriage-trainsets.index');
         Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
+        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'carriage_panels')->name('projects.trainsets.carriage-trainsets.panels.index');
     });
 });

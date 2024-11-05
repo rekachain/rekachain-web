@@ -2,9 +2,9 @@ name: Laravel
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev", "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev", "main" ]
 
 jobs:
   laravel-tests:
@@ -29,7 +29,9 @@ jobs:
           mkdir -p database
           touch database/database.sqlite
       - name: Execute VerifyStandardProjectStructureTest.php via Pest
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
+        #        env:
+        #          DB_CONNECTION: sqlite
+        #          DB_DATABASE: database/database.sqlite
         run: php artisan test tests/Unit/VerifyStandardProjectStructureTest.php
+      - name: Execute VerifyLocalizationImplementation.php via Pest
+        run: php artisan test tests/Unit/VerifyLocalizationImplementation.php

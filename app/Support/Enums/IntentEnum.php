@@ -2,9 +2,10 @@
 
 namespace App\Support\Enums;
 
-enum IntentEnum: string
-{
+enum IntentEnum: string {
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
+
+    case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';
 
     case API_PANEL_IMPORT_PANEL = 'api.panel.import.panel';
 
@@ -118,7 +119,13 @@ enum IntentEnum: string
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
 
-    case WEB_PROJECT_GET_TRAINSETS = 'web.project.show.project';
+    case WEB_PROJECT_GET_ALL_PANELS = 'web.project.get.all.panels';
+
+    case WEB_PROJECT_GET_ALL_PANELS_WITH_QTY = 'web.project.get.all.panels.with.qty';
+
+    case WEB_PROJECT_GET_ALL_COMPONENTS = 'web.project.get.all.components';
+
+    case WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY = 'web.project.get.all.components.with.qty';
 
     case WEB_PROJECT_ADD_TRAINSET = 'web.project.add.trainset';
 
@@ -126,17 +133,35 @@ enum IntentEnum: string
 
     case WEB_PROJECT_SAVE_TRAINSET_PRESET = 'web.project.save.trainset.preset';
 
+    case WEB_PROJECT_IMPORT_PROJECT_TEMPLATE = 'web.project.import.project.template';
+
     case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';
+
+    case WEB_TRAINSET_GET_ALL_COMPONENTS = 'web.trainset.get.all.components';
+
+    case WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY = 'web.trainset.get.all.components.with.qty';
+
+    case WEB_TRAINSET_GET_ALL_PANELS = 'web.trainset.get.all.panels';
+
+    case WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY = 'web.trainset.get.all.panels.with.qty';
 
     case WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET = 'web.trainset.update.carriage.trainset';
 
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
 
+    case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
+
+    case WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.component.import.progress.and.material';
+
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
 
     case WEB_PANEL_IMPORT_PANEL = 'web.panel.import.panel';
+
+    case WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.panel.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.component.progress.and.material';
 
     case WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL = 'web.raw.material.get.template.import.raw.material';
 
@@ -145,6 +170,10 @@ enum IntentEnum: string
     case WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE = 'web.carriage.get.template.import.carriage';
 
     case WEB_CARRIAGE_IMPORT_CARRIAGE = 'web.carriage.import.carriage';
+
+    case WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY = 'web.trainset.get.panel.materials.with.qty';
+
+    case WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.get.component.materials.with.qty';
 
     case WEB_TRAINSET_GET_TEMPLATE_IMPORT_TRAINSET = 'web.trainset.get.template.import.trainset';
 
@@ -168,5 +197,29 @@ enum IntentEnum: string
 
     case WEB_TRAINSET_GET_COMPONENTS = 'web.trainset.get.components';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.trainset.attachment.get.attachment.progress';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS = 'web.trainset.attachment.get.component.materials';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
+
+    case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
+
+    case WEB_PANEL_ATTACHMENT_GET_PANEL = 'web.panel.attachment.get.panel';
+
+    case WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS = 'web.panel.attachment.get.serial.panels';
+
+    case WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.panel.attachment.get.attachment.progress';
+
+    case WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY = 'web.panel.attachment.get.panel.with.qty';
+
+    case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT = 'web.trainset.attachment.download.trainset.attachment';
+
+    case WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.panel.attachment.download.panel.attachment';
+
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
+
+    case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY = 'web.panel.attachment.get.panel.materials.with.qty';
+
+    case WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.panel.attachment.assign.custom.attachment.material';
 }

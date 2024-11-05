@@ -22,7 +22,7 @@ export default function CarPanelCardView({
         <div>
             <>
                 {carriageTrainset?.carriage_panels?.map(carriage_panel => (
-                    <div>
+                    <div key={carriage_panel.id}>
                         <AnimateIn
                             from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
@@ -47,6 +47,20 @@ export default function CarPanelCardView({
                                     )}
                                 </h5>
                                 <p className="text-sm">{carriage_panel.panel.description}</p>
+                                <h5 className="text-base">
+                                    {t('pages.project.trainset.carriage.panel.partials.partials.carriage_panel_card.headers.components')} :
+                                </h5>
+                                <div className="text-sm">
+                                    {carriage_panel.carriage_panel_components?.map(
+                                        component => (
+                                            <div key={component.id}>
+                                                <span>
+                                                    {component.qty} x {component.component.name}
+                                                </span>
+                                            </div>
+                                        )
+                                    )}
+                                </div>
                                 {/* <h5 className="  text-sm ">Waktu Mulai : {workDay.start_time}</h5>
                                 <h5 className="  text-sm ">
                                     Waktu Istirahat :

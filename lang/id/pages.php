@@ -480,7 +480,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi (Menit)',
             ],
             'buttons' => [
                 'submit' => 'Buat Langkah',
@@ -496,7 +496,7 @@ return [
                 'progress_placeholder' => 'Pilih Progres',
                 'process' => 'Proses',
                 'name' => 'Nama',
-                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi',
+                'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi (Menit)',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Langkah',
@@ -523,7 +523,7 @@ return [
                     'headers' => [
                         'name' => 'Nama: :name',
                         'process' => 'Proses: :process',
-                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi: :estimated_manufacturing_time',
+                        'estimated_manufacturing_time' => 'Perkiraan Waktu Produksi: :estimated_manufacturing_time Menit',
                     ],
                 ],
             ],
@@ -671,49 +671,11 @@ return [
             ],
         ],
     ],
-    'panels' => [
+    'panel' => [
         'index' => [
             'title' => 'Panel',
             'buttons' => [
                 'create' => 'Buat Panel',
-            ],
-            'partials' => [
-                'panels' => [
-                    'messages' => [
-                        'deleted' => 'Panel berhasil dihapus!',
-                    ],
-                    'partials' => [
-                        'panels_table' => [
-                            'headers' => [
-                                'name' => 'Nama',
-                                'description' => 'Deskripsi',
-                            ],
-                        ],
-                        'panels_card' => [
-                            'headers' => [
-                                'name' => 'Nama: :name',
-                                'description' => 'Deskripsi: :description',
-                            ],
-                        ],
-                    ],
-                ],
-                'import' => [
-                    'title' => 'Impor Panel',
-                    'description' => 'Impor Panel dari file Excel',
-                    'fields' => [
-                        'download_template' => 'Unduh Template',
-                        'file' => 'File',
-                    ],
-                    'buttons' => [
-                        'import' => 'Impor Panel',
-                        'download_template' => 'Unduh',
-                        'submit' => 'Impor Panel',
-                        'processing' => 'Memproses...',
-                    ],
-                    'messages' => [
-                        'imported' => 'Panel berhasil diimpor!',
-                    ],
-                ],
             ],
         ],
         'create' => [
@@ -740,6 +702,49 @@ return [
             ],
             'messages' => [
                 'updated' => 'Panel berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'panels' => [
+                'messages' => [
+                    'deleted' => 'Panel berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'title' => 'Impor Panel',
+                'description' => 'Impor Panel dari file Excel',
+                'messages' => [
+                    'imported' => 'Panel berhasil diimpor!',
+                ],
+                'buttons' => [
+                    'import' => 'Impor Panel',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Panel',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Panel',
+                        'processing' => 'Memproses...',
+                    ],
+                ],
+            ],
+            'partials' => [
+                'panel_table' => [
+                    'headers' => [
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                    ],
+                ],
+                'panel_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'description' => 'Deskripsi: :description',
+                    ],
+                ],
             ],
         ],
     ],
@@ -876,6 +881,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Jumlah',
                                     'description' => 'Deskripsi',
+                                    'components' => 'Komponen',
                                     'progress' => 'Progres',
                                 ],
                             ],
@@ -884,6 +890,7 @@ return [
                                     'panel' => 'Panel',
                                     'qty' => 'Jumlah',
                                     'description' => 'Deskripsi',
+                                    'components' => 'Komponen',
                                     'progress' => 'Progres',
                                 ],
                             ],
@@ -907,20 +914,34 @@ return [
                             'delete_preset' => 'Hapus Preset',
                             'generate_kpm' => 'Hasilkan KPM',
                         ],
+                    ],
+                    'generate_attachment' => [
+                        'buttons' => [
+                            'generate_attachment' => 'Buat KPM',
+                        ],
+                        'messages' => [
+                            'attachment_generated' => 'KPM berhasil dibuat!',
+                            'attachment_not_generated' => 'KPM gagal dibuat!',
+                        ],
                         'dialogs' => [
-                            'generate_kpm_title' => 'Hasilkan KPM',
+                            'generate_attachment_title' => 'Buat KPM',
                             'fields' => [
                                 'source_workstation' => 'Workstation Sumber',
+                                'source_workstation_placeholder' => 'Pilih Workstation Sumber',
                                 'source_workstation_search' => 'Cari Workstation Sumber',
                                 'workstation' => 'Pilih Workstation',
                                 'workstation_placeholder' => 'Workstation',
                                 'destination_workstation' => 'Workstation Tujuan',
+                                'destination_workstation_placeholder' => 'Pilih Workstation Tujuan',
                                 'destination_workstation_search' => 'Cari Workstation Tujuan',
                             ],
                             'buttons' => [
-                                'generate_kpm' => 'Hasilkan KPM',
-                                'generate_mechanic_kpm' => 'Hasilkan KPM Mekanik',
-                                'generate_electric_kpm' => 'Hasilkan KPM Elektrik',
+                                'generate_attachment' => 'Buat KPM',
+                                'generate_mechanic_kpm' => 'Buat KPM Mekanik',
+                                'generate_electric_kpm' => 'Buat KPM Elektrik',
+                                'trainset_attachment_mechanic' => 'Mekanik',
+                                'trainset_attachment_electric' => 'Elektrik',
+                                'panel_attachment' => 'Panel (Perakitan)',
                             ],
                         ],
                     ],
@@ -1007,6 +1028,84 @@ return [
                                 'submit' => 'Perbarui Jumlah',
                             ],
                         ],
+                        'preview_panel_attachment' => [
+                            'buttons' => [
+                                'download' => 'Unduh Lampiran',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Panel',
+                                'headers' => [
+                                    'attachment_number' => 'Nomor Lampiran',
+                                    'reservation_number' => 'Nomor Reservasi',
+                                    'serial_number' => 'Nomor Seri',
+                                    'reference_number' => 'Nomor Referensi',
+                                    'date' => 'Tanggal',
+                                    'material_list' => 'Daftar Material',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Gerbong',
+                                    'carriage_placeholder' => 'Pilih Gerbong',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Cetak QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Total',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_trainset_attachment' => [
+                            'buttons' => [
+                                'download' => 'Unduh Lampiran',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Trainset',
+                                'headers' => [
+                                    'attachment_number' => 'Nomor Lampiran',
+                                    'reservation_number' => 'Nomor Reservasi',
+                                    'serial_number' => 'Nomor Seri',
+                                    'reference_number' => 'Nomor Referensi',
+                                    'date' => 'Tanggal',
+                                    'material_list' => 'Daftar Material',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Gerbong',
+                                    'carriage_placeholder' => 'Pilih Gerbong',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                ],
+                                'buttons' => [
+                                    'print_qr' => 'Cetak QR',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Total',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran Trainset',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -1038,15 +1137,17 @@ return [
                             'carriages' => 'Kereta',
                         ],
                     ],
-                    'trainset_name' => [
-                        'headers' => [
-                            'name' => 'Nama',
-                        ],
-                        'fields' => [
-                            'trainset_error' => 'Nomor trainset tidak boleh kosong',
-                        ],
-                        'buttons' => [
-                            'submit' => 'Simpan',
+                    'components' => [
+                        'trainset_name' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                            ],
+                            'fields' => [
+                                'trainset_error' => 'Nomor trainset tidak boleh kosong',
+                            ],
+                            'buttons' => [
+                                'submit' => 'Simpan',
+                            ],
                         ],
                     ],
                 ],
@@ -1056,6 +1157,31 @@ return [
             'projects' => [
                 'messages' => [
                     'deleted' => 'Proyek berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Proyek berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Proyek',
+                    'description' => 'Impor Proyek dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Proyek',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Proyek',
+                        'processing' => 'Memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Proyek berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Proyek',
                 ],
             ],
             'partials' => [
@@ -1264,6 +1390,53 @@ return [
                     'updated' => 'Informasi profil berhasil diperbarui!',
                     'verify_email' => 'Alamat email Anda belum diverifikasi.',
                     'verification_email_sent' => 'Email verifikasi baru telah dikirim ke alamat yang Anda berikan saat pendaftaran.',
+                ],
+            ],
+        ],
+    ],
+    'trainset_attachment' => [
+        'document_trainset_attachment' => [
+            'title' => 'Lampiran Trainset',
+            'headers' => [
+                'mechanic_attachment' => 'Lampiran Mekanik',
+                'electric_attachment' => 'Lampiran Elektrik',
+                'attachment_number' => 'Nomor Lampiran',
+                'reservation_number' => 'Nomor Reservasi',
+                'serial_number' => 'Nomor Seri',
+                'reference_number' => 'Nomor Referensi',
+                'date' => 'Tanggal',
+                'material_list' => 'Daftar Material',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Kode Material',
+                    'description' => 'Deskripsi',
+                    'specs' => 'Spesifikasi',
+                    'unit' => 'Satuan',
+                    'total_qty' => 'Total',
+                ],
+            ],
+        ],
+    ],
+    'panel_attachment' => [
+        'document_panel_attachment' => [
+            'title' => 'KPM Assembly',
+            'headers' => [
+                'kpm_assembly' => 'KPM Assembly',
+                'attachment_number' => 'Nomor Lampiran',
+                'reservation_number' => 'Nomor Reservasi',
+                'serial_number' => 'Nomor Seri',
+                'reference_number' => 'Nomor Referensi',
+                'date' => 'Tanggal',
+                'material_list' => 'Daftar Material',
+            ],
+            'raw_material_table' => [
+                'headers' => [
+                    'material_code' => 'Kode Material',
+                    'description' => 'Deskripsi',
+                    'specs' => 'Spesifikasi',
+                    'unit' => 'Satuan',
+                    'total_qty' => 'Total',
                 ],
             ],
         ],

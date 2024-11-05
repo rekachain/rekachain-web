@@ -45,9 +45,11 @@ export default function WorkshopCardView({
                             >
                                 {t('action.edit')}
                             </Link>
-                            <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
-                                {t('action.delete')}
-                            </Button>
+                            {workshop.can_be_deleted && (
+                                <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
+                                    {t('action.delete')}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

@@ -16,8 +16,11 @@ export const ROUTES = {
     WORKSTATIONS: 'workstations',
     TRAINSETS: 'trainsets',
     PROJECTS: 'projects',
+    PROJECTS_COMPONENTS: 'projects.components',
+    PROJECTS_PANELS: 'projects.panels',
     PROJECTS_TRAINSETS: 'projects.trainsets',
     PROJECTS_TRAINSETS_CARRIAGES: 'projects.trainsets.carriage-trainsets',
+    PROJECTS_TRAINSETS_DOWNLOAD_ATTACHMENT: 'projects.trainsets.download-attachment',
     PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_PANELS: 'projects.trainsets.carriage-trainsets.panels',
     CARRIAGES: 'carriages',
     CARRIAGE_PRESETS: 'carriage-presets',
@@ -40,4 +43,5 @@ export const ROUTES = {
     FAILED_COMPONENT_MANUFACTURES: 'failed-component-manufactures',
     ATTACHMENT_NOTES: 'attachment-notes',
     FEEDBACK: 'feedback',
+    CUSTOM_ATTACHMENT_MATERIALS: 'custom-attachment-materials',
 };

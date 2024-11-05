@@ -1,6 +1,6 @@
 import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ComponentResource } from '../Support/Interfaces/Resources';
+import { ComponentResource } from '@/Support/Interfaces/Resources';
 
 export const componentService = {
     ...serviceFactory<ComponentResource>(ROUTES.COMPONENTS),
@@ -20,5 +20,5 @@ export const componentService = {
         document.body.appendChild(link);
         link.click();
         link.remove();
-    }
+    },
 };

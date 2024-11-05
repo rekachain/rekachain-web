@@ -16,6 +16,25 @@ class ProjectResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_PROJECT_GET_ALL_PANELS_WITH_QTY->value:
+                return $this->carriage_panels->groupBy(['panel_id'])->map(function ($carriagePanels) {
+                    return [
+                        'panel' => PanelResource::make($carriagePanels->first()->panel),
+                        'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
+                            return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
+                        }),
+                    ];
+                })->toArray();
+            case IntentEnum::WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY->value:
+                return $this->carriage_panel_components
+                ->groupBy(['component_id'])->map(function ($carriagePanelComponents) {
+                    return [
+                        'component' => ComponentResource::make($carriagePanelComponents->first()->component),
+                        'total_qty' => $carriagePanelComponents->sum(function ($carriagePanelComponent) {
+                            return $carriagePanelComponent->qty * $carriagePanelComponent->carriage_panel->qty * $carriagePanelComponent->carriage_panel->carriage_trainset->qty;
+                        }),
+                    ];
+                })->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
                     'id' => $this->id,

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use App\Models\PanelAttachment;
+use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
 use App\Http\Resources\PanelAttachmentResource;
+use App\Http\Resources\PanelResource;
+use App\Http\Resources\RawMaterialResource;
+use App\Http\Resources\SerialPanelResource;
+use App\Models\PanelAttachment;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
+use Illuminate\Http\Request;
 
 class PanelAttachmentController extends Controller {
     /**
@@ -15,10 +19,13 @@ class PanelAttachmentController extends Controller {
     public function __construct(
         protected PanelAttachmentServiceInterface $panelAttachmentService,
     ) {}
-    
-    public function index() {
-        $data = $this->panelAttachmentService->showGraph();
-        return Inertia::render('Dashboard',['data'=>$data]);
+
+    public function index(Request $request) {
+        $perPage = $request->get('perPage', 10);
+
+        return PanelAttachmentResource::collection(
+            $this->panelAttachmentService->getAllPaginated($request->query(), $perPage)
+        );
     }
 
     /**
@@ -38,8 +45,38 @@ class PanelAttachmentController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(PanelAttachment $panelAttachment) {
-        return PanelAttachmentResource::make($panelAttachment);
+    public function show(Request $request, PanelAttachment $panelAttachment) {
+        $intent = $request->get('intent');
+
+        if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL->value:
+                    return PanelResource::make($panelAttachment->panel);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
+                    return PanelAttachmentResource::make($panelAttachment);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS->value:
+                    return SerialPanelResource::collection($panelAttachment->serial_panels);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                    return PanelAttachmentResource::make($panelAttachment);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
+                    return RawMaterialResource::collection($panelAttachment->raw_materials);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
+                    return PanelAttachmentResource::make($panelAttachment);
+                default:
+                    return PanelAttachmentResource::make($panelAttachment);
+            }
+        }
+
+        switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT->value:
+                $panelAttachment = PanelAttachmentResource::make($panelAttachment->load('raw_materials'));
+
+                return inertia('PanelAttachment/DocumentPanelAttachment', compact('panelAttachment'));
+        }
+
+        return inertia('PanelAttachment/Show', [
+            'panelAttachment' => PanelAttachmentResource::make($panelAttachment),
+        ]);
     }
 
     /**
@@ -52,8 +89,13 @@ class PanelAttachmentController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PanelAttachment $panelAttachment) {
-        //
+    public function update(UpdatePanelAttachmentRequest $request, PanelAttachment $panelAttachment) {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
+                return $this->panelAttachmentService->assignCustomAttachmentMaterial($panelAttachment, $request->validated());
+        }
     }
 
     /**

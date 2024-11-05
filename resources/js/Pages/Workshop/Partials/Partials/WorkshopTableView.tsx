@@ -40,9 +40,11 @@ export default function WorkshopTableView({
                                     >
                                         {t('action.edit')}
                                     </Link>
-                                    <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
-                                        {t('action.delete')}
-                                    </Button>
+                                    {workshop.can_be_deleted && (
+                                        <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}

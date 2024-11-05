@@ -2,24 +2,26 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import { roleService } from '@/Services/roleService';
 import { PermissionResource, PermissionResourceGrouped } from '@/Support/Interfaces/Resources/PermissionResource';
 import { Checkbox } from '@/Components/UI/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { divisionService } from '@/Services/divisionService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
-        division_id: '',
+        division_id: null as number | null,
         level: '',
         permissions: [] as number[],
     });
@@ -53,6 +55,10 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
         }
     };
 
+    const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
+        return await divisionService.getAll(filters).then(response => response.data);
+    }, []);
+
     return (
         <>
             <Head title={t('pages.role.create.title')} />
@@ -79,25 +85,16 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
 
                         <div className="mt-4">
                             <InputLabel htmlFor="division" value={t('pages.role.create.fields.division')} />
-                            {/* TODO: implement GenericDataSelector */}
-                            <Select
-                                name="division"
-                                value={data.division_id}
-                                onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder={t('pages.role.create.fields.division_placeholder')} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {/*none*/}
-                                    <SelectItem value="none">none</SelectItem>
-                                    {divisions.map(division => (
-                                        <SelectItem key={division.id} value={division.id.toString()}>
-                                            {division.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <GenericDataSelector
+                                id="division_id"
+                                fetchData={fetchDivisions}
+                                setSelectedData={id => setData('division_id', id)}
+                                selectedDataId={data.division_id ?? undefined}
+                                placeholder={t('pages.role.create.fields.division_placeholder')}
+                                renderItem={(item: DivisionResource) => item.name}
+                                buttonClassName="mt-1"
+                                nullable
+                            />
                         </div>
 
                         <div className="mt-4">

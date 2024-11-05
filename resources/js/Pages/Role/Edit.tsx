@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import {
@@ -11,13 +11,15 @@ import {
     PermissionResourceGrouped,
     RoleResource,
 } from '@/Support/Interfaces/Resources';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { Checkbox } from '@/Components/UI/checkbox';
 import { roleService } from '@/Services/roleService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { divisionService } from '@/Services/divisionService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function (props: {
     role: RoleResource;
@@ -27,7 +29,7 @@ export default function (props: {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: props.role.name,
-        division_id: props.role.division_id?.toString(),
+        division_id: props.role.division_id as number | null,
         level: props.role?.level ?? '',
         permissions: props.role.permissions as unknown as number[],
     });
@@ -51,6 +53,10 @@ export default function (props: {
             );
         }
     };
+
+    const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
+        return await divisionService.getAll(filters).then(response => response.data);
+    }, []);
 
     return (
         <>
@@ -83,32 +89,17 @@ export default function (props: {
 
                         <div className="mt-4">
                             <InputLabel htmlFor="division" value={t('pages.role.edit.fields.division')} />
-                            {/* TODO: implement GenericDataSelector */}
-                            <Select
-                                name="division"
-                                value={data.division_id}
-                                onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue
-                                        placeholder={t('pages.role.edit.fields.division_placeholder', {
-                                            division: props.role?.division?.name ?? '',
-                                        })}
-                                    />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="none">none</SelectItem>
-                                    {props.divisions.map(division => (
-                                        <SelectItem
-                                            defaultChecked={division.id == props.role.division_id}
-                                            key={division.id}
-                                            value={division.id.toString()}
-                                        >
-                                            {division.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <GenericDataSelector
+                                id="division_id"
+                                fetchData={fetchDivisions}
+                                setSelectedData={id => setData('division_id', id)}
+                                selectedDataId={data.division_id ?? undefined}
+                                placeholder={t('pages.role.edit.fields.division_placeholder')}
+                                renderItem={(item: DivisionResource) => item.name}
+                                buttonClassName="mt-1"
+                                initialSearch={props.role?.division?.name}
+                                nullable
+                            />
                         </div>
 
                         <div className="mt-4">
