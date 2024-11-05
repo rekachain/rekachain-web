@@ -290,7 +290,7 @@ test('model should have controllers, form request, resource, service interface, 
     $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php'];
     $excludedServices = ['TrainsetAttachmentComponent', 'DashboardService.php'];
     $excludedReactModelInterfaces = ['index.ts'];
-    $excludedReactResources = ['index.ts', 'Resource.ts'];
+    $excludedReactResources = ['index.ts', 'Resource.ts', 'ProjectComponentResource.ts', 'ProjectPanelResource.ts'];
     $excludedReactServices = ['serviceFactory.ts'];
 
     // Count files in each directory
