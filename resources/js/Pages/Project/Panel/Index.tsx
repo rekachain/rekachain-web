@@ -58,7 +58,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Panels project={project} handleSyncProject={handleSyncProject} />
+                        <Panels project={project} />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>
