@@ -20,13 +20,25 @@ class DashboardController extends Controller
         $data = $this->dashboardService->showGraph($request->query());
         return Inertia::render('Dashboard',['data'=>$data]);
     }
-    public function show(string $project)
+    public function show(string $id)
     {
-         $dataDb = DB::select(
-             'SELECT projects.name as project,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by workshops.name, projects.name ;',['project'=>$project]
+        $project = DB::select('select * from projects where id = :id',['id'=>$id]);
+        $name = $project[0]->name;
+
+
+        $ts=DB::select('SELECT trainsets.name , projects.name as project, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by projects.name,trainsets.name;',['project'=>$name]);
+         $ws = DB::select(
+             'SELECT projects.name as project,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by workshops.name, projects.name ;',['project'=>$name]
          );
-        //  dump($dataDb);
+         dump($project[0]->name);
+
+        $data = [
+            'ts' => $ts,
+            'ws' => $ws,
+            // 'panel' => $panel,
+        ];
         // return $dataDb;
-        return Inertia::render('Dashboard',['data'=>$dataDb]);
+        // return "alo";
+        return Inertia::render('Dashboard',['data'=>$data]);
     }
 }
