@@ -15,7 +15,6 @@ use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\Services\UserServiceInterface;
-use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(

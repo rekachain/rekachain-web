@@ -11,6 +11,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\TrainsetAttachmentController;
 use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\WorkAspectController;
 use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
@@ -59,6 +60,10 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
         Route::resource('carriage-panel-components', CarriagePanelComponentController::class);
         Route::resource('progress', ProgressController::class);
         Route::resource('steps', StepController::class);
+        Route::resource('work-aspects', WorkAspectController::class);
+        Route::controller(ProjectController::class)->group(function () {
+            Route::get('/projects/{project}/carriages/{carriage}', 'carriage_components')->name('projects.carriages.components.index');
+        });
     });
     Route::get('csrf-token', function () {
         return response()->json(['csrf_token' => csrf_token()]);

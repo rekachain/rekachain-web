@@ -119,6 +119,14 @@ enum IntentEnum: string {
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
 
+    case WEB_PROJECT_GET_ALL_CARRIAGES = 'web.project.get.all.carriages';
+
+    case WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY = 'web.project.get.all.carriages.with.qty';
+
+    case WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS = 'web.project.get.all.carriage.components';
+
+    case WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY = 'web.project.get.all.carriage.components.with.qty';
+
     case WEB_PROJECT_GET_ALL_PANELS = 'web.project.get.all.panels';
 
     case WEB_PROJECT_GET_ALL_PANELS_WITH_QTY = 'web.project.get.all.panels.with.qty';

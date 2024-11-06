@@ -7,7 +7,7 @@ import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function PanelCardView({
+export default function PanelTableView({
     panelResponse,
     handlePanelDeletion,
 }: {

@@ -1,6 +1,6 @@
 import AnimateIn from '@/Lib/AnimateIn';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { ProjectComponentResource, ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
 
@@ -32,11 +32,13 @@ export default function ({
                                 </h5> */}
                             {/* </div> */}
                         </div>
-                        <p className="text-sm">
-                            {data.panel.description}
-                        </p>
+                        <p className="text-sm">{data.panel.description}</p>
 
-                        <h5 className="font-bold text-sm ">Total Qty : {data.total_qty}</h5>
+                        <h5 className="font-bold text-sm">
+                            {t('pages.project.panel.partials.partials.panel_card.headers.total_qty', {
+                                total_qty: data.total_qty,
+                            })}
+                        </h5>
                         {/* <h5 className=" text-sm ">Lokasi : {panel.location}</h5> */}
                         <div className="flex items-center justify-end w-full">
                             <Import project={project} panel={data.panel} />

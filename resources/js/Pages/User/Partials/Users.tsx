@@ -9,6 +9,7 @@ import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/User/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -45,6 +46,7 @@ export default function () {
     // });
     return (
         <div className="space-y-4">
+            <Filters setFilters={setFilters} filters={filters} />
             {userResponse && (
                 <>
                     <div className="hidden md:block">

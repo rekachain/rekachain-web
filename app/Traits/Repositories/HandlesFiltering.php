@@ -15,6 +15,8 @@ trait HandlesFiltering {
             }
         }
 
+        // TODO: Support nested search filters, e.g search[relation.column] = value
+
         return $query;
     }
 
@@ -24,7 +26,19 @@ trait HandlesFiltering {
                 if (!in_array($key, $filterableColumns)) {
                     continue;
                 }
-                $query->where($key, $value);
+                if (is_array($value)) {
+                    if (array_key_exists('from', $value) && array_key_exists('to', $value)) {
+                        $query->whereBetween($key, [$value['from'], $value['to']]);
+                    } elseif (array_key_exists('from', $value)) {
+                        $query->where($key, '>=', $value['from']);
+                    } elseif (array_key_exists('to', $value)) {
+                        $query->where($key, '<=', $value['to']);
+                    } elseif (is_numeric(key($value))) {
+                        $query->whereIn($key, $value);
+                    }
+                } else {
+                    $query->where($key, $value);
+                }
             }
         }
 
@@ -63,7 +77,19 @@ trait HandlesFiltering {
                     foreach ($relationArray as $index => $rel) {
                         if ($index === count($relationArray) - 1) {
                             $relationQuery = $relationQuery->whereHas($rel, function ($query) use ($key, $val) {
-                                $query->where($key, $val);
+                                if (is_array($val)) {
+                                    if (array_key_exists('from', $val) && array_key_exists('to', $val)) {
+                                        $query->whereBetween($key, [$val['from'], $val['to']]);
+                                    } elseif (array_key_exists('from', $val)) {
+                                        $query->where($key, '>=', $val['from']);
+                                    } elseif (array_key_exists('to', $val)) {
+                                        $query->where($key, '<=', $val['to']);
+                                    } elseif (is_numeric(key($val))) {
+                                        $query->whereIn($key, $val);
+                                    }
+                                } else {
+                                    $query->where($key, $val);
+                                }
                             });
                         } else {
                             $relationQuery = $relationQuery->whereHas($rel);
