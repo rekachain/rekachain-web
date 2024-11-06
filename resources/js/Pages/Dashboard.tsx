@@ -21,12 +21,12 @@ const project = [
     {
         value: '612',
         label: '612',
-        link: '/dashboard/612',
+        link: '/dashboard/1',
     },
     {
         value: 'krl_kci',
         label: 'KRL KCI',
-        link: '/dashboard/KRL KCI',
+        link: '/dashboard/2',
     },
 ];
 
@@ -103,13 +103,16 @@ export default function Dashboard({ auth, data }: PageProps) {
             <Head title={t('pages.dashboard.index.title')} />
 
             <div className="py-12">
+                {/* <p>{value}</p> */}
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
                     <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
                         <div className="">
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <div className="flex justify-between w-full items-center">
-                                <h2 className="text-xl my-2">Proyek 612</h2>
+                                <h2 className="text-xl my-2">
+                                    {data['project'] == null ? 'Semua Proyek' : `Proyek ${data['project']}`}
+                                </h2>
                                 <Popover open={open} onOpenChange={setOpen}>
                                     <PopoverTrigger asChild>
                                         <Button
