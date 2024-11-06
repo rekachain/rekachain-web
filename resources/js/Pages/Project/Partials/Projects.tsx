@@ -9,6 +9,7 @@ import ProjectCardView from './Partials/ProjectCardView';
 import ProjectTableView from './Partials/ProjectTableView';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Project/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -42,6 +43,8 @@ export default function () {
             <>
                 {projectResponse && (
                     <>
+                        <Filters setFilters={setFilters} filters={filters} />
+                        
                         <div className="hidden md:block">
                             <ProjectTableView
                                 projectResponse={projectResponse}
