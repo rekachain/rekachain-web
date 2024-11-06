@@ -36,13 +36,14 @@ Sub BubbleSort(arr As Variant)
     Next i
 End Sub
 
-Sub createTrainsets()
+Sub changeTrainsets()
     Dim wsProyek As Worksheet
     Dim wsTrainset As Worksheet
     Dim wsPreset As Worksheet
     Dim totalTrainset As Long
     Dim i As Long
     Dim lastTsNumRow As Long
+    Dim lastTsNumCol As Long
     Dim validationRange As Range
 
     ' Set the worksheets
@@ -56,10 +57,13 @@ Sub createTrainsets()
     ' Find the last row with data in column A
     lastTsNumRow = wsTrainset.Cells(wsTrainset.Rows.Count, 1).End(xlUp).Row
 
+    ' Find the last column with data in row 3
+    lastTsNumCol = wsTrainset.Cells(3, wsTrainset.Columns.Count).End(xlToLeft).Column
+
     ' Clear content in columns A to G starting from the last row
     If lastTsNumRow > totalTrainset + 3 Then
-        wsTrainset.Range("A" & totalTrainset + 4 & ":G" & lastTsNumRow).ClearContents
-        wsTrainset.Range("A" & totalTrainset + 4 & ":G" & lastTsNumRow).Validation.Delete
+        wsTrainset.Range(wsTrainset.Cells(totalTrainset + 4, 1), wsTrainset.Cells(lastTsNumRow, lastTsNumCol)).ClearContents
+        wsTrainset.Range(wsTrainset.Cells(totalTrainset + 4, 1), wsTrainset.Cells(lastTsNumRow, lastTsNumCol)).Validation.Delete
     Else
         ' Loop to create rows with numbers starting at row 4
         For i = lastTsNumRow - 2 To totalTrainset
