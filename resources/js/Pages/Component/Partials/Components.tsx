@@ -11,6 +11,7 @@ import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { withLoading } from '@/Utils/withLoading';
+import Filters from '@/Pages/Component/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -58,6 +59,8 @@ export default function () {
         <div className="space-y-4">
             {componentResponse && (
                 <>
+                    <Filters setFilters={setFilters} filters={filters} />
+                    
                     <div className="hidden md:block">
                         <ComponentTableView
                             componentResponse={componentResponse}
