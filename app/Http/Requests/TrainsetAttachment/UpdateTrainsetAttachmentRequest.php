@@ -7,6 +7,7 @@ use App\Support\Enums\IntentEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerValidation;
 use Illuminate\Support\Facades\Auth;
 
@@ -62,6 +63,10 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
                     'note' => ['nullable', 'string', 'max:255']
                 ];
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_HANDLER->value:
+                return [
+                    'handles' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentHandlerHandlesEnum::cases(), 'value'))],
+                ];   
         }
         return [
             'trainset_id' => 'nullable|integer|exists:trainsets,id',
