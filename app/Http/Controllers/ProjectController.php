@@ -152,7 +152,7 @@ class ProjectController extends Controller {
 
     public function components(Request $request, Project $project) {
         $project = new ProjectResource($project);
-        
+
         if ($this->ajax()) {
             return [
                 'project' => $project,
@@ -164,7 +164,7 @@ class ProjectController extends Controller {
 
     public function panels(Request $request, Project $project) {
         $project = new ProjectResource($project);
-        
+
         if ($this->ajax()) {
             return [
                 'project' => $project,

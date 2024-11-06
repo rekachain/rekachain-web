@@ -93,7 +93,6 @@ export default function ({
             </div>
         );
     };
-    console.log(meta);
 
     return (
         meta && (
