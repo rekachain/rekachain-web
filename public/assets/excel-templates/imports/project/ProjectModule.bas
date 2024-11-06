@@ -36,13 +36,14 @@ Sub BubbleSort(arr As Variant)
     Next i
 End Sub
 
-Sub createTrainsets()
+Sub changeTrainsets()
     Dim wsProyek As Worksheet
     Dim wsTrainset As Worksheet
     Dim wsPreset As Worksheet
     Dim totalTrainset As Long
     Dim i As Long
     Dim lastTsNumRow As Long
+    Dim lastTsNumCol As Long
     Dim validationRange As Range
 
     ' Set the worksheets
@@ -56,10 +57,13 @@ Sub createTrainsets()
     ' Find the last row with data in column A
     lastTsNumRow = wsTrainset.Cells(wsTrainset.Rows.Count, 1).End(xlUp).Row
 
+    ' Find the last column with data in row 3
+    lastTsNumCol = wsTrainset.Cells(3, wsTrainset.Columns.Count).End(xlToLeft).Column
+
     ' Clear content in columns A to G starting from the last row
     If lastTsNumRow > totalTrainset + 3 Then
-        wsTrainset.Range("A" & totalTrainset + 4 & ":G" & lastTsNumRow).ClearContents
-        wsTrainset.Range("A" & totalTrainset + 4 & ":G" & lastTsNumRow).Validation.Delete
+        wsTrainset.Range(wsTrainset.Cells(totalTrainset + 4, 1), wsTrainset.Cells(lastTsNumRow, lastTsNumCol)).ClearContents
+        wsTrainset.Range(wsTrainset.Cells(totalTrainset + 4, 1), wsTrainset.Cells(lastTsNumRow, lastTsNumCol)).Validation.Delete
     Else
         ' Loop to create rows with numbers starting at row 4
         For i = lastTsNumRow - 2 To totalTrainset
@@ -88,7 +92,7 @@ End Sub
 
 Sub changeCarriage(target As Range) 
     Dim tableName As String
-    Dim tableRange As Range
+    Dim carriageTableRange As Range
     Dim typeColumn As Range
     Dim typeRowCount As Integer
     Dim lastPresetColumn As Integer
@@ -96,11 +100,11 @@ Sub changeCarriage(target As Range)
     Dim countPresetCarriages As Integer
     Dim countTrainsetCarriages As Integer
     Dim wsPreset As Worksheet
-    Dim trainsetSheet As Worksheet
+    Dim wsTrainset As Worksheet
     Dim i As Integer
     
-    Set tableRange = Worksheets("Gerbong").ListObjects("InitGerbong").Range
-    Set typeColumn = tableRange.Rows(1)
+    Set carriageTableRange = Worksheets("Gerbong").ListObjects("InitGerbong").Range
+    Set typeColumn = carriageTableRange.Rows(1)
     If Not typeColumn Is Nothing Then
         typeRowCount = typeColumn.End(xlDown).Row - typeColumn.Row
     End If
@@ -108,64 +112,60 @@ Sub changeCarriage(target As Range)
     Set wsPreset = ThisWorkbook.Sheets("Preset Trainset")
 
     lastPresetColumn = wsPreset.Cells(3, wsPreset.Columns.Count).End(xlToLeft).Column
-    countPresetCarriages = lastPresetColumn - 2
+    countPresetCarriages = lastPresetColumn - 1
 
+    wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(2, lastPresetColumn)).UnMerge
+    wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearFormats
     If countPresetCarriages > typeRowCount Then
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(3, lastPresetColumn)).UnMerge
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearFormats
         wsPreset.Range(wsPreset.Cells(3, typeRowCount + 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearContents
     Else
         wsPreset.Cells(3, lastPresetColumn).ClearContents
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).UnMerge
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Rows.Count, lastPresetColumn)).ClearFormats
 
         For i = 1 To typeRowCount
-            wsPreset.Cells(3, i + 2).Value = typeColumn.Rows(i + 1).Value
-            wsPreset.Cells(3, i + 2).HorizontalAlignment = xlCenter
-            wsPreset.Cells(3, i + 2).Borders.LineStyle = xlContinuous
-            wsPreset.Cells(3, i + 2).Borders.Weight = xlThin
-            wsPreset.Cells(3, i + 2).Interior.Color = rgb(142, 169, 219)
+            wsPreset.Cells(3, i + 1).Value = typeColumn.Rows(i + 1).Value
+            wsPreset.Cells(3, i + 1).HorizontalAlignment = xlCenter
+            wsPreset.Cells(3, i + 1).Borders.LineStyle = xlContinuous
+            wsPreset.Cells(3, i + 1).Borders.Weight = xlThin
+            wsPreset.Cells(3, i + 1).Interior.Color = rgb(142, 169, 219)
         Next i
     End If
         lastPresetColumn = wsPreset.Cells(3, wsPreset.Columns.Count).End(xlToLeft).Column
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).HorizontalAlignment = xlCenter
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.LineStyle = xlContinuous
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.Weight = xlThin
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(3, lastPresetColumn)).Interior.Color = rgb(142, 169, 219)
-        wsPreset.Range(wsPreset.Cells(2, 3), wsPreset.Cells(2, lastPresetColumn)).Merge
+        wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).HorizontalAlignment = xlCenter
+        wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.LineStyle = xlContinuous
+        wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(wsPreset.Cells(wsPreset.Rows.Count, 1).End(xlUp).Row, lastPresetColumn)).Borders.Weight = xlThin
+        wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(3, lastPresetColumn)).Interior.Color = rgb(142, 169, 219)
+        wsPreset.Range(wsPreset.Cells(2, 2), wsPreset.Cells(2, lastPresetColumn)).Merge
     
 
     ' changing carriage on trainset
-    Set trainsetSheet = ThisWorkbook.Sheets("Trainset")
+    Set wsTrainset = ThisWorkbook.Sheets("Trainset")
 
-    lastTrainsetColumn = trainsetSheet.Cells(3, trainsetSheet.Columns.Count).End(xlToLeft).Column
+    lastTrainsetColumn = wsTrainset.Cells(3, wsTrainset.Columns.Count).End(xlToLeft).Column
     countTrainsetCarriages = lastTrainsetColumn - 3
 
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(2, lastTrainsetColumn)).UnMerge
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(3, lastTrainsetColumn)).ClearFormats
     If countTrainsetCarriages > typeRowCount Then
-        trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(3, lastTrainsetColumn)).UnMerge
-        trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Rows.Count, lastTrainsetColumn)).ClearFormats
-        trainsetSheet.Range(trainsetSheet.Cells(3, typeRowCount + 4), trainsetSheet.Cells(trainsetSheet.Rows.Count, lastTrainsetColumn)).ClearContents
+        wsTrainset.Range(wsTrainset.Cells(3, typeRowCount + 4), wsTrainset.Cells(wsTrainset.Rows.Count, lastTrainsetColumn)).ClearContents
     Else
-        trainsetSheet.Cells(3, lastTrainsetColumn).ClearContents
-        trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Rows.Count, lastTrainsetColumn)).UnMerge
-        trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Rows.Count, lastTrainsetColumn)).ClearFormats
+        wsTrainset.Cells(3, lastTrainsetColumn).ClearContents
 
         For i = 1 To typeRowCount
-            trainsetSheet.Cells(3, i + 3).Value = typeColumn.Rows(i + 1).Value
-            trainsetSheet.Cells(3, i + 3).HorizontalAlignment = xlCenter
-            trainsetSheet.Cells(3, i + 3).Borders.LineStyle = xlContinuous
-            trainsetSheet.Cells(3, i + 3).Borders.Weight = xlThin
-            trainsetSheet.Cells(3, i + 3).Interior.Color = rgb(142, 169, 219)
+            wsTrainset.Cells(3, i + 3).Value = typeColumn.Rows(i + 1).Value
+            wsTrainset.Cells(3, i + 3).HorizontalAlignment = xlCenter
+            wsTrainset.Cells(3, i + 3).Borders.LineStyle = xlContinuous
+            wsTrainset.Cells(3, i + 3).Borders.Weight = xlThin
+            wsTrainset.Cells(3, i + 3).Interior.Color = rgb(142, 169, 219)
         Next i
     End If
     
 
-    lastTrainsetColumn = trainsetSheet.Cells(3, trainsetSheet.Columns.Count).End(xlToLeft).Column
-    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(trainsetSheet.Cells(trainsetSheet.Rows.Count, 1).End(xlUp).Row, lastTrainsetColumn)).HorizontalAlignment = xlCenter
-    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(2, lastTrainsetColumn)).Merge
-    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(2, lastTrainsetColumn)).Borders.LineStyle = xlContinuous
-    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(3, lastTrainsetColumn)).Borders.Weight = xlThin
-    trainsetSheet.Range(trainsetSheet.Cells(2, 4), trainsetSheet.Cells(3, lastTrainsetColumn)).Interior.Color = rgb(142, 169, 219)
+    lastTrainsetColumn = wsTrainset.Cells(3, wsTrainset.Columns.Count).End(xlToLeft).Column
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(wsTrainset.Cells(wsTrainset.Rows.Count, 1).End(xlUp).Row, lastTrainsetColumn)).HorizontalAlignment = xlCenter
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(2, lastTrainsetColumn)).Merge
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(2, lastTrainsetColumn)).Borders.LineStyle = xlContinuous
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(3, lastTrainsetColumn)).Borders.Weight = xlThin
+    wsTrainset.Range(wsTrainset.Cells(2, 4), wsTrainset.Cells(3, lastTrainsetColumn)).Interior.Color = rgb(142, 169, 219)
     
 End Sub
 
@@ -261,7 +261,7 @@ Sub UpdateCarriageValidation(changedCarriageType As Range, oldValue As String)
     wsPanel.Columns("C").Replace What:=oldValue, Replacement:=changedCarriageType.Value, LookAt:=xlWhole, MatchCase:=False
     
     ' Update the validation range in Component worksheet
-    For Each cell In wsComponent.Range("D2:D" & wsPanel.Cells(wsPanel.Rows.Count, "D").End(xlUp).Row)
+    For Each cell In wsComponent.Range("D2:D" & wsComponent.Cells(wsComponent.Rows.Count, "D").End(xlUp).Row)
         With cell.Validation
             .Delete ' Remove any existing validation
             .Add Type:=xlValidateList, AlertStyle:=xlValidAlertStop, Operator:= _
