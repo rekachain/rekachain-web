@@ -69,6 +69,18 @@ class ProjectResource extends JsonResource {
                     })
                     ->paginate($request->get('pageSize', $request->get('per_page', 10)))
                     ->toArray();
+            case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY->value:
+                return $this->carriage_panels()->whereCarriageId($this->projectCarriage->id)->get()
+                    ->groupBy(['panel_id'])->map(function ($carriagePanels) {
+                        return [
+                            'panel' => PanelResource::make($carriagePanels->first()->panel),
+                            'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
+                                return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
+                            }),
+                        ];
+                    })
+                    ->paginate($request->get('pageSize', $request->get('per_page', 10)))
+                    ->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
                     'id' => $this->id,

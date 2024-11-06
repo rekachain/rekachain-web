@@ -62,7 +62,8 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
         Route::resource('steps', StepController::class);
         Route::resource('work-aspects', WorkAspectController::class);
         Route::controller(ProjectController::class)->group(function () {
-            Route::get('/projects/{project}/carriages/{carriage}', 'carriage_components')->name('projects.carriages.components.index');
+            Route::get('/projects/{project}/carriages/{carriage}', 'project_carriage')->name('projects.carriages.show');
+            Route::put('/projects/{project}/carriages/{carriage}', 'project_carriage')->name('projects.carriages.update');
         });
     });
     Route::get('csrf-token', function () {
