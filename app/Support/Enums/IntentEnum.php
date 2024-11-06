@@ -38,6 +38,8 @@ enum IntentEnum: string {
     case API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV = 'api.trainset.attachment.confirm.kpm.by.spv';
 
     case API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT = 'api.trainset.attachment.assign.worker.component';
+    
+    case API_TRAINSET_ATTACHMENT_ASSIGN_HANDLER = 'api.trainset.attachment.assign.handler';
 
     case API_PANEL_ATTACHMENT_GET_ATTACHMENTS = 'api.panel.attachment.get.attachments';
 

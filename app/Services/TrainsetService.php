@@ -32,6 +32,7 @@ use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
 use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
@@ -42,6 +43,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected SerialPanelServiceInterface $serialPanelService,
         protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
+        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
         protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
         protected CarriagePanelServiceInterface $carriagePanelService,
     ) {
@@ -277,7 +279,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 ]);
 
                 // CREATE TRAINSET ATTACHMENT HANDLER
-                TrainsetAttachmentHandler::create([
+                $this->trainsetAttachmentHandlerService->create([
                     'user_id' => auth()->user()->id,
                     'handler_name' => auth()->user()->name,
                     'trainset_attachment_id' => $trainsetAttachment->id,
