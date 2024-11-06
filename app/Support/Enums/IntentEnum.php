@@ -74,6 +74,8 @@ enum IntentEnum: string {
     case API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.panel.attachment.update.assign.spv.and.receiver';
 
     case API_PANEL_ATTACHMENT_REJECT_KPM = 'api.panel.attachment.reject.kpm';
+    
+    case API_PANEL_ATTACHMENT_ASSIGN_HANDLER = 'api.panel.attachment.assign.handler';
 
     case API_DETAIL_WORKER_PANEL_GET_PANELS = 'api.detail.worker.panel.get.panels';
 
