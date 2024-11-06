@@ -127,6 +127,10 @@ enum IntentEnum: string {
 
     case WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY = 'web.project.get.all.carriage.components.with.qty';
 
+    case WEB_PROJECT_GET_ALL_CARRIAGE_PANELS = 'web.project.get.all.carriage.panels';
+
+    case WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY = 'web.project.get.all.carriage.panels.with.qty';
+
     case WEB_PROJECT_GET_ALL_PANELS = 'web.project.get.all.panels';
 
     case WEB_PROJECT_GET_ALL_PANELS_WITH_QTY = 'web.project.get.all.panels.with.qty';
@@ -170,6 +174,10 @@ enum IntentEnum: string {
     case WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.panel.progress.and.material';
 
     case WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.component.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.carriage.panel.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.carriage.component.progress.and.material';
 
     case WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL = 'web.raw.material.get.template.import.raw.material';
 
