@@ -4,7 +4,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Link } from 'lucide-react';
+import { Link } from '@inertiajs/react';
 
 export default function ({
     project,
@@ -37,13 +37,13 @@ export default function ({
                         <div className="flex items-center justify-end w-full">
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
-                                href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
+                                href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [project.id, data.carriage.id])}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.components')}
                             </Link>
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
-                                href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
+                                href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [project.id, data.carriage.id])}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.panels')}
                             </Link>

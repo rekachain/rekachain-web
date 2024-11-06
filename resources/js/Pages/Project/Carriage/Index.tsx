@@ -46,12 +46,6 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                             })}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
-                                    {/* <BreadcrumbSeparator />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>
-                                            {t('pages.project.carriages.index.breadcrumbs.components')}
-                                        </BreadcrumbPage>
-                                    </BreadcrumbItem> */}
                                 </BreadcrumbList>
                             </Breadcrumb>
                             <h1 className="text-page-header my-4">{t('pages.project.carriages.index.title')}</h1>
