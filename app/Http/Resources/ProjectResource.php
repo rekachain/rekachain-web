@@ -38,6 +38,9 @@ class ProjectResource extends JsonResource {
                 return $this->carriage_panels->groupBy(['panel_id'])->map(function ($carriagePanels) {
                     return [
                         'panel' => PanelResource::make($carriagePanels->first()->panel),
+                        'has_materials' => $carriagePanels->filter(function ($carriagePanel) {
+                            return $carriagePanel->hasMaterials();
+                        })->isNotEmpty(),
                         'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
                             return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
                         }),
@@ -50,6 +53,9 @@ class ProjectResource extends JsonResource {
                     ->groupBy(['component_id'])->map(function ($carriagePanelComponents) {
                         return [
                             'component' => ComponentResource::make($carriagePanelComponents->first()->component),
+                            'has_materials' => $carriagePanelComponents->filter(function ($carriagePanelComponent) {
+                                return $carriagePanelComponent->hasMaterials();
+                            })->isNotEmpty(),
                             'total_qty' => $carriagePanelComponents->sum(function ($carriagePanelComponent) {
                                 return $carriagePanelComponent->qty * $carriagePanelComponent->carriage_panel->qty * $carriagePanelComponent->carriage_panel->carriage_trainset->qty;
                             }),
@@ -62,6 +68,9 @@ class ProjectResource extends JsonResource {
                     ->groupBy(['component_id'])->map(function ($carriageComponents) {
                         return [
                             'component' => ComponentResource::make($carriageComponents->first()->component),
+                            'has_materials' => $carriageComponents->filter(function ($carriageComponent) {
+                                return $carriageComponent->hasMaterials();
+                            })->isNotEmpty(),
                             'total_qty' => $carriageComponents->sum(function ($carriageComponents) {
                                 return $carriageComponents->qty * $carriageComponents->carriage_panel->qty * $carriageComponents->carriage_panel->carriage_trainset->qty;
                             }),
@@ -74,6 +83,9 @@ class ProjectResource extends JsonResource {
                     ->groupBy(['panel_id'])->map(function ($carriagePanels) {
                         return [
                             'panel' => PanelResource::make($carriagePanels->first()->panel),
+                            'has_materials' => $carriagePanels->filter(function ($carriagePanel) {
+                                return $carriagePanel->hasMaterials();
+                            })->isNotEmpty(),
                             'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
                                 return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
                             }),

@@ -45,4 +45,8 @@ class CarriagePanel extends Model {
     public function panel_attachment(): HasOne {
         return $this->hasOne(PanelAttachment::class);
     }
+
+    public function hasMaterials(): bool {
+        return $this->panel_materials->isNotEmpty();
+    }
 }
