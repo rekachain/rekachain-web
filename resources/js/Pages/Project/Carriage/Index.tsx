@@ -23,10 +23,10 @@ export default function ({ project: initialProject }: { project: ProjectResource
         setProject(updatedProject);
     });
 
-    const Panels = lazy(() => import('./Partials/Panels'));
+    const Carriages = lazy(() => import('./Partials/Carriages'));
     return (
         <>
-            <Head title={t('pages.project.panel.index.title')} />
+            <Head title={t('pages.project.carriages.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -35,30 +35,24 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS}.index`)}>
-                                            {t('pages.project.panel.index.breadcrumbs.home')}
+                                            {t('pages.project.carriages.index.breadcrumbs.home')}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
-                                            {t('pages.project.panel.index.breadcrumbs.project', {
+                                            {t('pages.project.carriages.index.breadcrumbs.project', {
                                                 project: project.name,
                                             })}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
-                                    {/* <BreadcrumbSeparator />
-                                    <BreadcrumbItem>
-                                        <BreadcrumbPage>
-                                            {t('pages.project.panel.index.breadcrumbs.panels')}
-                                        </BreadcrumbPage>
-                                    </BreadcrumbItem> */}
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">{t('pages.project.panel.index.title')}</h1>
+                            <h1 className="text-page-header my-4">{t('pages.project.carriages.index.title')}</h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Panels project={project} />
+                        <Carriages project={project} handleSyncProject={handleSyncProject} />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

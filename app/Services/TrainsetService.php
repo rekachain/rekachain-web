@@ -31,7 +31,9 @@ use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
+use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
 use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
@@ -42,6 +44,8 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected SerialPanelServiceInterface $serialPanelService,
         protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
+        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
+        protected PanelAttachmentHandlerServiceInterface $panelAttachmentHandlerService,
         protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
         protected CarriagePanelServiceInterface $carriagePanelService,
     ) {
@@ -277,7 +281,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 ]);
 
                 // CREATE TRAINSET ATTACHMENT HANDLER
-                TrainsetAttachmentHandler::create([
+                $this->trainsetAttachmentHandlerService->create([
                     'user_id' => auth()->user()->id,
                     'handler_name' => auth()->user()->name,
                     'trainset_attachment_id' => $trainsetAttachment->id,
@@ -332,7 +336,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     ]);
 
                     // CREATE PANEL ATTACHMENT HANDLER
-                    PanelAttachmentHandler::create([
+                    $this->panelAttachmentHandlerService->create([
                         'user_id' => auth()->user()->id,
                         'handler_name' => auth()->user()->name,
                         'panel_attachment_id' => $panelAttachment->id,

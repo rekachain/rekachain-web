@@ -2,18 +2,19 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Models\CustomAttachmentMaterial;
 use App\Models\TrainsetAttachment;
-use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
+use App\Models\CustomAttachmentMaterial;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
-use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
-use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
-use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
-use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
-use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
+use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
+use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
+use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
+use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
+use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
+use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
+use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
 
 class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttachmentServiceInterface
 {
@@ -23,6 +24,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
         protected TrainsetAttachmentComponentRepositoryInterface $trainsetAttachmentComponentRepository,
         protected UserRepositoryInterface $userRepositoryInterface,
         protected DetailWorkerTrainsetServiceInterface $detailWorkerTrainsetService,
+        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
     ) {
         parent::__construct();
     }
@@ -31,6 +33,17 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
         return TrainsetAttachmentRepositoryInterface::class;
     }
 
+    public function assignHandler(TrainsetAttachment $trainsetAttachment, array $data){
+        $this->trainsetAttachmentHandlerService->updateOrCreate([
+            'trainset_attachment_id' => $trainsetAttachment->id,
+            'handles' => $data['handles'],
+        ], 
+        ['user_id' => auth()->user()->id,
+        'handler_name' => auth()->user()->name,]);
+
+        return $trainsetAttachment;
+    }
+    
     public function assignCustomAttachmentMaterial(TrainsetAttachment $trainsetAttachment, array $data): CustomAttachmentMaterial
     {
         logger($trainsetAttachment);
