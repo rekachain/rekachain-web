@@ -9,6 +9,7 @@ import RawMaterialTableView from './Partials/RawMaterialTableView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/RawMaterial/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -40,6 +41,8 @@ export default function () {
         <div className="space-y-4">
             {rawMaterialResponse && (
                 <>
+                    <Filters setFilters={setFilters} filters={filters} />
+
                     <div className="hidden md:block">
                         <RawMaterialTableView
                             rawMaterialResponse={rawMaterialResponse}
