@@ -1213,6 +1213,64 @@ return [
                 ],
             ],
         ],
+        'carriages' => [
+            'index' => [
+                'title' => 'Kereta',
+                'initial_date' => 'Tanggal Inisiasi :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Beranda',
+                    'project' => 'Proyek :project',
+                    'carriages' => 'Kereta',
+                ],
+            ],
+            'partials' => [
+                'carriages' => [
+                    'messages' => [
+                        'deleted' => 'Kereta berhasil dihapus!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Impor Kereta',
+                    ],
+                    'messages' => [
+                        'imported' => 'Kereta berhasil diimpor!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Impor Kereta',
+                        'description' => 'Impor data progres dan bahan mentah dari :carriage_name pada Proyek :project_name.',
+                        'fields' => [
+                            'download_template' => 'Unduh Template',
+                            'file' => 'File',
+                            'work_aspect' => 'Aspek Pekerjaan',
+                        ],
+                        'buttons' => [
+                            'import' => 'Impor Kereta',
+                            'download_template' => 'Unduh',
+                            'submit' => 'Impor Kereta',
+                            'processing' => 'Memproses...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'carriage_table' => [
+                        'headers' => [
+                            'name' => 'Nama',
+                            'description' => 'Deskripsi',
+                            'total_qty' => 'Jumlah Total',
+                        ],
+                    ],
+                    'carriage_card' => [
+                        'headers' => [
+                            'name' => 'Nama: :name',
+                            'description' => 'Deskripsi: :description',
+                            'total_qty' => 'Jumlah Total: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
         'components' => [
             'index' => [
                 'title' => 'Komponen',
@@ -1310,6 +1368,7 @@ return [
                         'trainset_count' => 'Jumlah Trainset',
                     ],
                     'actions' => [
+                        'carriages' => 'Kereta',
                         'trainsets' => 'Trainset',
                         'components' => 'Komponen',
                         'panels' => 'Panel',

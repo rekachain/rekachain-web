@@ -80,4 +80,11 @@ return [
             'no_results' => 'Tidak ada hasil yang ditemukan',
         ],
     ],
+    'generic_filters' => [
+        'fields' => [
+            'search_placeholder' => 'Cari...',
+            'select_placeholder' => 'Pilih',
+            'pagination_placeholder' => 'Item per halaman',
+        ],
+    ],
 ];

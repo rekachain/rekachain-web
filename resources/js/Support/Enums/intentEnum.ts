@@ -33,6 +33,7 @@ const intents = {
     WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT: 'web.panel.attachment.download.panel.attachment',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
+    WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY: 'web.project.get.all.carriages.with.qty',
     WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY: 'web.project.get.all.components.with.qty',
     WEB_PROJECT_GET_ALL_PANELS_WITH_QTY: 'web.project.get.all.panels.with.qty',
 };

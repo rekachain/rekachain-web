@@ -16,6 +16,7 @@ export const ROUTES = {
     WORKSTATIONS: 'workstations',
     TRAINSETS: 'trainsets',
     PROJECTS: 'projects',
+    PROJECTS_CARRIAGES: 'projects.carriages',
     PROJECTS_COMPONENTS: 'projects.components',
     PROJECTS_PANELS: 'projects.panels',
     PROJECTS_TRAINSETS: 'projects.trainsets',

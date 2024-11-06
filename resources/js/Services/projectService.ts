@@ -1,9 +1,11 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { ProjectCarriageResource, ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ProjectComponentResource } from '@/Support/Interfaces/Resources/ProjectComponentResource';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { AxiosRequestConfig } from 'axios';
 
 export const projectService = {
     ...serviceFactory<ProjectResource>(ROUTES.PROJECTS),
@@ -25,7 +27,8 @@ export const projectService = {
         window.location.href = '/assets/excel-templates/imports/project/project-import.xlsm';
     },
     downloadImportProgressRawMaterialTemplate: async () => {
-        window.location.href = '/assets/excel-templates/imports/progress-raw-materials/progress-raw-material-import.xlsx';
+        window.location.href =
+            '/assets/excel-templates/imports/progress-raw-materials/progress-raw-material-import.xlsx';
     },
     importProject: async (file: File) => {
         const formData = new FormData();
@@ -39,21 +42,54 @@ export const projectService = {
             },
         });
     },
-    getComponents: async (projectId: number): Promise<PaginateResponse<ProjectComponentResource>>  => {
-        return await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
+    getCarriages: async (
+        projectId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectCarriageResource>> => {
+        const response = await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
+            params: {
+                intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY,
+                ...filters,
+                ...config,
+            },
+        });
+        return response.data;
+    },
+    getComponents: async (
+        projectId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectComponentResource>> => {
+        const response = await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
             params: {
                 intent: IntentEnum.WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY,
+                ...filters,
+                ...config,
             },
         });
+        return response.data;
     },
-    getPanels: async (projectId: number): Promise<PaginateResponse<ProjectPanelResource>>  => {
-        return await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
+    getPanels: async (
+        projectId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectPanelResource>> => {
+        const response = await window.axios.get(route(`${ROUTES.PROJECTS}.show`, projectId), {
             params: {
                 intent: IntentEnum.WEB_PROJECT_GET_ALL_PANELS_WITH_QTY,
+                ...filters,
+                ...config,
             },
         });
+        return response.data;
     },
-    importComponentsProgressRawMaterial: async (projectId: number, file: File, componentId: number, workAspectId: number) => {
+    importComponentsProgressRawMaterial: async (
+        projectId: number,
+        file: File,
+        componentId: number,
+        workAspectId: number,
+    ) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('component_id', componentId.toString());
@@ -81,5 +117,5 @@ export const projectService = {
                 intent: IntentEnum.WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL,
             },
         });
-    }
+    },
 };

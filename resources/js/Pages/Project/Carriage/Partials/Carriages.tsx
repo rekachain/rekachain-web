@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
-import ComponentCardView from './Partials/ComponentCardView';
-import ComponentTableView from './Partials/ComponentTableView';
+import CarriageCardView from './Partials/CarriageCardView';
+import CarriageTableView from './Partials/CarriageTableView';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { withLoading } from '@/Utils/withLoading';
 import { projectService } from '@/Services/projectService';
@@ -21,8 +18,8 @@ export default function ({
     handleSyncProject: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
-    const [componentResponse, setComponentResponse] = useState<PaginateResponse<ProjectComponentResource>>();
-    const [componentResponseMeta, setComponentResponseMeta] = useState<PaginateMeta>();
+    const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<ProjectCarriageResource>>();
+    const [carriageResponseMeta, setCarriageResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
@@ -31,11 +28,11 @@ export default function ({
     const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
-        const data = await projectService.getComponents(project.id, filters);
+        const data = await projectService.getCarriages(project.id, filters);
 
-        setComponentResponse(data);
+        setCarriageResponse(data);
 
-        setComponentResponseMeta({
+        setCarriageResponseMeta({
             current_page: data.current_page,
             from: data.from,
             last_page: data.last_page,
@@ -51,38 +48,26 @@ export default function ({
         void syncComponents();
     }, [filters]);
 
-    const handleComponentDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await componentService.delete(id);
-                await syncComponents();
-                void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-                setLoading(false);
-            }
-        });
-    };
-
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
 
     return (
         <div className="space-y-4">
-            {componentResponse && (
+            {carriageResponse && (
                 <>
                     <div className="hidden md:block">
-                        <ComponentTableView
+                        <CarriageTableView
                             project={project}
-                            componentResponse={componentResponse}
-                        ></ComponentTableView>
+                            carriageResponse={carriageResponse}
+                        ></CarriageTableView>
                     </div>
                     <div className="block md:hidden">
-                        <ComponentCardView project={project} componentResponse={componentResponse}></ComponentCardView>
+                        <CarriageCardView project={project} carriageResponse={carriageResponse}></CarriageCardView>
                     </div>
                 </>
             )}
-            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
+            <GenericPagination meta={carriageResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );
 }

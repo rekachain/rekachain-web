@@ -65,13 +65,13 @@ export default function ProjectCardView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
                             >
-                                {'components'}
+                                {t('pages.project.partials.partials.project_table.actions.components')}
                             </Link>
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
                             >
-                                {'panels'}
+                                {t('pages.project.partials.partials.project_table.actions.panels')}
                             </Link>
                         </div>
                     </div>
