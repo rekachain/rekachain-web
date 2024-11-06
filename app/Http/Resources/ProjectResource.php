@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ProjectResource extends JsonResource {
     protected $projectCarriage;
 
-    public function setProjectCarriage(Carriage $projectCarriage) {
+    public function projectCarriage(Carriage $projectCarriage) {
         $this->projectCarriage = $projectCarriage;
         return $this;
     }
@@ -58,7 +58,7 @@ class ProjectResource extends JsonResource {
                     ->paginate($request->get('pageSize', $request->get('per_page', 10)))
                     ->toArray();
             case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY->value:
-                return $this->carriage_components($this->projectCarriage)->get()
+                return $this->carriage_panel_components()->whereCarriageId($this->projectCarriage->id)->get()
                     ->groupBy(['component_id'])->map(function ($carriageComponents) {
                         return [
                             'component' => ComponentResource::make($carriageComponents->first()->component),

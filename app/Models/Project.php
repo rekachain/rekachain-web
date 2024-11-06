@@ -37,10 +37,6 @@ class Project extends Model {
         );
     }
 
-    public function carriage_components(Carriage $carriage) {
-        return $this->carriage_panel_components()->whereCarriageId($carriage->id);
-    }
-
     public function trainsets(): HasMany {
         return $this->hasMany(Trainset::class);
     }

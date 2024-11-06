@@ -173,7 +173,7 @@ class ProjectController extends Controller {
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS->value:
                     return ComponentResource::collection($project->components()->whereCarriageId($carriage->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY->value:
-                    return ProjectResource::make($project)->setProjectCarriage($carriage);
+                    return ProjectResource::make($project)->projectCarriage($carriage);
             }
             return [
                 'project' => new ProjectResource($project),
