@@ -80,4 +80,11 @@ return [
             'no_results' => 'No results found',
         ],
     ],
+    'generic_filters' => [
+        'fields' => [
+            'search_placeholder' => 'Search...',
+            'select_placeholder' => 'Select',
+            'pagination_placeholder' => 'Items per page',
+        ],
+    ],
 ];
