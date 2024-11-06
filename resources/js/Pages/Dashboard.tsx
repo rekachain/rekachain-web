@@ -24,7 +24,7 @@ const project = [
         link: '/dashboard/1',
     },
     {
-        value: 'krl_kci',
+        value: 'KRL KCI',
         label: 'KRL KCI',
         link: '/dashboard/2',
     },
@@ -32,7 +32,7 @@ const project = [
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     console.log(data);
     const chartConfig = {
         in_progress: {
@@ -180,8 +180,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </BarChart>
                             </ChartContainer>
                         </div>
-                        <div className="flex max-w-full mt-2 ">
-                            <div className="w-1/2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
+                            <div className="">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                                 <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
@@ -210,7 +210,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </ChartContainer>
                             </div>
 
-                            <div className="w-[35%]  ">
+                            <div className=" ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel pada WS Assembly</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
