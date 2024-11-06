@@ -1231,6 +1231,64 @@ return [
                 ],
             ],
         ],
+        'carriages' => [
+            'index' => [
+                'title' => 'Carriages',
+                'initial_date' => 'Initial Date :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Home',
+                    'project' => 'Project :project',
+                    'carriages' => 'Carriages',
+                ],
+            ],
+            'partials' => [
+                'carriages' => [
+                    'messages' => [
+                        'deleted' => 'Carriage deleted successfully!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Import Carriage',
+                    ],
+                    'messages' => [
+                        'imported' => 'Carriage imported successfully!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Import Carriage',
+                        'description' => 'Import progress and raw material data of :carriage_name on Project :project_name.',
+                        'fields' => [
+                            'download_template' => 'Download Template',
+                            'file' => 'File',
+                            'work_aspect' => 'Work Aspect',
+                        ],
+                        'buttons' => [
+                            'import' => 'Import Carriage',
+                            'download_template' => 'Download',
+                            'submit' => 'Import Carriage',
+                            'processing' => 'Processing...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'carriage_table' => [
+                        'headers' => [
+                            'name' => 'Name',
+                            'description' => 'Description',
+                            'total_qty' => 'Total Qty',
+                        ],
+                    ],
+                    'carriage_card' => [
+                        'headers' => [
+                            'name' => 'Name: :name',
+                            'description' => 'Description: :description',
+                            'total_qty' => 'Total Qty: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
         'components' => [
             'index' => [
                 'title' => 'Components',
@@ -1328,6 +1386,7 @@ return [
                         'trainset_count' => 'Trainset Count',
                     ],
                     'actions' => [
+                        'carriages' => 'Carriages',
                         'trainsets' => 'Trainsets',
                         'components' => 'Components',
                         'panels' => 'Panels',
