@@ -12,13 +12,13 @@ class SerialPanel extends Model {
     use HasFactory;
 
     protected $fillable = [
+        'product_no',
         'panel_attachment_id',
         'qr_code',
         'qr_path',
         'manufacture_status',
         'notes',
     ];
-
     protected $casts = [
         'manufacture_status' => SerialPanelManufactureStatusEnum::class,
     ];

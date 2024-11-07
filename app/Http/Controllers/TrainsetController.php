@@ -84,6 +84,8 @@ class TrainsetController extends Controller {
                     return TrainsetResource::make($trainset);
                 case IntentEnum::WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY->value:
                     return TrainsetResource::make($trainset);
+                case IntentEnum::WEB_TRAINSET_EXPORT_SERIAL_NUMBERS->value:
+                    return $this->trainsetService->exportSerialNumbers($trainset);
             }
 
             return new TrainsetResource($trainset->load(['carriages', 'trainset_attachments', 'panel_attachments']));

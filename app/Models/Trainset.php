@@ -182,6 +182,29 @@ class Trainset extends Model {
             ]);
     }
 
+    public function serial_panels(): HasManyDeep {
+        return $this->hasManyDeep(
+            SerialPanel::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class,
+                PanelAttachment::class,
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'carriage_panel_id',
+                'panel_attachment_id',
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+            ]
+        );
+    }
+
     public function canBeDeleted(): bool {
         return $this->status !== TrainsetStatusEnum::PROGRESS;
     }
