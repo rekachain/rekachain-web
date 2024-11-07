@@ -12,7 +12,8 @@ class ProgressSheetImport implements ToCollection
 {
     public function __construct(
         private CarriagePanelComponent $carriagePanelComponent,
-        private int $workAspectId
+        private int $workAspectId,
+        protected ?bool $override = null
     ) {}
 
     public function collection(Collection $rows) 
@@ -57,7 +58,13 @@ class ProgressSheetImport implements ToCollection
             $progress->progress_steps()->createMany($steps->map(fn ($step) => ['step_id' => $step->id])->toArray());
         }
 
-        $this->carriagePanelComponent->update(['progress_id' => $progress->id]);
+        if ($this->override) {
+            // update progress no matter what🗿
+            return $this->carriagePanelComponent->update(['progress_id' => $progress->id]);
+        } else {
+            // update progress only if carriage panel progress is null
+            return $this->carriagePanelComponent->update(['progress_id' => $this->carriagePanelComponent->progress_id ?? $progress->id]);
+        }
     }
 
 }
