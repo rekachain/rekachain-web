@@ -811,9 +811,18 @@ return [
                     'new_preset_alert' => 'Anda menggunakan preset kustom, apakah Anda ingin menyimpannya sebagai preset baru?',
                     'buttons' => [
                         'add_carriage' => 'Tambah Kereta',
+                        'export_serial_numbers' => 'Ekspor Nomor Seri',
                     ],
                     'messages' => [
                         'carriage_added' => 'Kereta berhasil ditambahkan!',
+                    ],
+                    'dialogs' => [
+                        'export_serial_numbers' => [
+                            'confirmations' => [
+                                'title' => 'Apakah Anda yakin?',
+                                'text' => 'Proses ini akan membutuhkan waktu beberapa saat.',
+                            ],
+                        ],
                     ],
                     'breadcrumbs' => [
                         'home' => 'Beranda',
@@ -1058,7 +1067,7 @@ return [
                                 'download' => 'Unduh Lampiran',
                             ],
                             'dialogs' => [
-                                'title' => 'Lampiran Panel',
+                                'title' => 'KPM Panel',
                                 'headers' => [
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',

@@ -101,8 +101,8 @@ export default function ({
         },
         true,
         {
-            title: 'Are you sure?',
-            text: 'This process may take a while',
+            title: t('pages.project.trainset.carriage.index.dialogs.export_serial_numbers.confirmations.title'),
+            text: t('pages.project.trainset.carriage.index.dialogs.export_serial_numbers.confirmations.text'),
         },
     );
 
@@ -181,7 +181,9 @@ export default function ({
                                     {(trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && <PreviewAttachments trainset={trainset} />}
-                                    <Button onClick={handleExportSerialNumbers}>Export Serial Numbers</Button>
+                                    <Button onClick={handleExportSerialNumbers}>
+                                        {t('pages.project.trainset.carriage.index.buttons.export_serial_numbers')}
+                                    </Button>
                                 </div>
                             </div>
                         </div>

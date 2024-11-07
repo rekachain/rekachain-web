@@ -829,9 +829,18 @@ return [
                     'new_preset_alert' => 'You are using a custom preset, do you want to save it as a new preset?',
                     'buttons' => [
                         'add_carriage' => 'Add Carriage',
+                        'export_serial_numbers' => 'Export Serial Numbers',
                     ],
                     'messages' => [
                         'carriage_added' => 'Carriage added successfully!',
+                    ],
+                    'dialogs' => [
+                        'export_serial_numbers' => [
+                            'confirmations' => [
+                                'title' => 'Are you sure?',
+                                'text' => 'This process may take a while',
+                            ],
+                        ],
                     ],
                     'breadcrumbs' => [
                         'home' => 'Home',
