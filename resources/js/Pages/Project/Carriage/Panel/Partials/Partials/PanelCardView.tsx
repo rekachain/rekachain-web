@@ -43,7 +43,7 @@ export default function ({
                         </h5>
                         {/* <h5 className=" text-sm ">Lokasi : {panel.location}</h5> */}
                         <div className="flex items-center justify-end w-full">
-                            <Import project={project} carriage={carriage} panel={data.panel} />
+                            <Import project={project} carriage={carriage} panel={data.panel} hasMaterials={data.has_materials} />
                         </div>
                     </div>
                 </AnimateIn>
