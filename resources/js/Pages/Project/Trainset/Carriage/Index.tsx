@@ -30,6 +30,8 @@ import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/Add
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenerateAttachment from '@/Pages/Project/Trainset/Carriage/Partials/GenerateAttachment';
 import PreviewAttachments from '@/Pages/Project/Trainset/Carriage/Partials/PreviewAttachments';
+import { Button } from '@/Components/UI/button';
+import { trainsetService } from '@/Services/trainsetService';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -92,6 +94,17 @@ export default function ({
             trainset.status !== TrainsetStatusEnum.PROGRESS
         );
     }
+
+    const handleExportSerialNumbers = withLoading(
+        async () => {
+            await trainsetService.exportSerialNumbers(trainset.id);
+        },
+        true,
+        {
+            title: 'Are you sure?',
+            text: 'This process may take a while',
+        },
+    );
 
     return (
         <>
@@ -168,6 +181,7 @@ export default function ({
                                     {(trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && <PreviewAttachments trainset={trainset} />}
+                                    <Button onClick={handleExportSerialNumbers}>Export Serial Numbers</Button>
                                 </div>
                             </div>
                         </div>
