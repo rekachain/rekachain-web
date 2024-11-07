@@ -391,7 +391,15 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $path = "serial_panels/qr_images/{$serialPanel->id}.svg";
             $this->generateQrCode($qrCode, $path);
 
-            $this->serialPanelService->update($serialPanel, ['qr_code' => $qrCode, 'qr_path' => $path]);
+            $this->serialPanelService->update($serialPanel, [
+                'product_no' => $panelAttachment->trainset->project->id .
+                    $panelAttachment->trainset->id .
+                    $panelAttachment->carriage_panel->carriage->id .
+                    $panelAttachment->carriage_panel->panel_id .
+                    $serialPanel->id,
+                'qr_code' => $qrCode,
+                'qr_path' => $path,
+            ]);
 
             //            logger('Current serialPanelIds array: ' . json_encode($serialPanelIds));
         }
@@ -512,8 +520,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $qrs = $trainset->serial_panels->map(function ($serialPanel) {
             return [
                 'qr_path' => $serialPanel->qr_path,
-                // TODO: migrate to new product_no format
-                'product_no' => $serialPanel->panel_attachment->carriage_panel_id . $serialPanel->panel_attachment->carriage_panel->panel_id . $serialPanel->id,
+                'product_no' => $serialPanel->product_no,
                 'serial_no' => $serialPanel->id,
                 'product_name' => $serialPanel->panel_attachment->carriage_panel->panel->name,
             ];
