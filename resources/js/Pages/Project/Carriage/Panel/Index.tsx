@@ -33,7 +33,7 @@ export default function ({
     const Panels = lazy(() => import('./Partials/Panels'));
     return (
         <>
-            <Head title={t('pages.project.panel.index.title')} />
+            <Head title={t('pages.project.carriage.panel.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -42,13 +42,13 @@ export default function ({
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS}.index`)}>
-                                            {t('pages.project.panel.index.breadcrumbs.home')}
+                                            {t('pages.project.carriage.panel.index.breadcrumbs.home')}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, [project.id])}>
-                                            {t('pages.project.panel.index.breadcrumbs.project', {
+                                            {t('pages.project.carriage.panel.index.breadcrumbs.project', {
                                                 project: project.name,
                                             })}
                                         </Link>
@@ -63,7 +63,7 @@ export default function ({
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">{t('pages.project.panel.index.title')}</h1>
+                            <h1 className="text-page-header my-4">{t('pages.project.carriage.panel.index.title')}</h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

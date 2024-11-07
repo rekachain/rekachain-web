@@ -32,8 +32,13 @@ export default function ({ project, carriage, panel }: { project: any; carriage:
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await projectService.importCarriagePanelsProgressRawMaterial(project.id, carriage.id, data.file as File, panel.id);
-        await useSuccessToast(t('pages.project.panel.partials.import.messages.imported'));
+        await projectService.importCarriagePanelsProgressRawMaterial(
+            project.id,
+            carriage.id,
+            data.file as File,
+            panel.id,
+        );
+        await useSuccessToast(t('pages.project.carriage.panel.partials.import.messages.imported'));
         router.visit(route(`${ROUTES.PROJECTS_PANELS}.index`, [project.id]));
     });
 
@@ -45,20 +50,20 @@ export default function ({ project, carriage, panel }: { project: any; carriage:
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.project.panel.partials.import.buttons.import')}</Button>
+                <Button variant="tertiary">{t('pages.project.carriage.panel.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
                     <DialogDescription>
-                        {t('pages.project.panel.partials.import.dialogs.description', {
+                        {t('pages.project.carriage.panel.partials.import.dialogs.description', {
                             panel_name: panel.name,
                             project_name: project.name,
                         })}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.project.panel.partials.import.dialogs.fields.download_template')}</Label>
+                    <Label>{t('pages.project.carriage.panel.partials.import.dialogs.fields.download_template')}</Label>
                     <Button
                         type="button"
                         variant="secondary"
@@ -67,12 +72,14 @@ export default function ({ project, carriage, panel }: { project: any; carriage:
                     >
                         {loading
                             ? t('action.loading')
-                            : t('pages.project.panel.partials.import.dialogs.buttons.download_template')}
+                            : t('pages.project.carriage.panel.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.project.panel.partials.import.dialogs.buttons.import')}</Label>
+                        <Label htmlFor="file">
+                            {t('pages.project.carriage.panel.partials.import.dialogs.buttons.import')}
+                        </Label>
                         <Input
                             id="file"
                             type="file"
@@ -84,7 +91,7 @@ export default function ({ project, carriage, panel }: { project: any; carriage:
                         <Button type="submit" disabled={loading}>
                             {loading
                                 ? t('action.loading')
-                                : t('pages.project.panel.partials.import.dialogs.buttons.submit')}
+                                : t('pages.project.carriage.panel.partials.import.dialogs.buttons.submit')}
                         </Button>
                     </DialogFooter>
                 </form>
