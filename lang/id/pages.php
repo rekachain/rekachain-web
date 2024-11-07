@@ -1419,7 +1419,7 @@ return [
                 ],
             ],
         ],
-        'components' => [
+        'component' => [
             'index' => [
                 'title' => 'Komponen',
                 'initial_date' => 'Tanggal Awal :initial_date',
