@@ -33,4 +33,8 @@ class CarriagePanelComponent extends Model {
     public function component_materials(): HasMany {
         return $this->hasMany(ComponentMaterial::class);
     }
+
+    public function hasMaterials(): bool {
+        return $this->component_materials->isNotEmpty();
+    }
 }

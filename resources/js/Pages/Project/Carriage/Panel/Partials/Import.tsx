@@ -19,7 +19,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { projectService } from '@/Services/projectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function ({ project, carriage, panel }: { project: any; carriage: any; panel: any }) {
+export default function ({ project, carriage, panel, hasMaterials = false }: { project: any; carriage: any; panel: any, hasMaterials?: boolean }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
@@ -32,14 +32,9 @@ export default function ({ project, carriage, panel }: { project: any; carriage:
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await projectService.importCarriagePanelsProgressRawMaterial(
-            project.id,
-            carriage.id,
-            data.file as File,
-            panel.id,
-        );
+        await projectService.importCarriagePanelsProgressRawMaterial(project.id, carriage.id, data.file as File, panel.id);
         await useSuccessToast(t('pages.project.carriage.panel.partials.import.messages.imported'));
-        router.visit(route(`${ROUTES.PROJECTS_PANELS}.index`, [project.id]));
+        router.visit(route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [project.id, carriage.id]));
     });
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +45,7 @@ export default function ({ project, carriage, panel }: { project: any; carriage:
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.project.carriage.panel.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.carriage.panel.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

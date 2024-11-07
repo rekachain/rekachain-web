@@ -19,7 +19,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { projectService } from '@/Services/projectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function ({ project, panel }: { project: any; panel: any }) {
+export default function ({ project, panel, hasMaterials = false }: { project: any; panel: any, hasMaterials?: boolean }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
@@ -45,7 +45,7 @@ export default function ({ project, panel }: { project: any; panel: any }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.project.panel.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? 'warning' : 'tertiary'}>{t('pages.project.panel.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

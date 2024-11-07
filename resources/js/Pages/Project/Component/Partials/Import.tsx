@@ -22,7 +22,7 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { workAspectService } from '@/Services/workAspectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function ({ project, component }: { project: any; component: any }) {
+export default function ({ project, component, hasMaterials = false }: { project: any; component: any, hasMaterials?: boolean }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
@@ -70,7 +70,7 @@ export default function ({ project, component }: { project: any; component: any 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.project.component.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.component.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

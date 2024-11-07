@@ -36,6 +36,8 @@
         --sidebar-line-active-foreground: 222.2 84% 4.9%;
         --sidebar-header-foreground: 218, 11%, 65%;
         --navbar-secondary-foreground: 218, 11%, 65%;
+        --warning: 43 74% 66%;
+        --warning-foreground: 222.2 84% 4.9%;
     }
 
     .dark {
@@ -70,6 +72,8 @@
         --sidebar-line-active-foreground: 210 40% 98%;
         --sidebar-header: 218, 11%, 65%;
         --navbar-secondary-foreground: 218, 11%, 65%;
+        --warning: 43 74% 66%;
+        --warning-foreground: 222.2 47.4% 11.2%;
     }
 }
 

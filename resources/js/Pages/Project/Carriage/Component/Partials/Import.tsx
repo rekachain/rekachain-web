@@ -22,7 +22,7 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { workAspectService } from '@/Services/workAspectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function ({ project, carriage, component }: { project: any; carriage: any; component: any }) {
+export default function ({ project, carriage, component, hasMaterials = false }: { project: any; carriage: any; component: any, hasMaterials?: boolean }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
@@ -52,7 +52,7 @@ export default function ({ project, carriage, component }: { project: any; carri
             data.work_aspect_id as number,
         );
         await useSuccessToast(t('pages.project.carriage.component.partials.import.messages.imported'));
-        router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id, carriage.id]));
+        router.visit(route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [project.id, carriage.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
         return await workAspectService
@@ -71,9 +71,7 @@ export default function ({ project, carriage, component }: { project: any; carri
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">
-                    {t('pages.project.carriage.component.partials.import.buttons.import')}
-                </Button>
+                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.carriage.component.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
