@@ -1262,7 +1262,7 @@ return [
                 ],
             ],
         ],
-        'carriages' => [
+        'carriage' => [
             'index' => [
                 'title' => 'Carriages',
                 'initial_date' => 'Initial Date :initial_date',

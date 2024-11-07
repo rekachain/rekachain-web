@@ -1244,7 +1244,7 @@ return [
                 ],
             ],
         ],
-        'carriages' => [
+        'carriage' => [
             'index' => [
                 'title' => 'Kereta',
                 'initial_date' => 'Tanggal Inisiasi :initial_date',

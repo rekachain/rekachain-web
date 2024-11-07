@@ -15,7 +15,13 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 
-export default function ({ project: initialProject, carriage: initialCarriage }: { project: ProjectResource, carriage: CarriageResource }) {
+export default function ({
+    project: initialProject,
+    carriage: initialCarriage,
+}: {
+    project: ProjectResource;
+    carriage: CarriageResource;
+}) {
     const { t } = useLaravelReactI18n();
     const [project, setProject] = useState<ProjectResource>(initialProject);
     const [carriage, setCarriage] = useState<CarriageResource>(initialCarriage);
@@ -50,7 +56,7 @@ export default function ({ project: initialProject, carriage: initialCarriage }:
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
-                                            {t('pages.project.carriages.panel.index.breadcrumbs.carriage', {
+                                            {t('pages.project.carriage.panel.index.breadcrumbs.carriage', {
                                                 carriage: carriage.type,
                                             })}
                                         </BreadcrumbPage>
