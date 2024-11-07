@@ -40,13 +40,13 @@ export default function CarriageTableView({
                             <TableCell>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [project.id, data.carriage.id])}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.components')}
                                 </Link>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [project.id, data.carriage.id])}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.panels')}
                                 </Link>

@@ -9,6 +9,7 @@ import RoleTableView from './Partials/RoleTableView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Role/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -42,6 +43,8 @@ export default function () {
         <div className="space-y-4">
             {roleResponse && (
                 <>
+                    <Filters setFilters={setFilters} filters={filters} />
+                    
                     <div className="hidden md:block">
                         <RoleTableView roleResponse={roleResponse} handleRoleDeletion={handleRoleResourceDeletion} />
                     </div>
