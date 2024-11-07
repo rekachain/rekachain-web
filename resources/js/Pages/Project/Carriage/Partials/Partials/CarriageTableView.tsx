@@ -20,13 +20,13 @@ export default function CarriageTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.carriages.partials.partials.carriage_table.headers.name')}
+                            {t('pages.project.carriage.partials.partials.carriage_table.headers.name')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.carriages.partials.partials.carriage_table.headers.description')}
+                            {t('pages.project.carriage.partials.partials.carriage_table.headers.description')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.carriages.partials.partials.carriage_table.headers.total_qty')}
+                            {t('pages.project.carriage.partials.partials.carriage_table.headers.total_qty')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -40,13 +40,19 @@ export default function CarriageTableView({
                             <TableCell>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [project.id, data.carriage.id])}
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
+                                        project.id,
+                                        data.carriage.id,
+                                    ])}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.components')}
                                 </Link>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [project.id, data.carriage.id])}
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
+                                        project.id,
+                                        data.carriage.id,
+                                    ])}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.panels')}
                                 </Link>

@@ -1244,7 +1244,7 @@ return [
                 ],
             ],
         ],
-        'carriages' => [
+        'carriage' => [
             'index' => [
                 'title' => 'Kereta',
                 'initial_date' => 'Tanggal Inisiasi :initial_date',
@@ -1255,7 +1255,7 @@ return [
                     'carriages' => 'Kereta',
                 ],
             ],
-            'components' => [
+            'component' => [
                 'index' => [
                     'title' => 'Komponen',
                     'initial_date' => 'Tanggal Inisiasi :initial_date',
@@ -1283,10 +1283,15 @@ return [
                         'dialogs' => [
                             'title' => 'Impor Komponen',
                             'description' => 'Impor data progres dan bahan mentah dari :component_name pada Proyek :project_name.',
+                            'description_already_has_material' => 'Komponen ini sudah memiliki bahan mentah',
                             'fields' => [
                                 'download_template' => 'Unduh Template',
                                 'file' => 'File',
                                 'work_aspect' => 'Sisi Kerja',
+                                'override' => 'Pilih Opsi Impor',
+                                'override_default' => 'Impor Ulang',
+                                'override_override' => 'Timpa',
+                                'override_merge' => 'Gabung',
                             ],
                             'buttons' => [
                                 'import' => 'Impor Komponen',
@@ -1419,7 +1424,7 @@ return [
                 ],
             ],
         ],
-        'components' => [
+        'component' => [
             'index' => [
                 'title' => 'Komponen',
                 'initial_date' => 'Tanggal Awal :initial_date',

@@ -20,13 +20,15 @@ export default function ComponentTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.components.partials.partials.component_table.headers.name')}
+                            {t('pages.project.carriage.component.partials.partials.component_table.headers.name')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.components.partials.partials.component_table.headers.description')}
+                            {t(
+                                'pages.project.carriage.component.partials.partials.component_table.headers.description',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.components.partials.partials.component_table.headers.total_qty')}
+                            {t('pages.project.carriage.component.partials.partials.component_table.headers.total_qty')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>

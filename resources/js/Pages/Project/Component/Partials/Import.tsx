@@ -50,7 +50,7 @@ export default function ({ project, component, hasMaterials = false }: { project
             component.id,
             data.work_aspect_id as number,
         );
-        await useSuccessToast(t('pages.project.components.partials.import.messages.imported'));
+        await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
         router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
@@ -70,20 +70,20 @@ export default function ({ project, component, hasMaterials = false }: { project
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.components.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.component.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
                     <DialogDescription>
-                        {t('pages.project.components.partials.import.dialogs.description', {
+                        {t('pages.project.component.partials.import.dialogs.description', {
                             component_name: component.name,
                             project_name: project.name,
                         })}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.project.components.partials.import.dialogs.fields.download_template')}</Label>
+                    <Label>{t('pages.project.component.partials.import.dialogs.fields.download_template')}</Label>
                     <Button
                         type="button"
                         variant="secondary"
@@ -92,12 +92,12 @@ export default function ({ project, component, hasMaterials = false }: { project
                     >
                         {loading
                             ? t('action.loading')
-                            : t('pages.project.components.partials.import.dialogs.buttons.download_template')}
+                            : t('pages.project.component.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
                 <div className="space-y-4">
                     <Label htmlFor="work_aspect_id">
-                        {t('pages.project.components.partials.import.dialogs.fields.work_aspect')}
+                        {t('pages.project.component.partials.import.dialogs.fields.work_aspect')}
                     </Label>
                     <GenericDataSelector
                         id="work_aspect_id"
@@ -115,9 +115,7 @@ export default function ({ project, component, hasMaterials = false }: { project
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">
-                            {t('pages.project.components.partials.import.dialogs.fields.file')}
-                        </Label>
+                        <Label htmlFor="file">{t('pages.project.component.partials.import.dialogs.fields.file')}</Label>
                         <Input
                             id="file"
                             type="file"
@@ -129,7 +127,7 @@ export default function ({ project, component, hasMaterials = false }: { project
                         <Button type="submit" disabled={loading}>
                             {loading
                                 ? t('action.loading')
-                                : t('pages.project.components.partials.import.dialogs.buttons.submit')}
+                                : t('pages.project.component.partials.import.dialogs.buttons.submit')}
                         </Button>
                     </DialogFooter>
                 </form>

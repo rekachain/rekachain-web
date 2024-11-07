@@ -1262,7 +1262,7 @@ return [
                 ],
             ],
         ],
-        'carriages' => [
+        'carriage' => [
             'index' => [
                 'title' => 'Carriages',
                 'initial_date' => 'Initial Date :initial_date',
@@ -1273,7 +1273,7 @@ return [
                     'carriages' => 'Carriages',
                 ],
             ],
-            'components' => [
+            'component' => [
                 'index' => [
                     'title' => 'Components',
                     'initial_date' => 'Initial Date :initial_date',
@@ -1301,10 +1301,15 @@ return [
                         'dialogs' => [
                             'title' => 'Import Component',
                             'description' => 'Import progress and raw material data of :component_name on Project :project_name.',
+                            'description_already_has_material' => 'This component already has raw material data',
                             'fields' => [
                                 'download_template' => 'Download Template',
                                 'file' => 'File',
                                 'work_aspect' => 'Work Aspect',
+                                'override' => 'What is your action?',
+                                'override_default' => 'Re-Import',
+                                'override_override' => 'Override',
+                                'override_merge' => 'Merge',
                             ],
                             'buttons' => [
                                 'import' => 'Import Component',
@@ -1437,7 +1442,7 @@ return [
                 ],
             ],
         ],
-        'components' => [
+        'component' => [
             'index' => [
                 'title' => 'Components',
                 'initial_date' => 'Initial Date :initial_date',

@@ -19,12 +19,14 @@ export default function PanelTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.project.panel.partials.partials.panel_table.headers.name')}</TableHead>
                         <TableHead>
-                            {t('pages.project.panel.partials.partials.panel_table.headers.description')}
+                            {t('pages.project.carriage.panel.partials.partials.panel_table.headers.name')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.panel.partials.partials.panel_table.headers.total_qty')}
+                            {t('pages.project.carriage.panel.partials.partials.panel_table.headers.description')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.project.carriage.panel.partials.partials.panel_table.headers.total_qty')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
