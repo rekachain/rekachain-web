@@ -1301,10 +1301,15 @@ return [
                         'dialogs' => [
                             'title' => 'Import Component',
                             'description' => 'Import progress and raw material data of :component_name on Project :project_name.',
+                            'description_already_has_material' => 'This component already has raw material data',
                             'fields' => [
                                 'download_template' => 'Download Template',
                                 'file' => 'File',
                                 'work_aspect' => 'Work Aspect',
+                                'override' => 'What is your action?',
+                                'override_default' => 'Re-Import',
+                                'override_override' => 'Override',
+                                'override_merge' => 'Merge',
                             ],
                             'buttons' => [
                                 'import' => 'Import Component',

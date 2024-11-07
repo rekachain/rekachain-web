@@ -21,17 +21,31 @@ import GenericDataSelector from '@/Components/GenericDataSelector';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { workAspectService } from '@/Services/workAspectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
 
-export default function ({ project, carriage, component, hasMaterials = false }: { project: any; carriage: any; component: any, hasMaterials?: boolean }) {
+export default function ({
+    project,
+    carriage,
+    component,
+    hasMaterials = false,
+}: {
+    project: any;
+    carriage: any;
+    component: any;
+    hasMaterials?: boolean;
+}) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
         component_id: number;
         work_aspect_id: number | null;
+        override: ProjectImportProgressMaterialOverride;
     }>({
         file: null,
         component_id: component.id,
         work_aspect_id: null,
+        override: 'default',
     });
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -50,6 +64,7 @@ export default function ({ project, carriage, component, hasMaterials = false }:
             data.file as File,
             component.id,
             data.work_aspect_id as number,
+            data.override,
         );
         await useSuccessToast(t('pages.project.carriage.component.partials.import.messages.imported'));
         router.visit(route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [project.id, carriage.id]));
@@ -71,7 +86,9 @@ export default function ({ project, carriage, component, hasMaterials = false }:
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.carriage.component.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? 'warning' : 'tertiary'}>
+                    {t('pages.project.carriage.component.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -127,6 +144,65 @@ export default function ({ project, carriage, component, hasMaterials = false }:
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
                         />
+                        {hasMaterials && (
+                            <div className="bg-warning text-black rounded">
+                                <p className="p-3">
+                                    {t(
+                                        'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
+                                    )}
+                                </p>
+
+                                <div className="bg-white text-black p-3 space-y-2 rounded-b">
+                                    <Label htmlFor="import-override">
+                                        {t('pages.project.carriage.component.partials.import.dialogs.fields.override')}
+                                    </Label>
+                                    <RadioGroup
+                                        id="import-override"
+                                        className="flex justify-between"
+                                        value={data.override}
+                                        onValueChange={value => setData('override', value as any)}
+                                    >
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="default"
+                                                id="default"
+                                                color="crimson"
+                                                className="border-black text-black"
+                                            />
+                                            <Label htmlFor="default">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_default',
+                                                )}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="override"
+                                                id="override"
+                                                className="border-black text-black"
+                                            />
+                                            <Label htmlFor="override">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_override',
+                                                )}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="merge"
+                                                id="merge"
+                                                className="border-black text-black"
+                                            />
+                                            <Label htmlFor="merge">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_merge',
+                                                )}
+                                            </Label>
+                                        </div>
+                                    </RadioGroup>
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
