@@ -103,6 +103,15 @@
             "args": [
                 "${input:pestFile}"
             ],
+        },
+        {
+            "label": "Run Verify Structure Test",
+            "type": "shell",
+            "problemMatcher": [],
+            "command": ".\\vendor\\bin\\pest",
+            "args": [
+                "${input:verifyFile}"
+            ]
         }
 
         // ----------------------------------------------------------------
@@ -113,6 +122,15 @@
             "type": "promptString",
             "description": "Enter the file relative path to be tested (leave blank to run all tests)",
             "default": "tests\\Unit\\VerifyStandardProjectStructureTest.php",
+        },
+        {
+            "id": "verifyFile",
+            "type": "pickString",
+            "description": "Choose the verify file",
+            "options": [
+                "tests\\Unit\\VerifyStandardProjectStructureTest.php",
+                "tests\\Unit\\VerifyLocalizationImplementation.php"
+            ]
         }
     ]
 }

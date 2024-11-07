@@ -36,7 +36,7 @@ export default function PanelTableView({
                             <TableCell>{data.panel.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} carriage={carriage} panel={data.panel} />
+                                <Import project={project} carriage={carriage} panel={data.panel} hasMaterials={data.has_materials} />
                             </TableCell>
                         </TableRow>
                     ))}

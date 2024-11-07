@@ -120,9 +120,9 @@ class ProjectController extends Controller {
             case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
                 return $this->projectService->addTrainsets($project, $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL->value:
-                return $this->projectService->importProjectPanelProgressMaterial($project, $request->file('file'), $request->get('panel_id'));
+                return $this->projectService->importProjectPanelProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL->value:
-                return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->get('component_id'), $request->get('work_aspect_id'));
+                return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->validated());
         }
 
         if ($this->ajax()) {
@@ -183,9 +183,9 @@ class ProjectController extends Controller {
                 
                 // services
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL->value:
-                    return $this->projectService->importProjectCarriagePanelProgressMaterial($project, $carriage, $request->file('file'), $request->get('panel_id'));
+                    return $this->projectService->importProjectCarriagePanelProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL->value:
-                    return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->get('component_id'), $request->get('work_aspect_id'));    
+                    return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->validated());    
             }
             return [
                 'project' => new ProjectResource($project),
