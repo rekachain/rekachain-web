@@ -30,12 +30,14 @@ class UpdateProjectRequest extends FormRequest {
                 return [
                     'file' => 'required|file|mimes:xlsx,xlsm',
                     'panel_id' => 'required|exists:panels,id',
+                    'override' => 'nullable|boolean',
                 ];
             case IntentEnum::WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL->value:
                 return [
                     'file' => 'required|file|mimes:xlsx,xlsm',
                     'component_id' => 'required|exists:components,id',
                     'work_aspect_id' => 'required|exists:work_aspects,id',
+                    'override' => 'nullable|boolean',
                 ];
         }
 
