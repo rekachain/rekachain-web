@@ -33,7 +33,7 @@ export default function ({
     const Components = lazy(() => import('./Partials/Components'));
     return (
         <>
-            <Head title={t('pages.project.components.index.title')} />
+            <Head title={t('pages.project.carriage.component.index.title')} />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -42,13 +42,13 @@ export default function ({
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS}.index`)}>
-                                            {t('pages.project.components.index.breadcrumbs.home')}
+                                            {t('pages.project.component.index.breadcrumbs.home')}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, [project.id])}>
-                                            {t('pages.project.components.index.breadcrumbs.project', {
+                                            {t('pages.project.component.index.breadcrumbs.project', {
                                                 project: project.name,
                                             })}
                                         </Link>
@@ -56,14 +56,14 @@ export default function ({
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
-                                            {t('pages.project.carriage.components.index.breadcrumbs.carriage', {
+                                            {t('pages.project.carriage.component.index.breadcrumbs.carriage', {
                                                 carriage: carriage.type,
                                             })}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">{t('pages.project.components.index.title')}</h1>
+                            <h1 className="text-page-header my-4">{t('pages.project.component.index.title')}</h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

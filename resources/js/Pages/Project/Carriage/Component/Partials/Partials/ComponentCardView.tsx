@@ -37,7 +37,7 @@ export default function ({
                         <p className="text-sm">{data.component.description}</p>
 
                         <h5 className="font-bold text-sm ">
-                            {t('pages.project.components.partials.partials.component_card.headers.total_qty', {
+                            {t('pages.project.carriage.component.partials.partials.component_card.headers.total_qty', {
                                 total_qty: data.total_qty,
                             })}
                         </h5>

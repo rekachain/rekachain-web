@@ -1255,7 +1255,7 @@ return [
                     'carriages' => 'Kereta',
                 ],
             ],
-            'components' => [
+            'component' => [
                 'index' => [
                     'title' => 'Komponen',
                     'initial_date' => 'Tanggal Inisiasi :initial_date',

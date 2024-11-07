@@ -1273,7 +1273,7 @@ return [
                     'carriages' => 'Carriages',
                 ],
             ],
-            'components' => [
+            'component' => [
                 'index' => [
                     'title' => 'Components',
                     'initial_date' => 'Initial Date :initial_date',
