@@ -999,6 +999,28 @@ return [
                             ],
                         ],
                     ],
+                    'preview_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'view_detail_attachment' => 'Lihat Detail KPM',
+                                'mechanic_attachment' => 'KPM Mekanik',
+                                'electric_attachment' => 'KPM Elektrik',
+                                'panel_attachment' => 'KPM Panel',
+                            ],
+                            'components' => [
+                                'preview_trainset_attachment' => [
+                                    'props' => [
+                                        'title' => 'KPM Trainset',
+                                    ],
+                                ],
+                                'preview_panel_attachment' => [
+                                    'props' => [
+                                        'title' => 'KPM Panel',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [

@@ -1017,6 +1017,28 @@ return [
                             ],
                         ],
                     ],
+                    'preview_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'view_detail_attachment' => 'View Detail Attachment',
+                                'mechanic_attachment' => 'Mechanic Attachment',
+                                'electric_attachment' => 'Electric Attachment',
+                                'panel_attachment' => 'Panel Attachment',
+                            ],
+                            'components' => [
+                                'preview_trainset_attachment' => [
+                                    'props' => [
+                                        'title' => 'Trainset Attachment',
+                                    ],
+                                ],
+                                'preview_panel_attachment' => [
+                                    'props' => [
+                                        'title' => 'Panel Attachment',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
