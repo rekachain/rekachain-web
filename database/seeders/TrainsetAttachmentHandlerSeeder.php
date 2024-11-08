@@ -16,39 +16,26 @@ class TrainsetAttachmentHandlerSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-        $faker = Faker::create();
-        
         $datas = TrainsetAttachment::all();
-
         $handles = ['prepare', 'send', 'receive'];
         
         foreach ($datas as $data){
             foreach ($handles as $handle){
                 if ($handle == 'receive'){
-                    if ($data->type == TrainsetAttachmentTypeEnum::MECHANIC){
-                        TrainsetAttachmentHandler::create([
-                            'user_id' => User::role(RoleEnum::SUPERVISOR_MEKANIK)->inRandomOrder()->first()->id, 
-                            'handler_name' => User::role(RoleEnum::SUPERVISOR_MEKANIK)->inRandomOrder()->first()->name,
-                            'trainset_attachment_id' => $data->id,
-                            'handles' => $handle,
-                        ]);
-                    }else {
-                        TrainsetAttachmentHandler::create([
-                            'user_id' => User::role(RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first()->id, 
-                            'handler_name' => User::role(RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first()->name,
-                            'trainset_attachment_id' => $data->id,
-                            'handles' => $handle,
-                        ]);    
-                    }
+                    $user = $data->type == TrainsetAttachmentTypeEnum::MECHANIC 
+                        ? User::role(RoleEnum::SUPERVISOR_MEKANIK)->inRandomOrder()->first()
+                        : User::role(RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first();
                 } else {
-                    TrainsetAttachmentHandler::create([
-                        'user_id' => User::role(RoleEnum::PPC_PENGENDALIAN)->inRandomOrder()->first()->id, 
-                        'handler_name' => User::role(RoleEnum::PPC_PENGENDALIAN)->inRandomOrder()->first()->name,
-                        'trainset_attachment_id' => $data->id,
-                        'handles' => $handle,
-                    ]); 
-                } 
+                    $user = User::role(RoleEnum::PPC_PENGENDALIAN)->inRandomOrder()->first();
+                }
+
+                TrainsetAttachmentHandler::create([
+                    'user_id' => $user->id,
+                    'handler_name' => $user->name,
+                    'trainset_attachment_id' => $data->id,
+                    'handles' => $handle,
+                ]);
             }
         }
-    } 
+    }
 }
