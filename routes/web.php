@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
+    Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset']);
     // Route::resource('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('divisions', DivisionController::class);
     Route::resource('workshops', WorkshopController::class);

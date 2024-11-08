@@ -1,6 +1,16 @@
+// In one trainset, what are the Carriages and how many of them
+// SELECT * FROM `carriage_trainset` inner join carriages on carriage_trainset.carriage_id = carriages.id where trainset_id = '1'
+//
+
+// In one trainset, what kind of panel that is in there
+// SELECT trainsets.name, carriage_panels.panel_id, panels.name ,count(carriage_panels.panel_id) FROM `carriage_trainset` INNER JOIN carriage_panels on carriage_panels.carriage_trainset_id = carriage_trainset.id inner join trainsets on trainsets.id = carriage_trainset.trainset_id inner JOIN panels on carriage_panels.panel_id = panels.id where trainset_id = '1' GROUP by carriage_panels.panel_id ORDER BY `carriage_panels`.`panel_id` ASC
+
+// In one trainset how is the panel condition
+// SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { PageProps } from '../Types';
+import { PageProps } from '../../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
@@ -18,11 +28,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover
 import { useState } from 'react';
 
 const project = [
-    {
-        value: 'Semua Proyek',
-        label: 'Semua Proyek',
-        link: '/dashboard',
-    },
     {
         value: '612',
         label: '612',
@@ -116,7 +121,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <div className="flex justify-between w-full items-center">
                                 <h2 className="text-xl my-2">
-                                    {data['project'] == null ? 'Semua Proyek' : `Proyek ${data['project']}`}
+                                    {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`}
                                 </h2>
                                 <Popover open={open} onOpenChange={setOpen}>
                                     <PopoverTrigger asChild>
@@ -169,48 +174,26 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Popover>
                             </div>
                             <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                                <BarChart accessibilityLayer data={data['ts']}>
+                                <BarChart accessibilityLayer data={data['carriages']}>
                                     <CartesianGrid vertical={false} />
-                                    <XAxis
-                                        dataKey="name"
-                                        tickLine={false}
-                                        tickMargin={10}
-                                        axisLine={false}
-                                        tickFormatter={value => value.slice(0, 6)}
-                                    />
+                                    <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                    <Bar dataKey="qty" fill="var(--color-done)" radius={4} />
                                 </BarChart>
                             </ChartContainer>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
                             <div className="">
-                                <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
-                                <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
+                                <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
+                                <h3 className="text-base">Panel yang ada pada TS 1</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
-                                    <BarChart accessibilityLayer data={data.ws} layout="vertical">
+                                    <BarChart accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
-                                        <XAxis type="number" dataKey="in_progress"></XAxis>
-                                        <XAxis type="number" dataKey="done"></XAxis>
-                                        <YAxis
-                                            // max={10}
-                                            className=""
-                                            dataKey="name"
-                                            type="category"
-                                            tickLine={false}
-                                            // tickSize={20}
-                                            // tickCount={}
-                                            // padding={}
-                                            // minTickGap={0}
-                                            // tickMargin={1}
-                                            axisLine={false}
-                                        />
+                                        <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                        <Bar dataKey="total" fill="var(--color-done)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
@@ -218,22 +201,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className=" ">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
-                                    <BarChart accessibilityLayer data={data['panel']}>
-                                        <CartesianGrid vertical={false} />
-                                        <YAxis type="number" dataKey="in_progress"></YAxis>
-                                        <XAxis
-                                            dataKey="name"
-                                            tickLine={false}
-                                            // tickMargin={10}
-                                            axisLine={false}
-                                            tickFormatter={value => value.slice(0, 6)}
-                                        />
-                                        <ChartTooltip content={<ChartTooltipContent />} />
-                                        <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                    </BarChart>
+                                <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
+                                    <PieChart>
+                                        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                        <Pie data={data['total']} dataKey="" nameKey="browser" innerRadius={60} />
+                                    </PieChart>
                                 </ChartContainer>
                             </div>
                         </div>
