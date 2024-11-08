@@ -24,6 +24,16 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
 import { OctagonAlert } from 'lucide-react';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/Components/UI/dropdown-menu';
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/UI/tooltip';
 
 export default function ({
     project,
@@ -147,16 +157,16 @@ export default function ({
                         />
                         {hasMaterials && (
                             <div className=" text-black rounded">
-                                <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
+                                {/* <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
                                     <OctagonAlert className="h-[30px]"></OctagonAlert>
                                     <p className="">
                                         {t(
                                             'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
                                         )}
                                     </p>
-                                </div>
+                                </div> */}
 
-                                <div className="bg-white dark:bg-transparent dark:text-white text-black p-3 space-y-2 rounded-b">
+                                {/* <div className="bg-white dark:bg-transparent dark:text-white text-black p-3 space-y-2 rounded-b">
                                     <Label htmlFor="import-override">
                                         {t('pages.project.carriage.component.partials.import.dialogs.fields.override')}
                                     </Label>
@@ -170,10 +180,22 @@ export default function ({
                                             <RadioGroupItem
                                                 value="default"
                                                 id="default"
-                                                color="crimson"
                                                 className="border-black text-black dark:border-white dark:text-white"
                                             />
                                             <Label htmlFor="default">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_merge',
+                                                )}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="merge"
+                                                id="merge"
+                                                color="crimson"
+                                                className="border-black text-black dark:border-white dark:text-white"
+                                            />
+                                            <Label htmlFor="merge">
                                                 {t(
                                                     'pages.project.carriage.component.partials.import.dialogs.fields.override_default',
                                                 )}
@@ -191,29 +213,113 @@ export default function ({
                                                 )}
                                             </Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem
-                                                value="merge"
-                                                id="merge"
-                                                className="border-black text-black dark:border-white dark:text-white"
-                                            />
-                                            <Label htmlFor="merge">
-                                                {t(
-                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_merge',
-                                                )}
-                                            </Label>
-                                        </div>
                                     </RadioGroup>
-                                </div>
+                                </div> */}
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger className="w-full bg-rose-700">
+                                        <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
+                                            <OctagonAlert className="h-[30px]"></OctagonAlert>
+                                            <p className="">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
+                                                )}
+                                            </p>
+                                        </div>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-[450px]">
+                                        <DropdownMenuLabel>Aksi yang harus diambil</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <RadioGroup
+                                            id="import-override"
+                                            className="flex justify-between mt-5"
+                                            value={data.override}
+                                            onValueChange={value => setData('override', value as any)}
+                                        >
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem
+                                                    value="default"
+                                                    id="default"
+                                                    className="border-black text-black dark:border-white dark:text-white"
+                                                />
+                                                <TooltipProvider delayDuration={70}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger className="w-full text-left ">
+                                                            <Label htmlFor="default">
+                                                                {t(
+                                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_merge',
+                                                                )}
+                                                            </Label>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>Add to library</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem
+                                                    value="merge"
+                                                    id="merge"
+                                                    color="crimson"
+                                                    className="border-black text-black dark:border-white dark:text-white"
+                                                />
+                                                <TooltipProvider delayDuration={70}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger className="w-full text-left ">
+                                                            <Label htmlFor="merge">
+                                                                {t(
+                                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_default',
+                                                                )}
+                                                            </Label>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>Add to library</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
+                                            <div className="flex items-center space-x-2">
+                                                <RadioGroupItem
+                                                    value="override"
+                                                    id="override"
+                                                    className="border-black text-black dark:border-white dark:text-white"
+                                                />
+                                                <TooltipProvider delayDuration={70}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger className="w-full text-left ">
+                                                            <Label htmlFor="override">
+                                                                {t(
+                                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_override',
+                                                                )}
+                                                            </Label>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>Add to library</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
+                                        </RadioGroup>
+                                        <div className="flex justify-center w-full mt-5">
+                                            <Button type="submit" disabled={loading}>
+                                                {loading
+                                                    ? t('action.loading')
+                                                    : t(
+                                                          'pages.project.carriage.component.partials.import.dialogs.buttons.submit',
+                                                      )}
+                                            </Button>
+                                        </div>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
                         )}
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
+                        {/* <Button type="submit" disabled={loading}>
                             {loading
                                 ? t('action.loading')
                                 : t('pages.project.carriage.component.partials.import.dialogs.buttons.submit')}
-                        </Button>
+                        </Button> */}
                     </DialogFooter>
                 </form>
             </DialogContent>
