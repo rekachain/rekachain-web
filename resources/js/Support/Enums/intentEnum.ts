@@ -4,7 +4,8 @@ const intents = {
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
     WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
     WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL: 'web.project.import.component.progress.and.material',
-    WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL: 'web.project.import.carriage.component.progress.and.material',
+    WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL:
+        'web.project.import.carriage.component.progress.and.material',
     WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL: 'web.project.import.carriage.panel.progress.and.material',
     WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL: 'web.project.import.panel.progress.and.material',
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
@@ -14,6 +15,7 @@ const intents = {
     WEB_TRAINSET_GET_ALL_PANELS: 'web.trainset.get.all.panels',
     WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY: 'web.trainset.get.all.panels.with.qty',
     WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET: 'web.trainset.update.carriage.trainset',
+    WEB_TRAINSET_EXPORT_SERIAL_NUMBERS: 'web.trainset.export.serial.numbers',
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
     WEB_PANEL_IMPORT_PANEL: 'web.panel.import.panel',

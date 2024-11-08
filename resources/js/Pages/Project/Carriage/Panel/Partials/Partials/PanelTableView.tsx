@@ -19,12 +19,14 @@ export default function PanelTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.project.panel.partials.partials.panel_table.headers.name')}</TableHead>
                         <TableHead>
-                            {t('pages.project.panel.partials.partials.panel_table.headers.description')}
+                            {t('pages.project.carriage.panel.partials.partials.panel_table.headers.name')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.panel.partials.partials.panel_table.headers.total_qty')}
+                            {t('pages.project.carriage.panel.partials.partials.panel_table.headers.description')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.project.carriage.panel.partials.partials.panel_table.headers.total_qty')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -36,7 +38,7 @@ export default function PanelTableView({
                             <TableCell>{data.panel.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} carriage={carriage} panel={data.panel} />
+                                <Import project={project} carriage={carriage} panel={data.panel} hasMaterials={data.has_materials} />
                             </TableCell>
                         </TableRow>
                     ))}

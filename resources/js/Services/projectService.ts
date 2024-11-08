@@ -6,6 +6,7 @@ import { ProjectComponentResource } from '@/Support/Interfaces/Resources/Project
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { AxiosRequestConfig } from 'axios';
+import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
 
 export const projectService = {
     ...serviceFactory<ProjectResource>(ROUTES.PROJECTS),
@@ -154,20 +155,30 @@ export const projectService = {
         file: File,
         componentId: number,
         workAspectId: number,
+        override: ProjectImportProgressMaterialOverride,
     ) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('component_id', componentId.toString());
         formData.append('work_aspect_id', workAspectId.toString());
-        return await window.axios.post(route(`${ROUTES.PROJECTS_CARRIAGES}.update`, [projectId, carriageId]), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
+
+        if (override !== 'default') {
+            formData.append('override', override === 'override' ? '1' : '0');
+        }
+
+        return await window.axios.post(
+            route(`${ROUTES.PROJECTS_CARRIAGES}.update`, [projectId, carriageId]),
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL,
+                },
             },
-            params: {
-                _method: 'PUT',
-                intent: IntentEnum.WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL,
-            },
-        });
+        );
     },
     importCarriagePanelsProgressRawMaterial: async (
         projectId: number,
@@ -178,14 +189,18 @@ export const projectService = {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('panel_id', panelId.toString());
-        return await window.axios.post(route(`${ROUTES.PROJECTS_CARRIAGES}.update`, [projectId, carriageId]), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
+        return await window.axios.post(
+            route(`${ROUTES.PROJECTS_CARRIAGES}.update`, [projectId, carriageId]),
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL,
+                },
             },
-            params: {
-                _method: 'PUT',
-                intent: IntentEnum.WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL,
-            },
-        });
+        );
     },
 };

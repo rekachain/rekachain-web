@@ -147,25 +147,18 @@ const GenerateAttachment = ({
                         onValueChange={(value: string) => setActiveTab(value as GenerateAttachmentTabEnum)}
                     >
                         <TabsList>
-                            <TabsTrigger
-                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                                className={trainset.has_mechanic_trainset_attachment ? 'bg-green-500' : ''}
-                            >
+                            <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
                                 {t(
                                     'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.trainset_attachment_mechanic',
                                 )}
                             </TabsTrigger>
-                            <TabsTrigger
-                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
-                                className={trainset.has_electric_trainset_attachment ? 'bg-green-500' : ''}
-                            >
+                            <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
                                 {t(
                                     'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.trainset_attachment_electric',
                                 )}
                             </TabsTrigger>
                             <TabsTrigger
                                 value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}
-                                className={trainset.has_panel_attachment ? 'bg-green-500' : ''}
                                 disabled={
                                     trainset.has_panel_attachment ||
                                     !trainset.has_mechanic_trainset_attachment ||

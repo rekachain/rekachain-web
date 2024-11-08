@@ -829,9 +829,18 @@ return [
                     'new_preset_alert' => 'You are using a custom preset, do you want to save it as a new preset?',
                     'buttons' => [
                         'add_carriage' => 'Add Carriage',
+                        'export_serial_numbers' => 'Export Serial Numbers',
                     ],
                     'messages' => [
                         'carriage_added' => 'Carriage added successfully!',
+                    ],
+                    'dialogs' => [
+                        'export_serial_numbers' => [
+                            'confirmations' => [
+                                'title' => 'Are you sure?',
+                                'text' => 'This process may take a while',
+                            ],
+                        ],
                     ],
                     'breadcrumbs' => [
                         'home' => 'Home',
@@ -1014,6 +1023,28 @@ return [
                             ],
                             'buttons' => [
                                 'add_carriage' => 'Add Carriage',
+                            ],
+                        ],
+                    ],
+                    'preview_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'view_detail_attachment' => 'View Detail Attachment',
+                                'mechanic_attachment' => 'Mechanic Attachment',
+                                'electric_attachment' => 'Electric Attachment',
+                                'panel_attachment' => 'Panel Attachment',
+                            ],
+                            'components' => [
+                                'preview_trainset_attachment' => [
+                                    'props' => [
+                                        'title' => 'Trainset Attachment',
+                                    ],
+                                ],
+                                'preview_panel_attachment' => [
+                                    'props' => [
+                                        'title' => 'Panel Attachment',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -1231,7 +1262,7 @@ return [
                 ],
             ],
         ],
-        'carriages' => [
+        'carriage' => [
             'index' => [
                 'title' => 'Carriages',
                 'initial_date' => 'Initial Date :initial_date',
@@ -1242,7 +1273,7 @@ return [
                     'carriages' => 'Carriages',
                 ],
             ],
-            'components' => [
+            'component' => [
                 'index' => [
                     'title' => 'Components',
                     'initial_date' => 'Initial Date :initial_date',
@@ -1270,10 +1301,15 @@ return [
                         'dialogs' => [
                             'title' => 'Import Component',
                             'description' => 'Import progress and raw material data of :component_name on Project :project_name.',
+                            'description_already_has_material' => 'This component already has raw material data',
                             'fields' => [
                                 'download_template' => 'Download Template',
                                 'file' => 'File',
                                 'work_aspect' => 'Work Aspect',
+                                'override' => 'What is your action?',
+                                'override_default' => 'Re-Import',
+                                'override_override' => 'Override',
+                                'override_merge' => 'Merge',
                             ],
                             'buttons' => [
                                 'import' => 'Import Component',
@@ -1406,7 +1442,7 @@ return [
                 ],
             ],
         ],
-        'components' => [
+        'component' => [
             'index' => [
                 'title' => 'Components',
                 'initial_date' => 'Initial Date :initial_date',

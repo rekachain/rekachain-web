@@ -30,20 +30,26 @@ export default function ({
                         <p className="text-sm">{data.carriage.description}</p>
 
                         <h5 className="font-bold text-sm ">
-                            {t('pages.project.carriages.partials.partials.carriage_card.headers.total_qty', {
+                            {t('pages.project.carriage.partials.partials.carriage_card.headers.total_qty', {
                                 total_qty: data.total_qty,
                             })}
                         </h5>
                         <div className="flex items-center justify-end w-full">
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
-                                href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [project.id, data.carriage.id])}
+                                href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
+                                    project.id,
+                                    data.carriage.id,
+                                ])}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.components')}
                             </Link>
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
-                                href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [project.id, data.carriage.id])}
+                                href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
+                                    project.id,
+                                    data.carriage.id,
+                                ])}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.panels')}
                             </Link>

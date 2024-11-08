@@ -37,13 +37,13 @@ export default function ({
                         <p className="text-sm">{data.panel.description}</p>
 
                         <h5 className="font-bold text-sm">
-                            {t('pages.project.panel.partials.partials.panel_card.headers.total_qty', {
+                            {t('pages.project.carriage.panel.partials.partials.panel_card.headers.total_qty', {
                                 total_qty: data.total_qty,
                             })}
                         </h5>
                         {/* <h5 className=" text-sm ">Lokasi : {panel.location}</h5> */}
                         <div className="flex items-center justify-end w-full">
-                            <Import project={project} carriage={carriage} panel={data.panel} />
+                            <Import project={project} carriage={carriage} panel={data.panel} hasMaterials={data.has_materials} />
                         </div>
                     </div>
                 </AnimateIn>

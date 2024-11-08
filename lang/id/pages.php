@@ -811,9 +811,18 @@ return [
                     'new_preset_alert' => 'Anda menggunakan preset kustom, apakah Anda ingin menyimpannya sebagai preset baru?',
                     'buttons' => [
                         'add_carriage' => 'Tambah Kereta',
+                        'export_serial_numbers' => 'Ekspor Nomor Seri',
                     ],
                     'messages' => [
                         'carriage_added' => 'Kereta berhasil ditambahkan!',
+                    ],
+                    'dialogs' => [
+                        'export_serial_numbers' => [
+                            'confirmations' => [
+                                'title' => 'Apakah Anda yakin?',
+                                'text' => 'Proses ini akan membutuhkan waktu beberapa saat.',
+                            ],
+                        ],
                     ],
                     'breadcrumbs' => [
                         'home' => 'Beranda',
@@ -999,6 +1008,28 @@ return [
                             ],
                         ],
                     ],
+                    'preview_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'view_detail_attachment' => 'Lihat Detail KPM',
+                                'mechanic_attachment' => 'KPM Mekanik',
+                                'electric_attachment' => 'KPM Elektrik',
+                                'panel_attachment' => 'KPM Panel',
+                            ],
+                            'components' => [
+                                'preview_trainset_attachment' => [
+                                    'props' => [
+                                        'title' => 'KPM Trainset',
+                                    ],
+                                ],
+                                'preview_panel_attachment' => [
+                                    'props' => [
+                                        'title' => 'KPM Panel',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
@@ -1036,7 +1067,7 @@ return [
                                 'download' => 'Unduh Lampiran',
                             ],
                             'dialogs' => [
-                                'title' => 'Lampiran Panel',
+                                'title' => 'KPM Panel',
                                 'headers' => [
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
@@ -1213,7 +1244,7 @@ return [
                 ],
             ],
         ],
-        'carriages' => [
+        'carriage' => [
             'index' => [
                 'title' => 'Kereta',
                 'initial_date' => 'Tanggal Inisiasi :initial_date',
@@ -1224,7 +1255,7 @@ return [
                     'carriages' => 'Kereta',
                 ],
             ],
-            'components' => [
+            'component' => [
                 'index' => [
                     'title' => 'Komponen',
                     'initial_date' => 'Tanggal Inisiasi :initial_date',
@@ -1252,10 +1283,15 @@ return [
                         'dialogs' => [
                             'title' => 'Impor Komponen',
                             'description' => 'Impor data progres dan bahan mentah dari :component_name pada Proyek :project_name.',
+                            'description_already_has_material' => 'Komponen ini sudah memiliki bahan mentah',
                             'fields' => [
                                 'download_template' => 'Unduh Template',
                                 'file' => 'File',
                                 'work_aspect' => 'Sisi Kerja',
+                                'override' => 'Pilih Opsi Impor',
+                                'override_default' => 'Impor Ulang',
+                                'override_override' => 'Timpa',
+                                'override_merge' => 'Gabung',
                             ],
                             'buttons' => [
                                 'import' => 'Impor Komponen',
@@ -1388,7 +1424,7 @@ return [
                 ],
             ],
         ],
-        'components' => [
+        'component' => [
             'index' => [
                 'title' => 'Komponen',
                 'initial_date' => 'Tanggal Awal :initial_date',
