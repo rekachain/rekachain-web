@@ -23,6 +23,7 @@ import { workAspectService } from '@/Services/workAspectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
+import { OctagonAlert } from 'lucide-react';
 
 export default function ({
     project,
@@ -145,14 +146,17 @@ export default function ({
                             onChange={handleChangeImportFile}
                         />
                         {hasMaterials && (
-                            <div className="bg-warning text-black rounded">
-                                <p className="p-3">
-                                    {t(
-                                        'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
-                                    )}
-                                </p>
+                            <div className=" text-black rounded">
+                                <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
+                                    <OctagonAlert className="h-[30px]"></OctagonAlert>
+                                    <p className="">
+                                        {t(
+                                            'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
+                                        )}
+                                    </p>
+                                </div>
 
-                                <div className="bg-white text-black p-3 space-y-2 rounded-b">
+                                <div className="bg-white dark:bg-transparent dark:text-white text-black p-3 space-y-2 rounded-b">
                                     <Label htmlFor="import-override">
                                         {t('pages.project.carriage.component.partials.import.dialogs.fields.override')}
                                     </Label>
@@ -167,7 +171,7 @@ export default function ({
                                                 value="default"
                                                 id="default"
                                                 color="crimson"
-                                                className="border-black text-black"
+                                                className="border-black text-black dark:border-white dark:text-white"
                                             />
                                             <Label htmlFor="default">
                                                 {t(
@@ -179,7 +183,7 @@ export default function ({
                                             <RadioGroupItem
                                                 value="override"
                                                 id="override"
-                                                className="border-black text-black"
+                                                className="border-black text-black dark:border-white dark:text-white"
                                             />
                                             <Label htmlFor="override">
                                                 {t(
@@ -191,7 +195,7 @@ export default function ({
                                             <RadioGroupItem
                                                 value="merge"
                                                 id="merge"
-                                                className="border-black text-black"
+                                                className="border-black text-black dark:border-white dark:text-white"
                                             />
                                             <Label htmlFor="merge">
                                                 {t(
