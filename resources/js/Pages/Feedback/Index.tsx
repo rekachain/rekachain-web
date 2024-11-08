@@ -1,0 +1,25 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { lazy, Suspense } from 'react';
+import { Head } from '@inertiajs/react';
+import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+
+export default function () {
+    const { t } = useLaravelReactI18n();
+    const Feedbacks = lazy(() => import('./Partials/Feedbacks'));
+    return (
+        <>
+            <Head title={t('pages.feedback.index.title')} />
+            <AuthenticatedLayout>
+                <div className="p-4">
+                    <div className="flex gap-5 items-center">
+                        <h1 className="text-page-header my-4">{t('pages.feedback.index.title')}</h1>
+                    </div>
+                    <Suspense fallback={<StaticLoadingOverlay />}>
+                        <Feedbacks />
+                    </Suspense>
+                </div>
+            </AuthenticatedLayout>
+        </>
+    );
+}

@@ -13,9 +13,10 @@ class Component extends Model {
     protected $fillable = [
         'name',
         'progress_id',
+        'description',
     ];
 
-    public function carriage_panel_component(): HasMany {
+    public function carriage_panel_components(): HasMany {
         return $this->hasMany(CarriagePanelComponent::class);
     }
 
@@ -24,6 +25,6 @@ class Component extends Model {
     }
 
     public function canBeDeleted(): bool {
-        return $this->carriage_panel_component()->count() === 0;
+        return $this->carriage_panel_components()->count() === 0;
     }
 }

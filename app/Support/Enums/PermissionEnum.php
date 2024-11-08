@@ -53,6 +53,11 @@ enum PermissionEnum: string {
     case PANEL_UPDATE = 'panel-update';
     case PANEL_DELETE = 'panel-delete';
 
+    case PANEL_ATTACHMENT_CREATE = 'panel-attachment-create';
+    case PANEL_ATTACHMENT_READ = 'panel-attachment-read';
+    case PANEL_ATTACHMENT_UPDATE = 'panel-attachment-update';
+    case PANEL_ATTACHMENT_DELETE = 'panel-attachment-delete';
+
     case CARRIAGE_PANEL_CREATE = 'carriage-panel-create';
     case CARRIAGE_PANEL_READ = 'carriage-panel-read';
     case CARRIAGE_PANEL_UPDATE = 'carriage-panel-update';
@@ -87,6 +92,12 @@ enum PermissionEnum: string {
     case COMPONENT_READ = 'component-read';
     case COMPONENT_UPDATE = 'component-update';
     case COMPONENT_DELETE = 'component-delete';
+
+    case FEEDBACK_CREATE = 'feedback-create';
+    case FEEDBACK_READ = 'feedback-read';
+    case FEEDBACK_READ_ALL = 'feedback-read-all';
+    case FEEDBACK_UPDATE = 'feedback-update';
+    case FEEDBACK_DELETE = 'feedback-delete';
 
     /**
      * [Deprecated] Group permissions by first word.

@@ -6,9 +6,11 @@ use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\CarriageTrainsetController;
 use App\Http\Controllers\ComponentController;
 use App\Http\Controllers\ComponentMaterialController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailWorkerPanelController;
 use App\Http\Controllers\DetailWorkerTrainsetController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
@@ -20,8 +22,10 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StepController;
+use App\Http\Controllers\TrainsetAttachmentController;
 use App\Http\Controllers\TrainsetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkAspectController;
 use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\WorkDayTimeController;
 use App\Http\Controllers\WorkshopController;
@@ -46,13 +50,15 @@ if (app()->isLocal()) {
 require __DIR__ . '/auth.php';
 
 Route::redirect('/', 'dashboard');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::middleware('auth')->group(function () {
-    Route::inertia('/dashboard', 'Dashboard')->middleware(['verified'])->name('dashboard');
+    // Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('divisions', DivisionController::class);
     Route::resource('workshops', WorkshopController::class);
     Route::resource('workstations', WorkstationController::class);
@@ -61,6 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('projects', ProjectController::class);
     Route::resource('trainsets', TrainsetController::class);
+    Route::resource('trainset-attachments', TrainsetAttachmentController::class);
+    Route::resource('panel-attachments', PanelAttachmentController::class);
     Route::resource('raw-materials', RawMaterialController::class);
     Route::resource('carriages', CarriageController::class);
     Route::resource('carriage-presets', CarriagePresetController::class);
@@ -71,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
     Route::resource('components', ComponentController::class);
     Route::resource('component-materials', ComponentMaterialController::class);
+    Route::resource('work-aspects', WorkAspectController::class);
     Route::resource('work-days', WorkDayController::class);
     Route::resource('work-day-times', WorkDayTimeController::class);
     Route::resource('steps', StepController::class);
@@ -78,12 +87,24 @@ Route::middleware('auth')->group(function () {
     Route::resource('panel-attachments', PanelAttachmentController::class);
     Route::resource('detail-worker-panels', DetailWorkerPanelController::class);
     Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
+    Route::resource('feedback', FeedbackController::class)->except(['store']);
 
-    Route::controller(ProjectController::class)->group(function () {
-        Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
-        Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriages')->name('projects.trainsets.carriage-trainsets.index');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'panels')->name('projects.trainsets.carriage-trainsets.panels.index');
+    Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
+        Route::get('components', 'project_components')->name('components.index');
+        Route::get('panels', 'project_panels')->name('panels.index');
+        Route::group(['prefix' => 'carriages', 'as' => 'carriages.'], function () {
+            Route::get('/', 'project_carriages')->name('index');
+            Route::get('/{carriage}', 'project_carriage')->name('show');
+            Route::put('/{carriage}', 'project_carriage')->name('update');
+            Route::get('/{carriage}/components', 'project_carriage_components')->name('components.index');
+            Route::get('/{carriage}/panels', 'project_carriage_panels')->name('panels.index');
+        });
+        Route::group(['prefix' => 'trainsets', 'as' => 'trainsets.'], function () {
+            Route::get('/', 'project_trainsets')->name('index');
+            Route::get('/{trainset}', 'project_trainset')->name('show');
+            Route::get('/{trainset}/carriage-trainsets', 'project_trainset_carriageTrainsets')->name('carriage-trainsets.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}', 'project_trainset_carriageTrainset')->name('carriage-trainsets.show');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'project_trainset_carriageTrainset_panels')->name('carriage-trainsets.panels.index');
+        });
     });
 });

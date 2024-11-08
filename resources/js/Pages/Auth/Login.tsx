@@ -9,6 +9,9 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import { STYLING } from '@/Support/Constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
+import AddFeedback from '@/Components/AddFeedback';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -28,6 +31,9 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
         post(route('login'));
     };
+
+    const { t } = useLaravelReactI18n();
+
     const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
 
     const changeHtmlClass = () => {
@@ -85,21 +91,27 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 alt="login-form-header"
                                 className="md:mb-10 h-16 object-contain align-content-lg-start"
                             />
-                            <Button variant="ghost" size="icon" onClick={handleDarkMode}>
-                                {darkMode ? (
-                                    <Sun size={STYLING.ICON.SIZE.SMALL} />
-                                ) : (
-                                    <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
-                                )}
-                            </Button>
+                            <div className="flex">
+                                <Button variant="ghost" size="icon" onClick={handleDarkMode}>
+                                    {darkMode ? (
+                                        <Sun size={STYLING.ICON.SIZE.SMALL} />
+                                    ) : (
+                                        <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
+                                    )}
+                                </Button>
+                                <AddFeedback />
+                                <SetLocalization />
+                            </div>
                         </div>
                     </div>
                     <div className="">
-                        <div className="text-3xl md:text-4xl mb-16 text-center mt-12 sm:mt-0">Welcome Back...</div>
+                        <div className="text-3xl md:text-4xl mb-16 text-center mt-12 sm:mt-0">
+                            {t('pages.login.title')}
+                        </div>
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel htmlFor="nip" value="NIP" />
+                                <InputLabel htmlFor="nip" value={t('pages.login.fields.nip')} />
 
                                 <Input
                                     id="nip"
@@ -116,7 +128,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             </div>
 
                             <div className="mt-4">
-                                <InputLabel htmlFor="password" value="Password" />
+                                <InputLabel htmlFor="password" value={t('pages.login.fields.password')} />
 
                                 <Input
                                     id="password"
@@ -138,7 +150,9 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                         checked={data.remember}
                                         onChange={e => setData('remember', e.target.checked)}
                                     />
-                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
+                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
+                                        {t('pages.login.fields.remember')}
+                                    </span>
                                 </label>
 
                                 {canResetPassword && (
@@ -146,14 +160,14 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                         href={route('password.request')}
                                         className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                                     >
-                                        Forgot your password?
+                                        {t('pages.login.buttons.forgot_password')}
                                     </Link>
                                 )}
                             </div>
 
                             <div className="flex items-center justify-end mt-4">
                                 <Button className="w-full" disabled={processing}>
-                                    SIGN IN
+                                    {t('pages.login.buttons.sign_in')}
                                 </Button>
                             </div>
                         </form>

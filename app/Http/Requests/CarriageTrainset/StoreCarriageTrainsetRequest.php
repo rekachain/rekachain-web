@@ -19,8 +19,8 @@ class StoreCarriageTrainsetRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'trainset_id' => 'required|integer,exists:trainsets,id',
-            'carriage_id' => 'required|integer,exists:carriages,id',
+            'trainset_id' => 'required|integer|exists:trainsets,id',
+            'carriage_id' => 'required|integer|exists:carriages,id',
             'qty' => 'required|integer',
         ];
     }

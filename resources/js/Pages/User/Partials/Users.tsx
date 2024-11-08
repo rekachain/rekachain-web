@@ -8,8 +8,11 @@ import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
 import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/User/Partials/Partials/Filters';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [userResponse, setUserResponse] = useState<PaginateResponse<UserResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -29,7 +32,7 @@ export default function () {
     const handleUserDeletion = withLoading(async (id: number) => {
         await userService.delete(id);
         await syncUsers();
-        void useSuccessToast('User deleted successfully');
+        void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {
@@ -43,6 +46,7 @@ export default function () {
     // });
     return (
         <div className="space-y-4">
+            <Filters setFilters={setFilters} filters={filters} />
             {userResponse && (
                 <>
                     <div className="hidden md:block">

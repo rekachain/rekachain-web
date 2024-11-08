@@ -33,22 +33,21 @@ class AuthenticatedSessionController extends Controller {
         $request->session()->regenerate();
 
         $user = Auth::user();
-        $allowedRoles = [
-            RoleEnum::SUPER_ADMIN->value,
-            RoleEnum::PPC_PERENCANAAN->value,
-            RoleEnum::PPC_PENGENDALIAN->value,
-            RoleEnum::SUPERVISOR_MEKANIK->value,
-            RoleEnum::SUPERVISOR_ELEKTRIK->value,
-            RoleEnum::SUPERVISOR_ASSEMBLY->value,
+        $unAllowedRole = [
+            RoleEnum::WORKER_MEKANIK->value,
+            RoleEnum::WORKER_ELEKTRIK->value,
+            RoleEnum::WORKER_ASSEMBLY->value,
+            RoleEnum::QC_MEKANIK->value,
+            RoleEnum::QC_ELEKTRIK->value,
+            RoleEnum::QC_ASSEMBLY->value,
         ];
 
-        if (!in_array($user->roles()->first()?->name, $allowedRoles)) {
+        if (in_array($user->roles()->first()?->name, $unAllowedRole)) {
             Auth::guard('web')->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            // TODO: login_error doesnt show, might check this later
-            return redirect('/')->withErrors(['login_error' => __('validation.custom.auth.unauthorized')]);
+            abort(403, __('exception.auth.unauthorized'));
         }
 
         return redirect()->intended(RouteServiceProvider::HOME);

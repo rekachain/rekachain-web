@@ -5,6 +5,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkshopResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WorkshopCardView({
     workshopResponse,
@@ -13,6 +14,7 @@ export default function WorkshopCardView({
     workshopResponse: PaginateResponse<WorkshopResource>;
     handleWorkshopDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <>
             {workshopResponse?.data.map(workshop => (
@@ -30,18 +32,24 @@ export default function WorkshopCardView({
                             </div>
                         </div>
 
-                        <h5 className="  text-sm ">Alamat : {workshop.address}</h5>
+                        <h5 className="text-sm">
+                            {t('pages.workshop.partials.partials.workshop_card.headers.address', {
+                                address: workshop.address,
+                            })}
+                        </h5>
 
                         <div className="flex items-center justify-end w-full">
                             <Link
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
-                            <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
-                                Delete
-                            </Button>
+                            {workshop.can_be_deleted && (
+                                <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
+                                    {t('action.delete')}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

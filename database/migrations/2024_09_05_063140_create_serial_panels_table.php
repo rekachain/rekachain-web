@@ -12,6 +12,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('serial_panels', function (Blueprint $table) {
             $table->id();
+            $table->string('product_no')->nullable();
             $table->foreignId('panel_attachment_id')->constrained();
             $table->string('qr_code')->nullable()->unique();
             $table->string('qr_path')->nullable()->unique();

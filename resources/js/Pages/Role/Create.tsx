@@ -2,22 +2,26 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import { roleService } from '@/Services/roleService';
 import { PermissionResource, PermissionResourceGrouped } from '@/Support/Interfaces/Resources/PermissionResource';
 import { Checkbox } from '@/Components/UI/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { divisionService } from '@/Services/divisionService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
+    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
-        division_id: '',
+        division_id: null as number | null,
         level: '',
         permissions: [] as number[],
     });
@@ -37,7 +41,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
             permissions: data.permissions,
         });
         router.visit(route(`${ROUTES.ROLES}.index`));
-        void useSuccessToast('Role berhasil ditambahkan');
+        void useSuccessToast(t('pages.role.create.messages.created'));
     });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
@@ -51,54 +55,50 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
         }
     };
 
+    const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
+        return await divisionService.getAll(filters).then(response => response.data);
+    }, []);
+
     return (
         <>
-            <Head title="Tambah Role" />
+            <Head title={t('pages.role.create.title')} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Role</h1>
+                        <h1 className="text-page-header my-4">{t('pages.role.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel htmlFor="name" value={t('pages.role.create.fields.name')} />
                             <Input
-                                id="nama"
+                                id="name"
                                 type="text"
-                                name="nama"
+                                name="name"
                                 value={data.name}
                                 className="mt-1"
-                                autoComplete="nama"
+                                autoComplete="name"
                                 onChange={e => setData('name', e.target.value)}
                                 required
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value="Divisi" />
-                            <Select
-                                name="division"
-                                value={data.division_id}
-                                onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Pilih divisi" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {/*none*/}
-                                    <SelectItem value="none">none</SelectItem>
-                                    {divisions.map(division => (
-                                        <SelectItem key={division.id} value={division.id.toString()}>
-                                            {division.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <InputLabel htmlFor="division" value={t('pages.role.create.fields.division')} />
+                            <GenericDataSelector
+                                id="division_id"
+                                fetchData={fetchDivisions}
+                                setSelectedData={id => setData('division_id', id)}
+                                selectedDataId={data.division_id ?? undefined}
+                                placeholder={t('pages.role.create.fields.division_placeholder')}
+                                renderItem={(item: DivisionResource) => item.name}
+                                buttonClassName="mt-1"
+                                nullable
+                            />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="level" value="Level" />
+                            <InputLabel htmlFor="level" value={t('pages.role.create.fields.level')} />
                             <Input
                                 id="level"
                                 type="text"
@@ -112,7 +112,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-5">
-                            <h1>Permissions</h1>
+                            <h1>{t('pages.role.create.fields.permissions')}</h1>
                             <div className="mt-1">
                                 <div className="flex flex-wrap">
                                     {permissions.map(permission => (
@@ -140,7 +140,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                             </div>
                         </div>
                         <Button className="mt-4" disabled={loading}>
-                            Tambah Role
+                            {t('pages.role.create.buttons.submit')}
                         </Button>
                     </form>
                 </div>

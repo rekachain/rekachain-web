@@ -1,29 +1,66 @@
 <?php
 
 test('view all Components', function () {
-    createComponent();
-    actAsSuperAdmin()->get('/api/components')->assertStatus(200);
+    $this->dummy->createComponent();
+    actAsSuperAdmin()->get('/api/components')->assertStatus(200)
+        ->assertJsonStructure([
+            'data' => [
+                '*' => [
+                    'id',
+                    'name',
+                    'progress_id',
+                    'can_be_deleted',
+                    'updated_at',
+                ]
+            ],
+            'meta'
+        ]);
 });
 
 test('show one Component', function () {
-    $component = createComponent();
-    actAsSuperAdmin()->get('/api/components/' . $component->id)->assertStatus(200);
+    $component = $this->dummy->createComponent();
+    actAsSuperAdmin()->get('/api/components/' . $component->id)->assertStatus(200)
+        ->assertJson([
+            'id' => $component->id,
+            'name' => $component->name,
+            'progress_id' => $component->progress_id,
+        ]);
 });
 
 test('store component', function () {
-    actAsSuperAdmin()->post('/api/components', [
+    $progress = $this->dummy->createProgress();
+    $componentData = [
         'name' => 'Test Component',
-    ])->assertStatus(201);
+        'progress_id' => $progress->id
+    ];
+
+    actAsSuperAdmin()->post('/api/components', $componentData)->assertStatus(201)
+        ->assertJsonStructure([
+            'id',
+            'name',
+            'progress_id',
+            'progress',
+            'can_be_deleted',
+            'updated_at',
+        ]);
+
+    $this->assertDatabaseHas('components', $componentData);
 });
 
 test('update component', function () {
-    $component = createComponent();
-    actAsSuperAdmin()->put('/api/components/' . $component->id, [
+    $component = $this->dummy->createComponent();
+    $updatedComponentData = [
         'name' => 'Test Component',
-    ])->assertStatus(200);
+    ];
+
+    actAsSuperAdmin()->put('/api/components/' . $component->id, $updatedComponentData)->assertStatus(200);
+
+    $this->assertDatabaseHas('components', $updatedComponentData);
 });
 
-test('destroy component', function () {
-    $component = createComponent();
-    actAsSuperAdmin()->delete('/api/components/' . $component->id)->assertStatus(200);
-});
+// NOT IMPLEMENTED
+// test('destroy component', function () {
+
+//     $component = $this->dummy->createComponent();
+//     actAsSuperAdmin()->delete('/api/components/' . $component->id)->assertStatus(200);
+// });

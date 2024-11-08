@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,11 +12,15 @@ class SerialPanel extends Model {
     use HasFactory;
 
     protected $fillable = [
+        'product_no',
         'panel_attachment_id',
         'qr_code',
         'qr_path',
         'manufacture_status',
         'notes',
+    ];
+    protected $casts = [
+        'manufacture_status' => SerialPanelManufactureStatusEnum::class,
     ];
 
     public function panel_attachment(): BelongsTo {

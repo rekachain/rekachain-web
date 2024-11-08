@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('trainset_attachment_handlers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->string('handler_name')->nullable();
             $table->foreignId('trainset_attachment_id')->constrained();
-            $table->enum('handles', ['prepare', 'send', 'receive']);
+            $table->enum('handles', TrainsetAttachmentHandlerHandlesEnum::toArray());
             $table->timestamps();
         });
     }

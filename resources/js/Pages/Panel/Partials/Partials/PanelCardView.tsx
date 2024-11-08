@@ -5,14 +5,16 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PanelResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function PanelTableView({
+export default function PanelCardView({
     panelResponse,
     handlePanelDeletion,
 }: {
     panelResponse: PaginateResponse<PanelResource>;
     handlePanelDeletion: (id: number) => void;
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <div>
             {panelResponse?.data.map(panel => (
@@ -34,7 +36,11 @@ export default function PanelTableView({
                                 </h5>
                             </div> */}
                         </div>
-                        <h4 className="text-base">Level : {panel.description}</h4>
+                        <h4 className="text-base">
+                            {t('pages.panel.partials.partials.panel_card.headers.description', {
+                                description: panel.description ?? '-',
+                            })}
+                        </h4>
                         {/* <p>Jumlah User :{panel.users_count}</p>
                         <p>Jumlah Izin :{panel.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">
@@ -44,10 +50,10 @@ export default function PanelTableView({
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
                             <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
-                                Delete
+                                {t('action.delete')}
                             </Button>
                         </div>
                     </div>

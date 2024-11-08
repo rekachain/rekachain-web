@@ -10,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { Button } from '@/Components/UI/button';
 //   No Proyek jumlah TS Detail
 
 type Proyek = {
@@ -26,6 +27,10 @@ import { Calculator, FileSearch } from 'lucide-react';
 import AnimateIn from '@/Lib/AnimateIn';
 
 export default function ProjectList() {
+    const handleDownload = () => {
+        window.location.href = '/assets/excel-templates/imports/project/project-import.xlsm';
+    };
+
     return (
         <AuthenticatedLayout>
             <Head title="List Proyek" />
@@ -38,6 +43,7 @@ export default function ProjectList() {
                     >
                         <div className="p-4 sm:p-8 bg-white h-[20rem] dark:bg-gray-800 shadow sm:rounded-lg">
                             <h1 className="text-2xl font-bold">List Proyek</h1>
+                            <Button onClick={handleDownload} className="mb-4">Download Template Data Proyek</Button>
                             <Table>
                                 {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                                 <TableHeader>

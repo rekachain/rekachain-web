@@ -1,18 +1,18 @@
-import { usePage } from '@inertiajs/react';
 import { permissionService } from '@/Services/permissionService';
 import { useEffect, useState } from 'react';
-import { PaginateResponse } from '../../../Support/Interfaces/Others';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { PermissionResource } from '@/Support/Interfaces/Resources/PermissionResource';
 import PermissionsTableView from './Partials/PermissionsTableView';
 import PermissionsCardView from './Partials/PermissionsCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Permission/Partials/Partials/Filters';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -31,7 +31,7 @@ export default function () {
     const handlePermissionResourceDeletion = withLoading(async (id: number) => {
         await permissionService.delete(id);
         await syncPermissionResources();
-        await useSuccessToast('PermissionResource deleted successfully');
+        await useSuccessToast(t('pages.permission.partials.permissions.messages.deleted'));
     }, true);
 
     const handlePageChange = (page: number) => {
@@ -42,6 +42,7 @@ export default function () {
         <div className="space-y-4">
             {permissionResponse && (
                 <>
+                    <Filters setFilters={setFilters} filters={filters} />
                     <div className="hidden md:block">
                         <PermissionsTableView
                             permissionResponse={permissionResponse}

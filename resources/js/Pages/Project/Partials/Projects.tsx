@@ -8,8 +8,11 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import ProjectCardView from './Partials/ProjectCardView';
 import ProjectTableView from './Partials/ProjectTableView';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Project/Partials/Partials/Filters';
 
 export default function () {
+    const { t } = useLaravelReactI18n();
     const [projectResponse, setProjectResponse] = useState<PaginateResponse<ProjectResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -28,8 +31,8 @@ export default function () {
     const handleProjectDeletion = withLoading(async (id: number) => {
         await projectService.delete(id);
         await handleSyncProjects();
-        void useSuccessToast('Project deleted successfully');
-    });
+        void useSuccessToast(t('pages.project.partials.projects.messages.deleted'));
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -40,6 +43,8 @@ export default function () {
             <>
                 {projectResponse && (
                     <>
+                        <Filters setFilters={setFilters} filters={filters} />
+                        
                         <div className="hidden md:block">
                             <ProjectTableView
                                 projectResponse={projectResponse}

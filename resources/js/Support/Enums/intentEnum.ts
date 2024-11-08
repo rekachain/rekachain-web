@@ -1,10 +1,21 @@
-export const IntentEnum = {
+const intents = {
     WEB_PROJECT_ADD_TRAINSET: 'web.project.add.trainset',
     WEB_PROJECT_CHANGE_TRAINSET_PRESET: 'web.project.change.trainset.preset',
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
+    WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
+    WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL: 'web.project.import.component.progress.and.material',
+    WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL:
+        'web.project.import.carriage.component.progress.and.material',
+    WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL: 'web.project.import.carriage.panel.progress.and.material',
+    WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL: 'web.project.import.panel.progress.and.material',
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
+    WEB_TRAINSET_GET_ALL_COMPONENTS: 'web.trainset.get.all.components',
+    WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY: 'web.trainset.get.all.components.with.qty',
+    WEB_TRAINSET_GET_ALL_PANELS: 'web.trainset.get.all.panels',
+    WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY: 'web.trainset.get.all.panels.with.qty',
     WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET: 'web.trainset.update.carriage.trainset',
+    WEB_TRAINSET_EXPORT_SERIAL_NUMBERS: 'web.trainset.export.serial.numbers',
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
     WEB_PANEL_IMPORT_PANEL: 'web.panel.import.panel',
@@ -17,5 +28,21 @@ export const IntentEnum = {
     WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS: 'web.trainset.generate.panel.attachments',
     WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS: 'web.trainset.generate.trainset.attachments',
     WEB_TRAINSET_GET_COMPONENTS: 'web.trainset.get.components',
+    WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS: 'web.trainset.attachment.get.component.materials',
+    WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY:
+        'web.trainset.attachment.get.component.materials.with.qty',
+    WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL:
+        'web.trainset.attachment.assign.custom.attachment.material',
+    WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT: 'web.trainset.attachment.download.trainset.attachment',
+    WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT: 'web.panel.attachment.download.panel.attachment',
+    WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
+    WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY: 'web.project.get.all.carriages.with.qty',
+    WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY: 'web.project.get.all.components.with.qty',
+    WEB_PROJECT_GET_ALL_PANELS_WITH_QTY: 'web.project.get.all.panels.with.qty',
+    WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY: 'web.project.get.all.carriage.components.with.qty',
+    WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY: 'web.project.get.all.carriage.panels.with.qty',
 };
+export const IntentEnum = intents;
+
+export type IntentEnum = (typeof intents)[keyof typeof intents];

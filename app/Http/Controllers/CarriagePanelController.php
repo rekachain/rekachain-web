@@ -6,6 +6,7 @@ use App\Http\Requests\CarriagePanel\StoreCarriagePanelRequest;
 use App\Http\Requests\CarriagePanel\UpdateCarriagePanelRequest;
 use App\Http\Resources\CarriagePanelResource;
 use App\Models\CarriagePanel;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 class CarriagePanelController extends Controller {
     // TODO: update trainset_preset_id to null
 
-    public function __construct(protected CarriagePanelServiceInterface $CarriagePanelService) {}
+    public function __construct(protected CarriagePanelServiceInterface $carriagePanelService) {}
 
     /**
      * Display a listing of the resource.
@@ -26,10 +27,10 @@ class CarriagePanelController extends Controller {
             $perPage = request()->get('perPage', 'All');
 
             if ($perPage !== 'All') {
-                return CarriagePanelResource::collection($this->CarriagePanelService->getAllPaginated($request->query(), $perPage));
+                return CarriagePanelResource::collection($this->carriagePanelService->getAllPaginated($request->query(), $perPage));
             }
 
-            return CarriagePanelResource::collection($this->CarriagePanelService->getAll());
+            return CarriagePanelResource::collection($this->carriagePanelService->getAll());
         }
 
         return inertia('CarriagePanel/Index');
@@ -52,7 +53,7 @@ class CarriagePanelController extends Controller {
 
         $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_CREATE);
 
-        return new CarriagePanelResource($this->CarriagePanelService->create($request->validated()));
+        return new CarriagePanelResource($this->carriagePanelService->create($request->validated()));
     }
 
     /**
@@ -83,10 +84,19 @@ class CarriagePanelController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateCarriagePanelRequest $request, CarriagePanel $CarriagePanel) {
+        if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL->value:
+                    return $this->carriagePanelService->importProgressMaterialData($request->file('file'), $CarriagePanel);
+            }
+            return new CarriagePanelResource($this->carriagePanelService->update($CarriagePanel, $request->validated()));
+        }
 
         $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_UPDATE);
 
-        return new CarriagePanelResource($this->CarriagePanelService->update($CarriagePanel, $request->validated()));
+        return new CarriagePanelResource($this->carriagePanelService->update($CarriagePanel, $request->validated()));
     }
 
     /**
@@ -95,7 +105,7 @@ class CarriagePanelController extends Controller {
     public function destroy(Request $request, CarriagePanel $CarriagePanel) {
         $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_DELETE);
 
-        $this->CarriagePanelService->delete($CarriagePanel);
+        $this->carriagePanelService->delete($CarriagePanel);
 
         return response()->noContent();
     }

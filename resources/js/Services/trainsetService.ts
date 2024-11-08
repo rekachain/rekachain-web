@@ -1,6 +1,6 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { CarriageTrainsetResource, TrainsetResource } from '../Support/Interfaces/Resources';
+import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export const trainsetService = {
@@ -138,5 +138,32 @@ export const trainsetService = {
                 },
             },
         );
+    },
+    exportSerialNumbers: async (trainsetId: number) => {
+        // return window.axios.get(route(`${ROUTES.TRAINSETS}.show`, trainsetId), {
+        //     responseType: 'blob',
+        //     params: {
+        //         intent: IntentEnum.WEB_TRAINSET_EXPORT_SERIAL_NUMBERS,
+        //     },
+        // });
+
+        const response = await window.axios.get(route(`${ROUTES.TRAINSETS}.show`, trainsetId), {
+            responseType: 'blob',
+            params: {
+                intent: IntentEnum.WEB_TRAINSET_EXPORT_SERIAL_NUMBERS,
+            },
+        });
+
+        // Create a download link for the ZIP file
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'sn-exports.zip'); // Specify download name
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup and remove link
+        link.remove();
+        window.URL.revokeObjectURL(url);
     },
 };

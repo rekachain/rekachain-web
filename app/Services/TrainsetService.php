@@ -10,24 +10,33 @@ use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
+use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
+use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
+use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
+use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Imagick;
+use Intervention\Image\ImageManager;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use ZipArchive;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
     public function __construct(
@@ -37,6 +46,9 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected SerialPanelServiceInterface $serialPanelService,
         protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
+        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
+        protected PanelAttachmentHandlerServiceInterface $panelAttachmentHandlerService,
+        protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
         protected CarriagePanelServiceInterface $carriagePanelService,
     ) {
         parent::__construct();
@@ -191,14 +203,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         });
     }
 
-    public function delete($keyOrModel): bool {
-        $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
-            $this->carriageTrainsetService->delete($carriageTrainset);
-        });
-
-        return parent::delete($keyOrModel);
-    }
-
     public function importData(UploadedFile $file): bool {
         Excel::import(new TrainsetsImport, $file);
 
@@ -256,58 +260,91 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $this->generateTrainsetAttachment($trainset, $data);
             $this->generatePanelAttachment($trainset, $data);
 
-            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+            // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+            $this->checkGeneratedAttachment($trainset);
             // DB::rollBack();
         });
 
         return true;
     }
 
-    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool {
-        DB::transaction(function () use ($trainset, $data) {
+    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool|array {
+        return DB::transaction(function () use ($trainset, $data) {
             $division = $data['division'];
             $sourceWorkstationId = $data["{$division}_source_workstation_id"];
             $destinationWorkstationId = $data["{$division}_destination_workstation_id"];
 
-            $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
-                $trainsetAttachment = $this->trainsetAttachmentService->create([
-                    'carriage_trainset_id' => $carriageTrainset->id,
-                    'source_workstation_id' => $sourceWorkstationId,
-                    'destination_workstation_id' => $destinationWorkstationId,
-                ]);
+            // $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
+            $trainsetAttachment = $this->trainsetAttachmentService->create([
+                'trainset_id' => $trainset->id,
+                'source_workstation_id' => $sourceWorkstationId,
+                'destination_workstation_id' => $destinationWorkstationId,
+                'type' => $division,
+            ]);
 
-                $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
+            // CREATE TRAINSET ATTACHMENT HANDLER
+            $this->trainsetAttachmentHandlerService->create([
+                'user_id' => auth()->user()->id,
+                'handler_name' => auth()->user()->name,
+                'trainset_attachment_id' => $trainsetAttachment->id,
+                'handles' => TrainsetAttachmentHandlerHandlesEnum::PREPARE->value,
+            ]);
 
-                //            $serialPanelIds = $this->generateSerialPanels($trainsetAttachment, $carriageTrainset);
+            $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
+            $generateResult = $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
 
-                //            $serialPanelIdsString = implode(',', $serialPanelIds);
-                $qrCode = "KPM:{$trainsetAttachment->attachment_number};P:{$carriageTrainset->trainset->project->name};TS:{$carriageTrainset->trainset->name};;";
-                $path = "trainset_attachments/qr_images/{$trainsetAttachment->id}.svg";
-                $this->generateQrCode($qrCode, $path);
+            if ($generateResult['success'] === false) {
+                logger('Failed to generate trainset attachment');
+                DB::rollBack();
 
-                $trainsetAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
-            });
+                return $generateResult;
+            }
 
-            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+            //            $serialPanelIds = $this->generateSerialPanels($trainsetAttachment, $carriageTrainset);
 
+            //            $serialPanelIdsString = implode(',', $serialPanelIds);
+            $qrCode = "KPM:{$trainsetAttachment->attachment_number};P:{$trainset->project->name};TS:{$trainset->name};;";
+            $path = "trainset_attachments/qr_images/{$trainsetAttachment->id}.svg";
+            $this->generateQrCode($qrCode, $path);
+
+            $trainsetAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
+            // });
+            $this->checkGeneratedAttachment($trainset);
+            // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+
+            return true;
         });
-
-        return true;
     }
 
-    public function generatePanelAttachment(Trainset $trainset, array $data): bool {
+    public function generatePanelAttachment(Trainset $trainset, array $data): bool|array {
+        return DB::transaction(function () use ($trainset, $data) {
+            foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+                foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
+                    if (!$carriagePanel->progress) {
+                        logger('Failed to generate panel attachment');
+                        DB::rollBack();
 
-        DB::transaction(function () use ($trainset, $data) {
-            $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($data) {
-                $carriageTrainset->carriage_panels()->each(function ($carriagePanel) use ($data) {
+                        return [
+                            'status' => false,
+                            'code' => 409,
+                            'message' => __('exception.services.trainset_service.update.generate_panel_attachments.panel_progress_not_identified_exception', ['panel' => $carriagePanel->panel->name]),
+                        ];
+                    }
                     $sourceWorkstationId = $data['assembly_source_workstation_id'];
                     $destinationWorkstationId = $data['assembly_destination_workstation_id'];
 
                     $panelAttachment = $this->panelAttachmentService->create([
                         'carriage_panel_id' => $carriagePanel->id,
-                        'carriage_trainset_id' => $carriagePanel->carriage_trainset_id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
+                    ]);
+
+                    // CREATE PANEL ATTACHMENT HANDLER
+                    $this->panelAttachmentHandlerService->create([
+                        'user_id' => auth()->user()->id,
+                        'handler_name' => auth()->user()->name,
+                        'panel_attachment_id' => $panelAttachment->id,
+                        'handles' => PanelAttachmentHandlerHandlesEnum::PREPARE->value,
                     ]);
 
                     $panelAttachment->update(['attachment_number' => $this->generateAttachmentNumber($panelAttachment)]);
@@ -322,28 +359,12 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     $panelAttachment->update(['qr_code' => $qrCode, 'qr_path' => $path]);
 
                     logger('Panel Attachment: ' . $panelAttachment);
-                    //                $panelAttachment = $carriagePanel->panel_attachments()->create([
-                    //                    'carriage_panel_id' => $carriagePanel->panel_id,
-                    //                    'carriage_trainsets_id' => $carriagePanel->carriage_trainset_id,
-                    //                    // source_workstation?
-                    //                    // dest_workstation?
-                    //                    'qr_path' => 'qr_path', // generate qr code
-                    //                    'current_step' => 0, // get first step
-                    //                    'status' => 'pending', // default status
-                    //                    'panel_attachment_id' => null, // default
-                    //                    'attachment_number' => null, // default
-                    //                    'supervisor_id' => null, // default
-                    //                ]);
-                    //
-                });
-            });
+                    $this->checkGeneratedAttachment($trainset);
+                }
+            }
 
-            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
-
-            //            DB::rollBack();
+            return true;
         });
-
-        return true;
     }
 
     private function generateQrCode(string $content, string $path) {
@@ -370,7 +391,15 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $path = "serial_panels/qr_images/{$serialPanel->id}.svg";
             $this->generateQrCode($qrCode, $path);
 
-            $this->serialPanelService->update($serialPanel, ['qr_code' => $qrCode, 'qr_path' => $path]);
+            $this->serialPanelService->update($serialPanel, [
+                'product_no' => $panelAttachment->trainset->project->id .
+                    $panelAttachment->trainset->id .
+                    $panelAttachment->carriage_panel->carriage->id .
+                    $panelAttachment->carriage_panel->panel_id .
+                    $serialPanel->id,
+                'qr_code' => $qrCode,
+                'qr_path' => $path,
+            ]);
 
             //            logger('Current serialPanelIds array: ' . json_encode($serialPanelIds));
         }
@@ -420,7 +449,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
 
         $numberAttachmentOnTrainset = $this->trainsetAttachmentService->find([
-            'carriage_trainset_id' => $model->carriage_trainset_id,
+            'trainset_id' => $model->trainset_id,
         ])->count();
 
         logger('Number of attachments on trainset: ' . $numberAttachmentOnTrainset);
@@ -430,6 +459,153 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
         return $attachmentNumber;
 
+    }
+
+    public function checkGeneratedAttachment(Trainset $trainset): void {
+        $totalRequiredAttachment = 2; // base total required trainset attachment in 1 trainset
+        $totalGeneratedAttachment = 0;
+        $carriageTrainsetsIds = $trainset->carriage_trainsets()->pluck('id')->toArray();
+        $carriagePanelsIds = $this->carriagePanelService->find([
+            'carriage_trainset_id', 'in', $carriageTrainsetsIds,
+        ])->pluck('id')->toArray();
+
+        $totalRequiredAttachment += count($carriagePanelsIds);
+
+        $trainsetAttachments = $this->trainsetAttachmentService->find([
+            'trainset_id' => $trainset->id,
+        ]);
+        $totalGeneratedAttachment = $trainsetAttachments->count(); // should be 2
+
+        $panelAttachments = $this->panelAttachmentService->find([
+            ['carriage_panel_id', 'in', $carriagePanelsIds],
+        ]);
+        $totalGeneratedAttachment += $panelAttachments->count();
+
+        if ($totalGeneratedAttachment == $totalRequiredAttachment) {
+            $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+        }
+    }
+
+    public function exportSerialNumbers(Trainset $trainset): BinaryFileResponse {
+        $manager = ImageManager::imagick();
+        $pngFiles = [];
+        $tempDirectory = storage_path('app/temp/sn-exports');
+
+        /**
+         * 1. Clean up any existing temporary files at the start
+         * 2. Get all qrs from trainset_attachments and panel_attachments
+         * 3. load those qrs paths:
+         *      - trainset_attachment = storage/app/public/trainset_attachments/qr_images/{id}.svg
+         *      - panel_attachment = storage/app/public/panel_attachments/qr_images/{id}.svg
+         * 4. place those svg qrs into template in public/assets/png-templates/sn-template.png
+         * 5. export final state of those qrs into storage/app/temp/sn-exports
+         * 6. zip all final state of those qrs
+         * 7. download the zip
+         * 8. delete all temp files
+         */
+        //        $trainsetAttachmentQrCodes = $trainset->trainset_attachments->map(fn ($attachment) => $attachment->qr_path);
+        //        $panelAttachmentQrCodes = $trainset->carriage_trainsets->flatMap(fn ($carriageTrainset) => $carriageTrainset->carriage_panels->map(fn ($panel) => $panel->panel_attachment->qr_path)
+        //        );
+        //
+        //        $qrPaths = $trainsetAttachmentQrCodes->merge($panelAttachmentQrCodes);
+        //
+
+        // Step 1: Clean up any existing temporary files at the start
+        if (File::exists($tempDirectory)) {
+            File::cleanDirectory($tempDirectory);
+        } else {
+            File::makeDirectory($tempDirectory, 0755, true); // Create if it doesn't exist
+        }
+
+        $qrs = $trainset->serial_panels->map(function ($serialPanel) {
+            return [
+                'qr_path' => $serialPanel->qr_path,
+                'product_no' => $serialPanel->product_no,
+                'serial_no' => $serialPanel->id,
+                'product_name' => $serialPanel->panel_attachment->carriage_panel->panel->name,
+            ];
+        });
+
+        // check if temp and sn-exports directory exist
+        if (!File::exists(storage_path('app/temp/sn-exports'))) {
+            File::makeDirectory(storage_path('app/temp/sn-exports'), 0755, true);
+        }
+
+        // Step 2: Convert SVGs to PNG and overlay on template
+        $qrs->each(function ($qr, $index) use ($manager, &$pngFiles) {
+            $qrPath = $qr['qr_path'];
+            $startOffset = 70;
+
+            // TODO: Potential issue: product name (and or the others) might be too long to fit in the template
+            $productNo = $qr['product_no'];
+            $serialNo = $qr['serial_no'];
+            $productName = $qr['product_name'];
+            $svgPath = storage_path("app/public/$qrPath");
+
+            // Convert SVG to PNG using Imagick
+            $image = new Imagick;
+            $image->readImage($svgPath);
+            $image->setImageFormat('png');
+
+            $pngQrPath = storage_path("app/temp/qr_temp_{$index}.png");
+            $image->writeImage($pngQrPath);
+            $image->clear();
+            $image->destroy();
+
+            // Load the template
+            $template = $manager->read(public_path('assets/png-templates/sn-template.png'));
+
+            // Overlay the QR code
+            $qrImage = $manager->read($pngQrPath)->resize(700, 700); // Resize as needed
+            $template->place($qrImage, 'top-left', $startOffset, 15);
+
+            // Add text (optional)
+            $template->text("Product No: $productNo", $startOffset, 800, function ($font) {
+                $font->file(public_path('assets/fonts/arial.ttf'));
+                $font->size(36);
+                $font->color('#000000');
+            });
+            $template->text("Serial No: $serialNo", $startOffset, 900, function ($font) {
+                $font->file(public_path('assets/fonts/arial.ttf'));
+                $font->size(36);
+                $font->color('#000000');
+            });
+            $template->text("Product Name: $productName", $startOffset, 1000, function ($font) {
+                $font->file(public_path('assets/fonts/arial.ttf'));
+                $font->size(36);
+                $font->color('#000000');
+            });
+
+            // 4. Save the final image and keep track of paths
+            $outputPath = storage_path("app/temp/sn-exports/$productNo.png");
+            $template->save($outputPath);
+            $pngFiles[] = $outputPath;
+        });
+
+        // Step 5: Create a ZIP file with all the final PNGs
+        $zipPath = storage_path('app/temp/sn-exports.zip');
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+            foreach ($pngFiles as $file) {
+                $zip->addFile($file, basename($file));
+            }
+            $zip->close();
+        }
+
+        // Step 6: Provide download response for the ZIP file
+        return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
+
+    public function delete($keyOrModel): bool {
+        if (!$keyOrModel->canBeDeleted()) {
+            abort(402, __('exception.services.trainset_service.delete.trainset_in_progress_exception'));
+        }
+
+        $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
+            $this->carriageTrainsetService->delete($carriageTrainset);
+        });
+
+        return parent::delete($keyOrModel);
     }
 
     protected function getRepositoryClass(): string {

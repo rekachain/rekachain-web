@@ -21,7 +21,7 @@ class DivisionController extends Controller {
         $request->checkPermissionEnum(PermissionEnum::DIVISION_READ);
 
         if ($this->ajax()) {
-            $perPage = request()->get('perPage', 'All');
+            $perPage = request()->get('perPage', 5);
 
             if ($perPage !== 'All') {
                 return DivisionResource::collection($this->divisionService->getAllPaginated($request->query(), $perPage));

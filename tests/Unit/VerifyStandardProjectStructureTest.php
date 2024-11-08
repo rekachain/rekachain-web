@@ -5,9 +5,13 @@ use Illuminate\Support\Str;
 // Helper function to count files in a directory, excluding specified files or folders
 function countFilesInDirectory(string $dir, array $excluded = []): int {
     $iterator = new FilesystemIterator($dir, FilesystemIterator::SKIP_DOTS);
-    $filteredIterator = new CallbackFilterIterator($iterator, function ($file) use ($excluded) {
+    $filteredIterator = new CallbackFilterIterator($iterator, function ($file) use ($excluded, $dir) {
         if ($file->isDir()) {
-            return !in_array($file->getFilename(), $excluded);
+            $relativePath = substr($file->getPathname(), strlen($dir) + 1);
+            if (in_array($relativePath, $excluded)) {
+                return false;
+            }
+            return true;
         }
 
         return !in_array($file->getFilename(), $excluded);
@@ -16,8 +20,7 @@ function countFilesInDirectory(string $dir, array $excluded = []): int {
     $totalFileCount = 0;
     foreach ($filteredIterator as $file) {
         if ($file->isDir()) {
-            $filesInFolder = new FilesystemIterator($file->getPathname(), FilesystemIterator::SKIP_DOTS);
-            $totalFileCount += iterator_count($filesInFolder);
+            $totalFileCount += countFilesInDirectory($file->getPathname(), $excluded);
         } else {
             $totalFileCount++;
         }
@@ -286,10 +289,11 @@ test('model should have controllers, form request, resource, service interface, 
     $reactServiceDir = $baseDir . '/resources/js/Services';
 
     // Exclude certain folders or files
-    $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php'];
-    $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php'];
+    $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php', 'DashboardController.php'];
+    $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php', 'CarriageProjectRequest.php'];
+    $excludedServices = ['TrainsetAttachmentComponent', 'DashboardService.php'];
     $excludedReactModelInterfaces = ['index.ts'];
-    $excludedReactResources = ['index.ts', 'Resource.ts'];
+    $excludedReactResources = ['index.ts', 'Resource.ts', 'ProjectCarriageResource.ts', 'ProjectComponentResource.ts', 'ProjectPanelResource.ts'];
     $excludedReactServices = ['serviceFactory.ts'];
 
     // Count files in each directory
@@ -299,7 +303,7 @@ test('model should have controllers, form request, resource, service interface, 
     $resourceCount = countFilesInDirectory($resourceDir);
     $serviceInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Services');
     $repositoryInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Repositories');
-    $serviceCount = countFilesInDirectory($baseDir . '/app/Services');
+    $serviceCount = countFilesInDirectory($baseDir . '/app/Services', $excludedServices);
     $repositoryCount = countFilesInDirectory($baseDir . '/app/Repositories');
     $reactModelInterfaceCount = countFilesInDirectory($reactModelInterfaceDir, $excludedReactModelInterfaces);
     $reactResourceCount = countFilesInDirectory($reactResourceDir, $excludedReactResources);

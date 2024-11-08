@@ -5,21 +5,21 @@ import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import React from 'react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function DivisionTableView({
     divisionResponse,
     handleDivisionDeletion,
-    auth,
 }: {
     divisionResponse: PaginateResponse<DivisionResource>;
     handleDivisionDeletion: (id: number) => void;
-    auth: any; // sementara
 }) {
+    const { t } = useLaravelReactI18n();
     return (
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>Nama</TableHead>
+                    <TableHead>{t('pages.division.partials.partials.division_table.headers.name')}</TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
@@ -32,11 +32,13 @@ export default function DivisionTableView({
                                 className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
-                                Edit
+                                {t('action.edit')}
                             </Link>
-                            <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
-                                Delete
-                            </Button>
+                            {division.can_be_deleted && (
+                                <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
+                                    {t('action.delete')}
+                                </Button>
+                            )}
                         </TableCell>
                     </TableRow>
                 ))}

@@ -16,7 +16,9 @@ export * from './ProgressResource';
 export * from './CarriageTrainsetResource';
 export * from './ComponentResource';
 export * from './RawMaterialResource';
-
+export * from './ProjectCarriageResource';
+export * from './ProjectComponentResource';
+export * from './ProjectPanelResource';
 export * from './CarriagePanelComponentResource';
 export * from './PanelAttachmentResource';
 export * from './PanelAttachmentHandlerResource';
@@ -35,3 +37,6 @@ export * from './ComponentMaterialResource';
 export * from './WorkAspectResource';
 export * from './TrainsetAttachmentComponentResource';
 export * from './FailedComponentManufactureResource';
+export * from './AttachmentNoteResource';
+export * from './FeedbackResource';
+export * from './CustomAttachmentMaterialResource';

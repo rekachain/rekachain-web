@@ -6,6 +6,7 @@ use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class DetailWorkerPanel extends Model {
     use HasFactory;
@@ -16,6 +17,7 @@ class DetailWorkerPanel extends Model {
         'progress_step_id',
         'estimated_time',
         'work_status',
+        'image_path',
         'acceptance_status',
     ];
     protected $casts = [
@@ -27,11 +29,19 @@ class DetailWorkerPanel extends Model {
         return $this->belongsTo(SerialPanel::class);
     }
 
+    public function panel_attachment(): HasOneThrough {
+        return $this->hasOneThrough(PanelAttachment::class, SerialPanel::class, 'id', 'id', 'serial_panel_id', 'panel_attachment_id');
+    }
+
     public function worker() {
         return $this->belongsTo(User::class, 'worker_id');
     }
 
     public function progress_step() {
         return $this->belongsTo(ProgressStep::class);
+    }
+
+    public function getImageAttribute() {
+        return $this->image_path ? asset('storage/' . $this->image_path) : null;
     }
 }

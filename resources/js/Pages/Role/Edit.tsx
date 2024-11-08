@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import {
@@ -11,22 +11,26 @@ import {
     PermissionResourceGrouped,
     RoleResource,
 } from '@/Support/Interfaces/Resources';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { Checkbox } from '@/Components/UI/checkbox';
 import { roleService } from '@/Services/roleService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { divisionService } from '@/Services/divisionService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
 export default function (props: {
     role: RoleResource;
     permissions: PermissionResourceGrouped[];
     divisions: DivisionResource[];
 }) {
+    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: props.role.name,
-        division_id: props.role.division_id?.toString(),
-        level: props.role.level,
+        division_id: props.role.division_id as number | null,
+        level: props.role?.level ?? '',
         permissions: props.role.permissions as unknown as number[],
     });
     const { loading } = useLoading();
@@ -36,7 +40,7 @@ export default function (props: {
         e.preventDefault();
         await roleService.update(props.role.id, data);
         router.visit(route(`${ROUTES.ROLES}.index`));
-        void useSuccessToast('Role berhasil diubah');
+        void useSuccessToast(t('pages.role.edit.messages.updated'));
     });
 
     const handlePermissionChange = (checked: string | boolean, permission: PermissionResource) => {
@@ -50,18 +54,27 @@ export default function (props: {
         }
     };
 
+    const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
+        return await divisionService.getAll(filters).then(response => response.data);
+    }, []);
+
     return (
         <>
-            <Head title="Tambah Role" />
+            <Head title={t('pages.role.edit.title', { name: props.role.name })} />
             <AuthenticatedLayout>
                 <div className="p-4">
                     <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Role: {props.role.name}</h1>
+                        <h1 className="text-page-header my-4">
+                            {t('pages.role.edit.title', { name: props.role.name })}
+                        </h1>
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value="Nama" />
+                            <InputLabel
+                                htmlFor="name"
+                                value={t('pages.role.edit.fields.name', { name: props.role.name })}
+                            />
                             <Input
                                 id="name"
                                 type="text"
@@ -75,32 +88,25 @@ export default function (props: {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value="Divisi" />
-                            <Select
-                                name="division"
-                                value={data.division_id}
-                                onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Pilih divisi" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="none">none</SelectItem>
-                                    {props.divisions.map(division => (
-                                        <SelectItem
-                                            defaultChecked={division.id == props.role.division_id}
-                                            key={division.id}
-                                            value={division.id.toString()}
-                                        >
-                                            {division.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <InputLabel htmlFor="division" value={t('pages.role.edit.fields.division')} />
+                            <GenericDataSelector
+                                id="division_id"
+                                fetchData={fetchDivisions}
+                                setSelectedData={id => setData('division_id', id)}
+                                selectedDataId={data.division_id ?? undefined}
+                                placeholder={t('pages.role.edit.fields.division_placeholder')}
+                                renderItem={(item: DivisionResource) => item.name}
+                                buttonClassName="mt-1"
+                                initialSearch={props.role?.division?.name}
+                                nullable
+                            />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="level" value="Level" />
+                            <InputLabel
+                                htmlFor="level"
+                                value={t('pages.role.edit.fields.level', { level: props.role?.level ?? '' })}
+                            />
                             <Input
                                 id="level"
                                 type="text"
@@ -113,7 +119,7 @@ export default function (props: {
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-5">
-                            <h1>Permissions</h1>
+                            <h1>{t('pages.role.edit.fields.permissions')}</h1>
                             <div className="mt-1">
                                 <div className="flex flex-wrap">
                                     {permissions.map(permission => (
@@ -143,7 +149,7 @@ export default function (props: {
                         </div>
 
                         <Button className="mt-4" disabled={loading}>
-                            Ubah Role
+                            {t('pages.role.edit.buttons.submit')}
                         </Button>
                     </form>
                 </div>

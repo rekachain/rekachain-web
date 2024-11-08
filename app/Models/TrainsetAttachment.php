@@ -3,19 +3,25 @@
 namespace App\Models;
 
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class TrainsetAttachment extends Model {
-    use HasFactory;
+    use HasFactory, HasRelationships;
 
     protected $fillable = [
         'trainset_id',
         'source_workstation_id',
         'destination_workstation_id',
         'attachment_number',
+        'type',
         'qr_code',
         'qr_path',
         'elapsed_time',
@@ -24,6 +30,7 @@ class TrainsetAttachment extends Model {
         'status',
     ];
     protected $casts = [
+        'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
 
@@ -33,6 +40,26 @@ class TrainsetAttachment extends Model {
 
     public function childs(): HasMany {
         return $this->hasMany(TrainsetAttachment::class, 'trainset_attachment_id');
+    }
+    
+    public function progresses(): HasManyDeep {
+        return $this->hasManyDeep(
+            Progress::class, 
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+            ],
+            [
+                'trainset_attachment_id',
+                'id',
+                'id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'progress_id',
+            ]
+        );
     }
 
     public function trainset(): BelongsTo {
@@ -51,7 +78,74 @@ class TrainsetAttachment extends Model {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
 
+    public function trainset_attachment_handlers(): HasMany {
+        return $this->hasMany(TrainsetAttachmentHandler::class);
+    }
+
+    public function raw_materials(): HasManyDeep {
+        return $this->hasManyDeep(
+            RawMaterial::class,
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+                ComponentMaterial::class,
+            ],
+            [
+                'trainset_attachment_id',
+                'id',
+                'carriage_panel_component_id',
+                'id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'id',
+                'raw_material_id',
+            ]
+        )->distinct();
+    }
+
+    public function component_materials(): HasManyDeep {
+        return $this->hasManyDeep(
+            ComponentMaterial::class,
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+            ],
+            [
+                'trainset_attachment_id',
+                'id',
+                'carriage_panel_component_id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'id',
+            ]
+        );
+    }
+
     public function trainset_attachment_components(): HasMany {
         return $this->hasMany(TrainsetAttachmentComponent::class);
+    }
+
+    public function carriage_panel_components(): HasManyThrough {
+        return $this->hasManyThrough(CarriagePanelComponent::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'id', 'id', 'carriage_panel_component_id');
+    }
+
+    public function detail_worker_trainsets(): HasManyThrough {
+        return $this->hasManyThrough(DetailWorkerTrainset::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'trainset_attachment_component_id', 'id', 'id');
+    }
+
+    public function attachment_notes(): MorphMany {
+        return $this->morphMany(AttachmentNote::class, 'attachment_noteable');
+    }
+
+    public function custom_attachment_materials(): MorphMany {
+        return $this->morphMany(CustomAttachmentMaterial::class, 'custom_attachment_materialable');
+    }
+
+    public function getQrAttribute(): ?string {
+        return $this->qr_path ? asset('storage/' . $this->qr_path) : null;
     }
 }

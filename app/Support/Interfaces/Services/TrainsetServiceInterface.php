@@ -79,7 +79,7 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * $data['source_workstation_id'] - source workstation ID
      * $data['destination_workstation_id'] - destination workstation ID
      */
-    public function generatePanelAttachment(Trainset $trainset, array $data): bool;
+    public function generatePanelAttachment(Trainset $trainset, array $data): bool|array;
 
     /**
      * generate trainset attachment
@@ -88,5 +88,10 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * $data['source_workstation_id'] - source workstation ID
      * $data['destination_workstation_id'] - destination workstation ID
      */
-    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool;
+    public function generateTrainsetAttachment(Trainset $trainset, array $data): bool|array;
+
+    /**
+     * Export serial numbers
+     */
+    public function exportSerialNumbers(Trainset $trainset): BinaryFileResponse;
 }

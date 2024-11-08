@@ -4,9 +4,9 @@ use App\Models\User;
 
 test('index method returns paginated divisions', function () {
     $user = User::factory()->superAdmin()->create();
-    createDivision();
+    $this->dummy->createDivision();
 
-    $response = $this->actingAs($user)->getJson('/divisions?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/divisions?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
@@ -37,7 +37,7 @@ test('store method creates new division', function () {
 
 test('show method returns division details', function () {
     $user = User::factory()->superAdmin()->create();
-    $division = createDivision();
+    $division = $this->dummy->createDivision();
 
     $response = $this->actingAs($user)->getJson("/divisions/{$division->id}");
 
@@ -47,7 +47,7 @@ test('show method returns division details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->superAdmin()->create();
-    $division = createDivision();
+    $division = $this->dummy->createDivision();
 
     $response = $this->actingAs($user)->get("/divisions/{$division->id}/edit");
 
@@ -57,7 +57,7 @@ test('edit method returns edit page', function () {
 
 test('update method updates division', function () {
     $user = User::factory()->superAdmin()->create();
-    $division = createDivision();
+    $division = $this->dummy->createDivision();
     $updatedData = [
         'name' => 'Updated name',
     ];
@@ -71,7 +71,7 @@ test('update method updates division', function () {
 
 test('destroy method deletes division', function () {
     $user = User::factory()->superAdmin()->create();
-    $division = createDivision();
+    $division = $this->dummy->createDivision('create');
 
     $response = $this->actingAs($user)->deleteJson("/divisions/{$division->id}");
 

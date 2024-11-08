@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\User;
+use App\Models\Workshop;
 
 test('index method returns paginated workshops', function () {
     $user = User::factory()->superAdmin()->create();
-    createWorkshop();
+    $this->dummy->createWorkshop();
 
-    $response = $this->actingAs($user)->getJson('/workshops?page=1&perPage=5');
+    $response = $this->actingAs($user)->getJson('/workshops?page=1&perPage=1');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
@@ -52,7 +53,7 @@ test('store method creates new workshop', function () {
 
 test('show method returns workshop details', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = createWorkshop();
+    $workshop = $this->dummy->createWorkshop();
 
     $response = $this->actingAs($user)->getJson("/workshops/{$workshop->id}");
 
@@ -66,7 +67,7 @@ test('show method returns workshop details', function () {
 
 test('edit method returns edit page', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = createWorkshop();
+    $workshop = $this->dummy->createWorkshop();
 
     $response = $this->actingAs($user)->get("/workshops/{$workshop->id}/edit");
 
@@ -76,7 +77,7 @@ test('edit method returns edit page', function () {
 
 test('update method updates workshop', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = createWorkshop();
+    $workshop = $this->dummy->createWorkshop();
     $updatedData = [
         'name' => 'Updated name',
         'address' => 'Updated address',
@@ -91,7 +92,7 @@ test('update method updates workshop', function () {
 
 test('destroy method deletes workshop', function () {
     $user = User::factory()->superAdmin()->create();
-    $workshop = createWorkshop();
+    $workshop = Workshop::factory()->create();
 
     $response = $this->actingAs($user)->deleteJson("/workshops/{$workshop->id}");
 
