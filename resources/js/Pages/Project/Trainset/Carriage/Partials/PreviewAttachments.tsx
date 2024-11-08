@@ -19,8 +19,10 @@ import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService'
 import PreviewTrainsetAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Components/PreviewTrainsetAttachment';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import PreviewPanelAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Components/PreviewPanelAttachment';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
+    const { t } = useLaravelReactI18n();
     const [activeTab, setActiveTab] = useState<GenerateAttachmentTabEnum>();
 
     const [mechanicAttachmentIds, setMechanicAttachmentIds] = useState<number[]>([]);
@@ -81,32 +83,46 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
 
     return (
         <Dialog>
-            <DialogTrigger className={buttonVariants()}>Lihat Detail KPM</DialogTrigger>
+            <DialogTrigger className={buttonVariants()}>
+                {t(
+                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
+                )}
+            </DialogTrigger>
             <DialogContent className="w-[70%]">
                 <DialogHeader>
                     <DialogTitle>&nbsp;</DialogTitle>
                     <DialogDescription className="w-full"></DialogDescription>
                     <Tabs
-                        defaultValue="mekanik"
+                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
                         className="w-full"
                         value={activeTab}
                         onValueChange={value => setActiveTab(value as GenerateAttachmentTabEnum)}
                     >
                         <TabsList>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                                KPM Mekanik
+                                {t(
+                                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.mechanic_attachment',
+                                )}
                             </TabsTrigger>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
-                                KPM Elektrik
+                                {t(
+                                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.electric_attachment',
+                                )}
                             </TabsTrigger>
-                            <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>KPM Assembly</TabsTrigger>
+                            <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
+                                {t(
+                                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.panel_attachment',
+                                )}
+                            </TabsTrigger>
                         </TabsList>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
                             <ScrollArea className="h-[400px] rounded-md border p-4">
                                 {mechanicAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
-                                        title="KPM Mekanik"
+                                        title={t(
+                                            'pages.project.trainset.carriage.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
+                                        )}
                                         key={index}
                                     />
                                 ))}
@@ -117,7 +133,9 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                 {electricAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
-                                        title="KPM Elektrik"
+                                        title={t(
+                                            'pages.project.trainset.carriage.partials.preview_attachments.dialogs.components.preview_panel_attachment.props.title',
+                                        )}
                                         key={index}
                                     />
                                 ))}

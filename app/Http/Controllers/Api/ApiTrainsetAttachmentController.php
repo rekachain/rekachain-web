@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class ApiTrainsetAttachmentController extends ApiController {
     public function __construct(
-        protected TrainsetAttachmentServiceInterface $trainsetAttachmentService
+        protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
     ) {}
 
     /**
@@ -159,6 +159,8 @@ class ApiTrainsetAttachmentController extends ApiController {
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
+            case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_HANDLER->value:
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignHandler($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));    
             default:
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated()));
         }

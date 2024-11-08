@@ -14,6 +14,7 @@ class RawMaterialSheetImport implements ToModel, WithHeadingRow
     
     public function __construct(
         private CarriagePanelComponent $carriagePanelComponent,
+        protected ?bool $override = null
     ) {}
 
     public function model(array $row) 
@@ -29,10 +30,26 @@ class RawMaterialSheetImport implements ToModel, WithHeadingRow
         } else {
             $this->existedMaterialCodes[] = $rawMaterial->material_code;
         }
-        return ComponentMaterial::create([
-            'carriage_panel_component_id' => $this->carriagePanelComponent->id,
-            'raw_material_id' => $rawMaterial->id,
-            'qty' => $row['qty'],
-        ]);
+        if (is_null($this->override)) {
+            // update or create by default
+            return $this->carriagePanelComponent->component_materials()->updateOrCreate([
+                'raw_material_id' => $rawMaterial->id,
+            ], [
+                'qty' => $row['qty'],
+            ]);
+        } elseif ($this->override) {
+            // create new after deletion on caller
+            return $this->carriagePanelComponent->component_materials()->create([
+                'raw_material_id' => $rawMaterial->id,
+                'qty' => $row['qty'],
+            ]);
+        } elseif (!$this->override) {
+            // create only when not existed
+            return $this->carriagePanelComponent->component_materials()->firstOrCreate([
+                'raw_material_id' => $rawMaterial->id,
+            ], [
+                'qty' => $row['qty'],
+            ]);
+        }
     }
 }

@@ -9,6 +9,7 @@ import { withLoading } from '@/Utils/withLoading';
 import WDCardView from './Partials/WDCardView';
 import WDTableView from './Partials/WDTableView';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/WorkDay/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -40,6 +41,7 @@ export default function () {
 
     return (
         <div className="space-y-4">
+            <Filters setFilters={setFilters} filters={filters} />
             <>
                 <div className="hidden md:block">
                     <WDTableView

@@ -829,9 +829,18 @@ return [
                     'new_preset_alert' => 'You are using a custom preset, do you want to save it as a new preset?',
                     'buttons' => [
                         'add_carriage' => 'Add Carriage',
+                        'export_serial_numbers' => 'Export Serial Numbers',
                     ],
                     'messages' => [
                         'carriage_added' => 'Carriage added successfully!',
+                    ],
+                    'dialogs' => [
+                        'export_serial_numbers' => [
+                            'confirmations' => [
+                                'title' => 'Are you sure?',
+                                'text' => 'This process may take a while',
+                            ],
+                        ],
                     ],
                     'breadcrumbs' => [
                         'home' => 'Home',
@@ -1014,6 +1023,28 @@ return [
                             ],
                             'buttons' => [
                                 'add_carriage' => 'Add Carriage',
+                            ],
+                        ],
+                    ],
+                    'preview_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'view_detail_attachment' => 'View Detail Attachment',
+                                'mechanic_attachment' => 'Mechanic Attachment',
+                                'electric_attachment' => 'Electric Attachment',
+                                'panel_attachment' => 'Panel Attachment',
+                            ],
+                            'components' => [
+                                'preview_trainset_attachment' => [
+                                    'props' => [
+                                        'title' => 'Trainset Attachment',
+                                    ],
+                                ],
+                                'preview_panel_attachment' => [
+                                    'props' => [
+                                        'title' => 'Panel Attachment',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -1231,7 +1262,187 @@ return [
                 ],
             ],
         ],
-        'components' => [
+        'carriage' => [
+            'index' => [
+                'title' => 'Carriages',
+                'initial_date' => 'Initial Date :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Home',
+                    'project' => 'Project :project',
+                    'carriages' => 'Carriages',
+                ],
+            ],
+            'component' => [
+                'index' => [
+                    'title' => 'Components',
+                    'initial_date' => 'Initial Date :initial_date',
+                    'preset' => 'Preset :preset',
+                    'breadcrumbs' => [
+                        'home' => 'Home',
+                        'project' => 'Project :project',
+                        'carriage' => 'Carriage :carriage',
+                        'components' => 'Components',
+                    ],
+                ],
+                'partials' => [
+                    'components' => [
+                        'messages' => [
+                            'deleted' => 'Component deleted successfully!',
+                        ],
+                    ],
+                    'import' => [
+                        'buttons' => [
+                            'import' => 'Import Component',
+                        ],
+                        'messages' => [
+                            'imported' => 'Component imported successfully!',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Import Component',
+                            'description' => 'Import progress and raw material data of :component_name on Project :project_name.',
+                            'description_already_has_material' => 'This component already has raw material data',
+                            'fields' => [
+                                'download_template' => 'Download Template',
+                                'file' => 'File',
+                                'work_aspect' => 'Work Aspect',
+                                'override' => 'What is your action?',
+                                'override_default' => 'Re-Import',
+                                'override_override' => 'Override',
+                                'override_merge' => 'Merge',
+                            ],
+                            'buttons' => [
+                                'import' => 'Import Component',
+                                'download_template' => 'Download',
+                                'submit' => 'Import Component',
+                                'processing' => 'Processing...',
+                            ],
+                        ],
+                    ],
+                    'partials' => [
+                        'component_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'description' => 'Description',
+                                'total_qty' => 'Total Qty',
+                            ],
+                        ],
+                        'component_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'description' => 'Description: :description',
+                                'total_qty' => 'Total Qty: :total_qty',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'panel' => [
+                'index' => [
+                    'title' => 'Panels',
+                    'initial_date' => 'Initial Date :initial_date',
+                    'preset' => 'Preset :preset',
+                    'breadcrumbs' => [
+                        'home' => 'Home',
+                        'project' => 'Project :project',
+                        'carriage' => 'Carriage :carriage',
+                        'panels' => 'Panels',
+                    ],
+                ],
+                'partials' => [
+                    'panels' => [
+                        'messages' => [
+                            'deleted' => 'Panel deleted successfully!',
+                        ],
+                    ],
+                    'import' => [
+                        'buttons' => [
+                            'import' => 'Import Panel',
+                        ],
+                        'messages' => [
+                            'imported' => 'Panel imported successfully!',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Import Panel',
+                            'description' => 'Import progress and raw material data of :panel_name on Project :project_name.',
+                            'fields' => [
+                                'download_template' => 'Download Template',
+                                'file' => 'File',
+                            ],
+                            'buttons' => [
+                                'import' => 'Import Panel',
+                                'download_template' => 'Download',
+                                'submit' => 'Import Panel',
+                                'processing' => 'Processing...',
+                            ],
+                        ],
+                    ],
+                    'partials' => [
+                        'panel_table' => [
+                            'headers' => [
+                                'name' => 'Name',
+                                'description' => 'Description',
+                                'total_qty' => 'Total Qty',
+                            ],
+                        ],
+                        'panel_card' => [
+                            'headers' => [
+                                'name' => 'Name: :name',
+                                'description' => 'Description: :description',
+                                'total_qty' => 'Total Qty: :total_qty',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'partials' => [
+                'carriages' => [
+                    'messages' => [
+                        'deleted' => 'Carriage deleted successfully!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Import Carriage',
+                    ],
+                    'messages' => [
+                        'imported' => 'Carriage imported successfully!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Import Carriage',
+                        'description' => 'Import progress and raw material data of :carriage_name on Project :project_name.',
+                        'fields' => [
+                            'download_template' => 'Download Template',
+                            'file' => 'File',
+                            'work_aspect' => 'Work Aspect',
+                        ],
+                        'buttons' => [
+                            'import' => 'Import Carriage',
+                            'download_template' => 'Download',
+                            'submit' => 'Import Carriage',
+                            'processing' => 'Processing...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'carriage_table' => [
+                        'headers' => [
+                            'name' => 'Name',
+                            'description' => 'Description',
+                            'total_qty' => 'Total Qty',
+                        ],
+                    ],
+                    'carriage_card' => [
+                        'headers' => [
+                            'name' => 'Name: :name',
+                            'description' => 'Description: :description',
+                            'total_qty' => 'Total Qty: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'component' => [
             'index' => [
                 'title' => 'Components',
                 'initial_date' => 'Initial Date :initial_date',
@@ -1328,6 +1539,7 @@ return [
                         'trainset_count' => 'Trainset Count',
                     ],
                     'actions' => [
+                        'carriages' => 'Carriages',
                         'trainsets' => 'Trainsets',
                         'components' => 'Components',
                         'panels' => 'Panels',

@@ -64,7 +64,7 @@ class ProjectRepository extends BaseRepository implements ProjectRepositoryInter
     protected function applyFilters(array $searchParams = []): Builder {
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['name']);
+        $query = $this->applySearchFilters($query, $searchParams, ['name', 'initial_date']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 

@@ -18,13 +18,13 @@ export default function ComponentTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.components.partials.partials.component_table.headers.name')}
+                            {t('pages.project.component.partials.partials.component_table.headers.name')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.components.partials.partials.component_table.headers.description')}
+                            {t('pages.project.component.partials.partials.component_table.headers.description')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.components.partials.partials.component_table.headers.total_qty')}
+                            {t('pages.project.component.partials.partials.component_table.headers.total_qty')}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -36,7 +36,7 @@ export default function ComponentTableView({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} component={data.component} />
+                                <Import project={project} component={data.component} hasMaterials={data.has_materials} />
                             </TableCell>
                         </TableRow>
                     ))}

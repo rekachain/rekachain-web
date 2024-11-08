@@ -217,6 +217,8 @@ class ApiPanelAttachmentController extends Controller
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
                 }
                 return PanelAttachmentResource::make(($this->panelAttachmentService->assignSpvAndReceiver($panelAttachment, $request->validated())->load('panel_attachment_handlers')));
+            case IntentEnum::API_PANEL_ATTACHMENT_ASSIGN_HANDLER->value:
+                return PanelAttachmentResource::make(($this->panelAttachmentService->assignHandler($panelAttachment, $request->validated())->load('panel_attachment_handlers')));
             default:
                 return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated()));
         }

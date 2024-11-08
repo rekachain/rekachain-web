@@ -2,11 +2,19 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Carriage;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProjectResource extends JsonResource {
+    protected $projectCarriage;
+
+    public function projectCarriage(Carriage $projectCarriage) {
+        $this->projectCarriage = $projectCarriage;
+        return $this;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -15,10 +23,24 @@ class ProjectResource extends JsonResource {
     public function toArray(Request $request): array {
         $intent = $request->get('intent');
         switch ($intent) {
+            case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY->value:
+                return $this->carriage_trainsets->groupBy(['carriage_id'])->map(function ($cariageTrainsets) {
+                    return [
+                        'carriage' => CarriageResource::make($cariageTrainsets->first()->carriage),
+                        'total_qty' => $cariageTrainsets->sum(function ($cariageTrainset) {
+                            return $cariageTrainset->qty;
+                        })
+                    ];
+                })
+                ->paginate($request->get('pageSize', $request->get('per_page', 10)))
+                ->toArray();
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS_WITH_QTY->value:
                 return $this->carriage_panels->groupBy(['panel_id'])->map(function ($carriagePanels) {
                     return [
                         'panel' => PanelResource::make($carriagePanels->first()->panel),
+                        'has_materials' => $carriagePanels->filter(function ($carriagePanel) {
+                            return $carriagePanel->hasMaterials();
+                        })->isNotEmpty(),
                         'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
                             return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
                         }),
@@ -31,8 +53,41 @@ class ProjectResource extends JsonResource {
                     ->groupBy(['component_id'])->map(function ($carriagePanelComponents) {
                         return [
                             'component' => ComponentResource::make($carriagePanelComponents->first()->component),
+                            'has_materials' => $carriagePanelComponents->filter(function ($carriagePanelComponent) {
+                                return $carriagePanelComponent->hasMaterials();
+                            })->isNotEmpty(),
                             'total_qty' => $carriagePanelComponents->sum(function ($carriagePanelComponent) {
                                 return $carriagePanelComponent->qty * $carriagePanelComponent->carriage_panel->qty * $carriagePanelComponent->carriage_panel->carriage_trainset->qty;
+                            }),
+                        ];
+                    })
+                    ->paginate($request->get('pageSize', $request->get('per_page', 10)))
+                    ->toArray();
+            case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY->value:
+                return $this->carriage_panel_components()->whereCarriageId($this->projectCarriage->id)->get()
+                    ->groupBy(['component_id'])->map(function ($carriageComponents) {
+                        return [
+                            'component' => ComponentResource::make($carriageComponents->first()->component),
+                            'has_materials' => $carriageComponents->filter(function ($carriageComponent) {
+                                return $carriageComponent->hasMaterials();
+                            })->isNotEmpty(),
+                            'total_qty' => $carriageComponents->sum(function ($carriageComponents) {
+                                return $carriageComponents->qty * $carriageComponents->carriage_panel->qty * $carriageComponents->carriage_panel->carriage_trainset->qty;
+                            }),
+                        ];
+                    })
+                    ->paginate($request->get('pageSize', $request->get('per_page', 10)))
+                    ->toArray();
+            case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY->value:
+                return $this->carriage_panels()->whereCarriageId($this->projectCarriage->id)->get()
+                    ->groupBy(['panel_id'])->map(function ($carriagePanels) {
+                        return [
+                            'panel' => PanelResource::make($carriagePanels->first()->panel),
+                            'has_materials' => $carriagePanels->filter(function ($carriagePanel) {
+                                return $carriagePanel->hasMaterials();
+                            })->isNotEmpty(),
+                            'total_qty' => $carriagePanels->sum(function ($carriagePanel) {
+                                return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
                             }),
                         ];
                     })

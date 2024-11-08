@@ -46,12 +46,12 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                             })}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
-                                    <BreadcrumbSeparator />
+                                    {/* <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
                                             {t('pages.project.panel.index.breadcrumbs.panels')}
                                         </BreadcrumbPage>
-                                    </BreadcrumbItem>
+                                    </BreadcrumbItem> */}
                                 </BreadcrumbList>
                             </Breadcrumb>
                             <h1 className="text-page-header my-4">{t('pages.project.panel.index.title')}</h1>
