@@ -17,6 +17,10 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $data = $this->dashboardService->showGraph($request->query());
+        $data['panel_attachment_status'] = $this->dashboardService->showPanelAttachmentStatusOfTrainset($request->query());
+        if($this->ajax()) {
+            return $data;
+        }
         return Inertia::render('Dashboard',['data'=>$data]);
     }
 }

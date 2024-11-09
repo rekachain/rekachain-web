@@ -41,6 +41,10 @@ class Project extends Model {
         return $this->hasMany(Trainset::class);
     }
 
+    public function trainset_attachments(): HasManyThrough {
+        return $this->hasManyThrough(TrainsetAttachment::class, Trainset::class);
+    }
+
     public function preset_trainsets() {
         return $this->hasMany(PresetTrainset::class);
     }
@@ -88,6 +92,29 @@ class Project extends Model {
                 'id',                  // Local key on the CarriagePanel table
                 'id',                  // Local key on the Trainset table
                 'id',                  // Local key on the CarriageTrainset table
+            ]
+        );
+    }
+
+    public function panel_attachments() : HasManyDeep {
+        return $this->hasManyDeep(
+            PanelAttachment::class,
+            [
+                Trainset::class,
+                CarriageTrainset::class,
+                CarriagePanel::class,
+            ],
+            [
+                'project_id',          // Foreign key on the Trainset table
+                'trainset_id',         // Foreign key on the CarriageTrainset table
+                'carriage_trainset_id',// Foreign key on the CarriagePanel table
+                'carriage_panel_id',   // Foreign key on the CarriagePanelComponent table
+            ],
+            [
+                'id',                  // Local key on the Component table
+                'id',                  // Local key on the Trainset table
+                'id',                  // Local key on the CarriageTrainset table
+                'id',                  // Local key on the CarriagePanel table
             ]
         );
     }

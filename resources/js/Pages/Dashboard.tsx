@@ -10,9 +10,87 @@ import { TrendingUp } from 'lucide-react';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { ROUTES } from '@/Support/Constants/routes';
+import Checkbox from '@/Components/Checkbox';
+import InputLabel from '@/Components/InputLabel';
+interface AttachmentStatusOfTrainsetResource {
+    trainset_name: string;
+    progress: { status: string, count: number }[];
+}
+interface AttachmentStatusBarGraph {
+    data: AttachmentStatusOfTrainsetResource[];
+    config: ChartConfig;
+}
 export default function Dashboard({ auth, data }: PageProps) {
     console.log(data);
+
+    const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({
+        done: {
+            label: 'Done',
+            color: 'hsl(var(--chart-1))', 
+        },
+        in_progress: {
+            label: 'Progress',
+            color: 'hsl(var(--chart-2))', 
+        },
+        pending: {
+            label: 'Pending',
+            color: 'hsl(var(--chart-3))', 
+        },
+        material_in_transit: {
+            label: 'Material In Transit',
+            color: 'hsl(var(--chart-4))', 
+        },
+        material_accepted: {
+            label: 'Material Accepted',
+            color: 'hsl(var(--chart-5))', 
+        },
+    });
+    const [useMerged, setUseMerged] = useState(false);
+    const [useRaw, setUseRaw] = useState(false);
+    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
+        data: useRaw
+            ? data.panel_attachment_status
+            : data.panel_attachment_status.map(
+                ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+                    trainset_name,
+                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                }),
+            ),
+        config: Object.fromEntries(
+            Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
+        ),
+    });
+
+    useEffect(() => {
+        console.log('useMerged', useMerged, 'useRaw', useRaw);
+        syncAttachmentStatusData();
+    }, [useMerged, useRaw]);
+    
+    const syncAttachmentStatusData = async () => {
+        console.time('syncAttachmentStatusData');
+        const res = await axios.get(route(`${ROUTES.DASHBOARD}`, { use_merged: useMerged, use_raw: useRaw }));
+        console.timeEnd('syncAttachmentStatusData');
+        console.log('res', res.data);
+        setAttachmentStatusOfTrainsetGraph({
+            data: useRaw
+                ? res.data.panel_attachment_status
+                : res.data.panel_attachment_status.map(
+                      ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+                          trainset_name,
+                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                      }),
+                  ),
+            config: Object.fromEntries(
+                Object.entries(attachmentStatusConfig).filter(([key]) =>
+                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                ),
+            ),
+        });
+    };
+
     const chartConfig = {
         in_progress: {
             label: 'Progress',
@@ -88,11 +166,17 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <div className="">
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <h2 className="text-xl my-2">Proyek 612</h2>
-                            <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                                <BarChart accessibilityLayer data={data['ts']}>
+                            <div className="flex items-center px-1 gap-3">
+                                <Checkbox id="useMerged" onChange={e => setUseMerged(e.target.checked)} checked={useMerged} />
+                                <InputLabel htmlFor="useMerged" value="Use Merged Status" />
+                                <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
+                                <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
+                            </div>
+                            <ChartContainer config={attachmentStatusOfTrainsetGraph.config} className="h-[200px] w-full pr-10">
+                                <BarChart accessibilityLayer data={attachmentStatusOfTrainsetGraph.data}>
                                     <CartesianGrid vertical={false} />
                                     <XAxis
-                                        dataKey="name"
+                                        dataKey="trainset_name"
                                         tickLine={false}
                                         tickMargin={10}
                                         axisLine={false}
@@ -100,8 +184,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                    {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
+                                      <Bar key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} fill={`var(--color-${dataKey})`} />
+                                    ))}
                                 </BarChart>
                             </ChartContainer>
                         </div>
