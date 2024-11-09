@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Project\Carriage\CarriageProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
+use App\Http\Requests\Project\Trainset\TrainsetProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\CarriageResource;
 use App\Http\Resources\CarriageTrainsetResource;
@@ -148,7 +149,7 @@ class ProjectController extends Controller {
         return inertia('Project/Trainset/Index', ['project' => $project]);
     }
 
-    public function project_trainset(Request $request, Project $project, Trainset $trainset) {
+    public function project_trainset(TrainsetProjectRequest $request, Project $project, Trainset $trainset) {
         $intent = $request->get('intent');
         if ($this->ajax()) {
             switch($intent) {
