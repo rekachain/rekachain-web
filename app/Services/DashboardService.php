@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Models\PanelAttachment;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
 use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +17,8 @@ use App\Support\Interfaces\Services\WorkshopServiceInterface;
 
 class DashboardService {
     public function __construct(
+        protected PanelAttachmentRepositoryInterface $panelAttachmentRepository,
+        protected TrainsetAttachmentRepositoryInterface $trainsetAttachmentRepository,
         protected ProjectServiceInterface $projectService, 
         protected ProjectRepositoryInterface $projectRepository,
         protected TrainsetRepositoryInterface $trainsetRepository,
@@ -195,5 +199,42 @@ class DashboardService {
                 }, 'count' => $attachment->count()]
             )
             ->values();
+    }
+
+    public function showAttachmentStatusOfWorkstation(array $data) {
+        $data['attachment_status_of_workstation_filter'] = array_merge_recursive(
+            $data['attachment_status_of_workstation_filter'] ?? [], [
+                'relation_column_filters' => [
+                    'trainset' => ['project_id' => $data['project_id'] ?? 1],
+                ]
+        ]);
+        $panelAttachments = $this->panelAttachmentRepository
+            ->useFilters($data['attachment_status_of_workstation_filter'])->get();
+        $workstationPanelProgress = $panelAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
+            [
+                'workstation_name' => $attachments->first()->source_workstation->name,
+                'progress' => $this->calculateProgress($attachments, $data, 0)
+            ]);
+
+        $trainsetAttachments = $this->trainsetAttachmentRepository
+            ->useFilters($data['attachment_status_of_workstation_filter'])->get();
+        $workstationTrainsetProgress = $trainsetAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
+            [
+                'workstation_name' => $attachments->first()->source_workstation->name,
+                'progress' => $this->calculateProgress($attachments, $data, 1)
+            ]);
+
+        $progress = $workstationPanelProgress->merge($workstationTrainsetProgress)
+            ->groupBy('workstation_name')
+            ->map(fn($attachment) => [
+                'workstation_name' => $attachment->first()['workstation_name'],
+                'progress' => $attachment->map(fn ($item) => $item['progress'])->flatten(1)
+                    ->groupBy('status')
+                    ->map(fn ($attachment) => ['status' => $attachment->first()['status'], 'count' => $attachment->sum('count')])
+                    ->values()
+            ])
+            ->sortBy('workstation_name')
+            ->values();
+        return $progress->toArray();
     }
 }

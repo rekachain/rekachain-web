@@ -18,18 +18,24 @@ class TrainsetAttachmentRepository extends BaseRepository implements TrainsetAtt
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
+        $model = new ($this->getModelClass());
+
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['name']);
+        $query = $this->applySearchFilters($query, $searchParams, $model->getFilterable()['searchs']);
 
-        $query = $this->applyColumnFilters($query, $searchParams, ['supervisor_id','status']);
+        $query = $this->applyColumnFilters($query, $searchParams, $model->getFilterable()['columns']);
 
-        $query = $this->applyRelationColumnFilters($query, $searchParams, ['trainsets'=>['status','name'],'detail_worker_trainsets'=>['worker_id']]);
+        $query = $this->applyRelationColumnFilters($query, $searchParams, $model->getFilterable()['relation_columns']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);
 
         return $query;
+    }
+
+    public function useFilters(array $searchParams): Builder {
+        return $this->applyFilters($searchParams);
     }
 }

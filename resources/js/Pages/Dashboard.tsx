@@ -21,6 +21,10 @@ interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string, count: number }[];
 }
+interface AttachmentStatusOfWorkstationResource {
+    workstation_name: string;
+    progress: { status: string, count: number }[];
+}
 interface AttachmentStatusBarGraph {
     data: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
@@ -50,12 +54,12 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: 'hsl(var(--chart-5))', 
         },
     });
-    const [useMerged, setUseMerged] = useState(false);
+    const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(false);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
         data: useRaw
-            ? data.panel_attachment_status
-            : data.panel_attachment_status.map(
+            ? data.attachment_status_of_trainset
+            : data.attachment_status_of_trainset.map(
                 ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
                     trainset_name,
                     ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
@@ -65,26 +69,48 @@ export default function Dashboard({ auth, data }: PageProps) {
             Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
         ),
     });
-    const [trainsetFilters, setTrainsetFilters] = useState<{ column_filters: any } | null>({column_filters: {}});
+    const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] = useState<AttachmentStatusBarGraph>({
+        data: data.attachment_status_of_workstation.map(
+                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+                    workstation_name,
+                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                }),
+            ),
+        config: Object.fromEntries(
+            Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
+        ),
+    })
+    const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
+    const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({})
+    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({})
 
     useEffect(() => {
         console.log('useMerged', useMerged, 'useRaw', useRaw);
         syncAttachmentStatusData();
-    }, [useMerged, useRaw, trainsetFilters]);
+    }, [useMerged, useRaw]);
+
+    useEffect(() => {
+        setAttachmentStatusOfTrainsetFilter({column_filters: {id: trainsetFilters?.id}});
+        setAttachmentStatusOfWorkstationFilter({relation_column_filters: {trainset: {id: trainsetFilters?.id}}});
+    }, [trainsetFilters]);
+    useEffect(() => {
+        syncAttachmentStatusData();
+    }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
     
     const syncAttachmentStatusData = async () => {
         console.time('syncAttachmentStatusData');
         const res = await axios.get(route(`${ROUTES.DASHBOARD}`, { 
             use_merged: useMerged, 
             use_raw: useRaw,
-            attachment_status_of_trainset_filter: trainsetFilters
+            attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
+            attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter
         }));
         console.timeEnd('syncAttachmentStatusData');
         console.log('res', res.data);
         setAttachmentStatusOfTrainsetGraph({
             data: useRaw
-                ? res.data.panel_attachment_status
-                : res.data.panel_attachment_status.map(
+                ? res.data.attachment_status_of_trainset
+                : res.data.attachment_status_of_trainset.map(
                       ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
                           trainset_name,
                           ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
@@ -96,6 +122,19 @@ export default function Dashboard({ auth, data }: PageProps) {
                 ),
             ),
         });
+        setAttachmentStatusOfWorkstationGraph({
+            data: res.data.attachment_status_of_workstation.map(
+                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+                    workstation_name,
+                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                })
+            ),
+            config: Object.fromEntries(
+                Object.entries(attachmentStatusConfig).filter(([key]) =>
+                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                ),
+            )
+        })
     };
 
     const fetchTrainsetFilters = useCallback(async () => {
@@ -192,15 +231,15 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 // TODO: redesain dis shts🗿
                                 id="trainset_id"
                                 fetchData={fetchTrainsetFilters}
-                                setSelectedData={id => setTrainsetFilters({column_filters: {id: id}})}
-                                selectedDataId={trainsetFilters?.column_filters?.id ?? null}
+                                setSelectedData={id => setTrainsetFilters({id: id})}
+                                selectedDataId={trainsetFilters?.id ?? null}
                                 placeholder={'Choose'}
                                 renderItem={item => `${item.name}`}
                                 buttonClassName="mt-1"
                                 nullable
                             />
                             
-                            <ChartContainer config={attachmentStatusOfTrainsetGraph.config} className="h-[200px] w-full pr-10">
+                            <ChartContainer config={attachmentStatusOfTrainsetGraph.config} className="h-[200px] w-full mt-5 pr-2">
                                 <BarChart accessibilityLayer data={attachmentStatusOfTrainsetGraph.data}>
                                     <CartesianGrid vertical={false} />
                                     <XAxis
@@ -210,18 +249,21 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         axisLine={false}
                                         tickFormatter={value => value.slice(0, 6)}
                                     />
+                                    {/* {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
+                                      <YAxis key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} />
+                                    ))} */}
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
                                     {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
-                                      <Bar key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} fill={`var(--color-${dataKey})`} />
+                                      <Bar key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} fill={`var(--color-${dataKey})`} radius={[5, 5, 0, 0]} />
                                     ))}
                                 </BarChart>
                             </ChartContainer>
                         </div>
                         <div className="flex max-w-full mt-2 ">
                             <div className="w-1/2">
-                                <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
-                                <h3 className="text-base">Workstation Sukosari, Candisewu</h3>
+                                <h2 className="text-xl my-1 font-bold">Progress Tiap Workshop</h2>
+                                <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
                                 <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
                                     <BarChart accessibilityLayer data={data.ws} layout="vertical">
                                         <CartesianGrid vertical={false} />
@@ -269,6 +311,30 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     </BarChart>
                                 </ChartContainer>
                             </div>
+                        </div>
+                                <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
+                        <div className="flex max-w-full mt-2">
+                            {/* <div className="w-1/2"> */}
+                                {/* <h3 className="text-base">Workstation Sukosari, Candisewu</h3> */}
+                                <ChartContainer config={attachmentStatusOfWorkstationGraph.config} className="h-[300px] w-full mt-5">
+                                    <BarChart accessibilityLayer data={attachmentStatusOfWorkstationGraph.data} layout="vertical">
+                                        <CartesianGrid vertical={false} />
+                                        {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
+                                          <XAxis key={`workstationPanelStatus-${dataKey}-key`} type="number" dataKey={dataKey} />
+                                        ))}
+                                        <YAxis
+                                            className=""
+                                            dataKey="workstation_name"
+                                            type="category"
+                                        />
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
+                                          <Bar key={`workstationPanelStatus-${dataKey}-key`} dataKey={dataKey} fill={`var(--color-${dataKey})`} radius={[0, 4, 4, 0]} />
+                                        ))}
+                                    </BarChart>
+                                </ChartContainer>
+                            {/* </div> */}
                         </div>
                         {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
 
