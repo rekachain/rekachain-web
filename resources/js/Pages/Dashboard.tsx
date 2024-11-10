@@ -10,11 +10,13 @@ import { TrendingUp } from 'lucide-react';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ROUTES } from '@/Support/Constants/routes';
 import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { trainsetService } from '@/Services/trainsetService';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string, count: number }[];
@@ -63,15 +65,20 @@ export default function Dashboard({ auth, data }: PageProps) {
             Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
         ),
     });
+    const [trainsetFilters, setTrainsetFilters] = useState<{ column_filters: any } | null>({column_filters: {}});
 
     useEffect(() => {
         console.log('useMerged', useMerged, 'useRaw', useRaw);
         syncAttachmentStatusData();
-    }, [useMerged, useRaw]);
+    }, [useMerged, useRaw, trainsetFilters]);
     
     const syncAttachmentStatusData = async () => {
         console.time('syncAttachmentStatusData');
-        const res = await axios.get(route(`${ROUTES.DASHBOARD}`, { use_merged: useMerged, use_raw: useRaw }));
+        const res = await axios.get(route(`${ROUTES.DASHBOARD}`, { 
+            use_merged: useMerged, 
+            use_raw: useRaw,
+            attachment_status_of_trainset_filter: trainsetFilters
+        }));
         console.timeEnd('syncAttachmentStatusData');
         console.log('res', res.data);
         setAttachmentStatusOfTrainsetGraph({
@@ -90,6 +97,15 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     };
+
+    const fetchTrainsetFilters = useCallback(async () => {
+        return await trainsetService
+            .getAll({
+                filter: {},
+                column_filters: {project_id: 1},// TODO: use project filter
+            })
+            .then(response => response.data);
+    }, []);
 
     const chartConfig = {
         in_progress: {
@@ -172,6 +188,18 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
                                 <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                             </div>
+                            <GenericDataSelector
+                                // TODO: redesain dis shts🗿
+                                id="trainset_id"
+                                fetchData={fetchTrainsetFilters}
+                                setSelectedData={id => setTrainsetFilters({column_filters: {id: id}})}
+                                selectedDataId={trainsetFilters?.column_filters?.id ?? null}
+                                placeholder={'Choose'}
+                                renderItem={item => `${item.name}`}
+                                buttonClassName="mt-1"
+                                nullable
+                            />
+                            
                             <ChartContainer config={attachmentStatusOfTrainsetGraph.config} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={attachmentStatusOfTrainsetGraph.data}>
                                     <CartesianGrid vertical={false} />
