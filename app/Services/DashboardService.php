@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Models\PanelAttachment;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
+use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
@@ -12,7 +15,12 @@ use App\Support\Interfaces\Services\WorkshopServiceInterface;
 
 class DashboardService {
     public function __construct(
-        protected ProjectServiceInterface $projectService, protected WorkshopServiceInterface $workshopService, protected PanelServiceInterface $panelService
+        protected ProjectServiceInterface $projectService, 
+        protected ProjectRepositoryInterface $projectRepository,
+        protected TrainsetRepositoryInterface $trainsetRepository,
+        protected WorkshopServiceInterface $workshopService,
+        protected WorkstationRepositoryInterface $workstationRepository,
+        protected PanelServiceInterface $panelService
     ) {}
 
     public function showGraph(array $data = []) {
@@ -112,8 +120,8 @@ class DashboardService {
         'status_material_accepted' => [PanelAttachmentStatusEnum::MATERIAL_ACCEPTED, TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED],
         'status_done' => [PanelAttachmentStatusEnum::DONE, TrainsetAttachmentStatusEnum::DONE]
     ];
-    public function showPanelAttachmentStatusOfTrainset(array $data = []) {
-        $project = $this->projectService->find(['id' => $data['project_id'] ?? 1])->first();
+    public function showAttachmentStatusOfTrainset(array $data = []) {
+        $project = $this->projectRepository->useFilters($data)->find($data['project_id'] ?? 1);
         $returnMerged = $data['use_merged'] ?? false;
         $useRaw = $data['use_raw'] ?? false;
 
@@ -156,8 +164,10 @@ class DashboardService {
             })->values();
             return $progress->toArray();
         } else {
-            $trainsets = $project->trainsets()->get();
-            $progress = $trainsets->map(function ($trainset) use ($data) {
+            $data['attachment_status_of_trainset_filter']['relation_column_filters']['project'] = ['id' => $data['project_id'] ?? 1];
+            // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
+            $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
+            $progress = $trainsets->get()->map(function ($trainset) use ($data) {
                 $panelProgress = $this->calculateProgress($trainset->panel_attachments, $data, 0);
                 $trainsetProgress = $this->calculateProgress($trainset->trainset_attachments, $data, 1);
 
@@ -172,17 +182,17 @@ class DashboardService {
 
     private function calculateProgress($attachments, $data, $key) {
         $useMerged = $data['use_merged'] ?? false;
-        return $attachments->filter(fn ($a) => !array_key_exists('status', $data) || ($a->status?->value ?? $this->statusMapping['status_pending'][$key]) === $data['status'])
-            ->groupBy(fn ($a) => $a->status)
-            ->map(fn ($a) => 
-                (!$useMerged) ? ['status' => $a->first()->status ?? $this->statusMapping['status_pending'][$key], 'count' => $a->count()]
-                : ['status' => match ($a->first()->status) { 
+        return $attachments->filter(fn ($attachment) => !array_key_exists('status', $data) || ($attachment->status?->value ?? $this->statusMapping['status_pending'][$key]) === $data['status'])
+            ->groupBy(fn ($attachment) => $attachment->status)
+            ->map(fn ($attachment) => 
+                (!$useMerged) ? ['status' => $attachment->first()->status ?? $this->statusMapping['status_pending'][$key], 'count' => $attachment->count()]
+                : ['status' => match ($attachment->first()->status) { 
                     $this->statusMapping['status_in_progress'][$key] => $this->statusMapping['status_in_progress'][$key],
                     $this->statusMapping['status_material_in_transit'][$key] => $this->statusMapping['status_in_progress'][$key],
                     $this->statusMapping['status_material_accepted'][$key] => $this->statusMapping['status_in_progress'][$key],
                     $this->statusMapping['status_done'][$key] => $this->statusMapping['status_done'][$key],
                     default => $this->statusMapping['status_pending'][$key], 
-                }, 'count' => $a->count()]
+                }, 'count' => $attachment->count()]
             )
             ->values();
     }

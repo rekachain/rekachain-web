@@ -17,6 +17,29 @@ class Project extends Model {
         'initial_date',
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'name',
+            'initial_date',
+        ],
+        'columns' => [
+            'name',
+            'initial_date',
+        ],
+        'relation_columns' => [
+            // 'carriages' => [
+            //     'type',
+            // ],
+            // 'trainsets' => [
+            //     'name',
+            // ]
+        ]
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
     public function carriages(): HasManyDeep {
         return $this->hasManyDeep(
             Carriage::class, // The final target model is Carriage itself

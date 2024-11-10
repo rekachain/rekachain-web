@@ -18,14 +18,24 @@ class TrainsetRepository extends BaseRepository implements TrainsetRepositoryInt
     }
 
     protected function applyFilters(array $searchParams = []): Builder {
+        $model = new ($this->getModelClass());
+
         $query = $this->getQuery();
 
-        $query = $this->applySearchFilters($query, $searchParams, ['name']);
+        $query = $this->applySearchFilters($query, $searchParams, $model->getFilterable()['searchs']);
 
         $query = $this->applyResolvedRelations($query, $searchParams);
+
+        $query = $this->applyColumnFilters($query, $searchParams, $model->getFilterable()['columns']);
+
+        $query = $this->applyRelationColumnFilters($query, $searchParams, $model->getFilterable()['relation_columns']);
 
         $query = $this->applySorting($query, $searchParams);
 
         return $query;
+    }
+
+    public function useFilters(array $searchParams): Builder {
+        return $this->applyFilters($searchParams);
     }
 }
