@@ -75,16 +75,16 @@ trait HandlesFiltering {
                     $query->whereHas($relation, function ($query) use ($key, $val) {
                         if (is_array($val)) {
                             if (array_key_exists('from', $val) && array_key_exists('to', $val)) {
-                                $query->whereBetween($key, [$val['from'], $val['to']]);
+                                $query->whereBetween($query->from . '.' . $key, [$val['from'], $val['to']]);
                             } elseif (array_key_exists('from', $val)) {
-                                $query->where($key, '>=', $val['from']);
+                                $query->where($query->from . '.' . $key, '>=', $val['from']);
                             } elseif (array_key_exists('to', $val)) {
-                                $query->where($key, '<=', $val['to']);
+                                $query->where($query->from . '.' . $key, '<=', $val['to']);
                             } elseif (is_numeric(key($val))) {
-                                $query->whereIn($key, $val);
+                                $query->whereIn($query->from . '.' . $key, $val);
                             }
                         } else {
-                            $query->where($key, $val);
+                            $query->where($query->from . '.' . $key, $val);
                         }
                     });
                 }
