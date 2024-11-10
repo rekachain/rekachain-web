@@ -29,11 +29,42 @@ class TrainsetAttachment extends Model {
         'supervisor_id',
         'status',
     ];
+
     protected $casts = [
         'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'attachment_number',
+            'status',
+        ],
+        'relation_searchs' => [],
+        'columns' => [
+            'id',
+            'source_workstation_id', 
+            'destination_workstation_id', 
+            'status', 
+            'panel_attachment_id', 
+            'supervisor_id', 
+        ],
+        'relation_columns' => [
+            'detail_worker_trainsets' => [
+                'worker_id',
+            ],
+            'trainset' => [
+                'id',
+                'project_id',
+                'status',
+                'name',
+            ],
+        ]
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
     public function parent(): BelongsTo {
         return $this->belongsTo(TrainsetAttachment::class, 'trainset_attachment_id');
     }
