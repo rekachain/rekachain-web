@@ -83,6 +83,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({})
     const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({})
+    const [maxWorkstationStatusValue, setMaxWorkstationStatusValue] = useState(10);
 
     useEffect(() => {
         console.log('useMerged', useMerged, 'useRaw', useRaw);
@@ -96,6 +97,16 @@ export default function Dashboard({ auth, data }: PageProps) {
     useEffect(() => {
         syncAttachmentStatusData();
     }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
+    useEffect(() => {
+        let max = 0;
+        attachmentStatusOfWorkstationGraph.data.forEach(trainset => {
+            Object.values(trainset).forEach(count => {
+                if(count > max) max = count + 1;
+            })
+        })
+        console.log('max', max);
+        setMaxWorkstationStatusValue(max);
+    }, [attachmentStatusOfWorkstationGraph]);
     
     const syncAttachmentStatusData = async () => {
         console.time('syncAttachmentStatusData');
@@ -320,7 +331,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <BarChart accessibilityLayer data={attachmentStatusOfWorkstationGraph.data} layout="vertical">
                                         <CartesianGrid vertical={false} />
                                         {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                          <XAxis key={`workstationPanelStatus-${dataKey}-key`} type="number" dataKey={dataKey} />
+                                          <XAxis 
+                                            key={`workstationPanelStatus-${dataKey}-key`} 
+                                            type="number" 
+                                            dataKey={dataKey} 
+                                            domain={[0, maxWorkstationStatusValue]}
+                                          />
                                         ))}
                                         <YAxis
                                             className=""
