@@ -17,7 +17,7 @@ class TrainsetAttachmentHandlerSeeder extends Seeder {
      */
     public function run(): void {
         $datas = TrainsetAttachment::all();
-        $handles = ['prepare', 'send', 'receive'];
+        $handles = ['send', 'receive'];
         
         foreach ($datas as $data){
             foreach ($handles as $handle){
