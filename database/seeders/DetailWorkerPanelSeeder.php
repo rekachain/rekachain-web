@@ -26,8 +26,12 @@ class DetailWorkerPanelSeeder extends Seeder {
         //     return;
         // }
 
-        PanelAttachment::all()->each(function (PanelAttachment $panelAttachment, $panelAttachmentIndex) {
-            $panelAttachmentCount = PanelAttachment::count();
+        $panelAttachmentCount = PanelAttachment::count();
+        PanelAttachment::all()->take(rand(1, $panelAttachmentCount))->each(function (PanelAttachment $panelAttachment, $panelAttachmentIndex) use ($panelAttachmentCount) {
+            $randStatus = array_rand([
+                PanelAttachmentStatusEnum::IN_PROGRESS->value => PanelAttachmentStatusEnum::IN_PROGRESS->value,
+                PanelAttachmentStatusEnum::PENDING->value => PanelAttachmentStatusEnum::PENDING->value,
+            ]);
             $panelAttachment->update([
                 'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value
             ]);
@@ -75,10 +79,9 @@ class DetailWorkerPanelSeeder extends Seeder {
                     }
                 }
                 $randStatus = array_rand([
-                    PanelAttachmentStatusEnum::IN_PROGRESS->value => 7,
-                    PanelAttachmentStatusEnum::DONE->value => 5,
-                    PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => 3,
-                    PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value => 1,
+                    PanelAttachmentStatusEnum::IN_PROGRESS->value => PanelAttachmentStatusEnum::IN_PROGRESS->value,
+                    PanelAttachmentStatusEnum::DONE->value => PanelAttachmentStatusEnum::DONE->value,
+                    PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
                 ]);
                 if ($panelAttachmentIndex < $panelAttachmentCount - 1) {
                     $panelAttachment->update([
