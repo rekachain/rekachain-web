@@ -169,20 +169,23 @@ class DashboardService {
             })->values();
             return $progress->toArray();
         } else {
-            $data['attachment_status_of_trainset_filter']['relation_column_filters']['project'] = ['id' => $data['project_id'] ?? 1];
-            $data['attachment_status_of_trainset_filter']['column_filters'] = ['status' => 'progress'];
+            $data['attachment_status_of_trainset_filter'] = array_merge_recursive(
+                $data['attachment_status_of_trainset_filter'] ?? [],
+                ['relation_column_filters' => ['project' => ['id' => $data['project_id'] ?? 1]]],
+                ['column_filters' => ['status' => 'progress']]
+            );
             // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
             $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
-            $progress = $trainsets->get()->map(function ($trainset) use ($data) {
-                $panelProgress = $this->calculateProgress($trainset->panel_attachments, $data, 0);
+            $progressOfTrainset = $trainsets->get()->map(function ($trainset) use ($data) {
                 $trainsetProgress = $this->calculateProgress($trainset->trainset_attachments, $data, 1);
-
+                $panelProgress = $this->calculateProgress($trainset->panel_attachments, $data, 0);
+                $progress = $panelProgress->isNotEmpty() ? $trainsetProgress->merge($panelProgress) : $trainsetProgress;
                 return [
                     'trainset_name' => $trainset->name,
-                    'progress' => $panelProgress->merge($trainsetProgress)->groupBy('status')->map(fn($group) => ['status' => $group->first()['status'], 'count' => $group->sum('count')])->values()
+                    'progress' => $progress->groupBy('status')->map(fn($group) => ['status' => $group->first()['status'], 'count' => $group->sum('count')])->values()
                 ];
             });
-            return $progress->toArray();
+            return $progressOfTrainset->toArray();
         }
     }
 
@@ -207,17 +210,12 @@ class DashboardService {
         $data['attachment_status_of_workstation_filter'] = array_merge_recursive(
             $data['attachment_status_of_workstation_filter'] ?? [], [
                 'relation_column_filters' => [
-                    'trainset' => ['project_id' => $data['project_id'] ?? 1],
+                    'trainset' => [
+                        'status' => 'progress',
+                        'project_id' => $data['project_id'] ?? 1
+                    ],
                 ]
         ]);
-        $panelAttachments = $this->panelAttachmentRepository
-            ->useFilters($data['attachment_status_of_workstation_filter'])->get();
-        $workstationPanelProgress = $panelAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
-            [
-                'workstation_name' => $attachments->first()->source_workstation->name,
-                'progress' => $this->calculateProgress($attachments, $data, 0)
-            ]);
-
         $trainsetAttachments = $this->trainsetAttachmentRepository
             ->useFilters($data['attachment_status_of_workstation_filter'])->get();
         $workstationTrainsetProgress = $trainsetAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
@@ -226,7 +224,15 @@ class DashboardService {
                 'progress' => $this->calculateProgress($attachments, $data, 1)
             ]);
 
-        $progress = $workstationPanelProgress->merge($workstationTrainsetProgress)
+        $panelAttachments = $this->panelAttachmentRepository
+            ->useFilters($data['attachment_status_of_workstation_filter'])->get();
+        $workstationPanelProgress = $panelAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
+            [
+                'workstation_name' => $attachments->first()->source_workstation->name,
+                'progress' => $this->calculateProgress($attachments, $data, 0)
+            ]);
+        $progress = $workstationPanelProgress->isNotEmpty() ? $workstationTrainsetProgress->merge($workstationPanelProgress) : $workstationTrainsetProgress;
+        $progressOfWorkstation = $progress
             ->groupBy('workstation_name')
             ->map(fn(Collection $attachment) => [
                 'workstation_name' => $attachment->first()['workstation_name'],
@@ -237,6 +243,6 @@ class DashboardService {
             ])
             ->sortBy('workstation_name')
             ->values();
-        return $progress->toArray();
+        return $progressOfWorkstation->toArray();
     }
 }
