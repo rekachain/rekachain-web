@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
-use Illuminate\Support\Facades\DB;
 
 
 class DashboardService {

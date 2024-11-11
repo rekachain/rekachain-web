@@ -216,7 +216,7 @@ export default function ({
                                     </RadioGroup>
                                 </div> */}
                                 <DropdownMenu>
-                                    <DropdownMenuTrigger className="w-full bg-rose-700">
+                                    <DropdownMenuTrigger className="w-full">
                                         <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
                                             <OctagonAlert className="h-[30px]"></OctagonAlert>
                                             <p className="">
@@ -227,7 +227,11 @@ export default function ({
                                         </div>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="w-[450px]">
-                                        <DropdownMenuLabel>Aksi yang harus diambil</DropdownMenuLabel>
+                                        <DropdownMenuLabel>
+                                            {t(
+                                                'pages.project.carriage.component.partials.import.dialogs.fields.override',
+                                            )}
+                                        </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
                                         <RadioGroup
                                             id="import-override"
@@ -251,7 +255,7 @@ export default function ({
                                                             </Label>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>Add to library</p>
+                                                            <p>Gabungkan antara komponen sebelum dan sesudah</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -273,7 +277,7 @@ export default function ({
                                                             </Label>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>Add to library</p>
+                                                            <p>Import kembali seluruh komponen</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
@@ -294,7 +298,7 @@ export default function ({
                                                             </Label>
                                                         </TooltipTrigger>
                                                         <TooltipContent>
-                                                            <p>Add to library</p>
+                                                            <p>Menimpa Import</p>
                                                         </TooltipContent>
                                                     </Tooltip>
                                                 </TooltipProvider>
