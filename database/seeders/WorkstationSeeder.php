@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Workstation;
+use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
 class WorkstationSeeder extends Seeder {
@@ -10,6 +11,15 @@ class WorkstationSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
+        $csvReader = new CsvReader('workstation');
+        $csvData = $csvReader->getCsvData();
+        
+        if ($csvData) {
+            foreach ($csvData as $data) {
+                Workstation::create($data);
+            }
+            return;
+        }
         $workstations = [
             [
                 'workshop_id' => 1,
