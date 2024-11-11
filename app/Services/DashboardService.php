@@ -169,8 +169,11 @@ class DashboardService {
             })->values();
             return $progress->toArray();
         } else {
-            $data['attachment_status_of_trainset_filter']['relation_column_filters']['project'] = ['id' => $data['project_id'] ?? 1];
-            $data['attachment_status_of_trainset_filter']['column_filters'] = ['status' => 'progress'];
+            $data['attachment_status_of_trainset_filter'] = array_merge_recursive(
+                $data['attachment_status_of_trainset_filter'] ?? [],
+                ['relation_column_filters' => ['project' => ['id' => $data['project_id'] ?? 1]]],
+                ['column_filters' => ['status' => 'progress']]
+            );
             // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
             $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
             $progress = $trainsets->get()->map(function ($trainset) use ($data) {
