@@ -14,7 +14,7 @@ import { PageProps } from '../../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Text, XAxis, YAxis } from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
@@ -25,7 +25,7 @@ import { cn } from '@/Lib/Utils';
 import { Button } from '@/Components/UI/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 const project = [
     {
@@ -108,10 +108,30 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     // export default function Dashboard({ auth }: PageProps) {
     const { t } = useLaravelReactI18n();
+    // const formatTick = (tick: any) => {
+    //     return tick.length > 4 ? tick.slice(0, 4) + '\n' + tick.slice(4) : tick;
+    // };
+    // const CustomTick = ({ x, y, payload }: { x: any; y: any; payload: any }) => {
+    //     const maxCharsPerLine = 5; // Define maximum characters per line
+    //     const label = payload.value;
+
+    //     // Split label based on max character length
+    //     const wrappedLabel = label.match(new RegExp(`.{1,${maxCharsPerLine}}`, 'g')) || [];
+
+    //     return (
+    //         <text x={x} y={y + 10} textAnchor="middle" style={{ fontSize: 12 }}>
+    //             {wrappedLabel.map((line: any, index: any) => (
+    //                 <tspan x={x} dy={index * 14} key={index}>
+    //                     {line}
+    //                 </tspan>
+    //             ))}
+    //         </text>
+    //     );
+    // };
+
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
-
             <div className="py-12">
                 {/* <p>{value}</p> */}
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
@@ -187,13 +207,21 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="">
                                 <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
                                 <h3 className="text-base">Panel yang ada pada TS 1</h3>
-                                <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
-                                    <BarChart accessibilityLayer data={data['panel']}>
+                                <ChartContainer config={chartConfig} className="h-[400px] w-full mt-5">
+                                    <BarChart className="" accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
-                                        <XAxis dataKey="name" tickLine={false} tickMargin={10} axisLine={false} />
+                                        <XAxis
+                                            // tick={<CustomizedAxisTick />}
+                                            // angle={-45}
+                                            textAnchor="end"
+                                            dataKey="name"
+                                            tickLine={false}
+                                            tickMargin={0}
+                                            axisLine={false}
+                                        />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="total" fill="var(--color-done)" radius={4} />
+                                        <Bar className="" dataKey="total" fill="var(--color-done)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
                             </div>

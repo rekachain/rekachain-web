@@ -12,7 +12,7 @@ import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 import { cn } from '@/Lib/Utils';
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 // import { useState } from 'react';
@@ -34,6 +34,23 @@ const project = [
         link: '/dashboard/2',
     },
 ];
+const trainset = [
+    {
+        value: 'TS 11',
+        link: '/dashboard/1/1',
+    },
+    {
+        value: 'TS 12',
+        link: '/dashboard/1/2',
+    },
+    {
+        value: 'TS 13',
+
+        link: '/dashboard/1/3',
+    },
+];
+// TODO : TS only available when project
+// TODO : show ts for each project
 
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -56,8 +73,10 @@ interface AttachmentStatusBarGraph {
 }
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
+    const [openTrainset, setOpenTrainset] = useState(false);
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
+    const [valueTrainset, setValueTrainset] = useState('');
     console.log(data);
 
     const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({
@@ -272,12 +291,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 {data['project'] == null ? 'Semua Proyek' : `Proyek ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild>
+                                <PopoverTrigger asChild className=" ">
                                     <Button
                                         variant="outline"
                                         role="combobox"
                                         aria-expanded={open}
-                                        className="w-[200px] justify-between"
+                                        className="w-40 justify-between"
                                     >
                                         {value
                                             ? project.find(projectItem => projectItem.value === value)?.label
@@ -322,7 +341,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                         {/* <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['ts']}> */}
                         {/* <h2 className="text-xl my-2">Proyek 612</h2> */}
-                        <div className="flex items-center px-1 gap-3">
+                        {/* <div className="flex items-center px-1 gap-3 text-xs ">
                             <Checkbox
                                 id="useMerged"
                                 onChange={e => setUseMerged(e.target.checked)}
@@ -331,19 +350,77 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <InputLabel htmlFor="useMerged" value="Use Merged Status" />
                             <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
                             <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
-                        </div>
+                        </div> */}
                         {/* </ChartContainer> */}
-                        <GenericDataSelector
-                            // TODO: redesain dis shts🗿
-                            id="trainset_id"
-                            fetchData={fetchTrainsetFilters}
-                            setSelectedData={id => setTrainsetFilters({ id: id })}
-                            selectedDataId={trainsetFilters?.id ?? null}
-                            placeholder={'Choose'}
-                            renderItem={item => `${item.name}`}
-                            buttonClassName="mt-1"
-                            nullable
-                        />
+                        <div className="flex justify-between my-4 items-center">
+                            <h2 className="text-lg">Status dari Trainset</h2>
+                            <div className=" flex flex-col">
+                                <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
+                                    <PopoverTrigger asChild className={`${data['project'] == null ? 'hidden' : ' '}`}>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            aria-expanded={openTrainset}
+                                            className="w-40 justify-between"
+                                        >
+                                            {valueTrainset
+                                                ? project.find(projectItem => projectItem.value === valueTrainset)
+                                                      ?.label
+                                                : 'Pilih Trainset'}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-[200px] p-0">
+                                        <Command>
+                                            <CommandInput placeholder="Cari Trainset..." />
+                                            <CommandList>
+                                                <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                <CommandGroup>
+                                                    {trainset.map(projectItem => (
+                                                        <Link href={projectItem.link}>
+                                                            <CommandItem
+                                                                key={projectItem.value}
+                                                                value={projectItem.value}
+                                                                onSelect={currentValue => {
+                                                                    setValueTrainset(
+                                                                        currentValue === valueTrainset
+                                                                            ? ''
+                                                                            : currentValue,
+                                                                    );
+                                                                    setOpenTrainset(false);
+                                                                }}
+                                                            >
+                                                                <Check
+                                                                    className={cn(
+                                                                        'mr-2 h-4 w-4',
+                                                                        valueTrainset === projectItem.value
+                                                                            ? 'opacity-100'
+                                                                            : 'opacity-0',
+                                                                    )}
+                                                                />
+                                                                {projectItem.value}
+                                                            </CommandItem>
+                                                        </Link>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+                                {/* <button className={buttonVariants()}>Detail Trainset</button>
+                                <GenericDataSelector
+                                    // TODO: redesain dis shts🗿
+                                    id="trainset_id"
+                                    fetchData={fetchTrainsetFilters}
+                                    setSelectedData={id => setTrainsetFilters({ id: id })}
+                                    selectedDataId={trainsetFilters?.id ?? null}
+                                    placeholder={'Choose'}
+                                    renderItem={item => `${item.name}`}
+                                    buttonClassName="mt-1"
+                                    nullable
+                                /> */}
+                            </div>
+                        </div>
 
                         <ChartContainer
                             config={attachmentStatusOfTrainsetGraph.config}
