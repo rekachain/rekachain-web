@@ -55,7 +55,9 @@ export default function ({ project: initialProject }: { project: ProjectResource
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
-                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>Home</Link>
+                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>
+                                            {t('pages.project.trainset.index.breadcrumbs.home')}
+                                        </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>

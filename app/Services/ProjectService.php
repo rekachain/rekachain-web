@@ -6,6 +6,7 @@ use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
 use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 use App\Imports\Project\ProjectsImport;
+use App\Models\Carriage;
 use App\Models\Project;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
@@ -49,19 +50,37 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return true;
     }
 
-    public function importProjectPanelProgressMaterial(Project $project, UploadedFile $file, int $panelId): bool {
-        $carriagePanels = $project->carriage_panels()->where('panel_id', $panelId)->get();
+    public function importProjectPanelProgressMaterial(Project $project, UploadedFile $file, array $data): bool {
+        $carriagePanels = $project->carriage_panels()->wherePanelId($data['panel_id'])->get();
         foreach ($carriagePanels as $carriagePanel) {
-            Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel), $file);
+            Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel, $data['override'] ?? null), $file);
         }
 
         return true;
     }
 
-    public function importProjectComponentProgressMaterial(Project $project, UploadedFile $file, int $componentId, int $workAspectId): bool {
-        $carriagePanelComponents = $project->carriage_panel_components()->where('component_id', $componentId)->get();
+    public function importProjectComponentProgressMaterial(Project $project, UploadedFile $file, array $data): bool {
+        $carriagePanelComponents = $project->carriage_panel_components()->whereComponentId($data['component_id'])->get();
         foreach ($carriagePanelComponents as $carriagePanelComponent) {
-            Excel::import(new CarriagePanelComponentProgressMaterialImport($carriagePanelComponent, $workAspectId), $file);
+            Excel::import(new CarriagePanelComponentProgressMaterialImport($carriagePanelComponent, $data['work_aspect_id'], $data['override'] ?? null), $file);
+        }
+
+        return true;
+    }
+
+    public function importProjectCarriagePanelProgressMaterial(Project $project, Carriage $carriage, UploadedFile $file, array $data): bool {
+        $carriagePanels = $project->carriage_panels()->whereCarriageId($carriage->id)->wherePanelId($data['panel_id'])->get();
+        foreach ($carriagePanels as $carriagePanel) {
+            Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel, $data['override']  ?? null), $file);
+        }
+
+        return true;
+    }
+
+    public function importProjectCarriageComponentProgressMaterial(Project $project, Carriage $carriage, UploadedFile $file, array $data): bool {
+        $carriagePanelComponents = $project->carriage_panel_components()->whereCarriageId($carriage->id)->whereComponentId($data['component_id'])->get();
+        foreach ($carriagePanelComponents as $carriagePanelComponent) {
+            Excel::import(new CarriagePanelComponentProgressMaterialImport($carriagePanelComponent, $data['work_aspect_id'], $data['override'] ?? null), $file);
         }
 
         return true;

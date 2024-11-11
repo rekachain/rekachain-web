@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ProgressSheetImport implements ToCollection 
 {
-    public function __construct(private CarriagePanel $carriagePanel) {}
+    public function __construct(private CarriagePanel $carriagePanel, protected ?bool $override = null) {}
 
     public function collection(Collection $rows) 
     {
@@ -55,7 +55,13 @@ class ProgressSheetImport implements ToCollection
             $progress->progress_steps()->createMany($steps->map(fn ($step) => ['step_id' => $step->id])->toArray());
         }
 
-        $this->carriagePanel->update(['progress_id' => $progress->id]);
+        if ($this->override) {
+            // update progress no matter what🗿
+            return $this->carriagePanel->update(['progress_id' => $progress->id]);
+        } else {
+            // update progress only if carriage panel progress is null
+            return $this->carriagePanel->update(['progress_id' => $this->carriagePanel->progress_id ?? $progress->id]);
+        }
     }
 
 }

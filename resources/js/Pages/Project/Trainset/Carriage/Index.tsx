@@ -30,6 +30,8 @@ import AddNewTrainsetPreset from '@/Pages/Project/Trainset/Carriage/Partials/Add
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenerateAttachment from '@/Pages/Project/Trainset/Carriage/Partials/GenerateAttachment';
 import PreviewAttachments from '@/Pages/Project/Trainset/Carriage/Partials/PreviewAttachments';
+import { Button } from '@/Components/UI/button';
+import { trainsetService } from '@/Services/trainsetService';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -93,6 +95,17 @@ export default function ({
         );
     }
 
+    const handleExportSerialNumbers = withLoading(
+        async () => {
+            await trainsetService.exportSerialNumbers(trainset.id);
+        },
+        true,
+        {
+            title: t('pages.project.trainset.carriage.index.dialogs.export_serial_numbers.confirmations.title'),
+            text: t('pages.project.trainset.carriage.index.dialogs.export_serial_numbers.confirmations.text'),
+        },
+    );
+
     return (
         <>
             <Head
@@ -107,7 +120,9 @@ export default function ({
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
-                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>Home</Link>
+                                        <Link href={route(`${ROUTES.PROJECTS}.index`)}>
+                                            {t('pages.project.trainset.carriage.index.breadcrumbs.home')}
+                                        </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
@@ -166,6 +181,9 @@ export default function ({
                                     {(trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && <PreviewAttachments trainset={trainset} />}
+                                    <Button onClick={handleExportSerialNumbers}>
+                                        {t('pages.project.trainset.carriage.index.buttons.export_serial_numbers')}
+                                    </Button>
                                 </div>
                             </div>
                         </div>

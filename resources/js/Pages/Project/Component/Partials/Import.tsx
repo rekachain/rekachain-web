@@ -12,7 +12,6 @@ import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
 import { ROUTES } from '@/Support/Constants/routes';
 import { router, useForm } from '@inertiajs/react';
-import { componentService } from '@/Services/componentService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
@@ -21,8 +20,10 @@ import { projectService } from '@/Services/projectService';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { workAspectService } from '@/Services/workAspectService';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function ({ project, component }: { project: any, component: any }) {
+export default function ({ project, component, hasMaterials = false }: { project: any; component: any, hasMaterials?: boolean }) {
+    const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
         component_id: number;
@@ -32,12 +33,10 @@ export default function ({ project, component }: { project: any, component: any 
         component_id: component.id,
         work_aspect_id: null,
     });
-    
+
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         column_filters: {
-            division_id: [
-                1,2
-            ],
+            division_id: [1, 2],
         },
     });
 
@@ -45,9 +44,13 @@ export default function ({ project, component }: { project: any, component: any 
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // console.log(data);
-        await projectService.importComponentsProgressRawMaterial(project.id, data.file as File, component.id, data.work_aspect_id as number);
-        await useSuccessToast('Data imported successfully');
+        await projectService.importComponentsProgressRawMaterial(
+            project.id,
+            data.file as File,
+            component.id,
+            data.work_aspect_id as number,
+        );
+        await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
         router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
@@ -67,30 +70,41 @@ export default function ({ project, component }: { project: any, component: any 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">Import Data</Button>
+                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.component.partials.import.buttons.import')}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Import Component Data</DialogTitle>
-                    <DialogDescription>Import progress and raw material data of {component.name} on Project {project.name}.</DialogDescription>
+                    <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
+                    <DialogDescription>
+                        {t('pages.project.component.partials.import.dialogs.description', {
+                            component_name: component.name,
+                            project_name: project.name,
+                        })}
+                    </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
-                    <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={projectService.downloadImportProgressRawMaterialTemplate} disabled={loading}>
-                        {loading ? 'Processing' : 'Download'}
+                    <Label>{t('pages.project.component.partials.import.dialogs.fields.download_template')}</Label>
+                    <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={projectService.downloadImportProgressRawMaterialTemplate}
+                        disabled={loading}
+                    >
+                        {loading
+                            ? t('action.loading')
+                            : t('pages.project.component.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
                 <div className="space-y-4">
-                    <Label htmlFor="work_aspect_id">Work Aspect</Label>
+                    <Label htmlFor="work_aspect_id">
+                        {t('pages.project.component.partials.import.dialogs.fields.work_aspect')}
+                    </Label>
                     <GenericDataSelector
                         id="work_aspect_id"
                         fetchData={fetchWorkAspects}
-                        setSelectedData={id => setData('work_aspect_id',id)
-                        }
-                        selectedDataId={
-                            data.work_aspect_id ?? null
-                        }
-                        placeholder={"Choose"}
+                        setSelectedData={id => setData('work_aspect_id', id)}
+                        selectedDataId={data.work_aspect_id ?? null}
+                        placeholder={'Choose'}
                         renderItem={item => `${item.name}${item.division?.name ? ` - ${item.division.name}` : ''}`}
                         buttonClassName="mt-1"
                         nullable
@@ -101,7 +115,7 @@ export default function ({ project, component }: { project: any, component: any 
                 </div>
                 <form onSubmit={handleImportData} className="space-y-4">
                     <div className="space-y-4">
-                        <Label htmlFor="file">File</Label>
+                        <Label htmlFor="file">{t('pages.project.component.partials.import.dialogs.fields.file')}</Label>
                         <Input
                             id="file"
                             type="file"
@@ -111,7 +125,9 @@ export default function ({ project, component }: { project: any, component: any 
                     </div>
                     <DialogFooter>
                         <Button type="submit" disabled={loading}>
-                            {loading ? 'Processing' : 'Import'}
+                            {loading
+                                ? t('action.loading')
+                                : t('pages.project.component.partials.import.dialogs.buttons.submit')}
                         </Button>
                     </DialogFooter>
                 </form>
@@ -119,4 +135,3 @@ export default function ({ project, component }: { project: any, component: any 
         </Dialog>
     );
 }
-

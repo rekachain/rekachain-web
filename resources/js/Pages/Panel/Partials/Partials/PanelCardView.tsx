@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/react';
 import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function PanelTableView({
+export default function PanelCardView({
     panelResponse,
     handlePanelDeletion,
 }: {

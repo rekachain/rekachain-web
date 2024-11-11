@@ -2,18 +2,16 @@
 
 namespace App\Imports\CarriagePanel\Sheets;
 
-use App\Models\Carriage;
 use App\Models\CarriagePanel;
-use App\Models\PanelMaterial;
 use App\Models\RawMaterial;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class RawMaterialSheetImport implements ToModel, WithHeadingRow 
 {
-    private $existedMaterialCodes = [];
+    private $existedMaterialCodes = []; // for return existed material codes if needed
     
-    public function __construct(private CarriagePanel $carriagePanel) {}
+    public function __construct(private CarriagePanel $carriagePanel, protected ?bool $override = null) {}
 
     public function model(array $row) 
     {
@@ -28,10 +26,27 @@ class RawMaterialSheetImport implements ToModel, WithHeadingRow
         } else {
             $this->existedMaterialCodes[] = $rawMaterial->material_code;
         }
-        return PanelMaterial::create([
-            'carriage_panel_id' => $this->carriagePanel->id,
-            'raw_material_id' => $rawMaterial->id,
-            'qty' => $row['qty'],
-        ]);
+
+        if (is_null($this->override)) {
+            // update or create by default
+            return $this->carriagePanel->panel_materials()->updateOrCreate([
+                'raw_material_id' => $rawMaterial->id,
+            ], [
+                'qty' => $row['qty'],
+            ]);
+        } elseif ($this->override) {
+            // create new after deletion on caller
+            return $this->carriagePanel->panel_materials()->create([
+                'raw_material_id' => $rawMaterial->id,
+                'qty' => $row['qty'],
+            ]);
+        } elseif (!$this->override) {
+            // create only when not existed
+            return $this->carriagePanel->panel_materials()->firstOrCreate([
+                'raw_material_id' => $rawMaterial->id,
+            ], [
+                'qty' => $row['qty'],
+            ]);
+        }
     }
 }

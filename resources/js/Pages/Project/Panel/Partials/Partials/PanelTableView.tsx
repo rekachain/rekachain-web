@@ -17,26 +17,24 @@ export default function PanelTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.name')}</TableHead>
-                        <TableHead>Deskripsi</TableHead>
-                        <TableHead>Total Qty</TableHead>
+                        <TableHead>{t('pages.project.panel.partials.partials.panel_table.headers.name')}</TableHead>
+                        <TableHead>
+                            {t('pages.project.panel.partials.partials.panel_table.headers.description')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.project.panel.partials.partials.panel_table.headers.total_qty')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {panelResponse?.data.map((data) => (
+                    {panelResponse?.data.map(data => (
                         <TableRow key={data.panel.id}>
+                            <TableCell>{data.panel.name}</TableCell>
+                            <TableCell>{data.panel.description}</TableCell>
+                            <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                {data.panel.name}
-                            </TableCell>
-                            <TableCell>
-                                {data.panel.description}
-                            </TableCell>
-                            <TableCell>
-                                {data.total_qty}
-                            </TableCell>
-                            <TableCell>
-                                <Import project={project} panel={data.panel} />
+                                <Import project={project} panel={data.panel} hasMaterials={data.has_materials} />
                             </TableCell>
                         </TableRow>
                     ))}

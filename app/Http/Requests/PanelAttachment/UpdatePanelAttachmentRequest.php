@@ -3,10 +3,11 @@
 namespace App\Http\Requests\PanelAttachment;
 
 use App\Models\User;
-use App\Support\Enums\IntentEnum;
-use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\RoleEnum;
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 
 class UpdatePanelAttachmentRequest extends FormRequest {
     /**
@@ -40,7 +41,11 @@ class UpdatePanelAttachmentRequest extends FormRequest {
             case IntentEnum::API_PANEL_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 return [
                     'status' => ['required', 'in:' . implode(',', array_column(PanelAttachmentStatusEnum::cases(), 'value'))],
-                ];  
+                ];
+            case IntentEnum::API_PANEL_ATTACHMENT_ASSIGN_HANDLER->value:
+                return [
+                    'handles' => ['required', 'in:' . implode(',', array_column(PanelAttachmentHandlerHandlesEnum::cases(), 'value'))],
+                ];       
             case IntentEnum::API_PANEL_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 $arr = [
                     'supervisor_id' => [

@@ -15,6 +15,8 @@ trait HandlesFiltering {
             }
         }
 
+        // TODO: Support nested search filters, e.g search[relation.column] = value
+
         return $query;
     }
 
@@ -27,11 +29,11 @@ trait HandlesFiltering {
                 if (is_array($value)) {
                     if (array_key_exists('from', $value) && array_key_exists('to', $value)) {
                         $query->whereBetween($key, [$value['from'], $value['to']]);
-                    } else if (array_key_exists('from', $value)) { 
+                    } elseif (array_key_exists('from', $value)) {
                         $query->where($key, '>=', $value['from']);
-                    } else if (array_key_exists('to', $value)){
+                    } elseif (array_key_exists('to', $value)) {
                         $query->where($key, '<=', $value['to']);
-                    } else if (is_numeric(key($value))) {
+                    } elseif (is_numeric(key($value))) {
                         $query->whereIn($key, $value);
                     }
                 } else {
@@ -70,29 +72,21 @@ trait HandlesFiltering {
                     if (!in_array($key, $relationFilterableColumns[$relation])) {
                         continue;
                     }
-                    $relationArray = explode('.', $relation);
-                    $relationQuery = $query;
-                    foreach ($relationArray as $index => $rel) {
-                        if ($index === count($relationArray) - 1) {
-                            $relationQuery = $relationQuery->whereHas($rel, function ($query) use ($key, $val) {
-                                if (is_array($val)) {
-                                    if (array_key_exists('from', $val) && array_key_exists('to', $val)) {
-                                        $query->whereBetween($key, [$val['from'], $val['to']]);
-                                    } else if (array_key_exists('from', $val)) { 
-                                        $query->where($key, '>=', $val['from']);
-                                    } else if (array_key_exists('to', $val)){
-                                        $query->where($key, '<=', $val['to']);
-                                    } else if (is_numeric(key($val))) {
-                                        $query->whereIn($key, $val);
-                                    }
-                                } else {
-                                    $query->where($key, $val);
-                                }
-                            });
+                    $query->whereHas($relation, function ($query) use ($key, $val) {
+                        if (is_array($val)) {
+                            if (array_key_exists('from', $val) && array_key_exists('to', $val)) {
+                                $query->whereBetween($query->from . '.' . $key, [$val['from'], $val['to']]);
+                            } elseif (array_key_exists('from', $val)) {
+                                $query->where($query->from . '.' . $key, '>=', $val['from']);
+                            } elseif (array_key_exists('to', $val)) {
+                                $query->where($query->from . '.' . $key, '<=', $val['to']);
+                            } elseif (is_numeric(key($val))) {
+                                $query->whereIn($query->from . '.' . $key, $val);
+                            }
                         } else {
-                            $relationQuery = $relationQuery->whereHas($rel);
+                            $query->where($query->from . '.' . $key, $val);
                         }
-                    }
+                    });
                 }
             }
         }

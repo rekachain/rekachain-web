@@ -9,6 +9,7 @@ import PanelCardView from './Partials/PanelCardView';
 import PanelTableView from './Partials/PanelTableView';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Panel/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -41,6 +42,8 @@ export default function () {
         <div className="space-y-4">
             {panelResponse && (
                 <>
+                    <Filters setFilters={setFilters} filters={filters} />
+                    
                     <div className="hidden md:block">
                         <PanelTableView panelResponse={panelResponse} handlePanelDeletion={handlePanelDeletion} />
                     </div>

@@ -66,7 +66,9 @@ export default function ({
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
-                                    <Link href={route(`${ROUTES.PROJECTS}.index`)}>Home</Link>
+                                    <Link href={route(`${ROUTES.PROJECTS}.index`)}>
+                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.home')}
+                                    </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>

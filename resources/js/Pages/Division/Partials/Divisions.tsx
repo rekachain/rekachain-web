@@ -9,6 +9,7 @@ import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableV
 import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardView';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Division/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -41,6 +42,7 @@ export default function () {
         <div className="space-y-4">
             {divisionResponse && (
                 <>
+                    <Filters setFilters={setFilters} filters={filters} />
                     <div className="hidden md:block">
                         <DivisionTableView
                             divisionResponse={divisionResponse}

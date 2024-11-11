@@ -9,6 +9,7 @@ import { withLoading } from '@/Utils/withLoading';
 import CarriageCardView from './Partials/CarriageCardView';
 import CarriageTableView from './Partials/CarriageTableView';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Filters from '@/Pages/Carriage/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -39,6 +40,8 @@ export default function () {
 
     return (
         <div className="space-y-4">
+            <Filters setFilters={setFilters} filters={filters} />
+
             <div className="hidden md:block">
                 <CarriageTableView
                     carriageResponse={carriageResponse!}

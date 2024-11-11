@@ -794,6 +794,7 @@ return [
                     'trainset_added' => 'Trainset berhasil ditambahkan!',
                 ],
                 'breadcrumbs' => [
+                    'home' => 'Beranda',
                     'project' => 'Proyek :project',
                 ],
                 'fields' => [
@@ -810,11 +811,21 @@ return [
                     'new_preset_alert' => 'Anda menggunakan preset kustom, apakah Anda ingin menyimpannya sebagai preset baru?',
                     'buttons' => [
                         'add_carriage' => 'Tambah Kereta',
+                        'export_serial_numbers' => 'Ekspor Nomor Seri',
                     ],
                     'messages' => [
                         'carriage_added' => 'Kereta berhasil ditambahkan!',
                     ],
+                    'dialogs' => [
+                        'export_serial_numbers' => [
+                            'confirmations' => [
+                                'title' => 'Apakah Anda yakin?',
+                                'text' => 'Proses ini akan membutuhkan waktu beberapa saat.',
+                            ],
+                        ],
+                    ],
                     'breadcrumbs' => [
+                        'home' => 'Beranda',
                         'project' => 'Proyek :project',
                         'trainset' => 'Trainset :trainset',
                     ],
@@ -829,6 +840,7 @@ return [
                         'initial_date' => 'Tanggal Awal :initial_date',
                         'preset' => 'Preset :preset',
                         'breadcrumbs' => [
+                            'home' => 'Beranda',
                             'project' => 'Proyek :project',
                             'trainset' => 'Trainset :trainset',
                             'carriage' => 'Gerbong :carriage',
@@ -996,6 +1008,28 @@ return [
                             ],
                         ],
                     ],
+                    'preview_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'view_detail_attachment' => 'Lihat Detail KPM',
+                                'mechanic_attachment' => 'KPM Mekanik',
+                                'electric_attachment' => 'KPM Elektrik',
+                                'panel_attachment' => 'KPM Panel',
+                            ],
+                            'components' => [
+                                'preview_trainset_attachment' => [
+                                    'props' => [
+                                        'title' => 'KPM Trainset',
+                                    ],
+                                ],
+                                'preview_panel_attachment' => [
+                                    'props' => [
+                                        'title' => 'KPM Panel',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
@@ -1033,7 +1067,7 @@ return [
                                 'download' => 'Unduh Lampiran',
                             ],
                             'dialogs' => [
-                                'title' => 'Lampiran Panel',
+                                'title' => 'KPM Panel',
                                 'headers' => [
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
@@ -1125,7 +1159,7 @@ return [
                             'trainset_carriage' => 'Kereta Trainset',
                         ],
                         'actions' => [
-                            'carriages' => 'Trainset',
+                            'carriages' => 'Gerbong',
                         ],
                     ],
                     'trainset_card' => [
@@ -1134,7 +1168,7 @@ return [
                             'trainset_carriage' => 'Kereta Trainset: :trainset_carriage',
                         ],
                         'actions' => [
-                            'carriages' => 'Kereta',
+                            'carriages' => 'Gerbong',
                         ],
                     ],
                     'components' => [
@@ -1148,6 +1182,301 @@ return [
                             'buttons' => [
                                 'submit' => 'Simpan',
                             ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'panel' => [
+            'index' => [
+                'title' => 'Panel',
+                'initial_date' => 'Tanggal Awal :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Beranda',
+                    'project' => 'Proyek :project',
+                    'panels' => 'Panel',
+                ],
+            ],
+            'partials' => [
+                'panels' => [
+                    'messages' => [
+                        'deleted' => 'Panel berhasil dihapus!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Impor Panel',
+                    ],
+                    'messages' => [
+                        'imported' => 'Panel berhasil diimpor!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Impor Panel',
+                        'description' => 'Impor data progres dan bahan mentah dari :panel_name pada Proyek :project_name.',
+                        'fields' => [
+                            'download_template' => 'Unduh Template',
+                            'file' => 'File',
+                        ],
+                        'buttons' => [
+                            'import' => 'Impor Panel',
+                            'download_template' => 'Unduh',
+                            'submit' => 'Impor Panel',
+                            'processing' => 'Memproses...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'panel_table' => [
+                        'headers' => [
+                            'name' => 'Nama',
+                            'description' => 'Deskripsi',
+                            'total_qty' => 'Jumlah Total',
+                        ],
+                    ],
+                    'panel_card' => [
+                        'headers' => [
+                            'name' => 'Nama: :name',
+                            'description' => 'Deskripsi: :description',
+                            'total_qty' => 'Jumlah Total: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'carriage' => [
+            'index' => [
+                'title' => 'Kereta',
+                'initial_date' => 'Tanggal Inisiasi :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Beranda',
+                    'project' => 'Proyek :project',
+                    'carriages' => 'Kereta',
+                ],
+            ],
+            'component' => [
+                'index' => [
+                    'title' => 'Komponen',
+                    'initial_date' => 'Tanggal Inisiasi :initial_date',
+                    'preset' => 'Preset :preset',
+                    'breadcrumbs' => [
+                        'home' => 'Beranda',
+                        'project' => 'Proyek :project',
+                        'carriage' => 'Kereta :carriage',
+                        'components' => 'Komponen',
+                    ],
+                ],
+                'partials' => [
+                    'components' => [
+                        'messages' => [
+                            'deleted' => 'Komponen berhasil dihapus!',
+                        ],
+                    ],
+                    'import' => [
+                        'buttons' => [
+                            'import' => 'Impor Komponen',
+                        ],
+                        'messages' => [
+                            'imported' => 'Komponen berhasil diimpor!',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Impor Komponen',
+                            'description' => 'Impor data progres dan bahan mentah dari :component_name pada Proyek :project_name.',
+                            'description_already_has_material' => 'Komponen ini sudah memiliki bahan mentah',
+                            'fields' => [
+                                'download_template' => 'Unduh Template',
+                                'file' => 'File',
+                                'work_aspect' => 'Sisi Kerja',
+                                'override' => 'Pilih Opsi Impor',
+                                'override_default' => 'Impor Ulang',
+                                'override_override' => 'Timpa',
+                                'override_merge' => 'Gabung',
+                            ],
+                            'buttons' => [
+                                'import' => 'Impor Komponen',
+                                'download_template' => 'Unduh',
+                                'submit' => 'Impor Komponen',
+                                'processing' => 'Memproses...',
+                            ],
+                        ],
+                    ],
+                    'partials' => [
+                        'component_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'description' => 'Deskripsi',
+                                'total_qty' => 'Jumlah Total',
+                            ],
+                        ],
+                        'component_card' => [
+                            'headers' => [
+                                'name' => 'Nama: :name',
+                                'description' => 'Deskripsi: :description',
+                                'total_qty' => 'Jumlah Total: :total_qty',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'panel' => [
+                'index' => [
+                    'title' => 'Panel',
+                    'initial_date' => 'Tanggal Awal :initial_date',
+                    'preset' => 'Preset :preset',
+                    'breadcrumbs' => [
+                        'home' => 'Beranda',
+                        'project' => 'Proyek :project',
+                        'carriage' => 'Kereta :carriage',
+                        'panels' => 'Panel',
+                    ],
+                ],
+                'partials' => [
+                    'panels' => [
+                        'messages' => [
+                            'deleted' => 'Panel berhasil dihapus!',
+                        ],
+                    ],
+                    'import' => [
+                        'buttons' => [
+                            'import' => 'Impor Panel',
+                        ],
+                        'messages' => [
+                            'imported' => 'Panel berhasil diimpor!',
+                        ],
+                        'dialogs' => [
+                            'title' => 'Impor Panel',
+                            'description' => 'Impor data progres dan bahan mentah dari :panel_name pada Proyek :project_name.',
+                            'fields' => [
+                                'download_template' => 'Unduh Template',
+                                'file' => 'File',
+                            ],
+                            'buttons' => [
+                                'import' => 'Impor Panel',
+                                'download_template' => 'Unduh',
+                                'submit' => 'Impor Panel',
+                                'processing' => 'Memproses...',
+                            ],
+                        ],
+                    ],
+                    'partials' => [
+                        'panel_table' => [
+                            'headers' => [
+                                'name' => 'Nama',
+                                'description' => 'Deskripsi',
+                                'total_qty' => 'Jumlah Total',
+                            ],
+                        ],
+                        'panel_card' => [
+                            'headers' => [
+                                'name' => 'Nama: :name',
+                                'description' => 'Deskripsi: :description',
+                                'total_qty' => 'Jumlah Total: :total_qty',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'partials' => [
+                'carriages' => [
+                    'messages' => [
+                        'deleted' => 'Kereta berhasil dihapus!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Impor Kereta',
+                    ],
+                    'messages' => [
+                        'imported' => 'Kereta berhasil diimpor!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Impor Kereta',
+                        'description' => 'Impor data progres dan bahan mentah dari :carriage_name pada Proyek :project_name.',
+                        'fields' => [
+                            'download_template' => 'Unduh Template',
+                            'file' => 'File',
+                            'work_aspect' => 'Aspek Pekerjaan',
+                        ],
+                        'buttons' => [
+                            'import' => 'Impor Kereta',
+                            'download_template' => 'Unduh',
+                            'submit' => 'Impor Kereta',
+                            'processing' => 'Memproses...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'carriage_table' => [
+                        'headers' => [
+                            'name' => 'Nama',
+                            'description' => 'Deskripsi',
+                            'total_qty' => 'Jumlah Total',
+                        ],
+                    ],
+                    'carriage_card' => [
+                        'headers' => [
+                            'name' => 'Nama: :name',
+                            'description' => 'Deskripsi: :description',
+                            'total_qty' => 'Jumlah Total: :total_qty',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'component' => [
+            'index' => [
+                'title' => 'Komponen',
+                'initial_date' => 'Tanggal Awal :initial_date',
+                'preset' => 'Preset :preset',
+                'breadcrumbs' => [
+                    'home' => 'Beranda',
+                    'project' => 'Proyek :project',
+                    'components' => 'Komponen',
+                ],
+            ],
+            'partials' => [
+                'components' => [
+                    'messages' => [
+                        'deleted' => 'Komponen berhasil dihapus!',
+                    ],
+                ],
+                'import' => [
+                    'buttons' => [
+                        'import' => 'Impor Komponen',
+                    ],
+                    'messages' => [
+                        'imported' => 'Komponen berhasil diimpor!',
+                    ],
+                    'dialogs' => [
+                        'title' => 'Impor Komponen',
+                        'description' => 'Impor data progres dan bahan mentah dari :component_name pada Proyek :project_name.',
+                        'fields' => [
+                            'download_template' => 'Unduh Template',
+                            'file' => 'File',
+                            'work_aspect' => 'Aspek Kerja',
+                        ],
+                        'buttons' => [
+                            'import' => 'Impor Komponen',
+                            'download_template' => 'Unduh',
+                            'submit' => 'Impor Komponen',
+                            'processing' => 'Memproses...',
+                        ],
+                    ],
+                ],
+                'partials' => [
+                    'component_table' => [
+                        'headers' => [
+                            'name' => 'Nama',
+                            'description' => 'Deskripsi',
+                            'total_qty' => 'Jumlah Total',
+                        ],
+                    ],
+                    'component_card' => [
+                        'headers' => [
+                            'name' => 'Nama: :name',
+                            'description' => 'Deskripsi: :description',
+                            'total_qty' => 'Jumlah Total: :total_qty',
                         ],
                     ],
                 ],
@@ -1192,7 +1521,10 @@ return [
                         'trainset_count' => 'Jumlah Trainset',
                     ],
                     'actions' => [
+                        'carriages' => 'Kereta',
                         'trainsets' => 'Trainset',
+                        'components' => 'Komponen',
+                        'panels' => 'Panel',
                     ],
                 ],
                 'project_card' => [
@@ -1203,6 +1535,8 @@ return [
                     ],
                     'actions' => [
                         'trainsets' => 'Trainset',
+                        'components' => 'Komponen',
+                        'panels' => 'Panel',
                     ],
                 ],
             ],

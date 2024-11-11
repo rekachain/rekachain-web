@@ -48,6 +48,12 @@ export default function ProjectTableView({
                                 )}
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, project.id)}
+                                >
+                                    {t('pages.project.partials.partials.project_table.actions.carriages')}
+                                </Link>
+                                <Link
+                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.trainsets')}
@@ -56,13 +62,13 @@ export default function ProjectTableView({
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
                                 >
-                                    {'components'}
+                                    {t('pages.project.partials.partials.project_table.actions.components')}
                                 </Link>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
                                 >
-                                    {'panels'}
+                                    {t('pages.project.partials.partials.project_table.actions.panels')}
                                 </Link>
                             </TableCell>
                         </TableRow>

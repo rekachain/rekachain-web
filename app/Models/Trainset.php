@@ -26,6 +26,40 @@ class Trainset extends Model {
         'status' => TrainsetStatusEnum::class,
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'name',
+        ],
+        'columns' => [
+            'id',
+            'project_id',
+            'name',
+            'status',
+        ],
+        'relation_columns' => [
+            'project' => [
+                'id',
+                'name',
+            ],
+            'carriages' => [
+                'type',
+                'description',
+            ],
+            'trainset_attachments' => [
+                'source',
+                'description',
+            ],
+            'panel_attachments' => [
+                'type',
+                'description',
+            ],
+        ]
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
     public function project(): BelongsTo {
         return $this->belongsTo(Project::class);
     }
@@ -180,6 +214,29 @@ class Trainset extends Model {
                 'id',
                 'id',
             ]);
+    }
+
+    public function serial_panels(): HasManyDeep {
+        return $this->hasManyDeep(
+            SerialPanel::class,
+            [
+                CarriageTrainset::class,
+                CarriagePanel::class,
+                PanelAttachment::class,
+            ],
+            [
+                'trainset_id',
+                'carriage_trainset_id',
+                'carriage_panel_id',
+                'panel_attachment_id',
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+            ]
+        );
     }
 
     public function canBeDeleted(): bool {

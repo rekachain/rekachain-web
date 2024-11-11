@@ -1,4 +1,5 @@
 export const ROUTES = {
+    DASHBOARD: 'dashboard',
     SERIAL_PANELS: 'serial-panels',
     WORK_DAYS: 'work-days',
     WORK_DAY_TIMES: 'work-day-times',
@@ -16,6 +17,9 @@ export const ROUTES = {
     WORKSTATIONS: 'workstations',
     TRAINSETS: 'trainsets',
     PROJECTS: 'projects',
+    PROJECTS_CARRIAGES: 'projects.carriages',
+    PROJECTS_CARRIAGES_COMPONENTS: 'projects.carriages.components',
+    PROJECTS_CARRIAGES_PANELS: 'projects.carriages.panels',
     PROJECTS_COMPONENTS: 'projects.components',
     PROJECTS_PANELS: 'projects.panels',
     PROJECTS_TRAINSETS: 'projects.trainsets',

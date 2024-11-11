@@ -89,13 +89,22 @@ Route::middleware('auth')->group(function () {
     Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
     Route::resource('feedback', FeedbackController::class)->except(['store']);
 
-    Route::controller(ProjectController::class)->group(function () {
-        Route::get('/projects/{project}/trainsets', 'trainsets')->name('projects.trainsets.index');
-        Route::get('/projects/{project}/components', 'components')->name('projects.components.index');
-        Route::get('/projects/{project}/panels', 'panels')->name('projects.panels.index');
-        Route::get('/projects/{project}/trainsets/{trainset}', 'trainset')->name('projects.trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets', 'carriage_trainsets')->name('projects.trainsets.carriage-trainsets.index');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}', 'carriage')->name('projects.trainsets.carriage-trainsets.show');
-        Route::get('/projects/{project}/trainsets/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'carriage_panels')->name('projects.trainsets.carriage-trainsets.panels.index');
+    Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
+        Route::get('components', 'project_components')->name('components.index');
+        Route::get('panels', 'project_panels')->name('panels.index');
+        Route::group(['prefix' => 'carriages', 'as' => 'carriages.'], function () {
+            Route::get('/', 'project_carriages')->name('index');
+            Route::get('/{carriage}', 'project_carriage')->name('show');
+            Route::put('/{carriage}', 'project_carriage')->name('update');
+            Route::get('/{carriage}/components', 'project_carriage_components')->name('components.index');
+            Route::get('/{carriage}/panels', 'project_carriage_panels')->name('panels.index');
+        });
+        Route::group(['prefix' => 'trainsets', 'as' => 'trainsets.'], function () {
+            Route::get('/', 'project_trainsets')->name('index');
+            Route::get('/{trainset}', 'project_trainset')->name('show');
+            Route::get('/{trainset}/carriage-trainsets', 'project_trainset_carriageTrainsets')->name('carriage-trainsets.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}', 'project_trainset_carriageTrainset')->name('carriage-trainsets.show');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'project_trainset_carriageTrainset_panels')->name('carriage-trainsets.panels.index');
+        });
     });
 });
