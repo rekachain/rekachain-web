@@ -1,4 +1,5 @@
 export const ROUTES = {
+    DASHBOARD: 'dashboard',
     SERIAL_PANELS: 'serial-panels',
     WORK_DAYS: 'work-days',
     WORK_DAY_TIMES: 'work-day-times',
