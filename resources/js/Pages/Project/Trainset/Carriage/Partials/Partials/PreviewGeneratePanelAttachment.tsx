@@ -1,17 +1,18 @@
-import { PanelAttachmentResource, RawMaterialResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Separator } from '@/Components/UI/separator';
+import { PanelAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import InputLabel from '@/Components/InputLabel';
-import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { trainsetService } from '@/Services/trainsetService';
+import { PreviewGenerateAttachmentRawMaterialResource } from '@/Support/Interfaces/Others';
 
-const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
+const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
+    console.log(trainset);
     const { t } = useLaravelReactI18n();
 
     const [attachment, setAttachment] = useState<PanelAttachmentResource>();
@@ -20,55 +21,22 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
 
     const [selectedPanel, setSelectedPanel] = useState<number | null>(null);
 
-    const [selectedPanelRawMaterials, setSelectedPanelRawMaterials] = useState<RawMaterialResource[]>([]);
+    const [selectedPanelRawMaterials, setSelectedPanelRawMaterials] = useState<
+        PreviewGenerateAttachmentRawMaterialResource[]
+    >([]);
+
+    const fetchPanelRawMaterials = useCallback(async () => {
+        if (!selectedCarriage || !selectedPanel) return;
+        const res = await trainsetService.getPanelRawMaterials(trainset.id, selectedCarriage, selectedPanel);
+        setSelectedPanelRawMaterials(res.data);
+    }, [selectedCarriage, selectedPanel, trainset.id]);
 
     useEffect(() => {
-        if (selectedPanel) {
-            const panelAttachment = trainset.carriage_trainsets
-                .find(carriage => carriage.id === selectedCarriage)
-                ?.carriage_panels.find(panel => panel.id === selectedPanel)?.panel_attachment;
-
-            setAttachment(panelAttachment);
-
-            if (panelAttachment) {
-                panelAttachmentService
-                    .get(panelAttachment.id, {
-                        intent: IntentEnum.WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY,
-                    })
-                    .then(response => {
-                        setSelectedPanelRawMaterials(response as unknown as RawMaterialResource[]);
-                    });
-            }
-        }
-    }, [selectedPanel]);
-
-    const showSerialPanels = () => {
-        if (!attachment?.serial_numbers) return;
-
-        if (attachment?.serial_numbers?.length > 1) {
-            return `${attachment?.serial_numbers[0]} - ${attachment?.serial_numbers[attachment?.serial_numbers.length - 1]}`;
-        } else {
-            return attachment?.serial_numbers[0];
-        }
-    };
-
-    const openImageAndPrint = (imageUrl: string) => {
-        const newWindow = window.open(imageUrl, '_blank');
-        if (newWindow) {
-            newWindow.onload = () => {
-                newWindow.onafterprint = () => {
-                    newWindow.close();
-                };
-                newWindow.print();
-            };
-        }
-    };
+        void fetchPanelRawMaterials();
+    }, [fetchPanelRawMaterials]);
 
     return (
         <div className="text-black dark:text-white" key={trainset.id}>
-            <h1 className="text-xl font-bold">
-                {t('pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.title')}
-            </h1>
             {attachment && (
                 <Link
                     className={buttonVariants({
@@ -100,9 +68,12 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                {trainset.carriage_trainsets.map(carriage => (
-                                    <SelectItem value={carriage.id?.toString()} key={carriage.id}>
-                                        {carriage.carriage.type}
+                                {trainset.carriage_trainsets.map(carriageTrainset => (
+                                    <SelectItem
+                                        value={carriageTrainset.carriage.id?.toString()}
+                                        key={carriageTrainset.id}
+                                    >
+                                        {carriageTrainset.carriage.type}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -127,9 +98,9 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             </SelectTrigger>
                             <SelectContent>
                                 {trainset.carriage_trainsets
-                                    .find(carriage => carriage.id === selectedCarriage)
+                                    .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
                                     ?.carriage_panels?.map(carriagePanel => (
-                                        <SelectItem value={carriagePanel.id?.toString()} key={carriagePanel.id}>
+                                        <SelectItem value={carriagePanel.panel.id?.toString()} key={carriagePanel.id}>
                                             {carriagePanel.panel.name}
                                         </SelectItem>
                                     ))}
@@ -139,67 +110,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                 )}
             </div>
 
-            {attachment && (
+            {selectedPanelRawMaterials.length ? (
                 <>
-                    <div className="grid grid-cols-3">
-                        <div className="flex flex-col gap-3 mt-5">
-                            <div className="">
-                                <p className="font-bold">
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.attachment_number',
-                                    )}
-                                </p>
-                                <p>{attachment?.attachment_number}</p>
-                            </div>
-                            <div className="">
-                                <p className="font-bold">
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.reservation_number',
-                                    )}
-                                </p>
-                                <p>-</p>
-                            </div>
-                            <div className="">
-                                <p className="font-bold">
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.serial_number',
-                                    )}
-                                </p>
-                                <p>{showSerialPanels()}</p>
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-3 mt-5">
-                            <div className="">
-                                <p className="font-bold">
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.reference_number',
-                                    )}
-                                </p>
-                                <p>-</p>
-                            </div>
-                            <div className="">
-                                <p className="font-bold">
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.date',
-                                    )}
-                                </p>
-                                <p>{attachment?.formatted_created_at}</p>
-                            </div>
-                        </div>
-                        {attachment?.qr && (
-                            <div className="flex flex-col gap-3 mt-5 text-white items-center">
-                                <div className="bg-white p-3">
-                                    <img src={attachment.qr} alt="QR Code" width={200} />
-                                </div>
-                                <button className={buttonVariants()} onClick={() => openImageAndPrint(attachment.qr!)}>
-                                    {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.buttons.print_qr',
-                                    )}
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                    <Separator className="h-1 my-6" />
                     <h1 className="text-xl font-bold mt-3">
                         {t(
                             'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.material_list',
@@ -242,20 +154,26 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                         </TableHeader>
                         <TableBody>
                             {selectedPanelRawMaterials?.map(rawMaterial => (
-                                <TableRow key={rawMaterial.id}>
-                                    <TableCell className="font-medium">{rawMaterial.material_code}</TableCell>
-                                    <TableCell>{rawMaterial.description}</TableCell>
-                                    <TableCell>{rawMaterial.specs}</TableCell>
-                                    <TableCell>{rawMaterial.unit}</TableCell>
+                                <TableRow key={rawMaterial.raw_material.id}>
+                                    <TableCell className="font-medium">
+                                        {rawMaterial.raw_material.material_code}
+                                    </TableCell>
+                                    <TableCell>{rawMaterial.raw_material.description}</TableCell>
+                                    <TableCell>{rawMaterial.raw_material.specs}</TableCell>
+                                    <TableCell>{rawMaterial.raw_material.unit}</TableCell>
                                     <TableCell>{rawMaterial.total_qty}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </>
+            ) : (
+                <h1 className="text-red-500 font-bold mt-3">
+                    No raw materials found for the selected panel and carriage.
+                </h1>
             )}
         </div>
     );
 };
 
-export default PreviewPanelAttachment;
+export default PreviewGeneratePanelAttachment;
