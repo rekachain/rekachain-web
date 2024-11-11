@@ -310,11 +310,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         <CommandList>
                                             <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
                                             <CommandGroup>
-                                                {project.map(projectItem => (
-                                                    <Link href={projectItem.link}>
+                                                {data['projectDetail'].map(projectItem => (
+                                                    <Link href={`/dashboard/${projectItem.id}`}>
                                                         <CommandItem
                                                             key={projectItem.value}
-                                                            value={projectItem.value}
+                                                            value={`/dashboard/${projectItem.name}`}
                                                             onSelect={currentValue => {
                                                                 setValue(currentValue === value ? '' : currentValue);
                                                                 setOpen(false);
@@ -323,12 +323,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             <Check
                                                                 className={cn(
                                                                     'mr-2 h-4 w-4',
-                                                                    value === projectItem.value
+                                                                    value === projectItem.name
                                                                         ? 'opacity-100'
                                                                         : 'opacity-0',
                                                                 )}
                                                             />
-                                                            {projectItem.label}
+                                                            {projectItem.name}
                                                         </CommandItem>
                                                     </Link>
                                                 ))}
@@ -376,11 +376,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <CommandList>
                                                 <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
                                                 <CommandGroup>
-                                                    {trainset.map(projectItem => (
-                                                        <Link href={projectItem.link}>
+                                                    {data['tsList']?.map(projectItem => (
+                                                        <Link
+                                                            href={`/dashboard/${data['projectId']}/${projectItem.id}`}
+                                                        >
                                                             <CommandItem
-                                                                key={projectItem.value}
-                                                                value={projectItem.value}
+                                                                key={projectItem.id}
+                                                                value={projectItem.name}
                                                                 onSelect={currentValue => {
                                                                     setValueTrainset(
                                                                         currentValue === valueTrainset
@@ -393,12 +395,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 <Check
                                                                     className={cn(
                                                                         'mr-2 h-4 w-4',
-                                                                        valueTrainset === projectItem.value
+                                                                        valueTrainset === projectItem.name
                                                                             ? 'opacity-100'
                                                                             : 'opacity-0',
                                                                     )}
                                                                 />
-                                                                {projectItem.value}
+                                                                {projectItem.name}
                                                             </CommandItem>
                                                         </Link>
                                                     ))}
