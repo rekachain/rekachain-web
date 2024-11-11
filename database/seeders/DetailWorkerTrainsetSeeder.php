@@ -6,6 +6,7 @@ use App\Models\TrainsetAttachment;
 use App\Models\User;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use Illuminate\Database\Seeder;
 
 class DetailWorkerTrainsetSeeder extends Seeder
@@ -15,13 +16,14 @@ class DetailWorkerTrainsetSeeder extends Seeder
      */
     public function run(): void
     {
-        $trainsetAttachments = TrainsetAttachment::get();
-
-        foreach ($trainsetAttachments as $trainsetAttachment) {
+        TrainsetAttachment::all()->each(function (TrainsetAttachment $trainsetAttachment) {
+            $trainsetAttachment->update([
+                'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value
+            ]);
             $trainsetAttachmentComponentsCount = $trainsetAttachment->trainset_attachment_components()->count();
             $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->limit(rand(1, $trainsetAttachmentComponentsCount))->get();
             if (count($trainsetAttachmentComponents) == 0) {
-                continue;
+                return;
             }
             foreach ($trainsetAttachmentComponents as $key => $trainsetAttachmentComponent) {
                 $workStatus = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
@@ -53,6 +55,6 @@ class DetailWorkerTrainsetSeeder extends Seeder
                     }
                 }
             }
-        }
+        });
     }
 }

@@ -6,6 +6,7 @@ use App\Models\PanelAttachment;
 use App\Models\User;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
@@ -27,6 +28,9 @@ class DetailWorkerPanelSeeder extends Seeder {
 
 
         PanelAttachment::all()->each(function (PanelAttachment $panelAttachment) {
+            $panelAttachment->update([
+                'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value
+            ]);
             $serialPanelsCount = $panelAttachment->serial_panels()->count();
             $serialPanels = $panelAttachment->serial_panels()->limit(rand(1, $serialPanelsCount))->get();
             foreach ($serialPanels as $key => $serialPanel) {
