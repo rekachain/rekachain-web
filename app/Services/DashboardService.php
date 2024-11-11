@@ -177,12 +177,13 @@ class DashboardService {
             // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
             $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
             $progress = $trainsets->get()->map(function ($trainset) use ($data) {
-                $panelProgress = $this->calculateProgress($trainset->panel_attachments, $data, 0);
                 $trainsetProgress = $this->calculateProgress($trainset->trainset_attachments, $data, 1);
-
+                $panelProgress = $this->calculateProgress($trainset->panel_attachments, $data, 0);
                 return [
                     'trainset_name' => $trainset->name,
-                    'progress' => $panelProgress->merge($trainsetProgress)->groupBy('status')->map(fn($group) => ['status' => $group->first()['status'], 'count' => $group->sum('count')])->values()
+                    'progress' => $panelProgress->count() > 0 ? 
+                        $trainsetProgress->merge($panelProgress)->groupBy('status')->map(fn($group) => ['status' => $group->first()['status'], 'count' => $group->sum('count')])->values() 
+                        : $trainsetProgress->groupBy('status')->map(fn($group) => ['status' => $group->first()['status'], 'count' => $group->sum('count')])->values()
                 ];
             });
             return $progress->toArray();
