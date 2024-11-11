@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
+use Illuminate\Support\Collection;
 
 class DashboardService {
     public function __construct(
@@ -169,6 +170,7 @@ class DashboardService {
             return $progress->toArray();
         } else {
             $data['attachment_status_of_trainset_filter']['relation_column_filters']['project'] = ['id' => $data['project_id'] ?? 1];
+            $data['attachment_status_of_trainset_filter']['column_filters'] = ['status' => 'progress'];
             // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
             $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
             $progress = $trainsets->get()->map(function ($trainset) use ($data) {
@@ -226,7 +228,7 @@ class DashboardService {
 
         $progress = $workstationPanelProgress->merge($workstationTrainsetProgress)
             ->groupBy('workstation_name')
-            ->map(fn($attachment) => [
+            ->map(fn(Collection $attachment) => [
                 'workstation_name' => $attachment->first()['workstation_name'],
                 'progress' => $attachment->map(fn ($item) => $item['progress'])->flatten(1)
                     ->groupBy('status')
