@@ -207,7 +207,10 @@ class DashboardService {
         $data['attachment_status_of_workstation_filter'] = array_merge_recursive(
             $data['attachment_status_of_workstation_filter'] ?? [], [
                 'relation_column_filters' => [
-                    'trainset' => ['project_id' => $data['project_id'] ?? 1],
+                    'trainset' => [
+                        'status' => 'progress',
+                        'project_id' => $data['project_id'] ?? 1
+                    ],
                 ]
         ]);
         $panelAttachments = $this->panelAttachmentRepository
