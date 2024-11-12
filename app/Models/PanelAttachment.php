@@ -34,6 +34,36 @@ class PanelAttachment extends Model {
         'status' => PanelAttachmentStatusEnum::class,
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'attachment_number',
+            'status',
+        ],
+        'relation_searchs' => [],
+        'columns' => [
+            'id',
+            'source_workstation_id', 
+            'destination_workstation_id', 
+            'status', 
+            'panel_attachment_id', 
+            'supervisor_id', 
+        ],
+        'relation_columns' => [
+            'detail_worker_panels' => [
+                'worker_id',
+            ],
+            'trainset' => [
+                'id',
+                'project_id',
+                'status',
+            ],
+        ]
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
     public function panel(): HasOneThrough {
         return $this->hasOneThrough(Panel::class, CarriagePanel::class, 'id', 'id', 'id', 'panel_id');
     }

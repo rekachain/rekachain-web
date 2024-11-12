@@ -17,6 +17,11 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $data = $this->dashboardService->showGraph($request->query());
+        $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
+        $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
+        if($this->ajax()) {
+            return $data;
+        }
         return Inertia::render('Dashboard',['data'=>$data]);
     }
 }

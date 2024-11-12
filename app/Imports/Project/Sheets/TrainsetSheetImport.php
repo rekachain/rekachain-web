@@ -14,57 +14,56 @@ class TrainsetSheetImport implements ToCollection
 
     public function collection(Collection $rows)
     {
-        // Retrieve the Project instance from the parent import class
         $project = $this->parent->getProject();
         $topHeaders = $rows[1];
         $carTypeHeaders = $rows[2];
+
         $rows->skip(3)->each(function ($row) use ($project, $topHeaders, $carTypeHeaders) {
             $nameColumn = $topHeaders->search('Nama');
             $presetColumn = $topHeaders->search('Preset');
-            if ($row[$presetColumn] == null || $row[$presetColumn] == '' || $row[$nameColumn] == null || $row[$nameColumn] == '') {
+
+            if (empty($row[$presetColumn]) || empty($row[$nameColumn])) {
                 return;
             }
-            
+
+            $trainsetData = [
+                'project_id' => $project->id,
+                'name' => $row[$nameColumn],
+                'status' => TrainsetStatusEnum::DRAFT->value,
+            ];
+
             if ($row[$presetColumn] != 'Custom') {
                 $preset = $this->parent->getPresets()->firstWhere('name', $row[$presetColumn]);
-                $carriagePresets = $this->parent->getCarriagePresets()->where('preset_trainset_id', $preset->id)->all();
-                $trainset = Trainset::create([
-                    'project_id' => $project->id,
-                    'preset_trainset_id' => $preset->id,
-                    'name' => $row[$nameColumn],
-                    'status' => TrainsetStatusEnum::DRAFT->value,
-                ]);
+                $trainsetData['preset_trainset_id'] = $preset->id;
+                $trainset = Trainset::create($trainsetData);
                 $this->parent->addTrainset($trainset);
 
-                foreach ($carriagePresets as $key => $value) {
+                $carriagePresets = $this->parent->getCarriagePresets()->where('preset_trainset_id', $preset->id);
+                $carriagePresets->each(function ($preset) use ($trainset) {
                     $trainset->carriage_trainsets()->create([
                         'trainset_id' => $trainset->id,
-                        'carriage_id' => $value->carriage_id,
-                        'qty' => $value->qty,
+                        'carriage_id' => $preset->carriage_id,
+                        'qty' => $preset->qty,
                     ]);
-                }
+                });
             } else {
-                $trainset = Trainset::create([
-                    'project_id' => $project->id,
-                    'name' => $row[$nameColumn],
-                    'status' => TrainsetStatusEnum::DRAFT->value,
-                ]);
+                $trainset = Trainset::create($trainsetData);
                 $this->parent->addTrainset($trainset);
 
-                $carriageTrainset = [];
-                foreach ($carTypeHeaders->filter() as $index => $header) {
-                    $carriageTrainset[$header] = $row[$index];
-                }
+                $carriageTrainset = $carTypeHeaders->filter()->mapWithKeys(function ($header, $index) use ($row) {
+                    return [$header => $row[$index]];
+                });
 
-                foreach ($carriageTrainset as $key => $value) {
-                    if ($value != 0) {
+                $carriageTrainset->each(function ($qty, $type) use ($trainset) {
+                    if ($qty != 0) {
+                        $carriage = $this->parent->getCarriages()->firstWhere('type', $type);
                         $trainset->carriage_trainsets()->create([
                             'trainset_id' => $trainset->id,
-                            'carriage_id' => $this->parent->getCarriages()->firstWhere('type', $key)->id,
-                            'qty' => $value,
+                            'carriage_id' => $carriage->id,
+                            'qty' => $qty,
                         ]);
                     }
-                }
+                });
             }
         });
     }
