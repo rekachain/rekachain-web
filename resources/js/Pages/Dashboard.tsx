@@ -11,7 +11,6 @@ import { TrendingUp } from 'lucide-react';
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
 import { ROUTES } from '@/Support/Constants/routes';
 import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
@@ -109,7 +108,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, [attachmentStatusOfWorkstationGraph]);
     
     const syncAttachmentStatusData = async () => {
-        const res = await axios.get(route(`${ROUTES.DASHBOARD}`, { 
+        const res = await window.axios.get(route(`${ROUTES.DASHBOARD}`, { 
             use_merged: useMerged, 
             use_raw: useRaw,
             attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
