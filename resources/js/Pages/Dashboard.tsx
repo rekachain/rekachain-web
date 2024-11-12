@@ -16,6 +16,7 @@ import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string, count: number }[];
@@ -244,7 +245,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 setSelectedData={id => setTrainsetFilters({id: id})}
                                 selectedDataId={trainsetFilters?.id ?? null}
                                 placeholder={'Choose'}
-                                renderItem={item => `${item.name}`}
+                                renderItem={item => `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`}
                                 buttonClassName="mt-1"
                                 nullable
                             />
