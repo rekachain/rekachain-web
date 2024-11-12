@@ -13,34 +13,34 @@ const PreviewGenerateTrainsetAttachment = ({
         <Table>
             <TableCaption>
                 {t(
-                    'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
+                    'pages.project.trainset.carriage.partials.components.preview_generate_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                 )}
             </TableCaption>
             <TableHeader>
                 <TableRow>
                     <TableHead className="">
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
+                            'pages.project.trainset.carriage.partials.components.preview_generate_trainset_attachment.dialogs.raw_material_table.headers.material_code',
                         )}
                     </TableHead>
                     <TableHead>
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.description',
+                            'pages.project.trainset.carriage.partials.components.preview_generate_trainset_attachment.dialogs.raw_material_table.headers.description',
                         )}
                     </TableHead>
                     <TableHead>
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.specs',
+                            'pages.project.trainset.carriage.partials.components.preview_generate_trainset_attachment.dialogs.raw_material_table.headers.specs',
                         )}
                     </TableHead>
                     <TableHead>
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.unit',
+                            'pages.project.trainset.carriage.partials.components.preview_generate_trainset_attachment.dialogs.raw_material_table.headers.unit',
                         )}
                     </TableHead>
                     <TableHead>
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
+                            'pages.project.trainset.carriage.partials.components.preview_generate_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
                         )}
                     </TableHead>
                 </TableRow>

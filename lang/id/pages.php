@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * Current structure example:
+ * following directory structure
+ *
+ * pages
+ *   - component name
+ *     - fields (for form fields)
+ *     - messages (for flash messages)
+ *     - buttons (for button names)
+ *     - actions (for action names)
+ *     - dialogs (for dialog element)
+ *       - messages (for messages in dialog)
+ *       - buttons (for button names in dialog)
+ *       - actions (for action names in dialog)
+ *   - components (for page components)
+ *   - partials (for page partials)
+ */
+
 return [
     'login' => [
         'title' => 'Selamat Datang Kembali!',
@@ -937,6 +955,8 @@ return [
                         ],
                         'dialogs' => [
                             'generate_attachment_title' => 'Buat KPM',
+                            'confirm_generate_attachment_raw_materials' => 'Konfirmasi bahan baku.',
+                            'confirm_generate_attachment_raw_materials_description' => 'Konfirmasi bahan baku yang tertera di bawah ini.',
                             'fields' => [
                                 'source_workstation' => 'Workstation Sumber',
                                 'source_workstation_placeholder' => 'Pilih Workstation Sumber',
@@ -953,7 +973,7 @@ return [
                                 'generate_electric_kpm' => 'Buat KPM Elektrik',
                                 'trainset_attachment_mechanic' => 'Mekanik',
                                 'trainset_attachment_electric' => 'Elektrik',
-                                'panel_attachment' => 'Panel (Perakitan)',
+                                'panel_attachment' => 'Panel (Assembly)',
                             ],
                         ],
                     ],
@@ -1131,6 +1151,50 @@ return [
                                         'specs' => 'Spesifikasi',
                                         'unit' => 'Satuan',
                                         'total_qty' => 'Total',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran Trainset',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_generate_panel_attachment' => [
+                            'messages' => [
+                                'no_materials' => 'Tidak ada bahan baku yang ditemukan untuk panel dan gerbong yang dipilih.',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Panel',
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Total Jumlah',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'Daftar Material dalam Lampiran',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_generate_trainset_attachment' => [
+                            'messages' => [
+                                'no_materials' => 'Tidak ada bahan baku yang ditemukan untuk panel dan gerbong yang dipilih.',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Lampiran Trainset',
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'description' => 'Deskripsi',
+                                        'specs' => 'Spesifikasi',
+                                        'unit' => 'Satuan',
+                                        'total_qty' => 'Total Jumlah',
                                     ],
                                     'others' => [
                                         'captions' => [

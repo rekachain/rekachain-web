@@ -24,9 +24,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
 import { PreviewGenerateAttachmentRawMaterialResource } from '@/Support/Interfaces/Others';
-import PreviewGenerateTrainsetAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Partials/PreviewGenerateTrainsetAttachment';
+import PreviewGenerateTrainsetAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Components/PreviewGenerateTrainsetAttachment';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import PreviewGeneratePanelAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Partials/PreviewGeneratePanelAttachment';
+import PreviewGeneratePanelAttachment from '@/Pages/Project/Trainset/Carriage/Partials/Components/PreviewGeneratePanelAttachment';
 
 const GenerateAttachment = ({
     trainset,
@@ -457,9 +457,15 @@ const GenerateAttachment = ({
             <Dialog open={showConfirmationDialog} onOpenChange={setShowConfirmationDialog}>
                 <DialogContent className="lg:max-w-[750px]">
                     <DialogHeader>
-                        <DialogTitle>Raw Material Confirmation</DialogTitle>
+                        <DialogTitle>
+                            {t(
+                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials',
+                            )}
+                        </DialogTitle>
                         <DialogDescription>
-                            Please confirm the following raw materials to be attached to the trainset.
+                            {t(
+                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials_description',
+                            )}
                         </DialogDescription>
                         <ScrollArea className="sm:max-h-[450px]">
                             {activeTab === GenerateAttachmentTabEnum.PANEL_ATTACHMENT ? (
@@ -472,14 +478,14 @@ const GenerateAttachment = ({
                         </ScrollArea>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button onClick={() => setShowConfirmationDialog(false)}>Cancel</Button>
+                        <Button onClick={() => setShowConfirmationDialog(false)}>{t('action.cancel')}</Button>
                         <Button
                             onClick={() => {
                                 setShowConfirmationDialog(false);
                                 void confirmationAction();
                             }}
                         >
-                            Confirm
+                            {t('action.confirm')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
