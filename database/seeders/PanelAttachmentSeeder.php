@@ -31,7 +31,7 @@ class PanelAttachmentSeeder extends Seeder {
             }
             $data = [
                 'assembly_source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
-                'assembly_destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
+                'assembly_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang','Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
             ];
             $this->trainsetService->generatePanelAttachment($trainset, $data);
         }

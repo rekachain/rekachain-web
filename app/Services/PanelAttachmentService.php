@@ -4,9 +4,8 @@ namespace App\Services;
 
 use App\Models\CustomAttachmentMaterial;
 use App\Models\PanelAttachment;
-use Illuminate\Support\Facades\DB;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Resources\PanelAttachmentResource;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
@@ -82,7 +81,16 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
             );
             unset($data['note']);
         }
-        
+        if (array_key_exists('status', $data) && auth()->user()->hasRole([RoleEnum::SUPERVISOR_ASSEMBLY])) {
+            $panelAttachment->update([
+                'supervisor_id' => auth()->user()->id
+            ]);
+            $this->assignHandler($panelAttachment, array_merge($data, [
+                'handles' => PanelAttachmentHandlerHandlesEnum::RECEIVE->value
+            ]));
+        }
+
+
         return parent::update($panelAttachment, $data);
     }
 
