@@ -166,4 +166,28 @@ export const trainsetService = {
         link.remove();
         window.URL.revokeObjectURL(url);
     },
+    getComponentRawMaterials: async (
+        trainsetId: number,
+        carriageId?: number,
+        panelId?: number,
+        componentId?: number,
+    ) => {
+        return window.axios.get(route(`${ROUTES.TRAINSETS}.show`, trainsetId), {
+            params: {
+                component_id: componentId,
+                panel_id: panelId,
+                carriage_id: carriageId,
+                intent: IntentEnum.WEB_TRAINSET_GET_COMPONENT_MATERIALS_WITH_QTY,
+            },
+        });
+    },
+    getPanelRawMaterials: async (trainsetId: number, carriageId?: number, panelId?: number) => {
+        return window.axios.get(route(`${ROUTES.TRAINSETS}.show`, trainsetId), {
+            params: {
+                panel_id: panelId,
+                carriage_id: carriageId,
+                intent: IntentEnum.WEB_TRAINSET_GET_PANEL_MATERIALS_WITH_QTY,
+            },
+        });
+    },
 };

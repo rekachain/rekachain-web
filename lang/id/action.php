@@ -7,6 +7,7 @@ return [
     'add' => 'Tambah',
     'save' => 'Simpan',
     'cancel' => 'Batal',
+    'confirm' => 'Konfirmasi',
     'update' => 'Perbarui',
     'create' => 'Buat',
     'back' => 'Kembali',
