@@ -16,6 +16,7 @@ import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string, count: number }[];
@@ -54,7 +55,7 @@ export default function Dashboard({ auth, data }: PageProps) {
         },
     });
     const [useMerged, setUseMerged] = useState(true);
-    const [useRaw, setUseRaw] = useState(false);
+    const [useRaw, setUseRaw] = useState(true);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
         // data: useRaw
         //     ? data.attachment_status_of_trainset
@@ -119,11 +120,11 @@ export default function Dashboard({ auth, data }: PageProps) {
             data: useRaw
                 ? res.data.attachment_status_of_trainset
                 : res.data.attachment_status_of_trainset.map(
-                      ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                          trainset_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                      }),
-                  ),
+                    ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+                        trainset_name,
+                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                    }),
+                ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -131,12 +132,14 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
         setAttachmentStatusOfWorkstationGraph({
-            data: res.data.attachment_status_of_workstation.map(
-                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                    workstation_name,
-                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                })
-            ),
+            data: useRaw 
+                ? res.data.attachment_status_of_workstation 
+                : res.data.attachment_status_of_workstation.map(
+                    ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+                        workstation_name,
+                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                    })
+                ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -232,8 +235,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="flex items-center px-1 gap-3">
                                 <Checkbox id="useMerged" onChange={e => setUseMerged(e.target.checked)} checked={useMerged} />
                                 <InputLabel htmlFor="useMerged" value="Use Merged Status" />
-                                {/* <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
-                                <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" /> */}
+                                <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
+                                <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                             </div>
                             <GenericDataSelector
                                 // TODO: redesain dis shts🗿
@@ -242,7 +245,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 setSelectedData={id => setTrainsetFilters({id: id})}
                                 selectedDataId={trainsetFilters?.id ?? null}
                                 placeholder={'Choose'}
-                                renderItem={item => `${item.name}`}
+                                renderItem={item => `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`}
                                 buttonClassName="mt-1"
                                 nullable
                             />
