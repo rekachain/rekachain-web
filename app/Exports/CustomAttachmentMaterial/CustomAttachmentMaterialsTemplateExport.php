@@ -53,6 +53,21 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, WithHeadings
                 'startColor' => ['rgb' => '4F81BD']
             ]
         ]);
+        $validation = $sheet->getDataValidation('A:A');
+        $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_CUSTOM );
+        $validation->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
+        $validation->setShowErrorMessage(true);
+        $validation->setErrorTitle('Duplicate Entry');
+        $validation->setError('Data Kode Duplikat!');
+        $validation->setFormula1('=COUNTIF(A:A,A1)=1');
+
+        $conditional = new \PhpOffice\PhpSpreadsheet\Style\Conditional();
+        $conditional->setConditionType(\PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_DUPLICATES);
+        $conditional->getStyle()->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+        $conditional->getStyle()->getFill()->getStartColor()->setARGB('60E6B8B7');
+        $conditionalStyles = $sheet->getStyle('A:A')->getConditionalStyles();
+        $conditionalStyles[] = $conditional;
+        $sheet->getStyle('A:A')->setConditionalStyles($conditionalStyles);
     }
 
     public function array(): array {
