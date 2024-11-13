@@ -1161,11 +1161,20 @@ return [
                             ],
                         ],
                         'preview_generate_panel_attachment' => [
-                            'messages' => [
-                                'no_materials' => 'No raw materials found for the selected panel and carriage.',
-                            ],
                             'dialogs' => [
                                 'title' => 'Panel Attachment',
+                                'messages' => [
+                                    'no_materials' => 'No raw materials found for the selected panel and carriage.',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'headers' => [
+                                    'material_list' => 'Material List',
+                                ],
                                 'raw_material_table' => [
                                     'headers' => [
                                         'material_code' => 'Material Code',
