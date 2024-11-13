@@ -55,6 +55,7 @@ class PanelAttachment extends Model {
             'trainset' => [
                 'id',
                 'project_id',
+                'status',
             ],
         ]
     ];

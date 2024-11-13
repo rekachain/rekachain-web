@@ -6,6 +6,7 @@ use App\Models\PanelAttachment;
 use App\Models\User;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
@@ -25,21 +26,40 @@ class DetailWorkerPanelSeeder extends Seeder {
         //     return;
         // }
 
-
-        PanelAttachment::all()->each(function (PanelAttachment $panelAttachment) {
+        $panelAttachmentCount = PanelAttachment::count();
+        PanelAttachment::all()->take(rand(1, $panelAttachmentCount))->each(function (PanelAttachment $panelAttachment, $panelAttachmentIndex) use ($panelAttachmentCount) {
+            $randStatus = array_rand([
+                PanelAttachmentStatusEnum::IN_PROGRESS->value => PanelAttachmentStatusEnum::IN_PROGRESS->value,
+                PanelAttachmentStatusEnum::PENDING->value => PanelAttachmentStatusEnum::PENDING->value,
+            ]);
+            $panelAttachment->update([
+                'status' => PanelAttachmentStatusEnum::IN_PROGRESS->value
+            ]);
             $serialPanelsCount = $panelAttachment->serial_panels()->count();
-            $serialPanels = $panelAttachment->serial_panels()->limit(rand(1, $serialPanelsCount))->get();
+            if ($panelAttachmentIndex < $panelAttachmentCount - 1) {
+                $serialPanels = $panelAttachment->serial_panels()->get();
+            } else {
+                $serialPanels = $panelAttachment->serial_panels()->limit(rand(1, $serialPanelsCount))->get();
+            }
             foreach ($serialPanels as $key => $serialPanel) {
                 $workStatus = DetailWorkerPanelWorkStatusEnum::COMPLETED->value;
                 $acceptanceStatus = DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value;
                 $progressStepsCount = $panelAttachment->carriage_panel->progress->progress_steps()->count();
-                $progressSteps = $panelAttachment->carriage_panel->progress->progress_steps()->limit(rand(1, $progressStepsCount))->get();
+                if ($panelAttachmentIndex < $panelAttachmentCount - 1) {
+                    $progressSteps = $panelAttachment->carriage_panel->progress->progress_steps()->get();
+                } else {
+                    $progressSteps = $panelAttachment->carriage_panel->progress->progress_steps()->limit(rand(1, $progressStepsCount))->get();
+                }
                 foreach ($progressSteps as $key => $progressStep) {
                     if ($key == $progressSteps->count() - 1) {
-                        $workStatus = array_rand([
-                            DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
-                            DetailWorkerPanelWorkStatusEnum::COMPLETED->value => DetailWorkerPanelWorkStatusEnum::COMPLETED->value,
-                        ]);
+                        if ($panelAttachmentIndex < $panelAttachmentCount - 1) {
+                            $workStatus = DetailWorkerPanelWorkStatusEnum::COMPLETED->value;
+                        } else {
+                            $workStatus = array_rand([
+                                DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value => DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value,
+                                DetailWorkerPanelWorkStatusEnum::COMPLETED->value => DetailWorkerPanelWorkStatusEnum::COMPLETED->value,
+                            ]);
+                        }
                         $acceptanceStatus = $workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value ? DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value : null;
                         if($workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value && $progressSteps->count() == $progressStepsCount) {
                             $serialPanel->update([
@@ -57,6 +77,16 @@ class DetailWorkerPanelSeeder extends Seeder {
                             'acceptance_status' => $acceptanceStatus
                         ]);
                     }
+                }
+                $randStatus = array_rand([
+                    PanelAttachmentStatusEnum::IN_PROGRESS->value => PanelAttachmentStatusEnum::IN_PROGRESS->value,
+                    PanelAttachmentStatusEnum::DONE->value => PanelAttachmentStatusEnum::DONE->value,
+                    PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
+                ]);
+                if ($panelAttachmentIndex < $panelAttachmentCount - 1) {
+                    $panelAttachment->update([
+                        'status' => $randStatus
+                    ]);
                 }
             }
         });

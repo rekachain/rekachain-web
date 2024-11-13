@@ -53,12 +53,12 @@ const trainset = [
 // TODO : show ts for each project
 
 import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
 import { ROUTES } from '@/Support/Constants/routes';
 import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];
@@ -68,7 +68,7 @@ interface AttachmentStatusOfWorkstationResource {
     progress: { status: string; count: number }[];
 }
 interface AttachmentStatusBarGraph {
-    data: AttachmentStatusOfTrainsetResource[];
+    data?: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
 }
 export default function Dashboard({ auth, data }: PageProps) {
@@ -102,36 +102,33 @@ export default function Dashboard({ auth, data }: PageProps) {
         },
     });
     const [useMerged, setUseMerged] = useState(true);
-    const [useRaw, setUseRaw] = useState(false);
+    const [useRaw, setUseRaw] = useState(true);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
-        data: useRaw
-            ? data.attachment_status_of_trainset
-            : data.attachment_status_of_trainset.map(
-                  ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                      trainset_name,
-                      ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                  }),
-              ),
+        // data: useRaw
+        //     ? data.attachment_status_of_trainset
+        //     : data.attachment_status_of_trainset.map(
+        //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+        //             trainset_name,
+        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+        //         }),
+        //     ),
         config: Object.fromEntries(
             Object.entries(attachmentStatusConfig).filter(([key]) =>
                 useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
             ),
         ),
     });
-    const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
-        useState<AttachmentStatusBarGraph>({
-            data: data.attachment_status_of_workstation.map(
-                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                    workstation_name,
-                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                }),
-            ),
-            config: Object.fromEntries(
-                Object.entries(attachmentStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
-                ),
-            ),
-        });
+    const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] = useState<AttachmentStatusBarGraph>({
+        // data: data.attachment_status_of_workstation.map(
+        //         ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+        //             workstation_name,
+        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+        //         }),
+        //     ),
+        config: Object.fromEntries(
+            Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
+        ),
+    })
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
     const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({});
@@ -151,7 +148,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
     useEffect(() => {
         let max = 0;
-        attachmentStatusOfWorkstationGraph.data.forEach(trainset => {
+        attachmentStatusOfWorkstationGraph.data?.forEach(trainset => {
             Object.values(trainset).forEach(count => {
                 if (count > max) max = count + 1;
             });
@@ -161,26 +158,22 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, [attachmentStatusOfWorkstationGraph]);
 
     const syncAttachmentStatusData = async () => {
-        console.time('syncAttachmentStatusData');
-        const res = await axios.get(
-            route(`${ROUTES.DASHBOARD}`, {
-                use_merged: useMerged,
-                use_raw: useRaw,
-                attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
-                attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter,
-            }),
-        );
-        console.timeEnd('syncAttachmentStatusData');
+        const res = await window.axios.get(route(`${ROUTES.DASHBOARD}`, { 
+            use_merged: useMerged, 
+            use_raw: useRaw,
+            attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
+            attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter
+        }));
         console.log('res', res.data);
         setAttachmentStatusOfTrainsetGraph({
             data: useRaw
                 ? res.data.attachment_status_of_trainset
                 : res.data.attachment_status_of_trainset.map(
-                      ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                          trainset_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                      }),
-                  ),
+                    ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+                        trainset_name,
+                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                    }),
+                ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -188,12 +181,14 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
         setAttachmentStatusOfWorkstationGraph({
-            data: res.data.attachment_status_of_workstation.map(
-                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                    workstation_name,
-                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                }),
-            ),
+            data: useRaw 
+                ? res.data.attachment_status_of_workstation 
+                : res.data.attachment_status_of_workstation.map(
+                    ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+                        workstation_name,
+                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                    })
+                ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -205,8 +200,8 @@ export default function Dashboard({ auth, data }: PageProps) {
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
             .getAll({
-                filter: {},
-                column_filters: { project_id: 1 }, // TODO: use project filter
+                filter: {}, perPage: 100,
+                column_filters: {project_id: 1},// TODO: use project filter
             })
             .then(response => response.data);
     }, []);
@@ -346,6 +341,29 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 id="useMerged"
                                 onChange={e => setUseMerged(e.target.checked)}
                                 checked={useMerged}
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
+                    <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
+                        {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
+                        <div className="">
+                            <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
+                            <h2 className="text-xl my-2">Proyek 612</h2>
+                            <div className="flex items-center px-1 gap-3">
+                                <Checkbox id="useMerged" onChange={e => setUseMerged(e.target.checked)} checked={useMerged} />
+                                <InputLabel htmlFor="useMerged" value="Use Merged Status" />
+                                <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
+                                <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
+                            </div>
+                            <GenericDataSelector
+                                // TODO: redesain dis shts🗿
+                                id="trainset_id"
+                                fetchData={fetchTrainsetFilters}
+                                setSelectedData={id => setTrainsetFilters({id: id})}
+                                selectedDataId={trainsetFilters?.id ?? null}
+                                placeholder={'Choose'}
+                                renderItem={item => `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`}
+                                buttonClassName="mt-1"
+                                nullable
                             />
                             <InputLabel htmlFor="useMerged" value="Use Merged Status" />
                             <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />

@@ -11,7 +11,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
+const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();
 
     const [attachment, setAttachment] = useState<PanelAttachmentResource>();
@@ -258,4 +258,4 @@ const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource })
     );
 };
 
-export default PreviewTrainsetAttachment;
+export default PreviewPanelAttachment;

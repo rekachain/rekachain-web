@@ -7,6 +7,7 @@ use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
 use App\Models\Workstation;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Database\Seeders\Helpers\CsvReader;
@@ -22,9 +23,15 @@ class PanelAttachmentSeeder extends Seeder {
         \Illuminate\Support\Facades\Auth::login($user);
         $trainsets = Trainset::limit(5)->get();
         foreach ($trainsets as $trainset) {
+            $checkTrainsetAttachmentProgress = $trainset->trainset_attachments->every(function ($trainsetAttachment) {
+                return $trainsetAttachment->status == TrainsetAttachmentStatusEnum::DONE;
+            });
+            if (!$checkTrainsetAttachmentProgress) {
+                continue;
+            }
             $data = [
                 'assembly_source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
-                'assembly_destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
+                'assembly_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang','Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
             ];
             $this->trainsetService->generatePanelAttachment($trainset, $data);
         }
