@@ -77,7 +77,7 @@ class DashboardController extends Controller
 
         // dump($project);
 
-        $trainsets = DB::select("SELECT trainsets.name as ts_name, projects.name as pj_name from trainsets inner join projects on projects.id = trainsets.project_id where trainsets.id = :trainset;", ["trainset"=>$trainset]);
+        $trainsets = DB::select("SELECT trainsets.name as ts_name, projects.name as pj_name,projects.id as id from trainsets inner join projects on projects.id = trainsets.project_id where trainsets.id = :trainset;", ["trainset"=>$trainset]);
         $carriages = DB::select("SELECT qty, concat(type,' ',description) as type FROM `carriage_trainset` inner join carriages on carriage_trainset.carriage_id = carriages.id where trainset_id = :idTrainset",['idTrainset'=>$trainset]);
 
 
@@ -85,6 +85,7 @@ class DashboardController extends Controller
 
         $panel= DB::select("SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name
         ");
+        $tsList = DB::select('SELECT * FROM `trainsets` WHERE trainsets.project_id = :id', ["id"=>$project]); 
         // dump($trainsets);
         // return $trainset;
         // dump($panel[0]['name']);
@@ -99,7 +100,8 @@ class DashboardController extends Controller
             'trainsets'=>$trainsets,
             'carriages'=>$carriages,
             'panel'=>$trainsetPanel,
-            'total'=>$panel
+            'total'=>$panel,
+            'tsList'=>$tsList
         ];
         return Inertia::render('Dashboard/DashboardTrainset',['data'=>$data]);
     }
