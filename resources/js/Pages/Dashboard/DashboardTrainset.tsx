@@ -185,14 +185,18 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 <CommandList>
                                                     <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
                                                     <CommandGroup>
-                                                        {data['projectList'].map(projectItem => (
+                                                        {
+                                                        // @ts-ignore
+                                                        data['projectList'].map(projectItem => (
                                                             <Link href={`/dashboard/${projectItem.id}`}>
                                                                 <CommandItem
                                                                     key={projectItem.name}
                                                                     value={projectItem.name}
                                                                     onSelect={currentValue => {
                                                                         setValue(
-                                                                            currentValue === name ? '' : currentValue,
+                                                                            currentValue === projectItem.name
+                                                                                ? ''
+                                                                                : currentValue,
                                                                         );
                                                                         setOpen(false);
                                                                     }}
@@ -224,6 +228,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             >
                                                 {valueTrainset
                                                     ? data['tsList'].find(
+                                                        // @ts-ignore
                                                           projectItem => projectItem.name === valueTrainset,
                                                       )?.name
                                                     : 'Pilih Trainset'}
@@ -236,7 +241,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 <CommandList>
                                                     <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
                                                     <CommandGroup>
-                                                        {data['tsList']?.map(projectItem => (
+                                                        {// @ts-ignore
+                                                        data['tsList']?.map(projectItem => (
                                                             <Link
                                                                 href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >

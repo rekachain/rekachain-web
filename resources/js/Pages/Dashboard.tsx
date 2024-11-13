@@ -78,8 +78,6 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [valueTrainset, setValueTrainset] = useState('');
 
-    
-
     console.log(data);
 
     const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({
@@ -314,28 +312,33 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         <CommandList>
                                             <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
                                             <CommandGroup>
-                                                {data['projectDetail'].map(projectItem => (
-                                                    <Link href={`/dashboard/${projectItem.id}`}>
-                                                        <CommandItem
-                                                            key={projectItem.value}
-                                                            value={`/dashboard/${projectItem.name}`}
-                                                            onSelect={currentValue => {
-                                                                setValue(currentValue === value ? '' : currentValue);
-                                                                setOpen(false);
-                                                            }}
-                                                        >
-                                                            <Check
-                                                                className={cn(
-                                                                    'mr-2 h-4 w-4',
-                                                                    value === projectItem.name
-                                                                        ? 'opacity-100'
-                                                                        : 'opacity-0',
-                                                                )}
-                                                            />
-                                                            {projectItem.name}
-                                                        </CommandItem>
-                                                    </Link>
-                                                ))}
+                                                {
+                                                    // @ts-ignore
+                                                    data['projectDetail'].map(projectItem => (
+                                                        <Link href={`/dashboard/${projectItem.id}`}>
+                                                            <CommandItem
+                                                                key={projectItem.value}
+                                                                value={`/dashboard/${projectItem.name}`}
+                                                                onSelect={currentValue => {
+                                                                    setValue(
+                                                                        currentValue === value ? '' : currentValue,
+                                                                    );
+                                                                    setOpen(false);
+                                                                }}
+                                                            >
+                                                                <Check
+                                                                    className={cn(
+                                                                        'mr-2 h-4 w-4',
+                                                                        value === projectItem.name
+                                                                            ? 'opacity-100'
+                                                                            : 'opacity-0',
+                                                                    )}
+                                                                />
+                                                                {projectItem.name}
+                                                            </CommandItem>
+                                                        </Link>
+                                                    ))
+                                                }
                                             </CommandGroup>
                                         </CommandList>
                                     </Command>
@@ -409,7 +412,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <CommandList>
                                                 <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
                                                 <CommandGroup>
-                                                    {data['tsList']?.map(projectItem => (
+                                                    {// @ts-ignore
+                                                    data['tsList']?.map(projectItem => (
                                                         <Link
                                                             href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                         >
