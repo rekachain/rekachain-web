@@ -1,12 +1,9 @@
-import { SweetAlertOptions } from 'sweetalert2';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useConfirmationDialog } from '@/Contexts/ConfirmationDialogContext';
 
-export function withLoading(
-    fn: (...args: any[]) => Promise<void>,
-    confirmation?: boolean,
-    confirmationObject?: SweetAlertOptions,
-) {
+export function withLoading(fn: (...args: any[]) => Promise<void>, confirmation?: boolean, confirmationObject?: any) {
     const { setLoading } = useLoading();
+    const { showConfirmation } = useConfirmationDialog();
 
     const invoke = async (...args: any[]) => {
         setLoading(true);
@@ -25,21 +22,22 @@ export function withLoading(
 
     return async function (...args: any[]) {
         if (confirmation) {
-            const { isConfirmed } = await window.Swal.fire({
-                icon: 'warning',
-                title: 'Are you sure?',
-                text: 'This action is irreversible',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                ...confirmationObject,
-            });
-
-            if (!isConfirmed) {
-                return;
+            // Execute form e.preventDefault() if it exists
+            // TODO: Need to find a better way to handle this, it may not be the best way to handle this
+            const event = args[0];
+            if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
             }
-            return await invoke(...args);
+
+            showConfirmation(
+                async () => {
+                    await invoke(...args);
+                },
+                confirmationObject?.title,
+                confirmationObject?.text,
+            );
+        } else {
+            await invoke(...args);
         }
-        return await invoke(...args);
     };
 }
