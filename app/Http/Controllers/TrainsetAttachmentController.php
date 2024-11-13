@@ -53,6 +53,8 @@ class TrainsetAttachmentController extends Controller {
                 $trainsetAttachment = TrainsetAttachmentResource::make($trainsetAttachment->load('raw_materials'));
 
                 return inertia('TrainsetAttachment/DocumentTrainsetAttachment', compact('trainsetAttachment'));
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE->value:
+                return $this->customAttachmentMaterialService->getImportDataTemplate($trainsetAttachment);
         }
         $data = TrainsetAttachmentResource::make($trainsetAttachment);
 

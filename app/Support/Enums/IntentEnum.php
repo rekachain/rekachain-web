@@ -227,6 +227,8 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE = 'web.trainset.attachment.get.custom.attachment.material.import.template';
+
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT = 'web.trainset.attachment.assign.referenced.attachment';
 
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
@@ -244,6 +246,8 @@ enum IntentEnum: string {
     case WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT = 'web.trainset.attachment.download.trainset.attachment';
 
     case WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.panel.attachment.download.panel.attachment';
+
+    case WEB_PANEL_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE = 'web.panel.attachment.get.custom.attachment.material.import.template';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
 

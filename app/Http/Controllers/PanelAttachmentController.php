@@ -64,6 +64,8 @@ class PanelAttachmentController extends Controller {
                     return RawMaterialResource::collection($panelAttachment->raw_materials);
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
                     return PanelAttachmentResource::make($panelAttachment);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE->value:
+                    return $this->customAttachmentMaterialService->getImportDataTemplate($panelAttachment);
                 default:
                     return PanelAttachmentResource::make($panelAttachment);
             }
