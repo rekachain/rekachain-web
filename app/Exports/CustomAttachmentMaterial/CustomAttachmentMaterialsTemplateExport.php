@@ -22,7 +22,7 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, WithHeadings
     public function headings(): array {
         return [
             'Kode Material',
-            'Desktripsi',
+            'Deskripsi',
             'Spesifikasi',
             'Unit',
             'Qty',
