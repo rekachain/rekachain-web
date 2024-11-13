@@ -118,17 +118,20 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         ),
     });
-    const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] = useState<AttachmentStatusBarGraph>({
-        // data: data.attachment_status_of_workstation.map(
-        //         ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-        //             workstation_name,
-        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-        //         }),
-        //     ),
-        config: Object.fromEntries(
-            Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
-        ),
-    })
+    const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
+        useState<AttachmentStatusBarGraph>({
+            // data: data.attachment_status_of_workstation.map(
+            //         ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+            //             workstation_name,
+            //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+            //         }),
+            //     ),
+            config: Object.fromEntries(
+                Object.entries(attachmentStatusConfig).filter(([key]) =>
+                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                ),
+            ),
+        });
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
     const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({});
@@ -158,22 +161,24 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, [attachmentStatusOfWorkstationGraph]);
 
     const syncAttachmentStatusData = async () => {
-        const res = await window.axios.get(route(`${ROUTES.DASHBOARD}`, { 
-            use_merged: useMerged, 
-            use_raw: useRaw,
-            attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
-            attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter
-        }));
+        const res = await window.axios.get(
+            route(`${ROUTES.DASHBOARD}`, {
+                use_merged: useMerged,
+                use_raw: useRaw,
+                attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
+                attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter,
+            }),
+        );
         console.log('res', res.data);
         setAttachmentStatusOfTrainsetGraph({
             data: useRaw
                 ? res.data.attachment_status_of_trainset
                 : res.data.attachment_status_of_trainset.map(
-                    ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                        trainset_name,
-                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                    }),
-                ),
+                      ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+                          trainset_name,
+                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                      }),
+                  ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -181,14 +186,14 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
         setAttachmentStatusOfWorkstationGraph({
-            data: useRaw 
-                ? res.data.attachment_status_of_workstation 
+            data: useRaw
+                ? res.data.attachment_status_of_workstation
                 : res.data.attachment_status_of_workstation.map(
-                    ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                        workstation_name,
-                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                    })
-                ),
+                      ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+                          workstation_name,
+                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                      }),
+                  ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -200,8 +205,9 @@ export default function Dashboard({ auth, data }: PageProps) {
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
             .getAll({
-                filter: {}, perPage: 100,
-                column_filters: {project_id: 1},// TODO: use project filter
+                filter: {},
+                perPage: 100,
+                column_filters: { project_id: 1 }, // TODO: use project filter
             })
             .then(response => response.data);
     }, []);
@@ -345,11 +351,15 @@ export default function Dashboard({ auth, data }: PageProps) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
                     <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        <div className="">
+                        {/* <div className="">
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <h2 className="text-xl my-2">Proyek 612</h2>
                             <div className="flex items-center px-1 gap-3">
-                                <Checkbox id="useMerged" onChange={e => setUseMerged(e.target.checked)} checked={useMerged} />
+                                <Checkbox
+                                    id="useMerged"
+                                    onChange={e => setUseMerged(e.target.checked)}
+                                    checked={useMerged}
+                                />
                                 <InputLabel htmlFor="useMerged" value="Use Merged Status" />
                                 <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
                                 <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
@@ -358,10 +368,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 // TODO: redesain dis shts🗿
                                 id="trainset_id"
                                 fetchData={fetchTrainsetFilters}
-                                setSelectedData={id => setTrainsetFilters({id: id})}
+                                setSelectedData={id => setTrainsetFilters({ id: id })}
                                 selectedDataId={trainsetFilters?.id ?? null}
                                 placeholder={'Choose'}
-                                renderItem={item => `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`}
+                                renderItem={item =>
+                                    `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`
+                                }
                                 buttonClassName="mt-1"
                                 nullable
                             />

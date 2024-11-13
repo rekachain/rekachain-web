@@ -73,15 +73,19 @@ class DashboardController extends Controller
         // return "alo";
         return Inertia::render('Dashboard',['data'=>$data]);
     }
-    public function trainset(string $trainset){
+    public function trainset(string $project ,string $trainset){
+
+        // dump($project);
+
+        $trainsets = DB::select("SELECT trainsets.name as ts_name, projects.name as pj_name from trainsets inner join projects on projects.id = trainsets.project_id where trainsets.id = :trainset;", ["trainset"=>$trainset]);
         $carriages = DB::select("SELECT qty, concat(type,' ',description) as type FROM `carriage_trainset` inner join carriages on carriage_trainset.carriage_id = carriages.id where trainset_id = :idTrainset",['idTrainset'=>$trainset]);
 
 
-        $trainsetPanel= DB::select("SELECT trainsets.name, carriage_panels.panel_id, panels.name ,count(carriage_panels.panel_id) as total FROM `carriage_trainset` INNER JOIN carriage_panels on carriage_panels.carriage_trainset_id = carriage_trainset.id inner join trainsets on trainsets.id = carriage_trainset.trainset_id inner JOIN panels on carriage_panels.panel_id = panels.id where trainset_id = '1' GROUP by carriage_panels.panel_id ORDER BY `carriage_panels`.`panel_id` ASC");
+        $trainsetPanel= DB::select("SELECT trainsets.name, carriage_panels.panel_id, panels.name ,count(carriage_panels.panel_id) as total FROM `carriage_trainset` INNER JOIN carriage_panels on carriage_panels.carriage_trainset_id = carriage_trainset.id inner join trainsets on trainsets.id = carriage_trainset.trainset_id inner JOIN panels on carriage_panels.panel_id = panels.id where trainset_id = :idTrainset GROUP by carriage_panels.panel_id, trainsets.name ORDER BY `carriage_panels`.`panel_id` ASC",["idTrainset"=>$trainset]);
 
         $panel= DB::select("SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name
         ");
-        // dump($trainsetPanel)ao
+        // dump($trainsets);
         // return $trainset;
         // dump($panel[0]['name']);
         // $newArray = [];
@@ -92,6 +96,7 @@ class DashboardController extends Controller
         // dump($trainsetPanel);
         // dump($newArray);
         $data = [
+            'trainsets'=>$trainsets,
             'carriages'=>$carriages,
             'panel'=>$trainsetPanel,
             'total'=>$panel

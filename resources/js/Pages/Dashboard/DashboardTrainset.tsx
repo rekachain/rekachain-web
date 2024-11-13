@@ -141,7 +141,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <div className="flex justify-between w-full items-center">
                                 <h2 className="text-xl my-2">
-                                    {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`}
+                                    {`Proyek ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
+                                    {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
                                 <Popover open={open} onOpenChange={setOpen}>
                                     <PopoverTrigger asChild>
