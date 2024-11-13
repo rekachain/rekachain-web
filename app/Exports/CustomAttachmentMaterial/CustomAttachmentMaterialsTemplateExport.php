@@ -11,9 +11,10 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class CustomAttachmentMaterialsTemplateExport implements FromArray, WithHeadings, ShouldAutoSize {
+class CustomAttachmentMaterialsTemplateExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyles {
     use Exportable;
 
     public function __construct(protected Model $attachmentModel) {}
@@ -26,6 +27,32 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, WithHeadings
             'Unit',
             'Qty',
         ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $styleArray = [
+            'borders' => [
+                'right' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        foreach (range('A', 'E') as $column) {
+            $sheet->getStyle($column . '1:' . $column . $sheet->getHighestRow())->applyFromArray($styleArray);
+        }
+
+        $sheet->getStyle('A1:E1')->applyFromArray([
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '4F81BD']
+            ]
+        ]);
     }
 
     public function array(): array {
