@@ -22,6 +22,13 @@ export function withLoading(fn: (...args: any[]) => Promise<void>, confirmation?
 
     return async function (...args: any[]) {
         if (confirmation) {
+            // Execute form e.preventDefault() if it exists
+            // TODO: Need to find a better way to handle this, it may not be the best way to handle this
+            const event = args[0];
+            if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+            }
+
             showConfirmation(
                 async () => {
                     await invoke(...args);
