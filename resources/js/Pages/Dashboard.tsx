@@ -77,6 +77,9 @@ export default function Dashboard({ auth, data }: PageProps) {
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [valueTrainset, setValueTrainset] = useState('');
+
+    
+
     console.log(data);
 
     const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({

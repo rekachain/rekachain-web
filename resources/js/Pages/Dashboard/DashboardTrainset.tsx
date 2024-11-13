@@ -46,7 +46,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
     // alert(data['trainsets'])
-    // console.log(data);
+    console.log(data['total']);
     const chartConfig = {
         in_progress: {
             label: 'Progress',
@@ -55,6 +55,23 @@ export default function Dashboard({ auth, data }: PageProps) {
         done: {
             label: 'Done',
             color: '#00C3FF',
+        },
+    } satisfies ChartConfig;
+    const panelChartConf = {
+        total: {
+            label: 'Total',
+        },
+        chrome: {
+            label: 'required',
+            color: 'hsl(var(--chart-1))',
+        },
+        safari: {
+            label: 'fulfilled',
+            color: 'hsl(var(--chart-2))',
+        },
+        firefox: {
+            label: 'failed',
+            color: 'hsl(var(--chart-3))',
         },
     } satisfies ChartConfig;
     // from panel_attachment get status
@@ -287,13 +304,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </ChartContainer>
                             </div>
 
-                            <div className=" ">
+                            <div className="">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                                <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
+                                <ChartContainer config={panelChartConf} className="mx-auto aspect-square max-h-[250px]">
                                     <PieChart>
                                         <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                        <Pie data={data['total']} dataKey="" nameKey="browser" innerRadius={60} />
+                                        <Pie data={data['total']} dataKey="" nameKey="status" innerRadius={60} />
                                     </PieChart>
                                 </ChartContainer>
                             </div>
