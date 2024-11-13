@@ -10,4 +10,6 @@ interface CustomAttachmentMaterialServiceInterface extends BaseCrudServiceInterf
     public function getImportDataTemplate(Model $model): BinaryFileResponse;
 
     public function addNewAttachment(Model $attachment, array $data): Model;
+
+    public function importCustomAttachmentMaterial(Model $attachment, array $data): Model;
 }

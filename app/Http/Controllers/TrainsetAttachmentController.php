@@ -77,6 +77,8 @@ class TrainsetAttachmentController extends Controller {
                 return $this->customAttachmentMaterialService->addNewAttachment($trainsetAttachment, $request->validated())->load('parent');
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return $this->trainsetAttachmentService->assignCustomAttachmentMaterial($trainsetAttachment, $request->validated());
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT->value:
+                return $this->customAttachmentMaterialService->importCustomAttachmentMaterial($trainsetAttachment, $request->validated())->load('custom_attachment_materials');
         }
         if ($this->ajax()) {
             return $this->trainsetAttachmentService->update($trainsetAttachment, $request->validated());

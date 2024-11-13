@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\CustomAttachmentMaterial\CustomAttachmentMaterialsTemplateExport;
+use App\Imports\CustomAttachmentMaterial\CustomAttachmentMaterialsImport;
 use App\Models\PanelAttachment;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
@@ -13,6 +14,7 @@ use App\Support\Interfaces\Services\CustomAttachmentMaterialServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -80,5 +82,16 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         $model->update(['qr_code' => $qrCode, 'qr_path' => $path]);
         $qrCode = QrCode::format('svg')->size(600)->generate($qrCode);
         Storage::put("public/{$path}", $qrCode);
+    }
+
+    public function importCustomAttachmentMaterial(Model $attachment, array $data): Model{
+        if (array_key_exists('to_be_assigned', $data) && !$data['to_be_assigned']) {
+            $newAttachment = $attachment;
+        } else {
+            $newAttachment = $this->addNewAttachment($attachment, $data);
+        }
+        $file = request()->file('file');
+        Excel::import(new CustomAttachmentMaterialsImport($newAttachment, $data['override'] ?? null), $file);
+        return $newAttachment;
     }
 }

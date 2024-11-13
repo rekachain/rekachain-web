@@ -99,6 +99,8 @@ class PanelAttachmentController extends Controller {
                 return $this->customAttachmentMaterialService->addNewAttachment($panelAttachment, $request->validated())->load('parent');;
             case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return $this->panelAttachmentService->assignCustomAttachmentMaterial($panelAttachment, $request->validated());
+            case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT->value:
+                return $this->customAttachmentMaterialService->importCustomAttachmentMaterial($panelAttachment, $request->validated())->load('custom_attachment_materials');
         }
     }
 
