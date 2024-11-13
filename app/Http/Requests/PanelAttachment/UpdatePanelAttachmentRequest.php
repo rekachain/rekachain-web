@@ -28,6 +28,7 @@ class UpdatePanelAttachmentRequest extends FormRequest {
         switch ($intent){
             case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return [
+                    'override' => 'nullable|boolean',
                     'raw_material_id' => 'required|integer|exists:raw_materials,id',
                     'qty' => 'required|integer',
                 ];

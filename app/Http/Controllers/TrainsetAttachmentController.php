@@ -70,8 +70,6 @@ class TrainsetAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
-                logger($trainsetAttachment);
-
                 return $this->trainsetAttachmentService->assignCustomAttachmentMaterial($trainsetAttachment, $request->validated());
         }
         if ($this->ajax()) {
