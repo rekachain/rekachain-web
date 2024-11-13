@@ -10,9 +10,11 @@ import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardVie
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Filters from '@/Pages/Division/Partials/Partials/Filters';
+import { useConfirmationDialog } from '@/Contexts/ConfirmationDialogContext';
 
 export default function () {
     const { t } = useLaravelReactI18n();
+    const { showConfirmation } = useConfirmationDialog();
     const [divisionResponse, setDivisionResponse] = useState<PaginateResponse<DivisionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -29,10 +31,12 @@ export default function () {
     }, [filters]);
 
     const handleDivisionDeletion = withLoading(async (id: number) => {
-        await divisionService.delete(id);
-        await syncDivisions();
-        void useSuccessToast(t('pages.division.partials.divisions.messages.deleted'));
-    }, true);
+        showConfirmation(async () => {
+            await divisionService.delete(id);
+            await syncDivisions();
+            void useSuccessToast(t('pages.division.partials.divisions.messages.deleted'));
+        });
+    });
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });

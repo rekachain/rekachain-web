@@ -41,6 +41,7 @@ export default function Create() {
                             className="mt-1"
                             autoComplete="name"
                             onChange={e => setData('name', e.target.value)}
+                            required
                         />
                     </div>
 

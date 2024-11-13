@@ -30,16 +30,16 @@ export default function GenericFilters({ filters, setFilters, children }: Generi
         perPage: filters.page_size || 10,
     });
 
-    const debouncedData = useDebounce(data, 500);
+    const debouncedSearch = useDebounce(data.search, 500);
 
     useEffect(() => {
         if (isFirstRender) return;
         setFilters({
             ...filters,
-            search: debouncedData.search,
-            page_size: debouncedData.perPage,
+            search: debouncedSearch,
+            page_size: data.perPage,
         });
-    }, [debouncedData]);
+    }, [debouncedSearch, data.perPage]);
 
     return (
         <div className="flex items-center gap-4 rounded bg-background-2 p-3">
