@@ -8,4 +8,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 interface CustomAttachmentMaterialServiceInterface extends BaseCrudServiceInterface {
     public function getImportDataTemplate(Model $model): BinaryFileResponse;
+
+    public function addNewAttachment(Model $attachment, array $data): Model;
 }

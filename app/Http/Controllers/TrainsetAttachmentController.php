@@ -8,11 +8,15 @@ use App\Http\Resources\RawMaterialResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
+use App\Support\Interfaces\Services\CustomAttachmentMaterialServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use Illuminate\Http\Request;
 
 class TrainsetAttachmentController extends Controller {
-    public function __construct(protected TrainsetAttachmentServiceInterface $trainsetAttachmentService) {}
+    public function __construct(
+        protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
+        protected CustomAttachmentMaterialServiceInterface $customAttachmentMaterialService
+    ) {}
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
@@ -69,6 +73,8 @@ class TrainsetAttachmentController extends Controller {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT->value:
+                return $this->customAttachmentMaterialService->addNewAttachment($trainsetAttachment, $request->validated())->load('parent');
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return $this->trainsetAttachmentService->assignCustomAttachmentMaterial($trainsetAttachment, $request->validated());
         }

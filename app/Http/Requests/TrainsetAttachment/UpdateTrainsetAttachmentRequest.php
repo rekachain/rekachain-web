@@ -19,6 +19,29 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
         $intent = $this->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT->value:
+                return [
+                    'source_workstation_id' => [
+                        'required_if:destination_workstation_id,' . $this->get('destination_workstation_id'), 
+                        'integer', 
+                        'exists:workstations,id',
+                        function ($attribute, $value, $fail) {
+                            if ($value === $this->get('destination_workstation_id')) {
+                                $fail('The ' . $attribute . ' cannot be the same as the destination workstation ID.');
+                            }
+                        }
+                    ],
+                    'destination_workstation_id' => [
+                        'required_if:source_workstation_id,' . $this->get('source_workstation_id'),
+                        'integer',
+                        'exists:workstations,id',
+                        function ($attribute, $value, $fail) {
+                            if ($value === $this->get('source_workstation_id')) {
+                                $fail('The ' . $attribute . ' cannot be the same as the source workstation ID.');
+                            }
+                        },
+                    ]
+                ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return [
                     'override' => 'nullable|boolean',
