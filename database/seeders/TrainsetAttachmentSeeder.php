@@ -21,13 +21,13 @@ class TrainsetAttachmentSeeder extends Seeder {
             $data = [
                 'division' => TrainsetAttachmentTypeEnum::MECHANIC->value,
                 'mechanic_source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
-                'mechanic_destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
+                'mechanic_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang','Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
             ];
             $this->trainsetService->generateTrainsetAttachment($trainset, $data);
             $data = [
                 'division' => TrainsetAttachmentTypeEnum::ELECTRIC->value,
                 'electric_source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
-                'electric_destination_workstation_id' => Workstation::where('id', '!=', $sourceWorkstationId)->inRandomOrder()->first()->id,
+                'electric_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang','Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
             ];
             $this->trainsetService->generateTrainsetAttachment($trainset, $data);
         }

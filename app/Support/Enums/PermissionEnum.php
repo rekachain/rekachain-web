@@ -53,6 +53,11 @@ enum PermissionEnum: string {
     case PANEL_UPDATE = 'panel-update';
     case PANEL_DELETE = 'panel-delete';
 
+    case TRAINSET_ATTACHMENT_CREATE = 'trainset-attachment-create';
+    case TRAINSET_ATTACHMENT_READ = 'trainset-attachment-read';
+    case TRAINSET_ATTACHMENT_UPDATE = 'trainset-attachment-update';
+    case TRAINSET_ATTACHMENT_DELETE = 'trainset-attachment-delete';
+
     case PANEL_ATTACHMENT_CREATE = 'panel-attachment-create';
     case PANEL_ATTACHMENT_READ = 'panel-attachment-read';
     case PANEL_ATTACHMENT_UPDATE = 'panel-attachment-update';

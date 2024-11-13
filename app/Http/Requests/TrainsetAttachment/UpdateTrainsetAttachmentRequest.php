@@ -24,6 +24,13 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     'raw_material_id' => 'required|integer|exists:raw_materials,id',
                     'qty' => 'required|integer',
                 ];
+            case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
+                return [
+                    'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
+                    'note' => [
+                        'required_if:status,' . TrainsetAttachmentStatusEnum::PENDING->value,
+                    ]
+                ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 $arr = [
                     'supervisor_id' => [

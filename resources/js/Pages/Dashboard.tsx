@@ -11,12 +11,12 @@ import { TrendingUp } from 'lucide-react';
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
 import { ROUTES } from '@/Support/Constants/routes';
 import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string, count: number }[];
@@ -26,11 +26,11 @@ interface AttachmentStatusOfWorkstationResource {
     progress: { status: string, count: number }[];
 }
 interface AttachmentStatusBarGraph {
-    data: AttachmentStatusOfTrainsetResource[];
+    data?: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
 }
 export default function Dashboard({ auth, data }: PageProps) {
-    console.log(data);
+    // console.log(data);
 
     const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({
         done: {
@@ -55,27 +55,27 @@ export default function Dashboard({ auth, data }: PageProps) {
         },
     });
     const [useMerged, setUseMerged] = useState(true);
-    const [useRaw, setUseRaw] = useState(false);
+    const [useRaw, setUseRaw] = useState(true);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
-        data: useRaw
-            ? data.attachment_status_of_trainset
-            : data.attachment_status_of_trainset.map(
-                ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                    trainset_name,
-                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                }),
-            ),
+        // data: useRaw
+        //     ? data.attachment_status_of_trainset
+        //     : data.attachment_status_of_trainset.map(
+        //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+        //             trainset_name,
+        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+        //         }),
+        //     ),
         config: Object.fromEntries(
             Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
         ),
     });
     const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] = useState<AttachmentStatusBarGraph>({
-        data: data.attachment_status_of_workstation.map(
-                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                    workstation_name,
-                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                }),
-            ),
+        // data: data.attachment_status_of_workstation.map(
+        //         ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+        //             workstation_name,
+        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+        //         }),
+        //     ),
         config: Object.fromEntries(
             Object.entries(attachmentStatusConfig).filter(([key]) => useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true)
         ),
@@ -99,7 +99,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
     useEffect(() => {
         let max = 0;
-        attachmentStatusOfWorkstationGraph.data.forEach(trainset => {
+        attachmentStatusOfWorkstationGraph.data?.forEach(trainset => {
             Object.values(trainset).forEach(count => {
                 if(count > max) max = count + 1;
             })
@@ -109,24 +109,22 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, [attachmentStatusOfWorkstationGraph]);
     
     const syncAttachmentStatusData = async () => {
-        console.time('syncAttachmentStatusData');
-        const res = await axios.get(route(`${ROUTES.DASHBOARD}`, { 
+        const res = await window.axios.get(route(`${ROUTES.DASHBOARD}`, { 
             use_merged: useMerged, 
             use_raw: useRaw,
             attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
             attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter
         }));
-        console.timeEnd('syncAttachmentStatusData');
         console.log('res', res.data);
         setAttachmentStatusOfTrainsetGraph({
             data: useRaw
                 ? res.data.attachment_status_of_trainset
                 : res.data.attachment_status_of_trainset.map(
-                      ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                          trainset_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                      }),
-                  ),
+                    ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+                        trainset_name,
+                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                    }),
+                ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -134,12 +132,14 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
         setAttachmentStatusOfWorkstationGraph({
-            data: res.data.attachment_status_of_workstation.map(
-                ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                    workstation_name,
-                    ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-                })
-            ),
+            data: useRaw 
+                ? res.data.attachment_status_of_workstation 
+                : res.data.attachment_status_of_workstation.map(
+                    ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
+                        workstation_name,
+                        ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                    })
+                ),
             config: Object.fromEntries(
                 Object.entries(attachmentStatusConfig).filter(([key]) =>
                     useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
@@ -151,7 +151,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
             .getAll({
-                filter: {},
+                filter: {}, perPage: 100,
                 column_filters: {project_id: 1},// TODO: use project filter
             })
             .then(response => response.data);
@@ -245,7 +245,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 setSelectedData={id => setTrainsetFilters({id: id})}
                                 selectedDataId={trainsetFilters?.id ?? null}
                                 placeholder={'Choose'}
-                                renderItem={item => `${item.name}`}
+                                renderItem={item => `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`}
                                 buttonClassName="mt-1"
                                 nullable
                             />
