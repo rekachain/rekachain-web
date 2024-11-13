@@ -11,9 +11,11 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useConfirmationDialog } from '@/Contexts/ConfirmationDialogContext';
 
 export default function ({ division }: { division: DivisionResource }) {
     const { t } = useLaravelReactI18n();
+    const { showConfirmation } = useConfirmationDialog();
     const { data, setData } = useForm({
         id: division.id,
         name: division.name,
@@ -22,9 +24,11 @@ export default function ({ division }: { division: DivisionResource }) {
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
-        await divisionService.update(division.id, data);
-        void useSuccessToast(t('pages.division.edit.messages.updated'));
-        router.visit(route(`${ROUTES.DIVISIONS}.index`));
+        showConfirmation(async () => {
+            await divisionService.update(division.id, data);
+            void useSuccessToast(t('pages.division.edit.messages.updated'));
+            router.visit(route(`${ROUTES.DIVISIONS}.index`));
+        });
     });
 
     return (
