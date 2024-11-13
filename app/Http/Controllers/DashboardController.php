@@ -120,7 +120,7 @@ class DashboardController extends Controller
     SUM(total_failed) AS total
     FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1;");
 
-        dump($panel);
+        // dump($panel);
 
         // dump($tsList);
         // return $trainset;
