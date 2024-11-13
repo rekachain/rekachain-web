@@ -42,10 +42,11 @@ const project = [
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
+    const [value, setValue] = useState(data['project'][0]['name']);
     const [openTrainset, setOpenTrainset] = useState(false);
-    const [valueTrainset, setValueTrainset] = useState('');
-    console.log(data);
+    const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
+    // alert(data['trainsets'])
+    // console.log(data);
     const chartConfig = {
         in_progress: {
             label: 'Progress',
@@ -130,7 +131,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     //         </text>
     //     );
     // };
-
+    // data['trainsets'][0].id}/${projectItem.id
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
@@ -141,115 +142,117 @@ export default function Dashboard({ auth, data }: PageProps) {
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
                         <div className="">
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                            <div className="flex justify-between w-full items-center">
+                            <div className="flex justify-between w-full items-start">
                                 <h2 className="text-xl my-2">
                                     {`Proyek ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
                                     {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
-                                <Popover open={open} onOpenChange={setOpen}>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            role="combobox"
-                                            aria-expanded={open}
-                                            className="w-[200px] justify-between"
-                                        >
-                                            {value
-                                                ? project.find(projectItem => projectItem.value === value)?.label
-                                                : 'Pilih Proyek'}
-                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
-                                        <Command>
-                                            <CommandInput placeholder="Cari Projek..." />
-                                            <CommandList>
-                                                <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
-                                                <CommandGroup>
-                                                    {project.map(projectItem => (
-                                                        <Link href={projectItem.link}>
-                                                            <CommandItem
-                                                                key={projectItem.value}
-                                                                value={projectItem.value}
-                                                                onSelect={currentValue => {
-                                                                    setValue(
-                                                                        currentValue === value ? '' : currentValue,
-                                                                    );
-                                                                    setOpen(false);
-                                                                }}
+                                <div className="flex flex-col gap-4 mb-5">
+                                    <Popover open={open} onOpenChange={setOpen}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                aria-expanded={open}
+                                                className="w-40 justify-between"
+                                            >
+                                                {value
+                                                    ? project.find(projectItem => projectItem.value === value)?.label
+                                                    : 'Pilih Proyek'}
+                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[200px] p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Cari Projek..." />
+                                                <CommandList>
+                                                    <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        {data['projectList'].map(projectItem => (
+                                                            <Link href={`/dashboard/${projectItem.id}`}>
+                                                                <CommandItem
+                                                                    key={projectItem.name}
+                                                                    value={projectItem.name}
+                                                                    onSelect={currentValue => {
+                                                                        setValue(
+                                                                            currentValue === name ? '' : currentValue,
+                                                                        );
+                                                                        setOpen(false);
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            value === projectItem.name
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0',
+                                                                        )}
+                                                                    />
+                                                                    {projectItem.name}
+                                                                </CommandItem>
+                                                            </Link>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                aria-expanded={openTrainset}
+                                                className="w-40 justify-between"
+                                            >
+                                                {valueTrainset
+                                                    ? data['tsList'].find(
+                                                          projectItem => projectItem.name === valueTrainset,
+                                                      )?.name
+                                                    : 'Pilih Trainset'}
+                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-[200px] p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Cari Trainset..." />
+                                                <CommandList>
+                                                    <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        {data['tsList']?.map(projectItem => (
+                                                            <Link
+                                                                href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >
-                                                                <Check
-                                                                    className={cn(
-                                                                        'mr-2 h-4 w-4',
-                                                                        value === projectItem.value
-                                                                            ? 'opacity-100'
-                                                                            : 'opacity-0',
-                                                                    )}
-                                                                />
-                                                                {projectItem.label}
-                                                            </CommandItem>
-                                                        </Link>
-                                                    ))}
-                                                </CommandGroup>
-                                            </CommandList>
-                                        </Command>
-                                    </PopoverContent>
-                                </Popover>
-
-                                <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            role="combobox"
-                                            aria-expanded={openTrainset}
-                                            className="w-40 justify-between"
-                                        >
-                                            {valueTrainset
-                                                ? project.find(projectItem => projectItem.value === valueTrainset)
-                                                      ?.label
-                                                : 'Pilih Trainset'}
-                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
-                                        <Command>
-                                            <CommandInput placeholder="Cari Trainset..." />
-                                            <CommandList>
-                                                <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
-                                                <CommandGroup>
-                                                    {data['tsList']?.map(projectItem => (
-                                                        <Link
-                                                            href={`/dashboard/${data['trainsets'][0].id}/${projectItem.id}`}
-                                                        >
-                                                            <CommandItem
-                                                                key={projectItem.id}
-                                                                value={projectItem.name}
-                                                                onSelect={currentValue => {
-                                                                    setValueTrainset(
-                                                                        currentValue === valueTrainset
-                                                                            ? ''
-                                                                            : currentValue,
-                                                                    );
-                                                                    setOpenTrainset(false);
-                                                                }}
-                                                            >
-                                                                <Check
-                                                                    className={cn(
-                                                                        'mr-2 h-4 w-4',
-                                                                        valueTrainset === projectItem.name
-                                                                            ? 'opacity-100'
-                                                                            : 'opacity-0',
-                                                                    )}
-                                                                />
-                                                                {projectItem.name}
-                                                            </CommandItem>
-                                                        </Link>
-                                                    ))}
-                                                </CommandGroup>
-                                            </CommandList>
-                                        </Command>
-                                    </PopoverContent>
-                                </Popover>
+                                                                <CommandItem
+                                                                    key={projectItem.id}
+                                                                    value={projectItem.name}
+                                                                    onSelect={currentValue => {
+                                                                        setValueTrainset(
+                                                                            currentValue === valueTrainset
+                                                                                ? ''
+                                                                                : currentValue,
+                                                                        );
+                                                                        setOpenTrainset(false);
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            valueTrainset === projectItem.name
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0',
+                                                                        )}
+                                                                    />
+                                                                    {projectItem.name}
+                                                                </CommandItem>
+                                                            </Link>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             </div>
                             <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['carriages']}>
