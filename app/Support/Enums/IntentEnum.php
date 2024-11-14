@@ -258,4 +258,6 @@ enum IntentEnum: string {
     case WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.panel.attachment.assign.custom.attachment.material';
 
     case WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT = 'web.panel.attachment.assign.referenced.attachment.and.material.import';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE = 'web.trainset.attachment.get.component.materials.with.qty.for.template';
 }
