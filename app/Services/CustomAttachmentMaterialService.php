@@ -74,7 +74,15 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
             $qrCode = "KPM:{$model->attachment_number};P:{$model->trainset->project->name};TS:{$model->trainset->name};;";
             $path = "trainset_attachments/qr_images/{$model->id}.svg";
         } else {
-            $serialPanelIds = $model->parent->serial_panels()->pluck('id')->toArray();
+            $currentModel = $model;
+            $serialPanelIds = [];
+            while ($currentModel->is_child()) {
+                if ($currentModel->parent->serial_panels()->count() > 0) {
+                    $serialPanelIds = $currentModel->parent->serial_panels()->pluck('id')->toArray();
+                    break;
+                }
+                $currentModel = $currentModel->parent;
+            }
             $serialPanelIdsString = implode(',', $serialPanelIds);
             $qrCode = "KPM:{$model->attachment_number};SN:[{$serialPanelIdsString}];P:{$model->trainset->project->name};TS:{$model->trainset->name};;";
             $path = "panel_attachments/qr_images/{$model->id}.svg";
