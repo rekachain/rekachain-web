@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder {
             SerialPanelSeeder::class,
             DetailWorkerPanelSeeder::class,
             FeedbackSeeder::class,
+            HelpdeskContactSeeder::class,
         ]);
     }
 }
