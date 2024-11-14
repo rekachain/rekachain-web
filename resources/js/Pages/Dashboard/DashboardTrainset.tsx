@@ -203,13 +203,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
                             <div className="">
                                 <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
-                                <h3 className="text-base">Panel yang ada pada TS 1</h3>
+                                <h3 className="text-base">{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
                                 <ChartContainer config={chartConfig} className="h-[400px] w-full mt-5">
                                     <BarChart className="" accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
                                         <XAxis
                                             // tick={<CustomizedAxisTick />}
-                                            // angle={-45}
+                                            angle={-45}
                                             textAnchor="end"
                                             dataKey="name"
                                             tickLine={false}
