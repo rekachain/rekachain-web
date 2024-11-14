@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
     // Route::get('/test', function(){
     //     return inertia('Division/Create');
     // } );
-    Route::resource('/test',TestController::class);
+    // Route::resource('/test',TestController::class);
     
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
