@@ -14,7 +14,22 @@ import { PageProps } from '../../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Text, XAxis, YAxis } from 'recharts';
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    LabelList,
+    Legend,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    Text,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
@@ -29,6 +44,31 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [value, setValue] = useState(data['project'][0]['name']);
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
+    // console.log(data['total']);
+    const chartData = [
+        { status: 'fullfilled', total: 15 },
+        { status: 'required', total: 20 },
+        { status: 'failed', total: 3 },
+    ];
+
+    const chartConfigPie = {
+        total: {
+            label: 'Total',
+        },
+        fulfilled: {
+            label: 'Chrome',
+            color: 'hsl(var(--chart-1))',
+        },
+        required: {
+            label: 'Safari',
+            color: 'hsl(var(--chart-2))',
+        },
+        firefox: {
+            label: 'Firefox',
+            color: 'hsl(var(--chart-3))',
+        },
+    } satisfies ChartConfig;
+
     const chartConfig = {
         in_progress: {
             label: 'Progress',
@@ -39,24 +79,36 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: '#00C3FF',
         },
     } satisfies ChartConfig;
+    const panelData = [
+        { statusPanel: 'required', totalAmount: 15 },
+        { statusPanel: 'fulfilled', totalAmount: 22 },
+        { statusPanel: 'failed', totalAmount: 32 },
+    ];
+
+    const newArray = data['total'].map(item => ({
+        ...item,
+        total: parseInt(item.total),
+    }));
+    console.log(typeof newArray[0].total);
+    console.log('makan');
+    const COLORS = ['#8884d8', '#82ca9d', '#ff8042'];
     const panelChartConf = {
         total: {
             label: 'Total',
         },
-        chrome: {
-            label: 'required',
+        required: {
+            label: 'Required',
             color: 'hsl(var(--chart-1))',
         },
-        safari: {
-            label: 'fulfilled',
+        fulfilled: {
+            label: 'Fulfilled',
             color: 'hsl(var(--chart-2))',
         },
-        firefox: {
-            label: 'failed',
+        failed: {
+            label: 'Failed',
             color: 'hsl(var(--chart-3))',
         },
     } satisfies ChartConfig;
-
     const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
@@ -226,13 +278,55 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                                <ChartContainer config={panelChartConf} className="mx-auto aspect-square max-h-[250px]">
-                                    <PieChart>
-                                        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                        <Pie data={data['total']} dataKey="" nameKey="status" innerRadius={60} />
-                                    </PieChart>
+                                <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
+                                    <BarChart accessibilityLayer data={data['total']}>
+                                        <CartesianGrid vertical={false} />
+                                        <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        <Bar dataKey="qty" fill="var(--color-done)" radius={4} />
+                                    </BarChart>
                                 </ChartContainer>
                             </div>
+                            {/* <ChartContainer config={panelChartConf} className=" max-h-[250px]">
+                                <PieChart>
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                    <Pie data={panelData} dataKey="total" nameKey="status" innerRadius={60} />
+                                </PieChart>
+                            </ChartContainer> */}
+                            <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
+                                <PieChart>
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                    <Pie data={data['total']} dataKey="total" nameKey="status" innerRadius={60} />
+                                </PieChart>
+                            </ChartContainer>
+                            <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
+                                <PieChart>
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                    <Pie data={data['total']} dataKey="totalAmount" nameKey="statusPanel" />
+                                </PieChart>
+                            </ChartContainer>
+                            <PieChart width={400} height={400}>
+                                <Pie
+                                    data={newArray}
+                                    dataKey="total"
+                                    nameKey="status"
+                                    cx="200"
+                                    cy="200"
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    // dataKey="totalAmount"
+                                    // nameKey="statusPanel"
+                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                >
+                                    {panelData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        // <Cell key={`cell-${index}`} fill={entry.fill} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                                <Legend />
+                            </PieChart>
                         </div>
                         {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
 
