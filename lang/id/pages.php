@@ -1161,11 +1161,20 @@ return [
                             ],
                         ],
                         'preview_generate_panel_attachment' => [
-                            'messages' => [
-                                'no_materials' => 'Tidak ada bahan baku yang ditemukan untuk panel dan gerbong yang dipilih.',
-                            ],
                             'dialogs' => [
                                 'title' => 'Lampiran Panel',
+                                'messages' => [
+                                    'no_materials' => 'Tidak ada bahan baku yang ditemukan untuk panel dan gerbong yang dipilih.',
+                                ],
+                                'headers' => [
+                                    'material_list' => 'Daftar Material',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Gerbong',
+                                    'carriage_placeholder' => 'Pilih Gerbong',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Pilih Panel',
+                                ],
                                 'raw_material_table' => [
                                     'headers' => [
                                         'material_code' => 'Kode Material',

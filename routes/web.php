@@ -24,6 +24,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\TrainsetAttachmentController;
 use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkAspectController;
 use App\Http\Controllers\WorkDayController;
@@ -58,7 +59,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
+    // Route::get('/test', function(){
+    //     return inertia('Division/Create');
+    // } );
+    // Route::resource('/test',TestController::class);
+    
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/{project}', [DashboardController::class, 'show']);
+    Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset']);
+    // Route::resource('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('divisions', DivisionController::class);
     Route::resource('workshops', WorkshopController::class);
     Route::resource('workstations', WorkstationController::class);

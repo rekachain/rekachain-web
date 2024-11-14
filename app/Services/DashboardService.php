@@ -16,6 +16,7 @@ use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Support\Collection;
 
+
 class DashboardService {
     public function __construct(
         protected PanelAttachmentRepositoryInterface $panelAttachmentRepository,

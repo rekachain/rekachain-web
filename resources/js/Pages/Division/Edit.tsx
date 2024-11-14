@@ -25,7 +25,7 @@ export default function ({ division }: { division: DivisionResource }) {
         await divisionService.update(division.id, data);
         void useSuccessToast(t('pages.division.edit.messages.updated'));
         router.visit(route(`${ROUTES.DIVISIONS}.index`));
-    });
+    }, true);
 
     return (
         <>
