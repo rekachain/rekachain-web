@@ -94,8 +94,16 @@ class PanelAttachment extends Model {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
+    public function is_parent(): bool {
+        return $this->childs->count() > 0;
+    }
+
     public function childs(): HasMany {
         return $this->hasMany(PanelAttachment::class, 'panel_attachment_id', 'id');
+    }
+
+    public function is_child(): bool {
+        return $this->parent !== null;
     }
 
     public function source_workstation(): BelongsTo {
