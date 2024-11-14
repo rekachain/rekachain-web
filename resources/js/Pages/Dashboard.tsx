@@ -357,21 +357,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </Popover>
                         </div>
 
-                        <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
-                            <BarChart accessibilityLayer data={data['ts']} className="h-1/4">
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="ts_name"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                    // tickFormatter={value => value.slice(0, 10)}
-                                />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                            </BarChart>
-                        </ChartContainer>
                         {/* <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['ts']}> */}
                         {/* <h2 className="text-xl my-2">Proyek 612</h2> */}
@@ -488,6 +473,21 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
                         </div>
 
+                        <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
+                            <BarChart accessibilityLayer data={data['ts']} className="h-1/4">
+                                <CartesianGrid vertical={false} />
+                                <XAxis
+                                    dataKey="ts_name"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                    // tickFormatter={value => value.slice(0, 10)}
+                                />
+                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
+                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                            </BarChart>
+                        </ChartContainer>
                         {/* <ChartContainer
                             config={attachmentStatusOfTrainsetGraph.config}
                             className="h-[200px] w-full mt-5 pr-2"
