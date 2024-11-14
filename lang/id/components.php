@@ -97,6 +97,7 @@ return [
                 'no_email' => 'Tidak ada email yang tersedia.',
                 'no_notice' => 'Tidak ada pemberitahuan yang tersedia.',
                 'no_phone' => 'Tidak ada nomor telepon yang tersedia.',
+                'no_helpdesk_contact' => 'Tidak ada kontak helpdesk yang tersedia.',
             ],
             'headers' => [
                 'contact' => 'Informasi Kontak',

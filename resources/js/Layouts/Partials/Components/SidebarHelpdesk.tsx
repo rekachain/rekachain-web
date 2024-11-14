@@ -19,11 +19,13 @@ import {
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { Textarea } from '@/Components/UI/textarea';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { RoleEnum } from '@/Support/Enums/roleEnum';
 
 export default function () {
     const { t } = useLaravelReactI18n();
+    const { props } = usePage();
     const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full pr-52 md:mr-0 `;
     const [helpdeskContactResponse, setHelpdeskContactResponse] = useState<HelpdeskContactResource>();
 
@@ -38,6 +40,8 @@ export default function () {
         phone_number: '',
         notice: '',
     });
+
+    const isSuperAdmin = props.auth.user.role === RoleEnum.SUPER_ADMIN;
 
     const syncHelpdeskContacts = withLoading(async () => {
         const res = await helpdeskContactService.getAll();
@@ -76,6 +80,7 @@ export default function () {
     useEffect(() => {
         void syncHelpdeskContacts();
     }, []);
+
     return (
         <div className="md:px-4">
             <Dialog>
@@ -129,9 +134,15 @@ export default function () {
                         ) : (
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <button className={buttonVariants()}>
-                                        {t('components.sidebar_helpdesk.dialogs.buttons.create_first_helpdesk_contact')}
-                                    </button>
+                                    {isSuperAdmin ? (
+                                        <button className={buttonVariants()}>
+                                            {t(
+                                                'components.sidebar_helpdesk.dialogs.buttons.create_first_helpdesk_contact',
+                                            )}
+                                        </button>
+                                    ) : (
+                                        <p>{t('components.sidebar_helpdesk.dialogs.messages.no_helpdesk_contact')}</p>
+                                    )}
                                 </DialogTrigger>
                                 <DialogContent className="max-w-xl">
                                     <DialogHeader>
@@ -187,7 +198,7 @@ export default function () {
                     <DialogFooter>
                         <Dialog>
                             <DialogTrigger asChild>
-                                <button className={buttonVariants()}>{t('action.edit')}</button>
+                                {isSuperAdmin && <button className={buttonVariants()}>{t('action.edit')}</button>}
                             </DialogTrigger>
                             <DialogContent className="max-w-xl">
                                 <DialogHeader>

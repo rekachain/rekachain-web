@@ -97,6 +97,7 @@ return [
                 'no_email' => 'No email available.',
                 'no_notice' => 'No notice available.',
                 'no_phone' => 'No phone number available.',
+                'no_helpdesk_contact' => 'No helpdesk contact available.',
             ],
             'headers' => [
                 'contact' => 'Contact Information',
