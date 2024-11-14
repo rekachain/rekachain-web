@@ -65,6 +65,11 @@ class TrainsetAttachment extends Model {
     public function getFilterable(): array {
         return $this->filterable;
     }
+
+    public function is_ancestor(): bool {
+        return $this->parent === null;
+    }
+
     public function parent(): BelongsTo {
         return $this->belongsTo(TrainsetAttachment::class, 'trainset_attachment_id');
     }
