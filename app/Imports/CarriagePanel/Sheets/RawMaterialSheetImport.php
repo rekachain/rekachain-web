@@ -28,16 +28,16 @@ class RawMaterialSheetImport implements ToModel, WithHeadingRow
         }
 
         if (is_null($this->override)) {
+            // create new after deletion on call
+            return $this->carriagePanel->panel_materials()->create([
+                'raw_material_id' => $rawMaterial->id,
+                'qty' => $row['qty'],
+            ]);
+        } elseif ($this->override) {
             // update or create by default
             return $this->carriagePanel->panel_materials()->updateOrCreate([
                 'raw_material_id' => $rawMaterial->id,
             ], [
-                'qty' => $row['qty'],
-            ]);
-        } elseif ($this->override) {
-            // create new after deletion on caller
-            return $this->carriagePanel->panel_materials()->create([
-                'raw_material_id' => $rawMaterial->id,
                 'qty' => $row['qty'],
             ]);
         } elseif (!$this->override) {

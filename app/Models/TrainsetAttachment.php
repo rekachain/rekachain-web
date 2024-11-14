@@ -69,8 +69,16 @@ class TrainsetAttachment extends Model {
         return $this->belongsTo(TrainsetAttachment::class, 'trainset_attachment_id');
     }
 
+    public function is_parent(): bool {
+        return $this->childs->count() > 0;
+    }
+
     public function childs(): HasMany {
         return $this->hasMany(TrainsetAttachment::class, 'trainset_attachment_id');
+    }
+
+    public function is_child(): bool {
+        return $this->parent !== null;
     }
     
     public function progresses(): HasManyDeep {

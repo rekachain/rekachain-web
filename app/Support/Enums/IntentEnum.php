@@ -227,7 +227,13 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE = 'web.trainset.attachment.get.custom.attachment.material.import.template';
+
+    case WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT = 'web.trainset.attachment.assign.referenced.attachment';
+
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
+
+    case WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT = 'web.trainset.attachment.assign.referenced.attachment.and.material.import';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL = 'web.panel.attachment.get.panel';
 
@@ -241,9 +247,15 @@ enum IntentEnum: string {
 
     case WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.panel.attachment.download.panel.attachment';
 
+    case WEB_PANEL_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE = 'web.panel.attachment.get.custom.attachment.material.import.template';
+
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY = 'web.panel.attachment.get.panel.materials.with.qty';
 
+    case WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT = 'web.panel.attachment.assign.referenced.attachment';
+
     case WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.panel.attachment.assign.custom.attachment.material';
+
+    case WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT = 'web.panel.attachment.assign.referenced.attachment.and.material.import';
 }

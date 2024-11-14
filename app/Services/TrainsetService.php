@@ -427,7 +427,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         //        });
     }
 
-    private function generateAttachmentNumber(Model $model) {
+    public function generateAttachmentNumber(Model $model) {
 
         if ($model instanceof PanelAttachment) {
             $carriagePanelIds = $this->carriagePanelService->find([

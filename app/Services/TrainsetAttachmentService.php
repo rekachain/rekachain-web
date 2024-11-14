@@ -48,7 +48,15 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     
     public function assignCustomAttachmentMaterial(TrainsetAttachment $trainsetAttachment, array $data): CustomAttachmentMaterial
     {
-        logger($trainsetAttachment);
+        if (array_key_exists('override', $data)) {
+            if (!$data['override']) {
+                return $trainsetAttachment->custom_attachment_materials()->firstOrCreate([
+                    'raw_material_id' => $data['raw_material_id'],
+                ], [
+                    'qty' => $data['qty'],
+                ]);
+            }
+        } 
         return $trainsetAttachment->custom_attachment_materials()->updateOrCreate([
             'raw_material_id' => $data['raw_material_id'],
         ], [
