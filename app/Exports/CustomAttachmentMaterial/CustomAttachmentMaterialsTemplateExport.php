@@ -12,6 +12,8 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Table;
+use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class CustomAttachmentMaterialsTemplateExport implements FromArray, ShouldAutoSize, WithHeadings, WithStyles {
@@ -30,18 +32,6 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, ShouldAutoSi
     }
 
     public function styles(Worksheet $sheet) {
-        $styleArray = [
-            'borders' => [
-                'right' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                ],
-            ],
-        ];
-
-        foreach (range('A', 'E') as $column) {
-            $sheet->getStyle($column . '1:' . $column . $sheet->getHighestRow())->applyFromArray($styleArray);
-        }
-
         $sheet->getStyle('A1:E1')->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -67,6 +57,12 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, ShouldAutoSi
         $conditionalStyles = $sheet->getStyle('A:A')->getConditionalStyles();
         $conditionalStyles[] = $conditional;
         $sheet->getStyle('A:A')->setConditionalStyles($conditionalStyles);
+
+        $table = new Table('A1:E' . $sheet->getHighestRow(), 'Raw_Materials');
+        $tableStyle = new TableStyle(TableStyle::TABLE_STYLE_LIGHT15);
+        $tableStyle->setShowRowStripes(true);
+        $table->setStyle($tableStyle);
+        $sheet->addTable($table);
     }
 
     public function array(): array {
