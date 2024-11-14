@@ -27,19 +27,20 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         return CustomAttachmentMaterialRepositoryInterface::class;
     }
 
-    public function getImportDataTemplate(Model $model): BinaryFileResponse{
+    public function getImportDataTemplate(Model $model): BinaryFileResponse {
         if ($model instanceof PanelAttachment) {
-            $prefix = $model->carriage_panel->panel->name . 
-                '-' . $model->carriage_panel->carriage_trainset->carriage->type . 
-                '-' . $model->carriage_panel->carriage_trainset->trainset->name . 
+            $prefix = $model->carriage_panel->panel->name .
+                '-' . $model->carriage_panel->carriage_trainset->carriage->type .
+                '-' . $model->carriage_panel->carriage_trainset->trainset->name .
                 '-' . $model->carriage_panel->carriage_trainset->trainset->project->name;
         } else {
-            $prefix = $model->type . '-' . $model->trainset->name . '-' . $model->trainset->project->name;
+            $prefix = $model->type->value . '-' . $model->trainset->name . '-' . $model->trainset->project->name;
         }
+
         return (new CustomAttachmentMaterialsTemplateExport($model))->download($prefix . '-Raw Material Addition.xlsx');
     }
-    
-    public function addNewAttachment(Model $attachment, array $data): Model{
+
+    public function addNewAttachment(Model $attachment, array $data): Model {
         if ($attachment instanceof PanelAttachment) {
             $newTrainsetAttachment = $attachment->childs()->create([
                 'carriage_panel_id' => $attachment->carriage_panel_id,
@@ -66,6 +67,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         }
         $newTrainsetAttachment->update(['attachment_number' => $this->trainsetService->generateAttachmentNumber($newTrainsetAttachment)]);
         $this->generateAttachmentQrCode($newTrainsetAttachment);
+
         return $newTrainsetAttachment;
     }
 
@@ -92,7 +94,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         Storage::put("public/{$path}", $qrCode);
     }
 
-    public function importCustomAttachmentMaterial(Model $attachment, array $data): Model{
+    public function importCustomAttachmentMaterial(Model $attachment, array $data): Model {
         if (array_key_exists('to_be_assigned', $data) && !$data['to_be_assigned']) {
             $newAttachment = $attachment;
         } else {
@@ -100,6 +102,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         }
         $file = request()->file('file');
         Excel::import(new CustomAttachmentMaterialsImport($newAttachment, $data['override'] ?? null), $file);
+
         return $newAttachment;
     }
 }

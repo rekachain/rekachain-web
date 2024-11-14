@@ -46,7 +46,16 @@ class TrainsetAttachmentResource extends JsonResource {
                     'formatted_created_at' => $this->created_at->format('d F Y'),
                     'formatted_updated_at' => $this->updated_at->format('d F Y'),
                 ];
-
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE->value:
+                return $this->component_materials
+                    ->groupBy('raw_material_id')
+                    ->map(fn ($componentMaterials) => [
+                        ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                        'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
+                            * $cm->carriage_panel_component->carriage_panel->qty
+                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
+                        ),
+                    ])->sortBy('raw_material.id')->toArray();
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
                 $trainsetAttachment = $this->load(['trainset_attachment_components']);
 
@@ -222,7 +231,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         'component' => ComponentResource::make($trainsetAttachmentComponent->carriage_panel_component->component),
                         'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
-                        'steps' => $steps->sortBy('step_id')->map(fn($step) => $step)->values(),
+                        'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
                     ];
                 });
 

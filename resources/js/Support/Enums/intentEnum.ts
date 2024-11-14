@@ -33,6 +33,13 @@ const intents = {
     WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS: 'web.trainset.attachment.get.component.materials',
     WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY:
         'web.trainset.attachment.get.component.materials.with.qty',
+    WEB_TRAINSET_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE:
+        'web.trainset.attachment.get.custom.attachment.material.import.template',
+    WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT: 'web.trainset.attachment.assign.referenced.attachment',
+    WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE:
+        'web.trainset.attachment.get.component.materials.with.qty.for.template',
+    WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT:
+        'web.trainset.attachment.assign.referenced.attachment.and.material.import',
     WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL:
         'web.trainset.attachment.assign.custom.attachment.material',
     WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT: 'web.trainset.attachment.download.trainset.attachment',
@@ -45,6 +52,7 @@ const intents = {
     WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY: 'web.project.get.all.carriage.components.with.qty',
     WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY: 'web.project.get.all.carriage.panels.with.qty',
 };
+
 export const IntentEnum = intents;
 
 export type IntentEnum = (typeof intents)[keyof typeof intents];
