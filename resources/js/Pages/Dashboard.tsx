@@ -102,6 +102,17 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: 'hsl(var(--chart-5))',
         },
     });
+    const chartConfigTrainset = {
+        done: {
+            label: 'Done',
+            color: 'hsl(var(--chart-1))',
+        },
+        in_progress: {
+            label: 'In Progress',
+            color: 'hsl(var(--chart-2))',
+        },
+    } satisfies ChartConfig;
+
     const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(true);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
@@ -226,7 +237,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     // from panel_attachment get status
     // from carriage panel get carriage_trainset_id
     // from trainset get trainset id
-
+    console.log(data['ts']);
     //  TS
     // this is correct
     // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;
@@ -345,6 +356,22 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </PopoverContent>
                             </Popover>
                         </div>
+
+                        <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
+                            <BarChart accessibilityLayer data={data['ts']} className="h-1/4">
+                                <CartesianGrid vertical={false} />
+                                <XAxis
+                                    dataKey="ts_name"
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                    // tickFormatter={value => value.slice(0, 10)}
+                                />
+                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
+                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                            </BarChart>
+                        </ChartContainer>
                         {/* <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['ts']}> */}
                         {/* <h2 className="text-xl my-2">Proyek 612</h2> */}
@@ -461,7 +488,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
                         </div>
 
-                        <ChartContainer
+                        {/* <ChartContainer
                             config={attachmentStatusOfTrainsetGraph.config}
                             className="h-[200px] w-full mt-5 pr-2"
                         >
@@ -473,11 +500,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     tickMargin={10}
                                     axisLine={false}
                                     tickFormatter={value => value.slice(0, 6)}
-                                />
-                                {/* {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
+                                /> */}
+                        {/* {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
                                       <YAxis key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} />
                                     ))} */}
-                                <ChartTooltip content={<ChartTooltipContent />} />
+                        {/* <ChartTooltip content={<ChartTooltipContent />} />
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
                                     <Bar
@@ -488,7 +515,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                 ))}
                             </BarChart>
-                        </ChartContainer>
+                        </ChartContainer> */}
                     </div>
                     <div className="flex max-w-full mt-2 ">
                         <div className="w-1/2">
