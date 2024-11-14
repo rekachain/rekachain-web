@@ -73,14 +73,11 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, ShouldAutoSi
             $req = request()->merge(['intent' => IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE->value]);
             $exportData = TrainsetAttachmentResource::make($this->attachmentModel)->toArray($req);
         }
-        //        unset($exportData['id'], $exportData['can_be_deleted']);
 
         $exportData = array_map(function ($array) {
             unset($array['id'], $array['can_be_deleted']);
-
             return $array;
         }, $exportData);
-        logger($exportData);
 
         return $exportData;
     }
