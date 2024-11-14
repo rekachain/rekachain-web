@@ -12,15 +12,24 @@ class TrainsetAttachmentResource extends JsonResource {
 
         switch ($intent) {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
-                $rawMaterials = $this->component_materials
-                    ->groupBy('raw_material_id')
-                    ->map(fn ($componentMaterials) => [
-                        ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
-                        'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
-                            * $cm->carriage_panel_component->carriage_panel->qty
-                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
-                        ),
-                    ])->sortBy('raw_material.id')->toArray();
+                if ($this->is_child()) {
+                    $rawMaterials = $this->custom_attachment_materials
+                        ->groupBy('raw_material_id')
+                        ->map(fn ($componentMaterials) => [
+                            ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                            'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty),
+                        ])->sortBy('raw_material.id')->toArray();
+                } else {
+                    $rawMaterials = $this->component_materials
+                        ->groupBy('raw_material_id')
+                        ->map(fn ($componentMaterials) => [
+                            ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                            'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
+                                * $cm->carriage_panel_component->carriage_panel->qty
+                                * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
+                            ),
+                        ])->sortBy('raw_material.id')->toArray();
+                }
 
                 return [
                     'id' => $this->id,
@@ -47,7 +56,20 @@ class TrainsetAttachmentResource extends JsonResource {
                     'formatted_updated_at' => $this->updated_at->format('d F Y'),
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE->value:
-                return $this->component_materials
+                $attachmentComponentMaterials = collect();
+                if ($this->is_child()) {
+                    $attachment = $this;
+                    while ($attachment->is_child()) {
+                        if ($attachment->parent->component_materials()->count() > 0) {
+                            $attachmentComponentMaterials = $this->parent->component_materials;
+                            break;
+                        }
+                        $attachment = $attachment->parent;
+                    }
+                } else {
+                    $attachmentComponentMaterials = $this->component_materials;
+                }
+                return $attachmentComponentMaterials
                     ->groupBy('raw_material_id')
                     ->map(fn ($componentMaterials) => [
                         ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
