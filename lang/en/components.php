@@ -87,4 +87,34 @@ return [
             'pagination_placeholder' => 'Items per page',
         ],
     ],
+    'sidebar_helpdesk' => [
+        'messages' => [
+            'created' => 'Helpdesk contact created successfully.',
+            'updated' => 'Helpdesk contact updated successfully.',
+        ],
+        'dialogs' => [
+            'messages' => [
+                'no_email' => 'No email available.',
+                'no_notice' => 'No notice available.',
+                'no_phone' => 'No phone number available.',
+            ],
+            'headers' => [
+                'contact' => 'Contact Information',
+                'email' => 'Email :',
+                'phone_number' => 'Phone Number :',
+                'notice' => 'Notice :',
+            ],
+            'title' => 'Helpdesk Contact',
+            'edit_title' => 'Edit Helpdesk Contact',
+            'create_title' => 'Create Helpdesk Contact',
+            'fields' => [
+                'email' => 'Email',
+                'phone_number' => 'Phone Number',
+                'notice' => 'Notice',
+            ],
+            'buttons' => [
+                'create_first_helpdesk_contact' => 'Create First Helpdesk Contact',
+            ],
+        ],
+    ],
 ];

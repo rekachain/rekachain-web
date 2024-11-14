@@ -87,4 +87,34 @@ return [
             'pagination_placeholder' => 'Item per halaman',
         ],
     ],
+    'sidebar_helpdesk' => [
+        'messages' => [
+            'created' => 'Kontak helpdesk berhasil dibuat.',
+            'updated' => 'Kontak helpdesk berhasil diperbarui.',
+        ],
+        'dialogs' => [
+            'messages' => [
+                'no_email' => 'Tidak ada email yang tersedia.',
+                'no_notice' => 'Tidak ada pemberitahuan yang tersedia.',
+                'no_phone' => 'Tidak ada nomor telepon yang tersedia.',
+            ],
+            'headers' => [
+                'contact' => 'Informasi Kontak',
+                'email' => 'Email :',
+                'phone_number' => 'Nomor Telepon :',
+                'notice' => 'Pemberitahuan :',
+            ],
+            'title' => 'Kontak Helpdesk',
+            'edit_title' => 'Edit Kontak Helpdesk',
+            'create_title' => 'Buat Kontak Helpdesk',
+            'fields' => [
+                'email' => 'Email',
+                'phone_number' => 'Nomor Telepon',
+                'notice' => 'Pemberitahuan',
+            ],
+            'buttons' => [
+                'create_first_helpdesk_contact' => 'Buat Kontak Helpdesk',
+            ],
+        ],
+    ],
 ];

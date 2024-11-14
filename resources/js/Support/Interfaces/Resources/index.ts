@@ -40,3 +40,4 @@ export * from './FailedComponentManufactureResource';
 export * from './AttachmentNoteResource';
 export * from './FeedbackResource';
 export * from './CustomAttachmentMaterialResource';
+export * from './HelpdeskContactResource';

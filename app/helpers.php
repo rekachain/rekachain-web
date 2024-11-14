@@ -2,6 +2,7 @@
 
 use App\Helpers\PermissionHelper;
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 if (!function_exists('checkPermissions')) {
@@ -14,5 +15,12 @@ if (!function_exists('checkPermissions')) {
      */
     function checkPermissions(PermissionEnum|array $permissions, bool $returnBool = false, bool $strict = false): ?bool {
         return PermissionHelper::check($permissions, $returnBool, $strict);
+    }
+
+    /**
+     * Check user roles.
+     */
+    function checkRoles(RoleEnum|array $roles, bool $returnBool = false, bool $strict = false): ?bool {
+        return PermissionHelper::checkRoles($roles, $returnBool, $strict);
     }
 }
