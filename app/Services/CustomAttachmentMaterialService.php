@@ -27,17 +27,17 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         return CustomAttachmentMaterialRepositoryInterface::class;
     }
 
-    public function getImportDataTemplate(Model $model): BinaryFileResponse {
-        if ($model instanceof PanelAttachment) {
-            $prefix = $model->carriage_panel->panel->name .
-                '-' . $model->carriage_panel->carriage_trainset->carriage->type .
-                '-' . $model->carriage_panel->carriage_trainset->trainset->name .
-                '-' . $model->carriage_panel->carriage_trainset->trainset->project->name;
+    public function getImportDataTemplate(Model $attachment): BinaryFileResponse {
+        if ($attachment instanceof PanelAttachment) {
+            $prefix = $attachment->carriage_panel->panel->name .
+                '-' . $attachment->carriage_panel->carriage_trainset->carriage->type .
+                '-' . $attachment->carriage_panel->carriage_trainset->trainset->name .
+                '-' . $attachment->carriage_panel->carriage_trainset->trainset->project->name;
         } else {
-            $prefix = $model->type->value . '-' . $model->trainset->name . '-' . $model->trainset->project->name;
+            $prefix = ucfirst($attachment->type->value) . '-' . $attachment->trainset->name . '-' . $attachment->trainset->project->name;
         }
 
-        return (new CustomAttachmentMaterialsTemplateExport($model))->download($prefix . '-Raw Material Addition.xlsx');
+        return (new CustomAttachmentMaterialsTemplateExport($attachment))->download($prefix . '-Raw Material Addition.xlsx');
     }
 
     public function addNewAttachment(Model $attachment, array $data): Model {

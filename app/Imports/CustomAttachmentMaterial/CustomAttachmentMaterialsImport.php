@@ -12,7 +12,11 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class CustomAttachmentMaterialsImport implements ToModel, WithHeadingRow {
 
-    public function __construct(protected Model $attachment, protected ?bool $override = null) {}
+    public function __construct(protected Model $attachment, protected ?bool $override = null) {
+        if (is_null($this->override)) {
+            $attachment->custom_attachment_materials()->delete();
+        }
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Model|null
      */

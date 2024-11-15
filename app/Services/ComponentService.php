@@ -5,7 +5,9 @@ namespace App\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Component\ComponentsExport;
 use App\Exports\Component\ComponentsTemplateExport;
+use App\Exports\RawMaterialProgressStep\RawMaterialProgressStepsTemplateExport;
 use App\Imports\Component\ComponentsImport;
+use App\Models\Component;
 use App\Support\Interfaces\Repositories\ComponentRepositoryInterface;
 use App\Support\Interfaces\Services\ComponentServiceInterface;
 use Illuminate\Http\UploadedFile;
@@ -29,5 +31,9 @@ class ComponentService extends BaseCrudService implements ComponentServiceInterf
 
     public function getImportDataTemplate(): BinaryFileResponse {
         return (new ComponentsTemplateExport)->download('component_template.xlsx');
+    }
+
+    public function getImportDataRawMaterialAndProgressTemplate(Component $component): BinaryFileResponse {
+        return (new RawMaterialProgressStepsTemplateExport($component))->download($component->name . '-Raw Material & Progress.xlsx');
     }
 }
