@@ -102,6 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
         Route::get('components', 'project_components')->name('components.index');
         Route::get('panels', 'project_panels')->name('panels.index');
+
         Route::group(['prefix' => 'carriages', 'as' => 'carriages.'], function () {
             Route::get('/', 'project_carriages')->name('index');
             Route::get('/{carriage}', 'project_carriage')->name('show');
@@ -109,12 +110,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/{carriage}/components', 'project_carriage_components')->name('components.index');
             Route::get('/{carriage}/panels', 'project_carriage_panels')->name('panels.index');
         });
+
         Route::group(['prefix' => 'trainsets', 'as' => 'trainsets.'], function () {
             Route::get('/', 'project_trainsets')->name('index');
             Route::get('/{trainset}', 'project_trainset')->name('show');
             Route::get('/{trainset}/carriage-trainsets', 'project_trainset_carriageTrainsets')->name('carriage-trainsets.index');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}', 'project_trainset_carriageTrainset')->name('carriage-trainsets.show');
-            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'project_trainset_carriageTrainset_panels')->name('carriage-trainsets.panels.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels', 'project_trainset_carriageTrainset_carriagePanels')->name('carriage-trainsets.carriage-panels.index');
         });
     });
 });
