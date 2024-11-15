@@ -35,7 +35,7 @@ class ProgressSheetImport implements ToCollection
         }
 
         $workAspectId = WorkAspect::whereDivisionId(3)->first()->id;
-        $progress = Progress::whereWorkAspectId($workAspectId)
+        $progresses = Progress::whereWorkAspectId($workAspectId)
             ->whereHas('progress_steps', function ($query) use ($steps) {
                 $query->whereIn('step_id', $steps->pluck('id')->toArray())
                     ->groupBy('progress_id')
@@ -43,11 +43,17 @@ class ProgressSheetImport implements ToCollection
             })
             ->whereDoesntHave('progress_steps', function ($query) use ($steps) {
                 $query->whereNotIn('step_id', $steps->pluck('id')->toArray());
-            })
-            ->first();
-            logger($progress ? $progress->progress_steps : 'No matching progress found');
+            });
 
-        if (!$progress) {
+        $progress = null;
+        foreach ($progresses->get() as $foundedProgress) {
+            if ($foundedProgress->progress_steps->pluck('step_id')->values() == $steps->pluck('id')->values()) {
+                $progress = $foundedProgress;
+            }
+        }
+        logger($progress ? $progress->progress_steps : 'No matching progress found');
+
+        if (is_null($progress)) {
             $progress = Progress::create([
                 'name' => 'Fitting & Koneksi - ' . $this->carriagePanel->panel->name,
                 'work_aspect_id' => $workAspectId,
@@ -55,7 +61,7 @@ class ProgressSheetImport implements ToCollection
             $progress->progress_steps()->createMany($steps->map(fn ($step) => ['step_id' => $step->id])->toArray());
         }
 
-        if ($this->override) {
+        if (is_null($this->override) || $this->override) {
             // update progress no matter what🗿
             return $this->carriagePanel->update(['progress_id' => $progress->id]);
         } else {
