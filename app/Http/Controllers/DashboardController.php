@@ -110,20 +110,37 @@ class DashboardController extends Controller
         $tsList = DB::select('SELECT * FROM `trainsets` WHERE trainsets.project_id = :id', ["id"=>$project[0]->id]); 
 
         // status for each panel
-       $panel = DB::select("SELECT 
-    'required' AS status, 
-    SUM(total_required) AS total
-    FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    //    $panel = DB::select("SELECT 
+    // 'required' AS status, 
+    // SUM(total_required) AS total
+    // FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    // UNION ALL
+    // SELECT 
+    // 'fulfilled' AS status, 
+    // SUM(total_fulfilled) AS total
+    // FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    // UNION ALL
+    // SELECT 
+    // 'failed' AS status, 
+    // SUM(total_failed) AS total
+    // FROM trainset_attachment_components where trainset_attachment_coomponents.trainset_attachment_id = 1;");
+    
+    // Trainset Panel 
+    $panel = DB::select("WITH attachment_data AS (
+        SELECT 
+            trainset_attachment_components.total_required,
+            trainset_attachment_components.total_fulfilled,
+            trainset_attachment_components.total_failed
+        FROM trainset_attachment_components
+        INNER JOIN trainset_attachments 
+            ON trainset_attachment_components.trainset_attachment_id = trainset_attachments.id
+        WHERE trainset_attachments.trainset_id = :trainset
+    )
+    SELECT 'required' AS status, SUM(total_required) AS total FROM attachment_data
     UNION ALL
-    SELECT 
-    'fulfilled' AS status, 
-    SUM(total_fulfilled) AS total
-    FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    SELECT 'fulfilled' AS status, SUM(total_fulfilled) AS total FROM attachment_data
     UNION ALL
-    SELECT 
-    'failed' AS status, 
-    SUM(total_failed) AS total
-    FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1;");
+    SELECT 'failed' AS status, SUM(total_failed) AS total FROM attachment_data;", ["trainset" => $trainset]);
 
     // $panel = DB::select('SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name');
 

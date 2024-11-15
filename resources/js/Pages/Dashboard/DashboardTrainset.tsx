@@ -282,15 +282,18 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                                 <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                                <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                                    <BarChart accessibilityLayer data={data['total']}>
-                                        <CartesianGrid vertical={false} />
-                                        <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
-                                        <ChartTooltip content={<ChartTooltipContent />} />
-                                        <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="qty" fill="var(--color-done)" radius={4} />
-                                    </BarChart>
-                                </ChartContainer>
+                                <div className="h-[400px] flex flex-col items-center">
+                                    <ChartContainer config={chartConfigPie} className=" min-h-[300px] ">
+                                        <PieChart>
+                                            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                            <Pie data={newArray} dataKey="total" nameKey="status" innerRadius={60} />
+                                        </PieChart>
+                                    </ChartContainer>
+                                    <h4 className="font-bold">
+                                        Kebutuhan panel sejumlah {data['total'][0].total} masih belum terpenuhi
+                                    </h4>
+                                    <p className="text-sm">Menunjukkan progress dari status kebutuhan panel.</p>
+                                </div>
                             </div>
                             {/* <ChartContainer config={panelChartConf} className=" max-h-[250px]">
                                 <PieChart>
@@ -298,18 +301,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <Pie data={panelData} dataKey="total" nameKey="status" innerRadius={60} />
                                 </PieChart>
                             </ChartContainer> */}
-                            <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
-                                <PieChart>
-                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                    <Pie data={newArray} dataKey="total" nameKey="status" innerRadius={60} />
-                                </PieChart>
-                            </ChartContainer>
                             {/* <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
                                 <PieChart>
                                     <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                                     <Pie data={data['total']} dataKey="totalAmount" nameKey="statusPanel" />
                                 </PieChart>
-                            </ChartContainer>
                             <PieChart width={400} height={400}>
                                 <Pie
                                     data={newArray}
