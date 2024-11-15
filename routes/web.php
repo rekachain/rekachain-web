@@ -121,6 +121,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels', 'project_trainset_carriageTrainset_carriagePanels')->name('carriage-trainsets.carriage-panels.index');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}', 'project_trainset_carriageTrainset_carriagePanel')->name('carriage-trainsets.carriage-panels.show');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/carriage-panel-components', 'project_trainset_carriageTrainset_carriagePanel_carriagePanelComponents')->name('carriage-trainsets.carriage-panels.carriage-panel-components.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/carriage-panel-components/{carriage_panel_component}/component-materials', 'project_trainset_carriageTrainset_carriagePanel_carriagePanelComponent_componentMaterials')->name('carriage-trainsets.carriage-panels.carriage-panel-components.component-materials.index');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/panel-materials', 'project_trainset_carriageTrainset_carriagePanel_panelMaterials')->name('carriage-trainsets.carriage-panels.panel-materials.index');
         });
     });

@@ -170,6 +170,7 @@ enum IntentEnum: string {
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
 
     case WEB_CARRIAGE_PANEL_ADD_COMPONENT = 'web.carriage.panel.add.component';
+    case WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL = 'web.carriage.panel.component.add.raw.material';
 
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 

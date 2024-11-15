@@ -28,6 +28,10 @@ export const ROUTES = {
     PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS: 'projects.trainsets.carriage-trainsets.carriage-panels',
     PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS:
         'projects.trainsets.carriage-trainsets.carriage-panels.carriage-panel-components',
+    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS:
+        'projects.trainsets.carriage-trainsets.carriage-panels.carriage-panel-components.component-materials',
+    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS:
+        'projects.trainsets.carriage-trainsets.carriage-panels.panel-materials',
     CARRIAGES: 'carriages',
     CARRIAGE_PRESETS: 'carriage-presets',
     PRESET_TRAINSETS: 'preset-trainsets',

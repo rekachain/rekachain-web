@@ -1,4 +1,4 @@
-import { CarriagePanelComponentResource } from '@/Support/Interfaces/Resources';
+import { ComponentMaterialResource } from '@/Support/Interfaces/Resources';
 import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
@@ -9,19 +9,19 @@ import { FormEvent, useState } from 'react';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
+import { componentMaterialService } from '@/Services/componentMaterialService';
 
 export default function ({
-    carriagePanelComponent,
+    componentMaterial,
     handleSyncCarriagePanel,
 }: {
-    carriagePanelComponent: CarriagePanelComponentResource;
+    componentMaterial: ComponentMaterialResource;
     handleSyncCarriagePanel: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
     const [isEditing, setIsEditing] = useState(false);
     const { data, setData } = useForm({
-        panelComponentQty: carriagePanelComponent.qty,
+        componentMaterialQty: componentMaterial.qty,
     });
     const { loading } = useLoading();
     const toggleEditMode = () => {
@@ -31,12 +31,12 @@ export default function ({
     const handleEditCarriageQty = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        await carriagePanelComponentService.update(carriagePanelComponent.id, {
-            qty: data.panelComponentQty,
+        await componentMaterialService.update(componentMaterial.id, {
+            qty: data.componentMaterialQty,
         });
         await handleSyncCarriagePanel();
         setIsEditing(false);
-        void useSuccessToast('Carriage panel component quantity has been updated.');
+        void useSuccessToast('Component material quantity has been updated.');
     });
 
     return (
@@ -47,8 +47,8 @@ export default function ({
                         type="number"
                         min={1}
                         className="w-fit"
-                        defaultValue={data.panelComponentQty}
-                        onChange={e => setData('panelComponentQty', +e.target.value)}
+                        defaultValue={data.componentMaterialQty}
+                        onChange={e => setData('componentMaterialQty', +e.target.value)}
                     />
                     <Button type="submit" disabled={loading}>
                         {loading
@@ -63,7 +63,7 @@ export default function ({
                 </form>
             ) : (
                 <div className="flex items-center gap-4">
-                    <div>{carriagePanelComponent.qty}</div>
+                    <div>{componentMaterial.qty}</div>
                     <Button
                         variant="ghost"
                         onClick={toggleEditMode}

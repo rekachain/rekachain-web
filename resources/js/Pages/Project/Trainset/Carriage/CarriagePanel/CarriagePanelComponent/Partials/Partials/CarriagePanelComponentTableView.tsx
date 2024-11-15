@@ -4,6 +4,8 @@ import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { Button } from '@/Components/UI/button';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Link } from '@inertiajs/react';
+import { ROUTES } from '@/Support/Constants/routes';
 
 export default function CarriagePanelComponentTableView({
     trainset,
@@ -73,6 +75,21 @@ export default function CarriagePanelComponentTableView({
                                         {t('action.delete')}
                                     </Button>
                                 )}
+
+                                <Link
+                                    href={route(
+                                        `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
+                                        [
+                                            trainset.project_id,
+                                            trainset.id,
+                                            carriageTrainset.id,
+                                            carriagePanel.id,
+                                            carriagePanelComponent.id,
+                                        ],
+                                    )}
+                                >
+                                    Materials
+                                </Link>
                             </TableCell>
                         </TableRow>
                     ))}

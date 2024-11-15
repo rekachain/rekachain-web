@@ -76,6 +76,8 @@ class CarriagePanelComponentController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL->value:
                     return $this->carriagePanelComponentService->importProgressMaterialData($request->file('file'), $carriagePanelComponent, $request->get('work_aspect_id'));
+                case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL->value:
+                    return $this->carriagePanelComponentService->addRawMaterial($carriagePanelComponent, $request->validated());
             }
 
             return $this->carriagePanelComponentService->update($carriagePanelComponent, $request->validated());

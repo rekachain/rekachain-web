@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\Carriage\CarriageProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\CarriagePanelComponentResource;
 use App\Http\Resources\CarriagePanelResource;
 use App\Http\Resources\CarriageResource;
 use App\Http\Resources\CarriageTrainsetResource;
@@ -15,6 +16,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Carriage;
 use App\Models\CarriagePanel;
+use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Models\Panel;
 use App\Models\Project;
@@ -301,6 +303,20 @@ class ProjectController extends Controller {
         }
 
         return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
+    }
+
+    public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponent_componentMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel, CarriagePanelComponent $carriagePanelComponent) {
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
+        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel', 'carriage_panel_components' => ['progress', 'component', 'component_materials' => ['raw_material']]]));
+        $carriagePanelComponent = new CarriagePanelComponentResource($carriagePanelComponent->load(['component', 'component_materials' => ['raw_material']]));
+        $project = ProjectResource::make($project);
+        $trainset = TrainsetResource::make($trainset);
+
+        if ($this->ajax()) {
+            return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent');
+        }
+
+        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_panelMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
