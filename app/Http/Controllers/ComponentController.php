@@ -71,8 +71,9 @@ class ComponentController extends Controller {
         if ($this->ajax()) {
             switch ($intent) {
                 case IntentEnum::WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE->value:
-                    return $this->componentService->getImportDataTemplate();
+                    return $this->componentService->getImportDataRawMaterialAndProgressTemplate($component);
             }
+
             return new ComponentResource($component->load('progress'));
         }
 
