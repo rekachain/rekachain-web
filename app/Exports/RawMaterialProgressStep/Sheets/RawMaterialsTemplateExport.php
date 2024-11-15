@@ -72,17 +72,19 @@ class RawMaterialsTemplateExport implements FromArray, WithTitle, WithHeadings, 
 
     public function array(): array {
         if ($this->model instanceof Panel) {
-            $materialsModel = $this->model->carriage_panels()->first()->panel_materials()->get();
+            $carriagePanel = $this->model->carriage_panels()->first();
+            $materialsModel = $carriagePanel ? $carriagePanel->panel_materials()->get() : collect();
         } elseif ($this->model instanceof Component) {
-            $materialsModel = $this->model->carriage_panel_components()->first()->component_materials()->get();
+            $carriagePanelComponent = $this->model->carriage_panel_components()->first();
+            $materialsModel = $carriagePanelComponent ? $carriagePanelComponent->component_materials()->get() : collect();
         }
         if ($materialsModel->isEmpty()) {
             return [
-                'KodeMaterialABCDE',
+                ['KodeMaterialABCDE',
                 'Deskripsi Material',
                 'Spesifikasi Material',
                 'Unit Material',
-                'Jumlah Total',
+                'Jumlah Total',]
             ];
         }
         $exportData = $materialsModel->map(fn ($material) => [
