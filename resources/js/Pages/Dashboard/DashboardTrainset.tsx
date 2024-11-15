@@ -51,20 +51,22 @@ export default function Dashboard({ auth, data }: PageProps) {
         { status: 'failed', total: 3 },
     ];
 
+    const label = ['fulfilled', 'required', 'failed'];
+
     const chartConfigPie = {
         total: {
             label: 'Total',
         },
         fulfilled: {
-            label: 'Chrome',
+            label: 'Fulffilled',
             color: 'hsl(var(--chart-1))',
         },
         required: {
-            label: 'Safari',
+            label: 'Required',
             color: 'hsl(var(--chart-2))',
         },
-        firefox: {
-            label: 'Firefox',
+        failed: {
+            label: 'Failed',
             color: 'hsl(var(--chart-3))',
         },
     } satisfies ChartConfig;
@@ -85,11 +87,13 @@ export default function Dashboard({ auth, data }: PageProps) {
         { statusPanel: 'failed', totalAmount: 32 },
     ];
 
-    const newArray = data['total'].map(item => ({
+    // @ts-ignore
+    const newArray = data['total'].map((item, index) => ({
         ...item,
         total: parseInt(item.total),
+        fill: `var(--color-${label[index]})`,
     }));
-    console.log(typeof newArray[0].total);
+    console.log(newArray);
     console.log('makan');
     const COLORS = ['#8884d8', '#82ca9d', '#ff8042'];
     const panelChartConf = {
@@ -297,10 +301,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
                                 <PieChart>
                                     <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                    <Pie data={data['total']} dataKey="total" nameKey="status" innerRadius={60} />
+                                    <Pie data={newArray} dataKey="total" nameKey="status" innerRadius={60} />
                                 </PieChart>
                             </ChartContainer>
-                            <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
+                            {/* <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
                                 <PieChart>
                                     <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                                     <Pie data={data['total']} dataKey="totalAmount" nameKey="statusPanel" />
@@ -326,7 +330,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                                 <Tooltip />
                                 <Legend />
-                            </PieChart>
+                            </PieChart> */}
                         </div>
                         {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
 
