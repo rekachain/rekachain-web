@@ -517,8 +517,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </BarChart>
                         </ChartContainer> */}
                     </div>
-                    <div className="flex max-w-full mt-2 ">
-                        <div className="w-1/2">
+                    <div className="md:flex max-w-full mt-2 ">
+                        <div className="md:w-1/2 px-5">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Workshop</h2>
                             <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
                             <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
@@ -547,10 +547,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </ChartContainer>
                         </div>
 
-                        <div className=" ">
+                        <div className="px-5">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                             <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                            <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
+                            <ChartContainer config={chartConfig} className="h-[200px] md:h-[300px] w-full mt-5">
                                 <BarChart accessibilityLayer data={data['panel']}>
                                     <CartesianGrid vertical={false} />
                                     <YAxis type="number" dataKey="in_progress"></YAxis>
