@@ -18,6 +18,9 @@ const intents = {
     WEB_TRAINSET_EXPORT_SERIAL_NUMBERS: 'web.trainset.export.serial.numbers',
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
+    WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE: 'web.panel.get.panel.material.and.progress.template',
+    WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE:
+        'web.component.get.component.material.and.progress.template',
     WEB_PANEL_IMPORT_PANEL: 'web.panel.import.panel',
     WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL: 'web.raw.material.get.template.import.raw.material',
     WEB_RAW_MATERIAL_IMPORT_RAW_MATERIAL: 'web.raw.material.import.raw.material',
@@ -44,7 +47,13 @@ const intents = {
         'web.trainset.attachment.assign.custom.attachment.material',
     WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT: 'web.trainset.attachment.download.trainset.attachment',
     WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT: 'web.panel.attachment.download.panel.attachment',
+    WEB_PANEL_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE:
+        'web.panel.attachment.get.custom.attachment.material.import.template',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY: 'web.panel.attachment.get.panel.materials.with.qty',
+    WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT: 'web.panel.attachment.assign.referenced.attachment',
+    WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL: 'web.panel.attachment.assign.custom.attachment.material',
+    WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT:
+        'web.panel.attachment.assign.referenced.attachment.and.material.import',
     WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS: 'web.panel.attachment.get.panel.materials',
     WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY: 'web.project.get.all.carriages.with.qty',
     WEB_PROJECT_GET_ALL_COMPONENTS_WITH_QTY: 'web.project.get.all.components.with.qty',

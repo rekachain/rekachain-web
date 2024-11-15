@@ -6,7 +6,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import ImportCustomMaterial from '@/Pages/Project/Trainset/Carriage/Partials/Components/Components/ImportCustomMaterial';
+import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/Carriage/Partials/Components/Components/ImportTrainsetCustomMaterial';
 
 const PreviewTrainsetAttachment = ({
     attachment,
@@ -41,7 +41,7 @@ const PreviewTrainsetAttachment = ({
                         'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download',
                     )}
                 </Link>
-                <ImportCustomMaterial trainsetAttachment={attachment} />
+                <ImportTrainsetCustomMaterial trainsetAttachment={attachment} />
             </div>
             <div className="grid grid-cols-3">
                 <div className="flex flex-col gap-3 mt-5">
