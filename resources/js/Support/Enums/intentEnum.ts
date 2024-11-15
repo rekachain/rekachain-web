@@ -17,6 +17,7 @@ const intents = {
     WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET: 'web.trainset.update.carriage.trainset',
     WEB_TRAINSET_EXPORT_SERIAL_NUMBERS: 'web.trainset.export.serial.numbers',
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
+    WEB_CARRIAGE_PANEL_ADD_COMPONENT: 'web.carriage.panel.add.component',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',
     WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE: 'web.panel.get.panel.material.and.progress.template',
     WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE:

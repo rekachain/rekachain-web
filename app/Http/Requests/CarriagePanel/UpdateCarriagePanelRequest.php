@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\CarriagePanel;
 
+use App\Rules\CarriagePanel\CarriagePanelUniqueComponent;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,6 +26,19 @@ class UpdateCarriagePanelRequest extends FormRequest {
             case IntentEnum::WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL:
                 return [
                     'file' => 'required|mimes:xlsx,xlsm',
+                ];
+            case IntentEnum::WEB_CARRIAGE_PANEL_ADD_COMPONENT->value:
+                return [
+                    'component_id' => [
+                        'nullable',
+                        'integer',
+                        'exists:components,id',
+                        new CarriagePanelUniqueComponent,
+                    ],
+                    'component_progress_id' => 'required|integer|exists:progress,id',
+                    'component_name' => 'nullable|string|max:255',
+                    'component_description' => 'nullable|string|max:255',
+                    'carriage_component_qty' => 'required|integer|min:1',
                 ];
             default:
                 return [

@@ -177,23 +177,22 @@ return [
             'unauthorized' => 'Anda tidak memiliki izin untuk mengakses aplikasi ini.',
             'role_exception' => 'Pengguna harus memiliki peran ":role"',
         ],
-
         'attribute-name' => [
             'rule-name' => 'pesan-kustom',
         ],
-
         'permission' => [
             'permission_name' => [
                 'regex' => ':Attribute harus dalam format \'group-action\'.',
             ],
         ],
-
         'preset_trainset' => [
             'unique_preset_name_in_project' => 'Kombinasi nama preset dan ID proyek harus unik.',
         ],
-
         'carriage_trainset' => [
             'unique_panel' => 'Panel yang dipilih sudah ada di kereta.',
+        ],
+        'carriage_panel' => [
+            'unique_component' => 'Komponen yang dipilih sudah ada di panel.',
         ],
         'serial_panel' => [
             'assign_worker' => [
@@ -215,7 +214,7 @@ return [
             'update_worker' => [
                 'field_update_role_exception' => 'Hanya pengguna dengan peran :role yang dapat mengupdate field ":field"',
             ],
-        ]
+        ],
     ],
 
     /*
