@@ -44,12 +44,6 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [value, setValue] = useState(data['project'][0]['name']);
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
-    // console.log(data['total']);
-    const chartData = [
-        { status: 'fullfilled', total: 15 },
-        { status: 'required', total: 20 },
-        { status: 'failed', total: 3 },
-    ];
 
     const label = ['fulfilled', 'required', 'failed'];
 
@@ -81,38 +75,15 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: '#00C3FF',
         },
     } satisfies ChartConfig;
-    const panelData = [
-        { statusPanel: 'required', totalAmount: 15 },
-        { statusPanel: 'fulfilled', totalAmount: 22 },
-        { statusPanel: 'failed', totalAmount: 32 },
-    ];
 
     // @ts-ignore
-    const newArray = data['total'].map((item, index) => ({
+    const totalUpdated = data['total'].map((item, index) => ({
         ...item,
         total: parseInt(item.total),
         fill: `var(--color-${label[index]})`,
     }));
-    console.log(newArray);
+    console.log(totalUpdated);
     console.log('makan');
-    const COLORS = ['#8884d8', '#82ca9d', '#ff8042'];
-    const panelChartConf = {
-        total: {
-            label: 'Total',
-        },
-        required: {
-            label: 'Required',
-            color: 'hsl(var(--chart-1))',
-        },
-        fulfilled: {
-            label: 'Fulfilled',
-            color: 'hsl(var(--chart-2))',
-        },
-        failed: {
-            label: 'Failed',
-            color: 'hsl(var(--chart-3))',
-        },
-    } satisfies ChartConfig;
     const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
@@ -286,7 +257,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <ChartContainer config={chartConfigPie} className=" min-h-[300px] ">
                                         <PieChart>
                                             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                            <Pie data={newArray} dataKey="total" nameKey="status" innerRadius={60} />
+                                            <Pie
+                                                data={totalUpdated}
+                                                dataKey="total"
+                                                nameKey="status"
+                                                innerRadius={60}
+                                            />
                                         </PieChart>
                                     </ChartContainer>
                                     <h4 className="font-bold">
@@ -295,95 +271,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <p className="text-sm">Menunjukkan progress dari status kebutuhan panel.</p>
                                 </div>
                             </div>
-                            {/* <ChartContainer config={panelChartConf} className=" max-h-[250px]">
-                                <PieChart>
-                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                    <Pie data={panelData} dataKey="total" nameKey="status" innerRadius={60} />
-                                </PieChart>
-                            </ChartContainer> */}
-                            {/* <ChartContainer config={chartConfigPie} className=" max-h-[250px]">
-                                <PieChart>
-                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                    <Pie data={data['total']} dataKey="totalAmount" nameKey="statusPanel" />
-                                </PieChart>
-                            <PieChart width={400} height={400}>
-                                <Pie
-                                    data={newArray}
-                                    dataKey="total"
-                                    nameKey="status"
-                                    cx="200"
-                                    cy="200"
-                                    outerRadius={100}
-                                    fill="#8884d8"
-                                    // dataKey="totalAmount"
-                                    // nameKey="statusPanel"
-                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                                >
-                                    {panelData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                        // <Cell key={`cell-${index}`} fill={entry.fill} />
-                                    ))}
-                                </Pie>
-                                <Tooltip />
-                                <Legend />
-                            </PieChart> */}
                         </div>
-                        {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
-
-                        <p>use the updated at and status</p>
-                        <p>can be differentiate between Electric and Mechanic</p>
-                        <p>X Axis use date. 30 day before </p>
-                        <ChartContainer config={chartConfig}>
-                            <LineChart
-                                accessibilityLayer
-                                data={chartDataLine}
-                                margin={{
-                                    left: 12,
-                                    right: 12,
-                                }}
-                            >
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="tanggal"
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tickMargin={8}
-                                    tickFormatter={value => value.slice(0, 3)}
-                                />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                <Line
-                                    dataKey="inProgress"
-                                    type="monotone"
-                                    stroke="var(--color-desktop)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                                <Line
-                                    dataKey="Done"
-                                    type="monotone"
-                                    stroke="var(--color-mobile)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                            </LineChart>
-                        </ChartContainer>
-                        <ChartContainer
-                            config={chartConfigPie}
-                            className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
-                        >
-                            <PieChart>
-                                <ChartTooltip content={<ChartTooltipContent nameKey="visitors" hideLabel />} />
-                                <Pie data={chartDataPie} dataKey="visitors">
-                                    <LabelList
-                                        dataKey="browser"
-                                        className="fill-background"
-                                        stroke="none"
-                                        fontSize={12}
-                                        formatter={(value: keyof typeof chartConfigPie) => chartConfigPie[value]?.label}
-                                    />
-                                </Pie>
-                            </PieChart>
-                        </ChartContainer> */}
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 text-gray-900 dark:text-gray-100">
