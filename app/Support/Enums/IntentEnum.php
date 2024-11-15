@@ -175,6 +175,8 @@ enum IntentEnum: string {
 
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
 
+    case WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE = 'web.panel.get.panel.material.and.progress.template';
+
     case WEB_PANEL_IMPORT_PANEL = 'web.panel.import.panel';
 
     case WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.panel.progress.and.material';
@@ -204,6 +206,8 @@ enum IntentEnum: string {
     case WEB_TRAINSET_EXPORT_SERIAL_NUMBERS = 'web.trainset.export.serial.numbers';
 
     case WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT = 'web.component.get.template.import.component';
+
+    case WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE = 'web.component.get.component.material.and.progress.template';
 
     case WEB_COMPONENT_IMPORT_COMPONENT = 'web.component.import.component';
 

@@ -14,6 +14,11 @@ class CustomAttachmentMaterial extends Model
         'qty'
     ];
 
+    public function raw_material()
+    {
+        return $this->belongsTo(RawMaterial::class);
+    }
+
     public function custom_attachment_materialable()
     {
         return $this->morphTo();
