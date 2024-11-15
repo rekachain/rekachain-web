@@ -66,8 +66,13 @@ class ComponentController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(Component $component) {
+    public function show(Request $request, Component $component) {
+        $intent = $request->get('intent');
         if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE->value:
+                    return $this->componentService->getImportDataTemplate();
+            }
             return new ComponentResource($component->load('progress'));
         }
 
