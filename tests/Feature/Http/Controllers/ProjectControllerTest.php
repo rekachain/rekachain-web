@@ -1,11 +1,7 @@
 <?php
 
-use App\Models\User;
-use App\Models\Project;
 use App\Models\Trainset;
-use App\Models\CarriageTrainset;
-use App\Models\Carriage;
-use App\Models\Panel;
+use App\Models\User;
 use App\Support\Enums\IntentEnum;
 
 test('index method returns paginated projects', function () {
@@ -104,14 +100,14 @@ test('update method adds trainsets to project', function () {
 
     $response->assertStatus(200);
 
-    if($ts > 1) {
-        for($i = 1; $i <= $tsNeeded; $i++) {
+    if ($ts > 1) {
+        for ($i = 1; $i <= $tsNeeded; $i++) {
             $ts = $ts + $i;
             $this->assertDatabaseHas('trainsets', ['name' => 'TS ' . $ts . '', 'project_id' => $project->id]);
         }
     } else {
         $ts = $project->id;
-        for($i = 1; $i <= $tsNeeded; $i++) {
+        for ($i = 1; $i <= $tsNeeded; $i++) {
             $this->assertDatabaseHas('trainsets', ['name' => 'TS ' . $ts . '', 'project_id' => $project->id]);
             $ts = $ts + $i;
         }
@@ -179,7 +175,7 @@ test('panels method returns carriage panels', function () {
 
     $response->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert
-            ->component('Project/Trainset/Carriage/Panel/Index')
+            ->component('Project/Trainset/Carriage/CarriagePanel/Index')
             ->has('project')
             ->has('trainset')
             ->has('carriageTrainset')

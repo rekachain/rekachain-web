@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Progress;
 
+use App\Support\Enums\IntentEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProgressRequest extends FormRequest {
@@ -21,9 +22,21 @@ class UpdateProgressRequest extends FormRequest {
 
         $progress = $this->route('progress')->id;
 
+        $intent = $this->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_PROGRESS_CREATE_STEP->value:
+                return [
+                    'step_id' => 'nullable|integer|exists:steps,id',
+                    'step_name' => 'nullable|string|max:255|unique:steps,name',
+                    'step_process' => 'nullable|string|max:255',
+                    'step_estimated_time' => 'nullable|integer|min:0',
+                ];
+        }
+
         return [
             'name' => 'string|max:255',
-            'work_aspect_id' =>  'integer|exists:work_aspects,id',
+            'work_aspect_id' => 'integer|exists:work_aspects,id',
         ];
     }
 }

@@ -43,7 +43,7 @@ export default function () {
             {panelResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    
+
                     <div className="hidden md:block">
                         <PanelTableView panelResponse={panelResponse} handlePanelDeletion={handlePanelDeletion} />
                     </div>

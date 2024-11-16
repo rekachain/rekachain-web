@@ -8,4 +8,18 @@ use Illuminate\Http\UploadedFile;
 
 interface CarriagePanelServiceInterface extends BaseCrudServiceInterface {
     public function importProgressMaterialData(UploadedFile $file, CarriagePanel $carriagePanel): bool;
+
+    /**
+     * add component to panel
+     *
+     * required data:
+     * - progress_id
+     * - component_name
+     * - component_description
+     * - component_qty
+     *
+     * optional data:
+     * - component_id
+     */
+    public function addComponent(CarriagePanel $carriagePanel, array $data): bool;
 }

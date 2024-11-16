@@ -21,6 +21,7 @@ class CarriagePanelComponentResource extends JsonResource {
             'progress_id' => $this->progress_id,
             'progress' => ProgressResource::make($this->whenLoaded('progress')),
             'qty' => $this->qty,
+            'component_materials' => ComponentMaterialResource::collection($this->whenLoaded('component_materials')),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

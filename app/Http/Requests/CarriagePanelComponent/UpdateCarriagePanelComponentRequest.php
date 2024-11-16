@@ -27,6 +27,21 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
                     'file' => 'required|file|mimes:xlsx,xlsm',
                     'work_aspect_id' => 'required|integer|exists:work_aspects,id',
                 ];
+            case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL->value:
+                return [
+                    'raw_material_id' => 'nullable|integer|exists:raw_materials,id',
+                    'new_raw_material_code' => 'nullable|string',
+                    'new_raw_material_description' => 'nullable|string',
+                    'new_raw_material_unit' => 'nullable|string',
+                    'new_raw_material_specs' => 'nullable|string',
+                    'new_raw_material_qty' => 'nullable|integer|min:0',
+                ];
+            case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS->value:
+                return [
+                    'progress_id' => 'nullable|integer|exists:progress,id',
+                    'progress_name' => 'nullable|string',
+                    'progress_work_aspect_id' => 'nullable|integer|exists:work_aspects,id',
+                ];
             default:
                 return [
                     'carriage_panel_id' => 'nullable|integer|exists:carriage_panels,id',

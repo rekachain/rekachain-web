@@ -3,7 +3,7 @@ import AnimateIn from '@/Lib/AnimateIn';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
-import PanelQty from '../Components/PanelQty';
+import PanelQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/Partials/Partials/Components/PanelQty';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarPanelCardView({
@@ -48,18 +48,19 @@ export default function CarPanelCardView({
                                 </h5>
                                 <p className="text-sm">{carriage_panel.panel.description}</p>
                                 <h5 className="text-base">
-                                    {t('pages.project.trainset.carriage.panel.partials.partials.carriage_panel_card.headers.components')} :
+                                    {t(
+                                        'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_card.headers.components',
+                                    )}{' '}
+                                    :
                                 </h5>
                                 <div className="text-sm">
-                                    {carriage_panel.carriage_panel_components?.map(
-                                        component => (
-                                            <div key={component.id}>
-                                                <span>
-                                                    {component.qty} x {component.component.name}
-                                                </span>
-                                            </div>
-                                        )
-                                    )}
+                                    {carriage_panel.carriage_panel_components?.map(component => (
+                                        <div key={component.id}>
+                                            <span>
+                                                {component.qty} x {component.component.name}
+                                            </span>
+                                        </div>
+                                    ))}
                                 </div>
                                 {/* <h5 className="  text-sm ">Waktu Mulai : {workDay.start_time}</h5>
                                 <h5 className="  text-sm ">

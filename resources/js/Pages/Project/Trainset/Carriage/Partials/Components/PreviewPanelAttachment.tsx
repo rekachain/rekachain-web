@@ -26,8 +26,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     useEffect(() => {
         if (selectedPanel) {
             const panelAttachment = trainset.carriage_trainsets
-                .find(carriage => carriage.id === selectedCarriage)
-                ?.carriage_panels.find(panel => panel.id === selectedPanel)?.panel_attachment;
+                .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
+                ?.carriage_panels.find(carriagePanel => carriagePanel.panel.id === selectedPanel)?.panel_attachment;
 
             setAttachment(panelAttachment);
 
@@ -41,7 +41,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     });
             }
         }
-    }, [selectedPanel]);
+    }, [selectedPanel, selectedCarriage]);
 
     const showSerialPanels = () => {
         if (!attachment?.serial_numbers) return;
@@ -104,9 +104,12 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                {trainset.carriage_trainsets.map(carriage => (
-                                    <SelectItem value={carriage.id?.toString()} key={carriage.id}>
-                                        {carriage.carriage.type}
+                                {trainset.carriage_trainsets.map(carriageTrainset => (
+                                    <SelectItem
+                                        value={carriageTrainset.carriage.id?.toString()}
+                                        key={carriageTrainset.id}
+                                    >
+                                        {carriageTrainset.carriage.type}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -131,9 +134,9 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             </SelectTrigger>
                             <SelectContent>
                                 {trainset.carriage_trainsets
-                                    .find(carriage => carriage.id === selectedCarriage)
+                                    .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
                                     ?.carriage_panels?.map(carriagePanel => (
-                                        <SelectItem value={carriagePanel.id?.toString()} key={carriagePanel.id}>
+                                        <SelectItem value={carriagePanel.panel.id?.toString()} key={carriagePanel.id}>
                                             {carriagePanel.panel.name}
                                         </SelectItem>
                                     ))}
@@ -143,7 +146,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                 )}
             </div>
 
-            {attachment && (
+            {attachment ? (
                 <>
                     <div className="grid grid-cols-3">
                         <div className="flex flex-col gap-3 mt-5">
@@ -257,6 +260,12 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                         </TableBody>
                     </Table>
                 </>
+            ) : (
+                <h1 className="text-red-500 font-bold mt-3">
+                    {t(
+                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.messages.no_attachments',
+                    )}
+                </h1>
             )}
         </div>
     );

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelComponentController;
 use App\Http\Controllers\CarriagePanelController;
 use App\Http\Controllers\CarriagePresetController;
 use App\Http\Controllers\CarriageTrainsetController;
@@ -84,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('preset-trainsets', PresetTrainsetController::class);
     Route::resource('panels', PanelController::class);
     Route::resource('carriage-panels', CarriagePanelController::class);
+    Route::resource('carriage-panel-components', CarriagePanelComponentController::class);
     Route::resource('progress', ProgressController::class);
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
     Route::resource('components', ComponentController::class);
@@ -102,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
         Route::get('components', 'project_components')->name('components.index');
         Route::get('panels', 'project_panels')->name('panels.index');
+
         Route::group(['prefix' => 'carriages', 'as' => 'carriages.'], function () {
             Route::get('/', 'project_carriages')->name('index');
             Route::get('/{carriage}', 'project_carriage')->name('show');
@@ -109,6 +112,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{carriage}/components', 'project_carriage_components')->name('components.index');
             Route::get('/{carriage}/panels', 'project_carriage_panels')->name('panels.index');
         });
+
         Route::group(['prefix' => 'trainsets', 'as' => 'trainsets.'], function () {
             Route::get('/', 'project_trainsets')->name('index');
             Route::get('/{trainset}', 'project_trainset')->name('show');
@@ -116,7 +120,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/{trainset}/panels', 'project_trainset_panels')->name('panels.index');
             Route::get('/{trainset}/carriage-trainsets', 'project_trainset_carriageTrainsets')->name('carriage-trainsets.index');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}', 'project_trainset_carriageTrainset')->name('carriage-trainsets.show');
-            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'project_trainset_carriageTrainset_panels')->name('carriage-trainsets.panels.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels', 'project_trainset_carriageTrainset_carriagePanels')->name('carriage-trainsets.carriage-panels.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}', 'project_trainset_carriageTrainset_carriagePanel')->name('carriage-trainsets.carriage-panels.show');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/carriage-panel-components', 'project_trainset_carriageTrainset_carriagePanel_carriagePanelComponents')->name('carriage-trainsets.carriage-panels.carriage-panel-components.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/carriage-panel-components/{carriage_panel_component}/component-materials', 'project_trainset_carriageTrainset_carriagePanel_carriagePanelComponent_componentMaterials')->name('carriage-trainsets.carriage-panels.carriage-panel-components.component-materials.index');
+            Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/panel-materials', 'project_trainset_carriageTrainset_carriagePanel_panelMaterials')->name('carriage-trainsets.carriage-panels.panel-materials.index');
         });
     });
 });
