@@ -20,7 +20,6 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
      */
     public function rules(): array {
         $intent = $this->get('intent');
-
         switch ($intent) {
             case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL->value:
                 return [
@@ -39,8 +38,12 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
             case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS->value:
                 return [
                     'progress_id' => 'nullable|integer|exists:progress,id',
-                    'progress_name' => 'required_with:progress_work_aspect_id|string',
-                    'progress_work_aspect_id' => 'required_with:progress_name|integer|exists:work_aspects,id',
+                    'progress_name' => 'nullable|string',
+                    'progress_work_aspect_id' => 'nullable|integer|exists:work_aspects,id',
+
+                    // TODO: Intended validation rules for progress_name and progress_work_aspect_id
+                    //                    'progress_name' => 'required_with:progress_work_aspect_id|string',
+                    //                    'progress_work_aspect_id' => 'required_with:progress_name|integer|exists:work_aspects,id',
                 ];
             default:
                 return [
