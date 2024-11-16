@@ -1,6 +1,7 @@
 import {
     CarriagePanelComponentResource,
     PanelAttachmentResource,
+    PanelMaterialResource,
     PanelResource,
     ProgressResource,
     Resource,
@@ -12,4 +13,5 @@ export interface CarriagePanelResource extends Resource, CarriagePanel {
     progress: ProgressResource;
     carriage_panel_components: CarriagePanelComponentResource[];
     panel_attachment: PanelAttachmentResource;
+    panel_materials: PanelMaterialResource[];
 }

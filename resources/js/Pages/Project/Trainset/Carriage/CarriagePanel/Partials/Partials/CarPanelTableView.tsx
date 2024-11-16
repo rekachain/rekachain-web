@@ -101,6 +101,16 @@ export default function CarPanelTableView({
                                     >
                                         Components
                                     </Link>
+
+                                    <Link
+                                        className={buttonVariants({ variant: 'link' })}
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS}.index`,
+                                            [trainset.project_id, trainset.id, carriageTrainset.id, carriage_panel.id],
+                                        )}
+                                    >
+                                        Materials
+                                    </Link>
                                 </TableCell>
                             </TableRow>
                         );

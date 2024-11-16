@@ -38,13 +38,21 @@ export const carriagePanelComponentService = {
         progress_name: string,
         progress_work_aspect_id: number | null,
     ) => {
+        let formData = new FormData();
+
+        if (progress_id) {
+            formData.append('progress_id', progress_id.toString());
+            formData.append('progress_name', '');
+            formData.append('progress_work_aspect_id', '');
+        } else {
+            formData.append('progress_id', '');
+            formData.append('progress_name', progress_name);
+            formData.append('progress_work_aspect_id', progress_work_aspect_id!.toString());
+        }
+
         await window.axios.post(
             route(`${ROUTES.CARRIAGE_PANEL_COMPONENTS}.update`, carriagePanelComponentId),
-            {
-                progress_id,
-                progress_name,
-                progress_work_aspect_id,
-            },
+            formData,
             {
                 params: {
                     _method: 'PUT',

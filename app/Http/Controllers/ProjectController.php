@@ -156,7 +156,7 @@ class ProjectController extends Controller {
     public function project_trainset(TrainsetProjectRequest $request, Project $project, Trainset $trainset) {
         $intent = $request->get('intent');
         if ($this->ajax()) {
-            switch($intent) {
+            switch ($intent) {
                 // resources
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS->value:
                     return ComponentResource::collection($project->components()->whereTrainsetId($trainset->id)->distinct()->get());
@@ -167,12 +167,13 @@ class ProjectController extends Controller {
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY->value:
                     return ProjectResource::make($project)->projectTrainset($trainset);
 
-                // services
+                    // services
                 case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL->value:
                     return $this->projectService->importProjectTrainsetPanelProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL->value:
                     return $this->projectService->importProjectTrainsetComponentProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
             }
+
             return [
                 'project' => new ProjectResource($project),
                 'trainset' => new TrainsetResource($trainset->load(['carriages'])),
@@ -210,12 +211,13 @@ class ProjectController extends Controller {
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY->value:
                     return ProjectResource::make($project)->projectCarriage($carriage);
 
-                // services
+                    // services
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL->value:
                     return $this->projectService->importProjectCarriagePanelProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL->value:
                     return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
             }
+
             return [
                 'project' => new ProjectResource($project),
                 'carriage' => new CarriageResource($carriage),
@@ -223,7 +225,6 @@ class ProjectController extends Controller {
         }
         $project = new ProjectResource($project);
         $carriage = new CarriageResource($carriage);
-
 
         return inertia('Project/Carriage/Component/Index', compact('project', 'carriage'));
     }
@@ -237,6 +238,7 @@ class ProjectController extends Controller {
                 'carriage' => $carriage,
             ];
         }
+
         return inertia('Project/Carriage/Component/Index', compact('project', 'carriage'));
     }
 
@@ -249,6 +251,7 @@ class ProjectController extends Controller {
                 'carriage' => $carriage,
             ];
         }
+
         return inertia('Project/Carriage/Panel/Index', compact('project', 'carriage'));
     }
 
@@ -372,7 +375,7 @@ class ProjectController extends Controller {
 
     public function project_trainset_carriageTrainset_carriagePanel_panelMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
         $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
-        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel_materials']));
+        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel_materials' => ['raw_material']]));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 

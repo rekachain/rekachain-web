@@ -40,6 +40,15 @@ class UpdateCarriagePanelRequest extends FormRequest {
                     'component_description' => 'nullable|string|max:255',
                     'carriage_component_qty' => 'required|integer|min:1',
                 ];
+            case IntentEnum::WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL->value:
+                return [
+                    'raw_material_id' => 'nullable|integer|exists:raw_materials,id',
+                    'new_raw_material_code' => 'nullable|string',
+                    'new_raw_material_description' => 'nullable|string',
+                    'new_raw_material_unit' => 'nullable|string',
+                    'new_raw_material_specs' => 'nullable|string',
+                    'new_raw_material_qty' => 'nullable|integer|min:0',
+                ];
             default:
                 return [
                     'progress_id' => 'nullable|integer|exists:progress,id',

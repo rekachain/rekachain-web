@@ -6,7 +6,7 @@ import CarriagePanelComponentQty from '@/Pages/Project/Trainset/Carriage/Carriag
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
-import CC from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/Progress';
+import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
 
 export default function CarriagePanelComponentTableView({
     trainset,
@@ -83,7 +83,7 @@ export default function CarriagePanelComponentTableView({
                                     Materials
                                 </Link>
 
-                                <CC
+                                <CarriagePanelComponentProgress
                                     carriagePanelComponent={carriagePanelComponent}
                                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                                     progress={carriagePanelComponent.progress}
