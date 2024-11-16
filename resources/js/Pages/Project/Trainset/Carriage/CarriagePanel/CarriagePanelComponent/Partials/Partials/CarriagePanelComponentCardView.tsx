@@ -1,10 +1,13 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
+import { Link } from '@inertiajs/react';
+import { ROUTES } from '@/Support/Constants/routes';
+import CC from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CC';
 
 export default function CarriagePanelComponentCardView({
     trainset,
@@ -51,22 +54,6 @@ export default function CarriagePanelComponentCardView({
                                     )}
                                 </h5>
                                 <p className="text-sm">{carriagePanelComponent.component.description}</p>
-                                <h5 className="text-base">
-                                    {t(
-                                        'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_card.headers.components',
-                                    )}{' '}
-                                    :
-                                </h5>
-                                <div className="text-sm">
-                                    {carriagePanelComponent.component_materials?.map(componentMaterial => (
-                                        <div key={componentMaterial.id}>
-                                            <span>
-                                                {componentMaterial.qty} x {componentMaterial.raw_material.material_code}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-
                                 <div className="flex items-center justify-end w-full">
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button
@@ -76,6 +63,28 @@ export default function CarriagePanelComponentCardView({
                                             {t('action.delete')}
                                         </Button>
                                     )}
+
+                                    <Link
+                                        className={buttonVariants({ variant: 'link' })}
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
+                                            [
+                                                trainset.project_id,
+                                                trainset.id,
+                                                carriageTrainset.id,
+                                                carriagePanel.id,
+                                                carriagePanelComponent.id,
+                                            ],
+                                        )}
+                                    >
+                                        Materials
+                                    </Link>
+
+                                    <CC
+                                        carriagePanelComponent={carriagePanelComponent}
+                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                        progress={carriagePanelComponent.progress}
+                                    />
                                 </div>
                             </div>
                         </AnimateIn>

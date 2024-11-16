@@ -170,11 +170,14 @@ enum IntentEnum: string {
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
 
     case WEB_CARRIAGE_PANEL_ADD_COMPONENT = 'web.carriage.panel.add.component';
-    case WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL = 'web.carriage.panel.component.add.raw.material';
 
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 
+    case WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL = 'web.carriage.panel.component.add.raw.material';
+
     case WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.component.import.progress.and.material';
+
+    case WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS = 'web.carriage.panel.component.change.progress';
 
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
 
@@ -217,6 +220,8 @@ enum IntentEnum: string {
     case WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS = 'web.progress.get.template.import.progress';
 
     case WEB_PROGRESS_IMPORT_PROGRESS = 'web.progress.import.progress';
+
+    case WEB_PROGRESS_CREATE_STEP = 'web.progress.create.step';
 
     case WEB_STEP_GET_TEMPLATE_IMPORT_STEP = 'web.step.get.template.import.step';
 

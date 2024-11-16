@@ -32,4 +32,25 @@ export const carriagePanelComponentService = {
             },
         );
     },
+    changeProgress: async (
+        carriagePanelComponentId: number,
+        progress_id: number | null,
+        progress_name: string,
+        progress_work_aspect_id: number | null,
+    ) => {
+        await window.axios.post(
+            route(`${ROUTES.CARRIAGE_PANEL_COMPONENTS}.update`, carriagePanelComponentId),
+            {
+                progress_id,
+                progress_name,
+                progress_work_aspect_id,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS,
+                },
+            },
+        );
+    },
 };

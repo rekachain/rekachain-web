@@ -9,7 +9,7 @@ import {
 } from '@/Support/Interfaces/Resources';
 import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import CarriagePanelComponentQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
+import ComponentMaterialQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/Partials/Components/ComponentMaterialQty';
 
 export default function ComponentMaterialCardView({
     trainset,
@@ -30,55 +30,40 @@ export default function ComponentMaterialCardView({
     return (
         <div>
             <>
-                {carriagePanel.carriage_panel_components?.map(carriagePanelComponent => (
-                    <div key={carriagePanelComponent.id}>
+                {carriagePanelComponent.component_materials?.map(componentMaterial => (
+                    <div key={componentMaterial.id}>
                         <AnimateIn
                             from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
                             duration={300}
-                            key={carriagePanelComponent.id}
+                            key={componentMaterial.id}
                         >
                             <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                                 <div className="flex  justify-between items-scenter">
-                                    <h4 className="font-bold text-sm">{carriagePanelComponent.component.name}</h4>
+                                    <h4 className="font-bold text-sm">
+                                        {componentMaterial.raw_material.material_code}
+                                    </h4>
                                     <div className="text-end w-1/2">
                                         <h5 className="font-bold text-sm ">
-                                            {carriagePanelComponent.component.description}
+                                            {componentMaterial.raw_material.description}
                                         </h5>
                                     </div>
                                 </div>
                                 <h5 className="text-sm">
                                     {trainset.status === TrainsetStatusEnum.PROGRESS ? (
-                                        <span>{carriagePanelComponent.qty}</span>
+                                        <span>{componentMaterial.qty}</span>
                                     ) : (
-                                        <CarriagePanelComponentQty
+                                        <ComponentMaterialQty
                                             handleSyncCarriagePanel={handleSyncCarriagePanel}
-                                            carriagePanelComponent={carriagePanelComponent}
+                                            componentMaterial={componentMaterial}
                                         />
                                     )}
                                 </h5>
-                                <p className="text-sm">{carriagePanelComponent.component.description}</p>
-                                <h5 className="text-base">
-                                    {t(
-                                        'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_card.headers.components',
-                                    )}{' '}
-                                    :
-                                </h5>
-                                <div className="text-sm">
-                                    {carriagePanelComponent.component_materials?.map(componentMaterial => (
-                                        <div key={componentMaterial.id}>
-                                            <span>
-                                                {componentMaterial.qty} x {componentMaterial.raw_material.material_code}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-
                                 <div className="flex items-center justify-end w-full">
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button
                                             variant="link"
-                                            onClick={() => handleComponentMaterialDeletion(carriagePanelComponent.id)}
+                                            onClick={() => handleComponentMaterialDeletion(componentMaterial.id)}
                                         >
                                             {t('action.delete')}
                                         </Button>

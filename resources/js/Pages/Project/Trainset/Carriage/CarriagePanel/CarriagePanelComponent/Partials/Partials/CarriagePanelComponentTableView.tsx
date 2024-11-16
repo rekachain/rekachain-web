@@ -1,11 +1,12 @@
 import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
+import CC from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CC';
 
 export default function CarriagePanelComponentTableView({
     trainset,
@@ -29,7 +30,6 @@ export default function CarriagePanelComponentTableView({
                         <TableHead>Component</TableHead>
                         <TableHead>Qty</TableHead>
                         <TableHead>Description</TableHead>
-                        <TableHead>Materials</TableHead>
                         <TableHead>Progress</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -49,15 +49,6 @@ export default function CarriagePanelComponentTableView({
                                 )}
                             </TableCell>
                             <TableCell>{carriagePanelComponent.component.description}</TableCell>
-                            <TableCell>
-                                {carriagePanelComponent.component_materials?.map(componentMaterial => (
-                                    <div key={componentMaterial.id}>
-                                        <span>
-                                            {componentMaterial.qty} x {componentMaterial.raw_material.material_code}
-                                        </span>
-                                    </div>
-                                ))}
-                            </TableCell>
                             <TableCell>{carriagePanelComponent.progress?.name}</TableCell>
                             <TableCell>
                                 {/*<Link*/}
@@ -77,6 +68,7 @@ export default function CarriagePanelComponentTableView({
                                 )}
 
                                 <Link
+                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
                                         [
@@ -90,6 +82,12 @@ export default function CarriagePanelComponentTableView({
                                 >
                                     Materials
                                 </Link>
+
+                                <CC
+                                    carriagePanelComponent={carriagePanelComponent}
+                                    handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                    progress={carriagePanelComponent.progress}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}

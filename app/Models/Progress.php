@@ -34,8 +34,8 @@ class Progress extends Model {
 
     public function steps(): HasManyThrough {
         return $this->hasManyThrough(Step::class, ProgressStep::class, 'progress_id', 'id', 'id', 'step_id');
-
     }
+
     public function progress_steps(): HasMany {
         return $this->hasMany(ProgressStep::class);
     }

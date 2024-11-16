@@ -23,4 +23,14 @@ interface CarriagePanelComponentServiceInterface extends BaseCrudServiceInterfac
      * - raw_material_id
      */
     public function addRawMaterial(CarriagePanelComponent $carriagePanelComponent, array $data): bool;
+
+    /**
+     * change progress of panel component
+     *
+     * required data:
+     * - progress_id
+     * - progress_name
+     * - progress_work_aspect_id
+     */
+    public function changeProgress(CarriagePanelComponent $carriagePanelComponent, array $data): bool;
 }

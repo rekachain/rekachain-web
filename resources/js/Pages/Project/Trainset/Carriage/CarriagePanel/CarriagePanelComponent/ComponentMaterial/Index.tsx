@@ -115,8 +115,8 @@ export default function ({
                                 <BreadcrumbItem>
                                     <Link
                                         href={route(
-                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
-                                            [project.id, trainset.id, carriageTrainset.id],
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,
+                                            [project.id, trainset.id, carriageTrainset.id, carriagePanel.id],
                                         )}
                                     >
                                         Panel {carriagePanel.panel?.name}

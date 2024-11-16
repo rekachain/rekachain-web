@@ -7,6 +7,7 @@ use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImp
 use App\Models\CarriagePanelComponent;
 use App\Support\Interfaces\Repositories\CarriagePanelComponentRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface;
+use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use DB;
 use Illuminate\Http\UploadedFile;
@@ -15,6 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class CarriagePanelComponentService extends BaseCrudService implements CarriagePanelComponentServiceInterface {
     public function __construct(
         protected RawMaterialServiceInterface $rawMaterialService,
+        protected ProgressServiceInterface $progressService,
     ) {
         parent::__construct();
     }
@@ -59,13 +61,36 @@ class CarriagePanelComponentService extends BaseCrudService implements CarriageP
         });
     }
 
-    protected function getRepositoryClass(): string {
-        return CarriagePanelComponentRepositoryInterface::class;
+    public function changeProgress(CarriagePanelComponent $carriagePanelComponent, array $data): bool {
+        return DB::transaction(function () use ($carriagePanelComponent, $data) {
+            $progressId = $data['progress_id'];
+            $progressName = $data['progress_name'];
+            $progressWorkAspectId = $data['progress_work_aspect_id'];
+
+            if ($progressId) {
+                $progress = $this->progressService->findOrFail($progressId);
+            } else {
+                $progress = $this->progressService->create([
+                    'name' => $progressName,
+                    'work_aspect_id' => $progressWorkAspectId,
+                ]);
+            }
+
+            $carriagePanelComponent->update([
+                'progress_id' => $progress->id,
+            ]);
+
+            return true;
+        });
     }
 
     public function importProgressMaterialData(UploadedFile $file, CarriagePanelComponent $carriagePanelComponent, int $workAspectId): bool {
         Excel::import(new CarriagePanelComponentProgressMaterialImport($carriagePanelComponent, $workAspectId), $file);
 
         return true;
+    }
+
+    protected function getRepositoryClass(): string {
+        return CarriagePanelComponentRepositoryInterface::class;
     }
 }

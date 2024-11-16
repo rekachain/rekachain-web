@@ -36,6 +36,12 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
                     'new_raw_material_specs' => 'nullable|string',
                     'new_raw_material_qty' => 'nullable|integer|min:0',
                 ];
+            case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS->value:
+                return [
+                    'progress_id' => 'nullable|integer|exists:progress,id',
+                    'progress_name' => 'nullable|string',
+                    'progress_work_aspect_id' => 'nullable|integer|exists:work_aspects,id',
+                ];
             default:
                 return [
                     'carriage_panel_id' => 'nullable|integer|exists:carriage_panels,id',
