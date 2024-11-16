@@ -1233,6 +1233,8 @@ return [
                         ],
                         'actions' => [
                             'carriages' => 'Gerbong',
+                            'components' => 'Komponen',
+                            'panels' => 'Panel',
                         ],
                     ],
                     'trainset_card' => [

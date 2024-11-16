@@ -112,6 +112,8 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'trainsets', 'as' => 'trainsets.'], function () {
             Route::get('/', 'project_trainsets')->name('index');
             Route::get('/{trainset}', 'project_trainset')->name('show');
+            Route::get('/{trainset}/components', 'project_trainset_components')->name('components.index');
+            Route::get('/{trainset}/panels', 'project_trainset_panels')->name('panels.index');
             Route::get('/{trainset}/carriage-trainsets', 'project_trainset_carriageTrainsets')->name('carriage-trainsets.index');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}', 'project_trainset_carriageTrainset')->name('carriage-trainsets.show');
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/panels', 'project_trainset_carriageTrainset_panels')->name('carriage-trainsets.panels.index');

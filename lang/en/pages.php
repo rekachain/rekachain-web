@@ -1233,6 +1233,8 @@ return [
                         ],
                         'actions' => [
                             'carriages' => 'Carriages',
+                            'components' => 'Components',
+                            'panels' => 'Panels',
                         ],
                     ],
                     'trainset_card' => [

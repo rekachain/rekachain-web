@@ -64,6 +64,8 @@ Route::group(['prefix' => 'test', 'as' => 'test'], function () {
         Route::controller(ProjectController::class)->group(function () {
             Route::get('/projects/{project}/carriages/{carriage}', 'project_carriage')->name('projects.carriages.show');
             Route::put('/projects/{project}/carriages/{carriage}', 'project_carriage')->name('projects.carriages.update');
+            Route::get('/projects/{project}/trainsets/{trainset}', 'project_trainset')->name('projects.trainsets.index');
+            Route::put('/projects/{project}/trainsets/{trainset}', 'project_trainset')->name('projects.trainsets.update');
         });
     });
     Route::get('csrf-token', function () {
