@@ -15,6 +15,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HelpdeskContactController;
 use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PanelMaterialController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProfileController;
@@ -84,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('carriage-presets', CarriagePresetController::class);
     Route::resource('preset-trainsets', PresetTrainsetController::class);
     Route::resource('panels', PanelController::class);
+    Route::resource('panel-materials', PanelMaterialController::class);
     Route::resource('carriage-panels', CarriagePanelController::class);
     Route::resource('carriage-panel-components', CarriagePanelComponentController::class);
     Route::resource('progress', ProgressController::class);
