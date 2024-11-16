@@ -6,16 +6,17 @@ import PanelQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/Partials/P
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
+import PanelProgress from '@/Pages/Project/Trainset/Carriage/CarriagePanel/Partials/Partials/Components/PanelProgress';
 
 export default function CarPanelTableView({
     trainset,
     carriageTrainset,
-    handleSyncCarriage,
+    handleSyncCarriagePanel,
     handlePanelDeletion,
 }: {
     trainset: TrainsetResource;
     carriageTrainset: CarriageTrainsetResource;
-    handleSyncCarriage: () => Promise<void>;
+    handleSyncCarriagePanel: () => Promise<void>;
     handlePanelDeletion: (id: number) => void;
 }) {
     const { t } = useLaravelReactI18n();
@@ -62,7 +63,7 @@ export default function CarPanelTableView({
                                         <span>{carriage_panel.qty}</span>
                                     ) : (
                                         <PanelQty
-                                            handleSyncCarriage={handleSyncCarriage}
+                                            handleSyncCarriagePanel={handleSyncCarriagePanel}
                                             carriage_panel={carriage_panel}
                                         />
                                     )}
@@ -111,6 +112,12 @@ export default function CarPanelTableView({
                                     >
                                         Materials
                                     </Link>
+
+                                    <PanelProgress
+                                        progress={carriage_panel.progress}
+                                        carriagePanel={carriage_panel}
+                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                    />
                                 </TableCell>
                             </TableRow>
                         );

@@ -41,7 +41,7 @@ export default function CarPanelCardView({
                                         <span>{carriage_panel.qty}</span>
                                     ) : (
                                         <PanelQty
-                                            handleSyncCarriage={handleSyncCarriage}
+                                            handleSyncCarriagePanel={handleSyncCarriage}
                                             carriage_panel={carriage_panel}
                                         />
                                     )}
@@ -62,19 +62,6 @@ export default function CarPanelCardView({
                                         </div>
                                     ))}
                                 </div>
-                                {/* <h5 className="  text-sm ">Waktu Mulai : {workDay.start_time}</h5>
-                                <h5 className="  text-sm ">
-                                    Waktu Istirahat :
-                                    {workDay.work_day_times
-                                        .filter(time => time.status === WorkDayTimeEnum.BREAK)
-                                        .map(time => (
-                                            <div key={time.id}>
-                                                {time.start_time} - {time.end_time}
-                                            </div>
-                                        ))}
-                                </h5>
-                                <h5 className="  text-sm ">Waktu Selesai : {workDay.end_time}</h5> */}
-
                                 <div className="flex items-center justify-end w-full">
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button variant="link" onClick={() => handlePanelDeletion(carriage_panel.id)}>

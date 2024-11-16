@@ -13,10 +13,10 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     carriage_panel,
-    handleSyncCarriage,
+    handleSyncCarriagePanel,
 }: {
     carriage_panel: CarriagePanelResource;
-    handleSyncCarriage: () => Promise<void>;
+    handleSyncCarriagePanel: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
     const [isEditing, setIsEditing] = useState(false);
@@ -34,7 +34,7 @@ export default function ({
         await carriagePanelService.update(carriage_panel.id, {
             qty: data.panelQty,
         });
-        await handleSyncCarriage();
+        await handleSyncCarriagePanel();
         setIsEditing(false);
         void useSuccessToast(
             t('pages.project.trainset.carriage.panel.partials.components.panel_qty.messages.qty_updated'),

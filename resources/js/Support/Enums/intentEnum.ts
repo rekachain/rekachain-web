@@ -19,6 +19,7 @@ const intents = {
     WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL: 'web.carriage.trainset.add.carriage.panel',
     WEB_CARRIAGE_PANEL_ADD_COMPONENT: 'web.carriage.panel.add.component',
     WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL: 'web.carriage.panel.add.raw.material',
+    WEB_CARRIAGE_PANEL_CHANGE_PROGRESS: 'web.carriage.panel.change.progress',
     WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL: 'web.carriage.panel.component.add.raw.material',
     WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS: 'web.carriage.panel.component.change.progress',
     WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL: 'web.panel.get.template.import.panel',

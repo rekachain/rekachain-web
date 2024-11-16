@@ -28,7 +28,7 @@ export default function ({
                 <CarPanelTableView
                     trainset={trainset}
                     carriageTrainset={carriageTrainset}
-                    handleSyncCarriage={handleSyncCarriage}
+                    handleSyncCarriagePanel={handleSyncCarriage}
                     handlePanelDeletion={handlePanelDeletion}
                 ></CarPanelTableView>
             </div>

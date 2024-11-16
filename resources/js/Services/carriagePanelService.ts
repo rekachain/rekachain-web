@@ -57,4 +57,29 @@ export const carriagePanelService = {
             },
         );
     },
+    changeProgress: async (
+        carriagePanelId: number,
+        progress_id: number | null,
+        progress_name: string,
+        progress_work_aspect_id: number | null,
+    ) => {
+        let formData = new FormData();
+
+        if (progress_id) {
+            formData.append('progress_id', progress_id.toString());
+            formData.append('progress_name', '');
+            formData.append('progress_work_aspect_id', '');
+        } else {
+            formData.append('progress_id', '');
+            formData.append('progress_name', progress_name);
+            formData.append('progress_work_aspect_id', progress_work_aspect_id!.toString());
+        }
+
+        await window.axios.post(route(`${ROUTES.CARRIAGE_PANELS}.update`, carriagePanelId), formData, {
+            params: {
+                _method: 'PUT',
+                intent: IntentEnum.WEB_CARRIAGE_PANEL_CHANGE_PROGRESS,
+            },
+        });
+    },
 };
