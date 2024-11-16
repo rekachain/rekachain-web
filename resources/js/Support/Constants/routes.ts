@@ -23,6 +23,8 @@ export const ROUTES = {
     PROJECTS_COMPONENTS: 'projects.components',
     PROJECTS_PANELS: 'projects.panels',
     PROJECTS_TRAINSETS: 'projects.trainsets',
+    PROJECTS_TRAINSETS_COMPONENTS: 'projects.trainsets.components',
+    PROJECTS_TRAINSETS_PANELS: 'projects.trainsets.panels',
     PROJECTS_TRAINSETS_CARRIAGES: 'projects.trainsets.carriage-trainsets',
     PROJECTS_TRAINSETS_DOWNLOAD_ATTACHMENT: 'projects.trainsets.download-attachment',
     PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS: 'projects.trainsets.carriage-trainsets.carriage-panels',
