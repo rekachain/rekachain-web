@@ -106,7 +106,7 @@ export default function ({
                         </div>
                     ))}
                 </div>
-                <div className="flex flex-col gap-4 bg-background-2 p-4">
+                <div className="flex flex-col gap-4 bg-background-2 p-4 mt-4">
                     <Label htmlFor="name">Step</Label>
                     <div className="flex items-center">
                         <GenericDataSelector

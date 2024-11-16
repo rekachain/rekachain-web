@@ -12,20 +12,25 @@ export const progressService = {
         step_process: string | null,
         step_estimated_time: number | null,
     ) => {
-        return await window.axios.post(
-            route(`${ROUTES.PROGRESS}.update`, progress_id),
-            {
-                step_id,
-                step_name,
-                step_process,
-                step_estimated_time,
+        let formData = new FormData();
+
+        if (step_id) {
+            formData.append('step_id', step_id.toString());
+            formData.append('step_name', '');
+            formData.append('step_process', '');
+            formData.append('step_estimated_time', '');
+        } else {
+            formData.append('step_id', '');
+            formData.append('step_name', step_name!);
+            formData.append('step_process', step_process!);
+            formData.append('step_estimated_time', step_estimated_time!.toString());
+        }
+
+        return await window.axios.post(route(`${ROUTES.PROGRESS}.update`, progress_id), formData, {
+            params: {
+                _method: 'PUT',
+                intent: IntentEnum.WEB_PROGRESS_CREATE_STEP,
             },
-            {
-                params: {
-                    _method: 'PUT',
-                    intent: IntentEnum.WEB_PROGRESS_CREATE_STEP,
-                },
-            },
-        );
+        });
     },
 };
