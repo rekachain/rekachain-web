@@ -39,8 +39,8 @@ class UpdateCarriagePanelComponentRequest extends FormRequest {
             case IntentEnum::WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS->value:
                 return [
                     'progress_id' => 'nullable|integer|exists:progress,id',
-                    'progress_name' => 'nullable|string',
-                    'progress_work_aspect_id' => 'nullable|integer|exists:work_aspects,id',
+                    'progress_name' => 'required_with:progress_work_aspect_id|string',
+                    'progress_work_aspect_id' => 'required_with:progress_name|integer|exists:work_aspects,id',
                 ];
             default:
                 return [

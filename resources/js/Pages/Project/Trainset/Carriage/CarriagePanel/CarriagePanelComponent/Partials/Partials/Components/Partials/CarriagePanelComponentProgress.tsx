@@ -80,6 +80,7 @@ export default function ({
 
     const handleChangeProgress = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         await carriagePanelComponentService.changeProgress(
             carriagePanelComponent.id,
             data.progress_id,
@@ -111,7 +112,7 @@ export default function ({
                             renderItem={item => item.name}
                         />
 
-                        <Button variant="ghost" onClick={handleResetProgressSelectionId}>
+                        <Button type="button" variant="ghost" onClick={handleResetProgressSelectionId}>
                             <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                         </Button>
                     </div>

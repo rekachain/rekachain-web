@@ -22,8 +22,8 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { stepService } from '@/Services/stepService';
 import { progressStepService } from '@/Services/progressStepService';
-import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
-import CarriagePanelComponentProgressSteps from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgressSteps';
+import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/Partials/CarriagePanelComponentProgress';
+import CarriagePanelComponentProgressSteps from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/Partials/CarriagePanelComponentProgressSteps';
 
 export default function ({
     progress,
@@ -128,7 +128,7 @@ export default function ({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="link">CC</Button>
+                <Button variant="link">Progress</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

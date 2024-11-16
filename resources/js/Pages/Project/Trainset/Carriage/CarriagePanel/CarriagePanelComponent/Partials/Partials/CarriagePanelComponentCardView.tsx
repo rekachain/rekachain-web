@@ -7,7 +7,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
 import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
-import CC from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CC';
+import CC from '@/Pages/Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/Progress';
 
 export default function CarriagePanelComponentCardView({
     trainset,
