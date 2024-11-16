@@ -6,6 +6,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/Carriage/Partials/Components/Components/ImportTrainsetCustomMaterial';
 
 const PreviewTrainsetAttachment = ({
     attachment,
@@ -15,7 +16,6 @@ const PreviewTrainsetAttachment = ({
     title: string;
 }) => {
     const { t } = useLaravelReactI18n();
-
     const openImageAndPrint = (imageUrl: string) => {
         const newWindow = window.open(imageUrl, '_blank');
         if (newWindow) {
@@ -31,15 +31,18 @@ const PreviewTrainsetAttachment = ({
     return (
         <div className="text-black dark:text-white" key={attachment.id}>
             <h1 className="text-xl font-bold">{title}</h1>
-            <Link
-                className={buttonVariants({
-                    className: 'my-2',
-                })}
-                href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
-                target="_blank"
-            >
-                {t('pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download')}
-            </Link>
+            <div className="flex gap-4 my-4">
+                <Link
+                    className={buttonVariants()}
+                    href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
+                    target="_blank"
+                >
+                    {t(
+                        'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download',
+                    )}
+                </Link>
+                <ImportTrainsetCustomMaterial trainsetAttachment={attachment} />
+            </div>
             <div className="grid grid-cols-3">
                 <div className="flex flex-col gap-3 mt-5">
                     <div className="">

@@ -18,8 +18,17 @@ import { ChangeEvent, FormEvent } from 'react';
 import { withLoading } from '@/Utils/withLoading';
 import { projectService } from '@/Services/projectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { panelService } from '@/Services/panelService';
 
-export default function ({ project, panel, hasMaterials = false }: { project: any; panel: any, hasMaterials?: boolean }) {
+export default function ({
+    project,
+    panel,
+    hasMaterials = false,
+}: {
+    project: any;
+    panel: any;
+    hasMaterials?: boolean;
+}) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
@@ -45,7 +54,9 @@ export default function ({ project, panel, hasMaterials = false }: { project: an
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={hasMaterials ? 'warning' : 'tertiary'}>{t('pages.project.panel.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? 'warning' : 'tertiary'}>
+                    {t('pages.project.panel.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -62,7 +73,7 @@ export default function ({ project, panel, hasMaterials = false }: { project: an
                     <Button
                         type="button"
                         variant="secondary"
-                        onClick={projectService.downloadImportProgressRawMaterialTemplate}
+                        onClick={panelService.downloadImportProgressRawMaterialTemplate.bind(null, panel.id)}
                         disabled={loading}
                     >
                         {loading

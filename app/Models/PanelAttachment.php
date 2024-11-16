@@ -55,6 +55,7 @@ class PanelAttachment extends Model {
             'trainset' => [
                 'id',
                 'project_id',
+                'status',
             ],
         ]
     ];
@@ -89,12 +90,24 @@ class PanelAttachment extends Model {
         return $this->hasOneThrough(Progress::class, CarriagePanel::class, 'id', 'id', 'carriage_panel_id', 'progress_id');
     }
 
+    public function is_ancestor(): bool {
+        return $this->parent === null;
+    }
+
     public function parent(): BelongsTo {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');
     }
 
+    public function is_parent(): bool {
+        return $this->childs->count() > 0;
+    }
+
     public function childs(): HasMany {
         return $this->hasMany(PanelAttachment::class, 'panel_attachment_id', 'id');
+    }
+
+    public function is_child(): bool {
+        return $this->parent !== null;
     }
 
     public function source_workstation(): BelongsTo {

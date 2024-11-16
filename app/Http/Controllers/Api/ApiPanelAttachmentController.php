@@ -205,7 +205,7 @@ class ApiPanelAttachmentController extends Controller
                         ],
                     ], 403);
                 }
-                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated())->load('attachment_notes'));
+                return PanelAttachmentResource::make($this->panelAttachmentService->update($panelAttachment, $request->validated())->load('attachment_notes','panel_attachment_handlers'));
             case IntentEnum::API_PANEL_ATTACHMENT_REJECT_KPM->value:
                 if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                     abort(403, 'Unauthorized');

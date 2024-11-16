@@ -16,6 +16,7 @@ use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Support\Collection;
 
+
 class DashboardService {
     public function __construct(
         protected PanelAttachmentRepositoryInterface $panelAttachmentRepository,
@@ -30,43 +31,43 @@ class DashboardService {
 
     public function showGraph(array $data = []) {
         $project = $this->projectService->find(['id' => '1'])->first();
-        $workshop = $this->workshopService->getAll();
+        // $workshop = $this->workshopService->getAll();
         $panel = $this->panelService->getAll();
 
-        $workshopProgress = $workshop->map(function ($workshop) use ($project) {
-            return [
-                'workshop_name' => $workshop->name,
-                'progress' => $workshop->workstations->flatMap->panel_attachment_destination_workstations
-                    ->filter(function($attachment) use ($project) {
-                        return $attachment->carriage_panel->carriage_trainset->trainset->project_id === $project->id;
-                    })
-                    ->groupBy('status')->map(function ($attachments) {
-                        return [
-                            'status' => $attachments->first()->status,
-                            'count' => $attachments->count()
-                        ];
-                    })->values()
-            ];
-        });        
-        logger($workshopProgress);
+        // $workshopProgress = $workshop->map(function ($workshop) use ($project) {
+        //     return [
+        //         'workshop_name' => $workshop->name,
+        //         'progress' => $workshop->workstations->flatMap->panel_attachment_destination_workstations
+        //             ->filter(function($attachment) use ($project) {
+        //                 return $attachment->carriage_panel->carriage_trainset->trainset->project_id === $project->id;
+        //             })
+        //             ->groupBy('status')->map(function ($attachments) {
+        //                 return [
+        //                     'status' => $attachments->first()->status,
+        //                     'count' => $attachments->count()
+        //                 ];
+        //             })->values()
+        //     ];
+        // });        
+        // logger($workshopProgress);
 
-        $panelProgress = $this->panelService->getAll()->map(function ($panel) use ($project) {
-            return [
-                'panel_name' => $panel->name,
-                'progress' => $panel->carriage_panels->flatMap->panel_attachments
-                    ->filter(function($attachment) use ($project) {
-                        return $attachment->carriage_panel->carriage_trainset->trainset->project_id === $project->id;
-                    })
-                    ->groupBy('status')
-                    ->map(function ($attachments) {
-                        return [
-                            'status' => $attachments->first()->status,
-                            'count' => $attachments->count()
-                        ];
-                    })->values()
-            ];
-        });
-        logger($panelProgress);
+        // $panelProgress = $this->panelService->getAll()->map(function ($panel) use ($project) {
+        //     return [
+        //         'panel_name' => $panel->name,
+        //         'progress' => $panel->carriage_panels->flatMap->panel_attachments
+        //             ->filter(function($attachment) use ($project) {
+        //                 return $attachment->carriage_panel->carriage_trainset->trainset->project_id === $project->id;
+        //             })
+        //             ->groupBy('status')
+        //             ->map(function ($attachments) {
+        //                 return [
+        //                     'status' => $attachments->first()->status,
+        //                     'count' => $attachments->count()
+        //                 ];
+        //             })->values()
+        //     ];
+        // });
+        // logger($panelProgress);
 
         // other programming shihst
 
@@ -127,23 +128,11 @@ class DashboardService {
     ];
     public function showAttachmentStatusOfTrainset(array $data = []) {
         $project = $this->projectRepository->useFilters($data)->find($data['project_id'] ?? 1);
+        $trainsetId = $data['attachment_status_of_trainset_filter']['column_filters']['id'] ?? null;
         $returnMerged = $data['use_merged'] ?? false;
         $useRaw = $data['use_raw'] ?? false;
 
         if ($useRaw) {
-            $rawPanelAttachmentStatusExpression = $returnMerged
-                ? 'trainsets.name AS trainset_name,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_pending'][0]->value .'" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                    CAST(SUM(CASE WHEN panel_attachments.status IN ("'.$this->statusMapping['status_in_progress'][0]->value.'", "'.$this->statusMapping['status_material_in_transit'][0]->value.'", "'.$this->statusMapping['status_material_accepted'][0]->value.'") THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_done'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
-                : 'trainsets.name AS trainset_name,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_pending'][0]->value .'" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_in_progress'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_material_in_transit'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_material_accepted'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_done'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
-                    
-            $progressPanel = $project->panel_attachments()->selectRaw($rawPanelAttachmentStatusExpression)->groupBy('trainset_name', 'project_id')->get();
             $rawTrainsetAttachmentStatusExpression = $returnMerged
                 ? 'trainsets.name AS trainset_name,
                     CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_pending'][1]->value .'" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
@@ -155,8 +144,24 @@ class DashboardService {
                     CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_material_in_transit'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
                     CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_material_accepted'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
                     CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_done'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
-            $progressTrainset = $project->trainset_attachments()->selectRaw($rawTrainsetAttachmentStatusExpression)->groupBy('trainset_name', 'project_id')->get();
-            $progress = $progressPanel->push(...$progressTrainset)
+            $trainsetAttachments = $project->trainset_attachments()->whereHas('trainset', fn($query) => $query->where('status', 'progress'));
+            $progressTrainset = is_null($trainsetId) ? $trainsetAttachments : $trainsetAttachments->where('trainset_id', $trainsetId);
+            $progressTrainset = $progressTrainset->selectRaw($rawTrainsetAttachmentStatusExpression)->groupBy('trainset_name', 'project_id')->get();
+            $rawPanelAttachmentStatusExpression = $returnMerged
+                ? 'trainsets.name AS trainset_name,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_pending'][0]->value .'" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
+                    CAST(SUM(CASE WHEN panel_attachments.status IN ("'.$this->statusMapping['status_in_progress'][0]->value.'", "'.$this->statusMapping['status_material_in_transit'][0]->value.'", "'.$this->statusMapping['status_material_accepted'][0]->value.'") THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_done'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
+                : 'trainsets.name AS trainset_name,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_pending'][0]->value .'" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_in_progress'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_material_in_transit'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_material_accepted'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
+                    CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_done'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
+            $panelAttachments = $project->panel_attachments()->whereHas('carriage_panel.carriage_trainset.trainset', fn($query) => $query->where('status', 'progress'));
+            $progressPanel = is_null($trainsetId) ? $panelAttachments : $panelAttachments->whereHas('carriage_panel.carriage_trainset', fn($query) => $query->where('trainset_id', $trainsetId));
+            $progressPanel = $progressPanel->selectRaw($rawPanelAttachmentStatusExpression)->groupBy('trainset_name', 'project_id')->get();
+            $progress = $progressTrainset->push(...$progressPanel)
             ->groupBy('trainset_name')->map(function ($group) {
                 return [
                     'trainset_name' => $group->first()['trainset_name'],
@@ -206,6 +211,76 @@ class DashboardService {
             ->values();
     }
 
+    public function showAttachmentStatusOfWorkstationRaw(array $data) {
+        $returnMerged = $data['use_merged'] ?? false;
+        $data['attachment_status_of_workstation_filter'] = array_merge_recursive(
+            $data['attachment_status_of_workstation_filter'] ?? [], [
+                'relation_column_filters' => [
+                    'trainset' => [
+                        'status' => 'progress',
+                        'project_id' => $data['project_id'] ?? 1
+                    ],
+                ]
+        ]);
+        $rawTrainsetAttachmentStatusExpression = $returnMerged
+            ? 'workstations.name as workstation_name,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_pending'][1]->value .'" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_in_progress'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_done'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
+            : 'workstations.name as workstation_name,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_pending'][1]->value .'" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_in_progress'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_material_in_transit'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_material_accepted'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
+                CAST(SUM(CASE WHEN trainset_attachments.status = "'.$this->statusMapping['status_done'][1]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
+        $rawPanelAttachmentStatusExpression = $returnMerged
+            ? 'workstations.name as workstation_name,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_pending'][0]->value .'" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
+                CAST(SUM(CASE WHEN panel_attachments.status IN ("'.$this->statusMapping['status_in_progress'][0]->value.'", "'.$this->statusMapping['status_material_in_transit'][0]->value.'", "'.$this->statusMapping['status_material_accepted'][0]->value.'") THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_done'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
+            : 'workstations.name as workstation_name,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_pending'][0]->value .'" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_in_progress'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_material_in_transit'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_material_accepted'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
+                CAST(SUM(CASE WHEN panel_attachments.status = "'.$this->statusMapping['status_done'][0]->value.'" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
+                
+        $workstationTrainsetProgress = $this->trainsetAttachmentRepository
+            ->useFilters($data['attachment_status_of_workstation_filter'])
+            // ->with('destination_workstation')
+            ->join('workstations', 'trainset_attachments.destination_workstation_id', '=', 'workstations.id')
+            ->selectRaw($rawTrainsetAttachmentStatusExpression)
+            // ->where('trainset_attachments.status', 'progress')
+            ->groupBy('workstation_name')
+            ->get()
+            ;
+        $workstationPanelProgress = $this->panelAttachmentRepository
+            ->useFilters($data['attachment_status_of_workstation_filter'])
+            // ->with('destination_workstation')
+            ->join('workstations', 'panel_attachments.destination_workstation_id', '=', 'workstations.id')
+            ->selectRaw($rawPanelAttachmentStatusExpression)
+            // ->where('panel_attachments.status', 'progress')
+            // ->whereHas('carriage_panels.carriage_trainset.trainsets', fn($query) => $query->where('project_id', $projectId))
+            ->groupBy('workstation_name')
+            ->get()
+            ;
+        $progress = $workstationPanelProgress->isNotEmpty() ? $workstationTrainsetProgress->push(...$workstationPanelProgress) : $workstationTrainsetProgress;
+
+        $progressOfWorkstation = $progress
+            ->groupBy('workstation_name')
+            ->map(fn($attachment) => [
+                'workstation_name' => $attachment->first()->workstation_name,
+                'pending' => $attachment->sum('pending'),
+                'in_progress' => $attachment->sum('in_progress'),
+                'material_in_transit' => $attachment->sum('material_in_transit'),
+                'material_accepted' => $attachment->sum('material_accepted'),
+                'done' => $attachment->sum('done')
+            ])
+            ->sortBy('workstation_name')
+            ->values();
+
+        return $progressOfWorkstation->toArray();
+}
     public function showAttachmentStatusOfWorkstation(array $data) {
         $data['attachment_status_of_workstation_filter'] = array_merge_recursive(
             $data['attachment_status_of_workstation_filter'] ?? [], [
@@ -218,17 +293,17 @@ class DashboardService {
         ]);
         $trainsetAttachments = $this->trainsetAttachmentRepository
             ->useFilters($data['attachment_status_of_workstation_filter'])->get();
-        $workstationTrainsetProgress = $trainsetAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
+        $workstationTrainsetProgress = $trainsetAttachments->groupBy('destination_workstation_id')->map(fn ($attachments) => 
             [
-                'workstation_name' => $attachments->first()->source_workstation->name,
+                'workstation_name' => $attachments->first()->destination_workstation->name,
                 'progress' => $this->calculateProgress($attachments, $data, 1)
             ]);
 
         $panelAttachments = $this->panelAttachmentRepository
             ->useFilters($data['attachment_status_of_workstation_filter'])->get();
-        $workstationPanelProgress = $panelAttachments->groupBy('source_workstation_id')->map(fn ($attachments) => 
+        $workstationPanelProgress = $panelAttachments->groupBy('destination_workstation_id')->map(fn ($attachments) => 
             [
-                'workstation_name' => $attachments->first()->source_workstation->name,
+                'workstation_name' => $attachments->first()->destination_workstation->name,
                 'progress' => $this->calculateProgress($attachments, $data, 0)
             ]);
         $progress = $workstationPanelProgress->isNotEmpty() ? $workstationTrainsetProgress->merge($workstationPanelProgress) : $workstationTrainsetProgress;

@@ -10,8 +10,9 @@ import { buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/Carriage/Partials/Components/Components/ImportPanelCustomMaterial';
 
-const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
+const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();
 
     const [attachment, setAttachment] = useState<PanelAttachmentResource>();
@@ -70,15 +71,18 @@ const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource })
                 {t('pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.title')}
             </h1>
             {attachment && (
-                <Link
-                    className={buttonVariants({
-                        className: 'my-2',
-                    })}
-                    href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
-                    target="_blank"
-                >
-                    {t('pages.project.trainset.carriage.partials.components.preview_panel_attachment.buttons.download')}
-                </Link>
+                <div className="flex gap-4 my-4">
+                    <Link
+                        className={buttonVariants()}
+                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                        target="_blank"
+                    >
+                        {t(
+                            'pages.project.trainset.carriage.partials.components.preview_panel_attachment.buttons.download',
+                        )}
+                    </Link>
+                    <ImportPanelCustomMaterial panelAttachment={attachment} />
+                </div>
             )}
             <div className="flex gap-4 mt-4">
                 {trainset?.carriage_trainsets?.length > 0 && (
@@ -258,4 +262,4 @@ const PreviewTrainsetAttachment = ({ trainset }: { trainset: TrainsetResource })
     );
 };
 
-export default PreviewTrainsetAttachment;
+export default PreviewPanelAttachment;

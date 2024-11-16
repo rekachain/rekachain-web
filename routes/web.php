@@ -11,6 +11,7 @@ use App\Http\Controllers\DetailWorkerPanelController;
 use App\Http\Controllers\DetailWorkerTrainsetController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\HelpdeskContactController;
 use App\Http\Controllers\PanelAttachmentController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PermissionController;
@@ -58,7 +59,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Route::get('/test', function(){
+    //     return inertia('Division/Create');
+    // } );
+    // Route::resource('/test',TestController::class);
+
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/{project}', [DashboardController::class, 'show']);
+    Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset']);
+    // Route::resource('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('divisions', DivisionController::class);
     Route::resource('workshops', WorkshopController::class);
     Route::resource('workstations', WorkstationController::class);
@@ -88,6 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('detail-worker-panels', DetailWorkerPanelController::class);
     Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
     Route::resource('feedback', FeedbackController::class)->except(['store']);
+    Route::resource('helpdesk-contact', HelpdeskContactController::class);
 
     Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
         Route::get('components', 'project_components')->name('components.index');

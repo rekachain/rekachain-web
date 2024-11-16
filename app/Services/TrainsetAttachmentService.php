@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\TrainsetAttachment;
 use App\Models\CustomAttachmentMaterial;
+use App\Support\Enums\RoleEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
@@ -15,6 +16,7 @@ use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
 use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttachmentServiceInterface
 {
@@ -46,7 +48,15 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     
     public function assignCustomAttachmentMaterial(TrainsetAttachment $trainsetAttachment, array $data): CustomAttachmentMaterial
     {
-        logger($trainsetAttachment);
+        if (array_key_exists('override', $data)) {
+            if (!$data['override']) {
+                return $trainsetAttachment->custom_attachment_materials()->firstOrCreate([
+                    'raw_material_id' => $data['raw_material_id'],
+                ], [
+                    'qty' => $data['qty'],
+                ]);
+            }
+        } 
         return $trainsetAttachment->custom_attachment_materials()->updateOrCreate([
             'raw_material_id' => $data['raw_material_id'],
         ], [
@@ -95,6 +105,30 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
             $trainsetAttachment->save();
             return $trainsetAttachment;
         }
+    }
+
+    public function update($trainsetAttachment, array $data): ?Model
+    {   
+        if (array_key_exists('note', $data)) {
+            $trainsetAttachment->attachment_notes()->create(
+                [
+                    "note" => $data['note'],
+                    "status" => $data['status'],
+                ]
+            );
+            unset($data['note']);
+        }
+        if (array_key_exists('status', $data) && auth()->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+            $trainsetAttachment->update([
+                'supervisor_id' => auth()->user()->id
+            ]);
+            $this->assignHandler($trainsetAttachment, array_merge($data, [
+                'handles' => TrainsetAttachmentHandlerHandlesEnum::RECEIVE->value
+            ]));
+        }
+
+
+        return parent::update($trainsetAttachment, $data);
     }
 
     public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data)

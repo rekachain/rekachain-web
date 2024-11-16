@@ -65,12 +65,25 @@ class TrainsetAttachment extends Model {
     public function getFilterable(): array {
         return $this->filterable;
     }
+
+    public function is_ancestor(): bool {
+        return $this->parent === null;
+    }
+
     public function parent(): BelongsTo {
         return $this->belongsTo(TrainsetAttachment::class, 'trainset_attachment_id');
     }
 
+    public function is_parent(): bool {
+        return $this->childs->count() > 0;
+    }
+
     public function childs(): HasMany {
         return $this->hasMany(TrainsetAttachment::class, 'trainset_attachment_id');
+    }
+
+    public function is_child(): bool {
+        return $this->parent !== null;
     }
     
     public function progresses(): HasManyDeep {

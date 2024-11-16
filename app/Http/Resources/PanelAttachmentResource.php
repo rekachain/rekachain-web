@@ -24,6 +24,16 @@ class PanelAttachmentResource extends JsonResource
                     'total_qty' => $this->carriage_panel->qty * $this->carriage_panel->carriage_trainset->qty,
                 ];
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY->value:
+                if ($this->is_child()) {
+                    return $this->custom_attachment_materials
+                        ->groupBy(['raw_material_id'])
+                        ->map(fn ($panelMaterials) => [
+                            ...RawMaterialResource::make($panelMaterials->first()->raw_material)->toArray($request),
+                            'total_qty' => $panelMaterials->sum(function ($panelMaterial) {
+                                return $panelMaterial->qty;
+                            }),
+                        ])->sortBy('raw_material.id')->toArray();
+                }
                 return $this->panel_materials
                     ->groupBy(['raw_material_id'])
                     ->map(fn ($panelMaterials) => [
