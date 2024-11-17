@@ -27,7 +27,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
         if (selectedPanel) {
             const panelAttachment = trainset.carriage_trainsets
                 .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
-                ?.carriage_panels.find(carriagePanel => carriagePanel.panel.id === selectedPanel)?.panel_attachment;
+                ?.carriage_panels.find(carriagePanel => carriagePanel.panel.id === selectedPanel)
+                ?.panel_attachments[0];
 
             setAttachment(panelAttachment);
 
