@@ -75,6 +75,19 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: '#00C3FF',
         },
     } satisfies ChartConfig;
+    const chartConfigTrainsetCarriage = {
+        qty: {
+            label: 'Quantity',
+            color: '#00C3FF',
+        },
+    } satisfies ChartConfig;
+
+    const chartConfigPanelInTrainset = {
+        total: {
+            label: 'Total',
+            color: '#00C3FF',
+        },
+    } satisfies ChartConfig;
 
     // @ts-ignore
     const totalUpdated = data['total'].map((item, index) => ({
@@ -217,13 +230,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     </Popover>
                                 </div>
                             </div>
-                            <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
+                            <ChartContainer config={chartConfigTrainsetCarriage} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['carriages']}>
                                     <CartesianGrid vertical={false} />
                                     <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="qty" fill="var(--color-done)" radius={4} />
+                                    <Bar dataKey="qty" fill="var(--color-qty)" radius={4} />
                                 </BarChart>
                             </ChartContainer>
                         </div>
@@ -231,21 +244,23 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="">
                                 <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
                                 <h3 className="text-base">Panel yang ada pada TS 1</h3>
-                                <ChartContainer config={chartConfig} className="h-[400px] w-full mt-5">
-                                    <BarChart className="" accessibilityLayer data={data['panel']}>
+                                <ChartContainer config={chartConfigPanelInTrainset} className="h-[400px] w-full mt-5">
+                                    <BarChart className="h-[300px]" accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
                                         <XAxis
                                             // tick={<CustomizedAxisTick />}
-                                            // angle={-45}
+                                            angle={-55}
                                             textAnchor="end"
                                             dataKey="name"
                                             tickLine={false}
                                             tickMargin={0}
                                             axisLine={false}
+                                            height={100}
+                                            width={0}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar className="" dataKey="total" fill="var(--color-done)" radius={4} />
+                                        <Bar className="" dataKey="total" fill="var(--color-total)" radius={4} />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
