@@ -7,6 +7,10 @@ import { Link } from '@inertiajs/react';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/Carriage/Partials/Components/Components/ImportTrainsetCustomMaterial';
+import { useEffect, useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { withLoading } from '@/Utils/withLoading';
 
 const PreviewTrainsetAttachment = ({
     attachment,
@@ -28,6 +32,22 @@ const PreviewTrainsetAttachment = ({
         }
     };
 
+    const [trainsetAttachment, setTrainsetAttachment] = useState<TrainsetAttachmentResource>(attachment);
+    const [selectedAttachment, setSelectedAttachment] = useState<number | null>(attachment.id);
+
+    const loadAttachment = withLoading(async () => {
+        if (selectedAttachment) {
+            const attachment = await trainsetAttachmentService.get(selectedAttachment, {
+                intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY,
+            });
+            setTrainsetAttachment(attachment);
+        }
+    });
+
+    useEffect(() => {
+        loadAttachment();
+    }, [selectedAttachment]);
+
     return (
         <div className="text-black dark:text-white" key={attachment.id}>
             <h1 className="text-xl font-bold">{title}</h1>
@@ -41,7 +61,35 @@ const PreviewTrainsetAttachment = ({
                         'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download',
                     )}
                 </Link>
-                <ImportTrainsetCustomMaterial trainsetAttachment={attachment} />
+                <ImportTrainsetCustomMaterial trainsetAttachment={trainsetAttachment} />
+                {attachment.is_parent && (
+                    <div className="flex flex-col gap-2">
+                        <Select
+                            value={selectedAttachment?.toString()}
+                            onValueChange={value => setSelectedAttachment(+value)}
+                        >
+                            <SelectTrigger id="selected-carriage-id" className="w-[180px]">
+                                <SelectValue/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    value={attachment.id.toString()}
+                                    key={attachment.id}    
+                                >
+                                    {attachment.attachment_number}
+                                </SelectItem>
+                                {attachment.childs?.map(childAttachment => (
+                                    <SelectItem
+                                        value={childAttachment.id?.toString()}
+                                        key={childAttachment.id}
+                                    >
+                                        {childAttachment.attachment_number}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
             </div>
             <div className="grid grid-cols-3">
                 <div className="flex flex-col gap-3 mt-5">
@@ -52,7 +100,7 @@ const PreviewTrainsetAttachment = ({
                                 'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.attachment_number',
                             )}
                         </p>
-                        <p>{attachment.attachment_number}</p>
+                        <p>{trainsetAttachment.attachment_number}</p>
                     </div>
                     <div className="">
                         <p className="font-bold">
@@ -78,7 +126,7 @@ const PreviewTrainsetAttachment = ({
                                 'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.reference_number',
                             )}
                         </p>
-                        <p>-</p>
+                        <p>{trainsetAttachment.parent?.attachment_number ?? '-'}</p>
                     </div>
                     <div className="">
                         <p className="font-bold">
@@ -86,15 +134,15 @@ const PreviewTrainsetAttachment = ({
                                 'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.date',
                             )}
                         </p>
-                        <p>{attachment.formatted_created_at}</p>
+                        <p>{trainsetAttachment.formatted_created_at}</p>
                     </div>
                 </div>
-                {attachment?.qr && (
+                {trainsetAttachment?.qr && (
                     <div className="flex flex-col gap-3 mt-5 text-white items-center">
                         <div className="bg-white p-3">
-                            <img src={attachment.qr} alt="QR Code" width={200} />
+                            <img src={trainsetAttachment.qr} alt="QR Code" width={200} />
                         </div>
-                        <button className={buttonVariants()} onClick={() => openImageAndPrint(attachment.qr!)}>
+                        <button className={buttonVariants()} onClick={() => openImageAndPrint(trainsetAttachment.qr!)}>
                             {t(
                                 'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.buttons.print_qr',
                             )}
@@ -144,7 +192,7 @@ const PreviewTrainsetAttachment = ({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {attachment.raw_materials.map(rawMaterial => (
+                    {trainsetAttachment.raw_materials.map(rawMaterial => (
                         <TableRow key={rawMaterial.id}>
                             <TableCell className="font-medium">{rawMaterial.material_code}</TableCell>
                             <TableCell>{rawMaterial.description}</TableCell>

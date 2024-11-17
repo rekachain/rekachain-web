@@ -6,4 +6,10 @@ export interface TrainsetAttachmentResource extends Resource, TrainsetAttachment
     formatted_created_at: string;
     formatted_updated_at: string;
     raw_materials: RawMaterialResource[];
+    is_ancestor?: boolean;
+    is_parent?: boolean;
+    is_child?: boolean;
+    ancestor?: TrainsetAttachmentResource;
+    parent?: TrainsetAttachmentResource;
+    childs?: TrainsetAttachmentResource[];
 }
