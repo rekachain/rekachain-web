@@ -187,7 +187,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                         'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.reference_number',
                                     )}
                                 </p>
-                                <p>-</p>
+                                <p>{attachment.parent?.attachment_number ?? '-'}</p>
                             </div>
                             <div className="">
                                 <p className="font-bold">
