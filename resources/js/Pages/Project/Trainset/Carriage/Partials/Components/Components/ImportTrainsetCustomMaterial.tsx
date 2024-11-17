@@ -13,7 +13,7 @@ import {
     DialogTrigger,
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
@@ -50,6 +50,11 @@ export default function ({ trainsetAttachment }: { trainsetAttachment: TrainsetA
             void useSuccessToast();
         }
     }, true);
+
+    useEffect(() => {
+        setData('toBeAssigned', trainsetAttachment.is_child ? false : true);
+    },[trainsetAttachment]);
+
     return (
         <>
             <Dialog>
