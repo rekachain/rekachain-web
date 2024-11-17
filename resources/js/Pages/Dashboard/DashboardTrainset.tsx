@@ -68,24 +68,24 @@ export default function Dashboard({ auth, data }: PageProps) {
     const chartConfig = {
         in_progress: {
             label: 'Progress',
-            color: '#fd2c59',
+            color: 'hsl(var(--chart-1))',
         },
         done: {
             label: 'Done',
-            color: '#00C3FF',
+            color: 'hsl(var(--chart-2))',
         },
     } satisfies ChartConfig;
     const chartConfigTrainsetCarriage = {
         qty: {
             label: 'Quantity',
-            color: '#00C3FF',
+            color: 'hsl(var(--chart-1))',
         },
     } satisfies ChartConfig;
 
     const chartConfigPanelInTrainset = {
         total: {
             label: 'Total',
-            color: '#00C3FF',
+            color: 'hsl(var(--chart-2))',
         },
     } satisfies ChartConfig;
 

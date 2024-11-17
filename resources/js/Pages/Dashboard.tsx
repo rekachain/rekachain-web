@@ -227,11 +227,11 @@ export default function Dashboard({ auth, data }: PageProps) {
     const chartConfig = {
         in_progress: {
             label: 'Progress',
-            color: '#fd2c59',
+            color: 'hsl(var(--chart-1))',
         },
         done: {
             label: 'Done',
-            color: '#00C3FF',
+            color: 'hsl(var(--chart-2))',
         },
     } satisfies ChartConfig;
     // from panel_attachment get status
@@ -550,16 +550,19 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <div className="px-5">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                             <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                            <ChartContainer config={chartConfig} className="h-[200px] md:h-[300px] w-full mt-5">
+                            <ChartContainer config={chartConfig} className="h-[400px] md:h-[300px] w-full mt-5">
                                 <BarChart accessibilityLayer data={data['panel']}>
                                     <CartesianGrid vertical={false} />
                                     <YAxis type="number" dataKey="in_progress"></YAxis>
                                     <XAxis
+                                        height={110}
+                                        angle={-55}
                                         dataKey="name"
+                                        textAnchor="end"
                                         tickLine={false}
-                                        // tickMargin={10}
+                                        tickMargin={15}
                                         axisLine={false}
-                                        tickFormatter={value => value.slice(0, 6)}
+                                        // tickFormatter={value => value.slice(0, 6)}
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
