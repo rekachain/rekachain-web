@@ -17,9 +17,13 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
 
     const [attachment, setAttachment] = useState<PanelAttachmentResource>();
 
-    const [selectedCarriage, setSelectedCarriage] = useState<number | null>(null);
+    const [selectedCarriage, setSelectedCarriage] = useState<number | null>(
+        Object.values(trainset?.carriage_trainsets)[0]?.carriage.id
+    );
 
-    const [selectedPanel, setSelectedPanel] = useState<number | null>(null);
+    const [selectedPanel, setSelectedPanel] = useState<number | null>(
+        Object.values(Object.values(trainset?.carriage_trainsets)[0]?.carriage_panels)[0]?.panel.id
+    );
 
     const [selectedPanelRawMaterials, setSelectedPanelRawMaterials] = useState<RawMaterialResource[]>([]);
 
