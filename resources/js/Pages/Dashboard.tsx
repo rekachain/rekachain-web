@@ -6,7 +6,6 @@ import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
-// import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -49,8 +48,6 @@ const trainset = [
         link: '/dashboard/1/3',
     },
 ];
-// TODO : TS only available when project
-// TODO : show ts for each project
 
 import { useCallback, useEffect, useState } from 'react';
 import { ROUTES } from '@/Support/Constants/routes';
@@ -124,7 +121,6 @@ export default function Dashboard({ auth, data }: PageProps) {
             color: 'hsl(var(--chart-5))',
         },
     } satisfies ChartConfig;
-    console.log(data);
 
     const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(true);
@@ -237,69 +233,6 @@ export default function Dashboard({ auth, data }: PageProps) {
             .then(response => response.data);
     }, []);
 
-    const chartConfig = {
-        in_progress: {
-            label: 'Progress',
-            color: 'hsl(var(--chart-1))',
-        },
-        done: {
-            label: 'Done',
-            color: 'hsl(var(--chart-2))',
-        },
-    } satisfies ChartConfig;
-    // from panel_attachment get status
-    // from carriage panel get carriage_trainset_id
-    // from trainset get trainset id
-    console.log(data['ts']);
-    //  TS
-    // this is correct
-    // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;
-
-    // new with project ID
-    // SELECT trainsets.name, projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name,trainsets.name;
-
-    // SELECT count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id where panel_attachments.status = "done" GROUP BY trainsets.name;
-
-    // SELECT panel_attachments.status, count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id GROUP BY trainsets.name, panel_attachments.status;
-
-    const chartDataWS = [
-        { ts: 'WS Candisewu Lt1', progress: 186, done: 80 },
-        { ts: 'WS Candisewu Lt2', progress: 86, done: 80 },
-        { ts: 'WS Candisewu Lt3', progress: 20, done: 50 },
-        { ts: 'WS Sukosari', progress: 36, done: 50 },
-        { ts: 'WS Harmonika', progress: 45, done: 70 },
-    ];
-
-    // this is correct
-    // SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id where workshops.id <3 GROUP by workshops.name;
-
-    // Correct with project 612
-    //SELECT projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name
-
-    // INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id
-
-    // panel attachment source workstation in progress and done
-    // workstation id
-    // SELECT * FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id;
-    // SELECT count(panel_attachments.status) workstations.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id where status = "done" GROUP by workstations.name;
-    // for above need change in workstation and workshop.
-
-    const chartDataPanel = [
-        { panel: 'Panel PIDS A', progress: 186, done: 80 },
-        { panel: 'Panel PIDS B', progress: 86, done: 30 },
-        { panel: 'Panel PIDS C', progress: 16, done: 80 },
-        { panel: 'Panel PIDS D', progress: 18, done: 90 },
-    ];
-
-    // Correct with project name
-    // SELECT projects.name, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id GROUP by panels.name,projects.name, panel_attachments.status ORDER BY `panels`.`name` ASC
-
-    // SELECT count(panel_attachments.status), panel_attachments.status, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status;
-
-    //     With seperated done and in progress
-    // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status ORDER BY `panels`.`name` ASC
-
-    // export default function Dashboard({ auth }: PageProps) {
     const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
