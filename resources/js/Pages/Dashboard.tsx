@@ -111,7 +111,20 @@ export default function Dashboard({ auth, data }: PageProps) {
             label: 'In Progress',
             color: 'hsl(var(--chart-2))',
         },
+        pending: {
+            label: 'Pending',
+            color: 'hsl(var(--chart-3))',
+        },
+        material_in_transit: {
+            label: 'Material In Transit',
+            color: 'hsl(var(--chart-4))',
+        },
+        material_accepted: {
+            label: 'Material Accepted',
+            color: 'hsl(var(--chart-5))',
+        },
     } satisfies ChartConfig;
+    console.log(data);
 
     const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(true);
@@ -486,6 +499,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
                                 <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                 <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                                <Bar dataKey="material_in_transit" fill="var(--color-material_in_transit)" radius={4} />
+                                <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                <Bar dataKey="material_accepted" fill="var(--color-material_accepted)" radius={4} />
                             </BarChart>
                         </ChartContainer>
                         {/* <ChartContainer
@@ -521,7 +537,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <div className="md:w-1/2 px-5">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Workshop</h2>
                             <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
-                            <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
+                            <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full mt-5">
                                 <BarChart accessibilityLayer data={data.ws} layout="vertical">
                                     <CartesianGrid vertical={false} />
                                     <XAxis type="number" dataKey="in_progress"></XAxis>
@@ -543,6 +559,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <ChartLegend content={<ChartLegendContent />} />
                                     <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
                                     <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                    <Bar
+                                        dataKey="material_in_transit"
+                                        fill="var(--color-material_in_transit)"
+                                        radius={4}
+                                    />
+                                    <Bar dataKey="material_accepted" fill="var(--color-material_accepted)" radius={4} />
+                                    <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
                                 </BarChart>
                             </ChartContainer>
                         </div>
@@ -550,7 +573,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <div className="px-5">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                             <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                            <ChartContainer config={chartConfig} className="h-[400px] md:h-[300px] w-full mt-5">
+                            <ChartContainer
+                                config={chartConfigTrainset}
+                                className="h-[400px] md:h-[400px] w-[550px] mt-5"
+                            >
                                 <BarChart accessibilityLayer data={data['panel']}>
                                     <CartesianGrid vertical={false} />
                                     <YAxis type="number" dataKey="in_progress"></YAxis>
@@ -562,12 +588,19 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         tickLine={false}
                                         tickMargin={15}
                                         axisLine={false}
-                                        // tickFormatter={value => value.slice(0, 6)}
+                                        tickFormatter={value => value.slice(0, 20)}
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
                                     <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
                                     <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                    <Bar
+                                        dataKey="material_in_transit"
+                                        fill="var(--color-material_in_transit)"
+                                        radius={4}
+                                    />
+                                    <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                    <Bar dataKey="material_accepted" fill="var(--color-material_accepted)" radius={4} />
                                 </BarChart>
                             </ChartContainer>
                         </div>
@@ -665,13 +698,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                             </PieChart>
                         </ChartContainer> */}
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-gray-900 dark:text-gray-100">
                                 {t('pages.dashboard.index.welcome')}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {/* </div> */}
