@@ -125,6 +125,14 @@ enum IntentEnum: string {
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
 
+    case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS = 'web.project.get.all.trainset.components';
+
+    case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY = 'web.project.get.all.trainset.components.with.qty';
+
+    case WEB_PROJECT_GET_ALL_TRAINSET_PANELS = 'web.project.get.all.trainset.panels';
+
+    case WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY = 'web.project.get.all.trainset.panels.with.qty';
+
     case WEB_PROJECT_GET_ALL_CARRIAGES = 'web.project.get.all.carriages';
 
     case WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY = 'web.project.get.all.carriages.with.qty';
@@ -169,9 +177,17 @@ enum IntentEnum: string {
 
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
 
+    case WEB_CARRIAGE_PANEL_ADD_COMPONENT = 'web.carriage.panel.add.component';
+
+    case WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL = 'web.carriage.panel.add.raw.material';
+
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 
+    case WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL = 'web.carriage.panel.component.add.raw.material';
+
     case WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.component.import.progress.and.material';
+
+    case WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS = 'web.carriage.panel.component.change.progress';
 
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
 
@@ -182,6 +198,10 @@ enum IntentEnum: string {
     case WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.panel.progress.and.material';
 
     case WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.component.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.trainset.panel.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.trainset.component.progress.and.material';
 
     case WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.carriage.panel.progress.and.material';
 
@@ -214,6 +234,8 @@ enum IntentEnum: string {
     case WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS = 'web.progress.get.template.import.progress';
 
     case WEB_PROGRESS_IMPORT_PROGRESS = 'web.progress.import.progress';
+
+    case WEB_PROGRESS_CREATE_STEP = 'web.progress.create.step';
 
     case WEB_STEP_GET_TEMPLATE_IMPORT_STEP = 'web.step.get.template.import.step';
 

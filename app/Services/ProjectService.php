@@ -8,6 +8,7 @@ use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImp
 use App\Imports\Project\ProjectsImport;
 use App\Models\Carriage;
 use App\Models\Project;
+use App\Models\Trainset;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
@@ -81,6 +82,24 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         $carriagePanelComponents = $project->carriage_panel_components()->whereCarriageId($carriage->id)->whereComponentId($data['component_id'])->get();
         foreach ($carriagePanelComponents as $carriagePanelComponent) {
             Excel::import(new CarriagePanelComponentProgressMaterialImport($carriagePanelComponent, $data['work_aspect_id'], $data['override'] ?? null), $file);
+        }
+
+        return true;
+    }
+
+    public function importProjectTrainsetPanelProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool {
+        $trainsetPanels = $project->carriage_panels()->whereTrainsetId($trainset->id)->wherePanelId($data['panel_id'])->get();
+        foreach ($trainsetPanels as $trainsetPanel) {
+            Excel::import(new CarriagePanelProgressMaterialImport($trainsetPanel, $data['override']  ?? null), $file);
+        }
+
+        return true;
+    }
+
+    public function importProjectTrainsetComponentProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool {
+        $trainsetPanelComponents = $project->carriage_panel_components()->whereTrainsetId($trainset->id)->whereComponentId($data['component_id'])->get();
+        foreach ($trainsetPanelComponents as $trainsetPanelComponent) {
+            Excel::import(new CarriagePanelComponentProgressMaterialImport($trainsetPanelComponent, $data['work_aspect_id'], $data['override'] ?? null), $file);
         }
 
         return true;

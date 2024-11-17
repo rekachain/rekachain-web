@@ -10,6 +10,7 @@ import { buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/Carriage/Partials/Components/Components/ImportPanelCustomMaterial';
 
 const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();
@@ -25,8 +26,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     useEffect(() => {
         if (selectedPanel) {
             const panelAttachment = trainset.carriage_trainsets
-                .find(carriage => carriage.id === selectedCarriage)
-                ?.carriage_panels.find(panel => panel.id === selectedPanel)?.panel_attachment;
+                .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
+                ?.carriage_panels.find(carriagePanel => carriagePanel.panel.id === selectedPanel)?.panel_attachment;
 
             setAttachment(panelAttachment);
 
@@ -40,7 +41,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     });
             }
         }
-    }, [selectedPanel]);
+    }, [selectedPanel, selectedCarriage]);
 
     const showSerialPanels = () => {
         if (!attachment?.serial_numbers) return;
@@ -70,15 +71,18 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                 {t('pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.title')}
             </h1>
             {attachment && (
-                <Link
-                    className={buttonVariants({
-                        className: 'my-2',
-                    })}
-                    href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
-                    target="_blank"
-                >
-                    {t('pages.project.trainset.carriage.partials.components.preview_panel_attachment.buttons.download')}
-                </Link>
+                <div className="flex gap-4 my-4">
+                    <Link
+                        className={buttonVariants()}
+                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                        target="_blank"
+                    >
+                        {t(
+                            'pages.project.trainset.carriage.partials.components.preview_panel_attachment.buttons.download',
+                        )}
+                    </Link>
+                    <ImportPanelCustomMaterial panelAttachment={attachment} />
+                </div>
             )}
             <div className="flex gap-4 mt-4">
                 {trainset?.carriage_trainsets?.length > 0 && (
@@ -100,9 +104,12 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                {trainset.carriage_trainsets.map(carriage => (
-                                    <SelectItem value={carriage.id?.toString()} key={carriage.id}>
-                                        {carriage.carriage.type}
+                                {trainset.carriage_trainsets.map(carriageTrainset => (
+                                    <SelectItem
+                                        value={carriageTrainset.carriage.id?.toString()}
+                                        key={carriageTrainset.id}
+                                    >
+                                        {carriageTrainset.carriage.type}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -127,9 +134,9 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             </SelectTrigger>
                             <SelectContent>
                                 {trainset.carriage_trainsets
-                                    .find(carriage => carriage.id === selectedCarriage)
+                                    .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
                                     ?.carriage_panels?.map(carriagePanel => (
-                                        <SelectItem value={carriagePanel.id?.toString()} key={carriagePanel.id}>
+                                        <SelectItem value={carriagePanel.panel.id?.toString()} key={carriagePanel.id}>
                                             {carriagePanel.panel.name}
                                         </SelectItem>
                                     ))}
@@ -139,7 +146,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                 )}
             </div>
 
-            {attachment && (
+            {attachment ? (
                 <>
                     <div className="grid grid-cols-3">
                         <div className="flex flex-col gap-3 mt-5">
@@ -253,6 +260,12 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                         </TableBody>
                     </Table>
                 </>
+            ) : (
+                <h1 className="text-red-500 font-bold mt-3">
+                    {t(
+                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.messages.no_attachments',
+                    )}
+                </h1>
             )}
         </div>
     );

@@ -8,8 +8,11 @@ use App\Models\CarriagePanel;
 use App\Support\Interfaces\Repositories\CarriagePanelRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
+use App\Support\Interfaces\Services\ComponentServiceInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelMaterialServiceInterface;
+use App\Support\Interfaces\Services\RawMaterialServiceInterface;
+use DB;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -18,6 +21,8 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
         protected CarriagePanelComponentServiceInterface $carriagePanelComponentService,
         protected PanelMaterialServiceInterface $panelMaterialService,
         protected PanelAttachmentServiceInterface $panelAttachmentService,
+        protected ComponentServiceInterface $componentService,
+        protected RawMaterialServiceInterface $rawMaterialService,
     ) {
         parent::__construct();
     }
@@ -30,6 +35,78 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
         Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel), $file);
 
         return true;
+    }
+
+    public function addComponent(CarriagePanel $carriagePanel, array $data): bool {
+        return DB::transaction(function () use ($carriagePanel, $data) {
+            $componentId = $data['component_id'];
+            $progressId = $data['component_progress_id'];
+            $componentName = $data['component_name'];
+            $componentDescription = $data['component_description'];
+            $carriagePanelQty = $data['carriage_component_qty'];
+
+            if ($componentId) {
+                $component = $this->componentService->findOrFail($componentId);
+            } else {
+                $component = $this->componentService->create([
+                    'name' => $componentName,
+                    'description' => $componentDescription,
+                ]);
+            }
+
+            $carriagePanel->carriage_panel_components()->create([
+                'component_id' => $component->id,
+                'progress_id' => $progressId,
+                'carriage_trainset_id' => null,
+                'qty' => $carriagePanelQty,
+            ]);
+
+            // TODO: change trainset_preset_id to null?
+
+            //            $carriagePanel->trainset()->update(['preset_trainset_id' => null]);
+
+            return true;
+        });
+    }
+
+    public function addRawMaterial(CarriagePanel $carriagePanel, array $data): bool {
+        return DB::transaction(function () use ($carriagePanel, $data) {
+            $rawMaterialId = $data['raw_material_id'];
+            $newRawMaterialCode = $data['new_raw_material_code'];
+            $newRawMaterialDescription = $data['new_raw_material_description'];
+            $newRawMaterialUnit = $data['new_raw_material_unit'];
+            $newRawMaterialSpecs = $data['new_raw_material_specs'];
+            $newRawMaterialQty = $data['new_raw_material_qty'];
+
+            if ($rawMaterialId) {
+                $rawMaterial = $this->rawMaterialService->findOrFail($rawMaterialId);
+            } else {
+                $rawMaterial = $this->rawMaterialService->create([
+                    'code' => $newRawMaterialCode,
+                    'description' => $newRawMaterialDescription,
+                    'unit' => $newRawMaterialUnit,
+                    'specs' => $newRawMaterialSpecs,
+                ]);
+            }
+
+            $carriagePanel->panel_materials()->create([
+                'raw_material_id' => $rawMaterial->id,
+                'qty' => $newRawMaterialQty,
+            ]);
+            //
+            //            $carriagePanel->carriage_panel_components()->create([
+            //                'component_id' => $rawMaterial->id,
+            //                'progress_id' => $progressId,
+            //                'carriage_trainset_id' => null,
+            //                'qty' => $carriagePanelQty,
+            //            ]);
+
+            // TODO: change trainset_preset_id to null?
+
+            //            $carriagePanel->trainset()->update(['preset_trainset_id' => null]);
+
+            return true;
+        });
     }
 
     /**

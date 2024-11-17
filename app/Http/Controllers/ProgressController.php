@@ -81,9 +81,17 @@ class ProgressController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateProgressRequest $request, Progress $progress) {
-        if ($this->ajax()) {
-            return $this->progressService->update($progress, $request->validated());
 
+        $intent = $request->get('intent');
+
+        if ($this->ajax()) {
+
+            switch ($intent) {
+                case IntentEnum::WEB_PROGRESS_CREATE_STEP->value:
+                    return $this->progressService->createStep($progress, $request->validated());
+            }
+
+            return $this->progressService->update($progress, $request->validated());
         }
     }
 

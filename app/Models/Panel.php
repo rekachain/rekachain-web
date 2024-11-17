@@ -38,7 +38,6 @@ class Panel extends Model {
     public function carriage_panels(): HasMany {
         return $this->hasMany(CarriagePanel::class);
     }
-    
 
     /**
      * Currently only used in canBeDeleted method
@@ -48,6 +47,6 @@ class Panel extends Model {
     }
 
     public function canBeDeleted(): bool {
-        return $this->carriages()->doesntExist() && $this->carriage_panel_components()->doesntExist();
+        return $this->carriages()->doesntExist() && $this->carriage_panel_components()->doesntExist() ?? false;
     }
 }

@@ -27,10 +27,6 @@ export const projectService = {
     downloadImportProjectTemplate: async () => {
         window.location.href = '/assets/excel-templates/imports/project/project-import.xlsm';
     },
-    downloadImportProgressRawMaterialTemplate: async () => {
-        window.location.href =
-            '/assets/excel-templates/imports/progress-raw-materials/progress-raw-material-import.xlsx';
-    },
     importProject: async (file: File) => {
         const formData = new FormData();
         formData.append('file', file);

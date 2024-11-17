@@ -1088,6 +1088,9 @@ return [
                             ],
                             'dialogs' => [
                                 'title' => 'KPM Panel',
+                                'messages' => [
+                                    'no_attachments' => 'Tidak ada lampiran yang ditemukan.',
+                                ],
                                 'headers' => [
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
@@ -1233,6 +1236,8 @@ return [
                         ],
                         'actions' => [
                             'carriages' => 'Gerbong',
+                            'components' => 'Komponen',
+                            'panels' => 'Panel',
                         ],
                     ],
                     'trainset_card' => [
