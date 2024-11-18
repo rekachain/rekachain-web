@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider {
             $this->app->register(\App\Providers\TelescopeServiceProvider::class);
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
+        $this->app->register(\App\Providers\ImagickServiceProvider::class);
 
         // gaperlu manual binding karena sudah ada RepositoryServiceProvider
     }
