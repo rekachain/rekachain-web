@@ -507,12 +507,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </ChartContainer>
                         </div>
 
-                        <div className="md:px-5">
+                        <div className="md:px-5 ">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                             <h3 className="text-base">Panel panel pada WS Assembly</h3>
                             <ChartContainer
                                 config={chartConfigTrainset}
-                                className="h-[400px] md:h-[400px] w-[300px] mt-5 text-"
+                                className="h-[400px] md:h-[400px] w-[300px] md:w-[90%] mt-5 text-"
                             >
                                 <BarChart accessibilityLayer data={data['panel']}>
                                     <CartesianGrid vertical={false} />
