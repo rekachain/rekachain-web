@@ -37,15 +37,16 @@ class DatabaseSeeder extends Seeder {
             CarriagePanelComponentSeeder::class,
             ComponentMaterialSeeder::class,
             PanelMaterialSeeder::class,
-            PanelAttachmentSeeder::class,
-            PanelAttachmentHandlerSeeder::class,
-            SerialPanelSeeder::class,
-            DetailWorkerPanelSeeder::class,
             TrainsetAttachmentSeeder::class,
             TrainsetAttachmentHandlerSeeder::class,
             TrainsetAttachmentComponentSeeder::class,
             DetailWorkerTrainsetSeeder::class,
+            PanelAttachmentSeeder::class,
+            PanelAttachmentHandlerSeeder::class,
+            SerialPanelSeeder::class,
+            DetailWorkerPanelSeeder::class,
             FeedbackSeeder::class,
+            HelpdeskContactSeeder::class,
         ]);
     }
 }

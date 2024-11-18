@@ -1,4 +1,5 @@
 export const ROUTES = {
+    DASHBOARD: 'dashboard',
     SERIAL_PANELS: 'serial-panels',
     WORK_DAYS: 'work-days',
     WORK_DAY_TIMES: 'work-day-times',
@@ -22,9 +23,17 @@ export const ROUTES = {
     PROJECTS_COMPONENTS: 'projects.components',
     PROJECTS_PANELS: 'projects.panels',
     PROJECTS_TRAINSETS: 'projects.trainsets',
+    PROJECTS_TRAINSETS_COMPONENTS: 'projects.trainsets.components',
+    PROJECTS_TRAINSETS_PANELS: 'projects.trainsets.panels',
     PROJECTS_TRAINSETS_CARRIAGES: 'projects.trainsets.carriage-trainsets',
     PROJECTS_TRAINSETS_DOWNLOAD_ATTACHMENT: 'projects.trainsets.download-attachment',
-    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_PANELS: 'projects.trainsets.carriage-trainsets.panels',
+    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS: 'projects.trainsets.carriage-trainsets.carriage-panels',
+    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS:
+        'projects.trainsets.carriage-trainsets.carriage-panels.carriage-panel-components',
+    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS:
+        'projects.trainsets.carriage-trainsets.carriage-panels.carriage-panel-components.component-materials',
+    PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS:
+        'projects.trainsets.carriage-trainsets.carriage-panels.panel-materials',
     CARRIAGES: 'carriages',
     CARRIAGE_PRESETS: 'carriage-presets',
     PRESET_TRAINSETS: 'preset-trainsets',
@@ -47,4 +56,5 @@ export const ROUTES = {
     ATTACHMENT_NOTES: 'attachment-notes',
     FEEDBACK: 'feedback',
     CUSTOM_ATTACHMENT_MATERIALS: 'custom-attachment-materials',
+    HELPDESK_CONTACT: 'helpdesk-contact',
 };

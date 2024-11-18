@@ -8,6 +8,7 @@ use App\Http\Resources\DetailWorkerTrainsetResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
@@ -154,6 +155,16 @@ class ApiTrainsetAttachmentController extends ApiController {
                     abort(403, 'Unauthorized');
                 }
                 return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());
+            case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
+                if (!checkPermissions(PermissionEnum::TRAINSET_ATTACHMENT_UPDATE, true) && !\Auth::user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
+                    return response()->json([
+                        'message' => [
+                            __('exception.auth.permission.permission_exception', ['permission' => PermissionEnum::TRAINSET_ATTACHMENT_UPDATE->value]),
+                            __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value])
+                        ],
+                    ], 403);
+                }
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated())->load('attachment_notes','trainset_attachment_handlers'));
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));

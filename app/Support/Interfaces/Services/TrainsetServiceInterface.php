@@ -4,6 +4,7 @@ namespace App\Support\Interfaces\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\Contracts\BaseCrudServiceInterface;
 use App\Models\Trainset;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -89,6 +90,8 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * $data['destination_workstation_id'] - destination workstation ID
      */
     public function generateTrainsetAttachment(Trainset $trainset, array $data): bool|array;
+
+    public function generateAttachmentNumber(Model $model);
 
     /**
      * Export serial numbers

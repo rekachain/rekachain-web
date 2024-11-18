@@ -33,6 +33,7 @@ class RawMaterialController extends Controller {
             }
 
             try {
+                // TODO: might remove the default value of perPage
                 $perPage = request()->get('perPage', 'All');
                 if ($perPage !== 'All') {
                     return RawMaterialResource::collection($this->rawMaterialService->getAllPaginated($request->query(), $perPage));

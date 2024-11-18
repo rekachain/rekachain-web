@@ -29,17 +29,69 @@ class TrainsetAttachment extends Model {
         'supervisor_id',
         'status',
     ];
+
     protected $casts = [
         'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'attachment_number',
+            'status',
+        ],
+        'relation_searchs' => [],
+        'columns' => [
+            'id',
+            'source_workstation_id', 
+            'destination_workstation_id', 
+            'status', 
+            'panel_attachment_id', 
+            'supervisor_id', 
+        ],
+        'relation_columns' => [
+            'detail_worker_trainsets' => [
+                'worker_id',
+            ],
+            'trainset' => [
+                'id',
+                'project_id',
+                'status',
+                'name',
+            ],
+        ]
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
+    public function ancestor(): TrainsetAttachment {
+        $attachment = $this;
+        while ($attachment->parent) {
+            $attachment = $attachment->parent;
+        }
+        return $attachment;
+    }
+
+    public function is_ancestor(): bool {
+        return $this->parent === null;
+    }
+
     public function parent(): BelongsTo {
         return $this->belongsTo(TrainsetAttachment::class, 'trainset_attachment_id');
     }
 
+    public function is_parent(): bool {
+        return $this->childs->count() > 0;
+    }
+
     public function childs(): HasMany {
         return $this->hasMany(TrainsetAttachment::class, 'trainset_attachment_id');
+    }
+
+    public function is_child(): bool {
+        return $this->parent !== null;
     }
     
     public function progresses(): HasManyDeep {

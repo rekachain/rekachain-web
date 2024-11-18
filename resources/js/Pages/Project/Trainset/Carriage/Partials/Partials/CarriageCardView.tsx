@@ -96,11 +96,10 @@ export default function CarriageCardView({
                                 </Button>
                                 <Link
                                     className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_PANELS}.index`, [
-                                        trainset.project_id,
-                                        trainset.id,
-                                        carriage_trainset.id,
-                                    ])}
+                                    href={route(
+                                        `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
+                                        [trainset.project_id, trainset.id, carriage_trainset.id],
+                                    )}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage.partials.partials.carriage_card.actions.panels',

@@ -427,7 +427,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         //        });
     }
 
-    private function generateAttachmentNumber(Model $model) {
+    public function generateAttachmentNumber(Model $model) {
 
         if ($model instanceof PanelAttachment) {
             $carriagePanelIds = $this->carriagePanelService->find([
@@ -481,7 +481,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         ]);
         $totalGeneratedAttachment += $panelAttachments->count();
 
-        if ($totalGeneratedAttachment == $totalRequiredAttachment) {
+        if ($totalGeneratedAttachment > 0) {
             $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
         }
     }

@@ -12,15 +12,24 @@ class TrainsetAttachmentResource extends JsonResource {
 
         switch ($intent) {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:
-                $rawMaterials = $this->component_materials
-                    ->groupBy('raw_material_id')
-                    ->map(fn ($componentMaterials) => [
-                        ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
-                        'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
-                            * $cm->carriage_panel_component->carriage_panel->qty
-                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
-                        ),
-                    ])->sortBy('raw_material.id')->toArray();
+                if ($this->is_child()) {
+                    $rawMaterials = $this->custom_attachment_materials
+                        ->groupBy('raw_material_id')
+                        ->map(fn ($componentMaterials) => [
+                            ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                            'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty),
+                        ])->sortBy('raw_material.id')->toArray();
+                } else {
+                    $rawMaterials = $this->component_materials
+                        ->groupBy('raw_material_id')
+                        ->map(fn ($componentMaterials) => [
+                            ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                            'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
+                                * $cm->carriage_panel_component->carriage_panel->qty
+                                * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
+                            ),
+                        ])->sortBy('raw_material.id')->toArray();
+                }
 
                 return [
                     'id' => $this->id,
@@ -45,10 +54,27 @@ class TrainsetAttachmentResource extends JsonResource {
                     'updated_at' => $this->updated_at->toDateTimeString(),
                     'formatted_created_at' => $this->created_at->format('d F Y'),
                     'formatted_updated_at' => $this->updated_at->format('d F Y'),
+                    'is_ancestor' => $this->is_ancestor(),
+                    'is_parent' => $this->is_parent(),
+                    'is_child' => $this->is_child(),
+                    'ancestor' => $this->when($this->is_child() && $this->parent->is_child(), $this->ancestor()),
+                    'parent' => $this->when($this->is_child(), $this->parent),
+                    'childs' => $this->when($this->is_parent(), $this->childs),
                 ];
-
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE->value:
+                $attachmentComponentMaterials = collect();
+                $attachmentComponentMaterials = $this->ancestor()->component_materials;
+                return $attachmentComponentMaterials
+                    ->groupBy('raw_material_id')
+                    ->map(fn ($componentMaterials) => [
+                        ...RawMaterialResource::make($componentMaterials->first()->raw_material)->toArray($request),
+                        'total_qty' => $componentMaterials->sum(fn ($cm) => $cm->qty * $cm->carriage_panel_component->qty
+                            * $cm->carriage_panel_component->carriage_panel->qty
+                            * $cm->carriage_panel_component->carriage_panel->carriage_trainset->qty
+                        ),
+                    ])->sortBy('raw_material.id')->toArray();
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components']);
+                $trainsetAttachment = $this->ancestor()->load(['trainset_attachment_components']);
 
                 $components = $trainsetAttachment->trainset_attachment_components->mapToGroups(function ($trainset_attachment_component) {
                     return [
@@ -75,7 +101,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     'components' => $components,
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_REQUIRED_COMPONENTS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components']);
+                $trainsetAttachment = $this->ancestor()->load(['trainset_attachment_components']);
                 $components = $trainsetAttachment->trainset_attachment_components->filter(function ($trainset_attachment_component) {
                     return $trainset_attachment_component->total_fulfilled !== $trainset_attachment_component->total_required;
                 })->map(function ($trainset_attachment_component) {
@@ -109,6 +135,9 @@ class TrainsetAttachmentResource extends JsonResource {
                     'trainset_attachment_id' => $this->trainset_attachment_id,
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
+                    'is_ancestor' => $this->is_ancestor(),
+                    'is_parent' => $this->is_parent(),
+                    'is_child' => $this->is_child(),
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
@@ -127,9 +156,15 @@ class TrainsetAttachmentResource extends JsonResource {
                     'attachment_notes' => AttachmentNoteResource::collection($this->attachment_notes),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
+                    'is_ancestor' => $this->is_ancestor(),
+                    'is_parent' => $this->is_parent(),
+                    'is_child' => $this->is_child(),
+                    'ancestor' => $this->when($this->is_child() && $this->parent->is_child(), $this->ancestor()),
+                    'parent' => $this->when($this->is_child(), $this->parent),
+                    'childs' => $this->when($this->is_parent(), $this->childs),
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_MATERIALS->value:
-                $trainsetAttachment = $this->load(['trainset_attachment_components' => ['carriage_panel_component' => ['component_materials']]]);
+                $trainsetAttachment = $this->ancestor()->load(['trainset_attachment_components' => ['carriage_panel_component' => ['component_materials']]]);
 
                 $materials = collect();
                 $trainsetAttachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use (&$materials) {
@@ -162,8 +197,9 @@ class TrainsetAttachmentResource extends JsonResource {
                     'materials' => $materials,
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
+                $attachment = $this->ancestor();
                 $componentSteps = collect();
-                $this->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
+                $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
                     $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
                         $step = $componentSteps->firstWhere('step_id', $progressStep->step_id);
                         if (!$step) {
@@ -179,7 +215,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     });
                 });
                 // return $componentSteps->toArray();
-                $trainsetAttachmentComponents = $this->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($componentSteps) {
+                $trainsetAttachmentComponents = $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($componentSteps) {
                     $steps = collect();
                     $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
                         $workers = collect();
@@ -222,7 +258,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         'component' => ComponentResource::make($trainsetAttachmentComponent->carriage_panel_component->component),
                         'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
                         'total_steps' => $steps->count(),
-                        'steps' => $steps->sortBy('step_id')->map(fn($step) => $step)->values(),
+                        'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
                     ];
                 });
 
@@ -247,11 +283,18 @@ class TrainsetAttachmentResource extends JsonResource {
                     'supervisor' => UserResource::make($this->whenLoaded('supervisor')),
                     'trainset_attachment_id' => $this->trainset_attachment_id,
                     'trainset_attachment_handlers' => TrainsetAttachmentHandlerResource::collection($this->whenLoaded('trainset_attachment_handlers')),
+                    'attachment_notes' => AttachmentNoteResource::collection($this->whenLoaded('attachment_notes')),
                     'raw_materials' => RawMaterialResource::collection($this->whenLoaded('raw_materials')),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                     'formatted_created_at' => $this->created_at->format('d F Y'),
                     'formatted_updated_at' => $this->updated_at->format('d F Y'),
+                    'is_ancestor' => $this->is_ancestor(),
+                    'is_parent' => $this->is_parent(),
+                    'is_child' => $this->is_child(),
+                    'ancestor' => $this->when($this->is_child() && $this->parent->is_child(), $this->ancestor()),
+                    'parent' => $this->when($this->is_child(), $this->parent),
+                    'childs' => $this->when($this->is_parent(), $this->childs),
                 ];
         }
     }

@@ -955,6 +955,8 @@ return [
                         ],
                         'dialogs' => [
                             'generate_attachment_title' => 'Generate Attachment',
+                            'confirm_generate_attachment_raw_materials' => 'Raw Material Confirmation',
+                            'confirm_generate_attachment_raw_materials_description' => 'Please confirm the following raw materials to be attached to the trainset.',
                             'fields' => [
                                 'source_workstation' => 'Source Workstation',
                                 'source_workstation_placeholder' => 'Select Source Workstation',
@@ -1086,6 +1088,9 @@ return [
                             ],
                             'dialogs' => [
                                 'title' => 'Panel Attachment',
+                                'messages' => [
+                                    'no_attachments' => 'No attachments found for the selected panel and carriage.',
+                                ],
                                 'headers' => [
                                     'attachment_number' => 'Attachment Number',
                                     'reservation_number' => 'Reservation Number',
@@ -1158,6 +1163,59 @@ return [
                                 ],
                             ],
                         ],
+                        'preview_generate_panel_attachment' => [
+                            'dialogs' => [
+                                'title' => 'Panel Attachment',
+                                'messages' => [
+                                    'no_materials' => 'No raw materials found for the selected panel and carriage.',
+                                ],
+                                'fields' => [
+                                    'carriage' => 'Carriage',
+                                    'carriage_placeholder' => 'Select Carriage',
+                                    'panel' => 'Panel',
+                                    'panel_placeholder' => 'Select Panel',
+                                ],
+                                'headers' => [
+                                    'material_list' => 'Material List',
+                                ],
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'preview_generate_trainset_attachment' => [
+                            'messages' => [
+                                'no_materials' => 'No raw materials found for the selected panel and carriage.',
+                            ],
+                            'dialogs' => [
+                                'title' => 'Trainset Attachment',
+                                'raw_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'description' => 'Description',
+                                        'specs' => 'Specs',
+                                        'unit' => 'Unit',
+                                        'total_qty' => 'Total Qty',
+                                    ],
+                                    'others' => [
+                                        'captions' => [
+                                            'list_material_within_attachment' => 'List of Material within Trainset Attachment',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -1178,6 +1236,8 @@ return [
                         ],
                         'actions' => [
                             'carriages' => 'Carriages',
+                            'components' => 'Components',
+                            'panels' => 'Panels',
                         ],
                     ],
                     'trainset_card' => [

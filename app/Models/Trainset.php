@@ -26,6 +26,40 @@ class Trainset extends Model {
         'status' => TrainsetStatusEnum::class,
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'name',
+        ],
+        'columns' => [
+            'id',
+            'project_id',
+            'name',
+            'status',
+        ],
+        'relation_columns' => [
+            'project' => [
+                'id',
+                'name',
+            ],
+            'carriages' => [
+                'type',
+                'description',
+            ],
+            'trainset_attachments' => [
+                'source',
+                'description',
+            ],
+            'panel_attachments' => [
+                'type',
+                'description',
+            ],
+        ]
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
     public function project(): BelongsTo {
         return $this->belongsTo(Project::class);
     }

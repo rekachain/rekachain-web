@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -35,6 +36,31 @@ class PermissionHelper {
             }
         }
 
-        return $returnBool ? false : abort(403, __('exception.auth.permission.permission_exception', ['permission' => implode(', ', array_map(fn($perm) => $perm->value, $permissions))]));
+        return $returnBool ? false : abort(403, __('exception.auth.permission.permission_exception', ['permission' => implode(', ', array_map(fn ($perm) => $perm->value, $permissions))]));
+    }
+
+    /**
+     * Check user roles.
+     */
+    public static function checkRoles(RoleEnum|array $roles, bool $returnBool = false, bool $strict = false): ?bool {
+        $user = Auth::user(); // Using Auth facade for consistency
+
+        // Ensure we work with an array
+        $roles = is_array($roles) ? $roles : [$roles];
+
+        foreach ($roles as $role) {
+            if ($user->hasRole($role->value)) {
+                if (!$strict) {
+                    return true;
+                }
+            } elseif ($strict) {
+                if ($returnBool) {
+                    return false;
+                }
+                abort(403, __('exception.auth.permission.role_exception', ['role' => $role->value]));
+            }
+        }
+
+        return $returnBool ? false : abort(403, __('exception.auth.permission.role_exception', ['role' => implode(', ', array_map(fn ($role) => $role->value, $roles))]));
     }
 }

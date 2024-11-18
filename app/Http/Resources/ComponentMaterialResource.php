@@ -17,6 +17,8 @@ class ComponentMaterialResource extends JsonResource {
             'carriage_panel_component_id' => $this->carriage_panel_component_id,
             'raw_material_id' => $this->raw_material_id,
             'qty' => $this->qty,
+            'raw_material' => RawMaterialResource::make($this->whenLoaded('raw_material')),
+            'carriage_panel_component' => CarriagePanelComponentResource::make($this->whenLoaded('carriage_panel_component')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

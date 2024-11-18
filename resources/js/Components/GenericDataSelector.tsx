@@ -191,12 +191,12 @@ const GenericDataSelector = <T extends Resource>({
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            <PopoverTrigger asChild id={id}>
+            <PopoverTrigger asChild id={id} className="w-">
                 <Button
                     variant="outline"
                     role="combobox"
                     aria-expanded={openPopover}
-                    className={cn('w-full justify-between', buttonClassName)}
+                    className={cn('w-40 justify-between', buttonClassName)}
                 >
                     {selectedDataId
                         ? items.find(item => item.id === selectedDataId)

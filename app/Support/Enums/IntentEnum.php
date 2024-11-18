@@ -31,6 +31,8 @@ enum IntentEnum: string {
 
     case API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'api.trainset.attachment.get.attachment.progress';
 
+    case API_TRAINSET_ATTACHMENT_UPDATE_ATTACHMENT_STATUS = 'api.trainset.attachment.update.attachment.status';
+
     case API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER = 'api.trainset.attachment.update.assign.spv.and.receiver';
 
     case API_TRAINSET_ATTACHMENT_COMPONENT_GET_COMPONENT_DETAILS = 'api.trainset.attachment.component.get.component.details';
@@ -123,6 +125,14 @@ enum IntentEnum: string {
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
 
+    case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS = 'web.project.get.all.trainset.components';
+
+    case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY = 'web.project.get.all.trainset.components.with.qty';
+
+    case WEB_PROJECT_GET_ALL_TRAINSET_PANELS = 'web.project.get.all.trainset.panels';
+
+    case WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY = 'web.project.get.all.trainset.panels.with.qty';
+
     case WEB_PROJECT_GET_ALL_CARRIAGES = 'web.project.get.all.carriages';
 
     case WEB_PROJECT_GET_ALL_CARRIAGES_WITH_QTY = 'web.project.get.all.carriages.with.qty';
@@ -167,17 +177,31 @@ enum IntentEnum: string {
 
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
 
+    case WEB_CARRIAGE_PANEL_ADD_COMPONENT = 'web.carriage.panel.add.component';
+
+    case WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL = 'web.carriage.panel.add.raw.material';
+
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
+
+    case WEB_CARRIAGE_PANEL_COMPONENT_ADD_RAW_MATERIAL = 'web.carriage.panel.component.add.raw.material';
 
     case WEB_CARRIAGE_PANEL_COMPONENT_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.component.import.progress.and.material';
 
+    case WEB_CARRIAGE_PANEL_COMPONENT_CHANGE_PROGRESS = 'web.carriage.panel.component.change.progress';
+
     case WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL = 'web.panel.get.template.import.panel';
+
+    case WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE = 'web.panel.get.panel.material.and.progress.template';
 
     case WEB_PANEL_IMPORT_PANEL = 'web.panel.import.panel';
 
     case WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.panel.progress.and.material';
 
     case WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.component.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.trainset.panel.progress.and.material';
+
+    case WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL = 'web.project.import.trainset.component.progress.and.material';
 
     case WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL = 'web.project.import.carriage.panel.progress.and.material';
 
@@ -203,11 +227,15 @@ enum IntentEnum: string {
 
     case WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT = 'web.component.get.template.import.component';
 
+    case WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE = 'web.component.get.component.material.and.progress.template';
+
     case WEB_COMPONENT_IMPORT_COMPONENT = 'web.component.import.component';
 
     case WEB_PROGRESS_GET_TEMPLATE_IMPORT_PROGRESS = 'web.progress.get.template.import.progress';
 
     case WEB_PROGRESS_IMPORT_PROGRESS = 'web.progress.import.progress';
+
+    case WEB_PROGRESS_CREATE_STEP = 'web.progress.create.step';
 
     case WEB_STEP_GET_TEMPLATE_IMPORT_STEP = 'web.step.get.template.import.step';
 
@@ -225,7 +253,13 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE = 'web.trainset.attachment.get.custom.attachment.material.import.template';
+
+    case WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT = 'web.trainset.attachment.assign.referenced.attachment';
+
     case WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.trainset.attachment.assign.custom.attachment.material';
+
+    case WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT = 'web.trainset.attachment.assign.referenced.attachment.and.material.import';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL = 'web.panel.attachment.get.panel';
 
@@ -239,9 +273,17 @@ enum IntentEnum: string {
 
     case WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT = 'web.panel.attachment.download.panel.attachment';
 
+    case WEB_PANEL_ATTACHMENT_GET_CUSTOM_ATTACHMENT_MATERIAL_IMPORT_TEMPLATE = 'web.panel.attachment.get.custom.attachment.material.import.template';
+
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS = 'web.panel.attachment.get.panel.materials';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY = 'web.panel.attachment.get.panel.materials.with.qty';
 
+    case WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT = 'web.panel.attachment.assign.referenced.attachment';
+
     case WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL = 'web.panel.attachment.assign.custom.attachment.material';
+
+    case WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT = 'web.panel.attachment.assign.referenced.attachment.and.material.import';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE = 'web.trainset.attachment.get.component.materials.with.qty.for.template';
 }

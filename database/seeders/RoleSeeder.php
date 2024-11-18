@@ -14,8 +14,8 @@ class RoleSeeder extends Seeder {
     public function run(): void {
         $roles = [
             ['name' => RoleEnum::SUPER_ADMIN->value],
-            ['name' => RoleEnum::PPC_PERENCANAAN->value],
-            ['name' => RoleEnum::PPC_PENGENDALIAN->value],
+            ['name' => RoleEnum::PPC_PERENCANAAN->value, 'level' => 'PPC'],
+            ['name' => RoleEnum::PPC_PENGENDALIAN->value, 'level' => 'PPC'],
             ['name' => RoleEnum::SUPERVISOR_MEKANIK->value, 'level' => 'Supervisor', 'division_id' => 1],
             ['name' => RoleEnum::SUPERVISOR_ELEKTRIK->value, 'level' => 'Supervisor', 'division_id' => 2],
             ['name' => RoleEnum::SUPERVISOR_ASSEMBLY->value, 'level' => 'Supervisor', 'division_id' => 3],

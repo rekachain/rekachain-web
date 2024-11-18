@@ -90,7 +90,12 @@ class CarriagePanelController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL->value:
                     return $this->carriagePanelService->importProgressMaterialData($request->file('file'), $CarriagePanel);
+                case IntentEnum::WEB_CARRIAGE_PANEL_ADD_COMPONENT->value:
+                    return $this->carriagePanelService->addComponent($CarriagePanel, $request->validated());
+                case IntentEnum::WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL->value:
+                    return $this->carriagePanelService->addRawMaterial($CarriagePanel, $request->validated());
             }
+
             return new CarriagePanelResource($this->carriagePanelService->update($CarriagePanel, $request->validated()));
         }
 
