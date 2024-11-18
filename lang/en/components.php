@@ -2,6 +2,15 @@
 
 return [
     'navbar' => [
+        'toggle_dark_mode' => [
+            'title' => 'Toggle Dark Mode',
+        ],
+        'download_app' => [
+            'title' => 'Download App',
+        ],
+        'view_manual_book' => [
+            'title' => 'View Manual Book',
+        ],
         'search' => [
             'placeholder' => 'Search...',
         ],

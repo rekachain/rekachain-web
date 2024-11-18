@@ -2,6 +2,15 @@
 
 return [
     'navbar' => [
+        'toggle_dark_mode' => [
+            'title' => 'Ganti Mode Gelap',
+        ],
+        'download_app' => [
+            'title' => 'Unduh Aplikasi',
+        ],
+        'view_manual_book' => [
+            'title' => 'Lihat Buku Manual',
+        ],
         'search' => [
             'placeholder' => 'Cari...',
         ],
