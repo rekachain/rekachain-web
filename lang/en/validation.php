@@ -177,23 +177,22 @@ return [
             'unauthorized' => 'You do not have permission to access this application.',
             'role_exception' => 'The user must have the ":role" role',
         ],
-
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-
         'permission' => [
             'permission_name' => [
                 'regex' => 'The :attribute must be in the format of \'group-action\'.',
             ],
         ],
-
         'preset_trainset' => [
             'unique_preset_name_in_project' => 'The combination of preset name and project ID must be unique.',
         ],
-
         'carriage_trainset' => [
             'unique_panel' => 'The selected panel is already in the carriage.',
+        ],
+        'carriage_panel' => [
+            'unique_component' => 'The selected component is already in the panel.',
         ],
         'serial_panel' => [
             'assign_worker' => [
@@ -215,7 +214,7 @@ return [
             'update_worker' => [
                 'field_update_role_exception' => 'Only user with role :role can update ":field" field',
             ],
-        ]
+        ],
     ],
 
     /*

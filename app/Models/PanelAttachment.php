@@ -90,6 +90,18 @@ class PanelAttachment extends Model {
         return $this->hasOneThrough(Progress::class, CarriagePanel::class, 'id', 'id', 'carriage_panel_id', 'progress_id');
     }
 
+    public function ancestor(): PanelAttachment {
+        $attachment = $this;
+        while ($attachment->parent) {
+            $attachment = $attachment->parent;
+        }
+        return $attachment;
+    }
+
+    public function is_ancestor(): bool {
+        return $this->parent === null;
+    }
+
     public function parent(): BelongsTo {
         return $this->belongsTo(PanelAttachment::class, 'panel_attachment_id', 'id');
     }

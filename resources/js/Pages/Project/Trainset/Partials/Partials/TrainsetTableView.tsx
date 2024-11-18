@@ -72,6 +72,24 @@ export default function TrainsetTableView({
                                 >
                                     {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
                                 </Link>
+                                <Link
+                                    className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [
+                                        project.id,
+                                        trainset.id,
+                                    ])}
+                                >
+                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.components')}
+                                </Link>
+                                <Link
+                                    className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [
+                                        project.id,
+                                        trainset.id,
+                                    ])}
+                                >
+                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.panels')}
+                                </Link>
                             </TableCell>
                         </TableRow>
                     ))}

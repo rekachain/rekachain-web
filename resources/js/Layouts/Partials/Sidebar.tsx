@@ -12,7 +12,6 @@ import {
     RiHome8Line,
     RiInstanceLine,
     RiLockUnlockLine,
-    RiQuestionLine,
     RiSettings3Line,
     RiShieldLine,
     RiStackLine,
@@ -34,6 +33,7 @@ import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { checkPermission } from '@/Helpers/sidebarHelper';
 import { SidebarProvider } from '@/Contexts/SidebarContext';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import SidebarHelpdesk from '@/Layouts/Partials/Components/SidebarHelpdesk';
 
 export default function Sidebar() {
     const { t } = useLaravelReactI18n();
@@ -266,11 +266,9 @@ export default function Sidebar() {
                             title={t('components.sidebar.links.feedback')}
                             icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
-                        <SidebarLink
-                            routeName={`${ROUTES.PROFILE}.edit`}
-                            title={t('components.sidebar.links.helpdesk')}
-                            icon={<RiQuestionLine size={STYLING.ICON.SIZE.SMALL} />}
-                        />
+
+                        <SidebarHelpdesk />
+
                         <SidebarLogout />
                     </SidebarMenu>
                 </nav>

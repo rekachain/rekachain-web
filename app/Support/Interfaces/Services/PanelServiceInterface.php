@@ -3,6 +3,7 @@
 namespace App\Support\Interfaces\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\Contracts\BaseCrudServiceInterface;
+use App\Models\Panel;
 use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -21,4 +22,6 @@ interface PanelServiceInterface extends BaseCrudServiceInterface {
      * Serve the panel template.
      */
     public function getImportDataTemplate(): BinaryFileResponse;
+
+    public function getImportDataRawMaterialAndProgressTemplate(Panel $panel): BinaryFileResponse;
 }

@@ -27,13 +27,13 @@ import { OctagonAlert } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/UI/dropdown-menu';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/UI/tooltip';
+import { componentService } from '@/Services/componentService';
 
 export default function ({
     project,
@@ -118,7 +118,7 @@ export default function ({
                     <Button
                         type="button"
                         variant="secondary"
-                        onClick={projectService.downloadImportProgressRawMaterialTemplate}
+                        onClick={componentService.downloadImportProgressRawMaterialTemplate.bind(null, component.id)}
                         disabled={loading}
                     >
                         {loading

@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ComponentMaterial extends Pivot
-{
+class ComponentMaterial extends Pivot {
     use HasFactory;
 
     protected $table = 'component_materials';
-
     public $incrementing = true;
-
     protected $fillable = [
         'carriage_panel_component_id',
         'raw_material_id',

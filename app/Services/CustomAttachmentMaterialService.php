@@ -27,19 +27,20 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         return CustomAttachmentMaterialRepositoryInterface::class;
     }
 
-    public function getImportDataTemplate(Model $model): BinaryFileResponse{
-        if ($model instanceof PanelAttachment) {
-            $prefix = $model->carriage_panel->panel->name . 
-                '-' . $model->carriage_panel->carriage_trainset->carriage->type . 
-                '-' . $model->carriage_panel->carriage_trainset->trainset->name . 
-                '-' . $model->carriage_panel->carriage_trainset->trainset->project->name;
+    public function getImportDataTemplate(Model $attachment): BinaryFileResponse {
+        if ($attachment instanceof PanelAttachment) {
+            $prefix = $attachment->carriage_panel->panel->name .
+                '-' . $attachment->carriage_panel->carriage_trainset->carriage->type .
+                '-' . $attachment->carriage_panel->carriage_trainset->trainset->name .
+                '-' . $attachment->carriage_panel->carriage_trainset->trainset->project->name;
         } else {
-            $prefix = $model->type . '-' . $model->trainset->name . '-' . $model->trainset->project->name;
+            $prefix = ucfirst($attachment->type->value) . '-' . $attachment->trainset->name . '-' . $attachment->trainset->project->name;
         }
-        return (new CustomAttachmentMaterialsTemplateExport($model))->download($prefix . '-Raw Material Addition.xlsx');
+
+        return (new CustomAttachmentMaterialsTemplateExport($attachment))->download($prefix . '-Raw Material Addition.xlsx');
     }
-    
-    public function addNewAttachment(Model $attachment, array $data): Model{
+
+    public function addNewAttachment(Model $attachment, array $data): Model {
         if ($attachment instanceof PanelAttachment) {
             $newTrainsetAttachment = $attachment->childs()->create([
                 'carriage_panel_id' => $attachment->carriage_panel_id,
@@ -66,6 +67,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         }
         $newTrainsetAttachment->update(['attachment_number' => $this->trainsetService->generateAttachmentNumber($newTrainsetAttachment)]);
         $this->generateAttachmentQrCode($newTrainsetAttachment);
+
         return $newTrainsetAttachment;
     }
 
@@ -74,15 +76,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
             $qrCode = "KPM:{$model->attachment_number};P:{$model->trainset->project->name};TS:{$model->trainset->name};;";
             $path = "trainset_attachments/qr_images/{$model->id}.svg";
         } else {
-            $currentModel = $model;
-            $serialPanelIds = [];
-            while ($currentModel->is_child()) {
-                if ($currentModel->parent->serial_panels()->count() > 0) {
-                    $serialPanelIds = $currentModel->parent->serial_panels()->pluck('id')->toArray();
-                    break;
-                }
-                $currentModel = $currentModel->parent;
-            }
+            $serialPanelIds = $model->ancestor()->serial_panels()->pluck('id')->toArray();
             $serialPanelIdsString = implode(',', $serialPanelIds);
             $qrCode = "KPM:{$model->attachment_number};SN:[{$serialPanelIdsString}];P:{$model->trainset->project->name};TS:{$model->trainset->name};;";
             $path = "panel_attachments/qr_images/{$model->id}.svg";
@@ -92,7 +86,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         Storage::put("public/{$path}", $qrCode);
     }
 
-    public function importCustomAttachmentMaterial(Model $attachment, array $data): Model{
+    public function importCustomAttachmentMaterial(Model $attachment, array $data): Model {
         if (array_key_exists('to_be_assigned', $data) && !$data['to_be_assigned']) {
             $newAttachment = $attachment;
         } else {
@@ -100,6 +94,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
         }
         $file = request()->file('file');
         Excel::import(new CustomAttachmentMaterialsImport($newAttachment, $data['override'] ?? null), $file);
+
         return $newAttachment;
     }
 }

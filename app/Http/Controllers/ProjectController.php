@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Project\Carriage\CarriageProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
+use App\Http\Requests\Project\Trainset\TrainsetProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
+use App\Http\Resources\CarriagePanelComponentResource;
+use App\Http\Resources\CarriagePanelResource;
 use App\Http\Resources\CarriageResource;
 use App\Http\Resources\CarriageTrainsetResource;
 use App\Http\Resources\ComponentResource;
@@ -13,6 +16,8 @@ use App\Http\Resources\PresetTrainsetResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TrainsetResource;
 use App\Models\Carriage;
+use App\Models\CarriagePanel;
+use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Models\Panel;
 use App\Models\Project;
@@ -148,7 +153,32 @@ class ProjectController extends Controller {
         return inertia('Project/Trainset/Index', ['project' => $project]);
     }
 
-    public function project_trainset(Request $request, Project $project, Trainset $trainset) {
+    public function project_trainset(TrainsetProjectRequest $request, Project $project, Trainset $trainset) {
+        $intent = $request->get('intent');
+        if ($this->ajax()) {
+            switch ($intent) {
+                // resources
+                case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS->value:
+                    return ComponentResource::collection($project->components()->whereTrainsetId($trainset->id)->distinct()->get());
+                case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY->value:
+                    return ProjectResource::make($project)->projectTrainset($trainset);
+                case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS->value:
+                    return PanelResource::collection($project->panels()->whereTrainsetId($trainset->id)->distinct()->get());
+                case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY->value:
+                    return ProjectResource::make($project)->projectTrainset($trainset);
+
+                    // services
+                case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL->value:
+                    return $this->projectService->importProjectTrainsetPanelProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
+                case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL->value:
+                    return $this->projectService->importProjectTrainsetComponentProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
+            }
+
+            return [
+                'project' => new ProjectResource($project),
+                'trainset' => new TrainsetResource($trainset->load(['carriages'])),
+            ];
+        }
         $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset->load(['carriages']));
 
@@ -180,13 +210,14 @@ class ProjectController extends Controller {
                     return PanelResource::collection($project->panels()->whereCarriageId($carriage->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY->value:
                     return ProjectResource::make($project)->projectCarriage($carriage);
-                
-                // services
+
+                    // services
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL->value:
                     return $this->projectService->importProjectCarriagePanelProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL->value:
-                    return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->validated());    
+                    return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
             }
+
             return [
                 'project' => new ProjectResource($project),
                 'carriage' => new CarriageResource($carriage),
@@ -194,7 +225,6 @@ class ProjectController extends Controller {
         }
         $project = new ProjectResource($project);
         $carriage = new CarriageResource($carriage);
-
 
         return inertia('Project/Carriage/Component/Index', compact('project', 'carriage'));
     }
@@ -208,6 +238,7 @@ class ProjectController extends Controller {
                 'carriage' => $carriage,
             ];
         }
+
         return inertia('Project/Carriage/Component/Index', compact('project', 'carriage'));
     }
 
@@ -220,6 +251,7 @@ class ProjectController extends Controller {
                 'carriage' => $carriage,
             ];
         }
+
         return inertia('Project/Carriage/Panel/Index', compact('project', 'carriage'));
     }
 
@@ -247,9 +279,37 @@ class ProjectController extends Controller {
         return inertia('Project/Panel/Index', compact('project'));
     }
 
+    public function project_trainset_components(Request $request, Project $project, Trainset $trainset) {
+        $project = new ProjectResource($project);
+        $trainset = new TrainsetResource($trainset);
+
+        if ($this->ajax()) {
+            return [
+                'project' => $project,
+                'trainset' => $trainset,
+            ];
+        }
+
+        return inertia('Project/Trainset/Component/Index', compact('project', 'trainset'));
+    }
+
+    public function project_trainset_panels(Request $request, Project $project, Trainset $trainset) {
+        $project = new ProjectResource($project);
+        $trainset = new TrainsetResource($trainset);
+
+        if ($this->ajax()) {
+            return [
+                'project' => $project,
+                'trainset' => $trainset,
+            ];
+        }
+
+        return inertia('Project/Trainset/Panel/Index', compact('project', 'trainset'));
+    }
+
     public function project_trainset_carriageTrainsets(Request $request, Project $project, Trainset $trainset) {
         $project = new ProjectResource($project);
-        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachment' => ['serial_panels']], 'carriage']]));
+        $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachments' => ['serial_panels']], 'carriage']]));
         // sementara
         $presetTrainsets = PresetTrainsetResource::collection($this->presetTrainsetService->with(['carriage_presets' => [
             'carriage',
@@ -274,7 +334,7 @@ class ProjectController extends Controller {
         return inertia('Project/Trainset/Carriage/Show', ['carriage' => $carriage]);
     }
 
-    public function project_trainset_carriageTrainset_panels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
+    public function project_trainset_carriageTrainset_carriagePanels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
         $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
@@ -283,12 +343,52 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset');
         }
 
-        return inertia('Project/Trainset/Carriage/Panel/Index', compact('project', 'trainset', 'carriageTrainset'));
+        return inertia('Project/Trainset/Carriage/CarriagePanel/Index', compact('project', 'trainset', 'carriageTrainset'));
+    }
+
+    public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponents(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
+        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel', 'carriage_panel_components' => ['progress' => ['progress_steps' => ['step']], 'component', 'component_materials' => ['raw_material']]]));
+        $project = ProjectResource::make($project);
+        $trainset = TrainsetResource::make($trainset);
+
+        if ($this->ajax()) {
+            return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel');
+        }
+
+        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
+    }
+
+    public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponent_componentMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel, CarriagePanelComponent $carriagePanelComponent) {
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
+        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel', 'carriage_panel_components' => ['progress', 'component', 'component_materials' => ['raw_material']]]));
+        $carriagePanelComponent = new CarriagePanelComponentResource($carriagePanelComponent->load(['component', 'component_materials' => ['raw_material']]));
+        $project = ProjectResource::make($project);
+        $trainset = TrainsetResource::make($trainset);
+
+        if ($this->ajax()) {
+            return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent');
+        }
+
+        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent'));
+    }
+
+    public function project_trainset_carriageTrainset_carriagePanel_panelMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
+        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel_materials' => ['raw_material']]));
+        $project = ProjectResource::make($project);
+        $trainset = TrainsetResource::make($trainset);
+
+        if ($this->ajax()) {
+            return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel');
+        }
+
+        return inertia('Project/Trainset/Carriage/CarriagePanel/PanelMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
     }
 
     public function panel(Request $request, Project $project, Trainset $trainset, Carriage $carriage, Panel $panel) {
         $panel = new PanelResource($panel);
 
-        return inertia('Project/Trainset/Carriage/Panel/Show', ['panel' => $panel]);
+        return inertia('Project/Trainset/Carriage/CarriagePanel/Show', ['panel' => $panel]);
     }
 }

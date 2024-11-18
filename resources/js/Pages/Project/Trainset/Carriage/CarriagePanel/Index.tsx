@@ -21,8 +21,8 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { withLoading } from '@/Utils/withLoading';
-import AddNewPanel from '@/Pages/Project/Trainset/Carriage/Panel/Partials/AddNewPanel';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import AddNewPanel from '@/Pages/Project/Trainset/Carriage/CarriagePanel/Partials/AddNewPanel';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 

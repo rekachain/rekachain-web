@@ -1088,6 +1088,9 @@ return [
                             ],
                             'dialogs' => [
                                 'title' => 'Panel Attachment',
+                                'messages' => [
+                                    'no_attachments' => 'No attachments found for the selected panel and carriage.',
+                                ],
                                 'headers' => [
                                     'attachment_number' => 'Attachment Number',
                                     'reservation_number' => 'Reservation Number',
@@ -1233,6 +1236,8 @@ return [
                         ],
                         'actions' => [
                             'carriages' => 'Carriages',
+                            'components' => 'Components',
+                            'panels' => 'Panels',
                         ],
                     ],
                     'trainset_card' => [

@@ -36,7 +36,7 @@ class CarriagePanelResource extends JsonResource {
             'carriage_trainset' => new CarriageTrainsetResource($this->whenLoaded('carriage_trainset')),
             'carriage_panel_components' => CarriagePanelComponentResource::collection($this->whenLoaded('carriage_panel_components')),
             'panel_materials' => PanelMaterialResource::collection($this->whenLoaded('panel_materials')),
-            'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
+            'panel_attachments' => PanelAttachmentResource::collection($this->whenLoaded('panel_attachments')),
             'qty' => $this->qty,
             'carriage_trainset_id' => $this->carriage_trainset_id,
             'panel_id' => $this->panel_id,
