@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use File;
 use Illuminate\Support\ServiceProvider;
 use Imagick;
 
@@ -12,7 +13,7 @@ class ImagickServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        file_exists(storage_path('app/temp/imagick')) ?: mkdir(storage_path('app/temp/imagick'), 0755, true);
+        File::exists(storage_path('app/temp/imagick')) ?: File::makeDirectory(storage_path('app/temp/imagick'), 0755, true);
         Imagick::setRegistry('temporary-path', storage_path('app/temp/imagick'));
     }
 
