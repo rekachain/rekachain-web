@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
-import { Sun } from 'lucide-react';
+import { Menu, Sun } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,6 +16,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/UI/dropdown-menu';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+
 import { STYLING } from '@/Support/Constants/styling';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useMediaQuery } from 'react-responsive';
@@ -66,7 +68,7 @@ export default function Navbar() {
         changeHtmlClass();
     };
     return (
-        <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
+        <nav className="flex h-16 border-b-2 justify-between items-center px-4 py-3  w-full">
             <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
                 <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
                 <Input
@@ -80,28 +82,31 @@ export default function Navbar() {
                     )}
                 </label>
             </div>
+
             <div className="w-fit flex h-full items-center gap-1 md:gap-2">
-                <Button variant="ghost" size="icon" onClick={handleDarkMode}>
-                    {darkMode ? (
-                        <Sun size={STYLING.ICON.SIZE.SMALL} />
-                    ) : (
-                        <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
-                    )}
-                </Button>
-                <Sheet>
-                    <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-                        <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
-                    </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
-                            <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
-                        </SheetHeader>
-                    </SheetContent>
-                </Sheet>
-                <SetLocalization />
-                <AddFeedback />
-                <Separator orientation="vertical" className="w-[2px]" />
+                <div className="hidden md:flex">
+                    <Button variant="ghost" size="icon" onClick={handleDarkMode}>
+                        {darkMode ? (
+                            <Sun size={STYLING.ICON.SIZE.SMALL} />
+                        ) : (
+                            <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
+                        )}
+                    </Button>
+                    <Sheet>
+                        <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                            <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
+                                <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                            </SheetHeader>
+                        </SheetContent>
+                    </Sheet>
+                    <SetLocalization />
+                    <AddFeedback />
+                </div>
+                <Separator orientation="vertical" className="md:w-[2px] hidden" />
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <div className="flex justify-start gap-1 md:gap-2">
@@ -142,6 +147,36 @@ export default function Navbar() {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Separator orientation="vertical" className="w-[2px] md:hidden" />
+                <Select>
+                    <SelectTrigger className="ml-2 w-fit border-none md:hidden">
+                        <Menu size={STYLING.ICON.SIZE.SMALL}></Menu>
+                    </SelectTrigger>
+                    <SelectContent className="w-fit">
+                        <div className="">
+                            <Button variant="ghost" size="icon" onClick={handleDarkMode}>
+                                {darkMode ? (
+                                    <Sun size={STYLING.ICON.SIZE.SMALL} />
+                                ) : (
+                                    <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
+                                )}
+                            </Button>
+                            <Sheet>
+                                <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                                    <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
+                                </SheetTrigger>
+                                <SheetContent>
+                                    <SheetHeader>
+                                        <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
+                                        <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                                    </SheetHeader>
+                                </SheetContent>
+                            </Sheet>
+                            <SetLocalization />
+                            <AddFeedback />
+                        </div>
+                    </SelectContent>
+                </Select>
             </div>
         </nav>
     );

@@ -56,6 +56,7 @@ import InputLabel from '@/Components/InputLabel';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { useLocalStorage } from '@uidotdev/usehooks';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];
@@ -74,6 +75,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [valueTrainset, setValueTrainset] = useState('');
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
     console.log(data);
 
@@ -233,6 +235,8 @@ export default function Dashboard({ auth, data }: PageProps) {
             .then(response => response.data);
     }, []);
 
+    // alert(sidebarCollapse);
+
     const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
@@ -240,7 +244,7 @@ export default function Dashboard({ auth, data }: PageProps) {
 
             {/* <div className="py-12"> */}
             {/* <p>{value}</p> */}
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
+            <div className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5 `}>
                 <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
                     {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
                     <div className="">
@@ -255,7 +259,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         variant="outline"
                                         role="combobox"
                                         aria-expanded={open}
-                                        className="w-40 justify-between"
+                                        className="w-25 md:w-40 justify-between"
                                     >
                                         {value
                                             ? project.find(projectItem => projectItem.value === value)?.label
@@ -355,7 +359,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             variant="outline"
                                             role="combobox"
                                             aria-expanded={openTrainset}
-                                            className="w-40 justify-between"
+                                            className="w-25 md:w-40 justify-between"
                                         >
                                             {valueTrainset
                                                 ? project.find(projectItem => projectItem.value === valueTrainset)
@@ -503,12 +507,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </ChartContainer>
                         </div>
 
-                        <div className="px-5">
+                        <div className="md:px-5">
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                             <h3 className="text-base">Panel panel pada WS Assembly</h3>
                             <ChartContainer
                                 config={chartConfigTrainset}
-                                className="h-[400px] md:h-[400px] w-[550px] mt-5"
+                                className="h-[400px] md:h-[400px] w-[300px] mt-5 text-"
                             >
                                 <BarChart accessibilityLayer data={data['panel']}>
                                     <CartesianGrid vertical={false} />

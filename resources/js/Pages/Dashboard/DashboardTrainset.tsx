@@ -28,12 +28,14 @@ import { Button } from '@/Components/UI/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { useCallback, useState } from 'react';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(data['project'][0]['name']);
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
     const label = ['fulfilled', 'required', 'failed'];
 
@@ -83,10 +85,10 @@ export default function Dashboard({ auth, data }: PageProps) {
             <Head title={t('pages.dashboard.index.title')} />
             <div className="py-12">
                 {/* <p>{value}</p> */}
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
+                <div className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto sm:px-6 lg:px-5 `}>
                     <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        <div className="">
+                        <div className="px-4">
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <div className="flex justify-between w-full items-start">
                                 <h2 className="text-xl my-2">
@@ -100,7 +102,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 variant="outline"
                                                 role="combobox"
                                                 aria-expanded={open}
-                                                className="w-40 justify-between"
+                                                className="w-20 md:w-40 justify-between"
                                             >
                                                 {value
                                                     ? data['projectList'].find(
@@ -157,7 +159,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 variant="outline"
                                                 role="combobox"
                                                 aria-expanded={openTrainset}
-                                                className="w-40 justify-between"
+                                                className="w-20 md:w-40 justify-between"
                                             >
                                                 {valueTrainset
                                                     ? data['tsList'].find(
@@ -221,9 +223,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </ChartContainer>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
-                            <div className="">
+                            <div className="px-4">
                                 <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
-                                <h3 className="text-base">Panel yang ada pada TS 1</h3>
+                                <h3 className="text-base">{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
                                 <ChartContainer config={chartConfigPanelInTrainset} className="h-[400px] w-full mt-5">
                                     <BarChart className="h-[300px]" accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
@@ -245,9 +247,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </ChartContainer>
                             </div>
 
-                            <div className="">
+                            <div className="px-4">
                                 <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
-                                <h3 className="text-base">Panel panel pada WS Assembly</h3>
+                                <h3 className="text-base">{`Progress semua panel pada ${data['trainsets'][0].ts_name}`}</h3>
                                 <div className="h-[400px] flex flex-col items-center">
                                     <ChartContainer config={chartConfigPie} className=" min-h-[300px] ">
                                         <PieChart>
@@ -260,7 +262,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             />
                                         </PieChart>
                                     </ChartContainer>
-                                    <h4 className="font-bold">
+                                    <h4 className="font-bold text-center">
                                         Kebutuhan panel sejumlah {data['total'][0].total} masih belum terpenuhi
                                     </h4>
                                     <p className="text-sm">Menunjukkan progress dari status kebutuhan panel.</p>
