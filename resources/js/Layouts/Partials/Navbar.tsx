@@ -3,7 +3,7 @@ import { Input } from '@/Components/UI/input';
 import { Separator } from '@/Components/UI/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Link, usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
@@ -22,6 +22,8 @@ import { useMediaQuery } from 'react-responsive';
 import AddFeedback from '@/Components/AddFeedback';
 import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import axios from 'axios';
+import { SearchResults } from '@/Components/SearchResult';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -61,19 +63,36 @@ export default function Navbar() {
         changeHtmlClass();
     }, [darkMode]);
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
+    useEffect(() => {
+        if (searchQuery.length >= 2) {
+            axios.get(`/search?q=${searchQuery}`)
+                .then(response => {
+                    console.log('Search results:', response.data);
+                    setSearchResults(response.data);
+                });
+        }
+    }, [searchQuery]);
+
+
     const handleDarkMode = () => {
         setDarkMode(!darkMode);
         changeHtmlClass();
     };
     return (
         <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
-            <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
+            <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2 relative">
                 <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
                 <Input
                     id="search"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
                     className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     placeholder={t('action.search')}
                 />
+                {searchQuery.length >=2 && <SearchResults query={searchQuery} results={searchResults} />}
                 <label htmlFor="search">
                     {isDesktopOrLaptop && (
                         <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
