@@ -10,42 +10,30 @@ const ip = Object.values(os.networkInterfaces())
 
 export default defineConfig(({ command }) => {
     console.log(`Running vite with command: ${command}`);
-    if (command === 'serve') {
-        return {
-            base: '/',
-            server: {
-                host: '0.0.0.0',
+    const sharedConfig = command === 'serve' ? {
+        base: '/',
+        server: {
+            host: '0.0.0.0',
+            port: 5173,
+            hmr: {
+                host: ip,
                 port: 5173,
-                hmr: {
-                    host: ip,
-                    port: 5173,
-                },
             },
-            plugins: [
-                laravel({
-                    input: 'resources/js/app.tsx',
-                    refresh: true,
-                }),
-                react(),
-                i18n(),
-            ],
-            optimizeDeps: {
-                include: ['html2canvas', 'jspdf'],
-            },
-        }
-    } else {
-        return {
-            plugins: [
-                laravel({
-                    input: 'resources/js/app.tsx',
-                    refresh: true,
-                }),
-                react(),
-                i18n(),
-            ],
-            optimizeDeps: {
-                include: ['html2canvas', 'jspdf'],
-            },
-        }
+        },
+    } : {};
+
+    return {
+        ...sharedConfig,
+        plugins: [
+            laravel({
+                input: 'resources/js/app.tsx',
+                refresh: true,
+            }),
+            react(),
+            i18n(),
+        ],
+        optimizeDeps: {
+            include: ['html2canvas', 'jspdf'],
+        },
     }
 });
