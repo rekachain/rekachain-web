@@ -62,6 +62,20 @@
             }
         },
         {
+            "label": "Laravel Serve - Shared",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php",
+            "presentation": {
+                "group": "RUNAPPSHARED"
+            },
+            "args": [
+                "artisan",
+                "serve",
+                "--host=0.0.0.0"
+            ]
+        },
+        {
             "label": "Laravel NPM Run Dev",
             "problemMatcher": [],
             "type": "shell",
@@ -69,6 +83,21 @@
             "presentation": {
                 "group": "RUNAPP"
             }
+        },
+        {
+            "label": "Laravel NPM Run Dev - Shared",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm",
+            "presentation": {
+                "group": "RUNAPPSHARED"
+            },
+            "args": [
+                "run",
+                "dev",
+                "--",
+                "--host=0.0.0.0"
+            ]
         },
         {
             "label": "Laravel Websocket",
@@ -84,6 +113,15 @@
                 "Laravel Serve",
                 "Laravel NPM Run Dev"
                 // "Laravel Websocket"
+            ]
+        },
+        {
+            "label": "App-Shared",
+            "problemMatcher": [],
+            "type": "shell",
+            "dependsOn": [
+                "Laravel Serve - Shared",
+                "Laravel NPM Run Dev - Shared"
             ]
         },
         // ----------------------------------------------------------------
