@@ -27,6 +27,16 @@ class UserController extends Controller {
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
 
+            // TODO: refactor using trait
+            $request->whenHas('trashed', function ($value) use ($request, $perPage) {
+                if ($value === 'only') {
+                    return UserResource::collection($this->userService->onlyTrashed()->getAllPaginated($request->query(), $perPage));
+                }
+
+                return UserResource::collection($this->userService->withTrashed()->getAllPaginated($request->query(), $perPage));
+
+            });
+
             return UserResource::collection($this->userService->getAllPaginated($request->query(), $perPage));
         }
 

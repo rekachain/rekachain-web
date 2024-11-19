@@ -9,9 +9,11 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 export default function ({
     userResponse,
     handleUserDeletion,
+    handleUserForceDeletion,
 }: {
     userResponse: PaginateResponse<UserResource>;
     handleUserDeletion: (id: number) => void;
+    handleUserForceDeletion: (id: number) => void;
 }) {
     const { t } = useLaravelReactI18n();
     const { auth } = usePage().props;
@@ -50,9 +52,19 @@ export default function ({
                                     >
                                         {t('action.edit')}
                                     </Link>
-                                    <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                        {t('action.delete')}
-                                    </Button>
+                                    {user.is_trashed && user.can_be_deleted ? (
+                                        <Button
+                                            variant="link"
+                                            onClick={() => handleUserForceDeletion(user.id)}
+                                            disabled
+                                        >
+                                            {t('action.delete_permanently')}
+                                        </Button>
+                                    ) : (
+                                        <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                                 </div>
                             )}
                         </div>

@@ -102,6 +102,10 @@ class User extends Authenticatable {
         return $this->hasMany(PanelAttachmentHandler::class);
     }
 
+    public function trainset_attachment_handlers(): HasMany {
+        return $this->hasMany(TrainsetAttachmentHandler::class);
+    }
+
     public function detail_worker_panels(): HasMany {
         return $this->hasMany(DetailWorkerPanel::class, 'worker_id');
     }
@@ -125,6 +129,7 @@ class User extends Authenticatable {
     public function canBeDeleted(): bool {
         return $this->feedbacks->isEmpty() &&
             $this->panel_attachment_handlers->isEmpty() &&
+            $this->trainset_attachment_handlers->isEmpty() &&
             $this->detail_worker_panels->isEmpty() &&
             $this->detail_worker_trainsets->isEmpty() &&
             $this->panel_attachment_supervisors->isEmpty() &&
