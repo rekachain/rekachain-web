@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('steps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('process');
             $table->integer('estimated_time')->nullable();
             $table->timestamps();

@@ -5,6 +5,7 @@ namespace App\Support\Interfaces\Services;
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\Contracts\BaseCrudServiceInterface;
 use App\Models\Carriage;
 use App\Models\Project;
+use App\Models\Trainset;
 use Illuminate\Http\UploadedFile;
 
 interface ProjectServiceInterface extends BaseCrudServiceInterface {
@@ -25,4 +26,8 @@ interface ProjectServiceInterface extends BaseCrudServiceInterface {
     public function importProjectCarriagePanelProgressMaterial(Project $project, Carriage $carriage, UploadedFile $file, array $data): bool;
 
     public function importProjectCarriageComponentProgressMaterial(Project $project, Carriage $carriage, UploadedFile $file, array $data): bool;
+
+    public function importProjectTrainsetPanelProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool;
+    
+    public function importProjectTrainsetComponentProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool;
 }

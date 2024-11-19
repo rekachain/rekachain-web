@@ -36,6 +36,15 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
     
     public function assignCustomAttachmentMaterial(PanelAttachment $panelAttachment, array $data): CustomAttachmentMaterial
     {
+        if (array_key_exists('override', $data)) {
+            if (!$data['override']) {
+                return $panelAttachment->custom_attachment_materials()->firstOrCreate([
+                    'raw_material_id' => $data['raw_material_id'],
+                ], [
+                    'qty' => $data['qty'],
+                ]);
+            }
+        }
         return $panelAttachment->custom_attachment_materials()->updateOrCreate([
             'raw_material_id' => $data['raw_material_id'],
         ], [

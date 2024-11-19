@@ -65,8 +65,13 @@ class PanelController extends Controller {
     /**
      * Display the specified resource.
      */
-    public function show(Panel $panel) {
+    public function show(Request $request, Panel $panel) {
+        $intent = $request->get('intent');
         if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE->value:
+                    return $this->panelService->getImportDataRawMaterialAndProgressTemplate($panel);
+            }
             return new PanelResource($panel->load('progress'));
         }
     }

@@ -21,8 +21,17 @@ import GenericDataSelector from '@/Components/GenericDataSelector';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { workAspectService } from '@/Services/workAspectService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { componentService } from '@/Services/componentService';
 
-export default function ({ project, component, hasMaterials = false }: { project: any; component: any, hasMaterials?: boolean }) {
+export default function ({
+    project,
+    component,
+    hasMaterials = false,
+}: {
+    project: any;
+    component: any;
+    hasMaterials?: boolean;
+}) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm<{
         file: File | null;
@@ -70,7 +79,9 @@ export default function ({ project, component, hasMaterials = false }: { project
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant={hasMaterials ? "warning" : "tertiary"}>{t('pages.project.component.partials.import.buttons.import')}</Button>
+                <Button variant={hasMaterials ? 'warning' : 'tertiary'}>
+                    {t('pages.project.component.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -87,7 +98,7 @@ export default function ({ project, component, hasMaterials = false }: { project
                     <Button
                         type="button"
                         variant="secondary"
-                        onClick={projectService.downloadImportProgressRawMaterialTemplate}
+                        onClick={componentService.downloadImportProgressRawMaterialTemplate.bind(null, component.id)}
                         disabled={loading}
                     >
                         {loading
