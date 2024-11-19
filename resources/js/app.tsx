@@ -10,6 +10,7 @@ import LoadingOverlay from '@/Components/LoadingOverlay';
 import { LoadingProvider } from '@/Contexts/LoadingContext';
 import { LaravelReactI18nProvider } from 'laravel-react-i18n';
 import { ConfirmationDialogProvider } from '@/Contexts/ConfirmationDialogContext';
+import { HelpdeskProvider } from '@/Contexts/HelpdeskContext';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -23,9 +24,11 @@ void createInertiaApp({
             <LaravelReactI18nProvider locale={'en'} fallbackLocale={'en'} files={import.meta.glob('/lang/*.json')}>
                 <LoadingProvider>
                     <ConfirmationDialogProvider>
-                        <App {...props} />
-                        <Toaster />
-                        <LoadingOverlay />
+                        <HelpdeskProvider>
+                            <App {...props} />
+                            <Toaster />
+                            <LoadingOverlay />
+                        </HelpdeskProvider>
                     </ConfirmationDialogProvider>
                 </LoadingProvider>
             </LaravelReactI18nProvider>,
