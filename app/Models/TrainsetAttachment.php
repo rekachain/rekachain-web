@@ -66,6 +66,14 @@ class TrainsetAttachment extends Model {
         return $this->filterable;
     }
 
+    public function ancestor(): TrainsetAttachment {
+        $attachment = $this;
+        while ($attachment->parent) {
+            $attachment = $attachment->parent;
+        }
+        return $attachment;
+    }
+
     public function is_ancestor(): bool {
         return $this->parent === null;
     }

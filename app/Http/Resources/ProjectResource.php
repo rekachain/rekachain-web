@@ -129,23 +129,24 @@ class ProjectResource extends JsonResource {
                     })
                     ->paginate($request->get('pageSize', $request->get('per_page', 10)))
                     ->toArray();
-            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-                return [
-                    'id' => $this->id,
-                    'name' => $this->name,
-                    'initial_date' => $this->initial_date,
-                    'trainset_count' => $this->trainsets?->count(),
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
-                ];
-            case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
-                return [
-                    'id' => $this->id,
-                    'name' => $this->name,
-                    'initial_date' => $this->initial_date,
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
-                ];
+            // idonknowwhyisthishere💀 seemssavetodeletebutmeh🗿
+            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
+            //     return [
+            //         'id' => $this->id,
+            //         'name' => $this->name,
+            //         'initial_date' => $this->initial_date,
+            //         'trainset_count' => $this->trainsets?->count(),
+            //         'created_at' => $this->created_at,
+            //         'updated_at' => $this->updated_at,
+            //     ];
+            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
+            //     return [
+            //         'id' => $this->id,
+            //         'name' => $this->name,
+            //         'initial_date' => $this->initial_date,
+            //         'created_at' => $this->created_at,
+            //         'updated_at' => $this->updated_at,
+            //     ];
         }
 
         return [

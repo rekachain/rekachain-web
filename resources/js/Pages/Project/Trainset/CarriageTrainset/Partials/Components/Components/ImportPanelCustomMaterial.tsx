@@ -13,7 +13,7 @@ import {
     DialogTrigger,
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
-import { ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 import { PanelAttachmentResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
@@ -50,6 +50,11 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
             void useSuccessToast();
         }
     }, true);
+
+    useEffect(() => {
+        setData('toBeAssigned', panelAttachment.is_child ? false : true);
+    },[panelAttachment]);
+
     return (
         <>
             <Dialog>

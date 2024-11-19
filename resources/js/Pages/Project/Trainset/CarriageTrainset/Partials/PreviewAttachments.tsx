@@ -58,9 +58,9 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
         const data = await trainsetService.get(trainset.id);
 
         data.trainset_attachments.forEach(attachment => {
-            if (attachment.type === TrainsetAttachmentTypeEnum.MECHANIC) {
+            if (attachment.type === TrainsetAttachmentTypeEnum.MECHANIC && attachment.is_ancestor) {
                 setMechanicAttachmentIds([...mechanicAttachmentIds, attachment.id]);
-            } else if (attachment.type === TrainsetAttachmentTypeEnum.ELECTRIC) {
+            } else if (attachment.type === TrainsetAttachmentTypeEnum.ELECTRIC && attachment.is_ancestor) {
                 setElectricAttachmentIds([...electricAttachmentIds, attachment.id]);
             }
         });
@@ -134,7 +134,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
                                         title={t(
-                                            'pages.project.trainset.carriage.partials.preview_attachments.dialogs.components.preview_panel_attachment.props.title',
+                                            'pages.project.trainset.carriage.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
                                         )}
                                         key={index}
                                     />
