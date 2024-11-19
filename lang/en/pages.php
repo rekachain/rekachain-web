@@ -334,6 +334,16 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'worker_status' => [
+                        'title' => 'Worker Status',
+                        'fields' => [
+                            'all' => 'All',
+                            'active' => 'Active',
+                            'inactive' => 'Inactive',
+                        ],
+                    ],
+                ],
                 'user_table' => [
                     'headers' => [
                         'nip' => 'Employee ID',

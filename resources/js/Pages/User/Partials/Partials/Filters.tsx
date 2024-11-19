@@ -11,6 +11,7 @@ import {
     SelectValue,
 } from '@/Components/UI/select';
 import { ServiceFilterTrashedType } from '@/Support/Interfaces/Types';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const Filters = ({
     setFilters,
@@ -19,6 +20,8 @@ const Filters = ({
     filters: ServiceFilterOptions;
     setFilters: (filters: ServiceFilterOptions) => void;
 }) => {
+    const { t } = useLaravelReactI18n();
+
     return (
         <GenericFilters setFilters={setFilters} filters={filters}>
             <Select
@@ -35,14 +38,20 @@ const Filters = ({
                 }
             >
                 <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Worker Status" />
+                    <SelectValue placeholder={t('pages.user.partials.partials.filters.worker_status.title')} />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Worker Status</SelectLabel>
-                        <SelectItem value="null">Active</SelectItem>
-                        <SelectItem value="with">All</SelectItem>
-                        <SelectItem value="only">Terminated</SelectItem>
+                        <SelectLabel>{t('pages.user.partials.partials.filters.worker_status.title')}</SelectLabel>
+                        <SelectItem value="null">
+                            {t('pages.user.partials.partials.filters.worker_status.fields.active')}
+                        </SelectItem>
+                        <SelectItem value="with">
+                            {t('pages.user.partials.partials.filters.worker_status.fields.all')}
+                        </SelectItem>
+                        <SelectItem value="only">
+                            {t('pages.user.partials.partials.filters.worker_status.fields.inactive')}
+                        </SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>

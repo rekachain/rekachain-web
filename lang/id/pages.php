@@ -334,6 +334,16 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'worker_status' => [
+                        'title' => 'Status Pekerja',
+                        'fields' => [
+                            'all' => 'Semua',
+                            'active' => 'Aktif',
+                            'inactive' => 'Tidak Aktif',
+                        ],
+                    ],
+                ],
                 'user_table' => [
                     'headers' => [
                         'nip' => 'NIP',
