@@ -22,7 +22,13 @@ import { Checkbox } from '@/Components/UI/checkbox';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 
-export default function ({ trainsetAttachment }: { trainsetAttachment: TrainsetAttachmentResource }) {
+export default function ({ 
+    trainsetAttachment,
+    loadAttachment
+}: { 
+    trainsetAttachment: TrainsetAttachmentResource,
+    loadAttachment: () => void
+}) {
     const { t } = useLaravelReactI18n();
 
     const { loading, setLoading } = useLoading();
@@ -49,6 +55,7 @@ export default function ({ trainsetAttachment }: { trainsetAttachment: TrainsetA
             );
             void useSuccessToast();
         }
+        void loadAttachment();
     }, true);
 
     useEffect(() => {

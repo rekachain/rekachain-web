@@ -61,8 +61,8 @@ const PreviewTrainsetAttachment = ({
                         'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download',
                     )}
                 </Link>
-                <ImportTrainsetCustomMaterial trainsetAttachment={trainsetAttachment} />
-                {attachment.is_parent && (
+                <ImportTrainsetCustomMaterial trainsetAttachment={trainsetAttachment} loadAttachment={loadAttachment}/>
+                {(trainsetAttachment.is_parent || trainsetAttachment.is_child) && (
                     <div className="flex flex-col gap-2">
                         <Select
                             value={selectedAttachment?.toString()}
@@ -72,13 +72,21 @@ const PreviewTrainsetAttachment = ({
                                 <SelectValue/>
                             </SelectTrigger>
                             <SelectContent>
+                                {trainsetAttachment.parent && (
+                                    <SelectItem
+                                        value={trainsetAttachment.parent.id?.toString()}
+                                        key={trainsetAttachment.parent.id}
+                                    >
+                                        {trainsetAttachment.parent.attachment_number}
+                                    </SelectItem>
+                                )}
                                 <SelectItem
-                                    value={attachment.id.toString()}
-                                    key={attachment.id}    
+                                    value={trainsetAttachment.id.toString()}
+                                    key={trainsetAttachment.id}    
                                 >
-                                    {attachment.attachment_number}
+                                    {trainsetAttachment.attachment_number}
                                 </SelectItem>
-                                {attachment.childs?.map(childAttachment => (
+                                {trainsetAttachment.childs?.map(childAttachment => (
                                     <SelectItem
                                         value={childAttachment.id?.toString()}
                                         key={childAttachment.id}
