@@ -6,6 +6,7 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\RoleServiceInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
@@ -98,7 +99,15 @@ class UserController extends Controller {
     public function destroy(Request $request, User $user) {
         checkPermissions(PermissionEnum::USER_DELETE);
 
+        $intent = $request->get('intent');
+
         if ($this->ajax()) {
+            if ($intent === IntentEnum::SOFT_DELETE_ENTRY->value) {
+                $this->userService->softDelete($user);
+
+                return response('', 204);
+            }
+
             return $this->userService->delete($user);
         }
     }

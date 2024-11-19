@@ -3,6 +3,9 @@
 namespace App\Support\Enums;
 
 enum IntentEnum: string {
+    // To determine if current delete request is soft delete or hard delete (can be used in every model)
+    case SOFT_DELETE_ENTRY = 'soft.delete.entry';
+
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
 
     case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';

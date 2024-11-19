@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('password');
             $table->foreignId('workstation_id')->nullable()->constrained();
             $table->foreignId('step_id')->nullable()->constrained();
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

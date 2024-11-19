@@ -61,11 +61,9 @@ export default function ({
                                 >
                                     {t('action.edit')}
                                 </Link>
-                                {user.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                <Button variant="link" onClick={() => handleUserDeletion(user.id)}>
+                                    {t('action.delete')}
+                                </Button>
                             </TableCell>
                         ) : (
                             <TableCell></TableCell>

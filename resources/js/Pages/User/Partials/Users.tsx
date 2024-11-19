@@ -30,7 +30,7 @@ export default function () {
     }, [filters]);
 
     const handleUserDeletion = withLoading(async (id: number) => {
-        await userService.delete(id);
+        await userService.softDelete(id);
         await syncUsers();
         void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
     }, true);
