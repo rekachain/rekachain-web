@@ -20,7 +20,6 @@ class UpdateWorkDayTimeRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'work_day_id' => 'required|integer|exists:work_days,id',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'status' => 'required|string|in:' . implode(',', WorkDayTimeEnum::toArray()),

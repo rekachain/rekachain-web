@@ -103,11 +103,15 @@ Route::middleware('auth')->group(function () {
     Route::resource('feedback', FeedbackController::class)->except(['store']);
     Route::resource('helpdesk-contact', HelpdeskContactController::class);
 
-    Route::controller(WorkDayController::class)->prefix('work-days/{work_day}')->name('work-days.')->group(function () {
-        Route::resource('work-day-times', WorkDayTimeController::class)->parameters([
-            'work_day_times' => 'work_day_time',
-        ])->except(['show']);
-    });
+    // Route::controller(WorkDayController::class)->prefix('work-days/{work_day}')->name('work-days.')->group(function () {
+    //     Route::resource('work-day-times', WorkDayTimeController::class)->parameters([
+    //         'work_day_times' => 'work_day_time',
+    //     ])->except(['show']);
+    // });
+
+    Route::resource('work-days.work-day-times', WorkDayTimeController::class)->parameters([
+        'work-day-times' => 'work_day_time'
+    ])->except(['index', 'show']);
 
     Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
         Route::get('components', 'project_components')->name('components.index');
