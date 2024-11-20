@@ -94,6 +94,10 @@ class UserController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateUserRequest $request, User $user) {
+        if ($user->id === auth()->id()) { // User is updating his own profile
+            return $this->userService->update($user, $request->validated());
+        }
+
         checkPermissions(PermissionEnum::USER_UPDATE);
 
         if ($this->ajax()) {
