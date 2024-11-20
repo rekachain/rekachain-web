@@ -65,9 +65,12 @@ return [
             'logout' => 'Keluar',
         ],
     ],
-    'feedback' => [
-        'title' => 'Umpan Balik',
+    'add_feedback' => [
+        'title' => 'Tambahkan Umpan Balik',
         'description' => 'Umpan balik Anda penting bagi kami. Kami menghargai dan mempertimbangkan setiap saran dan umpan balik.',
+        'messages' => [
+            'created' => 'Umpan balik berhasil dibuat.',
+        ],
         'fields' => [
             'name' => 'Nama',
             'name_placeholder' => 'Nama Anda...',
