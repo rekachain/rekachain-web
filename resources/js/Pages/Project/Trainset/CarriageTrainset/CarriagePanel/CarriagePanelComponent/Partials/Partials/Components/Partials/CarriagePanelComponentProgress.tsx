@@ -104,10 +104,10 @@ export default function ({
                             setSelectedData={id => setData('progress_id', id)}
                             selectedDataId={data.progress_id}
                             customSearchPlaceholder={t(
-                                'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress_search',
+                                'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.progress_search',
                             )}
                             placeholder={t(
-                                'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
+                                'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
                             )}
                             renderItem={item => item.name}
                         />

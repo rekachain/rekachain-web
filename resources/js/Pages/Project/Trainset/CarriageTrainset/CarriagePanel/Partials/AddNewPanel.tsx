@@ -119,7 +119,9 @@ const AddNewPanel = ({
         handleResetProgressSearch();
         await handleSyncCarriage();
         reset();
-        void useSuccessToast(t('pages.project.trainset.carriage.panel.partials.add_new_panel.messages.panel_added'));
+        void useSuccessToast(
+            t('pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.messages.panel_added'),
+        );
     });
 
     const fetchPanelProgress = withLoading(async (panelId: number) => {
@@ -150,7 +152,7 @@ const AddNewPanel = ({
                     className: 'w-full',
                 })}
             >
-                {t('pages.project.trainset.carriage.panel.partials.add_new_panel.buttons.add_new_panel')}
+                {t('pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.buttons.add_new_panel')}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -160,7 +162,7 @@ const AddNewPanel = ({
                         <div className="flex flex-col bg-background-2 gap-4 p-4">
                             <Label htmlFor="progress">
                                 {t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress',
+                                    'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.progress',
                                 )}
                             </Label>
                             <div className="flex gap-2">
@@ -171,10 +173,10 @@ const AddNewPanel = ({
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id}
                                     customSearchPlaceholder={t(
-                                        'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress_search',
+                                        'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.progress_search',
                                     )}
                                     placeholder={t(
-                                        'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
+                                        'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
                                     )}
                                     renderItem={item => item.name}
                                 />
@@ -184,7 +186,9 @@ const AddNewPanel = ({
                             </div>
 
                             <Label htmlFor="panel">
-                                {t('pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.panel')}
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.panel',
+                                )}
                             </Label>
                             <GenericDataSelector
                                 id="panel_id"
@@ -192,7 +196,7 @@ const AddNewPanel = ({
                                 setSelectedData={id => setData('new_panel_id', id)}
                                 selectedDataId={data.new_panel_id}
                                 placeholder={t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.panel_placeholder',
+                                    'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.panel_placeholder',
                                 )}
                                 renderItem={item => item.name}
                                 nullable
@@ -205,7 +209,7 @@ const AddNewPanel = ({
                             <div className="flex flex-col gap-2">
                                 <Label>
                                     {t(
-                                        'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.new_panel_name',
+                                        'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.new_panel_name',
                                     )}
                                 </Label>
                                 <Input
@@ -218,7 +222,7 @@ const AddNewPanel = ({
                             </div>
                             <Label htmlFor="new-panel-description">
                                 {t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.new_panel_description',
+                                    'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.new_panel_description',
                                 )}
                             </Label>
                             <Textarea
@@ -230,7 +234,7 @@ const AddNewPanel = ({
                             />
                             <Label htmlFor="new-panel-qty">
                                 {t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.fields.new_panel_qty',
+                                    'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.fields.new_panel_qty',
                                 )}
                             </Label>
                             <Input
@@ -251,7 +255,7 @@ const AddNewPanel = ({
                                 </>
                             ) : (
                                 t(
-                                    'pages.project.trainset.carriage.panel.partials.add_new_panel.dialogs.buttons.add_panel',
+                                    'pages.project.trainset.carriage_trainset.panel.partials.add_new_panel.dialogs.buttons.add_panel',
                                 )
                             )}
                         </Button>

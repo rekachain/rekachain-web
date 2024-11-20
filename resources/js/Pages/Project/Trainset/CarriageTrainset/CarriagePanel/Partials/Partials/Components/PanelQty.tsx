@@ -37,7 +37,7 @@ export default function ({
         await handleSyncCarriagePanel();
         setIsEditing(false);
         void useSuccessToast(
-            t('pages.project.trainset.carriage.panel.partials.components.panel_qty.messages.qty_updated'),
+            t('pages.project.trainset.carriage_trainset.panel.partials.components.panel_qty.messages.qty_updated'),
         );
     });
 
@@ -56,7 +56,7 @@ export default function ({
                         {loading
                             ? t('action.loading')
                             : t(
-                                  'pages.project.trainset.carriage.panel.partials.components.panel_qty.buttons.update_qty',
+                                  'pages.project.trainset.carriage_trainset.panel.partials.components.panel_qty.buttons.update_qty',
                               )}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>

@@ -49,7 +49,7 @@ export default function CarPanelCardView({
                                 <p className="text-sm">{carriage_panel.panel.description}</p>
                                 <h5 className="text-base">
                                     {t(
-                                        'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_card.headers.components',
+                                        'pages.project.trainset.carriage_trainset.panel.partials.partials.carriage_panel_card.headers.components',
                                     )}{' '}
                                     :
                                 </h5>

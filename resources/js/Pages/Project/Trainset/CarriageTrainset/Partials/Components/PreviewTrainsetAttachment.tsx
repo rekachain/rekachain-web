@@ -58,7 +58,7 @@ const PreviewTrainsetAttachment = ({
                     target="_blank"
                 >
                     {t(
-                        'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.buttons.download',
+                        'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
                     )}
                 </Link>
                 <ImportTrainsetCustomMaterial trainsetAttachment={trainsetAttachment} loadAttachment={loadAttachment} />
@@ -99,7 +99,7 @@ const PreviewTrainsetAttachment = ({
                         <p className="font-bold">
                             {' '}
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.attachment_number',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.attachment_number',
                             )}
                         </p>
                         <p>{trainsetAttachment.attachment_number}</p>
@@ -107,7 +107,7 @@ const PreviewTrainsetAttachment = ({
                     <div className="">
                         <p className="font-bold">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.reservation_number',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.reservation_number',
                             )}
                         </p>
                         <p>-</p>
@@ -115,7 +115,7 @@ const PreviewTrainsetAttachment = ({
                     <div className="">
                         <p className="font-bold">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.serial_number',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.serial_number',
                             )}
                         </p>
                         <p>-</p>
@@ -125,7 +125,7 @@ const PreviewTrainsetAttachment = ({
                     <div className="">
                         <p className="font-bold">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.reference_number',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.reference_number',
                             )}
                         </p>
                         <p>{trainsetAttachment.parent?.attachment_number ?? '-'}</p>
@@ -133,7 +133,7 @@ const PreviewTrainsetAttachment = ({
                     <div className="">
                         <p className="font-bold">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.date',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.date',
                             )}
                         </p>
                         <p>{trainsetAttachment.formatted_created_at}</p>
@@ -146,7 +146,7 @@ const PreviewTrainsetAttachment = ({
                         </div>
                         <button className={buttonVariants()} onClick={() => openImageAndPrint(trainsetAttachment.qr!)}>
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.buttons.print_qr',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.buttons.print_qr',
                             )}
                         </button>
                     </div>
@@ -155,40 +155,40 @@ const PreviewTrainsetAttachment = ({
             <Separator className="h-1 my-6" />
             <h1 className="text-xl font-bold mt-3">
                 {t(
-                    'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.headers.material_list',
+                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.material_list',
                 )}
             </h1>
             <Table>
                 <TableCaption>
                     {t(
-                        'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
+                        'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                     )}
                 </TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.description',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.description',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.specs',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.specs',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.unit',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.unit',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
                             )}
                         </TableHead>
                     </TableRow>

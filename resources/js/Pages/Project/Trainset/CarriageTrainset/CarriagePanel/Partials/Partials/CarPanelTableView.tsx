@@ -27,27 +27,27 @@ export default function CarPanelTableView({
                     <TableRow>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.panel',
+                                'pages.project.trainset.carriage_trainset.panel.partials.partials.carriage_panel_table.headers.panel',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.qty',
+                                'pages.project.trainset.carriage_trainset.panel.partials.partials.carriage_panel_table.headers.qty',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.description',
+                                'pages.project.trainset.carriage_trainset.panel.partials.partials.carriage_panel_table.headers.description',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.components',
+                                'pages.project.trainset.carriage_trainset.panel.partials.partials.carriage_panel_table.headers.components',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.project.trainset.carriage.panel.partials.partials.carriage_panel_table.headers.progress',
+                                'pages.project.trainset.carriage_trainset.panel.partials.partials.carriage_panel_table.headers.progress',
                             )}
                         </TableHead>
                         <TableHead></TableHead>

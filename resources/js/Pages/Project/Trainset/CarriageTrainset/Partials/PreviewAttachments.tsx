@@ -85,7 +85,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
         <Dialog>
             <DialogTrigger className={buttonVariants()}>
                 {t(
-                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
+                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
                 )}
             </DialogTrigger>
             <DialogContent className="w-[70%]">
@@ -101,17 +101,17 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                         <TabsList>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
                                 {t(
-                                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.mechanic_attachment',
+                                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.mechanic_attachment',
                                 )}
                             </TabsTrigger>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
                                 {t(
-                                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.electric_attachment',
+                                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.electric_attachment',
                                 )}
                             </TabsTrigger>
                             <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
                                 {t(
-                                    'pages.project.trainset.carriage.partials.preview_attachments.dialogs.buttons.panel_attachment',
+                                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.panel_attachment',
                                 )}
                             </TabsTrigger>
                         </TabsList>
@@ -121,7 +121,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
                                         title={t(
-                                            'pages.project.trainset.carriage.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
+                                            'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
                                         )}
                                         key={index}
                                     />
@@ -134,7 +134,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
                                         title={t(
-                                            'pages.project.trainset.carriage.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
+                                            'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
                                         )}
                                         key={index}
                                     />

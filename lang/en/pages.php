@@ -830,7 +830,7 @@ return [
                     'trainset_needed_error' => 'Trainset number must be greater than 0',
                 ],
             ],
-            'carriage' => [
+            'carriage_trainset' => [
                 'index' => [
                     'title' => 'Carriages',
                     'initial_date' => 'Initial Date :initial_date',

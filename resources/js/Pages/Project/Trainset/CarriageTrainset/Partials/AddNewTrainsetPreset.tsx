@@ -38,7 +38,7 @@ const AddNewTrainsetPreset = ({
         await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
         await handleSyncTrainset();
         void useSuccessToast(
-            t('pages.project.trainset.carriage.partials.add_new_trainset_preset.messages.preset_added'),
+            t('pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.messages.preset_added'),
         );
     });
 
@@ -49,19 +49,19 @@ const AddNewTrainsetPreset = ({
                     className: 'w-full',
                 })}
             >
-                {t('pages.project.trainset.carriage.partials.add_new_trainset_preset.buttons.add_new_preset')}
+                {t('pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.buttons.add_new_preset')}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {t('pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.title')}
+                        {t('pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.title')}
                     </DialogTitle>
                     <DialogDescription></DialogDescription>
                     <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4">
                             <Label>
                                 {t(
-                                    'pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.fields.preset_name',
+                                    'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.fields.preset_name',
                                 )}
                             </Label>
                             <div className="flex gap-4">
@@ -75,12 +75,12 @@ const AddNewTrainsetPreset = ({
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                             {t(
-                                                'pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.actions.saving',
+                                                'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.actions.saving',
                                             )}
                                         </>
                                     ) : (
                                         t(
-                                            'pages.project.trainset.carriage.partials.add_new_trainset_preset.dialogs.buttons.submit',
+                                            'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.buttons.submit',
                                         )
                                     )}
                                 </Button>

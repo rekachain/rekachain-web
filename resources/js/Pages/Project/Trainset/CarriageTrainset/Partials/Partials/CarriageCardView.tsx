@@ -38,7 +38,10 @@ export default function CarriageCardView({
                             </div>
 
                             <h5 className="text-base">
-                                {t('pages.project.trainset.carriage.partials.partials.carriage_card.headers.qty')} :
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.headers.qty',
+                                )}{' '}
+                                :
                             </h5>
                             <div className="text-sm">
                                 {trainset.status === TrainsetStatusEnum.PROGRESS ? (
@@ -52,7 +55,10 @@ export default function CarriageCardView({
                                 )}
                             </div>
                             <h5 className="text-base">
-                                {t('pages.project.trainset.carriage.partials.partials.carriage_card.headers.panels')} :
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.headers.panels',
+                                )}{' '}
+                                :
                             </h5>
                             <div className="text-sm">
                                 {carriage_trainset.carriage_panels?.map(panel => (
@@ -102,7 +108,7 @@ export default function CarriageCardView({
                                     )}
                                 >
                                     {t(
-                                        'pages.project.trainset.carriage.partials.partials.carriage_card.actions.panels',
+                                        'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.actions.panels',
                                     )}
                                 </Link>
                                 {/* <Link

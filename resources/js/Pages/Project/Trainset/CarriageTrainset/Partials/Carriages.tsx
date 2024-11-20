@@ -17,7 +17,7 @@ export default function ({
     const handleCarriageDeletion = withLoading(async (carriageTrainsetId: number) => {
         await carriageTrainsetService.delete(carriageTrainsetId);
         await handleSyncTrainset();
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.carriages.messages.deleted'));
+        void useSuccessToast(t('pages.project.trainset.carriage_trainset.partials.carriages.messages.deleted'));
     }, true);
 
     return (

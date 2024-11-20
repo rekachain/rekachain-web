@@ -40,7 +40,9 @@ const ChangeTrainsetPreset = ({
         if (data.preset_trainset_id) {
             await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
             await handleSyncTrainset();
-            void useSuccessToast(t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.changed'));
+            void useSuccessToast(
+                t('pages.project.trainset.carriage_trainset.partials.change_trainset_preset.messages.changed'),
+            );
         }
     });
 
@@ -57,7 +59,7 @@ const ChangeTrainsetPreset = ({
         if (data.preset_trainset_id) {
             await presetTrainsetService.delete(data.preset_trainset_id);
             void useSuccessToast(
-                t('pages.project.trainset.carriage.partials.change_trainset_preset.messages.preset_deleted'),
+                t('pages.project.trainset.carriage_trainset.partials.change_trainset_preset.messages.preset_deleted'),
             );
             await handleSyncTrainset();
         }
@@ -73,7 +75,7 @@ const ChangeTrainsetPreset = ({
                         setSelectedData={id => setData('preset_trainset_id', id)}
                         selectedDataId={data.preset_trainset_id}
                         placeholder={t(
-                            'pages.project.trainset.carriage.partials.change_trainset_preset.fields.preset_trainset_placeholder',
+                            'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.fields.preset_trainset_placeholder',
                         )}
                         renderItem={(item: PresetTrainsetResource) => {
                             return `${item.name} (${item.carriage_presets.map((c, i) => {
@@ -105,7 +107,7 @@ const ChangeTrainsetPreset = ({
                                 </>
                             ) : (
                                 t(
-                                    'pages.project.trainset.carriage.partials.change_trainset_preset.buttons.change_preset',
+                                    'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.buttons.change_preset',
                                 )
                             )}
                         </Button>
@@ -124,7 +126,7 @@ const ChangeTrainsetPreset = ({
                                 </>
                             ) : (
                                 t(
-                                    'pages.project.trainset.carriage.partials.change_trainset_preset.buttons.delete_preset',
+                                    'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.buttons.delete_preset',
                                 )
                             )}
                         </Button>

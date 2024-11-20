@@ -99,7 +99,9 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     return (
         <div className="text-black dark:text-white" key={trainset.id}>
             <h1 className="text-xl font-bold">
-                {t('pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.title')}
+                {t(
+                    'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.title',
+                )}
             </h1>
             {panelAttachmentAncestor && (
                 <div className="flex gap-4 my-4">
@@ -109,7 +111,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                         target="_blank"
                     >
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_panel_attachment.buttons.download',
+                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
                         )}
                     </Link>
                     <ImportPanelCustomMaterial
@@ -122,7 +124,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="selected-carriage-id">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.fields.carriage',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.carriage',
                             )}
                         </InputLabel>
                         <Select
@@ -132,7 +134,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             <SelectTrigger id="selected-carriage-id" className="w-[180px]">
                                 <SelectValue
                                     placeholder={t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.fields.carriage_placeholder',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.carriage_placeholder',
                                     )}
                                 />
                             </SelectTrigger>
@@ -154,14 +156,14 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="selected-panel-id">
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.fields.panel',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.panel',
                             )}
                         </InputLabel>
                         <Select value={selectedPanel?.toString()} onValueChange={value => setSelectedPanel(+value)}>
                             <SelectTrigger id="selected-panel-id" className="w-[180px]">
                                 <SelectValue
                                     placeholder={t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.fields.panel_placeholder',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.fields.panel_placeholder',
                                     )}
                                 />
                             </SelectTrigger>
@@ -213,7 +215,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             <div className="">
                                 <p className="font-bold">
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.attachment_number',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.attachment_number',
                                     )}
                                 </p>
                                 <p>{panelAttachment?.attachment_number}</p>
@@ -221,7 +223,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             <div className="">
                                 <p className="font-bold">
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.reservation_number',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.reservation_number',
                                     )}
                                 </p>
                                 <p>-</p>
@@ -229,7 +231,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             <div className="">
                                 <p className="font-bold">
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.serial_number',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.serial_number',
                                     )}
                                 </p>
                                 <p>{showSerialPanels()}</p>
@@ -239,7 +241,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             <div className="">
                                 <p className="font-bold">
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.reference_number',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.reference_number',
                                     )}
                                 </p>
                                 <p>{panelAttachment.parent?.attachment_number ?? '-'}</p>
@@ -247,7 +249,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             <div className="">
                                 <p className="font-bold">
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.date',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.date',
                                     )}
                                 </p>
                                 <p>{panelAttachment?.formatted_created_at}</p>
@@ -263,7 +265,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                     onClick={() => openImageAndPrint(panelAttachment.qr!)}
                                 >
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.buttons.print_qr',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.buttons.print_qr',
                                     )}
                                 </button>
                             </div>
@@ -272,40 +274,40 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     <Separator className="h-1 my-6" />
                     <h1 className="text-xl font-bold mt-3">
                         {t(
-                            'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.headers.material_list',
+                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
                     <Table>
                         <TableCaption>
                             {t(
-                                'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                             )}
                         </TableCaption>
                         <TableHeader>
                             <TableRow>
                                 <TableHead className="">
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.material_code',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.material_code',
                                     )}
                                 </TableHead>
                                 <TableHead>
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.description',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.description',
                                     )}
                                 </TableHead>
                                 <TableHead>
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.specs',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.specs',
                                     )}
                                 </TableHead>
                                 <TableHead>
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.unit',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.unit',
                                     )}
                                 </TableHead>
                                 <TableHead>
                                     {t(
-                                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.total_qty',
+                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.total_qty',
                                     )}
                                 </TableHead>
                             </TableRow>
@@ -326,7 +328,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             ) : (
                 <h1 className="text-red-500 font-bold mt-3">
                     {t(
-                        'pages.project.trainset.carriage.partials.components.preview_panel_attachment.dialogs.messages.no_attachments',
+                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.messages.no_attachments',
                     )}
                 </h1>
             )}

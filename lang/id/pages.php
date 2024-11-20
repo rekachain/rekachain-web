@@ -830,7 +830,7 @@ return [
                     'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
                 ],
             ],
-            'carriage' => [
+            'carriage_trainset' => [
                 'index' => [
                     'title' => 'Trainset',
                     'initial_date' => 'Tanggal Awal :initial_date',

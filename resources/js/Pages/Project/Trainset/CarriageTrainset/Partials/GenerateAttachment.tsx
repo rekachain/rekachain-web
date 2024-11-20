@@ -90,7 +90,7 @@ const GenerateAttachment = ({
         await handleSyncTrainset();
         await handleSyncCarriages();
         void useSuccessToast(
-            t('pages.project.trainset.carriage.partials.generate_attachment.messages.attachment_generated'),
+            t('pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated'),
         );
         setActiveTab(GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC);
     });
@@ -111,7 +111,7 @@ const GenerateAttachment = ({
         await handleSyncTrainset();
         await handleSyncCarriages();
         void useSuccessToast(
-            t('pages.project.trainset.carriage.partials.generate_attachment.messages.attachment_generated'),
+            t('pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated'),
         );
         setActiveTab(GenerateAttachmentTabEnum.PANEL_ATTACHMENT);
     });
@@ -131,7 +131,7 @@ const GenerateAttachment = ({
         await handleSyncTrainset();
         await handleSyncCarriages();
         void useSuccessToast(
-            t('pages.project.trainset.carriage.partials.generate_attachment.messages.attachment_generated'),
+            t('pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated'),
         );
     });
 
@@ -168,13 +168,15 @@ const GenerateAttachment = ({
         <>
             <Dialog>
                 <DialogTrigger className={buttonVariants()}>
-                    {t('pages.project.trainset.carriage.partials.generate_attachment.buttons.generate_attachment')}
+                    {t(
+                        'pages.project.trainset.carriage_trainset.partials.generate_attachment.buttons.generate_attachment',
+                    )}
                 </DialogTrigger>
                 <DialogContent className="max-w-fit">
                     <DialogHeader>
                         <DialogTitle>
                             {t(
-                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.generate_attachment_title',
+                                'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.generate_attachment_title',
                             )}
                         </DialogTitle>
                         <DialogDescription></DialogDescription>
@@ -186,12 +188,12 @@ const GenerateAttachment = ({
                             <TabsList>
                                 <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
                                     {t(
-                                        'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.trainset_attachment_mechanic',
+                                        'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.trainset_attachment_mechanic',
                                     )}
                                 </TabsTrigger>
                                 <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
                                     {t(
-                                        'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.trainset_attachment_electric',
+                                        'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.trainset_attachment_electric',
                                     )}
                                 </TabsTrigger>
                                 <TabsTrigger
@@ -203,7 +205,7 @@ const GenerateAttachment = ({
                                     }
                                 >
                                     {t(
-                                        'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.panel_attachment',
+                                        'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.panel_attachment',
                                     )}
                                 </TabsTrigger>
                             </TabsList>
@@ -219,7 +221,7 @@ const GenerateAttachment = ({
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
                                             <Label>
                                                 {t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.source_workstation',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
@@ -235,7 +237,7 @@ const GenerateAttachment = ({
                                                     generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id
                                                 }
                                                 placeholder={t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
                                                 renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 buttonClassName="mt-1"
@@ -249,7 +251,7 @@ const GenerateAttachment = ({
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
                                             <Label>
                                                 {t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.destination_workstation',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
@@ -265,7 +267,7 @@ const GenerateAttachment = ({
                                                     generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id
                                                 }
                                                 placeholder={t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
                                                 renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 buttonClassName="mt-1"
@@ -285,7 +287,7 @@ const GenerateAttachment = ({
                                             </>
                                         ) : (
                                             t(
-                                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.generate_mechanic_kpm',
+                                                'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.generate_mechanic_kpm',
                                             )
                                         )}
                                     </Button>
@@ -303,7 +305,7 @@ const GenerateAttachment = ({
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
                                             <Label>
                                                 {t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.source_workstation',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
@@ -319,7 +321,7 @@ const GenerateAttachment = ({
                                                     generateElectricTrainsetAttachmentData.electric_source_workstation_id
                                                 }
                                                 placeholder={t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
                                                 renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 buttonClassName="mt-1"
@@ -330,7 +332,7 @@ const GenerateAttachment = ({
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
                                             <Label>
                                                 {t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.destination_workstation',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
@@ -346,7 +348,7 @@ const GenerateAttachment = ({
                                                     generateElectricTrainsetAttachmentData.electric_destination_workstation_id
                                                 }
                                                 placeholder={t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
                                                 renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 buttonClassName="mt-1"
@@ -366,7 +368,7 @@ const GenerateAttachment = ({
                                             </>
                                         ) : (
                                             t(
-                                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.generate_electric_kpm',
+                                                'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.generate_electric_kpm',
                                             )
                                         )}
                                     </Button>
@@ -384,7 +386,7 @@ const GenerateAttachment = ({
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
                                             <Label>
                                                 {t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.source_workstation',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
@@ -400,7 +402,7 @@ const GenerateAttachment = ({
                                                     generateAssemblyAttachmentData.assembly_source_workstation_id
                                                 }
                                                 placeholder={t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
                                                 renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 buttonClassName="mt-1"
@@ -411,7 +413,7 @@ const GenerateAttachment = ({
                                         <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
                                             <Label>
                                                 {t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.destination_workstation',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
@@ -427,7 +429,7 @@ const GenerateAttachment = ({
                                                     generateAssemblyAttachmentData.assembly_destination_workstation_id
                                                 }
                                                 placeholder={t(
-                                                    'pages.project.trainset.carriage.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
+                                                    'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
                                                 renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 buttonClassName="mt-1"
@@ -444,7 +446,7 @@ const GenerateAttachment = ({
                                             </>
                                         ) : (
                                             t(
-                                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.buttons.generate_attachment',
+                                                'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.generate_attachment',
                                             )
                                         )}
                                     </Button>
@@ -459,12 +461,12 @@ const GenerateAttachment = ({
                     <DialogHeader>
                         <DialogTitle>
                             {t(
-                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials',
+                                'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials',
                             )}
                         </DialogTitle>
                         <DialogDescription>
                             {t(
-                                'pages.project.trainset.carriage.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials_description',
+                                'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials_description',
                             )}
                         </DialogDescription>
                         <ScrollArea className="sm:max-h-[450px]">

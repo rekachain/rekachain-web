@@ -74,13 +74,13 @@ export default function ({
                             <BreadcrumbList>
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS}.index`)}>
-                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.home')}
+                                        {t('pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.home')}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
-                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.project', {
+                                        {t('pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.project', {
                                             project: project?.name,
                                         })}
                                     </Link>
@@ -93,9 +93,12 @@ export default function ({
                                             trainset.id,
                                         ])}
                                     >
-                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.trainset', {
-                                            trainset: trainset?.name,
-                                        })}
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.trainset',
+                                            {
+                                                trainset: trainset?.name,
+                                            },
+                                        )}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
@@ -106,9 +109,12 @@ export default function ({
                                             [project.id, trainset.id, carriageTrainset.id],
                                         )}
                                     >
-                                        {t('pages.project.trainset.carriage.panel.index.breadcrumbs.carriage', {
-                                            carriage: carriageTrainset?.carriage.type,
-                                        })}
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.carriage',
+                                            {
+                                                carriage: carriageTrainset?.carriage.type,
+                                            },
+                                        )}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />

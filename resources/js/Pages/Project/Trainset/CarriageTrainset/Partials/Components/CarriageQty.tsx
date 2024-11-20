@@ -37,7 +37,9 @@ export default function ({
         });
         await handleSyncTrainset();
         setIsEditing(false);
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.components.carriage_qty.messages.updated'));
+        void useSuccessToast(
+            t('pages.project.trainset.carriage_trainset.partials.components.carriage_qty.messages.updated'),
+        );
     });
 
     return (
@@ -54,7 +56,9 @@ export default function ({
                     <Button type="submit" disabled={loading}>
                         {loading
                             ? t('action.loading')
-                            : t('pages.project.trainset.carriage.partials.components.carriage_qty.buttons.submit')}
+                            : t(
+                                  'pages.project.trainset.carriage_trainset.partials.components.carriage_qty.buttons.submit',
+                              )}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>
                         {t('action.cancel')}

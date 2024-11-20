@@ -64,7 +64,9 @@ const AddCarriage = ({
             data.new_carriage_description,
             data.new_carriage_qty,
         );
-        void useSuccessToast(t('pages.project.trainset.carriage.partials.add_carriage.messages.carriage_added'));
+        void useSuccessToast(
+            t('pages.project.trainset.carriage_trainset.partials.add_carriage.messages.carriage_added'),
+        );
         await handleSyncTrainset();
     });
 
@@ -75,7 +77,7 @@ const AddCarriage = ({
                     className: 'w-full',
                 })}
             >
-                {t('pages.project.trainset.carriage.partials.add_carriage.buttons.add_carriage')}
+                {t('pages.project.trainset.carriage_trainset.partials.add_carriage.buttons.add_carriage')}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -84,7 +86,9 @@ const AddCarriage = ({
                     <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-4">
                         <div className="flex flex-col gap-4 bg-background-2 p-4">
                             <Label htmlFor="carriage">
-                                {t('pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.carriage')}
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage',
+                                )}
                             </Label>
                             <GenericDataSelector
                                 id="new_carriage_id"
@@ -92,7 +96,7 @@ const AddCarriage = ({
                                 setSelectedData={id => setData('new_carriage_id', id)}
                                 selectedDataId={data.new_carriage_id ?? undefined}
                                 placeholder={t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.carriage_placeholder',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage_placeholder',
                                 )}
                                 renderItem={(item: CarriageResource) => `${item.type} : ${item.description}`}
                                 customLabel={(item: CarriageResource) => `${item.type} : ${item.description}`}
@@ -104,7 +108,7 @@ const AddCarriage = ({
                             <div className=" flex-1">
                                 <Separator />
                             </div>
-                            {t('pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.or')}
+                            {t('pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.or')}
                             <div className=" flex-1">
                                 <Separator />
                             </div>
@@ -112,7 +116,7 @@ const AddCarriage = ({
                         <div className="flex flex-col gap-4 bg-background-2 p-4">
                             <Label>
                                 {t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.new_carriage_type',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_type',
                                 )}
                             </Label>
                             <Input
@@ -124,7 +128,7 @@ const AddCarriage = ({
                             />
                             <Label htmlFor="new-carriage-description">
                                 {t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.new_carriage_description',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_description',
                                 )}
                             </Label>
                             <Textarea
@@ -136,7 +140,7 @@ const AddCarriage = ({
                             />
                             <Label htmlFor="new-carriage-qty">
                                 {t(
-                                    'pages.project.trainset.carriage.partials.add_carriage.dialogs.fields.new_carriage_qty',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_qty',
                                 )}
                             </Label>
                             <Input
@@ -154,11 +158,13 @@ const AddCarriage = ({
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     {t(
-                                        'pages.project.trainset.carriage.partials.add_carriage.dialogs.actions.adding_carriage',
+                                        'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.actions.adding_carriage',
                                     )}
                                 </>
                             ) : (
-                                t('pages.project.trainset.carriage.partials.add_carriage.dialogs.buttons.add_carriage')
+                                t(
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.buttons.add_carriage',
+                                )
                             )}
                         </Button>
                     </form>

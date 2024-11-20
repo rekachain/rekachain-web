@@ -23,13 +23,17 @@ export default function CarriageTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.trainset.carriage.partials.partials.carriage_table.headers.type')}
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.headers.type',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.trainset.carriage.partials.partials.carriage_table.headers.qty')}
+                            {t('pages.project.trainset.carriage_trainset.partials.partials.carriage_table.headers.qty')}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.trainset.carriage.partials.partials.carriage_table.headers.panels')}
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.headers.panels',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -78,7 +82,7 @@ export default function CarriageTableView({
                                     )}
                                 >
                                     {t(
-                                        'pages.project.trainset.carriage.partials.partials.carriage_table.actions.panels',
+                                        'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.actions.panels',
                                     )}
                                 </Link>
                             </TableCell>
