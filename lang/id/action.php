@@ -3,6 +3,7 @@
 return [
     'edit' => 'Ubah',
     'delete' => 'Hapus',
+    'delete_permanently' => 'Hapus Permanen',
     'view' => 'Lihat',
     'add' => 'Tambah',
     'save' => 'Simpan',

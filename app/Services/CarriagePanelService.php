@@ -11,6 +11,7 @@ use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use App\Support\Interfaces\Services\ComponentServiceInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelMaterialServiceInterface;
+use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use DB;
 use Illuminate\Http\UploadedFile;
@@ -23,6 +24,7 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
         protected PanelAttachmentServiceInterface $panelAttachmentService,
         protected ComponentServiceInterface $componentService,
         protected RawMaterialServiceInterface $rawMaterialService,
+        protected ProgressServiceInterface $progressService,
     ) {
         parent::__construct();
     }
@@ -104,6 +106,29 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
             // TODO: change trainset_preset_id to null?
 
             //            $carriagePanel->trainset()->update(['preset_trainset_id' => null]);
+
+            return true;
+        });
+    }
+
+    public function changeProgress(CarriagePanel $carriagePanel, array $data): bool {
+        return DB::transaction(function () use ($carriagePanel, $data) {
+            $progressId = $data['progress_id'];
+            $progressName = $data['progress_name'];
+            $progressWorkAspectId = $data['progress_work_aspect_id'];
+
+            if ($progressId) {
+                $progress = $this->progressService->findOrFail($progressId);
+            } else {
+                $progress = $this->progressService->create([
+                    'name' => $progressName,
+                    'work_aspect_id' => $progressWorkAspectId,
+                ]);
+            }
+
+            $carriagePanel->update([
+                'progress_id' => $progress->id,
+            ]);
 
             return true;
         });

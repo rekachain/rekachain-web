@@ -30,10 +30,23 @@ export default function () {
     }, [filters]);
 
     const handleUserDeletion = withLoading(async (id: number) => {
-        await userService.delete(id);
+        await userService.softDelete(id);
         await syncUsers();
         void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
     }, true);
+
+    const handleUserForceDeletion = withLoading(
+        async (id: number) => {
+            await userService.delete(id);
+            await syncUsers();
+            void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
+        },
+        true,
+        {
+            title: t('pages.user.partials.users.messages.delete_permanently'),
+            text: t('pages.user.partials.users.messages.delete_permanently_description'),
+        },
+    );
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -50,11 +63,19 @@ export default function () {
             {userResponse && (
                 <>
                     <div className="hidden md:block">
-                        <UserTableView userResponse={userResponse} handleUserDeletion={handleUserDeletion} />
+                        <UserTableView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            handleUserForceDeletion={handleUserForceDeletion}
+                        />
                     </div>
 
                     <div className="block md:hidden">
-                        <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} />
+                        <UserCardView
+                            userResponse={userResponse}
+                            handleUserDeletion={handleUserDeletion}
+                            handleUserForceDeletion={handleUserForceDeletion}
+                        />
                     </div>
                 </>
             )}

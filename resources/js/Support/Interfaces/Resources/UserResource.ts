@@ -12,4 +12,5 @@ export interface UserResource extends Resource, User {
     workstation?: WorkstationResource;
     step?: StepResource;
     can_be_deleted: boolean;
+    is_trashed: boolean;
 }
