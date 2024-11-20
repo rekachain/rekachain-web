@@ -564,7 +564,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         domain={[0, maxWorkstationStatusValue]}
                                     />
                                 ))}
-                                <YAxis className="" dataKey="workstation_name" type="category" />
+                                <YAxis className="" angle={-45} dataKey="workstation_name" type="category" />
                                 <ChartTooltip content={<ChartTooltipContent />} />
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (

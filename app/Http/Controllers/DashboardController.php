@@ -136,7 +136,7 @@ class DashboardController extends Controller
             ON trainset_attachment_components.trainset_attachment_id = trainset_attachments.id
         WHERE trainset_attachments.trainset_id = :trainset
     )
-    SELECT 'required' AS status, SUM(total_required) AS total FROM attachment_data
+    SELECT 'required' AS status, SUM(total_required-total_fulfilled) AS total FROM attachment_data
     UNION ALL
     SELECT 'fulfilled' AS status, SUM(total_fulfilled) AS total FROM attachment_data
     UNION ALL
