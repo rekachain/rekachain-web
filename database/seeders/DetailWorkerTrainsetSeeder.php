@@ -19,14 +19,23 @@ class DetailWorkerTrainsetSeeder extends Seeder
         TrainsetAttachment::all()->each(function (TrainsetAttachment $trainsetAttachment, $trainsetAttachmentIndex) {
             $trainsetAttachmentCount = TrainsetAttachment::count();
             $trainsetAttachmentSeedBound = $trainsetAttachmentCount - 4;
-            $trainsetAttachment->update([
-                'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value
+            $randStatus = array_rand([
+                TrainsetAttachmentStatusEnum::IN_PROGRESS->value => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
+                // TrainsetAttachmentStatusEnum::PENDING->value => TrainsetAttachmentStatusEnum::PENDING->value,
+                TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
+                TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value => TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value,
             ]);
+            $trainsetAttachment->update([
+                'status' => $randStatus
+            ]);
+            $trainsetAttachmentComponents = collect();
             $trainsetAttachmentComponentsCount = $trainsetAttachment->trainset_attachment_components()->count();
             if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                 $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->get();
             } else {
-                $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->limit(rand(1, $trainsetAttachmentComponentsCount))->get();
+                if ($trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED && $trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT) {
+                    $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->limit(rand(1, $trainsetAttachmentComponentsCount))->get();
+                }
             }
 
             if (count($trainsetAttachmentComponents) == 0) {

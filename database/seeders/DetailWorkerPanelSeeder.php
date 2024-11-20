@@ -8,11 +8,12 @@ use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
-use App\Support\Enums\TrainsetStatusEnum;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
 class DetailWorkerPanelSeeder extends Seeder {
+    public function __construct(protected PanelAttachmentServiceInterface $panelAttachmentService) {}
     /**
      * Run the database seeds.
      */
@@ -88,10 +89,9 @@ class DetailWorkerPanelSeeder extends Seeder {
                     }
                 }
                 if ($panelAttachmentIndex < $panelAttachmentSeedBound) {
-                    $panelAttachment->update([
+                    $this->panelAttachmentService->update($panelAttachment, [
                         'status' => PanelAttachmentStatusEnum::DONE->value
                     ]);
-                    $panelAttachment->trainset()->update(['status' => TrainsetStatusEnum::DONE->value]);
                 }
             }
         });
