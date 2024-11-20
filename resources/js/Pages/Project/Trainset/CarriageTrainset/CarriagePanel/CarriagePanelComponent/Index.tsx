@@ -69,15 +69,20 @@ export default function ({
                             <BreadcrumbList>
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS}.index`)}>
-                                        {t('pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.home')}
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.home',
+                                        )}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
-                                        {t('pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.project', {
-                                            project: project?.name,
-                                        })}
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.project',
+                                            {
+                                                project: project?.name,
+                                            },
+                                        )}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
@@ -89,7 +94,7 @@ export default function ({
                                         ])}
                                     >
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.trainset',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.trainset',
                                             {
                                                 trainset: trainset?.name,
                                             },
@@ -105,7 +110,7 @@ export default function ({
                                         )}
                                     >
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.panel.index.breadcrumbs.carriage',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.carriage',
                                             {
                                                 carriage: carriageTrainset?.carriage.type,
                                             },

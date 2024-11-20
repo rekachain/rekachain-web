@@ -862,7 +862,7 @@ return [
                         'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
                     ],
                 ],
-                'panel' => [
+                'carriage_panel' => [
                     'index' => [
                         'title' => 'Gerbong: :name',
                         'initial_date' => 'Tanggal Awal :initial_date',

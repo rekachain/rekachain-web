@@ -862,7 +862,7 @@ return [
                         'trainset_needed_error' => 'Trainset number must be greater than 0',
                     ],
                 ],
-                'panel' => [
+                'carriage_panel' => [
                     'index' => [
                         'title' => 'Carriage: :name',
                         'initial_date' => 'Initial Date :initial_date',
