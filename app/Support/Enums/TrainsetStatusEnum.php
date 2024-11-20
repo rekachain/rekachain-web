@@ -10,4 +10,5 @@ enum TrainsetStatusEnum: string {
     case DRAFT = 'draft';
     case PROGRESS = 'progress';
     case FAILED = 'failed';
+    case DONE = 'done';
 }
