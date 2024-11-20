@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use Faker\Factory as Faker;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
@@ -27,6 +28,10 @@ class TrainsetAttachmentHandlerSeeder extends Seeder {
                         : User::role(RoleEnum::SUPERVISOR_ELEKTRIK)->inRandomOrder()->first();
                 } else {
                     $user = User::role(RoleEnum::PPC_PENGENDALIAN)->inRandomOrder()->first();
+                }
+
+                if ($data->status == TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT && $handle == 'receive') {
+                    continue;
                 }
 
                 TrainsetAttachmentHandler::create([
