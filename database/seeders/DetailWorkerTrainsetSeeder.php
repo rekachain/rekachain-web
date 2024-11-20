@@ -18,11 +18,12 @@ class DetailWorkerTrainsetSeeder extends Seeder
     {
         TrainsetAttachment::all()->each(function (TrainsetAttachment $trainsetAttachment, $trainsetAttachmentIndex) {
             $trainsetAttachmentCount = TrainsetAttachment::count();
+            $trainsetAttachmentSeedBound = $trainsetAttachmentCount - 4;
             $trainsetAttachment->update([
                 'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value
             ]);
             $trainsetAttachmentComponentsCount = $trainsetAttachment->trainset_attachment_components()->count();
-            if ($trainsetAttachmentIndex < $trainsetAttachmentCount - 4) {
+            if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                 $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->get();
             } else {
                 $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->limit(rand(1, $trainsetAttachmentComponentsCount))->get();
@@ -35,14 +36,14 @@ class DetailWorkerTrainsetSeeder extends Seeder
                 $workStatus = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
                 $acceptanceStatus = DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value;
                 $progressStepsCount = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps()->count();
-                if ($trainsetAttachmentIndex < $trainsetAttachmentCount - 4) {
+                if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                     $progressSteps = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps()->get();
                 } else {
                     $progressSteps = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps()->limit(rand(1, $progressStepsCount))->get();
                 }
                 foreach ($progressSteps as $key => $progressStep) {
                     if ($key == $progressSteps->count() - 1) {
-                        if ($trainsetAttachmentIndex < $trainsetAttachmentCount - 4) {
+                        if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                             $workStatus = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
                         } else {
                             $workStatus = array_rand([
@@ -70,7 +71,7 @@ class DetailWorkerTrainsetSeeder extends Seeder
                         ]);
                     }
                 }
-                if ($trainsetAttachmentIndex < $trainsetAttachmentCount - 4) {
+                if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                     $trainsetAttachment->update([
                         'status' => TrainsetAttachmentStatusEnum::DONE->value
                     ]);
