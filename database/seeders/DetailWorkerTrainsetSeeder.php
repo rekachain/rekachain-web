@@ -57,7 +57,9 @@ class DetailWorkerTrainsetSeeder extends Seeder
                             ]);
                         }
                     }
-                    $users = User::whereStepId($progressStep->step_id)->inRandomOrder()->take(rand(1, 3))->get();
+                    $users = User::whereStepId($progressStep->step_id)
+                        ->whereNotIn('id', $trainsetAttachment->detail_worker_trainsets()->whereWorkStatus(DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value)->pluck('worker_id')->toArray())
+                        ->inRandomOrder()->take(rand(1, 3))->get();
                     foreach ($users as $user) {
                         $trainsetAttachmentComponent->detail_worker_trainsets()->create([
                             'worker_id' => $user->id,

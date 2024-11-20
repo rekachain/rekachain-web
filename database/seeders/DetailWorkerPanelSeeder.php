@@ -67,7 +67,9 @@ class DetailWorkerPanelSeeder extends Seeder {
                             ]);
                         }
                     }
-                    $users = User::whereStepId($progressStep->step_id)->inRandomOrder()->take(rand(1, 3))->get();
+                    $users = User::whereStepId($progressStep->step_id)
+                        ->whereNotIn('id', $panelAttachment->detail_worker_panels()->whereWorkStatus(DetailWorkerPanelWorkStatusEnum::IN_PROGRESS->value)->pluck('worker_id')->toArray())
+                        ->inRandomOrder()->take(rand(1, 3))->get();
                     foreach ($users as $user) {
                         $serialPanel->detail_worker_panels()->create([
                             'worker_id' => $user->id,
