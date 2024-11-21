@@ -1016,6 +1016,50 @@ return [
                                             'update_qty' => 'Perbarui Jumlah',
                                         ],
                                     ],
+                                    'carriage_panel_component_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progres',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progres',
+                                            'progress_steps' => 'Langkah Progres',
+                                        ],
+                                    ],
+                                    'partials' => [
+                                        'carriage_panel_component_progress' => [
+                                            'fields' => [
+                                                'progress' => 'Progres',
+                                                'progress_search_placeholder' => 'Cari Progres',
+                                                'progress_placeholder' => 'Pilih Progres',
+                                                'progress_name' => 'Nama Progres',
+                                                'work_aspect' => 'Aspek Pekerjaan',
+                                                'work_aspect_placeholder' => 'Pilih Aspek Pekerjaan',
+                                                'panel_component_qty' => 'Jumlah Komponen Panel',
+                                            ],
+                                            'messages' => [
+                                                'updated' => 'Progres panel berhasil diperbarui!',
+                                            ],
+                                        ],
+                                        'carriage_panel_component_progress_steps' => [
+                                            'messages' => [
+                                                'updated' => 'Langkah progres berhasil diperbarui!',
+                                                'deleted' => 'Langkah progres berhasil dihapus!',
+                                            ],
+                                            'fields' => [
+                                                'step' => 'Langkah',
+                                                'step_placeholder' => 'Pilih Langkah',
+                                                'name' => 'Nama',
+                                                'name_placeholder' => 'Masukkan Nama Langkah',
+                                                'process' => 'Proses',
+                                                'process_placeholder' => 'Masukkan Proses Langkah',
+                                                'estimated_time' => 'Waktu Perkiraan (Menit)',
+                                                'estimated_time_placeholder' => 'Masukkan Waktu Perkiraan',
+                                            ],
+                                            'buttons' => [
+                                                'add_step' => 'Tambah Langkah',
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],

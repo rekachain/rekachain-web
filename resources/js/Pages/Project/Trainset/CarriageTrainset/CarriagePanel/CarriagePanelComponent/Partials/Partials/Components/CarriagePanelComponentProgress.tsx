@@ -11,17 +11,12 @@ import {
 } from '@/Components/UI/dialog';
 import { Button } from '@/Components/UI/button';
 import { useForm } from '@inertiajs/react';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { useDebounce } from '@uidotdev/usehooks';
 import { withLoading } from '@/Utils/withLoading';
 import { progressService } from '@/Services/progressService';
-import { workAspectService } from '@/Services/workAspectService';
-import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { stepService } from '@/Services/stepService';
-import { progressStepService } from '@/Services/progressStepService';
 import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/Partials/CarriagePanelComponentProgress';
 import CarriagePanelComponentProgressSteps from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/Partials/CarriagePanelComponentProgressSteps';
 
@@ -62,18 +57,6 @@ export default function ({
         setProgressResponse(res);
     });
 
-    const fetchWorkAspects = useCallback(async (filters: ServiceFilterOptions) => {
-        return await workAspectService.getAll(filters).then(response => response.data);
-    }, []);
-
-    const handleResetProgressSelectionId = () => {
-        setData('progress_id', null);
-    };
-
-    const handleChangeSearchProgressName = (value: string) => {
-        setSearchProgress(value);
-    };
-
     useEffect(() => {
         progressResponse?.data.find(progress => {
             if (progress.id === data.progress_id) {
@@ -86,49 +69,14 @@ export default function ({
         void handleSyncProgressResource();
     }, []);
 
-    const handleChangeProgress = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await carriagePanelComponentService.changeProgress(
-            carriagePanelComponent.id,
-            data.progress_id,
-            data.progress_name,
-            data.progress_work_aspect_id,
-        );
-        await handleSyncCarriagePanel();
-        void useSuccessToast('Progress has been changed');
-    };
-
-    const fetchSteps = useCallback(async (filters: ServiceFilterOptions) => {
-        return await stepService.getAll(filters).then(response => response.data);
-    }, []);
-
-    const handleAddStep = withLoading(async (e: FormEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        await progressService.createStep(
-            progress.id,
-            data.step_id,
-            data.step_name,
-            data.step_process,
-            data.step_estimated_time,
-        );
-        await handleSyncCarriagePanel();
-        void useSuccessToast('Step added');
-    }, true);
-
-    const handleProgressStepDeletion = withLoading(async (progressStepId: number) => {
-        await progressStepService.delete(progressStepId);
-        await handleSyncCarriagePanel();
-        void useSuccessToast('Step deleted');
-    }, true);
-
-    const handleResetStepSelectionId = () => {
-        setData('step_id', null);
-    };
-
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="link">Progress</Button>
+                <Button variant="link">
+                    {t(
+                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_progress.buttons.progress',
+                    )}
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -137,7 +85,11 @@ export default function ({
                 </DialogHeader>
                 <Accordion type="single" collapsible>
                     <AccordionItem value="item-1">
-                        <AccordionTrigger>Progress</AccordionTrigger>
+                        <AccordionTrigger>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_progress.accordions.progress',
+                            )}
+                        </AccordionTrigger>
                         <AccordionContent>
                             <CarriagePanelComponentProgress
                                 progress={progress}
@@ -147,7 +99,11 @@ export default function ({
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
-                        <AccordionTrigger>Progress Steps</AccordionTrigger>
+                        <AccordionTrigger>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_progress.accordions.progress_steps',
+                            )}
+                        </AccordionTrigger>
                         <AccordionContent>
                             <CarriagePanelComponentProgressSteps
                                 progress={progress}

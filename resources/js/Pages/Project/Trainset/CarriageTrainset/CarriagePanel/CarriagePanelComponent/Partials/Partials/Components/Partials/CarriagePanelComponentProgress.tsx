@@ -88,14 +88,22 @@ export default function ({
             data.progress_work_aspect_id,
         );
         await handleSyncCarriagePanel();
-        void useSuccessToast('Progress has been changed');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.messages.updated',
+            ),
+        );
     };
 
     return (
         <form onSubmit={handleChangeProgress}>
             <div className="flex flex-col gap-4">
                 <div className="flex gap-4 flex-col">
-                    <Label htmlFor="name">Progress</Label>
+                    <Label htmlFor="name">
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress',
+                        )}
+                    </Label>
                     <div className="flex items-center">
                         <GenericDataSelector
                             id="progress_id"
@@ -104,10 +112,10 @@ export default function ({
                             setSelectedData={id => setData('progress_id', id)}
                             selectedDataId={data.progress_id}
                             customSearchPlaceholder={t(
-                                'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_search',
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress_search_placeholder',
                             )}
                             placeholder={t(
-                                'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress_placeholder',
                             )}
                             renderItem={item => item.name}
                         />
@@ -130,11 +138,19 @@ export default function ({
                 )}
                 <div className="flex items-center gap-4">
                     <Separator className="flex-1" />
-                    <p>Create New Progress</p>
+                    <p>
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.panel_component_qty',
+                        )}
+                    </p>
                     <Separator className="flex-1" />
                 </div>
                 <div className="flex flex-col gap-4">
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name">
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress_name',
+                        )}
+                    </Label>
                     <Input
                         id="name"
                         value={data.progress_name}
@@ -142,13 +158,19 @@ export default function ({
                         disabled={data.progress_id !== null}
                     />
 
-                    <Label htmlFor="work_aspect">Work Aspect</Label>
+                    <Label htmlFor="work_aspect">
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.work_aspect',
+                        )}
+                    </Label>
                     <GenericDataSelector
                         id="work_aspect"
                         fetchData={fetchWorkAspects}
                         setSelectedData={id => setData('progress_work_aspect_id', id)}
                         selectedDataId={data.progress_work_aspect_id ?? undefined}
-                        placeholder={'Select a work aspect'}
+                        placeholder={t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.work_aspect_placeholder',
+                        )}
                         renderItem={(item: WorkAspectResource) => item.name}
                         nullable
                     />

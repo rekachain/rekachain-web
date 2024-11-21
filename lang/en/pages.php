@@ -1016,6 +1016,50 @@ return [
                                             'update_qty' => 'Update Qty',
                                         ],
                                     ],
+                                    'carriage_panel_component_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progress',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progress',
+                                            'progress_steps' => 'Progress Steps',
+                                        ],
+                                    ],
+                                    'partials' => [
+                                        'carriage_panel_component_progress' => [
+                                            'fields' => [
+                                                'progress' => 'Progress',
+                                                'progress_search_placeholder' => 'Search Progress',
+                                                'progress_placeholder' => 'Select Progress',
+                                                'progress_name' => 'Progress Name',
+                                                'work_aspect' => 'Work Aspect',
+                                                'work_aspect_placeholder' => 'Select Work Aspect',
+                                                'panel_component_qty' => 'Panel Component Quantity',
+                                            ],
+                                            'messages' => [
+                                                'updated' => 'Panel progress updated successfully!',
+                                            ],
+                                        ],
+                                        'carriage_panel_component_progress_steps' => [
+                                            'messages' => [
+                                                'updated' => 'Progress step updated successfully!',
+                                                'deleted' => 'Progress step deleted successfully!',
+                                            ],
+                                            'fields' => [
+                                                'step' => 'Step',
+                                                'step_placeholder' => 'Select Step',
+                                                'name' => 'Name',
+                                                'name_placeholder' => 'Enter Step Name',
+                                                'process' => 'Process',
+                                                'process_placeholder' => 'Enter Step Process',
+                                                'estimated_time' => 'Estimated Time (Minutes)',
+                                                'estimated_time_placeholder' => 'Enter Estimated Time',
+                                            ],
+                                            'buttons' => [
+                                                'add_step' => 'Add Step',
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
