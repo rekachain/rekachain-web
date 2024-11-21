@@ -942,6 +942,84 @@ return [
                             ],
                         ],
                     ],
+                    'carriage_panel_component' => [
+                        'index' => [
+                            'title' => 'Komponen',
+                            'breadcrumbs' => [
+                                'home' => 'Beranda',
+                                'project' => 'Proyek :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Gerbong :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'partials' => [
+                            'add_new_component' => [
+                                'buttons' => [
+                                    'add_component' => 'Tambah Komponen',
+                                ],
+                                'dialogs' => [
+                                    'fields' => [
+                                        'progress' => 'Progres',
+                                        'progress_search_placeholder' => 'Cari Progres',
+                                        'progress_placeholder' => 'Pilih Progres',
+                                        'component' => 'Komponen',
+                                        'component_placeholder' => 'Pilih Komponen',
+                                        'component_name' => 'Nama Komponen',
+                                        'component_description' => 'Deskripsi Komponen',
+                                        'component_qty' => 'Jumlah Komponen',
+                                    ],
+                                ],
+                                'messages' => [
+                                    'created' => 'Komponen berhasil ditambahkan!',
+                                ],
+                            ],
+                            'carriage_panel_component_table' => [
+                                'headers' => [
+                                    'component' => 'Komponen',
+                                    'qty' => 'Jumlah',
+                                    'description' => 'Deskripsi',
+                                    'progress' => 'Progres',
+                                ],
+                                'actions' => [
+                                    'materials' => 'Material',
+                                ],
+                            ],
+                            'carriage_panel_components' => [
+                                'messages' => [
+                                    'deleted' => 'Komponen berhasil dihapus!',
+                                ],
+                            ],
+                            'partials' => [
+                                'carriage_panel_component_table' => [
+                                    'headers' => [
+                                        'component' => 'Komponen',
+                                        'qty' => 'Jumlah',
+                                        'description' => 'Deskripsi',
+                                        'progress' => 'Progres',
+                                    ],
+                                    'actions' => [
+                                        'materials' => 'Material',
+                                    ],
+                                ],
+                                'carriage_panel_component_card' => [
+                                    'actions' => [
+                                        'materials' => 'Material',
+                                    ],
+                                ],
+                                'components' => [
+                                    'carriage_panel_component_qty' => [
+                                        'messages' => [
+                                            'updated' => 'Jumlah komponen berhasil diperbarui!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Perbarui Jumlah',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'panels' => [
                             'messages' => [

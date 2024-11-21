@@ -70,7 +70,7 @@ export default function ({
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS}.index`)}>
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.home',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.index.breadcrumbs.home',
                                         )}
                                     </Link>
                                 </BreadcrumbItem>
@@ -78,7 +78,7 @@ export default function ({
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.project',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.index.breadcrumbs.project',
                                             {
                                                 project: project?.name,
                                             },
@@ -94,7 +94,7 @@ export default function ({
                                         ])}
                                     >
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.trainset',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.index.breadcrumbs.trainset',
                                             {
                                                 trainset: trainset?.name,
                                             },
@@ -110,7 +110,7 @@ export default function ({
                                         )}
                                     >
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.carriage',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.index.breadcrumbs.carriage',
                                             {
                                                 carriage: carriageTrainset?.carriage.type,
                                             },
@@ -119,12 +119,23 @@ export default function ({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Panel : {carriagePanel.panel?.name}</BreadcrumbPage>
+                                    <BreadcrumbPage>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.index.breadcrumbs.panel',
+                                            {
+                                                panel: carriagePanel.panel?.name,
+                                            },
+                                        )}
+                                    </BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex items-center gap-4">
-                            <h1 className="text-page-header my-4">Panel : {carriagePanel.panel?.name}</h1>
+                            <h1 className="text-page-header my-4">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.index.title',
+                                )}
+                            </h1>
                         </div>
                     </div>
 

@@ -942,6 +942,84 @@ return [
                             ],
                         ],
                     ],
+                    'carriage_panel_component' => [
+                        'index' => [
+                            'title' => 'Components',
+                            'breadcrumbs' => [
+                                'home' => 'Home',
+                                'project' => 'Project :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Carriage :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'partials' => [
+                            'add_new_component' => [
+                                'buttons' => [
+                                    'add_component' => 'Add Component',
+                                ],
+                                'dialogs' => [
+                                    'fields' => [
+                                        'progress' => 'Progress',
+                                        'progress_search_placeholder' => 'Search Progress',
+                                        'progress_placeholder' => 'Select Progress',
+                                        'component' => 'Component',
+                                        'component_placeholder' => 'Select Component',
+                                        'component_name' => 'Component Name',
+                                        'component_description' => 'Component Description',
+                                        'component_qty' => 'Component Quantity',
+                                    ],
+                                ],
+                                'messages' => [
+                                    'created' => 'Component added successfully!',
+                                ],
+                            ],
+                            'carriage_panel_component_table' => [
+                                'headers' => [
+                                    'component' => 'Component',
+                                    'qty' => 'Quantity',
+                                    'description' => 'Description',
+                                    'progress' => 'Progress',
+                                ],
+                                'actions' => [
+                                    'materials' => 'Materials',
+                                ],
+                            ],
+                            'carriage_panel_components' => [
+                                'messages' => [
+                                    'deleted' => 'Component deleted successfully!',
+                                ],
+                            ],
+                            'partials' => [
+                                'carriage_panel_component_table' => [
+                                    'headers' => [
+                                        'component' => 'Component',
+                                        'qty' => 'Qty',
+                                        'description' => 'Description',
+                                        'progress' => 'Progress',
+                                    ],
+                                    'actions' => [
+                                        'materials' => 'Materials',
+                                    ],
+                                ],
+                                'carriage_panel_component_card' => [
+                                    'actions' => [
+                                        'materials' => 'Materials',
+                                    ],
+                                ],
+                                'components' => [
+                                    'carriage_panel_component_qty' => [
+                                        'messages' => [
+                                            'updated' => 'Component quantity updated successfully!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Update Qty',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'panels' => [
                             'messages' => [

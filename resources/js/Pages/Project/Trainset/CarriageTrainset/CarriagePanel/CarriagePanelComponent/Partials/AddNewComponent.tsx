@@ -119,7 +119,11 @@ const AddNewComponent = ({
         handleResetProgressSearch();
         await handleSyncCarriagePanel();
         reset();
-        void useSuccessToast('Komponen berhasil ditambahkan');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.messages.created',
+            ),
+        );
     });
 
     const fetchComponentProgress = withLoading(async (componentId: number) => {
@@ -150,7 +154,9 @@ const AddNewComponent = ({
                     className: 'w-full',
                 })}
             >
-                Tambah Komponen
+                {t(
+                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.buttons.add_component',
+                )}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -158,7 +164,11 @@ const AddNewComponent = ({
                     <DialogDescription></DialogDescription>
                     <form onSubmit={handleAddComponentCarriage} className="flex flex-col gap-4">
                         <div className="flex flex-col bg-background-2 gap-4 p-4">
-                            <Label htmlFor="progress">Progress</Label>
+                            <Label htmlFor="progress">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress',
+                                )}
+                            </Label>
                             <div className="flex gap-2">
                                 <GenericDataSelector
                                     id="progress_id"
@@ -166,8 +176,12 @@ const AddNewComponent = ({
                                     onSearchChange={handleChangeSearchProgressName}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id}
-                                    customSearchPlaceholder={'Cari Progress'}
-                                    placeholder={'Pilih Progress'}
+                                    customSearchPlaceholder={t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_search_placeholder',
+                                    )}
+                                    placeholder={t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_placeholder',
+                                    )}
                                     renderItem={item => item.name}
                                 />
                                 <Button type="button" variant="ghost" onClick={handleResetProgressSearch}>
@@ -175,13 +189,19 @@ const AddNewComponent = ({
                                 </Button>
                             </div>
 
-                            <Label htmlFor="component">Komponen</Label>
+                            <Label htmlFor="component">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component',
+                                )}
+                            </Label>
                             <GenericDataSelector
                                 id="component_id"
                                 fetchData={fetchComponents}
                                 setSelectedData={id => setData('new_component_id', id)}
                                 selectedDataId={data.new_component_id}
-                                placeholder={'Pilih Komponen'}
+                                placeholder={t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_placeholder',
+                                )}
                                 renderItem={item => item.name}
                                 nullable
                             />
@@ -191,7 +211,11 @@ const AddNewComponent = ({
 
                         <div className="flex flex-col gap-4 bg-background-2 p-4">
                             <div className="flex flex-col gap-2">
-                                <Label>Nama Komponen</Label>
+                                <Label>
+                                    {t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_name',
+                                    )}
+                                </Label>
                                 <Input
                                     type="text"
                                     value={data.new_component_name}
@@ -200,7 +224,11 @@ const AddNewComponent = ({
                                     required
                                 />
                             </div>
-                            <Label htmlFor="new-component-description">Deskripsi Komponen</Label>
+                            <Label htmlFor="new-component-description">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_description',
+                                )}
+                            </Label>
                             <Textarea
                                 id="new-component-description"
                                 className="p-2 rounded"
@@ -208,7 +236,11 @@ const AddNewComponent = ({
                                 onChange={handleChangeNewComponentDescription}
                                 disabled={data.new_component_id !== null}
                             />
-                            <Label htmlFor="new-component-qty">Jumlah Komponen</Label>
+                            <Label htmlFor="new-component-qty">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_qty',
+                                )}
+                            </Label>
                             <Input
                                 id="new-component-qty"
                                 type="number"

@@ -21,7 +21,11 @@ export default function ({
     const handlePanelComponentDeletion = withLoading(async (carriagePanelComponent: number) => {
         await carriagePanelComponentService.delete(carriagePanelComponent);
         await handleSyncCarriagePanel();
-        void useSuccessToast('Carriage panel component has been deleted.');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.carriage_panel_components.messages.deleted',
+            ),
+        );
     }, true);
 
     return (
