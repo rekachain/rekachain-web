@@ -334,6 +334,16 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'worker_status' => [
+                        'title' => 'Status Pekerja',
+                        'fields' => [
+                            'all' => 'Semua',
+                            'active' => 'Aktif',
+                            'inactive' => 'Tidak Aktif',
+                        ],
+                    ],
+                ],
                 'user_table' => [
                     'headers' => [
                         'nip' => 'NIP',
@@ -820,7 +830,7 @@ return [
                     'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
                 ],
             ],
-            'carriage' => [
+            'carriage_trainset' => [
                 'index' => [
                     'title' => 'Trainset',
                     'initial_date' => 'Tanggal Awal :initial_date',
@@ -852,7 +862,7 @@ return [
                         'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
                     ],
                 ],
-                'panel' => [
+                'carriage_panel' => [
                     'index' => [
                         'title' => 'Gerbong: :name',
                         'initial_date' => 'Tanggal Awal :initial_date',

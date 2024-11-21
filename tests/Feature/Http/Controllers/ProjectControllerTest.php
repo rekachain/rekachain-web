@@ -159,7 +159,7 @@ test('carriages method returns trainset carriages', function () {
 
     $response->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert
-            ->component('Project/Trainset/Carriage/Index')
+            ->component('Project/Trainset/CarriageTrainset/Index')
             ->has('project')
             ->has('trainset')
             ->has('presetTrainsets')
@@ -175,7 +175,7 @@ test('panels method returns carriage panels', function () {
 
     $response->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert
-            ->component('Project/Trainset/Carriage/CarriagePanel/Index')
+            ->component('Project/Trainset/CarriageTrainset/CarriagePanel/Index')
             ->has('project')
             ->has('trainset')
             ->has('carriageTrainset')
