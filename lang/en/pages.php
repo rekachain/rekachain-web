@@ -972,17 +972,6 @@ return [
                                 'add_new_panel' => 'Add New Panel',
                             ],
                         ],
-                        'components' => [
-                            'panel_qty' => [
-                                'title' => 'Panel Quantity',
-                                'messages' => [
-                                    'qty_updated' => 'Panel quantity updated successfully!',
-                                ],
-                                'buttons' => [
-                                    'update_qty' => 'Update Qty',
-                                ],
-                            ],
-                        ],
                         'partials' => [
                             'carriage_panel_table' => [
                                 'headers' => [
@@ -1000,6 +989,72 @@ return [
                                     'description' => 'Description',
                                     'components' => 'Components',
                                     'progress' => 'Progress',
+                                ],
+                            ],
+                            'components' => [
+                                'panel_qty' => [
+                                    'title' => 'Panel Quantity',
+                                    'messages' => [
+                                        'updated' => 'Panel quantity updated successfully!',
+                                    ],
+                                    'buttons' => [
+                                        'update_qty' => 'Update Qty',
+                                    ],
+                                ],
+                                'panel_progress' => [
+                                    'accordions' => [
+                                        'progress' => 'Progress',
+                                        'progress_steps' => 'Progress Steps',
+                                    ],
+                                    'messages' => [
+                                        'updated' => 'Panel progress updated successfully!',
+                                    ],
+                                    'buttons' => [
+                                        'progress' => 'Progress',
+                                    ],
+                                ],
+                                'partials' => [
+                                    'panel_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progress',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progress',
+                                            'progress_steps' => 'Progress Steps',
+                                        ],
+                                        'messages' => [
+                                            'updated' => 'Panel progress updated successfully!',
+                                        ],
+                                        'fields' => [
+                                            'progress' => 'Progress',
+                                            'progress_placeholder' => 'Select Progress',
+                                            'name' => 'Name',
+                                            'work_aspect' => 'Work Aspect',
+                                            'work_aspect_placeholder' => 'Select Work Aspect',
+                                        ],
+                                        'separators' => [
+                                            'create_new_progress' => 'Create New Progress',
+                                        ],
+                                    ],
+                                    'panel_progress_steps' => [
+                                        'messages' => [
+                                            'updated' => 'Progress step updated successfully!',
+                                            'deleted' => 'Progress step deleted successfully!',
+                                        ],
+                                        'fields' => [
+                                            'step' => 'Step',
+                                            'step_placeholder' => 'Select Step',
+                                            'name' => 'Name',
+                                            'name_placeholder' => 'Enter Step Name',
+                                            'process' => 'Process',
+                                            'process_placeholder' => 'Enter Step Process',
+                                            'estimated_time' => 'Estimated Time (Minutes)',
+                                            'estimated_time_placeholder' => 'Enter Estimated Time',
+                                        ],
+                                        'buttons' => [
+                                            'add_step' => 'Add Step',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],

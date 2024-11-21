@@ -972,17 +972,6 @@ return [
                                 'add_new_panel' => 'Tambah Panel Baru',
                             ],
                         ],
-                        'components' => [
-                            'panel_qty' => [
-                                'title' => 'Jumlah Panel',
-                                'messages' => [
-                                    'qty_updated' => 'Jumlah panel berhasil diperbarui!',
-                                ],
-                                'buttons' => [
-                                    'update_qty' => 'Perbarui Jumlah',
-                                ],
-                            ],
-                        ],
                         'partials' => [
                             'carriage_panel_table' => [
                                 'headers' => [
@@ -1000,6 +989,72 @@ return [
                                     'description' => 'Deskripsi',
                                     'components' => 'Komponen',
                                     'progress' => 'Progres',
+                                ],
+                            ],
+                            'components' => [
+                                'panel_qty' => [
+                                    'title' => 'Jumlah Panel',
+                                    'messages' => [
+                                        'updated' => 'Jumlah panel berhasil diperbarui!',
+                                    ],
+                                    'buttons' => [
+                                        'update_qty' => 'Perbarui Jumlah',
+                                    ],
+                                ],
+                                'panel_progress' => [
+                                    'accordions' => [
+                                        'progress' => 'Progress',
+                                        'progress_steps' => 'Langkah Progress',
+                                    ],
+                                    'messages' => [
+                                        'updated' => 'Progress panel berhasil diperbarui!',
+                                    ],
+                                    'buttons' => [
+                                        'progress' => 'Progress',
+                                    ],
+                                ],
+                                'partials' => [
+                                    'panel_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progress',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progress',
+                                            'progress_steps' => 'Langkah Progress',
+                                        ],
+                                        'messages' => [
+                                            'updated' => 'Progress panel berhasil diperbarui!',
+                                        ],
+                                        'fields' => [
+                                            'progress' => 'Progress',
+                                            'progress_placeholder' => 'Pilih Progress',
+                                            'name' => 'Nama',
+                                            'work_aspect' => 'Aspek Pekerjaan',
+                                            'work_aspect_placeholder' => 'Pilih Aspek Pekerjaan',
+                                        ],
+                                        'separators' => [
+                                            'create_new_progress' => 'Buat Kemajuan Baru',
+                                        ],
+                                    ],
+                                    'panel_progress_steps' => [
+                                        'messages' => [
+                                            'updated' => 'Langkah kemajuan berhasil diperbarui!',
+                                            'deleted' => 'Langkah kemajuan berhasil dihapus!',
+                                        ],
+                                        'fields' => [
+                                            'step' => 'Langkah',
+                                            'step_placeholder' => 'Pilih Langkah',
+                                            'name' => 'Nama',
+                                            'name_placeholder' => 'Masukkan Nama Langkah',
+                                            'process' => 'Proses',
+                                            'process_placeholder' => 'Masukkan Proses Langkah',
+                                            'estimated_time' => 'Waktu Perkiraan (Menit)',
+                                            'estimated_time_placeholder' => 'Masukkan Waktu Perkiraan',
+                                        ],
+                                        'buttons' => [
+                                            'add_step' => 'Tambah Langkah',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
