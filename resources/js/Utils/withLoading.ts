@@ -1,7 +1,15 @@
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useConfirmationDialog } from '@/Contexts/ConfirmationDialogContext';
 
-export function withLoading(fn: (...args: any[]) => Promise<void>, confirmation?: boolean, confirmationObject?: any) {
+export function withLoading(
+    fn: (...args: any[]) => Promise<void>,
+    confirmation?: boolean,
+    // TODO: Refactor using type
+    confirmationObject?: {
+        title?: string;
+        text?: string;
+    },
+) {
     const { setLoading } = useLoading();
     const { showConfirmation } = useConfirmationDialog();
 

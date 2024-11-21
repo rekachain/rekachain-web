@@ -334,6 +334,16 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'worker_status' => [
+                        'title' => 'Worker Status',
+                        'fields' => [
+                            'all' => 'All',
+                            'active' => 'Active',
+                            'inactive' => 'Inactive',
+                        ],
+                    ],
+                ],
                 'user_table' => [
                     'headers' => [
                         'nip' => 'Employee ID',
@@ -820,7 +830,7 @@ return [
                     'trainset_needed_error' => 'Trainset number must be greater than 0',
                 ],
             ],
-            'carriage' => [
+            'carriage_trainset' => [
                 'index' => [
                     'title' => 'Carriages',
                     'initial_date' => 'Initial Date :initial_date',
@@ -852,7 +862,7 @@ return [
                         'trainset_needed_error' => 'Trainset number must be greater than 0',
                     ],
                 ],
-                'panel' => [
+                'carriage_panel' => [
                     'index' => [
                         'title' => 'Carriage: :name',
                         'initial_date' => 'Initial Date :initial_date',

@@ -3,6 +3,7 @@
 return [
     'edit' => 'Edit',
     'delete' => 'Delete',
+    'delete_permanently' => 'Delete Permanently',
     'view' => 'View',
     'add' => 'Add',
     'save' => 'Save',

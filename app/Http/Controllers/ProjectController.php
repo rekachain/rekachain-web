@@ -325,17 +325,17 @@ class ProjectController extends Controller {
             ];
         }
 
-        return inertia('Project/Trainset/Carriage/Index', compact('project', 'trainset', 'presetTrainsets'));
+        return inertia('Project/Trainset/CarriageTrainset/Index', compact('project', 'trainset', 'presetTrainsets'));
     }
 
     public function project_trainset_carriageTrainset(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {
         $carriage = new CarriageResource($carriage);
 
-        return inertia('Project/Trainset/Carriage/Show', ['carriage' => $carriage]);
+        return inertia('Project/Trainset/CarriageTrainset/Show', ['carriage' => $carriage]);
     }
 
     public function project_trainset_carriageTrainset_carriagePanels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
-        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress' => ['progress_steps' => ['step']], 'carriage_panel_components' => ['component']], 'carriage']));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 
@@ -343,7 +343,7 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/Index', compact('project', 'trainset', 'carriageTrainset'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/Index', compact('project', 'trainset', 'carriageTrainset'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponents(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
@@ -356,7 +356,7 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponent_componentMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel, CarriagePanelComponent $carriagePanelComponent) {
@@ -370,7 +370,7 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_panelMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
@@ -383,12 +383,12 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/PanelMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
     }
 
     public function panel(Request $request, Project $project, Trainset $trainset, Carriage $carriage, Panel $panel) {
         $panel = new PanelResource($panel);
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/Show', ['panel' => $panel]);
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/Show', ['panel' => $panel]);
     }
 }

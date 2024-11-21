@@ -94,6 +94,8 @@ class CarriagePanelController extends Controller {
                     return $this->carriagePanelService->addComponent($CarriagePanel, $request->validated());
                 case IntentEnum::WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL->value:
                     return $this->carriagePanelService->addRawMaterial($CarriagePanel, $request->validated());
+                case IntentEnum::WEB_CARRIAGE_PANEL_CHANGE_PROGRESS->value:
+                    return $this->carriagePanelService->changeProgress($CarriagePanel, $request->validated());
             }
 
             return new CarriagePanelResource($this->carriagePanelService->update($CarriagePanel, $request->validated()));
