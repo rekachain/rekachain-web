@@ -66,22 +66,6 @@ export default function Navbar() {
 
             <div className="w-fit flex h-full items-center gap-1 md:gap-2">
                 <div className="hidden md:flex">
-                    <Sheet>
-                        <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-                            <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
-                        </SheetTrigger>
-                        <SheetContent>
-                            <SheetHeader>
-                                <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
-                                <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
-                            </SheetHeader>
-                        </SheetContent>
-                    </Sheet>
-                    <SetLocalization />
-                    <AddFeedback />
-                </div>
-                <Separator orientation="vertical" className="md:w-[2px] hidden" />
-                <div className="hidden md:flex">
                     <ViewManualBook />
                     <DownloadApp />
                     <ToggleDarkMode />
