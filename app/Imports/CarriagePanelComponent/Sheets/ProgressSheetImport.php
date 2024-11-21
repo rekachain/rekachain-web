@@ -65,6 +65,10 @@ class ProgressSheetImport implements ToCollection
             $progress->progress_steps()->createMany($steps->map(fn ($step) => ['step_id' => $step->id])->toArray());
         }
 
+        if (is_null($this->carriagePanelComponent->component->progress)) {
+            $this->carriagePanelComponent->component->update(['progress_id' => $progress->id]);
+        }
+
         if (is_null($this->override) || $this->override) {
             // update progress no matter what🗿
             return $this->carriagePanelComponent->update(['progress_id' => $progress->id]);
