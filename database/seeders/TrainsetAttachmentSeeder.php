@@ -16,7 +16,7 @@ class TrainsetAttachmentSeeder extends Seeder {
     public function run(): void {
         $user = \App\Models\User::role(\App\Support\Enums\RoleEnum::PPC_PENGENDALIAN)->first();
         \Illuminate\Support\Facades\Auth::login($user);
-        $trainsets = Trainset::limit(5)->get();
+        $trainsets = Trainset::limit(10)->get();
         foreach ($trainsets as $trainset) {
             $data = [
                 'division' => TrainsetAttachmentTypeEnum::MECHANIC->value,
