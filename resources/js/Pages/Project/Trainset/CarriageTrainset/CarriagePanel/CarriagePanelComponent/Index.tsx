@@ -1,5 +1,3 @@
-// TODO: i18n not implemented
-
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lazy, memo, Suspense, useEffect, useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
