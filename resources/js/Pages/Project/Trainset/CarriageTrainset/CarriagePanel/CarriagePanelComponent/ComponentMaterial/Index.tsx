@@ -28,7 +28,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { componentService } from '@/Services/componentService';
 import AddNewComponentRawMaterial from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/AddNewComponentRawMaterial';
 
-const CarriagePanelComponents = memo(lazy(() => import('./Partials/CarriagePanelComponents')));
+const ComponentMaterials = memo(lazy(() => import('./Partials/ComponentMaterials')));
 
 export default function ({
     project,
@@ -66,7 +66,11 @@ export default function ({
 
     return (
         <>
-            <Head title={`Carriage: ${carriageTrainset?.carriage.type}`} />
+            <Head
+                title={t(
+                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.title',
+                )}
+            />
             <AuthenticatedLayout>
                 <div className="p-4 space-y-4">
                     <div className="flex flex-col gap-2">
@@ -75,7 +79,7 @@ export default function ({
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS}.index`)}>
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.home',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.home',
                                         )}
                                     </Link>
                                 </BreadcrumbItem>
@@ -83,7 +87,7 @@ export default function ({
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.project',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.project',
                                             {
                                                 project: project?.name,
                                             },
@@ -99,7 +103,7 @@ export default function ({
                                         ])}
                                     >
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.trainset',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.trainset',
                                             {
                                                 trainset: trainset?.name,
                                             },
@@ -115,7 +119,7 @@ export default function ({
                                         )}
                                     >
                                         {t(
-                                            'pages.project.trainset.carriage_trainset.carriage_panel.index.breadcrumbs.carriage',
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.carriage',
                                             {
                                                 carriage: carriageTrainset?.carriage.type,
                                             },
@@ -130,24 +134,36 @@ export default function ({
                                             [project.id, trainset.id, carriageTrainset.id, carriagePanel.id],
                                         )}
                                     >
-                                        Panel {carriagePanel.panel?.name}
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.panel',
+                                            {
+                                                panel: carriagePanel.panel?.name,
+                                            },
+                                        )}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <BreadcrumbPage>Component {carriagePanelComponent.component?.name}</BreadcrumbPage>
+                                    <BreadcrumbPage>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.component',
+                                            { component: carriagePanelComponent.component?.name },
+                                        )}
+                                    </BreadcrumbPage>
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
                         <div className="flex items-center gap-4">
                             <h1 className="text-page-header my-4">
-                                Component : {carriagePanelComponent.component?.name}
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.title',
+                                )}
                             </h1>
                         </div>
                     </div>
 
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <CarriagePanelComponents
+                        <ComponentMaterials
                             trainset={trainset}
                             carriageTrainset={carriageTrainset}
                             carriagePanelComponent={carriagePanelComponent}

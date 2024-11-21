@@ -953,6 +953,72 @@ return [
                                 'panel' => 'Panel :panel',
                             ],
                         ],
+                        'component_material' => [
+                            'index' => [
+                                'title' => 'Component Material',
+                                'breadcrumbs' => [
+                                    'home' => 'Home',
+                                    'project' => 'Project :project',
+                                    'trainset' => 'Trainset :trainset',
+                                    'carriage' => 'Carriage :carriage',
+                                    'panel' => 'Panel :panel',
+                                    'component' => 'Component :component',
+                                ],
+                            ],
+                            'partials' => [
+                                'component_materials' => [
+                                    'messages' => [
+                                        'deleted' => 'Component Material deleted successfully!',
+                                    ],
+                                ],
+                                'add_new_component_raw_material' => [
+                                    'messages' => [
+                                        'created' => 'Component Material added successfully!',
+                                    ],
+                                    'buttons' => [
+                                        'add_new_component_raw_material' => 'Add New Component Material',
+                                    ],
+                                    'dialogs' => [
+                                        'title' => 'Add New Component Material',
+                                        'fields' => [
+                                            'raw_material' => 'Raw Material',
+                                            'raw_material_placeholder' => 'Select Raw Material',
+                                            'raw_material_code' => 'Raw Material Code',
+                                            'raw_material_code_placeholder' => 'Raw Material Code',
+                                            'raw_material_search' => 'Search Raw Material',
+                                            'new_raw_material_code' => 'New Raw Material Code',
+                                            'new_raw_material_description' => 'New Raw Material Description',
+                                            'new_raw_material_unit' => 'New Raw Material Unit',
+                                            'new_raw_material_specs' => 'New Raw Material Specs',
+                                            'new_raw_material_qty' => 'New Raw Material Qty',
+                                        ],
+                                        'buttons' => [
+                                            'add_component_material' => 'Add Component Material',
+                                        ],
+                                    ],
+                                ],
+                                'partials' => [
+                                    'component_material_table' => [
+                                        'headers' => [
+                                            'material_code' => 'Material Code',
+                                            'qty' => 'Quantity',
+                                            'description' => 'Description',
+                                        ],
+                                    ],
+                                    'components' => [
+                                        'component_material_qty' => [
+                                            'title' => 'Component Material Quantity',
+                                            'messages' => [
+                                                'updated' => 'Component Material quantity updated successfully!',
+                                            ],
+                                            'buttons' => [
+                                                'update_qty' => 'Update Qty',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                         'partials' => [
                             'add_new_component' => [
                                 'buttons' => [

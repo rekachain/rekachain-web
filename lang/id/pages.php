@@ -953,6 +953,72 @@ return [
                                 'panel' => 'Panel :panel',
                             ],
                         ],
+                        'component_material' => [
+                            'index' => [
+                                'title' => 'Material Komponen',
+                                'breadcrumbs' => [
+                                    'home' => 'Beranda',
+                                    'project' => 'Proyek :project',
+                                    'trainset' => 'Trainset :trainset',
+                                    'carriage' => 'Gerbong :carriage',
+                                    'panel' => 'Panel :panel',
+                                    'component' => 'Komponen :component',
+                                ],
+                            ],
+                            'partials' => [
+                                'component_materials' => [
+                                    'messages' => [
+                                        'deleted' => 'Material Komponen berhasil dihapus!',
+                                    ],
+                                ],
+                                'add_new_component_raw_material' => [
+                                    'messages' => [
+                                        'created' => 'Material Komponen berhasil ditambahkan!',
+                                    ],
+                                    'buttons' => [
+                                        'add_new_component_raw_material' => 'Tambah Material Komponen Baru',
+                                    ],
+                                    'dialogs' => [
+                                        'title' => 'Tambah Material Komponen Baru',
+                                        'fields' => [
+                                            'raw_material' => 'Bahan Mentah',
+                                            'raw_material_placeholder' => 'Pilih Bahan Mentah',
+                                            'raw_material_code' => 'Kode Bahan Mentah',
+                                            'raw_material_code_placeholder' => 'Kode Bahan Mentah',
+                                            'raw_material_search' => 'Cari Bahan Mentah',
+                                            'new_raw_material_code' => 'Kode Bahan Mentah Baru',
+                                            'new_raw_material_description' => 'Deskripsi Bahan Mentah Baru',
+                                            'new_raw_material_unit' => 'Satuan Bahan Mentah Baru',
+                                            'new_raw_material_specs' => 'Spesifikasi Bahan Mentah Baru',
+                                            'new_raw_material_qty' => 'Jumlah Bahan Mentah Baru',
+                                        ],
+                                        'buttons' => [
+                                            'add_component_material' => 'Tambah Material Komponen',
+                                        ],
+                                    ],
+                                ],
+                                'partials' => [
+                                    'component_material_table' => [
+                                        'headers' => [
+                                            'material_code' => 'Kode Material',
+                                            'qty' => 'Jumlah',
+                                            'description' => 'Deskripsi',
+                                        ],
+                                    ],
+                                    'components' => [
+                                        'component_material_qty' => [
+                                            'title' => 'Jumlah Material Komponen',
+                                            'messages' => [
+                                                'updated' => 'Jumlah Material Komponen berhasil diperbarui!',
+                                            ],
+                                            'buttons' => [
+                                                'update_qty' => 'Perbarui Jumlah',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
                         'partials' => [
                             'add_new_component' => [
                                 'buttons' => [
