@@ -53,6 +53,7 @@ class ProgressSheetImport implements ToCollection
         foreach ($progresses->get() as $foundedProgress) {
             if ($foundedProgress->progress_steps->pluck('step_id')->values() == $steps->pluck('id')->values()) {
                 $progress = $foundedProgress;
+                break;
             }
         }
         logger($progress ? $progress->progress_steps : 'No matching progress found');
