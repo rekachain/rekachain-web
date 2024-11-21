@@ -66,13 +66,6 @@ export default function Navbar() {
 
             <div className="w-fit flex h-full items-center gap-1 md:gap-2">
                 <div className="hidden md:flex">
-                    <Button variant="ghost" size="icon" onClick={handleDarkMode}>
-                        {darkMode ? (
-                            <Sun size={STYLING.ICON.SIZE.SMALL} />
-                        ) : (
-                            <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
-                        )}
-                    </Button>
                     <Sheet>
                         <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                             <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
@@ -88,30 +81,25 @@ export default function Navbar() {
                     <AddFeedback />
                 </div>
                 <Separator orientation="vertical" className="md:w-[2px] hidden" />
-                <ViewManualBook />
-
-                <DownloadApp />
-
-                <ToggleDarkMode />
-
-                <Sheet>
-                    <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-                        <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
-                    </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
-                            <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
-                        </SheetHeader>
-                    </SheetContent>
-                </Sheet>
-
-                <SetLocalization />
-
-                <AddFeedback />
-
-                <Separator orientation="vertical" className="w-[2px]" />
-
+                <div className="hidden md:flex">
+                    <ViewManualBook />
+                    <DownloadApp />
+                    <ToggleDarkMode />
+                    <Sheet>
+                        <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                            <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
+                                <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                            </SheetHeader>
+                        </SheetContent>
+                    </Sheet>
+                    <SetLocalization />
+                    <AddFeedback />
+                    <Separator orientation="vertical" className="w-[2px]" />
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <div className="flex justify-start gap-1 md:gap-2">
@@ -154,18 +142,16 @@ export default function Navbar() {
                 </DropdownMenu>
                 <Separator orientation="vertical" className="w-[2px] md:hidden" />
                 <Select>
-                    <SelectTrigger className="ml-2 w-fit border-none md:hidden">
+                    <SelectTrigger className="w-fit border-none md:hidden">
                         <Menu size={STYLING.ICON.SIZE.SMALL}></Menu>
                     </SelectTrigger>
                     <SelectContent className="w-fit">
                         <div className="">
-                            <Button variant="ghost" size="icon" onClick={handleDarkMode}>
-                                {darkMode ? (
-                                    <Sun size={STYLING.ICON.SIZE.SMALL} />
-                                ) : (
-                                    <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
-                                )}
-                            </Button>
+                            <ViewManualBook />
+
+                            <DownloadApp />
+
+                            <ToggleDarkMode />
                             <Sheet>
                                 <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                                     <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
@@ -187,7 +173,7 @@ export default function Navbar() {
     );
 }
 
-const ToggleDarkMode = () => {
+export const ToggleDarkMode = () => {
     const { t } = useLaravelReactI18n();
     const { darkMode, toggleDarkMode } = useDarkMode();
     return (
@@ -202,7 +188,7 @@ const ToggleDarkMode = () => {
     );
 };
 
-const ViewManualBook = () => {
+export const ViewManualBook = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
@@ -215,7 +201,7 @@ const ViewManualBook = () => {
     );
 };
 
-const DownloadApp = () => {
+export const DownloadApp = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
