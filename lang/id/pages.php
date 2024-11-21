@@ -874,6 +874,74 @@ return [
                             'carriage' => 'Gerbong :carriage',
                         ],
                     ],
+                    'panel_material' => [
+                        'index' => [
+                            'title' => 'Material Panel',
+                            'breadcrumbs' => [
+                                'home' => 'Beranda',
+                                'project' => 'Proyek :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Gerbong :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'partials' => [
+                            'panel_materials' => [
+                                'messages' => [
+                                    'deleted' => 'Material Panel berhasil dihapus!',
+                                ],
+                            ],
+                            'add_new_panel_raw_material' => [
+                                'messages' => [
+                                    'panel_material_added' => 'Material Panel berhasil ditambahkan!',
+                                ],
+                                'buttons' => [
+                                    'add_new_panel_raw_material' => 'Tambah Material Panel Baru',
+                                ],
+                                'dialogs' => [
+                                    'title' => 'Tambah Material Panel Baru',
+                                    'fields' => [
+                                        'raw_material' => 'Bahan Mentah',
+                                        'raw_material_placeholder' => 'Pilih Bahan Mentah',
+                                        'raw_material_code' => 'Kode Bahan Mentah',
+                                        'raw_material_code_placeholder' => 'Kode Bahan Mentah',
+                                        'raw_material_search' => 'Cari Bahan Mentah',
+                                        'new_raw_material_code' => 'Kode Bahan Mentah Baru',
+                                        'new_raw_material_description' => 'Deskripsi Bahan Mentah Baru',
+                                        'new_raw_material_unit' => 'Satuan Bahan Mentah Baru',
+                                        'new_raw_material_specs' => 'Spesifikasi Bahan Mentah Baru',
+                                        'new_raw_material_qty' => 'Jumlah Bahan Mentah Baru',
+                                    ],
+                                    'actions' => [
+                                        'adding_panel_material' => 'Menambahkan Material Panel...',
+                                    ],
+                                    'buttons' => [
+                                        'add_panel_material' => 'Tambah Material Panel',
+                                    ],
+                                ],
+                            ],
+                            'partials' => [
+                                'panel_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'qty' => 'Jumlah',
+                                        'description' => 'Deskripsi',
+                                    ],
+                                ],
+                                'components' => [
+                                    'panel_material_qty' => [
+                                        'title' => 'Jumlah Material Panel',
+                                        'messages' => [
+                                            'updated' => 'Jumlah Material Panel berhasil diperbarui!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Perbarui Jumlah',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'panels' => [
                             'messages' => [

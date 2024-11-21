@@ -874,6 +874,74 @@ return [
                             'carriage' => 'Carriage :carriage',
                         ],
                     ],
+                    'panel_material' => [
+                        'index' => [
+                            'title' => 'Panel Material',
+                            'breadcrumbs' => [
+                                'home' => 'Home',
+                                'project' => 'Project :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Carriage :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'partials' => [
+                            'panel_materials' => [
+                                'messages' => [
+                                    'deleted' => 'Panel Material deleted successfully!',
+                                ],
+                            ],
+                            'add_new_panel_raw_material' => [
+                                'messages' => [
+                                    'panel_material_added' => 'Panel Material added successfully!',
+                                ],
+                                'buttons' => [
+                                    'add_new_panel_raw_material' => 'Add New Panel Material',
+                                ],
+                                'dialogs' => [
+                                    'title' => 'Add New Panel Material',
+                                    'fields' => [
+                                        'raw_material' => 'Raw Material',
+                                        'raw_material_placeholder' => 'Select Raw Material',
+                                        'raw_material_code' => 'Raw Material Code',
+                                        'raw_material_code_placeholder' => 'Raw Material Code',
+                                        'raw_material_search' => 'Search Raw Material',
+                                        'new_raw_material_code' => 'New Raw Material Code',
+                                        'new_raw_material_description' => 'New Raw Material Description',
+                                        'new_raw_material_unit' => 'New Raw Material Unit',
+                                        'new_raw_material_specs' => 'New Raw Material Specs',
+                                        'new_raw_material_qty' => 'New Raw Material Qty',
+                                    ],
+                                    'actions' => [
+                                        'adding_panel_material' => 'Adding Panel Material...',
+                                    ],
+                                    'buttons' => [
+                                        'add_panel_material' => 'Add Panel Material',
+                                    ],
+                                ],
+                            ],
+                            'partials' => [
+                                'panel_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'qty' => 'Quantity',
+                                        'description' => 'Description',
+                                    ],
+                                ],
+                                'components' => [
+                                    'panel_material_qty' => [
+                                        'title' => 'Panel Material Quantity',
+                                        'messages' => [
+                                            'updated' => 'Panel Material quantity updated successfully!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Update Qty',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'panels' => [
                             'messages' => [
