@@ -50,7 +50,6 @@ export default function ({
 
     useEffect(() => {
         const step = stepResponse?.data.find(step => step.id === data.step_id);
-        console.log(step);
         if (step) {
             setData(previousData => ({
                 ...previousData,
@@ -78,13 +77,21 @@ export default function ({
             data.step_estimated_time,
         );
         await handleSyncCarriagePanel();
-        void useSuccessToast('Step added');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.messages.created',
+            ),
+        );
     }, true);
 
     const handleProgressStepDeletion = withLoading(async (progressStepId: number) => {
         await progressStepService.delete(progressStepId);
         await handleSyncCarriagePanel();
-        void useSuccessToast('Step deleted');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.messages.deleted',
+            ),
+        );
     }, true);
 
     const handleResetStepSelectionId = () => {
@@ -115,7 +122,9 @@ export default function ({
                             data={stepResponse?.data}
                             setSelectedData={id => setData('step_id', id)}
                             selectedDataId={data.step_id ?? undefined}
-                            placeholder={'Select a step'}
+                            placeholder={t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.step_placeholder',
+                            )}
                             renderItem={(item: StepResource) => item.name}
                             nullable
                         />
@@ -124,36 +133,58 @@ export default function ({
                         </Button>
                     </div>
 
-                    <Label htmlFor="name">Nama</Label>
+                    <Label htmlFor="name">
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.name',
+                        )}
+                    </Label>
                     <Input
                         id="name"
-                        placeholder="Nama"
+                        placeholder={t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.name_placeholder',
+                        )}
                         value={data.step_name}
                         onChange={e => setData('step_name', e.target.value)}
                         disabled={data.step_id !== null}
                     />
 
-                    <Label htmlFor="process">Proses</Label>
+                    <Label htmlFor="process">
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.process',
+                        )}
+                    </Label>
                     <Input
                         id="process"
-                        placeholder="Proses"
+                        placeholder={t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.process_placeholder',
+                        )}
                         value={data.step_process}
                         onChange={e => setData('step_process', e.target.value)}
                         disabled={data.step_id !== null}
                     />
 
-                    <Label htmlFor="estimated_time">Waktu Estimasi Manufaktur (menit)</Label>
+                    <Label htmlFor="estimated_time">
+                        {t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.estimated_time',
+                        )}
+                    </Label>
                     <Input
                         type="number"
                         id="estimated_time"
-                        placeholder="Waktu Estimasi Manufaktur"
+                        placeholder={t(
+                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.estimated_time_placeholder',
+                        )}
                         value={data.step_estimated_time}
                         onChange={e => setData('step_estimated_time', parseInt(e.target.value))}
                         disabled={data.step_id !== null}
                     />
 
                     <div className="flex ml-auto">
-                        <Button>Add Step</Button>
+                        <Button>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.buttons.add_step',
+                            )}
+                        </Button>
                     </div>
                 </div>
             </form>

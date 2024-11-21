@@ -24,9 +24,21 @@ export default function PanelMaterialTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Material</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>Description</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.partials.panel_material_table.headers.material_code',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.partials.panel_material_table.headers.qty',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.partials.panel_material_table.headers.description',
+                            )}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>

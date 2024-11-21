@@ -63,7 +63,11 @@ const AddNewPanelRawMaterial = ({
         );
         await handleSyncCarriagePanel();
         reset();
-        void useSuccessToast('Raw Material berhasil ditambahkan');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.messages.panel_material_added',
+            ),
+        );
     });
 
     const handleResetRawMaterialId = () => {
@@ -77,7 +81,9 @@ const AddNewPanelRawMaterial = ({
                     className: 'w-full',
                 })}
             >
-                Tambah Raw Material
+                {t(
+                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.title',
+                )}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -85,14 +91,20 @@ const AddNewPanelRawMaterial = ({
                     <DialogDescription></DialogDescription>
                     <form onSubmit={handleAddCarriagePanelRawMaterial} className="flex flex-col gap-4">
                         <div className="flex flex-col bg-background-2 gap-4 p-4">
-                            <Label htmlFor="raw_material_id">Raw Material</Label>
+                            <Label htmlFor="raw_material_id">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material',
+                                )}
+                            </Label>
                             <div className="flex gap-2">
                                 <GenericDataSelector
                                     id="raw_material_id"
                                     fetchData={fetchRawMaterials}
                                     setSelectedData={id => setData('raw_material_id', id)}
                                     selectedDataId={data.raw_material_id}
-                                    placeholder={'Pilih Raw Material'}
+                                    placeholder={t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material_placeholder',
+                                    )}
                                     renderItem={item => item.description}
                                     labelKey={'description'}
                                     nullable
@@ -107,7 +119,11 @@ const AddNewPanelRawMaterial = ({
 
                         <div className="flex flex-col gap-4 bg-background-2 p-4">
                             <div className="flex flex-col gap-2">
-                                <Label>Nama Raw Material</Label>
+                                <Label>
+                                    {t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_code',
+                                    )}
+                                </Label>
                                 <Input
                                     type="text"
                                     value={data.new_raw_material_code}
@@ -117,17 +133,11 @@ const AddNewPanelRawMaterial = ({
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-2">
-                                <Label>Nama Raw Material</Label>
-                                <Input
-                                    type="text"
-                                    value={data.new_raw_material_code}
-                                    onChange={e => setData('new_raw_material_code', e.target.value)}
-                                    disabled={data.raw_material_id !== null}
-                                    required
-                                />
-                            </div>
-                            <Label htmlFor="new-component-description">Deskripsi Raw Material</Label>
+                            <Label htmlFor="new-component-description">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_description',
+                                )}
+                            </Label>
                             <Textarea
                                 id="new-component-description"
                                 className="p-2 rounded"
@@ -135,7 +145,11 @@ const AddNewPanelRawMaterial = ({
                                 onChange={e => setData('new_raw_material_description', e.target.value)}
                                 disabled={data.raw_material_id !== null}
                             />
-                            <Label htmlFor="new-component-unit">Satuan</Label>
+                            <Label htmlFor="new-component-unit">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_unit',
+                                )}
+                            </Label>
                             <Input
                                 id="new-component-unit"
                                 type="text"
@@ -143,7 +157,11 @@ const AddNewPanelRawMaterial = ({
                                 onChange={e => setData('new_raw_material_unit', e.target.value)}
                                 disabled={data.raw_material_id !== null}
                             />
-                            <Label htmlFor="new-component-specs">Spesifikasi</Label>
+                            <Label htmlFor="new-component-specs">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_specs',
+                                )}
+                            </Label>
                             <Textarea
                                 id="new-component-specs"
                                 className="p-2 rounded"
@@ -151,7 +169,11 @@ const AddNewPanelRawMaterial = ({
                                 onChange={e => setData('new_raw_material_specs', e.target.value)}
                                 disabled={data.raw_material_id !== null}
                             />
-                            <Label htmlFor="new-component-qty">Jumlah Komponen</Label>
+                            <Label htmlFor="new-component-qty">
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_qty',
+                                )}
+                            </Label>
                             <Input
                                 id="new-component-qty"
                                 type="number"

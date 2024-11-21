@@ -31,9 +31,21 @@ export default function ComponentMaterialTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Material</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>Description</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.partials.partials.component_material_table.headers.material_code',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.partials.partials.component_material_table.headers.qty',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.partials.partials.component_material_table.headers.description',
+                            )}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
