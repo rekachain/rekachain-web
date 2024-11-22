@@ -653,6 +653,7 @@ return [
             'title' => 'Create Component',
             'fields' => [
                 'name' => 'Name',
+                'description' => 'Description',
                 'progress' => 'Progress',
                 'progress_placeholder' => 'Select Progress',
             ],
@@ -667,6 +668,7 @@ return [
             'title' => 'Edit Component: :name',
             'fields' => [
                 'name' => 'Name',
+                'description' => 'Description',
                 'progress' => 'Progress',
                 'progress_placeholder' => 'Select Progress',
             ],
@@ -687,12 +689,14 @@ return [
                 'component_table' => [
                     'headers' => [
                         'name' => 'Name',
+                        'description' => 'Description',
                         'progress' => 'Progress',
                     ],
                 ],
                 'component_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
+                        'description' => 'Description: :description',
                         'progress' => 'Progress: :progress',
                     ],
                 ],
@@ -710,6 +714,8 @@ return [
             'title' => 'Create Panel',
             'fields' => [
                 'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
                 'description' => 'Description',
             ],
             'buttons' => [
@@ -723,6 +729,8 @@ return [
             'title' => 'Edit Panel: :name',
             'fields' => [
                 'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
                 'description' => 'Description',
             ],
             'buttons' => [
@@ -765,12 +773,14 @@ return [
                     'headers' => [
                         'name' => 'Name',
                         'description' => 'Description',
+                        'progress' => 'Progress',
                     ],
                 ],
                 'panel_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
                         'description' => 'Description: :description',
+                        'progress' => 'Progress: :progress',
                     ],
                 ],
             ],

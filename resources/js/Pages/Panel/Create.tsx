@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useCallback } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import { panelService } from '@/Services/panelService';
@@ -10,15 +10,23 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { ProgressResource } from '@/Support/Interfaces/Resources';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { progressService } from '@/Services/progressService';
 
 export default function () {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
+        progress_id: null as number | null,
         description: '',
     });
 
     const { loading } = useLoading();
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
+        return await progressService.getAll(filters).then(response => response.data);
+    }, []);
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
@@ -38,6 +46,22 @@ export default function () {
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
+                        <div className="mt-4">
+                            <InputLabel htmlFor="progress">{t('pages.panel.create.fields.progress')}</InputLabel>
+                            <div className="mt-4">
+                                <GenericDataSelector
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    setSelectedData={id => setData('progress_id', id)}
+                                    selectedDataId={data.progress_id ?? undefined}
+                                    placeholder={t('pages.panel.create.fields.progress_placeholder')}
+                                    renderItem={(item: ProgressResource) => item.name}
+                                    buttonClassName="mt-1"
+                                    nullable
+                                />
+                            </div>
+                        </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="name" value={t('pages.panel.create.fields.name')} />
                             <Input
