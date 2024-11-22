@@ -35,6 +35,7 @@ return [
         'index' => [
             'title' => 'Dashboard',
             'welcome' => 'Welcome to the Dashboard',
+            // 'all_project' => 'Semua Proyek',
         ],
     ],
     'work_day' => [
