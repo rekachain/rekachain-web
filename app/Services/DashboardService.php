@@ -177,7 +177,7 @@ class DashboardService {
             $data['attachment_status_of_trainset_filter'] = array_merge_recursive(
                 $data['attachment_status_of_trainset_filter'] ?? [],
                 ['relation_column_filters' => ['project' => ['id' => $data['project_id'] ?? 1]]],
-                ['column_filters' => ['status' => 'progress']]
+                ['column_filters' => ['status' => ['progress', 'done']]]
             );
             // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
             $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
@@ -217,7 +217,7 @@ class DashboardService {
             $data['attachment_status_of_workstation_filter'] ?? [], [
                 'relation_column_filters' => [
                     'trainset' => [
-                        'status' => 'progress',
+                        'status' => ['progress', 'done'],
                         'project_id' => $data['project_id'] ?? 1
                     ],
                 ]
@@ -286,7 +286,7 @@ class DashboardService {
             $data['attachment_status_of_workstation_filter'] ?? [], [
                 'relation_column_filters' => [
                     'trainset' => [
-                        'status' => 'progress',
+                        'status' => ['progress', 'done'],
                         'project_id' => $data['project_id'] ?? 1
                     ],
                 ]
