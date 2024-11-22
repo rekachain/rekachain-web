@@ -30,6 +30,10 @@ class PanelAttachmentHandlerSeeder extends Seeder {
                     continue;
                 }
 
+                if (is_null($data->status) && $handle == 'send') {
+                    continue;
+                }
+
                 PanelAttachmentHandler::create([
                     'user_id' => $user->id,
                     'handler_name' => $user->name,

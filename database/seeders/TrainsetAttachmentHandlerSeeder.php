@@ -34,6 +34,10 @@ class TrainsetAttachmentHandlerSeeder extends Seeder {
                     continue;
                 }
 
+                if (is_null($data->status) && $handle == 'send') {
+                    continue;
+                }
+
                 TrainsetAttachmentHandler::create([
                     'user_id' => $user->id,
                     'handler_name' => $user->name,
