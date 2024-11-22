@@ -715,6 +715,8 @@ return [
             'fields' => [
                 'name' => 'Nama',
                 'description' => 'Deskripsi',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Pilih Progress',
             ],
             'buttons' => [
                 'submit' => 'Buat Panel',
@@ -728,6 +730,8 @@ return [
             'fields' => [
                 'name' => 'Nama',
                 'description' => 'Deskripsi',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Pilih Progress',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Panel',
@@ -769,12 +773,14 @@ return [
                     'headers' => [
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
+                        'progress' => 'Progress',
                     ],
                 ],
                 'panel_card' => [
                     'headers' => [
                         'name' => 'Nama: :name',
                         'description' => 'Deskripsi: :description',
+                        'progress' => 'Progress: :progress',
                     ],
                 ],
             ],

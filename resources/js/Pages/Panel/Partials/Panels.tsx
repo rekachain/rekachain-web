@@ -17,6 +17,7 @@ export default function () {
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
+        relations: 'progress',
     });
 
     const syncPanels = withLoading(async () => {
