@@ -18,22 +18,29 @@ class DetailWorkerTrainsetSeeder extends Seeder
     {
         TrainsetAttachment::all()->each(function (TrainsetAttachment $trainsetAttachment, $trainsetAttachmentIndex) {
             $trainsetAttachmentCount = TrainsetAttachment::count();
-            $trainsetAttachmentSeedBound = $trainsetAttachmentCount - 4;
+            $trainsetAttachmentSeedBound = $trainsetAttachmentCount - 6;
             $randStatus = array_rand([
                 TrainsetAttachmentStatusEnum::IN_PROGRESS->value => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
                 // TrainsetAttachmentStatusEnum::PENDING->value => TrainsetAttachmentStatusEnum::PENDING->value,
                 TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
                 TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value => TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value,
+                null => null
             ]);
-            $trainsetAttachment->update([
-                'status' => $randStatus
-            ]);
+            if (!empty($randStatus)){
+                logger($randStatus);
+                $trainsetAttachment->update([
+                    'status' => $randStatus
+                ]);
+            } 
             $trainsetAttachmentComponents = collect();
             $trainsetAttachmentComponentsCount = $trainsetAttachment->trainset_attachment_components()->count();
             if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                 $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->get();
             } else {
-                if ($trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED && $trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT) {
+                if ($trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED 
+                    && $trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT
+                    && $trainsetAttachment->status != null
+                ) {
                     $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->limit(rand(1, $trainsetAttachmentComponentsCount))->get();
                 }
             }

@@ -9,7 +9,6 @@ use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
 
 class DetailWorkerPanelSeeder extends Seeder {
@@ -18,34 +17,30 @@ class DetailWorkerPanelSeeder extends Seeder {
      * Run the database seeds.
      */
     public function run(): void {
-        // $csvReader = new CsvReader('detail_worker_panel');
-        // $csvData = $csvReader->getCsvData();
-
-        // if ($csvData) {
-        //     foreach ($csvData as $data) {
-        //         DetailWorkerPanel::factory()->create($data);
-        //     }
-        //     return;
-        // }
-
         PanelAttachment::all()->each(function (PanelAttachment $panelAttachment, $panelAttachmentIndex) {
             $panelAttachmentCount = PanelAttachment::count();
-            $panelAttachmentSeedBound = $panelAttachmentCount - 10;
+            $panelAttachmentSeedBound = $panelAttachmentCount - 40;
             $randStatus = array_rand([
                 PanelAttachmentStatusEnum::IN_PROGRESS->value => PanelAttachmentStatusEnum::IN_PROGRESS->value,
                 // PanelAttachmentStatusEnum::PENDING->value => PanelAttachmentStatusEnum::PENDING->value,
                 PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
                 PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value => PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value,
+                null => null
             ]);
-            $panelAttachment->update([
-                'status' => $randStatus
-            ]);
+            if (!empty($randStatus)) {
+                $panelAttachment->update([
+                    'status' => $randStatus
+                ]);    
+            } 
             $serialPanelsCount = $panelAttachment->serial_panels()->count();
             $serialPanels = collect();
             if ($panelAttachmentIndex < $panelAttachmentSeedBound) {
                 $serialPanels = $panelAttachment->serial_panels()->get();
             } else {
-                if ($panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT && $panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_ACCEPTED) {
+                if ($panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT 
+                    && $panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_ACCEPTED
+                    && $panelAttachment->status != null
+                ) {
                     $serialPanels = $panelAttachment->serial_panels()->limit(rand(1, $serialPanelsCount))->get();
                 }
             }
