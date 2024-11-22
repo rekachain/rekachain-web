@@ -37,11 +37,15 @@ export default function ({
                             {/* </div> */}
                         </div>
                         <p className="text-sm">
-                            {t('pages.component.partials.partials.component_card.headers.progress', {
-                                progress: component.progress?.name ?? '',
+                            {t('pages.component.partials.partials.component_card.headers.description', {
+                                description: component.description ?? '-',
                             })}
                         </p>
-
+                        <p className="text-sm">
+                            {t('pages.component.partials.partials.component_card.headers.progress', {
+                                progress: component.progress?.name ?? '-',
+                            })}
+                        </p>
                         {/* <h5 className="font-bold text-sm ">Workshop : {component.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {component.location}</h5> */}
                         <div className="flex items-center justify-end w-full">

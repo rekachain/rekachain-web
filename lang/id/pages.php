@@ -653,6 +653,7 @@ return [
             'title' => 'Buat Komponen',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'progress' => 'Progres',
                 'progress_placeholder' => 'Pilih Progres',
             ],
@@ -667,6 +668,7 @@ return [
             'title' => 'Edit Komponen: :name',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'progress' => 'Progres',
                 'progress_placeholder' => 'Pilih Progres',
             ],
@@ -687,12 +689,14 @@ return [
                 'component_table' => [
                     'headers' => [
                         'name' => 'Nama',
+                        'description' => 'Deskripsi',
                         'progress' => 'Progres',
                     ],
                 ],
                 'component_card' => [
                     'headers' => [
                         'name' => 'Nama: :name',
+                        'description' => 'Deskripsi: :description',
                         'progress' => 'Progres: :progress',
                     ],
                 ],
