@@ -24,8 +24,7 @@ class LoginRequest extends FormRequest {
      */
     public function rules(): array {
         return [
-            'nip' => ['required', 'string'],
-            // 'email' => ['required', 'string', 'email'],
+            'identifier' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -38,11 +37,20 @@ class LoginRequest extends FormRequest {
     public function authenticate(): void {
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt($this->only('nip', 'password'), $this->boolean('remember'))) {
+        $credentials = $this->only('password');
+        $identifier = $this->input('identifier');
+
+        if (filter_var($identifier, FILTER_VALIDATE_EMAIL)) {
+            $credentials['email'] = $identifier;
+        } else {
+            $credentials['nip'] = $identifier;
+        }
+
+        if (!Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'nip' => trans('auth.failed'),
+                'identifier' => trans('auth.failed'),
             ]);
         }
 
