@@ -6,13 +6,11 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import perfectionist from 'eslint-plugin-perfectionist';
 import stylisticJs from '@stylistic/eslint-plugin-js';
 
-export default [
-    { files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+const config = [
     { languageOptions: { globals: globals.browser } },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
     { ...pluginReact.configs.flat.recommended, settings: { react: { version: 'detect' } } },
-
     {
         plugins: { perfectionist, '@stylistic/js': stylisticJs },
         rules: {
@@ -37,6 +35,9 @@ export default [
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/ban-ts-comment': 'off',
+            '@typescript-eslint/no-unused-expressions': 'off',
+            'react/prop-types': 'warn',
+            'react/jsx-key': 'warn',
             '@typescript-eslint/no-unused-vars': [
                 'warn',
                 {
@@ -48,5 +49,16 @@ export default [
         },
     },
     eslintConfigPrettier,
-    { ignores: ['resources/js/Components/UI/*'] },
+    { files: ['resources/js/**/*.{js,mjs,cjs,ts,jsx,tsx}'] },
+    {
+        ignores: [
+            'vendor/**',
+            'resources/js/Components/UI/*',
+            'public/**',
+            'tailwind.config.js',
+            'resources/js/Types/global.d.ts',
+        ],
+    },
 ];
+
+export default config;
