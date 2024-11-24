@@ -11,22 +11,11 @@ export default [
     { languageOptions: { globals: globals.browser } },
     pluginJs.configs.recommended,
     ...tseslint.configs.recommended,
-    pluginReact.configs.flat.recommended,
+    { ...pluginReact.configs.flat.recommended, settings: { react: { version: 'detect' } } },
     {
         plugins: { perfectionist, '@stylistic/js': stylisticJs },
         rules: {
-            'perfectionist/sort-jsx-props': [
-                'error',
-                {
-                    type: 'alphabetical',
-                    order: 'desc',
-                    ignoreCase: true,
-                    ignorePattern: [],
-                    groups: [],
-                    customGroups: {},
-                },
-            ],
-
+            'perfectionist/sort-jsx-props': 'error',
             'react/react-in-jsx-scope': 'off',
             'no-unused-vars': 'off',
             'no-unused-expressions': 'off',

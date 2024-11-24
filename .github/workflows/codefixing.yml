@@ -1,4 +1,4 @@
-name: Lint and Fix
+name: Codefixing
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  lint:
+  codefixing:
 
     runs-on: ubuntu-latest
 
