@@ -10,7 +10,7 @@ const ip = Object.values(os.networkInterfaces())
 
 export default defineConfig(({ command }) => {
     console.log(`Running vite with command: ${command}`);
-    const sharedConfig = command === 'serve' ? {
+    const sharedConfig = command === 'serve' && process.argv.includes('--host=0.0.0.0') ? {
         base: '/',
         server: {
             host: '0.0.0.0',

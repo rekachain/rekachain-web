@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\CustomAttachmentMaterial;
 use App\Models\PanelAttachment;
+use App\Models\Trainset;
 use App\Support\Enums\RoleEnum;
+use App\Support\Enums\TrainsetStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
@@ -99,8 +101,28 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
             ]));
         }
 
+        $panelAttachment = parent::update($panelAttachment, $data);
 
-        return parent::update($panelAttachment, $data);
+        if ($panelAttachment->status == PanelAttachmentStatusEnum::DONE) {
+            $this->checkTrainsetPanelAttachmentProgress($panelAttachment->trainset);
+        }
+
+        return $panelAttachment;
+    }
+
+    private function checkTrainsetPanelAttachmentProgress(Trainset $trainset)
+    {
+        $carriagePanels = $trainset->carriage_panels;
+
+        $panelAttachments = $this->find([
+            ['carriage_panel_id', 'in', $carriagePanels->pluck('id')->toArray()],
+            ['status', PanelAttachmentStatusEnum::DONE->value],
+            ['panel_attachment_id', 'null'], // only check on ancestor
+        ]);
+
+        if ($panelAttachments->count() == $carriagePanels->count()) {
+            $trainset->update(['status' => TrainsetStatusEnum::DONE]);
+        }
     }
 
     public function rejectKPM($panelAttachment, $request)

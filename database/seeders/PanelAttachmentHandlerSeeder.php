@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\PanelAttachment;
+use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use App\Models\PanelAttachmentHandler;
@@ -23,6 +24,14 @@ class PanelAttachmentHandlerSeeder extends Seeder {
                     $user = User::role(RoleEnum::SUPERVISOR_ASSEMBLY)->inRandomOrder()->first();
                 } else {
                     $user = User::role(RoleEnum::PPC_PENGENDALIAN)->inRandomOrder()->first();
+                }
+
+                if ($data->status == PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT && $handle == 'receive') {
+                    continue;
+                }
+
+                if (is_null($data->status) && $handle == 'send') {
+                    continue;
                 }
 
                 PanelAttachmentHandler::create([
