@@ -22,7 +22,7 @@ return [
     'login' => [
         'title' => 'Welcome Back!',
         'fields' => [
-            'nip' => 'Employee ID',
+            'identifier' => 'Email or Employee ID',
             'password' => 'Password',
             'remember' => 'Remember Me',
         ],

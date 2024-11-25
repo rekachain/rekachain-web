@@ -22,7 +22,7 @@ return [
     'login' => [
         'title' => 'Selamat Datang Kembali!',
         'fields' => [
-            'nip' => 'NIP',
+            'identifier' => 'NIP/Email',
             'password' => 'Kata Sandi',
             'remember' => 'Ingat Saya',
         ],
