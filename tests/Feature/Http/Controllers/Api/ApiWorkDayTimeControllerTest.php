@@ -36,6 +36,7 @@ test('store work day time', function () {
         'start_time' => '09:00',
         'end_time' => '09:30',
         'status' => 'work',
+        'api' => true,
     ])->assertStatus(201);
 
     $this->assertDatabaseHas('work_day_times', [

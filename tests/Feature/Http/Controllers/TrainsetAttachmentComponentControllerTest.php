@@ -1,4 +1,11 @@
+<!-- TRAINSET ATTACHMENT COMPONENT ROUTE NOT SET -->
+
 <?php
+
+beforeEach(function () {
+    $this->dummy->createSupervisorMekanik();
+    $this->dummy->createSupervisorElektrik();
+});
 
 test('index return trainset attachment components', function () {
     $this->dummy->createTrainsetAttachmentComponent();

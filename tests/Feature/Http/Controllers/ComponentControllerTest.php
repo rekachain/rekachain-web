@@ -93,7 +93,7 @@ test('update method updates component', function () {
 
 test('destroy method deletes component', function () {
     $user = User::factory()->create();
-    $component = Component::factory()->create();
+    $component = $this->dummy->createComponent();
 
     $response = $this->actingAs($user)->deleteJson("/components/{$component->id}");
 

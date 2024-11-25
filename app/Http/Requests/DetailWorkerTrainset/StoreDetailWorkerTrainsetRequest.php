@@ -9,7 +9,8 @@ use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 class StoreDetailWorkerTrainsetRequest extends FormRequest {
     public function rules(): array {
         return [
-            'trainset_attachment_id' => 'required|exists:trainset_attachments,id',
+            // 'trainset_attachment_id' => 'required|exists:trainset_attachments,id',
+            'trainset_attachment_component_id' => 'required|exists:trainset_attachment_components,id',
             'worker_id' => 'required|exists:users,id',
             'progress_step_id' => 'required|exists:progress_steps,id',
             'estimated_time' => 'required|integer',
