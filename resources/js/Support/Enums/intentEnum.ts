@@ -88,6 +88,7 @@ const intents = {
     "WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY": "web.trainset.get.all.panels.with.qty",
     "WEB_TRAINSET_UPDATE_CARRIAGE_TRAINSET": "web.trainset.update.carriage.trainset",
     "WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL": "web.carriage.trainset.add.carriage.panel",
+    "WEB_CARRIAGE_PANEL_GET_PANEL_PROGRESS": "web.carriage.panel.get.panel.progress",
     "WEB_CARRIAGE_PANEL_ADD_COMPONENT": "web.carriage.panel.add.component",
     "WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL": "web.carriage.panel.add.raw.material",
     "WEB_CARRIAGE_PANEL_CHANGE_PROGRESS": "web.carriage.panel.change.progress",
