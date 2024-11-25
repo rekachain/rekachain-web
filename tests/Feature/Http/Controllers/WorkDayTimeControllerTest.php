@@ -22,11 +22,9 @@ test('store method creates new work day time', function () {
         'start_time' => '08:00',
         'end_time' => '17:00',
         'status' => WorkDayTimeEnum::WORK->value,
-        '_token' => 'test-token'
     ];
 
     $response = $this->actingAs($user)
-        ->withSession(['_token' => 'test-token'])
         ->postJson("/work-days/{$workDay->id}/work-day-times", $workDayTimeData);
 
     $response->assertStatus(201)
@@ -53,11 +51,9 @@ test('update method updates work day time', function () {
         'start_time' => '12:00',
         'end_time' => '13:00',
         'status' => WorkDayTimeEnum::BREAK->value,
-        '_token' => 'test-token'
     ];
 
     $response = $this->actingAs($user)
-        ->withSession(['_token' => 'test-token'])
         ->putJson("/work-days/{$workDay->id}/work-day-times/{$workDayTime->id}", $updatedData);
 
     $response->assertStatus(200)
@@ -70,26 +66,8 @@ test('destroy method deletes work day time', function () {
     $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
 
     $response = $this->actingAs($user)
-        ->withSession(['_token' => 'test-token'])
-        ->deleteJson("/work-days/{$workDay->id}/work-day-times/{$workDayTime->id}", [
-            '_token' => 'test-token'
-        ]);
+        ->deleteJson("/work-days/{$workDay->id}/work-day-times/{$workDayTime->id}");
 
     $response->assertStatus(200);
     $this->assertDatabaseMissing('work_day_times', ['id' => $workDayTime->id]);
 });
-
-
-// test('destroy method deletes work day time', function () {
-//     $user = User::factory()->superAdmin()->create();
-//     $workDay = WorkDay::factory()->create();
-//     $workDayTime = WorkDayTime::factory()->create(['work_day_id' => $workDay->id]);
-
-//     // $response = $this->actingAs($user)->deleteJson("/work-days/{$workDay->id}/work-day-times/{$workDayTime->id}");
-//     $response = $this->actingAs($user)
-//     ->withToken('test-token')
-//     ->deleteJson("/work-days/{$workDay->id}/work-day-times/{$workDayTime->id}");
-
-//     $response->assertStatus(200);
-//     $this->assertDatabaseMissing('work_day_times', ['id' => $workDayTime->id]);
-// });
