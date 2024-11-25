@@ -19,10 +19,10 @@ export default function RawMaterialCardView({
         <div>
             {rawMaterialResponse?.data.map(rawMaterial => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
                     to="opacity-100 translate-y-0 translate-x-0 mt-3"
-                    duration={300}
                     key={rawMaterial.id}
+                    from="opacity-0 -translate-y-4"
+                    duration={300}
                 >
                     <div
                         // key={permission.id}
@@ -38,8 +38,8 @@ export default function RawMaterialCardView({
                         <h4 className="text-sm w-[80%]">{rawMaterial.description}</h4>
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('action.edit')}
                             </Link>

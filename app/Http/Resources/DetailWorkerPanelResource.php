@@ -69,7 +69,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
-            default:    
+            default:
                 return [
                     'id' => $this->id,
                     'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),

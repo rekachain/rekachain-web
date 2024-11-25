@@ -47,12 +47,12 @@ export default function ({ project, carriage }: { project: ProjectResource, carr
                     <div className="hidden md:block">
                         <PanelTableView 
                             project={project} 
-                            carriage={carriage}
-                            panelResponse={panelResponse}>
+                            panelResponse={panelResponse}
+                            carriage={carriage}>
                         </PanelTableView>
                     </div>
                     <div className="block md:hidden">
-                        <PanelCardView project={project} carriage={carriage} panelResponse={panelResponse}></PanelCardView>
+                        <PanelCardView project={project} panelResponse={panelResponse} carriage={carriage}></PanelCardView>
                     </div>
                 </>
             )}

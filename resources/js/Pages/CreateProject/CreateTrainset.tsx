@@ -30,23 +30,23 @@ export default function CreateTrainset() {
                     <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
                         <h1 className="text-2xl font-bold">List Trainset</h1>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
+                            from="opacity-0 -translate-y-4"
                             duration={300}
                         >
                             <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg">
                                 <h1 className="text-xl font-bold ">Tambah Trainset</h1>
                                 <div className="flex gap-2 mt-2">
                                     <Input
+                                        placeholder="Jumlah Trainset"
                                         onChange={e => {
                                             setInput(Number(e.target.value));
                                         }}
                                         className="w-1/4 "
-                                        placeholder="Jumlah Trainset"
                                     ></Input>
                                     <Button
                                         onClick={() => {
-                                            let tempList: Trainset[] = [];
+                                            const tempList: Trainset[] = [];
                                             for (let i = 0; i < input; i++) {
                                                 tempList.push({
                                                     namaTrainset: i.toString(),
@@ -62,8 +62,8 @@ export default function CreateTrainset() {
                             </div>
                         </AnimateIn>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
+                            from="opacity-0 -translate-y-4"
                             duration={300}
                         >
                             <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg">

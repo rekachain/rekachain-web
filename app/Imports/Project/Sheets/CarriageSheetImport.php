@@ -7,16 +7,14 @@ use App\Models\Carriage;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CarriageSheetImport implements ToModel, WithHeadingRow 
-{
+class CarriageSheetImport implements ToModel, WithHeadingRow {
     public function __construct(public ProjectsImport $parent) {}
-    public function headingRow(): int 
-    {
+
+    public function headingRow(): int {
         return 2;
     }
 
-    public function model(array $row) 
-    {
+    public function model(array $row) {
         if (empty($row['nama_tipe']) || $row['nama_tipe'] == '' || $row['nama_tipe'] == null) {
             return;
         }

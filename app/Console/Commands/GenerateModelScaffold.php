@@ -96,6 +96,7 @@ class GenerateModelScaffold extends Command {
 
         if (self::$showHelp) {
             $this->help();
+
             return;
         }
 

@@ -68,7 +68,7 @@ class UpdateTrainsetRequest extends FormRequest {
                 ];
             case IntentEnum::WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS->value:
                 return [
-                    'division' => 'required|in:'. implode(',', TrainsetAttachmentTypeEnum::toArray()),
+                    'division' => 'required|in:' . implode(',', TrainsetAttachmentTypeEnum::toArray()),
                     'mechanic_source_workstation_id' => 'required_if:division,mechanic|integer|exists:workstations,id',
                     'mechanic_destination_workstation_id' => 'required_if:division,mechanic|integer|different:mechanic_source_workstation_id|exists:workstations,id',
                     'electric_source_workstation_id' => 'required_if:division,electric|integer|exists:workstations,id',

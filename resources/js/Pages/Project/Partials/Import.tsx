@@ -55,8 +55,8 @@ export default function () {
                 <div className="flex flex-col space-y-4">
                     <Label>{t('pages.project.partials.import.dialogs.fields.download_template')}</Label>
                     <Button
-                        type="button"
                         variant="secondary"
+                        type="button"
                         onClick={projectService.downloadImportProjectTemplate}
                         disabled={loading}
                     >
@@ -69,10 +69,10 @@ export default function () {
                     <div className="space-y-4">
                         <Label htmlFor="file">{t('pages.project.partials.import.dialogs.fields.file')}</Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.ms-excel.sheet.macroEnabled.12"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.ms-excel.sheet.macroEnabled.12"
                         />
                     </div>
                     <DialogFooter>

@@ -4,8 +4,8 @@ namespace App\Http\Resources;
 
 use App\Models\Carriage;
 use App\Models\Trainset;
-use Illuminate\Http\Request;
 use App\Support\Enums\IntentEnum;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProjectResource extends JsonResource {
@@ -13,11 +13,13 @@ class ProjectResource extends JsonResource {
 
     public function projectCarriage(Carriage $projectCarriage) {
         $this->projectCarriage = $projectCarriage;
+
         return $this;
     }
 
     public function projectTrainset(Trainset $projectTrainset) {
         $this->projectTrainset = $projectTrainset;
+
         return $this;
     }
 
@@ -35,11 +37,11 @@ class ProjectResource extends JsonResource {
                         'carriage' => CarriageResource::make($cariageTrainsets->first()->carriage),
                         'total_qty' => $cariageTrainsets->sum(function ($cariageTrainset) {
                             return $cariageTrainset->qty;
-                        })
+                        }),
                     ];
                 })
-                ->paginate($request->get('pageSize', $request->get('per_page', 10)))
-                ->toArray();
+                    ->paginate($request->get('pageSize', $request->get('per_page', 10)))
+                    ->toArray();
             case IntentEnum::WEB_PROJECT_GET_ALL_PANELS_WITH_QTY->value:
                 return $this->carriage_panels->groupBy(['panel_id'])->map(function ($carriagePanels) {
                     return [
@@ -129,24 +131,24 @@ class ProjectResource extends JsonResource {
                     })
                     ->paginate($request->get('pageSize', $request->get('per_page', 10)))
                     ->toArray();
-            // idonknowwhyisthishere💀 seemssavetodeletebutmeh🗿
-            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
-            //     return [
-            //         'id' => $this->id,
-            //         'name' => $this->name,
-            //         'initial_date' => $this->initial_date,
-            //         'trainset_count' => $this->trainsets?->count(),
-            //         'created_at' => $this->created_at,
-            //         'updated_at' => $this->updated_at,
-            //     ];
-            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
-            //     return [
-            //         'id' => $this->id,
-            //         'name' => $this->name,
-            //         'initial_date' => $this->initial_date,
-            //         'created_at' => $this->created_at,
-            //         'updated_at' => $this->updated_at,
-            //     ];
+                // idonknowwhyisthishere💀 seemssavetodeletebutmeh🗿
+                // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
+                //     return [
+                //         'id' => $this->id,
+                //         'name' => $this->name,
+                //         'initial_date' => $this->initial_date,
+                //         'trainset_count' => $this->trainsets?->count(),
+                //         'created_at' => $this->created_at,
+                //         'updated_at' => $this->updated_at,
+                //     ];
+                // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
+                //     return [
+                //         'id' => $this->id,
+                //         'name' => $this->name,
+                //         'initial_date' => $this->initial_date,
+                //         'created_at' => $this->created_at,
+                //         'updated_at' => $this->updated_at,
+                //     ];
         }
 
         return [

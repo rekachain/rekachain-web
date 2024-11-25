@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 
 class PanelAttachmentSeeder extends Seeder {
     public function __construct(protected TrainsetServiceInterface $trainsetService) {}
+
     /**
      * Run the database seeds.
      */

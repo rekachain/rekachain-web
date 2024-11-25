@@ -65,16 +65,16 @@ export default function () {
                     <div className="hidden md:block">
                         <UserTableView
                             userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
                             handleUserForceDeletion={handleUserForceDeletion}
+                            handleUserDeletion={handleUserDeletion}
                         />
                     </div>
 
                     <div className="block md:hidden">
                         <UserCardView
                             userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
                             handleUserForceDeletion={handleUserForceDeletion}
+                            handleUserDeletion={handleUserDeletion}
                         />
                     </div>
                 </>

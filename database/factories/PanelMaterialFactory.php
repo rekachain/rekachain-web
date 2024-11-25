@@ -18,6 +18,7 @@ class PanelMaterialFactory extends Factory {
      */
     public function definition(): array {
         $carriagePanel = CarriagePanel::inRandomOrder()->first();
+
         return [
             'carriage_panel_id' => $carriagePanel->id,
             'raw_material_id' => RawMaterial::whereNotIn('id', PanelMaterial::whereCarriagePanelId($carriagePanel->id)->pluck('raw_material_id'))->inRandomOrder()->first()->id,

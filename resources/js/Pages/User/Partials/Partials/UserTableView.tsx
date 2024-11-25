@@ -44,7 +44,7 @@ export default function ({
                         <TableCell>
                             {user.image_path && (
                                 <Avatar>
-                                    <AvatarImage className="object-cover" src={user.image} alt={user.name} />
+                                    <AvatarImage src={user.image} className="object-cover" alt={user.name} />
                                 </Avatar>
                             )}
                         </TableCell>
@@ -58,8 +58,8 @@ export default function ({
                         {canEditOrDelete(user) ? (
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

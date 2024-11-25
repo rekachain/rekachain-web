@@ -49,10 +49,10 @@ export default function ({
                 <form onSubmit={handleEditCarriageQty} className="flex gap-4">
                     <Input
                         type="number"
-                        min={1}
-                        className="w-fit"
-                        defaultValue={data.panelQty}
                         onChange={e => setData('panelQty', +e.target.value)}
+                        min={1}
+                        defaultValue={data.panelQty}
+                        className="w-fit"
                     />
                     <Button type="submit" disabled={loading}>
                         {loading

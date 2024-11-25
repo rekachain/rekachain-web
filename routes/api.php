@@ -1,26 +1,26 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\Api\ApiAuthController;
-use App\Http\Controllers\Api\ApiUserController;
-use App\Http\Controllers\Api\ApiPanelController;
-use App\Http\Controllers\Api\ApiProjectController;
-use App\Http\Controllers\Api\ApiWorkDayController;
 use App\Http\Controllers\Api\ApiCarriageController;
-use App\Http\Controllers\Api\ApiProgressController;
-use App\Http\Controllers\Api\ApiTrainsetController;
 use App\Http\Controllers\Api\ApiComponentController;
-use App\Http\Controllers\Api\ApiSerialPanelController;
-use App\Http\Controllers\Api\ApiWorkDayTimeController;
-use App\Http\Controllers\Api\ApiPanelMaterialController;
-use App\Http\Controllers\Api\ApiPanelAttachmentController;
 use App\Http\Controllers\Api\ApiDetailWorkerPanelController;
-use App\Http\Controllers\Api\ApiTrainsetAttachmentController;
 use App\Http\Controllers\Api\ApiDetailWorkerTrainsetController;
+use App\Http\Controllers\Api\ApiPanelAttachmentController;
 use App\Http\Controllers\Api\ApiPanelAttachmentHandlerController;
+use App\Http\Controllers\Api\ApiPanelController;
+use App\Http\Controllers\Api\ApiPanelMaterialController;
+use App\Http\Controllers\Api\ApiProgressController;
+use App\Http\Controllers\Api\ApiProjectController;
+use App\Http\Controllers\Api\ApiSerialPanelController;
+use App\Http\Controllers\Api\ApiTrainsetAttachmentController;
 use App\Http\Controllers\Api\ApiTrainsetAttachmentHandlerController;
+use App\Http\Controllers\Api\ApiTrainsetController;
+use App\Http\Controllers\Api\ApiUserController;
+use App\Http\Controllers\Api\ApiWorkDayController;
+use App\Http\Controllers\Api\ApiWorkDayTimeController;
+use App\Http\Controllers\FeedbackController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

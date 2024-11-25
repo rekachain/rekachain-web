@@ -72,7 +72,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
     public function importProjectCarriagePanelProgressMaterial(Project $project, Carriage $carriage, UploadedFile $file, array $data): bool {
         $carriagePanels = $project->carriage_panels()->whereCarriageId($carriage->id)->wherePanelId($data['panel_id'])->get();
         foreach ($carriagePanels as $carriagePanel) {
-            Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel, $data['override']  ?? null), $file);
+            Excel::import(new CarriagePanelProgressMaterialImport($carriagePanel, $data['override'] ?? null), $file);
         }
 
         return true;
@@ -90,7 +90,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
     public function importProjectTrainsetPanelProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool {
         $trainsetPanels = $project->carriage_panels()->whereTrainsetId($trainset->id)->wherePanelId($data['panel_id'])->get();
         foreach ($trainsetPanels as $trainsetPanel) {
-            Excel::import(new CarriagePanelProgressMaterialImport($trainsetPanel, $data['override']  ?? null), $file);
+            Excel::import(new CarriagePanelProgressMaterialImport($trainsetPanel, $data['override'] ?? null), $file);
         }
 
         return true;

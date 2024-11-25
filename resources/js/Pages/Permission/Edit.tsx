@@ -64,25 +64,25 @@ export default function (props: {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value="Nama" />
+                            <InputLabel value="Nama" htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
+                                type="text"
                                 placeholder={props.role.name}
                                 onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
+                                className="mt-1"
+                                autoComplete="name"
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value="Divisi" />
+                            <InputLabel value="Divisi" htmlFor="division" />
                             <Select
-                                name="division"
                                 value={data.division_id}
                                 onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
+                                name="division"
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Pilih divisi" />
@@ -92,9 +92,9 @@ export default function (props: {
                                     <SelectItem value="none">none</SelectItem>
                                     {props.divisions.map(division => (
                                         <SelectItem
-                                            defaultChecked={division.id == props.role.division_id}
-                                            key={division.id}
                                             value={division.id.toString()}
+                                            key={division.id}
+                                            defaultChecked={division.id == props.role.division_id}
                                         >
                                             {division.name}
                                         </SelectItem>
@@ -104,16 +104,16 @@ export default function (props: {
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="level" value="Level" />
+                            <InputLabel value="Level" htmlFor="level" />
                             <Input
-                                id="level"
-                                type="text"
-                                name="level"
                                 value={data.level}
+                                type="text"
+                                required
+                                onChange={e => setData('level', e.target.value)}
+                                name="level"
+                                id="level"
                                 className="mt-1"
                                 autoComplete="level"
-                                onChange={e => setData('level', e.target.value)}
-                                required
                             />
                         </div>
 
@@ -128,12 +128,12 @@ export default function (props: {
                                                 {permission.permissions.map(p => (
                                                     <div key={p.id} className="flex items-center">
                                                         <Checkbox
-                                                            id={`permission-${p.id}`}
-                                                            checked={data.permissions.includes(p.id)}
                                                             onCheckedChange={checked =>
                                                                 handlePermissionChange(checked, p)
                                                             }
                                                             name="permissions"
+                                                            id={`permission-${p.id}`}
+                                                            checked={data.permissions.includes(p.id)}
                                                         />
                                                         <label htmlFor={`permission-${p.id}`} className="ml-2">
                                                             {p.name}
@@ -147,7 +147,7 @@ export default function (props: {
                             </div>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             Ubah Role
                         </Button>
                     </form>

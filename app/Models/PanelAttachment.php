@@ -33,7 +33,6 @@ class PanelAttachment extends Model {
     protected $casts = [
         'status' => PanelAttachmentStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => [
             'attachment_number',
@@ -42,11 +41,11 @@ class PanelAttachment extends Model {
         'relation_searchs' => [],
         'columns' => [
             'id',
-            'source_workstation_id', 
-            'destination_workstation_id', 
-            'status', 
-            'panel_attachment_id', 
-            'supervisor_id', 
+            'source_workstation_id',
+            'destination_workstation_id',
+            'status',
+            'panel_attachment_id',
+            'supervisor_id',
         ],
         'relation_columns' => [
             'detail_worker_panels' => [
@@ -57,7 +56,7 @@ class PanelAttachment extends Model {
                 'project_id',
                 'status',
             ],
-        ]
+        ],
     ];
 
     public function getFilterable(): array {
@@ -68,21 +67,20 @@ class PanelAttachment extends Model {
         return $this->hasOneThrough(Panel::class, CarriagePanel::class, 'id', 'id', 'id', 'panel_id');
     }
 
-    public function trainset(): HasOneDeep
-    {
+    public function trainset(): HasOneDeep {
         return $this->hasOneDeep(
-            Trainset::class, 
+            Trainset::class,
             [
-                CarriagePanel::class, 
-                CarriageTrainset::class
+                CarriagePanel::class,
+                CarriageTrainset::class,
             ], [
                 'id',
-                'id', 
-                'id'
+                'id',
+                'id',
             ], [
-                'carriage_panel_id', 
-                'carriage_trainset_id', 
-                'trainset_id'
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'trainset_id',
             ]);
     }
 
@@ -95,6 +93,7 @@ class PanelAttachment extends Model {
         while ($attachment->parent) {
             $attachment = $attachment->parent;
         }
+
         return $attachment;
     }
 

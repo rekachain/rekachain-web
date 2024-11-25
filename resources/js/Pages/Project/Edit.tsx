@@ -49,32 +49,32 @@ export default function ({ project }: { project: ProjectResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.project.edit.fields.name')} />
+                            <InputLabel value={t('pages.project.edit.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value={t('pages.project.edit.fields.initial_date')} />
+                            <InputLabel value={t('pages.project.edit.fields.initial_date')} htmlFor="initial_date" />
                             <Input
-                                id="initial_date"
-                                type="date"
-                                name="initial_date"
                                 value={data.initial_date}
+                                type="date"
+                                onChange={e => setData('initial_date', e.target.value)}
+                                name="initial_date"
+                                id="initial_date"
                                 className="mt-1"
                                 autoComplete="initial_date"
-                                onChange={e => setData('initial_date', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.project.edit.buttons.submit')}
                         </Button>
                     </form>

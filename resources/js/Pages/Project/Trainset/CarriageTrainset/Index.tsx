@@ -199,16 +199,16 @@ export default function ({
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
                         <AddCarriage
                             trainset={trainset}
+                            handleSyncTrainset={handleSyncTrainset}
                             handleSyncCarriages={handleSyncCarriages}
                             debouncedCarriageFilters={debouncedCarriageFilters}
-                            handleSyncTrainset={handleSyncTrainset}
                         />
                     )}
                 </div>
 
                 {isNewPreset() && (
                     <CustomPresetAlert message={t('pages.project.trainset.carriage_trainset.index.new_preset_alert')}>
-                        <AddNewTrainsetPreset handleSyncTrainset={handleSyncTrainset} trainset={trainset} />
+                        <AddNewTrainsetPreset trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </CustomPresetAlert>
                 )}
             </AuthenticatedLayout>

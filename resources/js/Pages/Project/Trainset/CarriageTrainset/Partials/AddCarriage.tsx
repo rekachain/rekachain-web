@@ -91,16 +91,16 @@ const AddCarriage = ({
                                 )}
                             </Label>
                             <GenericDataSelector
-                                id="new_carriage_id"
-                                fetchData={fetchCarriages}
                                 setSelectedData={id => setData('new_carriage_id', id)}
                                 selectedDataId={data.new_carriage_id ?? undefined}
+                                renderItem={(item: CarriageResource) => `${item.type} : ${item.description}`}
                                 placeholder={t(
                                     'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage_placeholder',
                                 )}
-                                renderItem={(item: CarriageResource) => `${item.type} : ${item.description}`}
-                                customLabel={(item: CarriageResource) => `${item.type} : ${item.description}`}
                                 nullable
+                                id="new_carriage_id"
+                                fetchData={fetchCarriages}
+                                customLabel={(item: CarriageResource) => `${item.type} : ${item.description}`}
                             />
                         </div>
 
@@ -120,11 +120,11 @@ const AddCarriage = ({
                                 )}
                             </Label>
                             <Input
-                                type="text"
                                 value={data.new_carriage_type}
+                                type="text"
+                                required
                                 onChange={e => setData('new_carriage_type', e.target.value)}
                                 disabled={data.new_carriage_id !== null}
-                                required
                             />
                             <Label htmlFor="new-carriage-description">
                                 {t(
@@ -132,11 +132,11 @@ const AddCarriage = ({
                                 )}
                             </Label>
                             <Textarea
-                                id="new-carriage-description"
-                                className="p-2 rounded"
                                 value={data.new_carriage_description}
                                 onChange={e => setData('new_carriage_description', e.target.value)}
+                                id="new-carriage-description"
                                 disabled={data.new_carriage_id !== null}
+                                className="p-2 rounded"
                             />
                             <Label htmlFor="new-carriage-qty">
                                 {t(
@@ -144,12 +144,12 @@ const AddCarriage = ({
                                 )}
                             </Label>
                             <Input
-                                id="new-carriage-qty"
-                                type="number"
-                                min={1}
                                 value={data.new_carriage_qty}
-                                onChange={e => setData('new_carriage_qty', +e.target.value)}
+                                type="number"
                                 required
+                                onChange={e => setData('new_carriage_qty', +e.target.value)}
+                                min={1}
+                                id="new-carriage-qty"
                             />
                         </div>
 

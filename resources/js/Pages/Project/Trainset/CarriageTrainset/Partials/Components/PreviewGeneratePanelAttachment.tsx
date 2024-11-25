@@ -34,7 +34,7 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
     }, [fetchPanelRawMaterials]);
 
     return (
-        <div className="text-black dark:text-white" key={trainset.id}>
+        <div key={trainset.id} className="text-black dark:text-white">
             <div className="flex gap-4 mt-4">
                 {trainset?.carriage_trainsets?.length > 0 && (
                     <div className="flex flex-col gap-2">

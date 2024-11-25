@@ -20,7 +20,7 @@ export default function Edit({
 
             <div className="p-5 space-y-6">
                 <div className="p-4 sm:p-8 bg-background-2 shadow sm:rounded-lg">
-                    <UpdateProfileInformationForm mustVerifyEmail={mustVerifyEmail} status={status} />
+                    <UpdateProfileInformationForm status={status} mustVerifyEmail={mustVerifyEmail} />
                 </div>
 
                 <div className="p-4 sm:p-8 bg-background-2 shadow sm:rounded-lg">

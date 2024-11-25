@@ -11,7 +11,6 @@ class CarriageTrainset extends Pivot {
     use HasFactory;
 
     public $incrementing = true;
-
     protected $fillable = [
         'trainset_id',
         'carriage_id',

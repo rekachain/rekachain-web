@@ -19,10 +19,10 @@ export default function WorkstationCardView({
         <>
             {workstationResponse?.data.map(workstation => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
                     to="opacity-100 translate-y-0 translate-x-0"
-                    duration={300}
                     key={workstation.id}
+                    from="opacity-0 -translate-y-4"
+                    duration={300}
                 >
                     <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-4">
                         <div className="flex w-full justify-between items-scenter">
@@ -48,8 +48,8 @@ export default function WorkstationCardView({
                         </h5>
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('action.edit')}
                             </Link>

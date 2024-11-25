@@ -49,13 +49,13 @@ const PreviewTrainsetAttachment = ({
     }, [selectedAttachment]);
 
     return (
-        <div className="text-black dark:text-white" key={attachment.id}>
+        <div key={attachment.id} className="text-black dark:text-white">
             <h1 className="text-xl font-bold">{title}</h1>
             <div className="flex gap-4 my-4">
                 <Link
-                    className={buttonVariants()}
-                    href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
                     target="_blank"
+                    href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
+                    className={buttonVariants()}
                 >
                     {t(
                         'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
@@ -142,9 +142,9 @@ const PreviewTrainsetAttachment = ({
                 {trainsetAttachment?.qr && (
                     <div className="flex flex-col gap-3 mt-5 text-white items-center">
                         <div className="bg-white p-3">
-                            <img src={trainsetAttachment.qr} alt="QR Code" width={200} />
+                            <img width={200} src={trainsetAttachment.qr} alt="QR Code" />
                         </div>
-                        <button className={buttonVariants()} onClick={() => openImageAndPrint(trainsetAttachment.qr!)}>
+                        <button onClick={() => openImageAndPrint(trainsetAttachment.qr!)} className={buttonVariants()}>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.buttons.print_qr',
                             )}

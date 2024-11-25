@@ -53,7 +53,7 @@ export default function () {
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
                     <Label>{t('pages.raw_material.partials.import.dialogs.fields.download_template')}</Label>
-                    <Button type="button" variant="secondary" onClick={rawMaterialService.downloadImportDataTemplate}>
+                    <Button variant="secondary" type="button" onClick={rawMaterialService.downloadImportDataTemplate}>
                         {t('pages.raw_material.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
@@ -61,10 +61,10 @@ export default function () {
                     <div className="space-y-4">
                         <Label htmlFor="file">{t('pages.raw_material.partials.import.dialogs.fields.file')}</Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                     </div>
                     <DialogFooter>

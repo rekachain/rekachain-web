@@ -44,15 +44,15 @@ export default function () {
 
             <div className="hidden md:block">
                 <CarriageTableView
-                    carriageResponse={carriageResponse!}
                     handleCarriageDeletion={handleCarriageDeletion}
+                    carriageResponse={carriageResponse!}
                 ></CarriageTableView>
             </div>
 
             <div className="block md:hidden">
                 <CarriageCardView
-                    carriageResponse={carriageResponse!}
                     handleCarriageDeletion={handleCarriageDeletion}
+                    carriageResponse={carriageResponse!}
                 ></CarriageCardView>
             </div>
             <GenericPagination meta={carriageResponse?.meta} handleChangePage={handlePageChange} />

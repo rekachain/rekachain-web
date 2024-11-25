@@ -9,16 +9,14 @@ use App\Models\WorkAspect;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-class ProgressSheetImport implements ToCollection 
-{
+class ProgressSheetImport implements ToCollection {
     public function __construct(
         private CarriagePanelComponent $carriagePanelComponent,
         private int $workAspectId,
         protected ?bool $override = null
     ) {}
 
-    public function collection(Collection $rows) 
-    {
+    public function collection(Collection $rows) {
         $workAspect = WorkAspect::find($this->workAspectId);
         $header = $rows->first();
 
@@ -73,10 +71,10 @@ class ProgressSheetImport implements ToCollection
         if (is_null($this->override) || $this->override) {
             // update progress no matter what🗿
             return $this->carriagePanelComponent->update(['progress_id' => $progress->id]);
-        } else {
-            // update progress only if carriage panel progress is null
-            return $this->carriagePanelComponent->update(['progress_id' => $this->carriagePanelComponent->progress_id ?? $progress->id]);
         }
-    }
 
+        // update progress only if carriage panel progress is null
+        return $this->carriagePanelComponent->update(['progress_id' => $this->carriagePanelComponent->progress_id ?? $progress->id]);
+
+    }
 }

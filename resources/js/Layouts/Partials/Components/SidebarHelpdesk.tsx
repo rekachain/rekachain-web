@@ -144,32 +144,32 @@ export default function () {
                                                     {t('components.sidebar_helpdesk.dialogs.fields.email')}
                                                 </Label>
                                                 <Input
-                                                    type="email"
-                                                    id="email"
-                                                    name="email"
                                                     value={createData.email}
+                                                    type="email"
                                                     onChange={e => setCreateData('email', e.target.value)}
+                                                    name="email"
+                                                    id="email"
                                                     className="input"
                                                 />
-                                                <Label className="font-bold text-md" htmlFor="phone_number">
+                                                <Label htmlFor="phone_number" className="font-bold text-md">
                                                     {t('components.sidebar_helpdesk.dialogs.fields.phone_number')}
                                                 </Label>
                                                 <Input
-                                                    type="text"
-                                                    id="phone_number"
-                                                    name="phone_number"
                                                     value={createData.phone_number}
+                                                    type="text"
                                                     onChange={e => setCreateData('phone_number', e.target.value)}
+                                                    name="phone_number"
+                                                    id="phone_number"
                                                     className="input"
                                                 />
-                                                <Label className="font-bold text-md" htmlFor="notice">
+                                                <Label htmlFor="notice" className="font-bold text-md">
                                                     {t('components.sidebar_helpdesk.dialogs.fields.notice')}
                                                 </Label>
                                                 <Textarea
-                                                    name="notice"
-                                                    id="notice"
                                                     value={createData.notice}
                                                     onChange={e => setCreateData('notice', e.target.value)}
+                                                    name="notice"
+                                                    id="notice"
                                                     className="input"
                                                 />
                                                 <button type="submit" className={buttonVariants()}>
@@ -200,32 +200,32 @@ export default function () {
                                                 {t('components.sidebar_helpdesk.dialogs.fields.email')}
                                             </Label>
                                             <Input
-                                                type="email"
-                                                id="email"
-                                                name="email"
                                                 value={editData.email}
+                                                type="email"
                                                 onChange={e => setEditData('email', e.target.value)}
+                                                name="email"
+                                                id="email"
                                                 className="input"
                                             />
-                                            <Label className="font-bold text-md" htmlFor="phone_number">
+                                            <Label htmlFor="phone_number" className="font-bold text-md">
                                                 {t('components.sidebar_helpdesk.dialogs.fields.phone_number')}
                                             </Label>
                                             <Input
-                                                type="text"
-                                                id="phone_number"
-                                                name="phone_number"
                                                 value={editData.phone_number}
+                                                type="text"
                                                 onChange={e => setEditData('phone_number', e.target.value)}
+                                                name="phone_number"
+                                                id="phone_number"
                                                 className="input"
                                             />
-                                            <Label className="font-bold text-md" htmlFor="notice">
+                                            <Label htmlFor="notice" className="font-bold text-md">
                                                 {t('components.sidebar_helpdesk.dialogs.fields.notice')}
                                             </Label>
                                             <Textarea
-                                                name="notice"
-                                                id="notice"
                                                 value={editData.notice}
                                                 onChange={e => setEditData('notice', e.target.value)}
+                                                name="notice"
+                                                id="notice"
                                                 className="input"
                                             />
                                             <button type="submit" className={buttonVariants()}>

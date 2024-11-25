@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\TrainsetAttachment;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTrainsetAttachmentRequest extends FormRequest {
     public function rules(): array {

@@ -37,8 +37,8 @@ export default function CarriageTableView({
                             <TableCell>{carriage.description}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

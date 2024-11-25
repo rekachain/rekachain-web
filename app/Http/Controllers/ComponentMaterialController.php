@@ -8,12 +8,9 @@ use App\Http\Resources\ComponentMaterialResource;
 use App\Models\ComponentMaterial;
 use App\Support\Interfaces\Services\ComponentMaterialServiceInterface;
 use Illuminate\Http\Request;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class ComponentMaterialController extends Controller {
-
-    public function  __construct(protected ComponentMaterialServiceInterface $componentMaterialService) {}
+    public function __construct(protected ComponentMaterialServiceInterface $componentMaterialService) {}
 
     /**
      * Display a listing of the resource.
