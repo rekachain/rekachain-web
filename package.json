@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "transform-intent-enum": "node experimental/watch-intent-enum.js",
         "build": "tsc && vite build",
         "lint": "eslint --fix"
     },
@@ -19,6 +20,7 @@
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.4",
+        "chokidar": "^4.0.1",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-perfectionist": "^4.0.3",
         "eslint-plugin-react": "^7.37.2",
