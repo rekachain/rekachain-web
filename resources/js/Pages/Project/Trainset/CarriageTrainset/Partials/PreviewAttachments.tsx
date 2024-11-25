@@ -90,7 +90,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
             </DialogTrigger>
             <DialogContent className="w-[70%]">
                 <DialogHeader>
-                    <DialogTitle>&nbsp;</DialogTitle>
+                    <DialogTitle></DialogTitle>
                     <DialogDescription className="w-full"></DialogDescription>
                     <Tabs
                         defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
@@ -116,7 +116,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                            <ScrollArea className="h-[400px] rounded-md border p-4">
+                            <ScrollArea className="h-[400px] border p-4">
                                 {mechanicAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
@@ -129,7 +129,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
-                            <ScrollArea className="h-[400px] rounded-md border p-4">
+                            <ScrollArea className="h-[400px] border p-4">
                                 {electricAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
                                         attachment={attachment}
@@ -142,7 +142,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                            <ScrollArea className="h-[400px] rounded-md border p-4">
+                            <ScrollArea className="h-[400px] border p-4">
                                 <PreviewPanelAttachment trainset={trainset} />
                             </ScrollArea>
                         </TabsContent>
