@@ -35,7 +35,7 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
 
     return (
         <div className="text-black dark:text-white" key={trainset.id}>
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-4 mt-4 ml-3">
                 {trainset?.carriage_trainsets?.length > 0 && (
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="selected-carriage-id">
@@ -104,13 +104,13 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
                             'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
-                    <Table>
+                    <Table className='max-h-96'>
                         <TableCaption>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                             )}
                         </TableCaption>
-                        <TableHeader>
+                        <TableHeader className="sticky top-0 bg-background dark:bg-background-dark">
                             <TableRow>
                                 <TableHead className="">
                                     {t(

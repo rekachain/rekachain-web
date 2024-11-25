@@ -158,13 +158,13 @@ const PreviewTrainsetAttachment = ({
                     'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.material_list',
                 )}
             </h1>
-            <Table>
+            <Table className='max-h-96'>
                 <TableCaption>
                     {t(
                         'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                     )}
                 </TableCaption>
-                <TableHeader>
+                <TableHeader className="sticky top-0 bg-background dark:bg-background-dark">
                     <TableRow>
                         <TableHead className="">
                             {t(
