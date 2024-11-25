@@ -2,7 +2,7 @@ name: Codefixing
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   codefixing:
