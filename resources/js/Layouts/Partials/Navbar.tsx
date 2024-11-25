@@ -4,7 +4,14 @@ import { Separator } from '@/Components/UI/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Sun } from 'lucide-react';
 import {
@@ -82,9 +89,11 @@ export default function Navbar() {
         changeHtmlClass();
     };
     return (
-        <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
-            <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2 relative">
-                <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
+        <nav className='flex h-16 items-center justify-between border-b-2 px-4 py-3'>
+            <div className='flex h-full w-28 items-center rounded border-2 px-2 relative sm:w-64'>
+                <label htmlFor='search'>
+                    <RiSearchLine className='md:5 h-3 w-3 md:h-5' />
+                </label>
                 <Input
                     id="search"
                     value={searchQuery}
@@ -93,7 +102,7 @@ export default function Navbar() {
                     placeholder={t('action.search')}
                 />
                 {searchQuery.length >=2 && <SearchResults query={searchQuery} results={searchResults} />}
-                <label htmlFor="search">
+                <label htmlFor='search'>
                     {isDesktopOrLaptop && (
                         <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
                     )}
