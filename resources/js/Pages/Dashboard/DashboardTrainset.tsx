@@ -92,7 +92,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
                             <div className="flex justify-between w-full items-start">
                                 <h2 className="text-xl my-2">
-                                    {`Proyek ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
+                                    {`${t('pages.dashboard.index.project')} ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
                                     {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
                                 <div className="flex flex-col gap-4 mb-5">
@@ -115,9 +115,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-[200px] p-0">
                                             <Command>
-                                                <CommandInput placeholder="Cari Projek..." />
+                                                <CommandInput
+                                                    placeholder={`${t('pages.dashboard.index.find_project')}`}
+                                                />
                                                 <CommandList>
-                                                    <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
+                                                    <CommandEmpty>
+                                                        {t('pages.dashboard.index.project_not_found')}
+                                                    </CommandEmpty>
                                                     <CommandGroup>
                                                         {
                                                             // @ts-ignore
@@ -166,15 +170,19 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                           // @ts-ignore
                                                           projectItem => projectItem.name === valueTrainset,
                                                       )?.name
-                                                    : 'Pilih Trainset'}
+                                                    : `${t('pages.dashboard.index.select_trainset')}`}
                                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-[200px] p-0">
                                             <Command>
-                                                <CommandInput placeholder="Cari Trainset..." />
+                                                <CommandInput
+                                                    placeholder={`${t('pages.dashboard.index.find_trainset')}`}
+                                                />
                                                 <CommandList>
-                                                    <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                    <CommandEmpty>
+                                                        {t('pages.dashboard.index.trainset_not_found')}
+                                                    </CommandEmpty>
                                                     <CommandGroup>
                                                         {// @ts-ignore
                                                         data['tsList']?.map(projectItem => (
@@ -224,12 +232,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
                             <div className="px-4">
-                                <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
-                                <h3 className="text-base">{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
+                                <h2 className="text-xl my-1 font-bold">{t('pages.dashboard.index.panel_trainset')}</h2>
+                                <h3 className="text-base">{`${t('pages.dashboard.index.panel_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                 <ChartContainer config={chartConfigPanelInTrainset} className="h-[400px] w-full mt-5">
                                     <BarChart className="h-[300px]" accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
                                         <XAxis
+                                        
                                             // tick={<CustomizedAxisTick />}
                                             angle={-55}
                                             textAnchor="end"
@@ -248,8 +257,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
 
                             <div className="px-4">
-                                <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
-                                <h3 className="text-base">{`Progress semua panel pada ${data['trainsets'][0].ts_name}`}</h3>
+                                <h2 className="text-xl my-1 font-bold">
+                                    {t('pages.dashboard.index.panel_progress_trainset')}
+                                </h2>
+                                <h3 className="text-base">{`${t('pages.dashboard.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                 <div className="h-[400px] flex flex-col items-center">
                                     <ChartContainer config={chartConfigPie} className=" min-h-[300px] ">
                                         <PieChart>

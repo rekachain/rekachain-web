@@ -253,7 +253,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h2 className="text-xl my-2">
                                 {data['project'] == null
                                     ? t('pages.dashboard.index.all_project')
-                                    : `Proyek ${data['project']}`}
+                                    : `${t('pages.dashboard.index.project')} ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger asChild className=" ">
@@ -366,13 +366,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             {valueTrainset
                                                 ? project.find(projectItem => projectItem.value === valueTrainset)
                                                       ?.label
-                                                : 'Pilih Trainset'}
+                                                : `${t('pages.dashboard.index.select_trainset')}`}
                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-[200px] p-0">
                                         <Command>
-                                            <CommandInput placeholder="Cari Trainset..." />
+                                            <CommandInput placeholder={`${t('pages.dashboard.index.find_trainset')}`} />
                                             <CommandList>
                                                 <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
                                                 <CommandGroup>
@@ -579,7 +579,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         domain={[0, maxWorkstationStatusValue]}
                                     />
                                 ))}
-                                <YAxis className="" angle={-45} dataKey="workstation_name" type="category" />
+                                {
+                                    // @ts-ignore
+                                    <YAxis className="" angle={-45} dataKey="workstation_name" type="category" />
+                                }
                                 <ChartTooltip content={<ChartTooltipContent />} />
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
