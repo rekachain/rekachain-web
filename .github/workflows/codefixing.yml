@@ -1,8 +1,9 @@
 name: Codefixing
 
 on:
-  pull_request:
-    branches: [ "dev" ]
+  push:
+    branches:
+      - dev
 
 jobs:
   codefixing:
