@@ -2,15 +2,18 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useCallback } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { PanelResource } from '@/Support/Interfaces/Resources';
+import { PanelResource, ProgressResource } from '@/Support/Interfaces/Resources';
 import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { progressService } from '@/Services/progressService';
 
 export default function ({ panel }: { panel: PanelResource }) {
     const { t } = useLaravelReactI18n();
@@ -18,9 +21,14 @@ export default function ({ panel }: { panel: PanelResource }) {
 
     const { data, setData } = useForm({
         id: panel.id,
+        progress_id: panel.progress_id as number | null,
         name: panel.name,
         description: panel.description,
     });
+
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
+        return await progressService.getAll(filters).then(response => response.data);
+    }, []);
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
@@ -47,6 +55,23 @@ export default function ({ panel }: { panel: PanelResource }) {
                     </div>
 
                     <form onSubmit={submit} encType="multipart/form-data">
+                        <div className="mt-4">
+                            <InputLabel htmlFor="progress">{t('pages.panel.edit.fields.progress')}</InputLabel>
+                            <div className="mt-4">
+                                <GenericDataSelector
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    setSelectedData={id => setData('progress_id', id)}
+                                    selectedDataId={data.progress_id ?? undefined}
+                                    placeholder={t('pages.panel.edit.fields.progress_placeholder')}
+                                    renderItem={(item: ProgressResource) => item.name}
+                                    initialSearch={panel.progress?.name}
+                                    buttonClassName="mt-1"
+                                    nullable
+                                />
+                            </div>
+                        </div>
+
                         <div className="mt-4">
                             <InputLabel htmlFor="name" value={t('pages.panel.edit.fields.name')} />
                             <Input

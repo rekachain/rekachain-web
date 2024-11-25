@@ -16,7 +16,7 @@ import useDarkMode from '@/Hooks/useDarkMode';
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { darkMode, toggleDarkMode } = useDarkMode();
     const { data, setData, post, processing, errors, reset } = useForm({
-        nip: '',
+        identifier: '',
         password: '',
         remember: false,
     });
@@ -92,20 +92,20 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel htmlFor="nip" value={t('pages.login.fields.nip')} />
+                                <InputLabel htmlFor="identifier" value={t('pages.login.fields.identifier')} />
 
                                 <Input
-                                    id="nip"
+                                    id="identifier"
                                     type="text"
-                                    name="nip"
-                                    value={data.nip}
+                                    name="identifier"
+                                    value={data.identifier}
                                     className="mt-1"
-                                    autoComplete="nip"
+                                    autoComplete="identifier"
                                     autoFocus
-                                    onChange={e => setData('nip', e.target.value)}
+                                    onChange={e => setData('identifier', e.target.value)}
                                 />
 
-                                <InputError message={errors.nip} className="mt-2" />
+                                <InputError message={errors.identifier} className="mt-2" />
                             </div>
 
                             <div className="mt-4">

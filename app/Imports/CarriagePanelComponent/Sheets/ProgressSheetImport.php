@@ -53,6 +53,7 @@ class ProgressSheetImport implements ToCollection
         foreach ($progresses->get() as $foundedProgress) {
             if ($foundedProgress->progress_steps->pluck('step_id')->values() == $steps->pluck('id')->values()) {
                 $progress = $foundedProgress;
+                break;
             }
         }
         logger($progress ? $progress->progress_steps : 'No matching progress found');
@@ -63,6 +64,10 @@ class ProgressSheetImport implements ToCollection
                 'work_aspect_id' => $this->workAspectId,
             ]);
             $progress->progress_steps()->createMany($steps->map(fn ($step) => ['step_id' => $step->id])->toArray());
+        }
+
+        if (is_null($this->carriagePanelComponent->component->progress)) {
+            $this->carriagePanelComponent->component->update(['progress_id' => $progress->id]);
         }
 
         if (is_null($this->override) || $this->override) {

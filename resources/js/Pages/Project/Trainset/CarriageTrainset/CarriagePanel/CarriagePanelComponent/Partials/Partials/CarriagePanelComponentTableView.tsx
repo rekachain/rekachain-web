@@ -27,10 +27,26 @@ export default function CarriagePanelComponentTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Component</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Progress</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.component',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.qty',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.description',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.progress',
+                            )}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -80,7 +96,9 @@ export default function CarriagePanelComponentTableView({
                                         ],
                                     )}
                                 >
-                                    Materials
+                                    {t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.actions.materials',
+                                    )}
                                 </Link>
 
                                 <CarriagePanelComponentProgress

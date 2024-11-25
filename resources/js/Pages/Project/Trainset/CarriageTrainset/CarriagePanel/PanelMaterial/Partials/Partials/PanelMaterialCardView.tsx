@@ -32,10 +32,10 @@ export default function PanelMaterialCardView({
                             key={panelMaterial.id}
                         >
                             <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                                <div className="flex  justify-between items-scenter">
+                                <div className="flex justify-between items-scenter">
                                     <h4 className="font-bold text-sm">{panelMaterial.raw_material.material_code}</h4>
                                     <div className="text-end w-1/2">
-                                        <h5 className="font-bold text-sm ">{panelMaterial.raw_material.description}</h5>
+                                        <h5 className="font-bold text-sm">{panelMaterial.raw_material.description}</h5>
                                     </div>
                                 </div>
                                 <h5 className="text-sm">

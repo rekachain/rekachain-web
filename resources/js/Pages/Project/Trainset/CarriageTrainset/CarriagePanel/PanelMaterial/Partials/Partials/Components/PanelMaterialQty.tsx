@@ -36,7 +36,11 @@ export default function ({
         });
         await handleSyncCarriagePanel();
         setIsEditing(false);
-        void useSuccessToast('Panel material quantity has been updated.');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.partials.components.panel_material_qty.messages.updated',
+            ),
+        );
     });
 
     return (
@@ -54,7 +58,7 @@ export default function ({
                         {loading
                             ? t('action.loading')
                             : t(
-                                  'pages.project.trainset.carriage_trainset.carriage_panel.partials.components.panel_qty.buttons.update_qty',
+                                  'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.partials.components.panel_material_qty.buttons.update_qty',
                               )}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>

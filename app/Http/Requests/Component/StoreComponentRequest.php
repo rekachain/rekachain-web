@@ -30,6 +30,7 @@ class StoreComponentRequest extends FormRequest {
 
         return [
             'name' => 'required',
+            'description' => 'nullable',
             'progress_id' => 'nullable|integer',
             // 'panel_id' => 'required|integer',
         ];

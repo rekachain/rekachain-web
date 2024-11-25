@@ -38,7 +38,7 @@ export default function ({
         setIsEditing(false);
         void useSuccessToast(
             t(
-                'pages.project.trainset.carriage_trainset.carriage_panel.partials.components.panel_qty.messages.qty_updated',
+                'pages.project.trainset.carriage_trainset.carriage_panel.partials.partials.components.panel_qty.messages.updated',
             ),
         );
     });
@@ -58,7 +58,7 @@ export default function ({
                         {loading
                             ? t('action.loading')
                             : t(
-                                  'pages.project.trainset.carriage_trainset.carriage_panel.partials.components.panel_qty.buttons.update_qty',
+                                  'pages.project.trainset.carriage_trainset.carriage_panel.partials.partials.components.panel_qty.buttons.update_qty',
                               )}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>

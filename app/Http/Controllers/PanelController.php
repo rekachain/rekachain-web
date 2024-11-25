@@ -72,6 +72,7 @@ class PanelController extends Controller {
                 case IntentEnum::WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE->value:
                     return $this->panelService->getImportDataRawMaterialAndProgressTemplate($panel);
             }
+
             return new PanelResource($panel->load('progress'));
         }
     }
@@ -80,7 +81,7 @@ class PanelController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Panel $panel) {
-        return inertia('Panel/Edit', ['panel' => new PanelResource($panel)]);
+        return inertia('Panel/Edit', ['panel' => new PanelResource($panel->load('progress'))]);
     }
 
     /**

@@ -22,6 +22,9 @@ export default function ComponentTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>{t('pages.component.partials.partials.component_table.headers.name')}</TableHead>
+                        <TableHead>
+                            {t('pages.component.partials.partials.component_table.headers.description')}
+                        </TableHead>
                         <TableHead>{t('pages.component.partials.partials.component_table.headers.progress')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -30,6 +33,7 @@ export default function ComponentTableView({
                     {componentResponse?.data.map(component => (
                         <TableRow key={component.id}>
                             <TableCell>{component.name}</TableCell>
+                            <TableCell>{component.description}</TableCell>
                             <TableCell>{component.progress?.name}</TableCell>
                             <TableCell>
                                 <Link

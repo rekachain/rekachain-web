@@ -77,7 +77,9 @@ export default function CarriagePanelComponentCardView({
                                             ],
                                         )}
                                     >
-                                        Materials
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_card.actions.materials',
+                                        )}
                                     </Link>
 
                                     <CarriagePanelComponentProgress
