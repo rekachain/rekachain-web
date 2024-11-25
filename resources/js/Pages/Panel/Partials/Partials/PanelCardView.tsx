@@ -41,6 +41,11 @@ export default function PanelCardView({
                                 description: panel.description ?? '-',
                             })}
                         </h4>
+                        <p className="text-sm">
+                            {t('pages.panel.partials.partials.panel_card.headers.progress', {
+                                progress: panel.progress?.name ?? '-',
+                            })}
+                        </p>
                         {/* <p>Jumlah User :{panel.users_count}</p>
                         <p>Jumlah Izin :{panel.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">

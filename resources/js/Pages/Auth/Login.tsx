@@ -5,17 +5,18 @@ import InputLabel from '@/Components/InputLabel';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
-import { useLocalStorage } from '@uidotdev/usehooks';
 import { STYLING } from '@/Support/Constants/styling';
 import { RiMoonClearLine } from '@remixicon/react';
 import { Sun } from 'lucide-react';
 import AddFeedback from '@/Components/AddFeedback';
 import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import useDarkMode from '@/Hooks/useDarkMode';
 
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
+    const { darkMode, toggleDarkMode } = useDarkMode();
     const { data, setData, post, processing, errors, reset } = useForm({
-        nip: '',
+        identifier: '',
         password: '',
         remember: false,
     });
@@ -34,26 +35,6 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
     const { t } = useLaravelReactI18n();
 
-    const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
-
-    const changeHtmlClass = () => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-        } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.style.colorScheme = 'light';
-        }
-    };
-
-    useEffect(() => {
-        changeHtmlClass();
-    }, [darkMode]);
-
-    const handleDarkMode = () => {
-        setDarkMode(!darkMode);
-        changeHtmlClass();
-    };
     return (
         <>
             <Head title="Log in" />
@@ -92,7 +73,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 className="md:mb-10 h-16 object-contain align-content-lg-start"
                             />
                             <div className="flex">
-                                <Button variant="ghost" size="icon" onClick={handleDarkMode}>
+                                <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
                                     {darkMode ? (
                                         <Sun size={STYLING.ICON.SIZE.SMALL} />
                                     ) : (
@@ -111,20 +92,20 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel htmlFor="nip" value={t('pages.login.fields.nip')} />
+                                <InputLabel htmlFor="identifier" value={t('pages.login.fields.identifier')} />
 
                                 <Input
-                                    id="nip"
+                                    id="identifier"
                                     type="text"
-                                    name="nip"
-                                    value={data.nip}
+                                    name="identifier"
+                                    value={data.identifier}
                                     className="mt-1"
-                                    autoComplete="nip"
+                                    autoComplete="identifier"
                                     autoFocus
-                                    onChange={e => setData('nip', e.target.value)}
+                                    onChange={e => setData('identifier', e.target.value)}
                                 />
 
-                                <InputError message={errors.nip} className="mt-2" />
+                                <InputError message={errors.identifier} className="mt-2" />
                             </div>
 
                             <div className="mt-4">

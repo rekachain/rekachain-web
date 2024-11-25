@@ -1,4 +1,4 @@
-import { RiMoonClearLine, RiNotification4Line, RiSearchLine } from '@remixicon/react';
+import { RiBook2Line, RiDownload2Line, RiMoonClearLine, RiNotification4Line, RiSearchLine } from '@remixicon/react';
 import { Input } from '@/Components/UI/input';
 import { Separator } from '@/Components/UI/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
@@ -6,7 +6,6 @@ import { Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { useLocalStorage } from '@uidotdev/usehooks';
 import { Sun } from 'lucide-react';
 import {
     DropdownMenu,
@@ -22,6 +21,7 @@ import { useMediaQuery } from 'react-responsive';
 import AddFeedback from '@/Components/AddFeedback';
 import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import useDarkMode from '@/Hooks/useDarkMode';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -45,26 +45,6 @@ export default function Navbar() {
         };
     }, []);
 
-    const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
-
-    const changeHtmlClass = () => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-        } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.style.colorScheme = 'light';
-        }
-    };
-
-    useEffect(() => {
-        changeHtmlClass();
-    }, [darkMode]);
-
-    const handleDarkMode = () => {
-        setDarkMode(!darkMode);
-        changeHtmlClass();
-    };
     return (
         <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
             <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
@@ -81,13 +61,12 @@ export default function Navbar() {
                 </label>
             </div>
             <div className="w-fit flex h-full items-center gap-1 md:gap-2">
-                <Button variant="ghost" size="icon" onClick={handleDarkMode}>
-                    {darkMode ? (
-                        <Sun size={STYLING.ICON.SIZE.SMALL} />
-                    ) : (
-                        <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
-                    )}
-                </Button>
+                <ViewManualBook />
+
+                <DownloadApp />
+
+                <ToggleDarkMode />
+
                 <Sheet>
                     <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
                         <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
@@ -99,9 +78,13 @@ export default function Navbar() {
                         </SheetHeader>
                     </SheetContent>
                 </Sheet>
+
                 <SetLocalization />
+
                 <AddFeedback />
+
                 <Separator orientation="vertical" className="w-[2px]" />
+
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <div className="flex justify-start gap-1 md:gap-2">
@@ -146,3 +129,44 @@ export default function Navbar() {
         </nav>
     );
 }
+
+const ToggleDarkMode = () => {
+    const { t } = useLaravelReactI18n();
+    const { darkMode, toggleDarkMode } = useDarkMode();
+    return (
+        <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleDarkMode}
+            title={t('components.navbar.toggle_dark_mode.title')}
+        >
+            {darkMode ? <Sun size={STYLING.ICON.SIZE.SMALL} /> : <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />}
+        </Button>
+    );
+};
+
+const ViewManualBook = () => {
+    const { t } = useLaravelReactI18n();
+    return (
+        <Link
+            href="/"
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+            title={t('components.navbar.view_manual_book.title')}
+        >
+            <RiBook2Line />
+        </Link>
+    );
+};
+
+const DownloadApp = () => {
+    const { t } = useLaravelReactI18n();
+    return (
+        <Link
+            href="/"
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+            title={t('components.navbar.download_app.title')}
+        >
+            <RiDownload2Line />
+        </Link>
+    );
+};

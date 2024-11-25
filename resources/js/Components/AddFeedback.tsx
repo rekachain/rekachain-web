@@ -35,13 +35,13 @@ const AddFeedback = () => {
     const handleAddFeedback = withLoading(async (e: FormEvent) => {
         e.preventDefault();
         await feedbackService.create(data);
-        void useSuccessToast('Feedback added successfully');
+        void useSuccessToast(t('components.add_feedback.messages.created'));
     });
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" title="Add Feedback">
+                <Button variant="ghost" size="icon" title={t('components.add_feedback.title')}>
                     <RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />
                 </Button>
             </DialogTrigger>
@@ -49,34 +49,34 @@ const AddFeedback = () => {
                 <DialogHeader>
                     <DialogTitle>
                         <RiFeedbackLine className="inline-block w-6 h-6 mr-2" aria-hidden="true" />
-                        {t('components.feedback.title')}
+                        {t('components.add_feedback.title')}
                     </DialogTitle>
-                    <DialogDescription>{t('components.feedback.description')} </DialogDescription>
+                    <DialogDescription>{t('components.add_feedback.description')} </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleAddFeedback}>
                     <div className="grid gap-4 py-4">
                         {!auth.user.id && (
                             <>
-                                <Label htmlFor="name">{t('components.feedback.fields.name')}</Label>
+                                <Label htmlFor="name">{t('components.add_feedback.fields.name')}</Label>
                                 <Input
                                     id="name"
                                     name="name"
-                                    placeholder={t('components.feedback.fields.name_placeholder')}
+                                    placeholder={t('components.add_feedback.fields.name_placeholder')}
                                     value={data.name}
                                     onChange={e => setData('name', e.target.value)}
                                 />
-                                <Label htmlFor="email">{t('components.feedback.fields.email')}</Label>
+                                <Label htmlFor="email">{t('components.add_feedback.fields.email')}</Label>
                                 <Input
                                     id="email"
                                     name="email"
-                                    placeholder={t('components.feedback.fields.email_placeholder')}
+                                    placeholder={t('components.add_feedback.fields.email_placeholder')}
                                     value={data.email}
                                     onChange={e => setData('email', e.target.value)}
                                 />
                             </>
                         )}
 
-                        <Label htmlFor="rating">{t('components.feedback.fields.rating')}</Label>
+                        <Label htmlFor="rating">{t('components.add_feedback.fields.rating')}</Label>
                         <Rating
                             SVGclassName={'inline-block'}
                             onClick={(rate: number) => setData('rating', rate)}
@@ -89,11 +89,11 @@ const AddFeedback = () => {
                             emptyColor="gray"
                         />
 
-                        <Label htmlFor="message">{t('components.feedback.fields.message')}</Label>
+                        <Label htmlFor="message">{t('components.add_feedback.fields.message')}</Label>
                         <Input
                             id="message"
                             name="message"
-                            placeholder={t('components.feedback.fields.message_placeholder')}
+                            placeholder={t('components.add_feedback.fields.message_placeholder')}
                             value={data.message}
                             onChange={e => setData('message', e.target.value)}
                         />

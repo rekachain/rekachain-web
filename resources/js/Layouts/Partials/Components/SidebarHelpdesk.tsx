@@ -2,8 +2,7 @@ import { RiQuestionLine } from '@remixicon/react';
 import { buttonVariants } from '@/Components/UI/button';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { STYLING } from '@/Support/Constants/styling';
-import { useEffect, useState } from 'react';
-import { HelpdeskContactResource } from '@/Support/Interfaces/Resources';
+import { useEffect } from 'react';
 import { withLoading } from '@/Utils/withLoading';
 import { helpdeskContactService } from '@/Services/helpdeskContactService';
 import {
@@ -22,12 +21,13 @@ import { Textarea } from '@/Components/UI/textarea';
 import { useForm, usePage } from '@inertiajs/react';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { RoleEnum } from '@/Support/Enums/roleEnum';
+import { useHelpdesk } from '@/Contexts/HelpdeskContext';
 
 export default function () {
     const { t } = useLaravelReactI18n();
     const { props } = usePage();
     const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full pr-52 md:mr-0 `;
-    const [helpdeskContactResponse, setHelpdeskContactResponse] = useState<HelpdeskContactResource>();
+    const { helpdeskContactResponse, syncHelpdeskContacts } = useHelpdesk();
 
     const { data: editData, setData: setEditData } = useForm({
         email: '',
@@ -42,22 +42,6 @@ export default function () {
     });
 
     const isSuperAdmin = props.auth.user.role === RoleEnum.SUPER_ADMIN;
-
-    const syncHelpdeskContacts = withLoading(async () => {
-        const res = await helpdeskContactService.getAll();
-
-        if (res.data.length === 0) return;
-
-        const [helpdeskContactResponse] = res.data;
-
-        setHelpdeskContactResponse(helpdeskContactResponse);
-
-        setEditData({
-            email: helpdeskContactResponse.email,
-            phone_number: helpdeskContactResponse.phone_number,
-            notice: helpdeskContactResponse.notice,
-        });
-    });
 
     const handleEditSubmit = withLoading(async e => {
         e.preventDefault();
@@ -78,8 +62,14 @@ export default function () {
     }, true);
 
     useEffect(() => {
-        void syncHelpdeskContacts();
-    }, []);
+        if (!helpdeskContactResponse) return;
+
+        setEditData({
+            email: helpdeskContactResponse.email,
+            phone_number: helpdeskContactResponse.phone_number,
+            notice: helpdeskContactResponse.notice,
+        });
+    }, [helpdeskContactResponse]);
 
     return (
         <div className="md:px-4">

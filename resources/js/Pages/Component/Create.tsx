@@ -13,14 +13,17 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { progressService } from '@/Services/progressService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Textarea } from '@/Components/UI/textarea';
 
 export default function () {
     const { t } = useLaravelReactI18n();
     const { data, setData, processing } = useForm<{
         progress_id: number | null;
+        description: string;
         name: string;
     }>({
         progress_id: null,
+        description: '',
         name: '',
     });
 
@@ -59,6 +62,19 @@ export default function () {
                                     nullable
                                 />
                             </div>
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel htmlFor="description" value={t('pages.component.create.fields.description')} />
+                            <Textarea
+                                id="description"
+                                name="description"
+                                value={data.description}
+                                className="mt-1"
+                                autoComplete="description"
+                                required
+                                onChange={e => setData('description', e.target.value)}
+                            />
                         </div>
 
                         <div className="mt-4">

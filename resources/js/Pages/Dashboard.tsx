@@ -4,7 +4,7 @@ import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
@@ -114,7 +114,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     } satisfies ChartConfig;
 
     const [useMerged, setUseMerged] = useState(true);
-    const [useRaw, setUseRaw] = useState(true);
+    const [useRaw, setUseRaw] = useState(false);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
         // data: useRaw
         //     ? data.attachment_status_of_trainset
@@ -168,7 +168,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                 if (count > max) max = count + 1;
             });
         });
-        console.log('max', max);
         setMaxWorkstationStatusValue(max);
     }, [attachmentStatusOfWorkstationGraph]);
 
@@ -213,6 +212,43 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     };
+  
+    const toPercent = (decimal: number, fixed = 0) => {
+        return `${(decimal * 100).toFixed(fixed)}%`;
+    };
+    const getPercent = (value: number, total: number) => {
+        const ratio = total > 0 ? value / total : 0;
+        return toPercent(ratio,2);
+    };
+    
+
+    const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
+        const total = payload.reduce((result: number, entry: any) => result + entry.value, 0);
+        return (
+            <div className="grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
+                <p className="">{`${label} (Total: ${total})`}</p>
+                <ul className="list">
+                    {payload.map((entry: any, index: number) => (
+                        <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
+                            <div className="flex items-center gap-1.5">
+                                <div
+                                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                                    style={{
+                                        backgroundColor: entry.color,
+                                    }}
+                                />
+                                <span className="text-foreground">
+                                    {attachmentStatusConfig[entry.dataKey].label}
+                                </span>
+                            </div>
+                            <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+    
 
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
@@ -571,8 +607,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                     </div>
                     <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                     <div className="flex max-w-full mt-2">
-                        {/* <div className="w-1/2"> */}
-                        {/* <h3 className="text-base">Workstation Sukosari, Candisewu</h3> */}
                         <ChartContainer
                             config={attachmentStatusOfWorkstationGraph.config}
                             className="h-[300px] w-full mt-5"
@@ -580,31 +614,35 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <BarChart
                                 accessibilityLayer
                                 data={attachmentStatusOfWorkstationGraph.data}
+                                stackOffset='expand'
                                 layout="vertical"
                             >
                                 <CartesianGrid vertical={false} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                    <XAxis
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        type="number"
-                                        dataKey={dataKey}
-                                        domain={[0, maxWorkstationStatusValue]}
+                                <XAxis type="number" tickFormatter={value => toPercent(value, 0)} />
+                                <YAxis
+                                    className=""
+                                    dataKey="workstation_name"
+                                    type="category"
+                                    width={150}
+                                    tickLine={false}
+                                    tickMargin={10}
+                                    axisLine={false}
+                                    // tickFormatter={value => value.slice(0, 6)} 
                                     />
-                                ))}
-                                <YAxis className="" dataKey="workstation_name" type="category" />
-                                <ChartTooltip content={<ChartTooltipContent />} />
+                                <ChartTooltip content={renderWorkstationProgressTooltipContent} />
+                                {/* <ChartTooltip content={<ChartTooltipContent formatter={(value, name) => name+' '+value} />} /> nyerah🗿 */}
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
                                     <Bar
                                         key={`workstationPanelStatus-${dataKey}-key`}
                                         dataKey={dataKey}
                                         fill={`var(--color-${dataKey})`}
-                                        radius={[0, 4, 4, 0]}
+                                        stackId="1"
+                                        type='monotone'
                                     />
                                 ))}
                             </BarChart>
                         </ChartContainer>
-                        {/* </div> */}
                     </div>
                     {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
 

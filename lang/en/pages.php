@@ -22,7 +22,7 @@ return [
     'login' => [
         'title' => 'Welcome Back!',
         'fields' => [
-            'nip' => 'Employee ID',
+            'identifier' => 'Email or Employee ID',
             'password' => 'Password',
             'remember' => 'Remember Me',
         ],
@@ -334,6 +334,16 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'worker_status' => [
+                        'title' => 'Worker Status',
+                        'fields' => [
+                            'all' => 'All',
+                            'active' => 'Active',
+                            'inactive' => 'Inactive',
+                        ],
+                    ],
+                ],
                 'user_table' => [
                     'headers' => [
                         'nip' => 'Employee ID',
@@ -643,6 +653,7 @@ return [
             'title' => 'Create Component',
             'fields' => [
                 'name' => 'Name',
+                'description' => 'Description',
                 'progress' => 'Progress',
                 'progress_placeholder' => 'Select Progress',
             ],
@@ -657,6 +668,7 @@ return [
             'title' => 'Edit Component: :name',
             'fields' => [
                 'name' => 'Name',
+                'description' => 'Description',
                 'progress' => 'Progress',
                 'progress_placeholder' => 'Select Progress',
             ],
@@ -677,12 +689,14 @@ return [
                 'component_table' => [
                     'headers' => [
                         'name' => 'Name',
+                        'description' => 'Description',
                         'progress' => 'Progress',
                     ],
                 ],
                 'component_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
+                        'description' => 'Description: :description',
                         'progress' => 'Progress: :progress',
                     ],
                 ],
@@ -700,6 +714,8 @@ return [
             'title' => 'Create Panel',
             'fields' => [
                 'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
                 'description' => 'Description',
             ],
             'buttons' => [
@@ -713,6 +729,8 @@ return [
             'title' => 'Edit Panel: :name',
             'fields' => [
                 'name' => 'Name',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Select Progress',
                 'description' => 'Description',
             ],
             'buttons' => [
@@ -755,12 +773,14 @@ return [
                     'headers' => [
                         'name' => 'Name',
                         'description' => 'Description',
+                        'progress' => 'Progress',
                     ],
                 ],
                 'panel_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
                         'description' => 'Description: :description',
+                        'progress' => 'Progress: :progress',
                     ],
                 ],
             ],
@@ -820,7 +840,7 @@ return [
                     'trainset_needed_error' => 'Trainset number must be greater than 0',
                 ],
             ],
-            'carriage' => [
+            'carriage_trainset' => [
                 'index' => [
                     'title' => 'Carriages',
                     'initial_date' => 'Initial Date :initial_date',
@@ -852,7 +872,7 @@ return [
                         'trainset_needed_error' => 'Trainset number must be greater than 0',
                     ],
                 ],
-                'panel' => [
+                'carriage_panel' => [
                     'index' => [
                         'title' => 'Carriage: :name',
                         'initial_date' => 'Initial Date :initial_date',
@@ -862,6 +882,262 @@ return [
                             'project' => 'Project :project',
                             'trainset' => 'Trainset :trainset',
                             'carriage' => 'Carriage :carriage',
+                        ],
+                    ],
+                    'panel_material' => [
+                        'index' => [
+                            'title' => 'Panel Material',
+                            'breadcrumbs' => [
+                                'home' => 'Home',
+                                'project' => 'Project :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Carriage :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'partials' => [
+                            'panel_materials' => [
+                                'messages' => [
+                                    'deleted' => 'Panel Material deleted successfully!',
+                                ],
+                            ],
+                            'add_new_panel_raw_material' => [
+                                'messages' => [
+                                    'panel_material_added' => 'Panel Material added successfully!',
+                                ],
+                                'buttons' => [
+                                    'add_new_panel_raw_material' => 'Add New Panel Material',
+                                ],
+                                'dialogs' => [
+                                    'title' => 'Add New Panel Material',
+                                    'fields' => [
+                                        'raw_material' => 'Raw Material',
+                                        'raw_material_placeholder' => 'Select Raw Material',
+                                        'raw_material_code' => 'Raw Material Code',
+                                        'raw_material_code_placeholder' => 'Raw Material Code',
+                                        'raw_material_search' => 'Search Raw Material',
+                                        'new_raw_material_code' => 'New Raw Material Code',
+                                        'new_raw_material_description' => 'New Raw Material Description',
+                                        'new_raw_material_unit' => 'New Raw Material Unit',
+                                        'new_raw_material_specs' => 'New Raw Material Specs',
+                                        'new_raw_material_qty' => 'New Raw Material Qty',
+                                    ],
+                                    'actions' => [
+                                        'adding_panel_material' => 'Adding Panel Material...',
+                                    ],
+                                    'buttons' => [
+                                        'add_panel_material' => 'Add Panel Material',
+                                    ],
+                                ],
+                            ],
+                            'partials' => [
+                                'panel_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Material Code',
+                                        'qty' => 'Quantity',
+                                        'description' => 'Description',
+                                    ],
+                                ],
+                                'components' => [
+                                    'panel_material_qty' => [
+                                        'title' => 'Panel Material Quantity',
+                                        'messages' => [
+                                            'updated' => 'Panel Material quantity updated successfully!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Update Qty',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'carriage_panel_component' => [
+                        'index' => [
+                            'title' => 'Components',
+                            'breadcrumbs' => [
+                                'home' => 'Home',
+                                'project' => 'Project :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Carriage :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'component_material' => [
+                            'index' => [
+                                'title' => 'Component Material',
+                                'breadcrumbs' => [
+                                    'home' => 'Home',
+                                    'project' => 'Project :project',
+                                    'trainset' => 'Trainset :trainset',
+                                    'carriage' => 'Carriage :carriage',
+                                    'panel' => 'Panel :panel',
+                                    'component' => 'Component :component',
+                                ],
+                            ],
+                            'partials' => [
+                                'component_materials' => [
+                                    'messages' => [
+                                        'deleted' => 'Component Material deleted successfully!',
+                                    ],
+                                ],
+                                'add_new_component_raw_material' => [
+                                    'messages' => [
+                                        'created' => 'Component Material added successfully!',
+                                    ],
+                                    'buttons' => [
+                                        'add_new_component_raw_material' => 'Add New Component Material',
+                                    ],
+                                    'dialogs' => [
+                                        'title' => 'Add New Component Material',
+                                        'fields' => [
+                                            'raw_material' => 'Raw Material',
+                                            'raw_material_placeholder' => 'Select Raw Material',
+                                            'raw_material_code' => 'Raw Material Code',
+                                            'raw_material_code_placeholder' => 'Raw Material Code',
+                                            'raw_material_search' => 'Search Raw Material',
+                                            'new_raw_material_code' => 'New Raw Material Code',
+                                            'new_raw_material_description' => 'New Raw Material Description',
+                                            'new_raw_material_unit' => 'New Raw Material Unit',
+                                            'new_raw_material_specs' => 'New Raw Material Specs',
+                                            'new_raw_material_qty' => 'New Raw Material Qty',
+                                        ],
+                                        'buttons' => [
+                                            'add_component_material' => 'Add Component Material',
+                                        ],
+                                    ],
+                                ],
+                                'partials' => [
+                                    'component_material_table' => [
+                                        'headers' => [
+                                            'material_code' => 'Material Code',
+                                            'qty' => 'Quantity',
+                                            'description' => 'Description',
+                                        ],
+                                    ],
+                                    'components' => [
+                                        'component_material_qty' => [
+                                            'title' => 'Component Material Quantity',
+                                            'messages' => [
+                                                'updated' => 'Component Material quantity updated successfully!',
+                                            ],
+                                            'buttons' => [
+                                                'update_qty' => 'Update Qty',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'partials' => [
+                            'add_new_component' => [
+                                'buttons' => [
+                                    'add_component' => 'Add Component',
+                                ],
+                                'dialogs' => [
+                                    'fields' => [
+                                        'progress' => 'Progress',
+                                        'progress_search_placeholder' => 'Search Progress',
+                                        'progress_placeholder' => 'Select Progress',
+                                        'component' => 'Component',
+                                        'component_placeholder' => 'Select Component',
+                                        'component_name' => 'Component Name',
+                                        'component_description' => 'Component Description',
+                                        'component_qty' => 'Component Quantity',
+                                    ],
+                                ],
+                                'messages' => [
+                                    'created' => 'Component added successfully!',
+                                ],
+                            ],
+                            'carriage_panel_component_table' => [
+                                'headers' => [
+                                    'component' => 'Component',
+                                    'qty' => 'Quantity',
+                                    'description' => 'Description',
+                                    'progress' => 'Progress',
+                                ],
+                                'actions' => [
+                                    'materials' => 'Materials',
+                                ],
+                            ],
+                            'carriage_panel_components' => [
+                                'messages' => [
+                                    'deleted' => 'Component deleted successfully!',
+                                ],
+                            ],
+                            'partials' => [
+                                'carriage_panel_component_table' => [
+                                    'headers' => [
+                                        'component' => 'Component',
+                                        'qty' => 'Qty',
+                                        'description' => 'Description',
+                                        'progress' => 'Progress',
+                                    ],
+                                    'actions' => [
+                                        'materials' => 'Materials',
+                                    ],
+                                ],
+                                'carriage_panel_component_card' => [
+                                    'actions' => [
+                                        'materials' => 'Materials',
+                                    ],
+                                ],
+                                'components' => [
+                                    'carriage_panel_component_qty' => [
+                                        'messages' => [
+                                            'updated' => 'Component quantity updated successfully!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Update Qty',
+                                        ],
+                                    ],
+                                    'carriage_panel_component_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progress',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progress',
+                                            'progress_steps' => 'Progress Steps',
+                                        ],
+                                    ],
+                                    'partials' => [
+                                        'carriage_panel_component_progress' => [
+                                            'fields' => [
+                                                'progress' => 'Progress',
+                                                'progress_search_placeholder' => 'Search Progress',
+                                                'progress_placeholder' => 'Select Progress',
+                                                'progress_name' => 'Progress Name',
+                                                'work_aspect' => 'Work Aspect',
+                                                'work_aspect_placeholder' => 'Select Work Aspect',
+                                                'panel_component_qty' => 'Panel Component Quantity',
+                                            ],
+                                            'messages' => [
+                                                'updated' => 'Panel progress updated successfully!',
+                                            ],
+                                        ],
+                                        'carriage_panel_component_progress_steps' => [
+                                            'messages' => [
+                                                'updated' => 'Progress step updated successfully!',
+                                                'deleted' => 'Progress step deleted successfully!',
+                                            ],
+                                            'fields' => [
+                                                'step' => 'Step',
+                                                'step_placeholder' => 'Select Step',
+                                                'name' => 'Name',
+                                                'name_placeholder' => 'Enter Step Name',
+                                                'process' => 'Process',
+                                                'process_placeholder' => 'Enter Step Process',
+                                                'estimated_time' => 'Estimated Time (Minutes)',
+                                                'estimated_time_placeholder' => 'Enter Estimated Time',
+                                            ],
+                                            'buttons' => [
+                                                'add_step' => 'Add Step',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                     'partials' => [
@@ -894,17 +1170,6 @@ return [
                                 'add_new_panel' => 'Add New Panel',
                             ],
                         ],
-                        'components' => [
-                            'panel_qty' => [
-                                'title' => 'Panel Quantity',
-                                'messages' => [
-                                    'qty_updated' => 'Panel quantity updated successfully!',
-                                ],
-                                'buttons' => [
-                                    'update_qty' => 'Update Qty',
-                                ],
-                            ],
-                        ],
                         'partials' => [
                             'carriage_panel_table' => [
                                 'headers' => [
@@ -922,6 +1187,72 @@ return [
                                     'description' => 'Description',
                                     'components' => 'Components',
                                     'progress' => 'Progress',
+                                ],
+                            ],
+                            'components' => [
+                                'panel_qty' => [
+                                    'title' => 'Panel Quantity',
+                                    'messages' => [
+                                        'updated' => 'Panel quantity updated successfully!',
+                                    ],
+                                    'buttons' => [
+                                        'update_qty' => 'Update Qty',
+                                    ],
+                                ],
+                                'panel_progress' => [
+                                    'accordions' => [
+                                        'progress' => 'Progress',
+                                        'progress_steps' => 'Progress Steps',
+                                    ],
+                                    'messages' => [
+                                        'updated' => 'Panel progress updated successfully!',
+                                    ],
+                                    'buttons' => [
+                                        'progress' => 'Progress',
+                                    ],
+                                ],
+                                'partials' => [
+                                    'panel_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progress',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progress',
+                                            'progress_steps' => 'Progress Steps',
+                                        ],
+                                        'messages' => [
+                                            'updated' => 'Panel progress updated successfully!',
+                                        ],
+                                        'fields' => [
+                                            'progress' => 'Progress',
+                                            'progress_placeholder' => 'Select Progress',
+                                            'name' => 'Name',
+                                            'work_aspect' => 'Work Aspect',
+                                            'work_aspect_placeholder' => 'Select Work Aspect',
+                                        ],
+                                        'separators' => [
+                                            'create_new_progress' => 'Create New Progress',
+                                        ],
+                                    ],
+                                    'panel_progress_steps' => [
+                                        'messages' => [
+                                            'updated' => 'Progress step updated successfully!',
+                                            'deleted' => 'Progress step deleted successfully!',
+                                        ],
+                                        'fields' => [
+                                            'step' => 'Step',
+                                            'step_placeholder' => 'Select Step',
+                                            'name' => 'Name',
+                                            'name_placeholder' => 'Enter Step Name',
+                                            'process' => 'Process',
+                                            'process_placeholder' => 'Enter Step Process',
+                                            'estimated_time' => 'Estimated Time (Minutes)',
+                                            'estimated_time_placeholder' => 'Enter Estimated Time',
+                                        ],
+                                        'buttons' => [
+                                            'add_step' => 'Add Step',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],

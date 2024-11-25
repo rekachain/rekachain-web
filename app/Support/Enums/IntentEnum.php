@@ -3,6 +3,9 @@
 namespace App\Support\Enums;
 
 enum IntentEnum: string {
+    // To determine if current delete request is soft delete or hard delete (can be used in every model)
+    case SOFT_DELETE_ENTRY = 'soft.delete.entry';
+
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
 
     case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';
@@ -180,6 +183,8 @@ enum IntentEnum: string {
     case WEB_CARRIAGE_PANEL_ADD_COMPONENT = 'web.carriage.panel.add.component';
 
     case WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL = 'web.carriage.panel.add.raw.material';
+
+    case WEB_CARRIAGE_PANEL_CHANGE_PROGRESS = 'web.carriage.panel.change.progress';
 
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 
