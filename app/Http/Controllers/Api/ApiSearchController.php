@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 class ApiSearchController extends Controller
@@ -12,7 +13,7 @@ class ApiSearchController extends Controller
 {
     $query = strtolower($request->get('q'));
 
-    $routes = collect(Route::getRoutes())
+    $standardRoutes = collect(Route::getRoutes())
         ->filter(function ($route) {
             // Only get GET routes that render pages
             return $route->methods()[0] === 'GET' &&
@@ -70,14 +71,79 @@ class ApiSearchController extends Controller
                 'title_id' => $indonesianTitle,
                 'url' => '/' . $route->uri()
             ];
-        })
-        ->filter(function ($route) use ($query) {
-            return str_contains(strtolower($route['title']), $query) ||
-                   str_contains(strtolower($route['title_id']), $query);
-        })
-        ->values();
+        });
 
-    return response()->json($routes);
-}
+        // Get project-specific routes
+        $projects = Project::with(['trainsets.carriage_trainsets.carriage'])->get();
+        $projectRoutes = collect();
+
+        foreach ($projects as $project) {
+            // Project route
+            $projectRoutes->push([
+                'id' => "project_{$project->id}",
+                'title' => "Projects > {$project->name}",
+                'title_id' => "Proyek > {$project->name}",
+                'url' => "/projects/{$project->id}/trainsets",
+            ]);
+
+            $projectRoutes->push([
+                'id' => "project_{$project->id}",
+                'title' => "Projects > {$project->name} > Panels",
+                'title_id' => "Proyek > {$project->name} > Panels",
+                'url' => "/projects/{$project->id}/panels",
+            ]);
+
+            $projectRoutes->push([
+                'id' => "project_{$project->id}",
+                'title' => "Projects > {$project->name} > Components",
+                'title_id' => "Proyek > {$project->name} > Components",
+                'url' => "/projects/{$project->id}/components",
+            ]);
+
+            foreach ($project->trainsets as $trainset) {
+                // Project > Trainset route
+                $projectRoutes->push([
+                    'id' => "project_{$project->id}_trainset_{$trainset->id}",
+                    'title' => "Projects > {$project->name} > Trainsets > {$trainset->name}",
+                    'title_id' => "Proyek > {$project->name} > Trainset > {$trainset->name}",
+                    'url' => "/projects/{$project->id}/trainsets/{$trainset->id}/carriage-trainsets",
+                ]);
+
+                $projectRoutes->push([
+                    'id' => "project_{$project->id}_trainset_{$trainset->id}",
+                    'title' => "Projects > {$project->name} > Trainsets > {$trainset->name} > Components",
+                    'title_id' => "Proyek > {$project->name} > Trainset > {$trainset->name} > Components",
+                    'url' => "/projects/{$project->id}/trainsets/{$trainset->id}/components",
+                ]);
+
+                $projectRoutes->push([
+                    'id' => "project_{$project->id}_trainset_{$trainset->id}",
+                    'title' => "Projects > {$project->name} > Trainsets > {$trainset->name} > Panels",
+                    'title_id' => "Proyek > {$project->name} > Trainset > {$trainset->name} > Panels",
+                    'url' => "/projects/{$project->id}/trainsets/{$trainset->id}/panels",
+                ]);
+
+                foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+                    // Project > Trainset > Carriage route
+                    $projectRoutes->push([
+                        'id' => "project_{$project->id}_trainset_{$trainset->id}_carriage_{$carriageTrainset->id}",
+                        'title' => "Projects > {$project->name} > Trainsets > {$trainset->name} > Carriages > {$carriageTrainset->carriage->type}",
+                        'title_id' => "Proyek > {$project->name} > Trainset > {$trainset->name} > Gerbong > {$carriageTrainset->carriage->type}",
+                        'url' => "/projects/{$project->id}/trainsets/{$trainset->id}/carriage-trainsets/{$carriageTrainset->id}/carriage-panels",
+                    ]);
+                }
+            }
+        }
+
+        // Combine and filter all routes
+        $allRoutes = $standardRoutes->concat($projectRoutes)
+            ->filter(function ($route) use ($query) {
+                return str_contains(strtolower($route['title']), $query) ||
+                        str_contains(strtolower($route['title_id']), $query);
+            })
+            ->values();
+
+        return response()->json($allRoutes);
+    }
 
 }
