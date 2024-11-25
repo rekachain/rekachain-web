@@ -1,10 +1,23 @@
-import { RiBook2Line, RiDownload2Line, RiMoonClearLine, RiNotification4Line, RiSearchLine } from '@remixicon/react';
+import {
+    RiBook2Line,
+    RiDownload2Line,
+    RiMoonClearLine,
+    RiNotification4Line,
+    RiSearchLine,
+} from '@remixicon/react';
 import { Input } from '@/Components/UI/input';
 import { Separator } from '@/Components/UI/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Sun } from 'lucide-react';
 import {
@@ -33,7 +46,7 @@ export default function Navbar() {
 
     const { auth } = usePage().props;
     useEffect(() => {
-        document.addEventListener('keydown', e => {
+        document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'k') {
                 e.preventDefault();
                 document.getElementById('search')?.focus();
@@ -46,21 +59,25 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className="flex  h-16 border-b-2 justify-between items-center px-4 py-3">
-            <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
-                <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
+        <nav className='flex h-16 items-center justify-between border-b-2 px-4 py-3'>
+            <div className='flex h-full w-28 items-center rounded border-2 px-2 sm:w-64'>
+                <label htmlFor='search'>
+                    <RiSearchLine className='md:5 h-3 w-3 md:h-5' />
+                </label>
                 <Input
-                    id="search"
-                    className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     placeholder={t('action.search')}
+                    id='search'
+                    className='h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0'
                 />
-                <label htmlFor="search">
+                <label htmlFor='search'>
                     {isDesktopOrLaptop && (
-                        <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
+                        <p className='text-nowrap text-xs text-navbar-secondary-foreground'>
+                            CTRL + K
+                        </p>
                     )}
                 </label>
             </div>
-            <div className="w-fit flex h-full items-center gap-1 md:gap-2">
+            <div className='flex h-full w-fit items-center gap-1 md:gap-2'>
                 <ViewManualBook />
 
                 <DownloadApp />
@@ -74,7 +91,9 @@ export default function Navbar() {
                     <SheetContent>
                         <SheetHeader>
                             <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
-                            <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                            <SheetDescription>
+                                {t('components.navbar.notification.empty')}
+                            </SheetDescription>
                         </SheetHeader>
                     </SheetContent>
                 </Sheet>
@@ -83,20 +102,24 @@ export default function Navbar() {
 
                 <AddFeedback />
 
-                <Separator orientation="vertical" className="w-[2px]" />
+                <Separator orientation='vertical' className='w-[2px]' />
 
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <div className="flex justify-start gap-1 md:gap-2">
+                        <div className='flex justify-start gap-1 md:gap-2'>
                             <Avatar>
-                                <AvatarImage src={auth?.user.image} className="object-cover" />
+                                <AvatarImage src={auth?.user.image} className='object-cover' />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
                             {isTabletOrMobile && <span></span>}
                             {isDesktopOrLaptop && (
-                                <div className="flex flex-col items-start">
-                                    <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
-                                    <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
+                                <div className='flex flex-col items-start'>
+                                    <span className='text-navbar-primary-foreground text-sm'>
+                                        {auth?.user.name}
+                                    </span>
+                                    <span className='text-sm text-navbar-secondary-foreground'>
+                                        {auth?.user.role}
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -104,22 +127,20 @@ export default function Navbar() {
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="p-0">
+                        <DropdownMenuItem className='p-0'>
                             <Link
-                                className="h-full w-full text-left px-2 py-1.5"
                                 href={route(`${ROUTES.PROFILE}.edit`)}
-                                as="button"
-                            >
+                                className='h-full w-full px-2 py-1.5 text-left'
+                                as='button'>
                                 {t('components.navbar.profile.menus.profile')}
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="p-0">
+                        <DropdownMenuItem className='p-0'>
                             <Link
-                                className="h-full w-full text-left px-2 py-1.5"
-                                method="post"
+                                method='post'
                                 href={route(ROUTES.LOGOUT)}
-                                as="button"
-                            >
+                                className='h-full w-full px-2 py-1.5 text-left'
+                                as='button'>
                                 {t('components.navbar.profile.menus.logout')}
                             </Link>
                         </DropdownMenuItem>
@@ -135,12 +156,15 @@ const ToggleDarkMode = () => {
     const { darkMode, toggleDarkMode } = useDarkMode();
     return (
         <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleDarkMode}
+            variant='ghost'
             title={t('components.navbar.toggle_dark_mode.title')}
-        >
-            {darkMode ? <Sun size={STYLING.ICON.SIZE.SMALL} /> : <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />}
+            size='icon'
+            onClick={toggleDarkMode}>
+            {darkMode ? (
+                <Sun size={STYLING.ICON.SIZE.SMALL} />
+            ) : (
+                <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
+            )}
         </Button>
     );
 };
@@ -149,10 +173,9 @@ const ViewManualBook = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
-            href="/"
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
             title={t('components.navbar.view_manual_book.title')}
-        >
+            href='/'
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
             <RiBook2Line />
         </Link>
     );
@@ -162,10 +185,9 @@ const DownloadApp = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
-            href="/"
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
             title={t('components.navbar.download_app.title')}
-        >
+            href='/'
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
             <RiDownload2Line />
         </Link>
     );
