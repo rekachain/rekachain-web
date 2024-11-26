@@ -198,6 +198,13 @@ class TrainsetAttachmentResource extends JsonResource {
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                 $attachment = $this->ancestor();
+                $components = $attachment->components()->distinct()->get();
+                $attachmentProgress = $components->map(function ($component) use (&$componentSteps) {
+                    return [
+                        'component' => $component,
+                        'carriage_panel_components' => collect(),
+                    ];
+                });
                 $componentSteps = collect();
                 $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
                     $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
@@ -214,8 +221,8 @@ class TrainsetAttachmentResource extends JsonResource {
                         }
                     });
                 });
-                // return $componentSteps->toArray();
-                $trainsetAttachmentComponents = $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($componentSteps) {
+
+                $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($attachmentProgress, $componentSteps) {
                     $steps = collect();
                     $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
                         $workers = collect();
@@ -253,16 +260,19 @@ class TrainsetAttachmentResource extends JsonResource {
                         }
                     });
 
-                    return [
-                        'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
-                        'component' => ComponentResource::make($trainsetAttachmentComponent->carriage_panel_component->component),
-                        'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
-                        'total_steps' => $steps->count(),
-                        'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
-                    ];
+                    $attachmentProgress->each(function ($attachmentProgress) use ($steps, &$componentSteps, $trainsetAttachmentComponent) {
+                        if ($attachmentProgress['component']->id === $trainsetAttachmentComponent->carriage_panel_component->component_id) {
+                            $attachmentProgress['carriage_panel_components']->push([
+                                'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                                'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
+                                'total_steps' => $steps->count(),
+                                'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                            ]);
+                        }
+                    });
                 });
 
-                return $trainsetAttachmentComponents->toArray();
+                return $attachmentProgress->toArray();
             default:
                 return [
                     'id' => $this->id,
