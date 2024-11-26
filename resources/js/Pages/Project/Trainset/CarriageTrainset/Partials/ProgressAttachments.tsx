@@ -18,8 +18,8 @@ import { withLoading } from '@/Utils/withLoading';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import ProgressTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/ProgressTrainsetAttachment';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import PreviewPanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewPanelAttachment';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import ProgressPanel from './Components/ProgressPanel';
 
 const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();
@@ -84,7 +84,7 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     return (
         <Dialog>
             <DialogTrigger className={buttonVariants()}>
-                {'progressanmin'}
+                {'progressanmin🗿'}
             </DialogTrigger>
             <DialogContent className="w-[70%]">
                 <DialogHeader>
@@ -98,20 +98,14 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     >
                         <TabsList>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                                {t(
-                                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.mechanic_attachment',
-                                )}
+                                {'Progress Mekanik'}
                             </TabsTrigger>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
-                                {t(
-                                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.electric_attachment',
-                                )}
+                                {'Progress Elektrik'}
                             </TabsTrigger>
-                            {/* <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                                {t(
-                                    'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.panel_attachment',
-                                )}
-                            </TabsTrigger> */}
+                            <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
+                                {'Progress Assembly'}
+                            </TabsTrigger>
                         </TabsList>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
                             <ScrollArea className="h-[400px] border p-4">
@@ -135,11 +129,11 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                 ))}
                             </ScrollArea>
                         </TabsContent>
-                        {/* <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
+                        <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
                             <ScrollArea className="h-[400px] border p-4">
-                                <PreviewPanelAttachment trainset={trainset} />
+                                <ProgressPanel trainset={trainset} />
                             </ScrollArea>
-                        </TabsContent> */}
+                        </TabsContent>
                     </Tabs>
                 </DialogHeader>
             </DialogContent>
