@@ -50,11 +50,16 @@ class CarriagePanelComponentSeeder extends Seeder {
         // }
         
         foreach (CarriagePanel::all() as $carriagePanel) {
+            $components = collect();
             for($i=0; $i < rand(3,8); $i++) {
-                CarriagePanelComponent::factory()->create([
+                $component = Component::whereNotIn('id', $components->pluck('component_id'))->inRandomOrder()->first();
+                $carriagePanelComponent = CarriagePanelComponent::create([
+                    'component_id' => $component->id,
                     'carriage_panel_id' => $carriagePanel->id,
+                    'progress_id' => $component->progress_id,
                     'qty' => 1,
                 ]);
+                $components->push($carriagePanelComponent);
             }
         }
     }
