@@ -32,7 +32,10 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Imagick;
+use ImagickException;
+use Intervention\Image\Geometry\Factories\LineFactory;
 use Intervention\Image\ImageManager;
+use Intervention\Image\Interfaces\ImageInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -486,6 +489,9 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
     }
 
+    /**
+     * @throws ImagickException
+     */
     public function exportSerialNumbers(Trainset $trainset): BinaryFileResponse {
         $manager = ImageManager::imagick();
         $pngFiles = [];
@@ -503,12 +509,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
          * 7. download the zip
          * 8. delete all temp files
          */
-        //        $trainsetAttachmentQrCodes = $trainset->trainset_attachments->map(fn ($attachment) => $attachment->qr_path);
-        //        $panelAttachmentQrCodes = $trainset->carriage_trainsets->flatMap(fn ($carriageTrainset) => $carriageTrainset->carriage_panels->map(fn ($panel) => $panel->panel_attachment->qr_path)
-        //        );
-        //
-        //        $qrPaths = $trainsetAttachmentQrCodes->merge($panelAttachmentQrCodes);
-        //
 
         // Step 1: Clean up any existing temporary files at the start
         if (File::exists($tempDirectory)) {
@@ -526,7 +526,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ];
         });
 
-        // check if temp and sn-exports directory exist
+        // Crucial: check if temp and sn-exports directory exist
         if (!File::exists(storage_path('app/temp/sn-exports'))) {
             File::makeDirectory(storage_path('app/temp/sn-exports'), 0755, true);
         }
@@ -534,9 +534,9 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         // Step 2: Convert SVGs to PNG and overlay on template
         $qrs->each(function ($qr, $index) use ($manager, &$pngFiles) {
             $qrPath = $qr['qr_path'];
-            $startOffset = 70;
+            $firstTemplateStartOffset = 20;
+            $secondTemplateStartOffset = 970;
 
-            // TODO: Potential issue: product name (and or the others) might be too long to fit in the template
             $productNo = $qr['product_no'];
             $serialNo = $qr['serial_no'];
             $productName = $qr['product_name'];
@@ -550,31 +550,28 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $pngQrPath = storage_path("app/temp/qr_temp_{$index}.png");
             $image->writeImage($pngQrPath);
             $image->clear();
-            $image->destroy();
 
             // Load the template
             $template = $manager->read(public_path('assets/png-templates/sn-template.png'));
 
             // Overlay the QR code
-            $qrImage = $manager->read($pngQrPath)->resize(700, 700); // Resize as needed
-            $template->place($qrImage, 'top-left', $startOffset, 15);
+            $qrImage = $manager->read($pngQrPath)->resize(600, 600); // Resize as needed
 
-            // Add text (optional)
-            $template->text("Product No: $productNo", $startOffset, 800, function ($font) {
-                $font->file(public_path('assets/fonts/arial.ttf'));
-                $font->size(36);
-                $font->color('#000000');
-            });
-            $template->text("Serial No: $serialNo", $startOffset, 900, function ($font) {
-                $font->file(public_path('assets/fonts/arial.ttf'));
-                $font->size(36);
-                $font->color('#000000');
-            });
-            $template->text("Product Name: $productName", $startOffset, 1000, function ($font) {
-                $font->file(public_path('assets/fonts/arial.ttf'));
-                $font->size(36);
-                $font->color('#000000');
-            });
+            $logo = $manager->read(public_path('assets/png-templates/company-logo.png'))->resize(150, 100); // Adjust size as needed
+
+            // Insert the logo at the center of the QR code
+            $qrImage->place($logo, 'center');
+
+            // place 1st qr code on the left side
+            $template->place($qrImage, 'top-left', $firstTemplateStartOffset, 15);
+            // place 2nd qr code on the right side
+            $template->place($qrImage, 'top-left', $secondTemplateStartOffset, 15);
+
+            // Add text left side
+            $this->serialNumberTextMapper($template, $productName, $firstTemplateStartOffset, $serialNo, $productNo);
+
+            // Add 2nd text right side
+            $this->serialNumberTextMapper($template, $productName, $secondTemplateStartOffset, $serialNo, $productNo);
 
             // 4. Save the final image and keep track of paths
             $outputPath = storage_path("app/temp/sn-exports/$productNo.png");
@@ -594,6 +591,60 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
         // Step 6: Provide download response for the ZIP file
         return response()->download($zipPath)->deleteFileAfterSend(true);
+    }
+
+    private function serialNumberTextMapper(ImageInterface $template, $productName, int $templateStartingOffsetX, $serialNo, $productNo): void {
+        $defaultFontSize = 46;
+        $defaultLineHeight = 1.7;
+        $textStartingOffset = 640;
+        $serialNoStartingOffsetY = 970;
+
+        // Limit the product name to 6 lines
+        $maxLines = 6;
+        $wrappedProductName = wordwrap($productName, 37, "\n");
+        $productNameLines = explode("\n", $wrappedProductName);
+        $productNameLines = array_slice($productNameLines, 0, $maxLines);
+        $productName = implode("\n", $productNameLines);
+
+        $template->text("Panel: $productName", $templateStartingOffsetX, $textStartingOffset, function ($font) use ($defaultFontSize, $defaultLineHeight) {
+            $font->file(public_path('assets/fonts/arial.ttf'));
+            $font->size($defaultFontSize);
+            $font->valign('top');
+            $font->lineHeight($defaultLineHeight);
+            $font->color('#000000');
+        });
+
+        // Draw the horizontal line
+        $template->drawLine(function (LineFactory $line) use ($templateStartingOffsetX, $serialNoStartingOffsetY) {
+            $offset = 50;
+            $fromX = $templateStartingOffsetX;
+            $fromY = $serialNoStartingOffsetY + $offset;
+            $toX = $templateStartingOffsetX + 800;
+            $toY = $serialNoStartingOffsetY + $offset;
+
+            // starting point of line
+            $line->from($fromX, $fromY);
+            // ending point
+            $line->to($toX, $toY);
+            $line->color('#000000'); // line color in hex format
+            $line->width(5); // line width in pixels
+        });
+
+        $template->text("Serial No: $serialNo", $templateStartingOffsetX, $serialNoStartingOffsetY + 100, function ($font) use ($defaultFontSize, $defaultLineHeight) {
+            $font->file(public_path('assets/fonts/arial.ttf'));
+            $font->size($defaultFontSize);
+            $font->valign('top');
+            $font->lineHeight($defaultLineHeight);
+            $font->color('#000000');
+        });
+
+        $template->text("Product No: $productNo", $templateStartingOffsetX, $serialNoStartingOffsetY + 170, function ($font) use ($defaultFontSize, $defaultLineHeight) {
+            $font->file(public_path('assets/fonts/arial.ttf'));
+            $font->size($defaultFontSize);
+            $font->valign('top');
+            $font->lineHeight($defaultLineHeight);
+            $font->color('#000000');
+        });
     }
 
     public function delete($keyOrModel): bool {
