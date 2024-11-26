@@ -247,6 +247,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         if ($attachmentProgress['component']->id === $trainsetAttachmentComponent->carriage_panel_component->component_id) {
                             $attachmentProgress['carriage_panel_components']->push([
                                 'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                                'panel' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->panel,
                                 'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
                                 'total_steps' => $steps->count(),
                                 'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
@@ -324,6 +325,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         if ($attachmentProgress['component']->id === $trainsetAttachmentComponent->carriage_panel_component->component_id) {
                             $attachmentProgress['carriage_panel_components']->push([
                                 'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                                'panel' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->panel,
                                 'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
                                 'total_steps' => $steps->count(),
                                 'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
