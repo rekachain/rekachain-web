@@ -163,7 +163,7 @@ export const projectService = {
             },
             params: {
                 _method: 'PUT',
-                intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL,
+                intent: IntentEnum.WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL,
             },
         });
     },
@@ -171,7 +171,7 @@ export const projectService = {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('panel_id', panelId.toString());
-        return await window.axios.post(route(`${ROUTES.PROJECTS}.update`, projectId), formData, {
+        return await window.axios.post(route(`${ROUTES.PROJECTS}.update`, [projectId,trainsetId]), formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

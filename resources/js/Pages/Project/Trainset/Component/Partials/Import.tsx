@@ -90,11 +90,11 @@ export default function ({
                 <DialogHeader>
                     <DialogTitle>{'Import Komponen'}</DialogTitle>
                     <DialogDescription>
-                        Import komponen dan progress untuk trainset
-                        {/* {t('pages.project.component.partials.import.dialogs.description', {
+                        {/* Import komponen dan progress untuk trainset */}
+                        {t('pages.project.component.partials.import.dialogs.description', {
                             component_name: component.name,
                             project_name: project.name,
-                        })} */}
+                        })}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">

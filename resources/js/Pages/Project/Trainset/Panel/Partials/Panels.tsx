@@ -9,6 +9,7 @@ import { projectService } from '@/Services/projectService';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import GenericPagination from '@/Components/GenericPagination';
 import { filter } from 'lodash';
+import Import from './Import';
 
 export default function Panels({ project, trainset }: { project: ProjectResource; trainset: TrainsetResource }) {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<ProjectPanelResource>>();
@@ -66,11 +67,12 @@ export default function Panels({ project, trainset }: { project: ProjectResource
                                         <TableCell>{data.panel.description}</TableCell>
                                         <TableCell>{data.total_qty}</TableCell>
                                         <TableCell>
-                                            {/* <Import
+                                            <Import
                                                 project={project}
+                                                trainset={trainset}
                                                 panel={data.panel}
                                                 hasMaterials={data.has_materials}
-                                            /> */}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))}

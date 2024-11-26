@@ -40,7 +40,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import useDarkMode from '@/Hooks/useDarkMode';
 import axios from 'axios';
 import { SearchResults } from '@/Components/SearchResult';
-import { useLocalStorage } from '@uidotdev/usehooks';
+// import { useLocalStorage } from '@uidotdev/usehooks';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();

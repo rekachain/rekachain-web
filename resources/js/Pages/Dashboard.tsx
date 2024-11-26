@@ -619,7 +619,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 6)} 
                                     />
-                                ))}
+                                ))
                                 {
                                     // @ts-ignore
                                     <YAxis className="" angle={-45} dataKey="workstation_name" type="category" />
