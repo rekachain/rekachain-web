@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
+use App\Models\PanelAttachment;
 use App\Support\Enums\IntentEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -181,6 +182,58 @@ class TrainsetResource extends JsonResource {
                 })->values();
 
                 return ['components' => $mergedComponents->toArray()];
+            case IntentEnum::WEB_TRAINSET_GET_PANEL_PROGRESS->value:
+                $attachments = $this->panel_attachments->map(function (PanelAttachment $panelAttachment) {
+                    if ($panelAttachment->is_ancestor()) return $panelAttachment;
+                });
+                $panelProgress = $attachments->map(function (PanelAttachment $attachment) {
+                    $panelSteps = $attachment->progress->progress_steps->map(function ($progressStep) use (&$panelSteps) {
+                        return [
+                            'step_id' => $progressStep->step_id,
+                            'step_name' => $progressStep->step->name,
+                            'step_process' => $progressStep->step->process,
+                            'estimated_time' => $progressStep->step->estimated_time,
+                            'work_status' => null,
+                        ];
+                    });
+
+                    $serialPanels =$attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
+                        $steps = collect();
+                        $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
+                            $step = $steps->firstWhere('step_id', $detailWorkerPanel->progress_step->step_id);
+                            if (!$step) {
+                                $steps->push([
+                                    'step_id' => $detailWorkerPanel->progress_step->step_id,
+                                    'step_name' => $detailWorkerPanel->progress_step->step->name,
+                                    'step_process' => $detailWorkerPanel->progress_step->step->process,
+                                    'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
+                                    'work_status' => $detailWorkerPanel->work_status->value,
+                                ]);
+                            }
+                        });
+                        logger($steps);
+                        $panelSteps->each(function ($panelStep) use (&$steps) {
+                            $step = $steps->firstWhere('step_id', $panelStep['step_id']);
+                            if (!$step) {
+                                $steps->push($panelStep);
+                            }
+                        });
+
+                        return [
+                            'serial_number' => $serialPanel->id,
+                            'product_no' => $serialPanel->product_no,
+                            'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                        ];
+                    });
+
+                    return [
+                        'panel' => $attachment->carriage_panel->panel,
+                        'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
+                        'total_steps' => $panelSteps->count(),
+                        'serial_panels' => $serialPanels
+                    ];
+                });
+                return $panelProgress->toArray();
         }
 
         return [

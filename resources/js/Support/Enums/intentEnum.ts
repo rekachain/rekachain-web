@@ -125,6 +125,8 @@ const intents = {
     "WEB_TRAINSET_GENERATE_PANEL_ATTACHMENTS": "web.trainset.generate.panel.attachments",
     "WEB_TRAINSET_GENERATE_TRAINSET_ATTACHMENTS": "web.trainset.generate.trainset.attachments",
     "WEB_TRAINSET_GET_COMPONENTS": "web.trainset.get.components",
+    "WEB_TRAINSET_GET_PANEL_PROGRESS": "web.trainset.get.panel.progress",
+    "WEB_TRAINSET_GET_PANEL_PROGRESS_WITH_WORKER_STEPS": "web.trainset.get.panel.progress.with.worker.steps",
     "WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS": "web.trainset.attachment.get.attachment.progress",
     "WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS": "web.trainset.attachment.get.attachment.progress.with.worker.steps",
     "WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS": "web.trainset.attachment.get.component.materials",
