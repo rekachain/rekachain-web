@@ -48,6 +48,10 @@ return [
             'project_not_found' => 'Proyek Tidak Ditemukan',
             'find_trainset' => 'Cari Trainset...',
             'select_trainset' => 'Pilih Trainset...',
+            'panel_trainset' => 'Panel Trainset',
+            'panel_trainset_sub' => 'Semua Panel pada Trainset',
+            'panel_progress_trainset' => 'Progress Panel Trainset ',
+            'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
         ],
     ],
     'work_day' => [

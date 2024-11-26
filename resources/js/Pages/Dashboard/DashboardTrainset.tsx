@@ -238,7 +238,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <BarChart className="h-[300px]" accessibilityLayer data={data['panel']}>
                                         <CartesianGrid vertical={false} />
                                         <XAxis
-                                        
                                             // tick={<CustomizedAxisTick />}
                                             angle={-55}
                                             textAnchor="end"
@@ -274,7 +273,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         </PieChart>
                                     </ChartContainer>
                                     <h4 className="font-bold text-center">
-                                        Kebutuhan panel sejumlah {data['total'][0].total} masih belum terpenuhi
+                                        {data['total'][0].total == 0
+                                            ? 'Kebutuhan terpenuhi'
+                                            : `Kebutuhan panel sejumlah ${data['total'][0].total} masih belum terpenuhi`}
                                     </h4>
                                     <p className="text-sm">Menunjukkan progress dari status kebutuhan panel.</p>
                                 </div>
