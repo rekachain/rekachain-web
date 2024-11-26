@@ -212,6 +212,66 @@ class TrainsetAttachmentResource extends JsonResource {
                         if (!$step) {
                             $componentSteps->push([
                                 'step_id' => $progressStep->step_id,
+                                'step_name' => $progressStep->step->name,
+                                'step_process' => $progressStep->step->process,
+                                'estimated_time' => $progressStep->step->estimated_time,
+                                'work_status' => null,
+                            ]);
+                        }
+                    });
+                });
+
+                $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($attachmentProgress, $componentSteps) {
+                    $steps = collect();
+                    $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
+                        $step = $steps->firstWhere('step_id', $detailWorkerTrainset->progress_step->step_id);
+                        if (!$step) {
+                            $steps->push([
+                                'step_id' => $detailWorkerTrainset->progress_step->step_id,
+                                'step_name' => $detailWorkerTrainset->progress_step->step->name,
+                                'step_process' => $detailWorkerTrainset->progress_step->step->process,
+                                'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
+                                'work_status' => $detailWorkerTrainset->work_status->value,
+                            ]);
+                        }
+                    });
+                    logger($steps);
+                    $componentSteps->each(function ($componentStep) use (&$steps) {
+                        $step = $steps->firstWhere('step_id', $componentStep['step_id']);
+                        if (!$step) {
+                            $steps->push($componentStep);
+                        }
+                    });
+
+                    $attachmentProgress->each(function ($attachmentProgress) use ($steps, &$componentSteps, $trainsetAttachmentComponent) {
+                        if ($attachmentProgress['component']->id === $trainsetAttachmentComponent->carriage_panel_component->component_id) {
+                            $attachmentProgress['carriage_panel_components']->push([
+                                'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                                'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
+                                'total_steps' => $steps->count(),
+                                'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                            ]);
+                        }
+                    });
+                });
+
+                return $attachmentProgress->toArray();
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS->value:
+                $attachment = $this->ancestor();
+                $components = $attachment->components()->distinct()->get();
+                $attachmentProgress = $components->map(function ($component) use (&$componentSteps) {
+                    return [
+                        'component' => $component,
+                        'carriage_panel_components' => collect(),
+                    ];
+                });
+                $componentSteps = collect();
+                $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
+                    $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
+                        $step = $componentSteps->firstWhere('step_id', $progressStep->step_id);
+                        if (!$step) {
+                            $componentSteps->push([
+                                'step_id' => $progressStep->step_id,
                                 // 'progress_step_id' => $progressStep->id,
                                 'step_name' => $progressStep->step->name,
                                 'step_process' => $progressStep->step->process,

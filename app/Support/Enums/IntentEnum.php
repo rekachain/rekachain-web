@@ -256,6 +256,8 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.trainset.attachment.get.attachment.progress';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS = 'web.trainset.attachment.get.attachment.progress.with.worker.steps';
+
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS = 'web.trainset.attachment.get.component.materials';
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY = 'web.trainset.attachment.get.component.materials.with.qty';
