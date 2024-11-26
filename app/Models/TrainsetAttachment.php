@@ -191,12 +191,12 @@ class TrainsetAttachment extends Model {
             [
                 'trainset_attachment_id',
                 'id',
-                'carriage_panel_component_id',
+                'id',
             ],
             [
                 'id',
                 'carriage_panel_component_id',
-                'id',
+                'component_id',
             ]
         );
     }
