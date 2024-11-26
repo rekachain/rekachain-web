@@ -21,7 +21,11 @@ export default function ({
     const handlePanelComponentDeletion = withLoading(async (carriagePanelComponent: number) => {
         await carriagePanelComponentService.delete(carriagePanelComponent);
         await handleSyncCarriagePanel();
-        void useSuccessToast('Carriage panel component has been deleted.');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.carriage_panel_components.messages.deleted',
+            ),
+        );
     }, true);
 
     return (
@@ -29,20 +33,20 @@ export default function ({
             <div className="hidden md:block">
                 <CarriagePanelComponentTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                     handlePanelComponentDeletion={handlePanelComponentDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanel={carriagePanel}
                 />
             </div>
 
             <div className="block md:hidden">
                 <CarriagePanelComponentCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                     handlePanelComponentDeletion={handlePanelComponentDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanel={carriagePanel}
                 />
             </div>
         </div>

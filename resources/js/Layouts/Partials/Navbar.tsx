@@ -1,10 +1,23 @@
-import { RiBook2Line, RiDownload2Line, RiMoonClearLine, RiNotification4Line, RiSearchLine } from '@remixicon/react';
+import {
+    RiBook2Line,
+    RiDownload2Line,
+    RiMoonClearLine,
+    RiNotification4Line,
+    RiSearchLine,
+} from '@remixicon/react';
 import { Input } from '@/Components/UI/input';
 import { Separator } from '@/Components/UI/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Link, usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/UI/sheet';
+import { useEffect, useState } from 'react';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { Menu, Sun } from 'lucide-react';
@@ -25,6 +38,9 @@ import AddFeedback from '@/Components/AddFeedback';
 import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import useDarkMode from '@/Hooks/useDarkMode';
+import axios from 'axios';
+import { SearchResults } from '@/Components/SearchResult';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -36,7 +52,7 @@ export default function Navbar() {
 
     const { auth } = usePage().props;
     useEffect(() => {
-        document.addEventListener('keydown', e => {
+        document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'k') {
                 e.preventDefault();
                 document.getElementById('search')?.focus();
@@ -48,18 +64,57 @@ export default function Navbar() {
         };
     }, []);
 
+    const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
+
+    const changeHtmlClass = () => {
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+        }
+    };
+
+    useEffect(() => {
+        changeHtmlClass();
+    }, [darkMode]);
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+
+    useEffect(() => {
+        if (searchQuery.length >= 2) {
+            axios.get(`/search?q=${searchQuery}`).then((response) => {
+                console.log('Search results:', response.data);
+                setSearchResults(response.data);
+            });
+        }
+    }, [searchQuery]);
+
+    const handleDarkMode = () => {
+        setDarkMode(!darkMode);
+        changeHtmlClass();
+    };
     return (
         <nav className="flex h-16 border-b-2 justify-between items-center px-4 py-3  w-full">
             <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
                 <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
                 <Input
-                    id="search"
-                    className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                    value={searchQuery}
                     placeholder={t('action.search')}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    id='search'
+                    className='h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0'
                 />
-                <label htmlFor="search">
+                {searchQuery.length >= 2 && (
+                    <SearchResults results={searchResults} query={searchQuery} />
+                )}
+                <label htmlFor='search'>
                     {isDesktopOrLaptop && (
-                        <p className="text-xs text-navbar-secondary-foreground text-nowrap">CTRL + K</p>
+                        <p className='text-nowrap text-xs text-navbar-secondary-foreground'>
+                            CTRL + K
+                        </p>
                     )}
                 </label>
             </div>
@@ -86,16 +141,20 @@ export default function Navbar() {
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <div className="flex justify-start gap-1 md:gap-2">
+                        <div className='flex justify-start gap-1 md:gap-2'>
                             <Avatar>
-                                <AvatarImage src={auth?.user.image} className="object-cover" />
+                                <AvatarImage src={auth?.user.image} className='object-cover' />
                                 <AvatarFallback>{auth?.user.initials}</AvatarFallback>
                             </Avatar>
                             {isTabletOrMobile && <span></span>}
                             {isDesktopOrLaptop && (
-                                <div className="flex flex-col items-start">
-                                    <span className="text-navbar-primary-foreground text-sm">{auth?.user.name}</span>
-                                    <span className="text-navbar-secondary-foreground text-sm">{auth?.user.role}</span>
+                                <div className='flex flex-col items-start'>
+                                    <span className='text-navbar-primary-foreground text-sm'>
+                                        {auth?.user.name}
+                                    </span>
+                                    <span className='text-sm text-navbar-secondary-foreground'>
+                                        {auth?.user.role}
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -103,22 +162,20 @@ export default function Navbar() {
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="p-0">
+                        <DropdownMenuItem className='p-0'>
                             <Link
-                                className="h-full w-full text-left px-2 py-1.5"
                                 href={route(`${ROUTES.PROFILE}.edit`)}
-                                as="button"
-                            >
+                                className='h-full w-full px-2 py-1.5 text-left'
+                                as='button'>
                                 {t('components.navbar.profile.menus.profile')}
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="p-0">
+                        <DropdownMenuItem className='p-0'>
                             <Link
-                                className="h-full w-full text-left px-2 py-1.5"
-                                method="post"
+                                method='post'
                                 href={route(ROUTES.LOGOUT)}
-                                as="button"
-                            >
+                                className='h-full w-full px-2 py-1.5 text-left'
+                                as='button'>
                                 {t('components.navbar.profile.menus.logout')}
                             </Link>
                         </DropdownMenuItem>
@@ -162,12 +219,15 @@ export const ToggleDarkMode = () => {
     const { darkMode, toggleDarkMode } = useDarkMode();
     return (
         <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleDarkMode}
+            variant='ghost'
             title={t('components.navbar.toggle_dark_mode.title')}
-        >
-            {darkMode ? <Sun size={STYLING.ICON.SIZE.SMALL} /> : <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />}
+            size='icon'
+            onClick={toggleDarkMode}>
+            {darkMode ? (
+                <Sun size={STYLING.ICON.SIZE.SMALL} />
+            ) : (
+                <RiMoonClearLine size={STYLING.ICON.SIZE.SMALL} />
+            )}
         </Button>
     );
 };
@@ -176,10 +236,9 @@ export const ViewManualBook = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
-            href="/"
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
             title={t('components.navbar.view_manual_book.title')}
-        >
+            href='/'
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
             <RiBook2Line />
         </Link>
     );
@@ -189,10 +248,9 @@ export const DownloadApp = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
-            href="/"
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
             title={t('components.navbar.download_app.title')}
-        >
+            href='/'
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
             <RiDownload2Line />
         </Link>
     );

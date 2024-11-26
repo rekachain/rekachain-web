@@ -55,8 +55,8 @@ export default function () {
                 <div className="flex flex-col space-y-4">
                     <Label>{t('pages.carriage.partials.import.dialogs.fields.download_template')}</Label>
                     <Button
-                        type="button"
                         variant="secondary"
+                        type="button"
                         onClick={carriageService.downloadImportDataTemplate}
                         disabled={loading}
                     >
@@ -69,10 +69,10 @@ export default function () {
                     <div className="space-y-4">
                         <Label htmlFor="file">{t('pages.carriage.partials.import.dialogs.fields.file')}</Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                     </div>
                     <DialogFooter>

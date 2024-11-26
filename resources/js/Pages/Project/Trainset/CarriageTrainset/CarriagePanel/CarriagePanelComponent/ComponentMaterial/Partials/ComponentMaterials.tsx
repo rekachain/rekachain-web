@@ -28,7 +28,11 @@ export default function ({
     const handlePanelComponentDeletion = withLoading(async (componentMaterialId: number) => {
         await componentMaterialService.delete(componentMaterialId);
         await handleSyncCarriagePanelComponent();
-        void useSuccessToast('Component material has been deleted.');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.partials.component_materials.messages.deleted',
+            ),
+        );
     }, true);
 
     return (
@@ -36,22 +40,22 @@ export default function ({
             <div className="hidden md:block">
                 <ComponentMaterialTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
-                    carriagePanelComponent={carriagePanelComponent}
                     handleSyncCarriagePanel={handleSyncCarriagePanelComponent}
                     handleComponentMaterialDeletion={handlePanelComponentDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanelComponent={carriagePanelComponent}
+                    carriagePanel={carriagePanel}
                 />
             </div>
 
             <div className="block md:hidden">
                 <ComponentMaterialCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
-                    carriagePanelComponent={carriagePanelComponent}
                     handleSyncCarriagePanel={handleSyncCarriagePanelComponent}
                     handleComponentMaterialDeletion={handlePanelComponentDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanelComponent={carriagePanelComponent}
+                    carriagePanel={carriagePanel}
                 />
             </div>
         </div>

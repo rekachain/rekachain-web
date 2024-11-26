@@ -13,14 +13,17 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { progressService } from '@/Services/progressService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Textarea } from '@/Components/UI/textarea';
 
 export default function () {
     const { t } = useLaravelReactI18n();
     const { data, setData, processing } = useForm<{
         progress_id: number | null;
+        description: string;
         name: string;
     }>({
         progress_id: null,
+        description: '',
         name: '',
     });
 
@@ -49,33 +52,46 @@ export default function () {
                             <InputLabel htmlFor="progress">{t('pages.component.create.fields.progress')}</InputLabel>
                             <div className="mt-4">
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    fetchData={fetchProgress}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id ?? undefined}
-                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     renderItem={(item: ProgressResource) => item.name}
-                                    buttonClassName="mt-1"
+                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     nullable
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    buttonClassName="mt-1"
                                 />
                             </div>
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.component.create.fields.name')} />
-                            <Input
-                                id="name"
-                                type="text"
-                                name="name"
-                                value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
+                            <InputLabel value={t('pages.component.create.fields.description')} htmlFor="description" />
+                            <Textarea
+                                value={data.description}
                                 required
-                                onChange={e => setData('name', e.target.value)}
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
+                                className="mt-1"
+                                autoComplete="description"
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <div className="mt-4">
+                            <InputLabel value={t('pages.component.create.fields.name')} htmlFor="name" />
+                            <Input
+                                value={data.name}
+                                type="text"
+                                required
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
+                                className="mt-1"
+                                autoComplete="name"
+                            />
+                        </div>
+
+                        <Button disabled={processing} className="mt-4">
                             {t('pages.component.create.buttons.submit')}
                         </Button>
                     </form>

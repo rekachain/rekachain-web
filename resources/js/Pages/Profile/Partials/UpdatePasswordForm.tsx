@@ -57,11 +57,11 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                     </Label>
 
                     <Input
-                        id="current_password"
-                        ref={currentPasswordInput}
                         value={data.current_password}
-                        onChange={e => setData('current_password', e.target.value)}
                         type="password"
+                        ref={currentPasswordInput}
+                        onChange={e => setData('current_password', e.target.value)}
+                        id="current_password"
                         autoComplete="current-password"
                     />
 
@@ -72,11 +72,11 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                     <Label htmlFor="password">{t('pages.profile.partials.update_password_form.fields.password')}</Label>
 
                     <Input
-                        id="password"
-                        ref={passwordInput}
                         value={data.password}
-                        onChange={e => setData('password', e.target.value)}
                         type="password"
+                        ref={passwordInput}
+                        onChange={e => setData('password', e.target.value)}
+                        id="password"
                         autoComplete="new-password"
                     />
 
@@ -89,10 +89,10 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
                     </Label>
 
                     <Input
-                        id="password_confirmation"
                         value={data.password_confirmation}
-                        onChange={e => setData('password_confirmation', e.target.value)}
                         type="password"
+                        onChange={e => setData('password_confirmation', e.target.value)}
+                        id="password_confirmation"
                         autoComplete="new-password"
                     />
 
@@ -106,10 +106,10 @@ export default function UpdatePasswordForm({ className = '' }: { className?: str
 
                     <Transition
                         show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
                         leaveTo="opacity-0"
+                        leave="transition ease-in-out"
+                        enterFrom="opacity-0"
+                        enter="transition ease-in-out"
                     >
                         <p className="text-sm text-gray-600 dark:text-gray-400">
                             {t('pages.profile.partials.update_password_form.messages.updated')}

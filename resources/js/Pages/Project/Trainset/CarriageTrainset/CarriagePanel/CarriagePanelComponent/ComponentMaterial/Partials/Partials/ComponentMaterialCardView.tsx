@@ -33,10 +33,10 @@ export default function ComponentMaterialCardView({
                 {carriagePanelComponent.component_materials?.map(componentMaterial => (
                     <div key={componentMaterial.id}>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
-                            duration={300}
                             key={componentMaterial.id}
+                            from="opacity-0 -translate-y-4"
+                            duration={300}
                         >
                             <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                                 <div className="flex  justify-between items-scenter">

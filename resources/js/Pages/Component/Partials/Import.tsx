@@ -51,7 +51,7 @@ export default function () {
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
-                    <Button type="button" variant="secondary" onClick={componentService.downloadImportDataTemplate} disabled={loading}>
+                    <Button variant="secondary" type="button" onClick={componentService.downloadImportDataTemplate} disabled={loading}>
                         {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>
@@ -59,10 +59,10 @@ export default function () {
                     <div className="space-y-4">
                         <Label htmlFor="file">File</Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                     </div>
                     <DialogFooter>

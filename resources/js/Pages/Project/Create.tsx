@@ -52,51 +52,51 @@ export default function () {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.project.create.fields.name')} />
+                            <InputLabel value={t('pages.project.create.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                required
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
-                                required
                             />
                         </div>
 
                         <div className="mt-4">
                             <InputLabel
-                                htmlFor="trainset_needed"
                                 value={t('pages.project.create.fields.trainset_needed')}
+                                htmlFor="trainset_needed"
                             />
                             <Input
-                                id="trainset_needed"
-                                type="number"
-                                name="trainset_needed"
                                 value={data.trainset_needed}
+                                type="number"
+                                required
+                                onChange={e => setData('trainset_needed', +e.target.value)}
+                                name="trainset_needed"
+                                id="trainset_needed"
                                 className="mt-1"
                                 autoComplete="trainset_needed"
-                                onChange={e => setData('trainset_needed', +e.target.value)}
-                                required
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value={t('pages.project.create.fields.initial_date')} />
+                            <InputLabel value={t('pages.project.create.fields.initial_date')} htmlFor="initial_date" />
                             <Input
-                                id="initial_date"
-                                type="date"
-                                name="initial_date"
                                 value={data.initial_date}
+                                type="date"
+                                required
+                                onChange={e => setData('initial_date', e.target.value)}
+                                name="initial_date"
+                                id="initial_date"
                                 className="mt-1"
                                 autoComplete="initial_date"
-                                onChange={e => setData('initial_date', e.target.value)}
-                                required
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.project.create.buttons.submit')}
                         </Button>
                     </form>

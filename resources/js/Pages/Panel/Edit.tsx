@@ -2,15 +2,18 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, useForm } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
 import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useCallback } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { PanelResource } from '@/Support/Interfaces/Resources';
+import { PanelResource, ProgressResource } from '@/Support/Interfaces/Resources';
 import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { progressService } from '@/Services/progressService';
 
 export default function ({ panel }: { panel: PanelResource }) {
     const { t } = useLaravelReactI18n();
@@ -18,9 +21,14 @@ export default function ({ panel }: { panel: PanelResource }) {
 
     const { data, setData } = useForm({
         id: panel.id,
+        progress_id: panel.progress_id as number | null,
         name: panel.name,
         description: panel.description,
     });
+
+    const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
+        return await progressService.getAll(filters).then(response => response.data);
+    }, []);
 
     const submit: FormEventHandler = withLoading(async e => {
         e.preventDefault();
@@ -48,32 +56,49 @@ export default function ({ panel }: { panel: PanelResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.panel.edit.fields.name')} />
+                            <InputLabel htmlFor="progress">{t('pages.panel.edit.fields.progress')}</InputLabel>
+                            <div className="mt-4">
+                                <GenericDataSelector
+                                    setSelectedData={id => setData('progress_id', id)}
+                                    selectedDataId={data.progress_id ?? undefined}
+                                    renderItem={(item: ProgressResource) => item.name}
+                                    placeholder={t('pages.panel.edit.fields.progress_placeholder')}
+                                    nullable
+                                    initialSearch={panel.progress?.name}
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    buttonClassName="mt-1"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mt-4">
+                            <InputLabel value={t('pages.panel.edit.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.panel.edit.fields.description')} />
+                            <InputLabel value={t('pages.panel.edit.fields.description')} htmlFor="description" />
                             <Input
-                                id="description"
-                                type="text"
-                                name="description"
                                 value={data.description}
+                                type="text"
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
                                 className="mt-1"
                                 autoComplete="description"
-                                onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.panel.edit.buttons.submit')}
                         </Button>
                     </form>

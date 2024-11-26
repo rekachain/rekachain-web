@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Str;
 
+// Exclude certain folders or files
+$excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php', 'DashboardController.php', 'TestController.php'];
+$excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php', 'CarriageProjectRequest.php', 'TrainsetProjectRequest.php'];
+$excludedServices = ['TrainsetAttachmentComponent', 'DashboardService.php'];
+$excludedReactModelInterfaces = ['index.ts'];
+$excludedReactResources = ['index.ts', 'Resource.ts', 'ProjectCarriageResource.ts', 'ProjectComponentResource.ts', 'ProjectPanelResource.ts'];
+$excludedReactServices = ['serviceFactory.ts'];
+
 // Helper function to count files in a directory, excluding specified files or folders
 function countFilesInDirectory(string $dir, array $excluded = []): int {
     $iterator = new FilesystemIterator($dir, FilesystemIterator::SKIP_DOTS);
@@ -11,6 +19,7 @@ function countFilesInDirectory(string $dir, array $excluded = []): int {
             if (in_array($relativePath, $excluded)) {
                 return false;
             }
+
             return true;
         }
 
@@ -277,7 +286,7 @@ test('ensure no other files in App\Support\Interfaces folder', function () {
 });
 
 // Test that models have corresponding controllers, form requests, resources, services, and repositories
-test('model should have controllers, form request, resource, service interface, repository interface, service, and repository', function () {
+test('model should have controllers, form request, resource, service interface, repository interface, service, and repository', function () use ($excludedControllers, $excludedRequests, $excludedServices, $excludedReactModelInterfaces, $excludedReactResources, $excludedReactServices) {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
 
     $modelDir = $baseDir . '/app/Models';
@@ -287,14 +296,6 @@ test('model should have controllers, form request, resource, service interface, 
     $reactModelInterfaceDir = $baseDir . '/resources/js/Support/Interfaces/Models';
     $reactResourceDir = $baseDir . '/resources/js/Support/Interfaces/Resources';
     $reactServiceDir = $baseDir . '/resources/js/Services';
-
-    // Exclude certain folders or files
-    $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php', 'DashboardController.php','TestController.php'];
-    $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php', 'CarriageProjectRequest.php', 'TrainsetProjectRequest.php'];
-    $excludedServices = ['TrainsetAttachmentComponent', 'DashboardService.php'];
-    $excludedReactModelInterfaces = ['index.ts'];
-    $excludedReactResources = ['index.ts', 'Resource.ts', 'ProjectCarriageResource.ts', 'ProjectComponentResource.ts', 'ProjectPanelResource.ts'];
-    $excludedReactServices = ['serviceFactory.ts'];
 
     // Count files in each directory
     $modelCount = countFilesInDirectory($modelDir);
@@ -332,4 +333,140 @@ test('model should have controllers, form request, resource, service interface, 
     $this->assertEquals($modelCount, $reactModelInterfaceCount);
     $this->assertEquals($modelCount, $reactResourceCount);
     $this->assertEquals($modelCount, $reactServiceCount);
+});
+
+test('detect extra files and anomalies in project structure', function () use ($excludedControllers, $excludedRequests, $excludedServices) {
+    $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
+
+    $modelDir = $baseDir . '/app/Models';
+    $controllerDir = $baseDir . '/app/Http/Controllers';
+    $requestDir = $baseDir . '/app/Http/Requests';
+    $resourceDir = $baseDir . '/app/Http/Resources';
+    $serviceDir = $baseDir . '/app/Services';
+    $repositoryDir = $baseDir . '/app/Repositories';
+    $serviceInterfaceDir = $baseDir . '/app/Support/Interfaces/Services';
+    $repositoryInterfaceDir = $baseDir . '/app/Support/Interfaces/Repositories';
+
+    $modelFiles = new FilesystemIterator($modelDir, FilesystemIterator::SKIP_DOTS);
+    $anomalies = [];
+    $modelNames = [];
+
+    foreach ($modelFiles as $modelFile) {
+        if ($modelFile->isFile()) {
+            $modelName = pathinfo($modelFile->getFilename(), PATHINFO_FILENAME);
+            $modelNames[] = $modelName;
+
+            // Check for corresponding controller
+            $controllerPath = $controllerDir . '/' . $modelName . 'Controller.php';
+            if (!file_exists($controllerPath) && !in_array($modelName . 'Controller.php', $excludedControllers)) {
+                $anomalies[] = "Model $modelName is missing corresponding controller.";
+            }
+
+            // Check for corresponding requests
+            $storeRequestPath = $requestDir . '/' . $modelName . '/Store' . $modelName . 'Request.php';
+            $updateRequestPath = $requestDir . '/' . $modelName . '/Update' . $modelName . 'Request.php';
+            if ((!file_exists($storeRequestPath) || !file_exists($updateRequestPath)) && !in_array($modelName, $excludedRequests)) {
+                $anomalies[] = "Model $modelName is missing corresponding requests.";
+            }
+
+            // Check for corresponding service and repository
+            $servicePath = $serviceDir . '/' . $modelName . 'Service.php';
+            $repositoryPath = $repositoryDir . '/' . $modelName . 'Repository.php';
+            if (!file_exists($servicePath) && !in_array($modelName . 'Service.php', $excludedServices)) {
+                $anomalies[] = "Model $modelName is missing corresponding service.";
+            }
+            if (!file_exists($repositoryPath)) {
+                $anomalies[] = "Model $modelName is missing corresponding repository.";
+            }
+
+            // Check for corresponding service and repository interfaces
+            $serviceInterfacePath = $serviceInterfaceDir . '/' . $modelName . 'ServiceInterface.php';
+            $repositoryInterfacePath = $repositoryInterfaceDir . '/' . $modelName . 'RepositoryInterface.php';
+            if (!file_exists($serviceInterfacePath)) {
+                $anomalies[] = "Model $modelName is missing corresponding service interface.";
+            }
+            if (!file_exists($repositoryInterfacePath)) {
+                $anomalies[] = "Model $modelName is missing corresponding repository interface.";
+            }
+        }
+    }
+
+    // Check for extra controllers
+    $controllerFiles = new FilesystemIterator($controllerDir, FilesystemIterator::SKIP_DOTS);
+    foreach ($controllerFiles as $controllerFile) {
+        if ($controllerFile->isFile()) {
+            $controllerName = pathinfo($controllerFile->getFilename(), PATHINFO_FILENAME);
+            $modelName = str_replace('Controller', '', $controllerName);
+            if (!in_array($modelName, $modelNames) && !in_array($controllerFile->getFilename(), $excludedControllers)) {
+                $anomalies[] = "Controller $controllerName does not have a corresponding model.";
+            }
+        }
+    }
+
+    // Check for extra directories in the request directory
+    $requestDirs = new FilesystemIterator($requestDir, FilesystemIterator::SKIP_DOTS);
+    foreach ($requestDirs as $requestDirItem) {
+        if ($requestDirItem->isDir()) {
+            $requestDirName = $requestDirItem->getFilename();
+            $modelPath = $modelDir . '/' . $requestDirName . '.php';
+            if (!file_exists($modelPath) && !in_array($requestDirName, $excludedRequests)) {
+                $anomalies[] = "Request directory $requestDirName does not have a corresponding model.";
+            }
+        }
+    }
+
+    // Check for extra services
+    $serviceFiles = new FilesystemIterator($serviceDir, FilesystemIterator::SKIP_DOTS);
+    foreach ($serviceFiles as $serviceFile) {
+        if ($serviceFile->isFile()) {
+            $serviceName = pathinfo($serviceFile->getFilename(), PATHINFO_FILENAME);
+            $modelName = str_replace('Service', '', $serviceName);
+            if (!in_array($modelName, $modelNames) && !in_array($serviceFile->getFilename(), $excludedServices)) {
+                $anomalies[] = "Service $serviceName does not have a corresponding model.";
+            }
+        }
+    }
+
+    // Check for extra repositories
+    $repositoryFiles = new FilesystemIterator($repositoryDir, FilesystemIterator::SKIP_DOTS);
+    foreach ($repositoryFiles as $repositoryFile) {
+        if ($repositoryFile->isFile()) {
+            $repositoryName = pathinfo($repositoryFile->getFilename(), PATHINFO_FILENAME);
+            $modelName = str_replace('Repository', '', $repositoryName);
+            if (!in_array($modelName, $modelNames)) {
+                $anomalies[] = "Repository $repositoryName does not have a corresponding model.";
+            }
+        }
+    }
+
+    // Check for extra service interfaces
+    $serviceInterfaceFiles = new FilesystemIterator($serviceInterfaceDir, FilesystemIterator::SKIP_DOTS);
+    foreach ($serviceInterfaceFiles as $serviceInterfaceFile) {
+        if ($serviceInterfaceFile->isFile()) {
+            $serviceInterfaceName = pathinfo($serviceInterfaceFile->getFilename(), PATHINFO_FILENAME);
+            $modelName = str_replace('ServiceInterface', '', $serviceInterfaceName);
+            if (!in_array($modelName, $modelNames)) {
+                $anomalies[] = "Service interface $serviceInterfaceName does not have a corresponding model.";
+            }
+        }
+    }
+
+    // Check for extra repository interfaces
+    $repositoryInterfaceFiles = new FilesystemIterator($repositoryInterfaceDir, FilesystemIterator::SKIP_DOTS);
+    foreach ($repositoryInterfaceFiles as $repositoryInterfaceFile) {
+        if ($repositoryInterfaceFile->isFile()) {
+            $repositoryInterfaceName = pathinfo($repositoryInterfaceFile->getFilename(), PATHINFO_FILENAME);
+            $modelName = str_replace('RepositoryInterface', '', $repositoryInterfaceName);
+            if (!in_array($modelName, $modelNames)) {
+                $anomalies[] = "Repository interface $repositoryInterfaceName does not have a corresponding model.";
+            }
+        }
+    }
+
+    if (!empty($anomalies)) {
+        dump('Anomalies detected: ', $anomalies);
+    } else {
+        dump('No anomalies detected.');
+    }
+    expect($anomalies)->toBeEmpty();
 });

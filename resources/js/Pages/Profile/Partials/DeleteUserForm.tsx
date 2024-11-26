@@ -77,16 +77,16 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
                         </Label>
 
                         <Input
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
                             value={data.password}
-                            onChange={e => setData('password', e.target.value)}
-                            autoFocus
+                            type="password"
+                            ref={passwordInput}
                             placeholder={t(
                                 'pages.profile.partials.delete_user_form.dialogs.fields.password_placeholder',
                             )}
+                            onChange={e => setData('password', e.target.value)}
+                            name="password"
+                            id="password"
+                            autoFocus
                         />
 
                         <InputError message={errors.password} className="mt-2" />
@@ -95,7 +95,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
                     <div className="mt-6 flex justify-end">
                         <Button onClick={closeModal}>{t('action.cancel')}</Button>
 
-                        <Button variant="destructive" className="ms-3" disabled={processing}>
+                        <Button variant="destructive" disabled={processing} className="ms-3">
                             {t('pages.profile.partials.delete_user_form.dialogs.buttons.delete_account')}
                         </Button>
                     </div>

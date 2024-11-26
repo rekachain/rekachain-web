@@ -27,10 +27,26 @@ export default function CarriagePanelComponentTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Component</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Progress</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.component',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.qty',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.description',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.headers.progress',
+                            )}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -68,7 +84,6 @@ export default function CarriagePanelComponentTableView({
                                 )}
 
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
                                         [
@@ -79,14 +94,17 @@ export default function CarriagePanelComponentTableView({
                                             carriagePanelComponent.id,
                                         ],
                                     )}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    Materials
+                                    {t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.actions.materials',
+                                    )}
                                 </Link>
 
                                 <CarriagePanelComponentProgress
-                                    carriagePanelComponent={carriagePanelComponent}
-                                    handleSyncCarriagePanel={handleSyncCarriagePanel}
                                     progress={carriagePanelComponent.progress}
+                                    handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                    carriagePanelComponent={carriagePanelComponent}
                                 />
                             </TableCell>
                         </TableRow>

@@ -29,8 +29,8 @@ export default function DivisionTableView({
                         <TableCell>{division.name}</TableCell>
                         <TableCell>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('action.edit')}
                             </Link>

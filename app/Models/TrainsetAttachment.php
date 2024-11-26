@@ -29,12 +29,10 @@ class TrainsetAttachment extends Model {
         'supervisor_id',
         'status',
     ];
-
     protected $casts = [
         'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => [
             'attachment_number',
@@ -43,11 +41,11 @@ class TrainsetAttachment extends Model {
         'relation_searchs' => [],
         'columns' => [
             'id',
-            'source_workstation_id', 
-            'destination_workstation_id', 
-            'status', 
-            'panel_attachment_id', 
-            'supervisor_id', 
+            'source_workstation_id',
+            'destination_workstation_id',
+            'status',
+            'panel_attachment_id',
+            'supervisor_id',
         ],
         'relation_columns' => [
             'detail_worker_trainsets' => [
@@ -59,7 +57,7 @@ class TrainsetAttachment extends Model {
                 'status',
                 'name',
             ],
-        ]
+        ],
     ];
 
     public function getFilterable(): array {
@@ -71,6 +69,7 @@ class TrainsetAttachment extends Model {
         while ($attachment->parent) {
             $attachment = $attachment->parent;
         }
+
         return $attachment;
     }
 
@@ -93,10 +92,10 @@ class TrainsetAttachment extends Model {
     public function is_child(): bool {
         return $this->parent !== null;
     }
-    
+
     public function progresses(): HasManyDeep {
         return $this->hasManyDeep(
-            Progress::class, 
+            Progress::class,
             [
                 TrainsetAttachmentComponent::class,
                 CarriagePanelComponent::class,

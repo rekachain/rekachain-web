@@ -21,7 +21,11 @@ export default function ({
     const handlePanelMaterialDeletion = withLoading(async (rawMaterialId: number) => {
         await panelMaterialService.delete(rawMaterialId);
         await handleSyncCarriagePanel();
-        void useSuccessToast('Material deleted successfully');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.panel_materials.messages.deleted',
+            ),
+        );
     }, true);
 
     return (
@@ -29,20 +33,20 @@ export default function ({
             <div className="hidden md:block">
                 <PanelMaterialTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                     handlePanelMaterialDeletion={handlePanelMaterialDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanel={carriagePanel}
                 />
             </div>
 
             <div className="block md:hidden">
                 <PanelMaterialCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                     handlePanelMaterialDeletion={handlePanelMaterialDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanel={carriagePanel}
                 />
             </div>
         </div>

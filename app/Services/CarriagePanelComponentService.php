@@ -34,7 +34,7 @@ class CarriagePanelComponentService extends BaseCrudService implements CarriageP
                 $rawMaterial = $this->rawMaterialService->findOrFail($rawMaterialId);
             } else {
                 $rawMaterial = $this->rawMaterialService->create([
-                    'code' => $newRawMaterialCode,
+                    'material_code' => $newRawMaterialCode,
                     'description' => $newRawMaterialDescription,
                     'unit' => $newRawMaterialUnit,
                     'specs' => $newRawMaterialSpecs,

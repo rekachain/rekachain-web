@@ -35,13 +35,13 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                 <form onSubmit={handleEditTrainsetName} className="flex gap-4 group">
                     <div className="">
                         <Input
-                            pattern="^(?!\s*$).+"
-                            required
                             type="text"
-                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
+                            required
+                            pattern="^(?!\s*$).+"
+                            onChange={e => setData('trainsetName', e.target.value)}
                             // className="w-fit"
                             defaultValue={data.trainsetName}
-                            onChange={e => setData('trainsetName', e.target.value)}
+                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
                         />
                         <span className="mt-2 text-sm hidden text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
                             {t('pages.project.trainset.partials.partials.components.trainset_name.trainset_error')}

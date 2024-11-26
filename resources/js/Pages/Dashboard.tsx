@@ -4,7 +4,7 @@ import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 
 // import { PageProps } from '@/Types';
@@ -125,7 +125,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     } satisfies ChartConfig;
 
     const [useMerged, setUseMerged] = useState(true);
-    const [useRaw, setUseRaw] = useState(true);
+    const [useRaw, setUseRaw] = useState(false);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
         // data: useRaw
         //     ? data.attachment_status_of_trainset
@@ -179,7 +179,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                 if (count > max) max = count + 1;
             });
         });
-        console.log('max', max);
         setMaxWorkstationStatusValue(max);
     }, [attachmentStatusOfWorkstationGraph]);
 
@@ -224,6 +223,43 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     };
+  
+    const toPercent = (decimal: number, fixed = 0) => {
+        return `${(decimal * 100).toFixed(fixed)}%`;
+    };
+    const getPercent = (value: number, total: number) => {
+        const ratio = total > 0 ? value / total : 0;
+        return toPercent(ratio,2);
+    };
+    
+
+    const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
+        const total = payload.reduce((result: number, entry: any) => result + entry.value, 0);
+        return (
+            <div className="grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
+                <p className="">{`${label} (Total: ${total})`}</p>
+                <ul className="list">
+                    {payload.map((entry: any, index: number) => (
+                        <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
+                            <div className="flex items-center gap-1.5">
+                                <div
+                                    style={{
+                                        backgroundColor: entry.color,
+                                    }}
+                                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                                />
+                                <span className="text-foreground">
+                                    {attachmentStatusConfig[entry.dataKey].label}
+                                </span>
+                            </div>
+                            <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+    
 
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
@@ -256,7 +292,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     : `${t('pages.dashboard.index.project')} ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild className=" ">
+                                <PopoverTrigger className=" " asChild>
                                     <Button
                                         variant="outline"
                                         role="combobox"
@@ -280,7 +316,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     data['projectDetail'].map(projectItem => (
                                                         <Link href={`/dashboard/${projectItem.id}`}>
                                                             <CommandItem
-                                                                key={projectItem.value}
                                                                 value={`/dashboard/${projectItem.name}`}
                                                                 onSelect={currentValue => {
                                                                     setValue(
@@ -288,6 +323,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     );
                                                                     setOpen(false);
                                                                 }}
+                                                                key={projectItem.value}
                                                             >
                                                                 <Check
                                                                     className={cn(
@@ -356,7 +392,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h2 className="text-lg">{t('pages.dashboard.index.all_trainset_status')}</h2>
                             <div className=" flex flex-col">
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                                    <PopoverTrigger asChild className={`${data['project'] == null ? 'hidden' : ' '}`}>
+                                    <PopoverTrigger className={`${data['project'] == null ? 'hidden' : ' '}`} asChild>
                                         <Button
                                             variant="outline"
                                             role="combobox"
@@ -382,7 +418,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                         >
                                                             <CommandItem
-                                                                key={projectItem.id}
                                                                 value={projectItem.name}
                                                                 onSelect={currentValue => {
                                                                     setValueTrainset(
@@ -392,6 +427,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     );
                                                                     setOpenTrainset(false);
                                                                 }}
+                                                                key={projectItem.id}
                                                             >
                                                                 <Check
                                                                     className={cn(
@@ -426,12 +462,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                         </div>
 
                         <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
-                            <BarChart accessibilityLayer data={data['ts']} className="h-1/4">
+                            <BarChart data={data['ts']} className="h-1/4" accessibilityLayer>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
-                                    dataKey="ts_name"
-                                    tickLine={false}
                                     tickMargin={10}
+                                    tickLine={false}
+                                    dataKey="ts_name"
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
@@ -566,17 +602,22 @@ export default function Dashboard({ auth, data }: PageProps) {
                             className="h-[300px] w-full mt-5"
                         >
                             <BarChart
-                                accessibilityLayer
-                                data={attachmentStatusOfWorkstationGraph.data}
+                                stackOffset='expand'
                                 layout="vertical"
+                                data={attachmentStatusOfWorkstationGraph.data}
+                                accessibilityLayer
                             >
                                 <CartesianGrid vertical={false} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                    <XAxis
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        type="number"
-                                        dataKey={dataKey}
-                                        domain={[0, maxWorkstationStatusValue]}
+                                <XAxis type="number" tickFormatter={value => toPercent(value, 0)} />
+                                <YAxis
+                                    width={150}
+                                    type="category"
+                                    tickMargin={10}
+                                    tickLine={false}
+                                    dataKey="workstation_name"
+                                    className=""
+                                    axisLine={false}
+                                    // tickFormatter={value => value.slice(0, 6)} 
                                     />
                                 ))}
                                 {
@@ -587,15 +628,15 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
                                     <Bar
+                                        type='monotone'
+                                        stackId="1"
                                         key={`workstationPanelStatus-${dataKey}-key`}
-                                        dataKey={dataKey}
                                         fill={`var(--color-${dataKey})`}
-                                        radius={[0, 4, 4, 0]}
+                                        dataKey={dataKey}
                                     />
                                 ))}
                             </BarChart>
                         </ChartContainer>
-                        {/* </div> */}
                     </div>
                     {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
 

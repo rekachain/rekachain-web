@@ -19,10 +19,10 @@ export default function PanelCardView({
         <div>
             {panelResponse?.data.map(panel => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
                     to="opacity-100 translate-y-0 translate-x-0"
-                    duration={300}
                     key={panel.id}
+                    from="opacity-0 -translate-y-4"
+                    duration={300}
                 >
                     <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-5">
                         <div className="flex w-full justify-between items-center">
@@ -41,12 +41,17 @@ export default function PanelCardView({
                                 description: panel.description ?? '-',
                             })}
                         </h4>
+                        <p className="text-sm">
+                            {t('pages.panel.partials.partials.panel_card.headers.progress', {
+                                progress: panel.progress?.name ?? '-',
+                            })}
+                        </p>
                         {/* <p>Jumlah User :{panel.users_count}</p>
                         <p>Jumlah Izin :{panel.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PANELS}.edit`, panel.id)}
+                                className={buttonVariants({ variant: 'link' })}
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >

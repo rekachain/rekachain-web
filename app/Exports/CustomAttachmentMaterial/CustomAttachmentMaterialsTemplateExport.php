@@ -76,6 +76,7 @@ class CustomAttachmentMaterialsTemplateExport implements FromArray, ShouldAutoSi
 
         $exportData = array_map(function ($array) {
             unset($array['id'], $array['can_be_deleted']);
+
             return $array;
         }, $exportData);
 

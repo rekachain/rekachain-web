@@ -83,7 +83,8 @@ test('update method updates component material', function () {
 
 test('destroy method deletes component material', function () {
     $user = User::factory()->create();
-    $componentMaterial = ComponentMaterial::factory()->create();
+    // $componentMaterial = ComponentMaterial::factory()->create();
+    $componentMaterial = $this->dummy->createComponentMaterial();
 
     $response = $this->actingAs($user)->deleteJson("/component-materials/{$componentMaterial->id}");
 

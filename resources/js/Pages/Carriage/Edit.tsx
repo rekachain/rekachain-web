@@ -46,34 +46,34 @@ export default function ({ carriage }: { carriage: CarriageResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="type" value={t('pages.carriage.edit.fields.type')} />
+                            <InputLabel value={t('pages.carriage.edit.fields.type')} htmlFor="type" />
                             <Input
-                                id="type"
-                                type="text"
-                                name="type"
                                 value={data.type}
+                                type="text"
+                                onChange={e => setData('type', e.target.value)}
+                                name="type"
+                                id="type"
                                 className="mt-1"
                                 autoComplete="type"
-                                onChange={e => setData('type', e.target.value)}
                             />
                             <InputError message={errors.type} className="mt-2" />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.carriage.edit.fields.description')} />
+                            <InputLabel value={t('pages.carriage.edit.fields.description')} htmlFor="description" />
                             <Input
-                                id="description"
-                                type="text"
-                                name="description"
                                 value={data.description}
+                                type="text"
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
                                 className="mt-1"
                                 autoComplete="description"
-                                onChange={e => setData('description', e.target.value)}
                             />
                             <InputError message={errors.description} className="mt-2" />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button disabled={processing} className="mt-4">
                             {t('pages.carriage.edit.buttons.submit')}
                         </Button>
                     </form>

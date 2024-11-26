@@ -62,25 +62,25 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
 
                     <form onSubmit={submit}>
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel value="Nama" htmlFor="nama" />
                             <Input
-                                id="nama"
-                                type="text"
-                                name="nama"
                                 value={data.name}
+                                type="text"
+                                required
+                                onChange={e => setData('name', e.target.value)}
+                                name="nama"
+                                id="nama"
                                 className="mt-1"
                                 autoComplete="nama"
-                                onChange={e => setData('name', e.target.value)}
-                                required
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value="Divisi" />
+                            <InputLabel value="Divisi" htmlFor="division" />
                             <Select
-                                name="division"
                                 value={data.division_id}
                                 onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
+                                name="division"
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Pilih divisi" />
@@ -88,7 +88,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                                 <SelectContent>
                                     <SelectItem value="none">none</SelectItem>
                                     {divisions.map(division => (
-                                        <SelectItem key={division.id} value={division.id.toString()}>
+                                        <SelectItem value={division.id.toString()} key={division.id}>
                                             {division.name}
                                         </SelectItem>
                                     ))}
@@ -97,16 +97,16 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="level" value="Level" />
+                            <InputLabel value="Level" htmlFor="level" />
                             <Input
-                                id="level"
-                                type="text"
-                                name="level"
                                 value={data.level}
+                                type="text"
+                                required
+                                onChange={e => setData('level', e.target.value)}
+                                name="level"
+                                id="level"
                                 className="mt-1"
                                 autoComplete="level"
-                                onChange={e => setData('level', e.target.value)}
-                                required
                             />
                         </div>
 
@@ -121,11 +121,11 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                                                 {permission.permissions.map(p => (
                                                     <div key={p.id} className="flex items-center">
                                                         <Checkbox
-                                                            id={`permission-${p.id}`}
                                                             onCheckedChange={checked =>
                                                                 handlePermissionChange(checked, p)
                                                             }
                                                             name="permissions"
+                                                            id={`permission-${p.id}`}
                                                         />
                                                         <label htmlFor={`permission-${p.id}`} className="ml-2">
                                                             {p.name}
@@ -138,7 +138,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                                 </div>
                             </div>
                         </div>
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             Tambah Role
                         </Button>
                     </form>

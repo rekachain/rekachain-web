@@ -13,12 +13,14 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { progressService } from '@/Services/progressService';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Textarea } from '@/Components/UI/textarea';
 
 export default function ({ component }: { component: ComponentResource }) {
     const { t } = useLaravelReactI18n();
     console.log(component);
     const { data, setData, processing } = useForm({
         progress_id: component.progress_id as number | null,
+        description: component.description,
         name: component.name,
     });
 
@@ -55,33 +57,45 @@ export default function ({ component }: { component: ComponentResource }) {
                             <InputLabel htmlFor="progress">{t('pages.component.create.fields.progress')}</InputLabel>
                             <div className="mt-4">
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    fetchData={fetchProgress}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id ?? undefined}
-                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     renderItem={(item: ProgressResource) => item.name}
-                                    initialSearch={component.progress?.name}
-                                    buttonClassName="mt-1"
+                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     nullable
+                                    initialSearch={component.progress?.name}
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    buttonClassName="mt-1"
                                 />
                             </div>
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.component.edit.fields.name')} />
-                            <Input
-                                id="name"
-                                type="text"
-                                name="name"
-                                value={data.name}
+                            <InputLabel value={t('pages.component.edit.fields.description')} htmlFor="description" />
+                            <Textarea
+                                value={data.description}
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
                                 className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                autoComplete="description"
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <div className="mt-4">
+                            <InputLabel value={t('pages.component.edit.fields.name')} htmlFor="name" />
+                            <Input
+                                value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
+                                className="mt-1"
+                                autoComplete="name"
+                            />
+                        </div>
+
+                        <Button disabled={processing} className="mt-4">
                             {t('pages.component.edit.buttons.submit')}
                         </Button>
                     </form>

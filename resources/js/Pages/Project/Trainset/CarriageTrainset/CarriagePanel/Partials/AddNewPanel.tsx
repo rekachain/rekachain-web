@@ -169,20 +169,20 @@ const AddNewPanel = ({
                             </Label>
                             <div className="flex gap-2">
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    data={progressResponse?.data}
-                                    onSearchChange={handleChangeSearchProgressName}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id}
-                                    customSearchPlaceholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_search',
-                                    )}
+                                    renderItem={item => item.name}
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
                                     )}
-                                    renderItem={item => item.name}
+                                    onSearchChange={handleChangeSearchProgressName}
+                                    id="progress_id"
+                                    data={progressResponse?.data}
+                                    customSearchPlaceholder={t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_search',
+                                    )}
                                 />
-                                <Button type="button" variant="ghost" onClick={handleResetProgressSearch}>
+                                <Button variant="ghost" type="button" onClick={handleResetProgressSearch}>
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
@@ -193,15 +193,15 @@ const AddNewPanel = ({
                                 )}
                             </Label>
                             <GenericDataSelector
-                                id="panel_id"
-                                fetchData={fetchPanels}
                                 setSelectedData={id => setData('new_panel_id', id)}
                                 selectedDataId={data.new_panel_id}
+                                renderItem={item => item.name}
                                 placeholder={t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel_placeholder',
                                 )}
-                                renderItem={item => item.name}
                                 nullable
+                                id="panel_id"
+                                fetchData={fetchPanels}
                             />
                         </div>
 
@@ -215,11 +215,11 @@ const AddNewPanel = ({
                                     )}
                                 </Label>
                                 <Input
-                                    type="text"
                                     value={data.new_panel_name}
+                                    type="text"
+                                    required
                                     onChange={handleChangeNewPanelName}
                                     disabled={data.new_panel_id !== null}
-                                    required
                                 />
                             </div>
                             <Label htmlFor="new-panel-description">
@@ -228,11 +228,11 @@ const AddNewPanel = ({
                                 )}
                             </Label>
                             <Textarea
-                                id="new-panel-description"
-                                className="p-2 rounded"
                                 value={data.new_panel_description}
                                 onChange={handleChangeNewPanelDescription}
+                                id="new-panel-description"
                                 disabled={data.new_panel_id !== null}
+                                className="p-2 rounded"
                             />
                             <Label htmlFor="new-panel-qty">
                                 {t(
@@ -240,12 +240,12 @@ const AddNewPanel = ({
                                 )}
                             </Label>
                             <Input
-                                id="new-panel-qty"
-                                type="number"
-                                min={1}
                                 value={data.new_panel_qty}
-                                onChange={handleChangeNewPanelQty}
+                                type="number"
                                 required
+                                onChange={handleChangeNewPanelQty}
+                                min={1}
+                                id="new-panel-qty"
                             />
                         </div>
 

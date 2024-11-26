@@ -16,7 +16,7 @@ import useDarkMode from '@/Hooks/useDarkMode';
 export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { darkMode, toggleDarkMode } = useDarkMode();
     const { data, setData, post, processing, errors, reset } = useForm({
-        nip: '',
+        identifier: '',
         password: '',
         remember: false,
     });
@@ -41,27 +41,27 @@ export default function Login({ status, canResetPassword }: { status?: string; c
             <section className="login max-h-screen flex flex-col md:flex-row">
                 <div className="hero flex-1 hidden md:flex">
                     <img
-                        className="w-full object-cover"
-                        id="login-hero"
                         src="/assets/images/login-hero.jpeg"
+                        id="login-hero"
+                        className="w-full object-cover"
                         alt="login-hero.png"
                     />
                 </div>
 
                 <div className="flex-1 flex flex-col z-10 p-5 md:px-16 justify-start md:gap-20 sm:gap-10  h-screen md:py-16 relative">
                     <img
-                        className="hidden h-44 md:block top-0 left-0 absolute"
                         src="/assets/images/login-top-left.png"
+                        className="hidden h-44 md:block top-0 left-0 absolute"
                         alt="login-top-left.png"
                     />
                     <img
-                        className="hidden h-44 md:block bottom-0 left-0 absolute"
                         src="/assets/images/login-bottom-left.png"
+                        className="hidden h-44 md:block bottom-0 left-0 absolute"
                         alt="login-bottom-left.png"
                     />
                     <img
-                        className="hidden h-44 md:block bottom-0 right-0 absolute"
                         src="/assets/images/login-bottom-right.png"
+                        className="hidden h-44 md:block bottom-0 right-0 absolute"
                         alt="login-bottom-right.png"
                     />
 
@@ -69,8 +69,8 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         <div className="flex flex-row justify-between">
                             <img
                                 src="/assets/images/Logo REKA.svg"
-                                alt="login-form-header"
                                 className="md:mb-10 h-16 object-contain align-content-lg-start"
+                                alt="login-form-header"
                             />
                             <div className="flex">
                                 <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
@@ -92,33 +92,33 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                         {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel htmlFor="nip" value={t('pages.login.fields.nip')} />
+                                <InputLabel value={t('pages.login.fields.identifier')} htmlFor="identifier" />
 
                                 <Input
-                                    id="nip"
+                                    value={data.identifier}
                                     type="text"
-                                    name="nip"
-                                    value={data.nip}
+                                    onChange={e => setData('identifier', e.target.value)}
+                                    name="identifier"
+                                    id="identifier"
                                     className="mt-1"
-                                    autoComplete="nip"
                                     autoFocus
-                                    onChange={e => setData('nip', e.target.value)}
+                                    autoComplete="identifier"
                                 />
 
-                                <InputError message={errors.nip} className="mt-2" />
+                                <InputError message={errors.identifier} className="mt-2" />
                             </div>
 
                             <div className="mt-4">
-                                <InputLabel htmlFor="password" value={t('pages.login.fields.password')} />
+                                <InputLabel value={t('pages.login.fields.password')} htmlFor="password" />
 
                                 <Input
-                                    id="password"
-                                    type="password"
-                                    name="password"
                                     value={data.password}
+                                    type="password"
+                                    onChange={e => setData('password', e.target.value)}
+                                    name="password"
+                                    id="password"
                                     className="mt-1"
                                     autoComplete="current-password"
-                                    onChange={e => setData('password', e.target.value)}
                                 />
 
                                 <InputError message={errors.password} className="mt-2" />
@@ -127,9 +127,9 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             <div className="flex mt-4 justify-between flex-col md:flex-row gap-4">
                                 <label className="flex items-center">
                                     <Checkbox
+                                        onChange={e => setData('remember', e.target.checked)}
                                         name="remember"
                                         checked={data.remember}
-                                        onChange={e => setData('remember', e.target.checked)}
                                     />
                                     <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
                                         {t('pages.login.fields.remember')}
@@ -147,7 +147,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             </div>
 
                             <div className="flex items-center justify-end mt-4">
-                                <Button className="w-full" disabled={processing}>
+                                <Button disabled={processing} className="w-full">
                                     {t('pages.login.buttons.sign_in')}
                                 </Button>
                             </div>

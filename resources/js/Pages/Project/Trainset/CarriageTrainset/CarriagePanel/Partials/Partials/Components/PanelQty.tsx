@@ -38,7 +38,7 @@ export default function ({
         setIsEditing(false);
         void useSuccessToast(
             t(
-                'pages.project.trainset.carriage_trainset.carriage_panel.partials.components.panel_qty.messages.qty_updated',
+                'pages.project.trainset.carriage_trainset.carriage_panel.partials.partials.components.panel_qty.messages.updated',
             ),
         );
     });
@@ -49,16 +49,16 @@ export default function ({
                 <form onSubmit={handleEditCarriageQty} className="flex gap-4">
                     <Input
                         type="number"
-                        min={1}
-                        className="w-fit"
-                        defaultValue={data.panelQty}
                         onChange={e => setData('panelQty', +e.target.value)}
+                        min={1}
+                        defaultValue={data.panelQty}
+                        className="w-fit"
                     />
                     <Button type="submit" disabled={loading}>
                         {loading
                             ? t('action.loading')
                             : t(
-                                  'pages.project.trainset.carriage_trainset.carriage_panel.partials.components.panel_qty.buttons.update_qty',
+                                  'pages.project.trainset.carriage_trainset.carriage_panel.partials.partials.components.panel_qty.buttons.update_qty',
                               )}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>

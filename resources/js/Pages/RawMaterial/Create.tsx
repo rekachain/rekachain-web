@@ -43,63 +43,63 @@ export default function () {
                     <form onSubmit={submit}>
                         <div className="mt-4">
                             <InputLabel
-                                htmlFor="material_code"
                                 value={t('pages.raw_material.create.fields.material_code')}
+                                htmlFor="material_code"
                             />
                             <Input
-                                id="material_code"
-                                type="text"
-                                name="material_code"
                                 value={data.material_code}
+                                type="text"
+                                onChange={e => setData('material_code', e.target.value)}
+                                name="material_code"
+                                id="material_code"
                                 className="mt-1"
                                 autoComplete="material_code"
-                                onChange={e => setData('material_code', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
                             <InputLabel
-                                htmlFor="description"
                                 value={t('pages.raw_material.create.fields.description')}
+                                htmlFor="description"
                             />
                             <Input
-                                id="description"
-                                type="text"
-                                name="description"
                                 value={data.description}
+                                type="text"
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
                                 className="mt-1"
                                 autoComplete="description"
-                                onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="specs" value={t('pages.raw_material.create.fields.specs')} />
+                            <InputLabel value={t('pages.raw_material.create.fields.specs')} htmlFor="specs" />
                             <Input
-                                id="specs"
-                                type="text"
-                                name="specs"
                                 value={data.specs}
+                                type="text"
+                                onChange={e => setData('specs', e.target.value)}
+                                name="specs"
+                                id="specs"
                                 className="mt-1"
                                 autoComplete="specs"
-                                onChange={e => setData('specs', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="unit" value={t('pages.raw_material.create.fields.unit')} />
+                            <InputLabel value={t('pages.raw_material.create.fields.unit')} htmlFor="unit" />
                             <Input
-                                id="unit"
-                                type="text"
-                                name="unit"
                                 value={data.unit}
+                                type="text"
+                                onChange={e => setData('unit', e.target.value)}
+                                name="unit"
+                                id="unit"
                                 className="mt-1"
                                 autoComplete="unit"
-                                onChange={e => setData('unit', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.raw_material.create.buttons.submit')}
                         </Button>
                     </form>

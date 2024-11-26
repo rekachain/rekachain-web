@@ -54,36 +54,36 @@ export default function ({
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workstation.edit.fields.name')} />
+                            <InputLabel value={t('pages.workstation.edit.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value={t('pages.workstation.edit.fields.location')} />
+                            <InputLabel value={t('pages.workstation.edit.fields.location')} htmlFor="location" />
                             <Input
-                                id="location"
-                                type="text"
-                                name="location"
                                 value={data.location}
+                                type="text"
+                                onChange={e => setData('location', e.target.value)}
+                                name="location"
+                                id="location"
                                 className="mt-1"
                                 autoComplete="location"
-                                onChange={e => setData('location', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
                             <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.workshop')}</h2>
                             <RadioGroup
-                                defaultValue={workstation.workshop_id.toString()}
                                 onValueChange={v => setData('workshop_id', v)}
+                                defaultValue={workstation.workshop_id.toString()}
                             >
                                 {workshops?.map(role => (
                                     <div key={role.id} className="flex items-center space-x-2">
@@ -97,8 +97,8 @@ export default function ({
                         <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
                             <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.division')}</h2>
                             <RadioGroup
-                                defaultValue={workstation.division_id.toString()}
                                 onValueChange={v => setData('division_id', v)}
+                                defaultValue={workstation.division_id.toString()}
                             >
                                 {divisions?.map(division => (
                                     <div key={division.id} className="flex items-center space-x-2">
@@ -112,7 +112,7 @@ export default function ({
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.workstation.edit.buttons.submit')}
                         </Button>
                     </form>

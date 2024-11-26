@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\Step;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Step;
 use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;

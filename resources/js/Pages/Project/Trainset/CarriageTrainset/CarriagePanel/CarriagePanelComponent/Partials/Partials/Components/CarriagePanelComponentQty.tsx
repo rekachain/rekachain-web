@@ -36,7 +36,11 @@ export default function ({
         });
         await handleSyncCarriagePanel();
         setIsEditing(false);
-        void useSuccessToast('Carriage panel component quantity has been updated.');
+        void useSuccessToast(
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_qty.messages.updated',
+            ),
+        );
     });
 
     return (
@@ -45,16 +49,16 @@ export default function ({
                 <form onSubmit={handleEditCarriageQty} className="flex gap-4">
                     <Input
                         type="number"
-                        min={1}
-                        className="w-fit"
-                        defaultValue={data.panelComponentQty}
                         onChange={e => setData('panelComponentQty', +e.target.value)}
+                        min={1}
+                        defaultValue={data.panelComponentQty}
+                        className="w-fit"
                     />
                     <Button type="submit" disabled={loading}>
                         {loading
                             ? t('action.loading')
                             : t(
-                                  'pages.project.trainset.carriage_trainset.carriage_panel.partials.components.panel_qty.buttons.update_qty',
+                                  'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_qty.buttons.update_qty',
                               )}
                     </Button>
                     <Button type="button" onClick={toggleEditMode}>

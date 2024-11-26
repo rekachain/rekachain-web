@@ -3,11 +3,15 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build"
+        "transform-intent-enum": "node experimental/watch-intent-enum.js",
+        "build": "tsc && vite build",
+        "lint": "eslint --fix"
     },
     "devDependencies": {
+        "@eslint/js": "^9.15.0",
         "@headlessui/react": "^1.4.2",
         "@inertiajs/react": "^1.0.0",
+        "@stylistic/eslint-plugin-js": "^2.11.0",
         "@tailwindcss/forms": "^0.5.3",
         "@types/lodash": "^4.17.13",
         "@types/node": "^18.13.0",
@@ -16,13 +20,20 @@
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.4",
+        "chokidar": "^4.0.1",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-perfectionist": "^4.0.3",
+        "eslint-plugin-react": "^7.37.2",
+        "globals": "^15.12.0",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.31",
         "prettier": "^3.3.3",
+        "prettier-plugin-tailwindcss": "^0.6.9",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "tailwindcss": "^3.2.1",
         "typescript": "^5.0.2",
+        "typescript-eslint": "^8.15.0",
         "vite": "^5.0.0"
     },
     "dependencies": {

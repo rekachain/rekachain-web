@@ -21,7 +21,7 @@ void createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <LaravelReactI18nProvider locale={'en'} fallbackLocale={'en'} files={import.meta.glob('/lang/*.json')}>
+            <LaravelReactI18nProvider locale={'en'} files={import.meta.glob('/lang/*.json')} fallbackLocale={'en'}>
                 <LoadingProvider>
                     <ConfirmationDialogProvider>
                         <HelpdeskProvider>

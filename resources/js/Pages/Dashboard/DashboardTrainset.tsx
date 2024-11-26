@@ -128,7 +128,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             data['projectList'].map(projectItem => (
                                                                 <Link href={`/dashboard/${projectItem.id}`}>
                                                                     <CommandItem
-                                                                        key={projectItem.name}
                                                                         value={projectItem.name}
                                                                         onSelect={currentValue => {
                                                                             setValue(
@@ -138,6 +137,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                             );
                                                                             setOpen(false);
                                                                         }}
+                                                                        key={projectItem.name}
                                                                     >
                                                                         <Check
                                                                             className={cn(
@@ -190,7 +190,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >
                                                                 <CommandItem
-                                                                    key={projectItem.id}
                                                                     value={projectItem.name}
                                                                     onSelect={currentValue => {
                                                                         setValueTrainset(
@@ -200,6 +199,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                         );
                                                                         setOpenTrainset(false);
                                                                     }}
+                                                                    key={projectItem.id}
                                                                 >
                                                                     <Check
                                                                         className={cn(
@@ -223,7 +223,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <ChartContainer config={chartConfigTrainsetCarriage} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['carriages']}>
                                     <CartesianGrid vertical={false} />
-                                    <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
+                                    <XAxis tickMargin={10} tickLine={false} dataKey="type" axisLine={false} />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
                                     <Bar dataKey="qty" fill="var(--color-qty)" radius={4} />
@@ -242,8 +242,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             angle={-55}
                                             textAnchor="end"
                                             dataKey="name"
-                                            tickLine={false}
-                                            tickMargin={0}
                                             axisLine={false}
                                             height={100}
                                             width={0}

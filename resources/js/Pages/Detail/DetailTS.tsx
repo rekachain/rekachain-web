@@ -39,8 +39,8 @@ export default function DetailTS({ noProyek, detailTS }: DetailTS) {
             <div className="py-12">
                 <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
                     <AnimateIn
-                        from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
+                        from="opacity-0 -translate-y-4"
                         duration={300}
                     >
                         <div className="p-4 sm:p-8 bg-white  dark:bg-gray-800 shadow sm:rounded-lg h-fit">

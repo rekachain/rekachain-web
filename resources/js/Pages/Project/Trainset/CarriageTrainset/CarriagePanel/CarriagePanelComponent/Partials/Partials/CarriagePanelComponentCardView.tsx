@@ -29,10 +29,10 @@ export default function CarriagePanelComponentCardView({
                 {carriagePanel.carriage_panel_components?.map(carriagePanelComponent => (
                     <div key={carriagePanelComponent.id}>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
-                            duration={300}
                             key={carriagePanelComponent.id}
+                            from="opacity-0 -translate-y-4"
+                            duration={300}
                         >
                             <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                                 <div className="flex  justify-between items-scenter">
@@ -65,7 +65,6 @@ export default function CarriagePanelComponentCardView({
                                     )}
 
                                     <Link
-                                        className={buttonVariants({ variant: 'link' })}
                                         href={route(
                                             `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
                                             [
@@ -76,14 +75,17 @@ export default function CarriagePanelComponentCardView({
                                                 carriagePanelComponent.id,
                                             ],
                                         )}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        Materials
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_card.actions.materials',
+                                        )}
                                     </Link>
 
                                     <CarriagePanelComponentProgress
-                                        carriagePanelComponent={carriagePanelComponent}
-                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
                                         progress={carriagePanelComponent.progress}
+                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                        carriagePanelComponent={carriagePanelComponent}
                                     />
                                 </div>
                             </div>

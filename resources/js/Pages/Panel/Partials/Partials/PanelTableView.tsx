@@ -22,6 +22,7 @@ export default function PanelTableView({
                     <TableRow>
                         <TableHead>{t('pages.panel.partials.partials.panel_table.headers.name')}</TableHead>
                         <TableHead>{t('pages.panel.partials.partials.panel_table.headers.description')}</TableHead>
+                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.progress')}</TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -30,10 +31,11 @@ export default function PanelTableView({
                         <TableRow key={panel.id}>
                             <TableCell>{panel.name}</TableCell>
                             <TableCell>{panel.description}</TableCell>
+                            <TableCell>{panel.progress?.name}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PANELS}.edit`, panel.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

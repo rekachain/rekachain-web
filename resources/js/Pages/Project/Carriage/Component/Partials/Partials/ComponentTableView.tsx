@@ -40,7 +40,7 @@ export default function ComponentTableView({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} carriage={carriage} component={data.component} hasMaterials={data.has_materials} />
+                                <Import project={project} hasMaterials={data.has_materials} component={data.component} carriage={carriage} />
                             </TableCell>
                         </TableRow>
                     ))}

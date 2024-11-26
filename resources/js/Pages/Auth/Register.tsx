@@ -32,68 +32,68 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel value="Name" htmlFor="name" />
 
                     <TextInput
-                        id="name"
-                        name="name"
                         value={data.name}
+                        required
+                        onChange={e => setData('name', e.target.value)}
+                        name="name"
+                        isFocused={true}
+                        id="name"
                         className="mt-1 block w-full"
                         autoComplete="name"
-                        isFocused={true}
-                        onChange={e => setData('name', e.target.value)}
-                        required
                     />
 
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel value="Email" htmlFor="email" />
 
                     <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
                         value={data.email}
+                        type="email"
+                        required
+                        onChange={e => setData('email', e.target.value)}
+                        name="email"
+                        id="email"
                         className="mt-1 block w-full"
                         autoComplete="username"
-                        onChange={e => setData('email', e.target.value)}
-                        required
                     />
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel value="Password" htmlFor="password" />
 
                     <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
                         value={data.password}
+                        type="password"
+                        required
+                        onChange={e => setData('password', e.target.value)}
+                        name="password"
+                        id="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={e => setData('password', e.target.value)}
-                        required
                     />
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel value="Confirm Password" htmlFor="password_confirmation" />
 
                     <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
                         value={data.password_confirmation}
+                        type="password"
+                        required
+                        onChange={e => setData('password_confirmation', e.target.value)}
+                        name="password_confirmation"
+                        id="password_confirmation"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={e => setData('password_confirmation', e.target.value)}
-                        required
                     />
 
                     <InputError message={errors.password_confirmation} className="mt-2" />
@@ -107,7 +107,7 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton disabled={processing} className="ms-4">
                         Register
                     </PrimaryButton>
                 </div>

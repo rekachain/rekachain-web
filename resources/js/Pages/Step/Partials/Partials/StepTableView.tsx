@@ -38,8 +38,8 @@ export default function StepTableView({
                             <TableCell>{step.estimated_time}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.STEPS}.edit`, step.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

@@ -7,14 +7,12 @@ use App\Models\RawMaterial;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class RawMaterialSheetImport implements ToModel, WithHeadingRow 
-{
+class RawMaterialSheetImport implements ToModel, WithHeadingRow {
     private $existedMaterialCodes = []; // for return existed material codes if needed
-    
+
     public function __construct(private CarriagePanel $carriagePanel, protected ?bool $override = null) {}
 
-    public function model(array $row) 
-    {
+    public function model(array $row) {
         $rawMaterial = RawMaterial::whereMaterialCode($row['kode_material'])->first();
         if (is_null($rawMaterial)) {
             $rawMaterial = RawMaterial::create([

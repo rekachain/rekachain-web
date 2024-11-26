@@ -20,6 +20,7 @@ class UpdateComponentRequest extends FormRequest {
     public function rules(): array {
         return [
             'name' => 'nullable',
+            'description' => 'nullable',
             'progress_id' => 'nullable|exists:progress,id',
             // 'panel_id' => 'nullable|exists:panels,id',
         ];

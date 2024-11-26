@@ -26,16 +26,16 @@ export default function PanelMaterialCardView({
                 {carriagePanel.panel_materials?.map(panelMaterial => (
                     <div key={panelMaterial.id}>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
-                            duration={300}
                             key={panelMaterial.id}
+                            from="opacity-0 -translate-y-4"
+                            duration={300}
                         >
                             <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                                <div className="flex  justify-between items-scenter">
+                                <div className="flex justify-between items-scenter">
                                     <h4 className="font-bold text-sm">{panelMaterial.raw_material.material_code}</h4>
                                     <div className="text-end w-1/2">
-                                        <h5 className="font-bold text-sm ">{panelMaterial.raw_material.description}</h5>
+                                        <h5 className="font-bold text-sm">{panelMaterial.raw_material.description}</h5>
                                     </div>
                                 </div>
                                 <h5 className="text-sm">
@@ -43,8 +43,8 @@ export default function PanelMaterialCardView({
                                         <span>{panelMaterial.qty}</span>
                                     ) : (
                                         <PanelMaterialQty
-                                            handleSyncCarriagePanel={handleSyncCarriagePanel}
                                             panelMaterial={panelMaterial}
+                                            handleSyncCarriagePanel={handleSyncCarriagePanel}
                                         />
                                     )}
                                 </h5>

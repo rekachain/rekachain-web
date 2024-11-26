@@ -48,9 +48,9 @@ class CarriagePanelComponentSeeder extends Seeder {
         //         }
         //     }
         // }
-        
+
         foreach (CarriagePanel::all() as $carriagePanel) {
-            for($i=0; $i < rand(3,8); $i++) {
+            for ($i = 0; $i < rand(3, 8); $i++) {
                 CarriagePanelComponent::factory()->create([
                     'carriage_panel_id' => $carriagePanel->id,
                     'qty' => 1,

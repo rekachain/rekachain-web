@@ -38,7 +38,7 @@ export const carriagePanelComponentService = {
         progress_name: string,
         progress_work_aspect_id: number | null,
     ) => {
-        let formData = new FormData();
+        const formData = new FormData();
 
         if (progress_id) {
             formData.append('progress_id', progress_id.toString());

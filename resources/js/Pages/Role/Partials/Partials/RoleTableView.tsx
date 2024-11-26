@@ -38,8 +38,8 @@ export default function RoleTableView({
                             <TableCell>{role.permissions_count}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.ROLES}.edit`, role.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>
