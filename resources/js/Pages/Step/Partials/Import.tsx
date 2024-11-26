@@ -52,8 +52,8 @@ export default function () {
                 <div className="flex flex-col space-y-4">
                     <Label>Download Template</Label>
                     <Button
-                        type="button"
                         variant="secondary"
+                        type="button"
                         onClick={stepService.downloadImportDataTemplate}
                         disabled={loading}
                     >
@@ -64,10 +64,10 @@ export default function () {
                     <div className="space-y-4">
                         <Label htmlFor="file">File</Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                     </div>
                     <DialogFooter>

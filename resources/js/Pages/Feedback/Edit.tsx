@@ -37,19 +37,19 @@ export default function ({ feedback }: { feedback: FeedbackResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel value="Nama" htmlFor="nama" />
                             <Input
-                                id="nama"
-                                type="text"
-                                name="nama"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="nama"
+                                id="nama"
                                 className="mt-1"
                                 autoComplete="nama"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             Ubah Feedback
                         </Button>
                     </form>

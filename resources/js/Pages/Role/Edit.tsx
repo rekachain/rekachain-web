@@ -72,49 +72,49 @@ export default function (props: {
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
                             <InputLabel
-                                htmlFor="name"
                                 value={t('pages.role.edit.fields.name', { name: props.role.name })}
+                                htmlFor="name"
                             />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
+                                type="text"
                                 placeholder={props.role.name}
                                 onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
+                                className="mt-1"
+                                autoComplete="name"
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="division" value={t('pages.role.edit.fields.division')} />
+                            <InputLabel value={t('pages.role.edit.fields.division')} htmlFor="division" />
                             <GenericDataSelector
-                                id="division_id"
-                                fetchData={fetchDivisions}
                                 setSelectedData={id => setData('division_id', id)}
                                 selectedDataId={data.division_id ?? undefined}
-                                placeholder={t('pages.role.edit.fields.division_placeholder')}
                                 renderItem={(item: DivisionResource) => item.name}
-                                buttonClassName="mt-1"
-                                initialSearch={props.role?.division?.name}
+                                placeholder={t('pages.role.edit.fields.division_placeholder')}
                                 nullable
+                                initialSearch={props.role?.division?.name}
+                                id="division_id"
+                                fetchData={fetchDivisions}
+                                buttonClassName="mt-1"
                             />
                         </div>
 
                         <div className="mt-4">
                             <InputLabel
-                                htmlFor="level"
                                 value={t('pages.role.edit.fields.level', { level: props.role?.level ?? '' })}
+                                htmlFor="level"
                             />
                             <Input
-                                id="level"
-                                type="text"
-                                name="level"
                                 value={data.level}
+                                type="text"
+                                onChange={e => setData('level', e.target.value)}
+                                name="level"
+                                id="level"
                                 className="mt-1"
                                 autoComplete="level"
-                                onChange={e => setData('level', e.target.value)}
                             />
                         </div>
 
@@ -129,12 +129,12 @@ export default function (props: {
                                                 {permission.permissions.map(p => (
                                                     <div key={p.id} className="flex items-center">
                                                         <Checkbox
-                                                            id={`permission-${p.id}`}
-                                                            checked={data.permissions.includes(p.id)}
                                                             onCheckedChange={checked =>
                                                                 handlePermissionChange(checked, p)
                                                             }
                                                             name="permissions"
+                                                            id={`permission-${p.id}`}
+                                                            checked={data.permissions.includes(p.id)}
                                                         />
                                                         <label htmlFor={`permission-${p.id}`} className="ml-2">
                                                             {p.name}
@@ -148,7 +148,7 @@ export default function (props: {
                             </div>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.role.edit.buttons.submit')}
                         </Button>
                     </form>

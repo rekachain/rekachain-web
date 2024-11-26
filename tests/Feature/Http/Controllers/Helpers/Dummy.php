@@ -26,6 +26,7 @@ use App\Models\CarriagePanel;
 use App\Models\PanelMaterial;
 use App\Models\CarriagePreset;
 use App\Models\PresetTrainset;
+use App\Models\HelpdeskContact;
 use App\Models\PanelAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Models\CarriageTrainset;
@@ -468,6 +469,12 @@ class Dummy {
         ]);
 
         return $trainsetAttachmentHandler;
+    }
+
+    public function createHelpdeskContact() {
+        $helpdeskContact = HelpdeskContact::factory()->create();
+
+        return $helpdeskContact;
     }
 
 }

@@ -48,8 +48,8 @@ export default function CarriageTableView({
                                 ) : (
                                     <CarriageQty
                                         trainset={trainset}
-                                        carriage_trainset={carriage_trainset}
                                         handleSyncTrainset={handleSyncTrainset}
+                                        carriage_trainset={carriage_trainset}
                                     />
                                 )}
                             </TableCell>
@@ -75,11 +75,11 @@ export default function CarriageTableView({
                                     </Button>
                                 )}
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
                                         [trainset.project_id, trainset.id, carriage_trainset.id],
                                     )}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.actions.panels',

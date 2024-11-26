@@ -64,6 +64,7 @@ class TrainsetAttachmentResource extends JsonResource {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE->value:
                 $attachmentComponentMaterials = collect();
                 $attachmentComponentMaterials = $this->ancestor()->component_materials;
+
                 return $attachmentComponentMaterials
                     ->groupBy('raw_material_id')
                     ->map(fn ($componentMaterials) => [

@@ -4,8 +4,7 @@ namespace App\Support\Enums;
 
 use App\Traits\Enums\Arrayable;
 
-enum PanelAttachmentHandlerHandlesEnum: string
-{
+enum PanelAttachmentHandlerHandlesEnum: string {
     use Arrayable;
 
     case PREPARE = 'prepare';

@@ -18,8 +18,8 @@ export default function () {
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">{t('pages.carriage.index.title')}</h1>
                         <Link
-                            className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.CARRIAGES}.create`)}
+                            className={buttonVariants({ variant: 'default' })}
                         >
                             {t('pages.carriage.index.buttons.create')}
                         </Link>

@@ -17,6 +17,7 @@ class RawMaterialSeeder extends Seeder {
 
         if (!$csvData) {
             RawMaterial::factory(30)->create();
+
             return;
         }
 

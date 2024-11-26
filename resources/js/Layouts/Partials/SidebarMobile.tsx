@@ -68,10 +68,10 @@ export default function SidebarMobile() {
                             <Button
                                 variant="default"
                                 size="icon"
-                                className="sidebar-collapse-toggle-mobile w-full h-10  bg-transparent hover:bg-transparent"
                                 onClick={handleSidebarCollapse}
+                                className="sidebar-collapse-toggle-mobile w-full h-10  bg-transparent hover:bg-transparent"
                             >
-                                <img src="/assets/images/icon.png" alt="logo" width={50} />
+                                <img width={50} src="/assets/images/icon.png" alt="logo" />
                             </Button>
                         </SheetTrigger>
                         <SheetContent side={'left'} className="w-[250px] sm:w-[540px] h-screen ">
@@ -79,7 +79,7 @@ export default function SidebarMobile() {
                                 {' '}
                                 <SheetHeader>
                                     <SheetTitle className="mx-auto">
-                                        <img src="/assets/images/icon.png" alt="logo" width={50} />
+                                        <img width={50} src="/assets/images/icon.png" alt="logo" />
                                     </SheetTitle>
                                     <SheetDescription className="items-start w-full  flex flex-col gap-7 dark:text-white text-black">
                                         <Link href={'dashboard'} className="mt-5">
@@ -105,8 +105,8 @@ export default function SidebarMobile() {
                                                 <AccordionContent className="items-start pl-10 flex flex-col gap-7">
                                                     {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
                                                         <Link
-                                                            className="flex items-center gap-2"
                                                             href={route(`${ROUTES.DIVISIONS}.index`)}
+                                                            className="flex items-center gap-2"
                                                         >
                                                             <RiDivideLine size={STYLING.ICON.SIZE.SMALL} />
                                                             <p className="text-base">Divisi</p>
@@ -115,8 +115,8 @@ export default function SidebarMobile() {
 
                                                     {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
                                                         <Link
-                                                            className="flex items-center gap-2"
                                                             href={route(`${ROUTES.WORKSHOPS}.index`)}
+                                                            className="flex items-center gap-2"
                                                         >
                                                             <RiHome2Line size={STYLING.ICON.SIZE.SMALL} />
                                                             <p className="text-base">Workshop</p>
@@ -125,8 +125,8 @@ export default function SidebarMobile() {
 
                                                     {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
                                                         <Link
-                                                            className="flex items-center gap-2"
                                                             href={route(`${ROUTES.WORKSTATIONS}.index`)}
+                                                            className="flex items-center gap-2"
                                                         >
                                                             <RiToolsFill size={STYLING.ICON.SIZE.SMALL} />
                                                             <p className="text-base">Workstation</p>
@@ -135,8 +135,8 @@ export default function SidebarMobile() {
 
                                                     {checkPermission(PERMISSION_ENUM.USER_READ) && (
                                                         <Link
-                                                            className="flex items-center gap-2"
                                                             href={route(`${ROUTES.USERS}.index`)}
+                                                            className="flex items-center gap-2"
                                                         >
                                                             <RiUserLine size={STYLING.ICON.SIZE.SMALL} />
                                                             <p className="text-base">Staff</p>
@@ -156,17 +156,17 @@ export default function SidebarMobile() {
                                                 </AccordionTrigger>
                                                 <AccordionContent className="items-start pl-10 flex flex-col gap-7">
                                                     <Link
-                                                        className="flex items-center gap-2"
                                                         href={route(`${ROUTES.PERMISSIONS}.index`)}
+                                                        className="flex items-center gap-2"
                                                     >
                                                         <RiLockUnlockFill size={25} />
                                                         <p className="text-base">Permissions</p>
                                                     </Link>
                                                     <Link
-                                                        className="flex items-center gap-2"
                                                         href={route(`${ROUTES.ROLES}.index`)}
+                                                        className="flex items-center gap-2"
                                                     >
-                                                        <RiShieldLine className="mt-2" size={25} />
+                                                        <RiShieldLine size={25} className="mt-2" />
                                                         <p className="text-base">Roles</p>
                                                     </Link>
                                                 </AccordionContent>
@@ -177,8 +177,8 @@ export default function SidebarMobile() {
 
                                         {checkPermission(PERMISSION_ENUM.STEP_READ) && (
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.STEPS}.index`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiExpandRightLine size={35} />
                                                 <p className="text-base">List Step</p>
@@ -187,8 +187,8 @@ export default function SidebarMobile() {
 
                                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_READ) && (
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.RAW_MATERIALS}.index`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiInstanceLine size={35} />
                                                 <p className="text-base">List Material</p>
@@ -196,8 +196,8 @@ export default function SidebarMobile() {
                                         )}
                                         {checkPermission(PERMISSION_ENUM.COMPONENT_READ) && (
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.COMPONENTS}.index`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiStackLine size={35} />
                                                 <p className="text-base">List Component</p>
@@ -205,8 +205,8 @@ export default function SidebarMobile() {
                                         )}
                                         {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.PANELS}.index`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiArtboard2Fill size={35} />
                                                 <p className="text-base">List Panel</p>
@@ -214,8 +214,8 @@ export default function SidebarMobile() {
                                         )}
                                         {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.PROJECTS}.index`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiBox3Line size={35} />
                                                 <p className="text-base">List Proyek</p>
@@ -223,8 +223,8 @@ export default function SidebarMobile() {
                                         )}
                                         {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.CARRIAGES}.index`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiCaravanLine size={35} />
                                                 <p className="text-base">List Gerbong</p>
@@ -233,15 +233,15 @@ export default function SidebarMobile() {
 
                                         <div className="flex flex-col h-44 justify-end gap-y-6 ">
                                             <Link
-                                                className="flex items-center gap-2 m "
                                                 href={route(`${ROUTES.PROFILE}.edit`)}
+                                                className="flex items-center gap-2 m "
                                             >
                                                 <RiSettings3Line size={35} />
                                                 <p className="text-base">Pengaturan</p>
                                             </Link>
                                             <Link
-                                                className="flex items-center gap-2"
                                                 href={route(`${ROUTES.PROFILE}.edit`)}
+                                                className="flex items-center gap-2"
                                             >
                                                 <RiQuestionLine size={35} />
                                                 <p className="text-base">Help Desk</p>

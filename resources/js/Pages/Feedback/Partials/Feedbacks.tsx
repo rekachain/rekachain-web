@@ -60,15 +60,15 @@ export default function () {
                 <>
                     <div className="hidden md:block">
                         <FeedbackTableView
-                            feedbackResponse={feedbackResponse}
                             handleFeedbackDeletion={handleFeedbackDeletion}
+                            feedbackResponse={feedbackResponse}
                         />
                     </div>
 
                     <div className="block md:hidden">
                         <FeedbackCardView
-                            feedbackResponse={feedbackResponse}
                             handleFeedbackDeletion={handleFeedbackDeletion}
+                            feedbackResponse={feedbackResponse}
                         />
                     </div>
                 </>

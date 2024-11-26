@@ -105,7 +105,8 @@ test('update method updates DetailWorkerPanel', function () {
 
 test('destroy method deletes DetailWorkerPanel', function () {
     $user = User::factory()->superAdmin()->create();
-    $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
+    // $DetailWorkerPanel = DetailWorkerPanel::factory()->create();
+    $DetailWorkerPanel = $this->dummy->createDetailWorkerPanel();
 
     $response = $this->actingAs($user)->deleteJson("/detail-worker-panels/{$DetailWorkerPanel->id}");
 

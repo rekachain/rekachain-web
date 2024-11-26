@@ -191,12 +191,12 @@ const GenericDataSelector = <T extends Resource>({
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            <PopoverTrigger asChild id={id} className="w-">
+            <PopoverTrigger id={id} className="w-" asChild>
                 <Button
                     variant="outline"
                     role="combobox"
-                    aria-expanded={openPopover}
                     className={cn('w-40 justify-between', buttonClassName)}
+                    aria-expanded={openPopover}
                 >
                     {selectedDataId
                         ? items.find(item => item.id === selectedDataId)
@@ -209,13 +209,13 @@ const GenericDataSelector = <T extends Resource>({
             <PopoverContent className={cn('w-[200px] p-0', popoverContentClassName)}>
                 <Command shouldFilter={false}>
                     <CommandInput
+                        value={searchTerm}
                         placeholder={
                             customSearchPlaceholder ?? t('components.generic_data_selector.fields.search_placeholder')
                         }
-                        value={searchTerm}
                         onInput={handleSearchChange}
-                        className="border-none focus:ring-0"
                         disabled={isFetching}
+                        className="border-none focus:ring-0"
                     />
                     <CommandList>
                         <CommandGroup>
@@ -236,7 +236,7 @@ const GenericDataSelector = <T extends Resource>({
                             )}
                             {!isFetching &&
                                 items.map(item => (
-                                    <CommandItem key={item.id} onSelect={() => handleSelectItem(item.id)}>
+                                    <CommandItem onSelect={() => handleSelectItem(item.id)} key={item.id}>
                                         <Check
                                             className={cn(
                                                 'mr-2 h-4 w-4',

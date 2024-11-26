@@ -8,7 +8,7 @@ class StoreHelpdeskContactRequest extends FormRequest {
     public function rules(): array {
         return [
             'email' => 'required|email',
-            'phone_number' => 'nullable|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:15',
+            'phone_number' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:15',
             'notice' => 'nullable|string',
         ];
     }

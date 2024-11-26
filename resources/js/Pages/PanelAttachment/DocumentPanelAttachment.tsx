@@ -57,7 +57,7 @@ const DocumentAttachment = ({
     return (
         <>
             <Head title={pageTitle} />
-            <div className="text-black dark:text-white" key={panelAttachment.id}>
+            <div key={panelAttachment.id} className="text-black dark:text-white">
                 <h1 className="text-xl font-bold">{pageTitle}</h1>
                 <div className="grid grid-cols-3">
                     <div className="flex flex-col gap-3 mt-5">
@@ -96,7 +96,7 @@ const DocumentAttachment = ({
                     </div>
                     {panelAttachment?.qr && (
                         <div className="flex flex-col gap-3 mt-5 text-white items-center">
-                            <img src={panelAttachment.qr} alt="QR Code" width={200} />
+                            <img width={200} src={panelAttachment.qr} alt="QR Code" />
                         </div>
                     )}
                 </div>

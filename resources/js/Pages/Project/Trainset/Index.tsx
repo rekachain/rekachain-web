@@ -81,24 +81,24 @@ export default function ({ project: initialProject }: { project: ProjectResource
                         </div>
 
                         <div className="rounded p-5 bg-background-2">
-                            <form onSubmit={handleAddTrainset} className="flex flex-col gap-2 group" noValidate>
+                            <form onSubmit={handleAddTrainset} noValidate className="flex flex-col gap-2 group">
                                 <Label htmlFor="add-trainset">
                                     {t('pages.project.trainset.index.buttons.add_trainset')}
                                 </Label>
                                 <div className="flex gap-2">
                                     <div className="">
                                         <Input
-                                            // pattern="^[2-9]\d*$"
-                                            id="add-trainset"
+                                            value={data.trainsetNeeded}
                                             type="number"
-                                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
-                                            min={1}
+                                            required
                                             placeholder={t(
                                                 'pages.project.trainset.index.fields.trainset_needed_placeholder',
                                             )}
-                                            value={data.trainsetNeeded}
                                             onChange={e => setData('trainsetNeeded', +e.target.value)}
-                                            required
+                                            min={1}
+                                            // pattern="^[2-9]\d*$"
+                                            id="add-trainset"
+                                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
                                         />
                                         <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
                                             {t('pages.project.trainset.index.fields.trainset_needed_error')}

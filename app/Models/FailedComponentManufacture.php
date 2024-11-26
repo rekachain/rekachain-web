@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class FailedComponentManufacture extends Model
-{
+class FailedComponentManufacture extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -15,8 +14,7 @@ class FailedComponentManufacture extends Model
         'notes',
     ];
 
-    public function detail_worker_trainset(): BelongsTo
-    {
+    public function detail_worker_trainset(): BelongsTo {
         return $this->belongsTo(DetailWorkerTrainset::class);
     }
 }

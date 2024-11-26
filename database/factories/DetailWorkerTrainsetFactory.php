@@ -12,22 +12,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DetailWorkerTrainset>
  */
-class DetailWorkerTrainsetFactory extends Factory
-{
+class DetailWorkerTrainsetFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             'trainset_attachment_component_id' => TrainsetAttachmentComponent::inRandomOrder()->first()->id,
             'worker_id' => User::inRandomOrder()->first()->id,
             'progress_step_id' => ProgressStep::inRandomOrder()->first()->id,
             'estimated_time' => $this->faker->numberBetween(1, 10),
             'work_status' => DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS->value,
-            'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value
+            'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value,
         ];
     }
 }

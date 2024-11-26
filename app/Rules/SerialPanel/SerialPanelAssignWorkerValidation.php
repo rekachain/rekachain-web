@@ -19,10 +19,11 @@ class SerialPanelAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.manufacture_status_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
-                    'manufacture_status'=>$serialPanel->manufacture_status,
+                    'progress' => $serialPanel->panel_attachment->carriage_panel->progress->name,
+                    'manufacture_status' => $serialPanel->manufacture_status,
                 ]
             ));
+
             return;
         }
         // if ($user->hasRole([RoleEnum::QC_ASSEMBLY,RoleEnum::WORKER_ASSEMBLY])) {
@@ -31,10 +32,11 @@ class SerialPanelAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_invalid_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
-                    'step'=>$user->step->name
+                    'progress' => $serialPanel->panel_attachment->carriage_panel->progress->name,
+                    'step' => $user->step->name,
                 ]
             ));
+
             return;
         }
 
@@ -46,15 +48,15 @@ class SerialPanelAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_completed_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
-                    'step'=>$user->step->name
+                    'progress' => $serialPanel->panel_attachment->carriage_panel->progress->name,
+                    'step' => $user->step->name,
                 ]
             ));
         } elseif ($currentKey - $lastKey > 1 || ($currentKey > $lastKey && !$lastWorkerPanelCompleted)) {
             $fail(__(
                 'validation.custom.serial_panel.assign_worker.step_ahead_exception',
                 [
-                    'progress'=>$serialPanel->panel_attachment->carriage_panel->progress->name,
+                    'progress' => $serialPanel->panel_attachment->carriage_panel->progress->name,
                 ]
             ));
         }

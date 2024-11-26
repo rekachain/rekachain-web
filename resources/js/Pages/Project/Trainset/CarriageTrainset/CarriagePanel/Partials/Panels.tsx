@@ -29,18 +29,18 @@ export default function ({
             <div className="hidden md:block">
                 <CarPanelTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
                     handleSyncCarriagePanel={handleSyncCarriage}
                     handlePanelDeletion={handlePanelDeletion}
+                    carriageTrainset={carriageTrainset}
                 ></CarPanelTableView>
             </div>
 
             <div className="block md:hidden">
                 <CarPanelCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
                     handleSyncCarriage={handleSyncCarriage}
                     handlePanelDeletion={handlePanelDeletion}
+                    carriageTrainset={carriageTrainset}
                 ></CarPanelCardView>
             </div>
         </div>

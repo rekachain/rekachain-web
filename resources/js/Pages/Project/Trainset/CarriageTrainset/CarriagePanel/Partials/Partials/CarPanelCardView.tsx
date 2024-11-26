@@ -24,10 +24,10 @@ export default function CarPanelCardView({
                 {carriageTrainset?.carriage_panels?.map(carriage_panel => (
                     <div key={carriage_panel.id}>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
                             to="opacity-100 translate-y-0 translate-x-0"
-                            duration={300}
                             key={carriage_panel.id}
+                            from="opacity-0 -translate-y-4"
+                            duration={300}
                         >
                             <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                                 <div className="flex  justify-between items-scenter">

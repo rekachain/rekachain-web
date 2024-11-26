@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\PanelAttachment;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StorePanelAttachmentRequest extends FormRequest {
     /**

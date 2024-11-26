@@ -43,8 +43,8 @@ export default function WorkstationTableView({
 
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

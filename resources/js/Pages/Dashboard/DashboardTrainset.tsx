@@ -79,8 +79,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <Button
                                                 variant="outline"
                                                 role="combobox"
-                                                aria-expanded={open}
                                                 className="w-40 justify-between"
+                                                aria-expanded={open}
                                             >
                                                 {value
                                                     ? data['projectList'].find(
@@ -102,7 +102,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             data['projectList'].map(projectItem => (
                                                                 <Link href={`/dashboard/${projectItem.id}`}>
                                                                     <CommandItem
-                                                                        key={projectItem.name}
                                                                         value={projectItem.name}
                                                                         onSelect={currentValue => {
                                                                             setValue(
@@ -112,6 +111,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                             );
                                                                             setOpen(false);
                                                                         }}
+                                                                        key={projectItem.name}
                                                                     >
                                                                         <Check
                                                                             className={cn(
@@ -136,8 +136,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <Button
                                                 variant="outline"
                                                 role="combobox"
-                                                aria-expanded={openTrainset}
                                                 className="w-40 justify-between"
+                                                aria-expanded={openTrainset}
                                             >
                                                 {valueTrainset
                                                     ? data['tsList'].find(
@@ -160,7 +160,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >
                                                                 <CommandItem
-                                                                    key={projectItem.id}
                                                                     value={projectItem.name}
                                                                     onSelect={currentValue => {
                                                                         setValueTrainset(
@@ -170,6 +169,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                         );
                                                                         setOpenTrainset(false);
                                                                     }}
+                                                                    key={projectItem.id}
                                                                 >
                                                                     <Check
                                                                         className={cn(
@@ -191,12 +191,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </div>
                             </div>
                             <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                                <BarChart accessibilityLayer data={data['carriages']}>
+                                <BarChart data={data['carriages']} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
-                                    <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
+                                    <XAxis tickMargin={10} tickLine={false} dataKey="type" axisLine={false} />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="qty" fill="var(--color-done)" radius={4} />
+                                    <Bar radius={4} fill="var(--color-done)" dataKey="qty" />
                                 </BarChart>
                             </ChartContainer>
                         </div>
@@ -205,20 +205,20 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
                                 <h3 className="text-base">{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
                                 <ChartContainer config={chartConfig} className="h-[400px] w-full mt-5">
-                                    <BarChart className="" accessibilityLayer data={data['panel']}>
+                                    <BarChart data={data['panel']} className="" accessibilityLayer>
                                         <CartesianGrid vertical={false} />
                                         <XAxis
-                                            // tick={<CustomizedAxisTick />}
-                                            angle={-45}
+                                            tickMargin={0}
+                                            tickLine={false}
                                             textAnchor="end"
                                             dataKey="name"
-                                            tickLine={false}
-                                            tickMargin={0}
                                             axisLine={false}
+                                            // tick={<CustomizedAxisTick />}
+                                            angle={-45}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar className="" dataKey="total" fill="var(--color-done)" radius={4} />
+                                        <Bar radius={4} fill="var(--color-done)" dataKey="total" className="" />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
@@ -229,7 +229,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <ChartContainer config={panelChartConf} className="mx-auto aspect-square max-h-[250px]">
                                     <PieChart>
                                         <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                        <Pie data={data['total']} dataKey="" nameKey="status" innerRadius={60} />
+                                        <Pie nameKey="status" innerRadius={60} dataKey="" data={data['total']} />
                                     </PieChart>
                                 </ChartContainer>
                             </div>

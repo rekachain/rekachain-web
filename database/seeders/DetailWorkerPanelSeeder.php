@@ -13,6 +13,7 @@ use Illuminate\Database\Seeder;
 
 class DetailWorkerPanelSeeder extends Seeder {
     public function __construct(protected PanelAttachmentServiceInterface $panelAttachmentService) {}
+
     /**
      * Run the database seeds.
      */
@@ -25,19 +26,19 @@ class DetailWorkerPanelSeeder extends Seeder {
                 // PanelAttachmentStatusEnum::PENDING->value => PanelAttachmentStatusEnum::PENDING->value,
                 PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
                 PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value => PanelAttachmentStatusEnum::MATERIAL_ACCEPTED->value,
-                null => null
+                null => null,
             ]);
             if (!empty($randStatus)) {
                 $panelAttachment->update([
-                    'status' => $randStatus
-                ]);    
-            } 
+                    'status' => $randStatus,
+                ]);
+            }
             $serialPanelsCount = $panelAttachment->serial_panels()->count();
             $serialPanels = collect();
             if ($panelAttachmentIndex < $panelAttachmentSeedBound) {
                 $serialPanels = $panelAttachment->serial_panels()->get();
             } else {
-                if ($panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT 
+                if ($panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_IN_TRANSIT
                     && $panelAttachment->status != PanelAttachmentStatusEnum::MATERIAL_ACCEPTED
                     && $panelAttachment->status != null
                 ) {
@@ -64,9 +65,9 @@ class DetailWorkerPanelSeeder extends Seeder {
                             ]);
                         }
                         $acceptanceStatus = $workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value ? DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value : null;
-                        if($workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value && $progressSteps->count() == $progressStepsCount) {
+                        if ($workStatus == DetailWorkerPanelWorkStatusEnum::COMPLETED->value && $progressSteps->count() == $progressStepsCount) {
                             $serialPanel->update([
-                                'manufacture_status' => SerialPanelManufactureStatusEnum::COMPLETED->value
+                                'manufacture_status' => SerialPanelManufactureStatusEnum::COMPLETED->value,
                             ]);
                         }
                     }
@@ -79,13 +80,13 @@ class DetailWorkerPanelSeeder extends Seeder {
                             'progress_step_id' => $progressStep->id,
                             'estimated_time' => $progressStep->step->estimated_time,
                             'work_status' => $workStatus,
-                            'acceptance_status' => $acceptanceStatus
+                            'acceptance_status' => $acceptanceStatus,
                         ]);
                     }
                 }
                 if ($panelAttachmentIndex < $panelAttachmentSeedBound) {
                     $this->panelAttachmentService->update($panelAttachment, [
-                        'status' => PanelAttachmentStatusEnum::DONE->value
+                        'status' => PanelAttachmentStatusEnum::DONE->value,
                     ]);
                 }
             }

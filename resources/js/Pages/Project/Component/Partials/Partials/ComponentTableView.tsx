@@ -36,7 +36,7 @@ export default function ComponentTableView({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} component={data.component} hasMaterials={data.has_materials} />
+                                <Import project={project} hasMaterials={data.has_materials} component={data.component} />
                             </TableCell>
                         </TableRow>
                     ))}

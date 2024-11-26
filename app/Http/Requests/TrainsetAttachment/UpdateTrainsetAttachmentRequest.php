@@ -3,18 +3,19 @@
 namespace App\Http\Requests\TrainsetAttachment;
 
 use App\Models\User;
+use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerValidation;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\RoleEnum;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
-use App\Rules\TrainsetAttachment\TrainsetAttachmentAssignWorkerValidation;
+use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateTrainsetAttachmentRequest extends FormRequest {
     public function authorize(): bool {
         return true;
     }
+
     public function rules(): array {
         $intent = $this->get('intent');
 
@@ -22,14 +23,14 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT->value:
                 return [
                     'source_workstation_id' => [
-                        'required_if:destination_workstation_id,' . $this->get('destination_workstation_id'), 
-                        'integer', 
+                        'required_if:destination_workstation_id,' . $this->get('destination_workstation_id'),
+                        'integer',
                         'exists:workstations,id',
                         function ($attribute, $value, $fail) {
                             if ($value === $this->get('destination_workstation_id')) {
                                 $fail('The ' . $attribute . ' cannot be the same as the destination workstation ID.');
                             }
-                        }
+                        },
                     ],
                     'destination_workstation_id' => [
                         'required_if:source_workstation_id,' . $this->get('source_workstation_id'),
@@ -40,7 +41,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                                 $fail('The ' . $attribute . ' cannot be the same as the source workstation ID.');
                             }
                         },
-                    ]
+                    ],
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT->value:
                 return [
@@ -49,14 +50,14 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     // 'override' => 'required_if:to_be_assigned,false|boolean',
                     'override' => 'nullable|boolean',
                     'source_workstation_id' => [
-                        'required_if:destination_workstation_id,' . $this->get('destination_workstation_id'), 
-                        'integer', 
+                        'required_if:destination_workstation_id,' . $this->get('destination_workstation_id'),
+                        'integer',
                         'exists:workstations,id',
                         function ($attribute, $value, $fail) {
                             if ($value === $this->get('destination_workstation_id')) {
                                 $fail('The ' . $attribute . ' cannot be the same as the destination workstation ID.');
                             }
-                        }
+                        },
                     ],
                     'destination_workstation_id' => [
                         'required_if:source_workstation_id,' . $this->get('source_workstation_id'),
@@ -67,7 +68,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                                 $fail('The ' . $attribute . ' cannot be the same as the source workstation ID.');
                             }
                         },
-                    ]
+                    ],
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return [
@@ -80,7 +81,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
                     'note' => [
                         'required_if:status,' . TrainsetAttachmentStatusEnum::PENDING->value,
-                    ]
+                    ],
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 $arr = [
@@ -100,6 +101,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                 } else {
                     $arr['receiver_id'] = 'required|integer|exists:users,id';
                 }
+
                 return $arr;
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_WORKER_COMPONENT->value:
                 $arr = [
@@ -115,17 +117,19 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     }
                     $arr['worker_id'] = 'required|integer|exists:users,id';
                 }
+
                 return $arr;
             case IntentEnum::API_TRAINSET_ATTACHMENT_CONFIRM_KPM_BY_SPV->value:
                 return [
                     'status' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentStatusEnum::cases(), 'value'))],
-                    'note' => ['nullable', 'string', 'max:255']
+                    'note' => ['nullable', 'string', 'max:255'],
                 ];
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_HANDLER->value:
                 return [
                     'handles' => ['required', 'in:' . implode(',', array_column(TrainsetAttachmentHandlerHandlesEnum::cases(), 'value'))],
-                ];   
+                ];
         }
+
         return [
             'trainset_id' => 'nullable|integer|exists:trainsets,id',
             'source_workstation_id' => 'nullable|integer|exists:workstations,id',
@@ -153,7 +157,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                     function ($validator) use ($trainsetAttachment) {
                         $validator->safe()->all();
                         $userId = $validator->getData()['worker_id'] ?? auth()->user()->id;
-                        $assignWorkerStepValidation = new TrainsetAttachmentAssignWorkerValidation();
+                        $assignWorkerStepValidation = new TrainsetAttachmentAssignWorkerValidation;
                         $assignWorkerStepValidation->validate('Trainset Attachment', [
                             $trainsetAttachment,
                             $validator->getData()['carriage_panel_component_id'],
@@ -161,7 +165,7 @@ class UpdateTrainsetAttachmentRequest extends FormRequest {
                         ], function ($message) use ($validator) {
                             $validator->errors()->add('Trainset Attachment Worker Assign', $message);
                         });
-                    }
+                    },
                 ];
             default:
                 return [];

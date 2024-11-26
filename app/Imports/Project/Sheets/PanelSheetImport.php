@@ -7,12 +7,10 @@ use App\Models\Panel;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PanelSheetImport extends ProjectsImport implements ToModel, WithHeadingRow
-{
-    public function __construct(private ProjectsImport $parent) { }
-    
-    public function model(array $row) 
-    {
+class PanelSheetImport extends ProjectsImport implements ToModel, WithHeadingRow {
+    public function __construct(private ProjectsImport $parent) {}
+
+    public function model(array $row) {
         // logger(array_keys($row));
         $panel = Panel::firstOrCreate([
             'name' => $row['nama'],

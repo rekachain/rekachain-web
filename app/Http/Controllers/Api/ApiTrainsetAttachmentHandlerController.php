@@ -4,20 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TrainsetAttachmentHandlerResource;
-use App\Models\TrainsetAttachmentHandler;
-use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
 use Illuminate\Http\Request;
 
 class ApiTrainsetAttachmentHandlerController extends Controller {
     public function __construct(
         protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService
-    ){}
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request) {
         $perPage = $request->get('perPage', 5);
+
         return TrainsetAttachmentHandlerResource::collection($this->trainsetAttachmentHandlerService->getAllPaginated($request->query(), $perPage));
     }
 

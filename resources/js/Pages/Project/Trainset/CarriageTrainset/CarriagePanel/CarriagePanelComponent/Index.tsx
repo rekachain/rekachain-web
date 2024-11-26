@@ -140,18 +140,18 @@ export default function ({
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <CarriagePanelComponents
                             trainset={trainset}
-                            carriageTrainset={carriageTrainset}
                             handleSyncCarriagePanel={handleSyncCarriagePanel}
+                            carriageTrainset={carriageTrainset}
                             carriagePanel={carriagePanel}
                         />
                     </Suspense>
 
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && componentResource && (
                         <AddNewComponent
-                            carriagePanel={carriagePanel}
+                            setComponentResource={setComponentResource}
                             handleSyncCarriagePanel={handleSyncCarriagePanel}
                             componentResource={componentResource}
-                            setComponentResource={setComponentResource}
+                            carriagePanel={carriagePanel}
                         />
                     )}
                 </div>
