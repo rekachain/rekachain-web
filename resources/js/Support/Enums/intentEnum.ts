@@ -5,6 +5,7 @@ const intents = {
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
     WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
     WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL: 'web.project.import.component.progress.and.material',
+    WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL:'web.project.import.trainset.component.progress.and.material',
     WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL:
         'web.project.import.carriage.component.progress.and.material',
     WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL: 'web.project.import.carriage.panel.progress.and.material',

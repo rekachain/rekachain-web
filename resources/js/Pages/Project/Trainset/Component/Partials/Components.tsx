@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { projectService } from '@/Services/projectService';
 import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
+import GenericPagination from '@/Components/GenericPagination';
+import Import from './Import';
 // import Import from '../Import';
 
 export default function Components({ project, trainset }: { project: ProjectResource; trainset: TrainsetResource }) {
@@ -19,7 +21,7 @@ export default function Components({ project, trainset }: { project: ProjectReso
     const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
-        const data = await projectService.getCarriageComponents(project.id, trainset.id);
+        const data = await projectService.getCarriageComponents(project.id, trainset.id, filters);
 
         setComponentResponse(data);
 
@@ -80,12 +82,19 @@ export default function Components({ project, trainset }: { project: ProjectReso
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                {/* <Import project={project} component={data.component} hasMaterials={data.has_materials} /> */}
+                                <Import
+                                    project={project}
+                                    trainset={trainset}
+                                    component={data.component}
+                                    hasMaterials={data.has_materials}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
+
+            <GenericPagination meta={componentResponse} handleChangePage={handlePageChange} />
         </div>
     );
 }

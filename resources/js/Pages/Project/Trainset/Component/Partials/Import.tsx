@@ -25,10 +25,12 @@ import { componentService } from '@/Services/componentService';
 
 export default function ({
     project,
+    trainset,
     component,
     hasMaterials = false,
 }: {
     project: any;
+    trainset: any;
     component: any;
     hasMaterials?: boolean;
 }) {
@@ -53,14 +55,15 @@ export default function ({
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await projectService.importComponentsProgressRawMaterial(
+        await projectService.importTrainsetComponentsProgressRawMaterial(
             project.id,
+            trainset.id,
             data.file as File,
             component.id,
             data.work_aspect_id as number,
         );
         await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
-        // router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
+        router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
         return await workAspectService
@@ -85,12 +88,13 @@ export default function ({
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
+                    <DialogTitle>{'Import Komponen'}</DialogTitle>
                     <DialogDescription>
-                        {t('pages.project.component.partials.import.dialogs.description', {
+                        Import komponen dan progress untuk trainset
+                        {/* {t('pages.project.component.partials.import.dialogs.description', {
                             component_name: component.name,
                             project_name: project.name,
-                        })}
+                        })} */}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col space-y-4">

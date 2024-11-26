@@ -8,6 +8,7 @@ import { projectService } from '@/Services/projectService';
 // import PanelCardView from './Partials/PanelCardView';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import GenericPagination from '@/Components/GenericPagination';
+import { filter } from 'lodash';
 
 export default function Panels({ project, trainset }: { project: ProjectResource; trainset: TrainsetResource }) {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<ProjectPanelResource>>();
@@ -19,7 +20,7 @@ export default function Panels({ project, trainset }: { project: ProjectResource
 
     const syncPanels = withLoading(async () => {
         // const data = await projectService.getPanels(project.id, filters);
-        const data = await projectService.getCarriagePanels(project.id, trainset.id);
+        const data = await projectService.getCarriagePanels(project.id, trainset.id, filters);
         setPanelResponse(data);
         console.log('==========aa');
         console.log(panelResponse);
