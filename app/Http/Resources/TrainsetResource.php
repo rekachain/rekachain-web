@@ -189,10 +189,7 @@ class TrainsetResource extends JsonResource {
                 $panelProgress = $attachments->map(function (PanelAttachment $attachment) {
                     $panelSteps = $attachment->progress->progress_steps->map(function ($progressStep) use (&$panelSteps) {
                         return [
-                            'step_id' => $progressStep->step_id,
-                            'step_name' => $progressStep->step->name,
-                            'step_process' => $progressStep->step->process,
-                            'estimated_time' => $progressStep->step->estimated_time,
+                            ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
                             'work_status' => null,
                         ];
                     });
@@ -200,20 +197,17 @@ class TrainsetResource extends JsonResource {
                     $serialPanels =$attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
                         $steps = collect();
                         $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
-                            $step = $steps->firstWhere('step_id', $detailWorkerPanel->progress_step->step_id);
+                            $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
                             if (!$step) {
                                 $steps->push([
-                                    'step_id' => $detailWorkerPanel->progress_step->step_id,
-                                    'step_name' => $detailWorkerPanel->progress_step->step->name,
-                                    'step_process' => $detailWorkerPanel->progress_step->step->process,
-                                    'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
+                                    ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                     'work_status' => $detailWorkerPanel->work_status->value,
                                 ]);
                             }
                         });
                         logger($steps);
                         $panelSteps->each(function ($panelStep) use (&$steps) {
-                            $step = $steps->firstWhere('step_id', $panelStep['step_id']);
+                            $step = $steps->firstWhere('id', $panelStep['id']);
                             if (!$step) {
                                 $steps->push($panelStep);
                             }
@@ -222,12 +216,13 @@ class TrainsetResource extends JsonResource {
                         return [
                             'serial_number' => $serialPanel->id,
                             'product_no' => $serialPanel->product_no,
-                            'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                            'steps' => $steps->sortBy('id')->map(fn ($step) => $step)->values(),
                         ];
                     });
 
                     return [
                         'panel' => $attachment->carriage_panel->panel,
+                        'carriage' => $attachment->carriage_panel->carriage_trainset->carriage,
                         'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
                         'total_steps' => $panelSteps->count(),
                         'serial_panels' => $serialPanels
@@ -241,10 +236,7 @@ class TrainsetResource extends JsonResource {
                 $panelProgress = $attachments->map(function (PanelAttachment $attachment) {
                     $panelSteps = $attachment->progress->progress_steps->map(function ($progressStep) use (&$panelSteps) {
                         return [
-                            'step_id' => $progressStep->step_id,
-                            'step_name' => $progressStep->step->name,
-                            'step_process' => $progressStep->step->process,
-                            'estimated_time' => $progressStep->step->estimated_time,
+                            ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
                             'work_status' => null,
                             'workers' => collect(),
                         ];
@@ -254,7 +246,7 @@ class TrainsetResource extends JsonResource {
                         $steps = collect();
                         $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                             $workers = collect();
-                            $step = $steps->firstWhere('step_id', $detailWorkerPanel->progress_step->step_id);
+                            $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
                             if (!$step) {
                                 $workers->push([
                                     'nip' => $detailWorkerPanel->worker->nip,
@@ -264,10 +256,7 @@ class TrainsetResource extends JsonResource {
                                     'work_status' => $detailWorkerPanel->work_status
                                 ]);
                                 $steps->push([
-                                    'step_id' => $detailWorkerPanel->progress_step->step->id,
-                                    'step_name' => $detailWorkerPanel->progress_step->step->name,
-                                    'step_process' => $detailWorkerPanel->progress_step->step->process,
-                                    'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
+                                    ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                     'work_status' => $detailWorkerPanel->work_status->value,
                                     'workers' => $workers
                                 ]);
@@ -281,9 +270,8 @@ class TrainsetResource extends JsonResource {
                                 ]);
                             }
                         });
-                        logger($steps);
                         $panelSteps->each(function ($panelStep) use (&$steps) {
-                            $step = $steps->firstWhere('step_id', $panelStep['step_id']);
+                            $step = $steps->firstWhere('id', $panelStep['id']);
                             if (!$step) {
                                 $steps->push($panelStep);
                             }
@@ -292,12 +280,13 @@ class TrainsetResource extends JsonResource {
                         return [
                             'serial_number' => $serialPanel->id,
                             'product_no' => $serialPanel->product_no,
-                            'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                            'steps' => $steps->sortBy('id')->map(fn ($step) => $step)->values(),
                         ];
                     });
 
                     return [
                         'panel' => $attachment->carriage_panel->panel,
+                        'carriage' => $attachment->carriage_panel->carriage_trainset->carriage,
                         'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
                         'total_steps' => $panelSteps->count(),
                         'serial_panels' => $serialPanels

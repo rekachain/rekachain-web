@@ -208,13 +208,10 @@ class TrainsetAttachmentResource extends JsonResource {
                 $componentSteps = collect();
                 $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
                     $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
-                        $step = $componentSteps->firstWhere('step_id', $progressStep->step_id);
+                        $step = $componentSteps->firstWhere('id', $progressStep->step_id);
                         if (!$step) {
                             $componentSteps->push([
-                                'step_id' => $progressStep->step_id,
-                                'step_name' => $progressStep->step->name,
-                                'step_process' => $progressStep->step->process,
-                                'estimated_time' => $progressStep->step->estimated_time,
+                                ...StepResource::make($progressStep->step)->only('id', 'name', 'process', 'estimated_time'),
                                 'work_status' => null,
                             ]);
                         }
@@ -224,20 +221,16 @@ class TrainsetAttachmentResource extends JsonResource {
                 $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($attachmentProgress, $componentSteps) {
                     $steps = collect();
                     $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
-                        $step = $steps->firstWhere('step_id', $detailWorkerTrainset->progress_step->step_id);
+                        $step = $steps->firstWhere('id', $detailWorkerTrainset->progress_step->step_id);
                         if (!$step) {
                             $steps->push([
-                                'step_id' => $detailWorkerTrainset->progress_step->step_id,
-                                'step_name' => $detailWorkerTrainset->progress_step->step->name,
-                                'step_process' => $detailWorkerTrainset->progress_step->step->process,
-                                'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
+                                ...StepResource::make($detailWorkerTrainset->progress_step->step)->only('id', 'name', 'process', 'estimated_time'),
                                 'work_status' => $detailWorkerTrainset->work_status->value,
                             ]);
                         }
                     });
-                    logger($steps);
                     $componentSteps->each(function ($componentStep) use (&$steps) {
-                        $step = $steps->firstWhere('step_id', $componentStep['step_id']);
+                        $step = $steps->firstWhere('id', $componentStep['id']);
                         if (!$step) {
                             $steps->push($componentStep);
                         }
@@ -250,7 +243,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'panel' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->panel,
                                 'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
                                 'total_steps' => $steps->count(),
-                                'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                                'steps' => $steps->sortBy('id')->map(fn ($step) => $step)->values(),
                             ]);
                         }
                     });
@@ -269,14 +262,10 @@ class TrainsetAttachmentResource extends JsonResource {
                 $componentSteps = collect();
                 $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
                     $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
-                        $step = $componentSteps->firstWhere('step_id', $progressStep->step_id);
+                        $step = $componentSteps->firstWhere('id', $progressStep->step_id);
                         if (!$step) {
                             $componentSteps->push([
-                                'step_id' => $progressStep->step_id,
-                                // 'progress_step_id' => $progressStep->id,
-                                'step_name' => $progressStep->step->name,
-                                'step_process' => $progressStep->step->process,
-                                'estimated_time' => $progressStep->step->estimated_time,
+                                ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
                                 'work_status' => null,
                                 'workers' => collect(),
                             ]);
@@ -288,7 +277,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     $steps = collect();
                     $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
                         $workers = collect();
-                        $step = $steps->firstWhere('step_id', $detailWorkerTrainset->progress_step->step_id);
+                        $step = $steps->firstWhere('id', $detailWorkerTrainset->progress_step->step_id);
                         if (!$step) {
                             $workers->push([
                                 'nip' => $detailWorkerTrainset->worker->nip,
@@ -298,11 +287,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'work_status' => $detailWorkerTrainset->work_status,
                             ]);
                             $steps->push([
-                                'step_id' => $detailWorkerTrainset->progress_step->step_id,
-                                // 'progress_step_id' => $detailWorkerTrainset->progress_step->id,
-                                'step_name' => $detailWorkerTrainset->progress_step->step->name,
-                                'step_process' => $detailWorkerTrainset->progress_step->step->process,
-                                'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
+                                ...StepResource::make($detailWorkerTrainset->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                 'work_status' => $detailWorkerTrainset->work_status->value,
                                 'workers' => $workers,
                             ]);
@@ -317,7 +302,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         }
                     });
                     $componentSteps->each(function ($componentStep) use (&$steps) {
-                        $step = $steps->firstWhere('step_id', $componentStep['step_id']);
+                        $step = $steps->firstWhere('id', $componentStep['id']);
                         if (!$step) {
                             $steps->push($componentStep);
                         }
@@ -330,7 +315,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'panel' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->panel,
                                 'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
                                 'total_steps' => $steps->count(),
-                                'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
+                                'steps' => $steps->sortBy('id')->map(fn ($step) => $step)->values(),
                             ]);
                         }
                     });
