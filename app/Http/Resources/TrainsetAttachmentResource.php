@@ -277,6 +277,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'step_name' => $progressStep->step->name,
                                 'step_process' => $progressStep->step->process,
                                 'estimated_time' => $progressStep->step->estimated_time,
+                                'work_status' => null,
                                 'workers' => collect(),
                             ]);
                         }
@@ -302,6 +303,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'step_name' => $detailWorkerTrainset->progress_step->step->name,
                                 'step_process' => $detailWorkerTrainset->progress_step->step->process,
                                 'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
+                                'work_status' => $detailWorkerTrainset->work_status->value,
                                 'workers' => $workers,
                             ]);
                         } else {
