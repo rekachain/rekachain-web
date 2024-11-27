@@ -76,8 +76,17 @@ const ProgressTrainsetAttachment = ({
                             <div className="flex flex-col gap-2">
                                 {progress.carriage_panel_components.map((componentProgress) => (
                                     <div key={`${componentProgress.carriage_panel_component_id}`}>
-                                        <h3>Panel: {componentProgress.panel.name}</h3>
-                                        <h3>Gerbong: {componentProgress.carriage.type}</h3>
+                                        <div className="flex items-center justify-center space-x-2 pb-1">
+                                            <div className="flex-1">
+                                                <h3 className="text-right">{componentProgress.panel.name}</h3>
+                                            </div>
+                                            <div className="flex-none">
+                                                <h3 className="text-center">|</h3>
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-left">Gerbong: {componentProgress.carriage.type}</h3>
+                                            </div>
+                                        </div>
                                         <ScrollArea className="w-full rounded-md border">
                                             <div className="flex w-max space-x-4 p-4">
                                                 <Breadcrumb>
@@ -147,7 +156,7 @@ const ProgressTrainsetAttachment = ({
                                         </ScrollArea>
                                     </div>
                                 ))}
-                                <Separator className="my-4 h-1" />
+                                <Separator className="my-4 h-1 bg-black dark:bg-white" />
                             </div>
                         </div>
                     ))
