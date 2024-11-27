@@ -281,12 +281,14 @@ class TrainsetAttachmentResource extends JsonResource {
                         $step = $steps->firstWhere('id', $detailWorkerTrainset->progress_step->step_id);
                         if (!$step) {
                             $workers->push([
-                                'nip' => $detailWorkerTrainset->worker->nip,
-                                'name' => $detailWorkerTrainset->worker->name,
-                                'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
-                                'acceptance_status' => $detailWorkerTrainset->acceptance_status,
-                                'work_status' => $detailWorkerTrainset->work_status,
+                                'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
+                                ...DetailWorkerTrainsetResource::make(
+                                    $detailWorkerTrainset->fresh()
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                             ]);
+                            // logger(DetailWorkerTrainsetResource::make(
+                            //     $detailWorkerTrainset->fresh()
+                            // )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'));
                             $steps->push([
                                 ...StepResource::make($detailWorkerTrainset->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                 'work_status' => $detailWorkerTrainset->work_status->value,
@@ -294,11 +296,10 @@ class TrainsetAttachmentResource extends JsonResource {
                             ]);
                         } else {
                             $step['workers']->push([
-                                'nip' => $detailWorkerTrainset->worker->nip,
-                                'name' => $detailWorkerTrainset->worker->name,
-                                'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
-                                'acceptance_status' => $detailWorkerTrainset->acceptance_status,
-                                'work_status' => $detailWorkerTrainset->work_status,
+                                'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
+                                ...DetailWorkerTrainsetResource::make(
+                                    $detailWorkerTrainset->fresh()
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                             ]);
                         }
                     });
