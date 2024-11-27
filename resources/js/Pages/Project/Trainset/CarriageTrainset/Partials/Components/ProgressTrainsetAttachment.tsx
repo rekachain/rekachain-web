@@ -1,4 +1,4 @@
-import { ComponentResource, PanelResource, ProgressResource, StepResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import { CarriageResource, ComponentResource, PanelResource, ProgressResource, StepResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { Separator } from '@/Components/UI/separator';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -13,6 +13,7 @@ import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStat
 interface CarriagePanelComponentProgressResource {
     carriage_panel_component_id: number;
     panel: PanelResource;
+    carriage: CarriageResource;
     progress: ProgressResource;
     total_steps: number;
     steps: StepResource & { work_status: string | null }[];
@@ -64,20 +65,21 @@ const ProgressTrainsetAttachment = ({
                 (trainsetAttachmentProgress.length === 0 && 
                     <h3>{'Kososng🗿' + attachment.status}</h3>
                 ) || (trainsetAttachmentProgress &&
-                    trainsetAttachmentProgress.map((progress, index) => (
+                    trainsetAttachmentProgress.map((progress) => (
                         <div key={progress.component.id}>
                             <h4 className="text-lg font-bold">Komponen: {progress.component.name}</h4>
                             <div className="flex flex-col gap-2">
-                                {progress.carriage_panel_components.map((componentProgress, index) => (
-                                    <div key={`${progress.component.name} ${componentProgress.panel.id}`}>
-                                        <h3 key={`panel_name_${componentProgress.panel.id}`}>Panel: {componentProgress.panel.name}</h3>
+                                {progress.carriage_panel_components.map((componentProgress) => (
+                                    <div key={`${componentProgress.carriage_panel_component_id}`}>
+                                        <h3>Panel: {componentProgress.panel.name}</h3>
+                                        <h3>Gerbong: {componentProgress.carriage.type}</h3>
                                         <ScrollArea className="w-full rounded-md border">
                                             <div className="flex w-max space-x-4 p-4">
-                                                <Breadcrumb key={`panel_breadcrumb_${componentProgress.panel.id}`}>
-                                                    <BreadcrumbList key={`panel_breadcrumb_list_${componentProgress.panel.id}`}>
+                                                <Breadcrumb>
+                                                    <BreadcrumbList>
                                                     {componentProgress.steps.map((step, index) => (
-                                                        <Fragment key={componentProgress.panel.name + (step as unknown as StepResource).id}>
-                                                            <BreadcrumbItem key={componentProgress.panel.name + (step as unknown as StepResource).id}>
+                                                        <Fragment key={`${componentProgress.carriage_panel_component_id} ${(step as unknown as StepResource).id}`}>
+                                                            <BreadcrumbItem>
                                                                 <Card className={`${getStatusColor(step.work_status)}`}>
                                                                     <CardHeader className='pb-1'>
                                                                         <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
@@ -90,12 +92,10 @@ const ProgressTrainsetAttachment = ({
                                                                 </Card>
                                                             </BreadcrumbItem>
                                                             {index < componentProgress.steps.length - 1 && <BreadcrumbSeparator key={componentProgress.panel.name + (step as unknown as StepResource).id + 'sep'}/>}
-
                                                         </Fragment>
                                                     ))}
                                                     </BreadcrumbList>
                                                 </Breadcrumb>
-
                                             </div>
                                             <ScrollBar orientation="horizontal" />
                                         </ScrollArea>

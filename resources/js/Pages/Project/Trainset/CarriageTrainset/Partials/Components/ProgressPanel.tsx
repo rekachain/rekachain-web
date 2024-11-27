@@ -59,21 +59,22 @@ const ProgressPanel = ({ trainset }: { trainset: TrainsetResource }) => {
                 <h3>Kosong🗿</h3>
             )) ||
                 (panelProgress && (
-                    panelProgress.map((progress, index) => (
+                    panelProgress.map((progress) => (
                         <div key={`${progress.panel.id} ${progress.carriage.id}`}>
                             <h4 className="text-lg font-bold">Panel: {progress.panel.name}</h4>
+                            <h4 className="text-lg font-bold">Gerbong: {progress.carriage.type}</h4>
                             <div className="flex flex-col gap-2">
-                                {progress.serial_panels.map((serialPanelProgress, index) => (
+                                {progress.serial_panels.map((serialPanelProgress) => (
                                     <div key={`${progress.panel.name} ${serialPanelProgress.serial_number}`}>
-                                        <h3 key={`serial_panel_number_${serialPanelProgress.serial_number}`}>Serial Number: {serialPanelProgress.serial_number}</h3>
-                                        <h3 key={`serial_panel_product_${serialPanelProgress.serial_number}`}>Product Number: {serialPanelProgress.product_no}</h3>
+                                        <h3>Serial Number: {serialPanelProgress.serial_number}</h3>
+                                        <h3>Product Number: {serialPanelProgress.product_no}</h3>
                                         <ScrollArea className="w-full rounded-md border">
                                             <div className="flex w-max space-x-4 p-4">
-                                                <Breadcrumb key={`serial_panel_breadcrumb_${serialPanelProgress.serial_number}`}>
-                                                    <BreadcrumbList key={`serial_panel_breadcrumb_list_${serialPanelProgress.serial_number}`}>
+                                                <Breadcrumb>
+                                                    <BreadcrumbList>
                                                     {serialPanelProgress.steps.map((step, index) => (
                                                         <Fragment key={`${serialPanelProgress.serial_number} ${(step as unknown as StepResource).id}`}>
-                                                            <BreadcrumbItem key={`${serialPanelProgress.serial_number} ${(step as unknown as StepResource).id}`}>
+                                                            <BreadcrumbItem>
                                                                 <Card className={`${getStatusColor(step.work_status)}`}>
                                                                     <CardHeader className='pb-1'>
                                                                         <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
@@ -85,8 +86,7 @@ const ProgressPanel = ({ trainset }: { trainset: TrainsetResource }) => {
                                                                     </CardContent>
                                                                 </Card>
                                                             </BreadcrumbItem>
-                                                            {index < serialPanelProgress.steps.length - 1 && <BreadcrumbSeparator key={serialPanelProgress.serial_number + (step as unknown as StepResource).id + 'sep'}/>}
-
+                                                            {index < serialPanelProgress.steps.length - 1 && <BreadcrumbSeparator />}
                                                         </Fragment>
                                                     ))}
                                                     </BreadcrumbList>
