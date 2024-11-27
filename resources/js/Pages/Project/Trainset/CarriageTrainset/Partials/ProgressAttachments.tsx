@@ -87,7 +87,7 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                 {'progressanmin🗿'}
             </DialogTrigger>
             <DialogContent className="w-[70%]">
-                <DialogHeader>
+                <DialogHeader className='overflow-auto'>
                     <DialogTitle></DialogTitle>
                     <DialogDescription className="w-full"></DialogDescription>
                     <Tabs

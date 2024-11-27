@@ -1,11 +1,14 @@
-import { PanelResource, ProgressResource, StepResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { CarriageResource, PanelResource, ProgressResource, StepResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Separator } from '@/Components/UI/separator';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
-import { ScrollArea } from '@/Components/UI/scroll-area';
+import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from '@/Components/UI/breadcrumb';
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
+import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
 
 interface SerialPanelProgressResource {
     serial_number: number;
@@ -14,6 +17,7 @@ interface SerialPanelProgressResource {
 }
 interface PanelProgressResource {
     panel: PanelResource;
+    carriage: CarriageResource;
     progress: ProgressResource;
     total_steps: number;
     serial_panels: SerialPanelProgressResource[];
@@ -35,36 +39,17 @@ const ProgressPanel = ({ trainset }: { trainset: TrainsetResource }) => {
         loadProgress();
     }, []);
 
-    const StepCard = ({ step }: any) => {
-        const getStatusColor = (status: any) => {
-            switch (status) {
-                case 'completed':
-                    return 'bg-green-500 text-black';
-                case 'in_progress':
-                    return 'bg-yellow-500 text-black';
-                case 'failed':
-                    return 'bg-red-500 text-black';
-                default:
-                    return 'bg-background dark:bg-background-dark border border-gray-300'; // Neutral background
-            }
-        };
-
-        return (
-            <div className={getStatusColor(step.work_status)}
-                style={{
-                    margin: '0 8px',
-                    display: "inline-block",
-                    backgroundColor: getStatusColor(step.work_status),
-                    borderRadius: '8px',
-                    padding: '8px',
-                    marginBottom: '8px',
-                }}
-            >
-                <h4 style={{ margin: 0 }}>{step.step_name}</h4>
-                <p style={{ margin: '4px 0' }}>{step.step_process}</p>
-                <small>Estimated Time: {step.estimated_time}</small>
-            </div>
-        );
+    const getStatusColor = (status: any) => {
+        switch (status) {
+            case 'completed':
+                return 'bg-tertiary text-black';
+            case 'in_progress':
+                return 'bg-warning text-black';
+            case 'failed':
+                return 'bg-destructive text-black';
+            default:
+                return 'bg-background dark:bg-background-dark border border-gray-300'; // Neutral background
+        }
     };
 
     return (
@@ -74,34 +59,50 @@ const ProgressPanel = ({ trainset }: { trainset: TrainsetResource }) => {
                 <h3>Kosong🗿</h3>
             )) ||
                 (panelProgress && (
-                    <ScrollArea>
-                        <h4>
-                            {panelProgress.map((progress, index) => (
-                                <div key={index}>
-                                    <h4 className="text-lg font-bold">Panel: {progress.panel.name}</h4>
-                                    <h4 className="text-lg font-bold">Progress: {progress.progress.name}</h4>
-                                    <ScrollArea className='overflow-x-auto'>
-                                        <div className="flex flex-col gap-2">
-                                            {progress.serial_panels.map((panelProgress, index) => (
-                                                <div key={panelProgress.serial_number}>
-                                                    <h3>SN: {panelProgress.serial_number}</h3>
-                                                    <h3>Product No: {panelProgress.product_no}</h3>
-                                                    {panelProgress.steps.map((step, index) => (
-                                                        <>
-                                                            <StepCard step={step} />
-                                                            {index < panelProgress.steps.length - 1 && '→'}
-                                                        </>
+                    panelProgress.map((progress, index) => (
+                        <div key={`${progress.panel.id} ${progress.carriage.id}`}>
+                            <h4 className="text-lg font-bold">Panel: {progress.panel.name}</h4>
+                            <div className="flex flex-col gap-2">
+                                {progress.serial_panels.map((serialPanelProgress, index) => (
+                                    <div key={`${progress.panel.name} ${serialPanelProgress.serial_number}`}>
+                                        <h3 key={`serial_panel_number_${serialPanelProgress.serial_number}`}>Serial Number: {serialPanelProgress.serial_number}</h3>
+                                        <h3 key={`serial_panel_product_${serialPanelProgress.serial_number}`}>Product Number: {serialPanelProgress.product_no}</h3>
+                                        <ScrollArea className="w-full rounded-md border">
+                                            <div className="flex w-max space-x-4 p-4">
+                                                <Breadcrumb key={`serial_panel_breadcrumb_${serialPanelProgress.serial_number}`}>
+                                                    <BreadcrumbList key={`serial_panel_breadcrumb_list_${serialPanelProgress.serial_number}`}>
+                                                    {serialPanelProgress.steps.map((step, index) => (
+                                                        <Fragment key={`${serialPanelProgress.serial_number} ${(step as unknown as StepResource).id}`}>
+                                                            <BreadcrumbItem key={`${serialPanelProgress.serial_number} ${(step as unknown as StepResource).id}`}>
+                                                                <Card className={`${getStatusColor(step.work_status)}`}>
+                                                                    <CardHeader className='pb-1'>
+                                                                        <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
+                                                                    </CardHeader>
+                                                                    <CardContent className='flex flex-col gap-1'>
+                                                                        <p className='text-sm'>{(step as unknown as StepResource).process}</p>
+                                                                        <small className='text-xs'>
+                                                                            Status: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
+                                                                    </CardContent>
+                                                                </Card>
+                                                            </BreadcrumbItem>
+                                                            {index < serialPanelProgress.steps.length - 1 && <BreadcrumbSeparator key={serialPanelProgress.serial_number + (step as unknown as StepResource).id + 'sep'}/>}
+
+                                                        </Fragment>
                                                     ))}
-                                                </div>
-                                            ))}
-                                            <Separator className="my-4 h-1" />
-                                        </div>
-                                    </ScrollArea>
-                                </div>
-                            ))}
-                        </h4>
-                    </ScrollArea>
-                ))}
+                                                    </BreadcrumbList>
+                                                </Breadcrumb>
+
+                                            </div>
+                                            <ScrollBar orientation="horizontal" />
+                                        </ScrollArea>
+                                    </div>
+                                ))}
+                                <Separator className="my-4 h-1" />
+                            </div>
+                        </div>
+                    ))
+                )
+            )}
         </div>
     );
 };
