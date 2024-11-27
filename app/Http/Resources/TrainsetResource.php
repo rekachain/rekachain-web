@@ -249,11 +249,10 @@ class TrainsetResource extends JsonResource {
                             $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
                             if (!$step) {
                                 $workers->push([
-                                    'nip' => $detailWorkerPanel->worker->nip,
-                                    'name' => $detailWorkerPanel->worker->name,
-                                    'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
-                                    'acceptance_status' => $detailWorkerPanel->acceptance_status,
-                                    'work_status' => $detailWorkerPanel->work_status
+                                    'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
+                                    ...DetailWorkerPanelResource::make(
+                                        $detailWorkerPanel->fresh()
+                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                                 ]);
                                 $steps->push([
                                     ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
@@ -262,11 +261,10 @@ class TrainsetResource extends JsonResource {
                                 ]);
                             } else {
                                 $step['workers']->push([
-                                    'nip' => $detailWorkerPanel->worker->nip,
-                                    'name' => $detailWorkerPanel->worker->name,
-                                    'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
-                                    'acceptance_status' => $detailWorkerPanel->acceptance_status,
-                                    'work_status' => $detailWorkerPanel->work_status
+                                    'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
+                                    ...DetailWorkerPanelResource::make(
+                                        $detailWorkerPanel->fresh()
+                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                                 ]);
                             }
                         });
