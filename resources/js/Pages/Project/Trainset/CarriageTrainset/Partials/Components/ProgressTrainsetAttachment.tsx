@@ -1,4 +1,4 @@
-import { CarriageResource, ComponentResource, PanelResource, ProgressResource, StepResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import { CarriageResource, ComponentResource, DetailWorkerTrainsetResource, PanelResource, ProgressResource, StepResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { Separator } from '@/Components/UI/separator';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -9,6 +9,8 @@ import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from '@/Components/UI/breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
 import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
+import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { DetailWorkerAcceptanceStatusEnum } from '@/Support/Enums/DetailWorkerAcceptanceStatusEnum';
 
 interface CarriagePanelComponentProgressResource {
     carriage_panel_component_id: number;
@@ -16,7 +18,10 @@ interface CarriagePanelComponentProgressResource {
     carriage: CarriageResource;
     progress: ProgressResource;
     total_steps: number;
-    steps: StepResource & { work_status: string | null }[];
+    steps: StepResource & { 
+        work_status: string | null;
+        workers: DetailWorkerTrainsetResource[];
+    }[];
 }
 interface TrainsetAttachmentProgressResource {
     component: ComponentResource;
@@ -80,16 +85,57 @@ const ProgressTrainsetAttachment = ({
                                                     {componentProgress.steps.map((step, index) => (
                                                         <Fragment key={`${componentProgress.carriage_panel_component_id} ${(step as unknown as StepResource).id}`}>
                                                             <BreadcrumbItem>
-                                                                <Card className={`${getStatusColor(step.work_status)}`}>
-                                                                    <CardHeader className='pb-1'>
-                                                                        <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
-                                                                    </CardHeader>
-                                                                    <CardContent className='flex flex-col gap-1'>
-                                                                        <p className='text-sm'>{(step as unknown as StepResource).process}</p>
-                                                                        <small className='text-xs'>
-                                                                            Status: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
-                                                                    </CardContent>
-                                                                </Card>
+                                                                <Popover modal>
+                                                                    <PopoverTrigger className='text-left'>
+                                                                        <Card className={`${getStatusColor(step.work_status)}`}>
+                                                                            <CardHeader className='pb-1'>
+                                                                                <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
+                                                                            </CardHeader>
+                                                                            <CardContent className='flex flex-col gap-1'>
+                                                                                <p className='text-sm'>{(step as unknown as StepResource).process}</p>
+                                                                                <small className='text-xs'>
+                                                                                    Status: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
+                                                                            </CardContent>
+                                                                        </Card>
+                                                                    </PopoverTrigger>
+                                                                    <PopoverContent className='flex flex-col gap-2'>
+                                                                        <h4 className="text-lg font-bold">Workers🗿:</h4>
+                                                                        <ScrollArea className="max-h-[250px] overflow-y-auto">
+                                                                            <div className="flex flex-col gap-2">
+                                                                            {step.workers && step.workers.map(stepWorker => (
+                                                                                <Card className="bg-background dark:bg-background-dark rounded-lg shadow-lg" key={stepWorker.id}>
+                                                                                    <CardHeader className="pb-2">
+                                                                                        <CardTitle className="text-lg font-bold text-black dark:text-white">{stepWorker.worker?.name}</CardTitle>
+                                                                                        <small className="text-sm text-gray-600 dark:text-gray-300">NIP: {stepWorker.worker?.nip}</small>
+                                                                                    </CardHeader>
+                                                                                    <CardContent className="flex flex-col gap-1">
+                                                                                        <p className="text-sm">
+                                                                                            Acceptance Status: <span className={stepWorker.acceptance_status === DetailWorkerAcceptanceStatusEnum.ACCEPTED ? 'text-green-500' : stepWorker.acceptance_status === DetailWorkerAcceptanceStatusEnum.DECLINED ? 'text-red-500' : ''}>{stepWorker.acceptance_status ?? 'N/A🗿'}</span>
+                                                                                        </p>
+                                                                                        <p className="text-sm">
+                                                                                            Work Status: <span className={stepWorker.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'text-green-500' : 'text-yellow-500'}>{stepWorker.work_status}</span>
+                                                                                        </p>
+                                                                                        <div className="flex flex-col gap-1">
+                                                                                            <p className="text-sm">Started At:</p>
+                                                                                            {/* <p className="text-sm">{stepWorker.created_at}</p> not work💀*/}
+                                                                                            <p className="text-sm">
+                                                                                                {new Intl.DateTimeFormat('en-US', {
+                                                                                                    year: 'numeric',
+                                                                                                    month: '2-digit',
+                                                                                                    day: '2-digit',
+                                                                                                    hour: '2-digit',
+                                                                                                    minute: '2-digit',
+                                                                                                    second: '2-digit',
+                                                                                                }).format(new Date(stepWorker.created_at))}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </CardContent>
+                                                                                </Card>
+                                                                            ))}
+                                                                            </div>
+                                                                        </ScrollArea>
+                                                                    </PopoverContent>
+                                                                </Popover>
                                                             </BreadcrumbItem>
                                                             {index < componentProgress.steps.length - 1 && <BreadcrumbSeparator key={componentProgress.panel.name + (step as unknown as StepResource).id + 'sep'}/>}
                                                         </Fragment>
