@@ -18,12 +18,15 @@ export default function Edit({
         <AuthenticatedLayout>
             <Head title={t('pages.profile.edit.title')} />
 
-            <div className="p-5 space-y-6">
-                <div className="p-4 sm:p-8 bg-background-2 shadow sm:rounded-lg">
-                    <UpdateProfileInformationForm status={status} mustVerifyEmail={mustVerifyEmail} />
+            <div className='space-y-6 p-5'>
+                <div className='bg-background-2 p-4 shadow sm:rounded-lg sm:p-8'>
+                    <UpdateProfileInformationForm
+                        status={status}
+                        mustVerifyEmail={mustVerifyEmail}
+                    />
                 </div>
 
-                <div className="p-4 sm:p-8 bg-background-2 shadow sm:rounded-lg">
+                <div className='bg-background-2 p-4 shadow sm:rounded-lg sm:p-8'>
                     <UpdatePasswordForm />
                 </div>
 

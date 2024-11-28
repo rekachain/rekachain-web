@@ -18,7 +18,7 @@ export default function () {
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await feedbackService.create(data);
@@ -28,41 +28,41 @@ export default function () {
 
     return (
         <>
-            <Head title="Tambah Feedback" />
+            <Head title='Tambah Feedback' />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Feedback</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>Tambah Feedback</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value="Nama" htmlFor="nama" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel value='Nama' htmlFor='nama' />
                             <Input
                                 value={data.name}
-                                type="text"
-                                onChange={e => setData('name', e.target.value)}
-                                name="nama"
-                                id="nama"
-                                className="mt-1"
-                                autoComplete="nama"
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='nama'
+                                id='nama'
+                                className='mt-1'
+                                autoComplete='nama'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value="Deskripsi" htmlFor="deskripsi" />
+                        <div className='mt-4'>
+                            <InputLabel value='Deskripsi' htmlFor='deskripsi' />
                             <Input
                                 value={data.description}
-                                type="text"
-                                onChange={e => setData('description', e.target.value)}
-                                name="deskripsi"
-                                id="deskripsi"
-                                className="mt-1"
-                                autoComplete="deskripsi"
+                                type='text'
+                                onChange={(e) => setData('description', e.target.value)}
+                                name='deskripsi'
+                                id='deskripsi'
+                                className='mt-1'
+                                autoComplete='deskripsi'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             Tambah Feedback
                         </Button>
                     </form>

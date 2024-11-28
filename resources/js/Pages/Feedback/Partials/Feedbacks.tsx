@@ -19,7 +19,8 @@ export default function () {
     const [feedbackResponse, setFeedbackResponse] = useState<PaginateResponse<FeedbackResource>>();
     const auth = usePage().props.auth;
     const allowedToReadAll =
-        auth.user.role === RoleEnum.SUPER_ADMIN || checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
+        auth.user.role === RoleEnum.SUPER_ADMIN ||
+        checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -55,17 +56,17 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {feedbackResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <FeedbackTableView
                             handleFeedbackDeletion={handleFeedbackDeletion}
                             feedbackResponse={feedbackResponse}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <FeedbackCardView
                             handleFeedbackDeletion={handleFeedbackDeletion}
                             feedbackResponse={feedbackResponse}

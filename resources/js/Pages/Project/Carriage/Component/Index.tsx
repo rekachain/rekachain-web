@@ -35,8 +35,8 @@ export default function ({
         <>
             <Head title={t('pages.project.carriage.component.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <div>
                             <Breadcrumb>
                                 <BreadcrumbList>
@@ -47,27 +47,43 @@ export default function ({
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
-                                        <Link href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, [project.id])}>
-                                            {t('pages.project.component.index.breadcrumbs.project', {
-                                                project: project.name,
-                                            })}
+                                        <Link
+                                            href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, [
+                                                project.id,
+                                            ])}
+                                        >
+                                            {t(
+                                                'pages.project.component.index.breadcrumbs.project',
+                                                {
+                                                    project: project.name,
+                                                },
+                                            )}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
-                                            {t('pages.project.carriage.component.index.breadcrumbs.carriage', {
-                                                carriage: carriage.type,
-                                            })}
+                                            {t(
+                                                'pages.project.carriage.component.index.breadcrumbs.carriage',
+                                                {
+                                                    carriage: carriage.type,
+                                                },
+                                            )}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">{t('pages.project.component.index.title')}</h1>
+                            <h1 className='text-page-header my-4'>
+                                {t('pages.project.component.index.title')}
+                            </h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Components project={project} handleSyncProject={handleSyncProject} carriage={carriage} />
+                        <Components
+                            project={project}
+                            handleSyncProject={handleSyncProject}
+                            carriage={carriage}
+                        />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

@@ -22,12 +22,12 @@ import { Checkbox } from '@/Components/UI/checkbox';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 
-export default function ({ 
+export default function ({
     trainsetAttachment,
-    loadAttachment
-}: { 
-    trainsetAttachment: TrainsetAttachmentResource,
-    loadAttachment: () => void
+    loadAttachment,
+}: {
+    trainsetAttachment: TrainsetAttachmentResource;
+    loadAttachment: () => void;
 }) {
     const { t } = useLaravelReactI18n();
 
@@ -60,27 +60,27 @@ export default function ({
 
     useEffect(() => {
         setData('toBeAssigned', trainsetAttachment.is_child ? false : true);
-    },[trainsetAttachment]);
+    }, [trainsetAttachment]);
 
     return (
         <>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="tertiary">Tambah Material Baru</Button>
+                    <Button variant='tertiary'>Tambah Material Baru</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className='sm:max-w-[425px]'>
                     <DialogHeader>
                         <DialogTitle>Tambah Material Baru</DialogTitle>
                         <DialogDescription>
-                            Tambahkan material baru ke attachment ini dengan mengunggah file excel yang berisi data
-                            material
+                            Tambahkan material baru ke attachment ini dengan mengunggah file excel
+                            yang berisi data material
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="flex flex-col space-y-4">
+                    <div className='flex flex-col space-y-4'>
                         <Label>Unduh template excel</Label>
                         <Button
-                            variant="secondary"
-                            type="button"
+                            variant='secondary'
+                            type='button'
                             onClick={trainsetAttachmentService.downloadCustomAttachmentMaterialImportTemplate.bind(
                                 null,
                                 trainsetAttachment.id,
@@ -89,63 +89,75 @@ export default function ({
                         >
                             {loading
                                 ? t('action.loading')
-                                : t('pages.panel.partials.import.dialogs.buttons.download_template')}
+                                : t(
+                                      'pages.panel.partials.import.dialogs.buttons.download_template',
+                                  )}
                         </Button>
                     </div>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-4">
-                            <Label htmlFor="file">{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
+                    <form onSubmit={handleSubmit} className='space-y-4'>
+                        <div className='space-y-4'>
+                            <Label htmlFor='file'>
+                                {t('pages.panel.partials.import.dialogs.fields.file')}
+                            </Label>
                             <Input
-                                type="file"
+                                type='file'
                                 onChange={handleChangeImportFile}
-                                id="file"
-                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                id='file'
+                                accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                             />
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className='flex items-center space-x-2'>
                             <Label
-                                htmlFor="to-be-assigned"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                htmlFor='to-be-assigned'
+                                className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                             >
                                 Buat KPM baru?
                             </Label>
 
                             <Checkbox
-                                onCheckedChange={checked => setData('toBeAssigned', checked as boolean)}
-                                id="to-be-assigned"
+                                onCheckedChange={(checked) =>
+                                    setData('toBeAssigned', checked as boolean)
+                                }
+                                id='to-be-assigned'
                                 checked={data.toBeAssigned}
                             />
                         </div>
 
                         {!data.toBeAssigned && (
-                            <div className="space-y-4">
+                            <div className='space-y-4'>
                                 <Label>override kah min?</Label>
-                                <div className="flex space-x-4">
+                                <div className='flex space-x-4'>
                                     <RadioGroup
                                         value={data.override}
-                                        onValueChange={override =>
-                                            setData('override', override as ProjectImportProgressMaterialOverride)
+                                        onValueChange={(override) =>
+                                            setData(
+                                                'override',
+                                                override as ProjectImportProgressMaterialOverride,
+                                            )
                                         }
-                                        className="flex justify-content-between"
+                                        className='justify-content-between flex'
                                     >
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="default" id="override-default" />
-                                            <Label htmlFor="override-default">Default</Label>
+                                        <div className='flex items-center space-x-2'>
+                                            <RadioGroupItem value='default' id='override-default' />
+                                            <Label htmlFor='override-default'>Default</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="override" id="override-override" />
-                                            <Label htmlFor="override-override">Override</Label>
+                                        <div className='flex items-center space-x-2'>
+                                            <RadioGroupItem
+                                                value='override'
+                                                id='override-override'
+                                            />
+                                            <Label htmlFor='override-override'>Override</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="merge" id="override-merge" />
-                                            <Label htmlFor="override-merge">Merge</Label>
+                                        <div className='flex items-center space-x-2'>
+                                            <RadioGroupItem value='merge' id='override-merge' />
+                                            <Label htmlFor='override-merge'>Merge</Label>
                                         </div>
                                     </RadioGroup>
                                 </div>
                             </div>
                         )}
                         <DialogFooter>
-                            <Button type="submit" disabled={loading}>
+                            <Button type='submit' disabled={loading}>
                                 {loading
                                     ? t('pages.panel.partials.import.dialogs.buttons.processing')
                                     : t('pages.panel.partials.import.dialogs.buttons.import')}

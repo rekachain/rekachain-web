@@ -1,5 +1,16 @@
-import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
@@ -51,7 +62,7 @@ export default function CarriagePanelComponentTableView({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriagePanel.carriage_panel_components?.map(carriagePanelComponent => (
+                    {carriagePanel.carriage_panel_components?.map((carriagePanelComponent) => (
                         <TableRow key={carriagePanelComponent.id}>
                             <TableCell>{carriagePanelComponent.component?.name}</TableCell>
                             <TableCell>
@@ -76,8 +87,10 @@ export default function CarriagePanelComponentTableView({
 
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button
-                                        variant="link"
-                                        onClick={() => handlePanelComponentDeletion(carriagePanelComponent.id)}
+                                        variant='link'
+                                        onClick={() =>
+                                            handlePanelComponentDeletion(carriagePanelComponent.id)
+                                        }
                                     >
                                         {t('action.delete')}
                                     </Button>

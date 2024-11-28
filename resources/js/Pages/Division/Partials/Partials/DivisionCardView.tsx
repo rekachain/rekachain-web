@@ -17,21 +17,21 @@ export default function DivisionCardView({
     const { t } = useLaravelReactI18n();
     return (
         <>
-            {divisionResponse?.data.map(division => (
+            {divisionResponse?.data.map((division) => (
                 <AnimateIn
-                    to="opacity-100 translate-y-0 translate-x-0"
+                    to='opacity-100 translate-y-0 translate-x-0'
                     key={division.id}
-                    from="opacity-0 -translate-y-4"
+                    from='opacity-0 -translate-y-4'
                     duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                        <div className="flex w-full justify-between items-scenter">
-                            <h4 className="font-bold text-xl">{division.name}</h4>
-                            <div className="text-center">
+                    <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-xl font-bold'>{division.name}</h4>
+                            <div className='text-center'>
                                 {/* <h5 className="font-bold text-xs items-center "> {division.role?.name}</h5> */}
                             </div>
                         </div>
-                        <div className="flex items-center justify-end w-full">
+                        <div className='flex w-full items-center justify-end'>
                             <Link
                                 href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                                 className={buttonVariants({ variant: 'link' })}
@@ -39,7 +39,10 @@ export default function DivisionCardView({
                                 {t('action.edit')}
                             </Link>
                             {division.can_be_deleted && (
-                                <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
+                                <Button
+                                    variant='link'
+                                    onClick={() => handleDivisionDeletion(division.id)}
+                                >
                                     {t('action.delete')}
                                 </Button>
                             )}

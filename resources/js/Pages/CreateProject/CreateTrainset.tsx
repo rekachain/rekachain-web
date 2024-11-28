@@ -1,6 +1,13 @@
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AnimateIn from '@/Lib/AnimateIn';
 import { Head, Link } from '@inertiajs/react';
@@ -23,26 +30,26 @@ export default function CreateTrainset() {
     const [input, setInput] = useState(0);
 
     return (
-        <div className="">
+        <div className=''>
             <AuthenticatedLayout>
-                <Head title="Buat Trainset" />
-                <div className="py-12">
-                    <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
-                        <h1 className="text-2xl font-bold">List Trainset</h1>
+                <Head title='Buat Trainset' />
+                <div className='py-12'>
+                    <div className='h-screen max-w-7xl space-y-6 sm:px-6 lg:px-8'>
+                        <h1 className='text-2xl font-bold'>List Trainset</h1>
                         <AnimateIn
-                            to="opacity-100 translate-y-0 translate-x-0"
-                            from="opacity-0 -translate-y-4"
+                            to='opacity-100 translate-y-0 translate-x-0'
+                            from='opacity-0 -translate-y-4'
                             duration={300}
                         >
-                            <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg">
-                                <h1 className="text-xl font-bold ">Tambah Trainset</h1>
-                                <div className="flex gap-2 mt-2">
+                            <div className='h-fit bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+                                <h1 className='text-xl font-bold'>Tambah Trainset</h1>
+                                <div className='mt-2 flex gap-2'>
                                     <Input
-                                        placeholder="Jumlah Trainset"
-                                        onChange={e => {
+                                        placeholder='Jumlah Trainset'
+                                        onChange={(e) => {
                                             setInput(Number(e.target.value));
                                         }}
-                                        className="w-1/4 "
+                                        className='w-1/4'
                                     ></Input>
                                     <Button
                                         onClick={() => {
@@ -53,7 +60,10 @@ export default function CreateTrainset() {
                                                     jumlahGerbong: 0,
                                                 });
                                             }
-                                            setListTrainset(prevListTrainset => [...prevListTrainset, ...tempList]);
+                                            setListTrainset((prevListTrainset) => [
+                                                ...prevListTrainset,
+                                                ...tempList,
+                                            ]);
                                         }}
                                     >
                                         Tambah Trainset
@@ -62,28 +72,34 @@ export default function CreateTrainset() {
                             </div>
                         </AnimateIn>
                         <AnimateIn
-                            to="opacity-100 translate-y-0 translate-x-0"
-                            from="opacity-0 -translate-y-4"
+                            to='opacity-100 translate-y-0 translate-x-0'
+                            from='opacity-0 -translate-y-4'
                             duration={300}
                         >
-                            <div className="p-4 sm:p-8 bg-white h-fit dark:bg-gray-800 shadow sm:rounded-lg">
-                                <Table className="mt-2">
+                            <div className='h-fit bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+                                <Table className='mt-2'>
                                     {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead className="w-[100px]">Trainset</TableHead>
-                                            <TableHead className="text-center">Jumlah Gerbong</TableHead>
-                                            <TableHead className="text-center">Action </TableHead>
+                                            <TableHead className='w-[100px]'>Trainset</TableHead>
+                                            <TableHead className='text-center'>
+                                                Jumlah Gerbong
+                                            </TableHead>
+                                            <TableHead className='text-center'>Action </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {listTrainset.map(trainset => (
+                                        {listTrainset.map((trainset) => (
                                             <TableRow key={trainset.namaTrainset}>
-                                                <TableCell className="font-medium">{trainset.namaTrainset}</TableCell>
-                                                <TableCell className="text-center">{trainset.jumlahGerbong}</TableCell>
-                                                <TableCell className="flex justify-center ">
-                                                    <Link href="buat-trainset">
-                                                        <FileSearch className="hover:cursor-pointer"></FileSearch>
+                                                <TableCell className='font-medium'>
+                                                    {trainset.namaTrainset}
+                                                </TableCell>
+                                                <TableCell className='text-center'>
+                                                    {trainset.jumlahGerbong}
+                                                </TableCell>
+                                                <TableCell className='flex justify-center'>
+                                                    <Link href='buat-trainset'>
+                                                        <FileSearch className='hover:cursor-pointer'></FileSearch>
                                                     </Link>
                                                     {/* <FileSearch className="hover:cursor-pointer"></FileSearch> */}
                                                 </TableCell>

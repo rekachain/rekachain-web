@@ -11,7 +11,8 @@ interface HelpdeskContextProps {
 const HelpdeskContext = createContext<HelpdeskContextProps | undefined>(undefined);
 
 export const HelpdeskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [helpdeskContactResponse, setHelpdeskContactResponse] = useState<HelpdeskContactResource>();
+    const [helpdeskContactResponse, setHelpdeskContactResponse] =
+        useState<HelpdeskContactResource>();
 
     const syncHelpdeskContacts = withLoading(async () => {
         const res = await helpdeskContactService.getAll();

@@ -171,7 +171,8 @@ export default function Navbar() {
                             <Link
                                 href={route(`${ROUTES.PROFILE}.edit`)}
                                 className='h-full w-full px-2 py-1.5 text-left'
-                                as='button'>
+                                as='button'
+                            >
                                 {t('components.navbar.profile.menus.profile')}
                             </Link>
                         </DropdownMenuItem>
@@ -180,7 +181,8 @@ export default function Navbar() {
                                 method='post'
                                 href={route(ROUTES.LOGOUT)}
                                 className='h-full w-full px-2 py-1.5 text-left'
-                                as='button'>
+                                as='button'
+                            >
                                 {t('components.navbar.profile.menus.logout')}
                             </Link>
                         </DropdownMenuItem>
@@ -199,7 +201,8 @@ const ToggleDarkMode = () => {
             variant='ghost'
             title={t('components.navbar.toggle_dark_mode.title')}
             size='icon'
-            onClick={toggleDarkMode}>
+            onClick={toggleDarkMode}
+        >
             {darkMode ? (
                 <Sun size={STYLING.ICON.SIZE.SMALL} />
             ) : (
@@ -215,7 +218,8 @@ const ViewManualBook = () => {
         <Link
             title={t('components.navbar.view_manual_book.title')}
             href='/'
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+        >
             <RiBook2Line />
         </Link>
     );
@@ -227,7 +231,8 @@ const DownloadApp = () => {
         <Link
             title={t('components.navbar.download_app.title')}
             href='/'
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+        >
             <RiDownload2Line />
         </Link>
     );

@@ -11,9 +11,9 @@ export default function () {
         <>
             <Head title={t('pages.feedback.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.feedback.index.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.feedback.index.title')}</h1>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Feedbacks />

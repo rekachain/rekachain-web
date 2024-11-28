@@ -21,7 +21,7 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await workDayService.update(workDay.id, data);
@@ -33,28 +33,31 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
         <>
             <Head title={t('pages.work_day.edit.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
                             {t('pages.work_day.edit.title', { name: workDay.day })}
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.work_day.edit.fields.name')} htmlFor="type" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.work_day.edit.fields.name')}
+                                htmlFor='type'
+                            />
                             <Input
                                 value={data.day}
-                                type="text"
-                                onChange={e => setData('day', e.target.value)}
-                                name="type"
-                                id="type"
-                                className="mt-1"
-                                autoComplete="type"
+                                type='text'
+                                onChange={(e) => setData('day', e.target.value)}
+                                name='type'
+                                id='type'
+                                className='mt-1'
+                                autoComplete='type'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.work_day.edit.buttons.submit')}
                         </Button>
                     </form>

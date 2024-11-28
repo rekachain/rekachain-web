@@ -21,29 +21,31 @@ export default function CarriageCardView({
 
     return (
         <div>
-            {trainset?.carriage_trainsets?.map(carriage_trainset => (
+            {trainset?.carriage_trainsets?.map((carriage_trainset) => (
                 <div key={carriage_trainset.id}>
                     <AnimateIn
-                        to="opacity-100 translate-y-0 translate-x-0"
+                        to='opacity-100 translate-y-0 translate-x-0'
                         key={carriage_trainset.id}
-                        from="opacity-0 -translate-y-4"
+                        from='opacity-0 -translate-y-4'
                         duration={300}
                     >
-                        <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                            <div className="flex w-full justify-between items-scenter">
-                                <h4 className="font-bold text-xl">{carriage_trainset.carriage.type}</h4>
-                                <div className="text-center">
+                        <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                            <div className='items-scenter flex w-full justify-between'>
+                                <h4 className='text-xl font-bold'>
+                                    {carriage_trainset.carriage.type}
+                                </h4>
+                                <div className='text-center'>
                                     {/* <h5 className="font-bold text-xs items-center "> {division.role?.name}</h5> */}
                                 </div>
                             </div>
 
-                            <h5 className="text-base">
+                            <h5 className='text-base'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.headers.qty',
                                 )}{' '}
                                 :
                             </h5>
-                            <div className="text-sm">
+                            <div className='text-sm'>
                                 {trainset.status === TrainsetStatusEnum.PROGRESS ? (
                                     <span>{carriage_trainset.qty}</span>
                                 ) : (
@@ -54,14 +56,14 @@ export default function CarriageCardView({
                                     />
                                 )}
                             </div>
-                            <h5 className="text-base">
+                            <h5 className='text-base'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.headers.panels',
                                 )}{' '}
                                 :
                             </h5>
-                            <div className="text-sm">
-                                {carriage_trainset.carriage_panels?.map(panel => (
+                            <div className='text-sm'>
+                                {carriage_trainset.carriage_panels?.map((panel) => (
                                     <div key={panel.id}>
                                         <span>
                                             {panel.qty} x {panel.panel.name}
@@ -92,9 +94,9 @@ export default function CarriageCardView({
                             </h5> */}
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
-                            <div className="flex items-center justify-end w-full">
+                            <div className='flex w-full items-center justify-end'>
                                 <Button
-                                    variant="link"
+                                    variant='link'
                                     // disabled={loading || !trainset.can_be_deleted}
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
                                 >

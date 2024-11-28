@@ -24,8 +24,8 @@ export default function ({
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <TrainsetTableView
                     project={project}
                     loading={loading}
@@ -33,7 +33,7 @@ export default function ({
                 ></TrainsetTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <TrainsetCardView
                     project={project}
                     loading={loading}

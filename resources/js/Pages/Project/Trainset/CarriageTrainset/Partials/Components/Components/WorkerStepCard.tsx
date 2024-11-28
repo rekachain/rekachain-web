@@ -1,14 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/UI/card";
-import { DetailWorkerWorkStatusEnum } from "@/Support/Enums/DetailWorkerWorkStatusEnum";
-import { StepResource } from "@/Support/Interfaces/Resources";
-import { useLaravelReactI18n } from "laravel-react-i18n";
+import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
+import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
+import { StepResource } from '@/Support/Interfaces/Resources';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export default function ({ 
+export default function ({
     step,
-}: { 
+}: {
     step: StepResource & {
-        work_status: string | null,
-    },
+        work_status: string | null;
+    };
 }) {
     const { t } = useLaravelReactI18n();
 
@@ -33,7 +33,16 @@ export default function ({
             <CardContent className='flex flex-col gap-1'>
                 <p className='text-sm'>{(step as unknown as StepResource).process}</p>
                 <small className='text-xs'>
-                    {t('pages.project.trainset.carriage_trainset.partials.components.components.worker_step_card.step_status')}: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
+                    {t(
+                        'pages.project.trainset.carriage_trainset.partials.components.components.worker_step_card.step_status',
+                    )}
+                    :{' '}
+                    {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED
+                        ? 'Complete'
+                        : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS
+                          ? 'In Progress'
+                          : 'Nothing '}
+                </small>
             </CardContent>
         </Card>
     );

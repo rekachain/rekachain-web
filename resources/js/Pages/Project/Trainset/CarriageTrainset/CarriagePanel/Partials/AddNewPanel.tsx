@@ -1,4 +1,8 @@
-import { CarriageTrainsetResource, PanelResource, ProgressResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriageTrainsetResource,
+    PanelResource,
+    ProgressResource,
+} from '@/Support/Interfaces/Resources';
 import {
     Dialog,
     DialogContent,
@@ -120,13 +124,15 @@ const AddNewPanel = ({
         await handleSyncCarriage();
         reset();
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.messages.panel_added'),
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.messages.panel_added',
+            ),
         );
     });
 
     const fetchPanelProgress = withLoading(async (panelId: number) => {
         const res = await panelService.get(panelId);
-        setData(prevData => ({
+        setData((prevData) => ({
             ...prevData,
             new_panel_id: panelId,
             search_progress: res.progress?.name || '',
@@ -160,55 +166,59 @@ const AddNewPanel = ({
                 <DialogHeader>
                     <DialogTitle>{data.new_panel_name}</DialogTitle>
                     <DialogDescription></DialogDescription>
-                    <form onSubmit={handleAddPanelCarriage} className="flex flex-col gap-4">
-                        <div className="flex flex-col bg-background-2 gap-4 p-4">
-                            <Label htmlFor="progress">
+                    <form onSubmit={handleAddPanelCarriage} className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <Label htmlFor='progress'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress',
                                 )}
                             </Label>
-                            <div className="flex gap-2">
+                            <div className='flex gap-2'>
                                 <GenericDataSelector
-                                    setSelectedData={id => setData('progress_id', id)}
+                                    setSelectedData={(id) => setData('progress_id', id)}
                                     selectedDataId={data.progress_id}
-                                    renderItem={item => item.name}
+                                    renderItem={(item) => item.name}
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
                                     )}
                                     onSearchChange={handleChangeSearchProgressName}
-                                    id="progress_id"
+                                    id='progress_id'
                                     data={progressResponse?.data}
                                     customSearchPlaceholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_search',
                                     )}
                                 />
-                                <Button variant="ghost" type="button" onClick={handleResetProgressSearch}>
+                                <Button
+                                    variant='ghost'
+                                    type='button'
+                                    onClick={handleResetProgressSearch}
+                                >
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
 
-                            <Label htmlFor="panel">
+                            <Label htmlFor='panel'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel',
                                 )}
                             </Label>
                             <GenericDataSelector
-                                setSelectedData={id => setData('new_panel_id', id)}
+                                setSelectedData={(id) => setData('new_panel_id', id)}
                                 selectedDataId={data.new_panel_id}
-                                renderItem={item => item.name}
+                                renderItem={(item) => item.name}
                                 placeholder={t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel_placeholder',
                                 )}
                                 nullable
-                                id="panel_id"
+                                id='panel_id'
                                 fetchData={fetchPanels}
                             />
                         </div>
 
                         <Separator />
 
-                        <div className="flex flex-col gap-4 bg-background-2 p-4">
-                            <div className="flex flex-col gap-2">
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_name',
@@ -216,13 +226,13 @@ const AddNewPanel = ({
                                 </Label>
                                 <Input
                                     value={data.new_panel_name}
-                                    type="text"
+                                    type='text'
                                     required
                                     onChange={handleChangeNewPanelName}
                                     disabled={data.new_panel_id !== null}
                                 />
                             </div>
-                            <Label htmlFor="new-panel-description">
+                            <Label htmlFor='new-panel-description'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_description',
                                 )}
@@ -230,29 +240,29 @@ const AddNewPanel = ({
                             <Textarea
                                 value={data.new_panel_description}
                                 onChange={handleChangeNewPanelDescription}
-                                id="new-panel-description"
+                                id='new-panel-description'
                                 disabled={data.new_panel_id !== null}
-                                className="p-2 rounded"
+                                className='rounded p-2'
                             />
-                            <Label htmlFor="new-panel-qty">
+                            <Label htmlFor='new-panel-qty'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_qty',
                                 )}
                             </Label>
                             <Input
                                 value={data.new_panel_qty}
-                                type="number"
+                                type='number'
                                 required
                                 onChange={handleChangeNewPanelQty}
                                 min={1}
-                                id="new-panel-qty"
+                                id='new-panel-qty'
                             />
                         </div>
 
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                     {t('action.loading')}
                                 </>
                             ) : (

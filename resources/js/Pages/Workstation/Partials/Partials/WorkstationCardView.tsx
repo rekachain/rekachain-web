@@ -17,36 +17,45 @@ export default function WorkstationCardView({
     const { t } = useLaravelReactI18n();
     return (
         <>
-            {workstationResponse?.data.map(workstation => (
+            {workstationResponse?.data.map((workstation) => (
                 <AnimateIn
-                    to="opacity-100 translate-y-0 translate-x-0"
+                    to='opacity-100 translate-y-0 translate-x-0'
                     key={workstation.id}
-                    from="opacity-0 -translate-y-4"
+                    from='opacity-0 -translate-y-4'
                     duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-4">
-                        <div className="flex w-full justify-between items-scenter">
-                            <h4 className="font-bold text-xl">{workstation.name}</h4>
-                            <div className="text-center">
-                                <h5 className="font-bold text-md items-center ">
-                                    {t('pages.workstation.partials.partials.workstation_card.headers.division', {
-                                        division: workstation.division.name,
-                                    })}
+                    <div className='mt-4 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-xl font-bold'>{workstation.name}</h4>
+                            <div className='text-center'>
+                                <h5 className='text-md items-center font-bold'>
+                                    {t(
+                                        'pages.workstation.partials.partials.workstation_card.headers.division',
+                                        {
+                                            division: workstation.division.name,
+                                        },
+                                    )}
                                 </h5>
                             </div>
                         </div>
 
-                        <h5 className="font-bold text-sm ">
-                            {t('pages.workstation.partials.partials.workstation_card.headers.workshop', {
-                                workshop: workstation.workshop.name,
-                            })}
+                        <h5 className='text-sm font-bold'>
+                            {t(
+                                'pages.workstation.partials.partials.workstation_card.headers.workshop',
+                                {
+                                    workshop: workstation.workshop.name,
+                                },
+                            )}
                         </h5>
-                        <h5 className=" text-sm ">
-                            {t('pages.workstation.partials.partials.workstation_card.headers.location', {
-                                location: workstation.location,
-                            })}
+                        <h5 className='text-sm'>
+                            {t(
+                                'pages.workstation.partials.partials.workstation_card.headers.location',
+                                {
+                                    location: workstation.location,
+                                },
+                            )}
                         </h5>
-                        <div className="flex items-center justify-end w-full">
+                        <div className='flex w-full items-center justify-end'>
                             <Link
                                 href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
                                 className={buttonVariants({ variant: 'link' })}
@@ -54,7 +63,10 @@ export default function WorkstationCardView({
                                 {t('action.edit')}
                             </Link>
                             {workstation.can_be_deleted && (
-                                <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
+                                <Button
+                                    variant='link'
+                                    onClick={() => handleWorkstationDeletion(workstation.id)}
+                                >
                                     {t('action.delete')}
                                 </Button>
                             )}

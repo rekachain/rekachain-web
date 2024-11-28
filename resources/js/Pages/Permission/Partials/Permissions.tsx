@@ -13,7 +13,8 @@ import Filters from '@/Pages/Permission/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
+    const [permissionResponse, setPermissionResponse] =
+        useState<PaginateResponse<PermissionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
@@ -39,18 +40,18 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {permissionResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <PermissionsTableView
                             permissionResponse={permissionResponse}
                             handlePermissionDeletion={handlePermissionResourceDeletion}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <PermissionsCardView
                             permissionResponse={permissionResponse}
                             handlePermissionDeletion={handlePermissionResourceDeletion}
@@ -58,7 +59,10 @@ export default function () {
                     </div>
                 </>
             )}
-            <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination
+                meta={permissionResponse?.meta}
+                handleChangePage={handlePageChange}
+            />
         </div>
     );
 }

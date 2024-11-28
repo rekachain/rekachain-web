@@ -36,8 +36,8 @@ export default function ({
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <ComponentMaterialTableView
                     trainset={trainset}
                     handleSyncCarriagePanel={handleSyncCarriagePanelComponent}
@@ -48,7 +48,7 @@ export default function ({
                 />
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <ComponentMaterialCardView
                     trainset={trainset}
                     handleSyncCarriagePanel={handleSyncCarriagePanelComponent}

@@ -18,7 +18,8 @@ export default function ({
     handleSyncProject: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
-    const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<ProjectCarriageResource>>();
+    const [carriageResponse, setCarriageResponse] =
+        useState<PaginateResponse<ProjectCarriageResource>>();
     const [carriageResponseMeta, setCarriageResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -53,17 +54,20 @@ export default function ({
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {carriageResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <CarriageTableView
                             project={project}
                             carriageResponse={carriageResponse}
                         ></CarriageTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <CarriageCardView project={project} carriageResponse={carriageResponse}></CarriageCardView>
+                    <div className='block md:hidden'>
+                        <CarriageCardView
+                            project={project}
+                            carriageResponse={carriageResponse}
+                        ></CarriageCardView>
                     </div>
                 </>
             )}

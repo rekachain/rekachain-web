@@ -23,7 +23,7 @@ export default function () {
         unit: '',
     });
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await rawMaterialService.create(data);
@@ -35,71 +35,79 @@ export default function () {
         <>
             <Head title={t('pages.raw_material.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.raw_material.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.raw_material.create.title')}
+                        </h1>
                     </div>
 
                     <form onSubmit={submit}>
-                        <div className="mt-4">
+                        <div className='mt-4'>
                             <InputLabel
                                 value={t('pages.raw_material.create.fields.material_code')}
-                                htmlFor="material_code"
+                                htmlFor='material_code'
                             />
                             <Input
                                 value={data.material_code}
-                                type="text"
-                                onChange={e => setData('material_code', e.target.value)}
-                                name="material_code"
-                                id="material_code"
-                                className="mt-1"
-                                autoComplete="material_code"
+                                type='text'
+                                onChange={(e) => setData('material_code', e.target.value)}
+                                name='material_code'
+                                id='material_code'
+                                className='mt-1'
+                                autoComplete='material_code'
                             />
                         </div>
 
-                        <div className="mt-4">
+                        <div className='mt-4'>
                             <InputLabel
                                 value={t('pages.raw_material.create.fields.description')}
-                                htmlFor="description"
+                                htmlFor='description'
                             />
                             <Input
                                 value={data.description}
-                                type="text"
-                                onChange={e => setData('description', e.target.value)}
-                                name="description"
-                                id="description"
-                                className="mt-1"
-                                autoComplete="description"
+                                type='text'
+                                onChange={(e) => setData('description', e.target.value)}
+                                name='description'
+                                id='description'
+                                className='mt-1'
+                                autoComplete='description'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.raw_material.create.fields.specs')} htmlFor="specs" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.raw_material.create.fields.specs')}
+                                htmlFor='specs'
+                            />
                             <Input
                                 value={data.specs}
-                                type="text"
-                                onChange={e => setData('specs', e.target.value)}
-                                name="specs"
-                                id="specs"
-                                className="mt-1"
-                                autoComplete="specs"
+                                type='text'
+                                onChange={(e) => setData('specs', e.target.value)}
+                                name='specs'
+                                id='specs'
+                                className='mt-1'
+                                autoComplete='specs'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.raw_material.create.fields.unit')} htmlFor="unit" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.raw_material.create.fields.unit')}
+                                htmlFor='unit'
+                            />
                             <Input
                                 value={data.unit}
-                                type="text"
-                                onChange={e => setData('unit', e.target.value)}
-                                name="unit"
-                                id="unit"
-                                className="mt-1"
-                                autoComplete="unit"
+                                type='text'
+                                onChange={(e) => setData('unit', e.target.value)}
+                                name='unit'
+                                id='unit'
+                                className='mt-1'
+                                autoComplete='unit'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.raw_material.create.buttons.submit')}
                         </Button>
                     </form>

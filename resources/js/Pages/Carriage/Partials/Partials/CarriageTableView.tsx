@@ -1,6 +1,13 @@
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { CarriageResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
@@ -23,15 +30,19 @@ export default function CarriageTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.carriage.partials.partials.carriage_table.headers.type')}</TableHead>
                         <TableHead>
-                            {t('pages.carriage.partials.partials.carriage_table.headers.description')}
+                            {t('pages.carriage.partials.partials.carriage_table.headers.type')}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.carriage.partials.partials.carriage_table.headers.description',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriageResponse?.data.map(carriage => (
+                    {carriageResponse?.data.map((carriage) => (
                         <TableRow key={carriage.id}>
                             <TableCell>{carriage.type}</TableCell>
                             <TableCell>{carriage.description}</TableCell>
@@ -43,7 +54,10 @@ export default function CarriageTableView({
                                     {t('action.edit')}
                                 </Link>
                                 {carriage.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleCarriageDeletion(carriage.id)}>
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleCarriageDeletion(carriage.id)}
+                                    >
                                         {t('action.delete')}
                                     </Button>
                                 )}

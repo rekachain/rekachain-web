@@ -1,4 +1,4 @@
-import { DivisionResource } from "../Resources";
+import { DivisionResource } from '../Resources';
 
 export interface WorkAspect {
     id: number;

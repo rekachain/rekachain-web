@@ -22,7 +22,10 @@ import {
 import { Button } from '@/Components/UI/button';
 import SidebarLink from './Components/SidebarLink';
 import SidebarMenu from './Components/SidebarMenu';
-import { SidebarLinkCollapsible, SidebarLinkCollapsibleItem } from './Components/SidebarLinkCollapsible';
+import {
+    SidebarLinkCollapsible,
+    SidebarLinkCollapsibleItem,
+} from './Components/SidebarLinkCollapsible';
 import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
@@ -56,23 +59,26 @@ export default function Sidebar() {
 
     return (
         <SidebarProvider>
-            <aside ref={sidebarRef} className="sidebar w-72 h-screen border-border border-r-2 transition-all">
-                <nav className="flex flex-col space-y-1">
-                    <div className="sidebar-header flex justify-between px-4 py-3 border-b-2 h-16">
+            <aside
+                ref={sidebarRef}
+                className='sidebar h-screen w-72 border-r-2 border-border transition-all'
+            >
+                <nav className='flex flex-col space-y-1'>
+                    <div className='sidebar-header flex h-16 justify-between border-b-2 px-4 py-3'>
                         <img
-                            src="/assets/images/Logo REKA.svg"
+                            src='/assets/images/Logo REKA.svg'
                             height={200}
                             // className=" "
                             // className="sidebar-header-logo h-full object-contain"
-                            className="sidebar-header-logo h-12 "
-                            alt="logo"
+                            className='sidebar-header-logo h-12'
+                            alt='logo'
                             // height={500}
                         />
                         <Button
-                            variant="outline"
-                            size="icon"
+                            variant='outline'
+                            size='icon'
                             onClick={handleSidebarCollapse}
-                            className="sidebar-collapse-toggle h-10 w-10"
+                            className='sidebar-collapse-toggle h-10 w-10'
                         >
                             {sidebarCollapse ? (
                                 <RiContractRightLine size={STYLING.ICON.SIZE.SMALL} />
@@ -84,7 +90,7 @@ export default function Sidebar() {
                     <SidebarMenu title={t('components.sidebar.menus.general')}>
                         <SidebarLink
                             title={t('components.sidebar.links.dashboard')}
-                            routeName="dashboard"
+                            routeName='dashboard'
                             icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (

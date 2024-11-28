@@ -22,7 +22,7 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await workshopService.update(workshop.id, data);
@@ -38,43 +38,49 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
                 })}
             />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
                             {t('pages.workshop.edit.title', {
                                 name: workshop.name,
                             })}
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.workshop.edit.fields.name')} htmlFor="name" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.workshop.edit.fields.name')}
+                                htmlFor='name'
+                            />
                             <Input
                                 value={data.name}
-                                type="text"
-                                onChange={e => setData('name', e.target.value)}
-                                name="name"
-                                id="name"
-                                className="mt-1"
-                                autoComplete="name"
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.workshop.edit.fields.address')} htmlFor="address" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.workshop.edit.fields.address')}
+                                htmlFor='address'
+                            />
                             <Input
                                 value={data.address}
-                                type="text"
-                                onChange={e => setData('address', e.target.value)}
-                                name="address"
-                                id="address"
-                                className="mt-1"
-                                autoComplete="address"
+                                type='text'
+                                onChange={(e) => setData('address', e.target.value)}
+                                name='address'
+                                id='address'
+                                className='mt-1'
+                                autoComplete='address'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.workshop.edit.buttons.submit')}
                         </Button>
                     </form>

@@ -208,7 +208,7 @@ export default function (props: { roles: RoleResource[] }) {
                             <FilePond
                                 onupdatefiles={handleFileChange}
                                 labelIdle={t(
-                                    'pages.user.create.fields.avatar_filepond_placeholder'
+                                    'pages.user.create.fields.avatar_filepond_placeholder',
                                 )}
                                 imagePreviewMaxHeight={400}
                                 files={data.image_path}
