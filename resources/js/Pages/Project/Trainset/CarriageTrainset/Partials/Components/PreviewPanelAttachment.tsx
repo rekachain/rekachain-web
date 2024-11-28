@@ -277,13 +277,13 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
-                    <Table>
+                    <Table wrapperClassName='block max-h-96'>
                         <TableCaption>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                             )}
                         </TableCaption>
-                        <TableHeader>
+                        <TableHeader className="sticky top-0 bg-background dark:bg-background-dark">
                             <TableRow>
                                 <TableHead className="">
                                     {t(

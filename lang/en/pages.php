@@ -1381,6 +1381,31 @@ return [
                             ],
                         ],
                     ],
+                    'progress_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'trigger' => 'Trainset Progresses',
+                            ],
+                            'components' => [
+                                'tabs' => [
+                                    'props' => [
+                                        'tab_list' => [
+                                            'mechanic' => 'Mechanic Progress',
+                                            'electric' => 'Electric Progress',
+                                            'assembly' => 'Assembly Progress',
+                                        ],
+                                        'tab_content' => [
+                                            'title' => [
+                                                'mechanic' => 'Mechanic Progresses For :trainset Trainset',
+                                                'electric' => 'Electric Progresses For :trainset Trainset',
+                                                'assembly' => 'Assembly Progresses For :trainset Trainset',
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
@@ -1545,6 +1570,36 @@ return [
                                         ],
                                     ],
                                 ],
+                            ],
+                        ],
+                        'progress_component' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'component' => 'Component: :component',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Carriage: :carriage',
+                                'workers' => 'Workers:',
+                            ]
+                        ],
+                        'progress_panel' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Carriage: :carriage',
+                                'serial_number' => 'Serial Number: :serial_number',
+                                'product_number' => 'Product Number: :product_number',
+                                'workers' => 'Workers:',
+                            ]
+                        ],
+                        'components' => [
+                            'worker_card' => [
+                                'worker_identification' => 'EIN: :worker_identification',
+                                'acceptance_status' => 'Acceptance Status',
+                                'work_status' => 'Work Status',
+                                'start_at' => 'Started At',
+                            ],
+                            'worker_step_card' => [
+                                'step_status' => 'Status',
                             ],
                         ],
                     ],
