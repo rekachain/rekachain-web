@@ -10,22 +10,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from 
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import WorkerCard from './Components/WorkerCard';
 import WorkerStepCard from './Components/WorkerStepCard';
+import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
 
-interface CarriagePanelComponentProgressResource {
-    carriage_panel_component_id: number;
-    panel: PanelResource;
-    carriage: CarriageResource;
-    progress: ProgressResource;
-    total_steps: number;
-    steps: StepResource & { 
-        work_status: string | null;
-        workers: DetailWorkerTrainsetResource[];
-    }[];
-}
-interface TrainsetAttachmentProgressResource {
-    component: ComponentResource;
-    carriage_panel_components: CarriagePanelComponentProgressResource[];
-}
 const ProgressComponent = ({
     attachment,
     title,
@@ -35,12 +21,12 @@ const ProgressComponent = ({
 }) => {
     const { t } = useLaravelReactI18n();
 
-    const [trainsetAttachmentProgress, setTrainsetAttachmentProgress] = useState<TrainsetAttachmentProgressResource[]>();
+    const [trainsetAttachmentProgress, setTrainsetAttachmentProgress] = useState<ComponentProgressResource[]>();
 
     const loadProgress = withLoading(async () => {
         const progress = await trainsetAttachmentService.get(attachment.id, {
             intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS,
-        }) as unknown as TrainsetAttachmentProgressResource[];
+        }) as unknown as ComponentProgressResource[];
         setTrainsetAttachmentProgress(progress);
     });
 

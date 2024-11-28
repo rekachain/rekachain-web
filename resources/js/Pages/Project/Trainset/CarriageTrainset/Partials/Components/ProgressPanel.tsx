@@ -7,28 +7,11 @@ import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
 import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from '@/Components/UI/breadcrumb';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
-import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { DetailWorkerAcceptanceStatusEnum } from '@/Support/Enums/DetailWorkerAcceptanceStatusEnum';
 import WorkerStepCard from './Components/WorkerStepCard';
 import WorkerCard from './Components/WorkerCard';
+import { PanelProgressResource } from '@/Support/Interfaces/Others/PanelProgressResource';
 
-interface SerialPanelProgressResource {
-    serial_number: number;
-    product_no: string;
-    steps: StepResource & { 
-        work_status: string | null;
-        workers: DetailWorkerPanelResource[]; 
-    }[];
-}
-interface PanelProgressResource {
-    panel: PanelResource;
-    carriage: CarriageResource;
-    progress: ProgressResource;
-    total_steps: number;
-    serial_panels: SerialPanelProgressResource[];
-}
 const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title: string }) => {
     const { t } = useLaravelReactI18n();
 
@@ -45,19 +28,6 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
     useEffect(() => {
         loadProgress();
     }, []);
-
-    const getStatusColor = (status: any) => {
-        switch (status) {
-            case 'completed':
-                return 'bg-tertiary text-black';
-            case 'in_progress':
-                return 'bg-warning text-black';
-            case 'failed':
-                return 'bg-destructive text-black';
-            default:
-                return 'bg-background dark:bg-background-dark border border-gray-300'; // Neutral background
-        }
-    };
 
     return (
         <div className="text-black dark:text-white" key={trainset.id}>
