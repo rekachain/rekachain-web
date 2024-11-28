@@ -91,7 +91,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
                                         </ScrollArea>
                                     </div>
                                 ))}
-                                <Separator className="my-4 h-1 bg-black dark:bg-white" />
+                                <Separator className="my-4 h-1" />
                             </div>
                         </div>
                     ))
