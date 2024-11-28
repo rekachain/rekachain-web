@@ -71,20 +71,20 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
                             <h4 className="text-lg font-bold">
                                 <span>{progress.panel.name}</span> 
                                 <span className="mx-2">|</span> 
-                                <span>{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.carriage', { carriage: progress.carriage.type})}</span>
+                                <span>{t('pages.project.trainset.carriage_trainset.partials.components.progress_panel.props.carriage', { carriage: progress.carriage.type})}</span>
                             </h4>
                             <div className="flex flex-col gap-2">
                                 {progress.serial_panels.map((serialPanelProgress) => (
                                     <div key={`${progress.panel.name} ${serialPanelProgress.serial_number}`}>
                                         <div className="flex items-center justify-center space-x-2 pb-1">
                                             <div className="flex-1">
-                                                <h3 className="text-right">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.serial_number', { serial_number: serialPanelProgress.serial_number })}</h3>
+                                                <h3 className="text-right">{t('pages.project.trainset.carriage_trainset.partials.components.progress_panel.props.serial_number', { serial_number: serialPanelProgress.serial_number })}</h3>
                                             </div>
                                             <div className="flex-none">
                                                 <h3 className="text-center">|</h3>
                                             </div>
                                             <div className="flex-1">
-                                                <h3 className="text-left">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.product_number', { product_number: serialPanelProgress.product_no })}</h3>
+                                                <h3 className="text-left">{t('pages.project.trainset.carriage_trainset.partials.components.progress_panel.props.product_number', { product_number: serialPanelProgress.product_no })}</h3>
                                             </div>
                                         </div>
                                         <ScrollArea className="w-full rounded-md border">
@@ -99,7 +99,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
                                                                         <WorkerStepCard step={step as StepResource & { work_status: string | null; workers: DetailWorkerPanelResource[];}}/>
                                                                     </PopoverTrigger>
                                                                     <PopoverContent className='flex flex-col gap-2'>
-                                                                        <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.workers')}</h4>
+                                                                        <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.components.progress_panel.props.workers')}</h4>
                                                                         <ScrollArea className="max-h-[250px] overflow-y-auto">
                                                                         <div className="flex flex-col gap-2">
                                                                             {step.workers && step.workers.map(stepWorker => (

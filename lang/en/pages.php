@@ -1405,27 +1405,6 @@ return [
                                 ],
                             ],
                         ],
-                        'components' => [
-                            'progress_component' => [
-                                'props' => [
-                                    'trainset' => 'Trainset: :trainset',
-                                    'component' => 'Component: :component',
-                                    'panel' => 'Panel: :panel',
-                                    'carriage' => 'Carriage: :carriage',
-                                    'workers' => 'Workers:',
-                                ]
-                            ],
-                            'progress_panel' => [
-                                'props' => [
-                                    'trainset' => 'Trainset: :trainset',
-                                    'panel' => 'Panel: :panel',
-                                    'carriage' => 'Carriage: :carriage',
-                                    'serial_number' => 'Serial Number: :serial_number',
-                                    'product_number' => 'Product Number: :product_number',
-                                    'workers' => 'Workers:',
-                                ]
-                            ],
-                        ]
                     ],
                     'partials' => [
                         'carriage_table' => [
@@ -1592,6 +1571,25 @@ return [
                                     ],
                                 ],
                             ],
+                        ],
+                        'progress_component' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'component' => 'Component: :component',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Carriage: :carriage',
+                                'workers' => 'Workers:',
+                            ]
+                        ],
+                        'progress_panel' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Carriage: :carriage',
+                                'serial_number' => 'Serial Number: :serial_number',
+                                'product_number' => 'Product Number: :product_number',
+                                'workers' => 'Workers:',
+                            ]
                         ],
                     ],
                 ],

@@ -1405,27 +1405,6 @@ return [
                                 ],
                             ],
                         ],
-                        'components' => [
-                            'progress_component' => [
-                                'props' => [
-                                    'trainset' => 'Trainset: :trainset',
-                                    'component' => 'Komponen: :component',
-                                    'panel' => 'Panel: :panel',
-                                    'carriage' => 'Gerbong: :carriage',
-                                    'workers' => 'Pekerja:',
-                                ]
-                            ],
-                            'progress_panel' => [
-                                'props' => [
-                                    'trainset' => 'Trainset: :trainset',
-                                    'panel' => 'Panel: :panel',
-                                    'carriage' => 'Gerbong: :carriage',
-                                    'serial_number' => 'Nomor Serial: :serial_number',
-                                    'product_number' => 'Nomor Produk: :product_number',
-                                    'workers' => 'Pekerja:',
-                                ]
-                            ],
-                        ]
                     ],
                     'partials' => [
                         'carriage_table' => [
@@ -1592,6 +1571,25 @@ return [
                                     ],
                                 ],
                             ],
+                        ],
+                        'progress_component' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'component' => 'Komponen: :component',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Gerbong: :carriage',
+                                'workers' => 'Pekerja:',
+                            ]
+                        ],
+                        'progress_panel' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Gerbong: :carriage',
+                                'serial_number' => 'Nomor Serial: :serial_number',
+                                'product_number' => 'Nomor Produk: :product_number',
+                                'workers' => 'Pekerja:',
+                            ]
                         ],
                     ],
                 ],
