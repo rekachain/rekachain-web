@@ -14,7 +14,7 @@
     "proseWrap": "preserve",
     "embeddedLanguageFormatting": "auto",
     "editorconfig": true,
-    "bracketSameLine": true,
+    "bracketSameLine": false,
     "plugins": [
         "prettier-plugin-tailwindcss"
     ]
