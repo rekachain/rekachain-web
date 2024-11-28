@@ -7,12 +7,10 @@ use App\Models\Component;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ComponentSheetImport implements ToModel, WithHeadingRow 
-{
-    public function __construct(private ProjectsImport $parent) { }
-    
-    public function model(array $row) 
-    {
+class ComponentSheetImport implements ToModel, WithHeadingRow {
+    public function __construct(private ProjectsImport $parent) {}
+
+    public function model(array $row) {
         $component = Component::firstOrCreate([
             'name' => $row['nama'],
             'description' => $row['deskripsi'],

@@ -2,19 +2,17 @@
 
 namespace App\Http\Requests\DetailWorkerTrainset;
 
+use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
-use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateDetailWorkerTrainsetRequest extends FormRequest
-{
-    public function rules(): array
-    {
+class UpdateDetailWorkerTrainsetRequest extends FormRequest {
+    public function rules(): array {
         $intent = $this->get('intent');
-        switch ($intent){
+        switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 return [
                     'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
@@ -38,17 +36,16 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest
         ];
     }
 
-    public function after()
-    {
+    public function after() {
         return [
             function ($validator) {
                 if ($this->get('acceptance_status') && !Auth::user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     $validator->errors()->add(
-                        'Detail Worker Trainset Acceptance', 
-                        __('validation.custom.detail_worker_trainset.update_worker.field_update_role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value. ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value, 'field' => 'acceptance_status'])
+                        'Detail Worker Trainset Acceptance',
+                        __('validation.custom.detail_worker_trainset.update_worker.field_update_role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value, 'field' => 'acceptance_status'])
                     );
                 }
-            }
+            },
         ];
     }
 }

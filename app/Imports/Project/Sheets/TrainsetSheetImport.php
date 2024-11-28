@@ -8,12 +8,10 @@ use App\Support\Enums\TrainsetStatusEnum;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-class TrainsetSheetImport implements ToCollection
-{
-    public function __construct(private ProjectsImport $parent) { }
+class TrainsetSheetImport implements ToCollection {
+    public function __construct(private ProjectsImport $parent) {}
 
-    public function collection(Collection $rows)
-    {
+    public function collection(Collection $rows) {
         $project = $this->parent->getProject();
         $topHeaders = $rows[1];
         $carTypeHeaders = $rows[2];

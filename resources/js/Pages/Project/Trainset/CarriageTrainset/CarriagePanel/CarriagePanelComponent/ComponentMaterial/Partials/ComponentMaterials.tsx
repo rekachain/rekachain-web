@@ -40,22 +40,22 @@ export default function ({
             <div className="hidden md:block">
                 <ComponentMaterialTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
-                    carriagePanelComponent={carriagePanelComponent}
                     handleSyncCarriagePanel={handleSyncCarriagePanelComponent}
                     handleComponentMaterialDeletion={handlePanelComponentDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanelComponent={carriagePanelComponent}
+                    carriagePanel={carriagePanel}
                 />
             </div>
 
             <div className="block md:hidden">
                 <ComponentMaterialCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
-                    carriagePanelComponent={carriagePanelComponent}
                     handleSyncCarriagePanel={handleSyncCarriagePanelComponent}
                     handleComponentMaterialDeletion={handlePanelComponentDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanelComponent={carriagePanelComponent}
+                    carriagePanel={carriagePanel}
                 />
             </div>
         </div>

@@ -21,7 +21,7 @@ class PanelMaterialSeeder extends Seeder {
 
         if (!$csvData) {
             foreach (CarriagePanel::all() as $carriagePanel) {
-                for($i=0; $i < rand(5,10); $i++) {
+                for ($i = 0; $i < rand(5, 10); $i++) {
                     PanelMaterial::factory()->create([
                         'carriage_panel_id' => $carriagePanel->id,
                         'raw_material_id' => RawMaterial::whereNotIn('id', $carriagePanel->panel_materials->pluck('raw_material_id'))->inRandomOrder()->first()->id,

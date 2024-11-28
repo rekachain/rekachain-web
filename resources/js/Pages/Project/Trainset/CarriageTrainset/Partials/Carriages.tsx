@@ -24,17 +24,17 @@ export default function ({
         <div className="space-y-4">
             <div className="hidden md:block">
                 <CarriageTableView
-                    handleSyncTrainset={handleSyncTrainset}
                     trainset={trainset}
+                    handleSyncTrainset={handleSyncTrainset}
                     handleCarriageDeletion={handleCarriageDeletion}
                 ></CarriageTableView>
             </div>
 
             <div className="block md:hidden">
                 <CarriageCardView
-                    handleSyncTrainset={handleSyncTrainset}
                     trainset={trainset}
                     handleTrainsetDeletion={handleCarriageDeletion}
+                    handleSyncTrainset={handleSyncTrainset}
                 ></CarriageCardView>
             </div>
         </div>

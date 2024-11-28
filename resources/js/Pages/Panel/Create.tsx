@@ -50,45 +50,45 @@ export default function () {
                             <InputLabel htmlFor="progress">{t('pages.panel.create.fields.progress')}</InputLabel>
                             <div className="mt-4">
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    fetchData={fetchProgress}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id ?? undefined}
-                                    placeholder={t('pages.panel.create.fields.progress_placeholder')}
                                     renderItem={(item: ProgressResource) => item.name}
-                                    buttonClassName="mt-1"
+                                    placeholder={t('pages.panel.create.fields.progress_placeholder')}
                                     nullable
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    buttonClassName="mt-1"
                                 />
                             </div>
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.panel.create.fields.name')} />
+                            <InputLabel value={t('pages.panel.create.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.panel.create.fields.description')} />
+                            <InputLabel value={t('pages.panel.create.fields.description')} htmlFor="description" />
                             <Input
-                                id="description"
-                                type="text"
-                                name="description"
                                 value={data.description}
+                                type="text"
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
                                 className="mt-1"
                                 autoComplete="description"
-                                onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.panel.create.buttons.submit')}
                         </Button>
                     </form>

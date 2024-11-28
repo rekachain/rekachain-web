@@ -39,20 +39,20 @@ export default function CarriageTableView({
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
                                         project.id,
                                         data.carriage.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.components')}
                                 </Link>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
                                         project.id,
                                         data.carriage.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('pages.project.partials.partials.project_table.actions.panels')}
                                 </Link>

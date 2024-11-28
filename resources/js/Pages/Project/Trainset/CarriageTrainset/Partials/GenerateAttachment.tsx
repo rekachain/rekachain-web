@@ -182,8 +182,8 @@ const GenerateAttachment = ({
                         <DialogDescription></DialogDescription>
                         <Tabs
                             value={activeTab}
-                            className="w-[400px]"
                             onValueChange={(value: string) => setActiveTab(value as GenerateAttachmentTabEnum)}
+                            className="w-[400px]"
                         >
                             <TabsList>
                                 <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
@@ -225,8 +225,6 @@ const GenerateAttachment = ({
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                id="mechanic_source_workstation_id"
-                                                fetchData={fetchWorkstations}
                                                 setSelectedData={id =>
                                                     setGenerateMechanicTrainsetAttachmentData(
                                                         'mechanic_source_workstation_id',
@@ -236,12 +234,14 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id
                                                 }
+                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
-                                                buttonClassName="mt-1"
                                                 nullable
+                                                id="mechanic_source_workstation_id"
+                                                fetchData={fetchWorkstations}
+                                                buttonClassName="mt-1"
 
                                                 // TODO: possible minor issue: perform pre-search on the workstation if trainset attachment created
                                                 // initialSearch={}
@@ -255,8 +255,6 @@ const GenerateAttachment = ({
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                id="mechanic_destination_workstation_id"
-                                                fetchData={fetchWorkstations}
                                                 setSelectedData={id =>
                                                     setGenerateMechanicTrainsetAttachmentData(
                                                         'mechanic_destination_workstation_id',
@@ -266,12 +264,14 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id
                                                 }
+                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
-                                                buttonClassName="mt-1"
                                                 nullable
+                                                id="mechanic_destination_workstation_id"
+                                                fetchData={fetchWorkstations}
+                                                buttonClassName="mt-1"
                                             />
                                         </div>
                                     </div>
@@ -309,8 +309,6 @@ const GenerateAttachment = ({
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                id="electric_source_workstation_id"
-                                                fetchData={fetchWorkstations}
                                                 setSelectedData={id =>
                                                     setGenerateElectricTrainsetAttachmentData(
                                                         'electric_source_workstation_id',
@@ -320,12 +318,14 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateElectricTrainsetAttachmentData.electric_source_workstation_id
                                                 }
+                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
-                                                buttonClassName="mt-1"
                                                 nullable
+                                                id="electric_source_workstation_id"
+                                                fetchData={fetchWorkstations}
+                                                buttonClassName="mt-1"
                                             />
                                         </div>
 
@@ -336,8 +336,6 @@ const GenerateAttachment = ({
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                id="electric_destination_workstation_id"
-                                                fetchData={fetchWorkstations}
                                                 setSelectedData={id =>
                                                     setGenerateElectricTrainsetAttachmentData(
                                                         'electric_destination_workstation_id',
@@ -347,12 +345,14 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateElectricTrainsetAttachmentData.electric_destination_workstation_id
                                                 }
+                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
-                                                buttonClassName="mt-1"
                                                 nullable
+                                                id="electric_destination_workstation_id"
+                                                fetchData={fetchWorkstations}
+                                                buttonClassName="mt-1"
                                             />
                                         </div>
                                     </div>
@@ -390,8 +390,6 @@ const GenerateAttachment = ({
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                id="assembly_source_workstation_id"
-                                                fetchData={fetchWorkstations}
                                                 setSelectedData={id =>
                                                     setGenerateAssemblyAttachmentData(
                                                         'assembly_source_workstation_id',
@@ -401,12 +399,14 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateAssemblyAttachmentData.assembly_source_workstation_id
                                                 }
+                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
-                                                buttonClassName="mt-1"
                                                 nullable
+                                                id="assembly_source_workstation_id"
+                                                fetchData={fetchWorkstations}
+                                                buttonClassName="mt-1"
                                             />
                                         </div>
 
@@ -417,8 +417,6 @@ const GenerateAttachment = ({
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                id="assembly_destination_workstation_id"
-                                                fetchData={fetchWorkstations}
                                                 setSelectedData={id =>
                                                     setGenerateAssemblyAttachmentData(
                                                         'assembly_destination_workstation_id',
@@ -428,12 +426,14 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateAssemblyAttachmentData.assembly_destination_workstation_id
                                                 }
+                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
-                                                buttonClassName="mt-1"
                                                 nullable
+                                                id="assembly_destination_workstation_id"
+                                                fetchData={fetchWorkstations}
+                                                buttonClassName="mt-1"
                                             />
                                         </div>
                                     </div>

@@ -57,45 +57,45 @@ export default function ({ component }: { component: ComponentResource }) {
                             <InputLabel htmlFor="progress">{t('pages.component.create.fields.progress')}</InputLabel>
                             <div className="mt-4">
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    fetchData={fetchProgress}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id ?? undefined}
-                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     renderItem={(item: ProgressResource) => item.name}
-                                    initialSearch={component.progress?.name}
-                                    buttonClassName="mt-1"
+                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     nullable
+                                    initialSearch={component.progress?.name}
+                                    id="progress_id"
+                                    fetchData={fetchProgress}
+                                    buttonClassName="mt-1"
                                 />
                             </div>
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.component.edit.fields.description')} />
+                            <InputLabel value={t('pages.component.edit.fields.description')} htmlFor="description" />
                             <Textarea
-                                id="description"
-                                name="description"
                                 value={data.description}
+                                onChange={e => setData('description', e.target.value)}
+                                name="description"
+                                id="description"
                                 className="mt-1"
                                 autoComplete="description"
-                                onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.component.edit.fields.name')} />
+                            <InputLabel value={t('pages.component.edit.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button disabled={processing} className="mt-4">
                             {t('pages.component.edit.buttons.submit')}
                         </Button>
                     </form>

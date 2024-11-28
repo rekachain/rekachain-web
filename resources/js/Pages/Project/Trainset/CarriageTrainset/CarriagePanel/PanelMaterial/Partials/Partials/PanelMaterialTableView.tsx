@@ -51,8 +51,8 @@ export default function PanelMaterialTableView({
                                     <span>{panelMaterial.qty}</span>
                                 ) : (
                                     <PanelMaterialQty
-                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
                                         panelMaterial={panelMaterial}
+                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
                                     />
                                 )}
                             </TableCell>

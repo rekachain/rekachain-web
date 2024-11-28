@@ -93,10 +93,10 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     <DialogTitle></DialogTitle>
                     <DialogDescription className="w-full"></DialogDescription>
                     <Tabs
-                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                        className="w-full"
                         value={activeTab}
                         onValueChange={value => setActiveTab(value as GenerateAttachmentTabEnum)}
+                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                        className="w-full"
                     >
                         <TabsList>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
@@ -119,11 +119,11 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             <ScrollArea className="h-[400px] border p-4">
                                 {mechanicAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
-                                        attachment={attachment}
                                         title={t(
                                             'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
                                         )}
                                         key={index}
+                                        attachment={attachment}
                                     />
                                 ))}
                             </ScrollArea>
@@ -132,11 +132,11 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             <ScrollArea className="h-[400px] border p-4">
                                 {electricAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
-                                        attachment={attachment}
                                         title={t(
                                             'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.components.preview_trainset_attachment.props.title',
                                         )}
                                         key={index}
+                                        attachment={attachment}
                                     />
                                 ))}
                             </ScrollArea>

@@ -2,7 +2,6 @@
 
 namespace App\Imports\CustomAttachmentMaterial;
 
-use App\Models\Carriage;
 use App\Models\PanelAttachment;
 use App\Models\RawMaterial;
 use App\Models\TrainsetAttachment;
@@ -11,12 +10,12 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class CustomAttachmentMaterialsImport implements ToModel, WithHeadingRow {
-
     public function __construct(protected Model $attachment, protected ?bool $override = null) {
         if (is_null($this->override)) {
             $attachment->custom_attachment_materials()->delete();
         }
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Model|null
      */
@@ -40,14 +39,16 @@ class CustomAttachmentMaterialsImport implements ToModel, WithHeadingRow {
                 ], [
                     'qty' => $row['qty'],
                 ]);
-            } else {
-                return $this->attachment->custom_attachment_materials()->firstOrCreate([
-                    'raw_material_id' => $rawMaterial->id,
-                ], [
-                    'qty' => $row['qty'],
-                ]);
             }
+
+            return $this->attachment->custom_attachment_materials()->firstOrCreate([
+                'raw_material_id' => $rawMaterial->id,
+            ], [
+                'qty' => $row['qty'],
+            ]);
+
         }
+
         return null;
     }
 }

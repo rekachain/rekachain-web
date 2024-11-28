@@ -25,7 +25,6 @@ class Trainset extends Model {
     protected $casts = [
         'status' => TrainsetStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => [
             'name',
@@ -53,7 +52,7 @@ class Trainset extends Model {
                 'type',
                 'description',
             ],
-        ]
+        ],
     ];
 
     public function getFilterable(): array {

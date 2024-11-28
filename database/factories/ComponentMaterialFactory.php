@@ -2,24 +2,23 @@
 
 namespace Database\Factories;
 
+use App\Models\CarriagePanelComponent;
 use App\Models\ComponentMaterial;
 use App\Models\RawMaterial;
-use App\Models\CarriagePanelComponent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ComponentMaterial>
  */
-class ComponentMaterialFactory extends Factory
-{
+class ComponentMaterialFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         $carriagePanelComponent = CarriagePanelComponent::inRandomOrder()->first();
+
         return [
             'carriage_panel_component_id' => $carriagePanelComponent->id,
             'raw_material_id' => RawMaterial::whereNotIn('id', ComponentMaterial::whereCarriagePanelComponentId($carriagePanelComponent->id)->pluck('raw_material_id'))->inRandomOrder()->first()->id,

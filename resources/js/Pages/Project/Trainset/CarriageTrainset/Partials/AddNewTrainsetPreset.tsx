@@ -66,8 +66,8 @@ const AddNewTrainsetPreset = ({
                             </Label>
                             <div className="flex gap-4">
                                 <Input
-                                    type="text"
                                     value={data.new_carriage_preset_name}
+                                    type="text"
                                     onChange={e => setData('new_carriage_preset_name', e.target.value)}
                                 />
                                 <Button type="submit" disabled={loading} className="w-fit">

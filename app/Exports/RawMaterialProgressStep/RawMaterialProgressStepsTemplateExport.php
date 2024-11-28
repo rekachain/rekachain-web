@@ -13,8 +13,7 @@ class RawMaterialProgressStepsTemplateExport implements WithMultipleSheets {
 
     public function __construct(protected Model $model) {}
 
-    public function sheets(): array
-    {
+    public function sheets(): array {
         return [
             new RawMaterialsTemplateExport($this->model),
             new ProgressTemplateExport($this->model->progress),

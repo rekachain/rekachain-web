@@ -128,16 +128,16 @@ export default function ({
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <PanelMaterials
                             trainset={trainset}
+                            handleSyncCarriagePanel={handleSyncCarriagePanel}
                             carriageTrainset={carriageTrainset}
                             carriagePanel={carriagePanel}
-                            handleSyncCarriagePanel={handleSyncCarriagePanel}
                         />
                     </Suspense>
 
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriagePanel && (
                         <AddNewPanelRawMaterial
-                            carriagePanel={carriagePanel}
                             handleSyncCarriagePanel={handleSyncCarriagePanel}
+                            carriagePanel={carriagePanel}
                         />
                     )}
                 </div>

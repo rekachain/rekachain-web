@@ -71,8 +71,8 @@ export default function ({
                 <div className="flex flex-col space-y-4">
                     <Label>{t('pages.project.panel.partials.import.dialogs.fields.download_template')}</Label>
                     <Button
-                        type="button"
                         variant="secondary"
+                        type="button"
                         onClick={panelService.downloadImportProgressRawMaterialTemplate.bind(null, panel.id)}
                         disabled={loading}
                     >
@@ -85,10 +85,10 @@ export default function ({
                     <div className="space-y-4">
                         <Label htmlFor="file">{t('pages.project.panel.partials.import.dialogs.buttons.import')}</Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                     </div>
                     <DialogFooter>

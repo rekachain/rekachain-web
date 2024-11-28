@@ -11,6 +11,7 @@ use Illuminate\Database\Seeder;
 
 class TrainsetAttachmentSeeder extends Seeder {
     public function __construct(protected TrainsetServiceInterface $trainsetService) {}
+
     /**
      * Run the database seeds.
      */
@@ -22,14 +23,17 @@ class TrainsetAttachmentSeeder extends Seeder {
         if ($csvData) {
             foreach ($csvData as $row) {
                 $trainset = Trainset::whereId($row['trainset_id'])->first();
-                if (is_null($trainset)) continue;
+                if (is_null($trainset)) {
+                    continue;
+                }
                 $data = [
                     'division' => $row['division'],
-                    $row['division'].'_source_workstation_id' => $row['source_workstation_id'],
-                    $row['division'].'_destination_workstation_id' => $row['destination_workstation_id'],
+                    $row['division'] . '_source_workstation_id' => $row['source_workstation_id'],
+                    $row['division'] . '_destination_workstation_id' => $row['destination_workstation_id'],
                 ];
                 $this->trainsetService->generateTrainsetAttachment($trainset, $data);
             }
+
             return;
         }
         $trainsets = Trainset::limit(10)->get();
@@ -37,13 +41,13 @@ class TrainsetAttachmentSeeder extends Seeder {
             $data = [
                 'division' => TrainsetAttachmentTypeEnum::MECHANIC->value,
                 'mechanic_source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
-                'mechanic_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang','Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
+                'mechanic_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang', 'Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
             ];
             $this->trainsetService->generateTrainsetAttachment($trainset, $data);
             $data = [
                 'division' => TrainsetAttachmentTypeEnum::ELECTRIC->value,
                 'electric_source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,
-                'electric_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang','Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
+                'electric_destination_workstation_id' => Workstation::whereNotIn('name', ['Gudang', 'Ws. Harmonika'])->whereNot('id', $sourceWorkstationId)->inRandomOrder()->value('id'),
             ];
             $this->trainsetService->generateTrainsetAttachment($trainset, $data);
         }

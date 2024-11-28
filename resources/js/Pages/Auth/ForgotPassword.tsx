@@ -29,19 +29,19 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
             <form onSubmit={submit}>
                 <TextInput
-                    id="email"
-                    type="email"
-                    name="email"
                     value={data.email}
-                    className="mt-1 block w-full"
-                    isFocused={true}
+                    type="email"
                     onChange={e => setData('email', e.target.value)}
+                    name="email"
+                    isFocused={true}
+                    id="email"
+                    className="mt-1 block w-full"
                 />
 
                 <InputError message={errors.email} className="mt-2" />
 
                 <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton disabled={processing} className="ms-4">
                         Email Password Reset Link
                     </PrimaryButton>
                 </div>

@@ -6,21 +6,25 @@ import os from 'os';
 
 const ip = Object.values(os.networkInterfaces())
     .flat()
-    .find(i => i.family === 'IPv4' && !i.internal)?.address;
+    .find((i) => i.family === 'IPv4' && !i.internal)?.address;
 
 export default defineConfig(({ command }) => {
     console.log(`Running vite with command: ${command}`);
-    const sharedConfig = command === 'serve' && process.argv.includes('--host=0.0.0.0') ? {
-        base: '/',
-        server: {
-            host: '0.0.0.0',
-            port: 5173,
-            hmr: {
-                host: ip,
-                port: 5173,
-            },
-        },
-    } : {};
+    const sharedConfig =
+        // eslint-disable-next-line no-undef
+        command === 'serve' && process.argv.includes('--host=0.0.0.0')
+            ? {
+                  base: '/',
+                  server: {
+                      host: '0.0.0.0',
+                      port: 5173,
+                      hmr: {
+                          host: ip,
+                          port: 5173,
+                      },
+                  },
+              }
+            : {};
 
     return {
         ...sharedConfig,
@@ -35,5 +39,5 @@ export default defineConfig(({ command }) => {
         optimizeDeps: {
             include: ['html2canvas', 'jspdf'],
         },
-    }
+    };
 });

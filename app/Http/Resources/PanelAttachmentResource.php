@@ -6,20 +6,19 @@ use App\Support\Enums\IntentEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PanelAttachmentResource extends JsonResource
-{
+class PanelAttachmentResource extends JsonResource {
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): array
-    {
+    public function toArray(Request $request): array {
         $intent = $request->get('intent');
 
         switch ($intent) {
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY->value:
                 $attachment = $this->ancestor();
+
                 return [
                     'panel' => PanelResource::make($attachment->carriage_panel->panel),
                     'total_qty' => $attachment->carriage_panel->qty * $attachment->carriage_panel->carriage_trainset->qty,
@@ -35,6 +34,7 @@ class PanelAttachmentResource extends JsonResource
                             }),
                         ])->sortBy('raw_material.id')->toArray();
                 }
+
                 return $this->panel_materials
                     ->groupBy(['raw_material_id'])
                     ->map(fn ($panelMaterials) => [
@@ -138,7 +138,7 @@ class PanelAttachmentResource extends JsonResource
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
                                 'acceptance_status' => $detailWorkerPanel->acceptance_status,
-                                'work_status' => $detailWorkerPanel->work_status
+                                'work_status' => $detailWorkerPanel->work_status,
                             ]);
                             $steps->push([
                                 'step_id' => $detailWorkerPanel->progress_step->step->id,
@@ -146,7 +146,7 @@ class PanelAttachmentResource extends JsonResource
                                 'step_name' => $detailWorkerPanel->progress_step->step->name,
                                 'step_process' => $detailWorkerPanel->progress_step->step->process,
                                 'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
-                                'workers' => $workers
+                                'workers' => $workers,
                             ]);
                         } else {
                             $step['workers']->push([
@@ -154,7 +154,7 @@ class PanelAttachmentResource extends JsonResource
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
                                 'acceptance_status' => $detailWorkerPanel->acceptance_status,
-                                'work_status' => $detailWorkerPanel->work_status
+                                'work_status' => $detailWorkerPanel->work_status,
                             ]);
                         }
                     });
@@ -164,6 +164,7 @@ class PanelAttachmentResource extends JsonResource
                             $steps->push($panelStep);
                         }
                     });
+
                     return [
                         'serial_number' => $serialPanel->id,
                         'product_number' => $serialPanel->product_no,

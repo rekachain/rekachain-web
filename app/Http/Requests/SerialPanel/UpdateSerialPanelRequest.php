@@ -26,7 +26,7 @@ class UpdateSerialPanelRequest extends FormRequest {
     public function rules(): array {
         $intent = $this->get('intent');
 
-        switch ($intent){
+        switch ($intent) {
             case IntentEnum::API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS->value:
                 return [
                     'manufacture_status' => 'required|in:' . implode(',', SerialPanelManufactureStatusEnum::toArray()),
@@ -37,6 +37,7 @@ class UpdateSerialPanelRequest extends FormRequest {
                     if (!Auth::user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                         abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value]));
                     }
+
                     return [
                         'worker_id' => [
                             'integer',
@@ -45,10 +46,11 @@ class UpdateSerialPanelRequest extends FormRequest {
                     ];
                 }
         }
+
         return [
             'panel_attachment_id' => 'nullable|integer',
             'qr_code' => 'nullable|string|max:255',
-            'qr_path'=> 'nullable|string|max:255',
+            'qr_path' => 'nullable|string|max:255',
             'manufacture_status' => 'nullable|in:' . implode(',', SerialPanelManufactureStatusEnum::toArray()),
             'notes' => 'required_if:manufacture_status,' . SerialPanelManufactureStatusEnum::FAILED->value . '|string',
         ];
@@ -64,14 +66,14 @@ class UpdateSerialPanelRequest extends FormRequest {
                     function ($validator) use ($serialPanel) {
                         $validator->safe()->all();
                         $userId = $validator->getData()['worker_id'] ?? Auth::user()->id;
-                        $assignWorkerStepValidation = new SerialPanelAssignWorkerValidation();
+                        $assignWorkerStepValidation = new SerialPanelAssignWorkerValidation;
                         $assignWorkerStepValidation->validate('serialPanel', [
                             $serialPanel,
                             User::find($userId),
                         ], function ($message) use ($validator) {
                             $validator->errors()->add('Serial Panel Worker Assign', $message);
                         });
-                    }
+                    },
                 ];
             default:
                 return [];

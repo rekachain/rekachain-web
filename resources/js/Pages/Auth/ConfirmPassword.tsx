@@ -33,23 +33,23 @@ export default function ConfirmPassword() {
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel value="Password" htmlFor="password" />
 
                     <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
-                        isFocused={true}
+                        type="password"
                         onChange={e => setData('password', e.target.value)}
+                        name="password"
+                        isFocused={true}
+                        id="password"
+                        className="mt-1 block w-full"
                     />
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton disabled={processing} className="ms-4">
                         Confirm
                     </PrimaryButton>
                 </div>

@@ -19,10 +19,10 @@ export default function ProjectCardView({
         <div>
             {projectResponse.data.map(project => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
                     to="opacity-100 translate-y-0 translate-x-0"
-                    duration={300}
                     key={project.id}
+                    from="opacity-0 -translate-y-4"
+                    duration={300}
                 >
                     <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-5">
                         <div className="flex w-full justify-between items-center">
@@ -45,8 +45,8 @@ export default function ProjectCardView({
                         <p>Jumlah Izin :{project.permissions_count}</p> */}
                         <div className="flex items-center justify-end w-full">
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
+                                className={buttonVariants({ variant: 'link' })}
                                 // className={buttonVariants({ variant: 'link' })}
                                 // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
                             >
@@ -56,26 +56,26 @@ export default function ProjectCardView({
                                 {t('action.delete')}
                             </Button>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, project.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.carriages')}
                             </Link>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('pages.project.partials.partials.project_card.actions.trainsets')}
                             </Link>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.components')}
                             </Link>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.panels')}
                             </Link>

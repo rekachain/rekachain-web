@@ -37,5 +37,8 @@
             "classes_opening_brace": "same_line",
             "functions_opening_brace": "same_line"
         }
-    }
+    },
+    "exclude": [
+        "tests"
+    ]
 }

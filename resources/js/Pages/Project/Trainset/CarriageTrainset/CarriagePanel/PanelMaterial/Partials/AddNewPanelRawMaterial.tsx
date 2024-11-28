@@ -98,18 +98,18 @@ const AddNewPanelRawMaterial = ({
                             </Label>
                             <div className="flex gap-2">
                                 <GenericDataSelector
-                                    id="raw_material_id"
-                                    fetchData={fetchRawMaterials}
                                     setSelectedData={id => setData('raw_material_id', id)}
                                     selectedDataId={data.raw_material_id}
+                                    renderItem={item => item.description}
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material_placeholder',
                                     )}
-                                    renderItem={item => item.description}
-                                    labelKey={'description'}
                                     nullable
+                                    labelKey={'description'}
+                                    id="raw_material_id"
+                                    fetchData={fetchRawMaterials}
                                 />
-                                <Button type="button" variant="ghost" onClick={handleResetRawMaterialId}>
+                                <Button variant="ghost" type="button" onClick={handleResetRawMaterialId}>
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
@@ -125,11 +125,11 @@ const AddNewPanelRawMaterial = ({
                                     )}
                                 </Label>
                                 <Input
-                                    type="text"
                                     value={data.new_raw_material_code}
+                                    type="text"
+                                    required
                                     onChange={e => setData('new_raw_material_code', e.target.value)}
                                     disabled={data.raw_material_id !== null}
-                                    required
                                 />
                             </div>
 
@@ -139,11 +139,11 @@ const AddNewPanelRawMaterial = ({
                                 )}
                             </Label>
                             <Textarea
-                                id="new-component-description"
-                                className="p-2 rounded"
                                 value={data.new_raw_material_description}
                                 onChange={e => setData('new_raw_material_description', e.target.value)}
+                                id="new-component-description"
                                 disabled={data.raw_material_id !== null}
+                                className="p-2 rounded"
                             />
                             <Label htmlFor="new-component-unit">
                                 {t(
@@ -151,10 +151,10 @@ const AddNewPanelRawMaterial = ({
                                 )}
                             </Label>
                             <Input
-                                id="new-component-unit"
-                                type="text"
                                 value={data.new_raw_material_unit}
+                                type="text"
                                 onChange={e => setData('new_raw_material_unit', e.target.value)}
+                                id="new-component-unit"
                                 disabled={data.raw_material_id !== null}
                             />
                             <Label htmlFor="new-component-specs">
@@ -163,11 +163,11 @@ const AddNewPanelRawMaterial = ({
                                 )}
                             </Label>
                             <Textarea
-                                id="new-component-specs"
-                                className="p-2 rounded"
                                 value={data.new_raw_material_specs}
                                 onChange={e => setData('new_raw_material_specs', e.target.value)}
+                                id="new-component-specs"
                                 disabled={data.raw_material_id !== null}
+                                className="p-2 rounded"
                             />
                             <Label htmlFor="new-component-qty">
                                 {t(
@@ -175,12 +175,12 @@ const AddNewPanelRawMaterial = ({
                                 )}
                             </Label>
                             <Input
-                                id="new-component-qty"
-                                type="number"
-                                min={1}
                                 value={data.new_raw_material_qty}
-                                onChange={e => setData('new_raw_material_qty', +e.target.value)}
+                                type="number"
                                 required
+                                onChange={e => setData('new_raw_material_qty', +e.target.value)}
+                                min={1}
+                                id="new-component-qty"
                             />
                         </div>
 

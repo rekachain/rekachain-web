@@ -106,21 +106,21 @@ export default function ({
                     </Label>
                     <div className="flex items-center">
                         <GenericDataSelector
-                            id="progress_id"
-                            data={progressResponse?.data}
-                            onSearchChange={handleChangeSearchProgressName}
                             setSelectedData={id => setData('progress_id', id)}
                             selectedDataId={data.progress_id}
-                            customSearchPlaceholder={t(
-                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress_search_placeholder',
-                            )}
+                            renderItem={item => item.name}
                             placeholder={t(
                                 'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress_placeholder',
                             )}
-                            renderItem={item => item.name}
+                            onSearchChange={handleChangeSearchProgressName}
+                            id="progress_id"
+                            data={progressResponse?.data}
+                            customSearchPlaceholder={t(
+                                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.progress_search_placeholder',
+                            )}
                         />
 
-                        <Button type="button" variant="ghost" onClick={handleResetProgressSelectionId}>
+                        <Button variant="ghost" type="button" onClick={handleResetProgressSelectionId}>
                             <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                         </Button>
                     </div>
@@ -152,9 +152,9 @@ export default function ({
                         )}
                     </Label>
                     <Input
-                        id="name"
                         value={data.progress_name}
                         onInput={e => setData('progress_name', e.currentTarget.value)}
+                        id="name"
                         disabled={data.progress_id !== null}
                     />
 
@@ -164,15 +164,15 @@ export default function ({
                         )}
                     </Label>
                     <GenericDataSelector
-                        id="work_aspect"
-                        fetchData={fetchWorkAspects}
                         setSelectedData={id => setData('progress_work_aspect_id', id)}
                         selectedDataId={data.progress_work_aspect_id ?? undefined}
+                        renderItem={(item: WorkAspectResource) => item.name}
                         placeholder={t(
                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress.fields.work_aspect_placeholder',
                         )}
-                        renderItem={(item: WorkAspectResource) => item.name}
                         nullable
+                        id="work_aspect"
+                        fetchData={fetchWorkAspects}
                     />
                 </div>
                 <div className="flex ml-auto gap-4">

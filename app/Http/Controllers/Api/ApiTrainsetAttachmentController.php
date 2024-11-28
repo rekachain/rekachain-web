@@ -40,9 +40,10 @@ class ApiTrainsetAttachmentController extends ApiController {
                 $request->merge([
                     'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
                     'column_filters' => [
-                        'status'=>$status,
+                        'status' => $status,
                     ],
                 ]);
+
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_CURRENT_USER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
@@ -53,8 +54,9 @@ class ApiTrainsetAttachmentController extends ApiController {
                         'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
                         'relation_column_filters' => [
                             'detail_worker_trainsets' => ['worker_id' => $request->user()->id],
-                        ]
+                        ],
                     ]);
+
                     return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
                 }
 
@@ -62,8 +64,9 @@ class ApiTrainsetAttachmentController extends ApiController {
                     'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
                     'column_filters' => [
                         'supervisor_id' => $request->user()->id,
-                    ]
+                    ],
                 ]);
+
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS_BY_STATUS_AND_CURRENT_USER->value:
                 $status = request()->get('status');
@@ -80,26 +83,29 @@ class ApiTrainsetAttachmentController extends ApiController {
                     $request->merge([
                         'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
                         'column_filters' => [
-                            'status'=>$status,
+                            'status' => $status,
                         ],
                         'relation_column_filters' => [
                             'detail_worker_trainsets' => ['worker_id' => $request->user()->id],
-                        ]
+                        ],
                     ]);
+
                     return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
                 }
                 $request->merge([
                     'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
                     'column_filters' => [
-                        'status'=>$status,
+                        'status' => $status,
                         'supervisor_id' => $request->user()->id,
-                    ]
+                    ],
                 ]);
+
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
             default:
                 $request->merge([
-                    'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value
+                    'intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENTS->value,
                 ]);
+
                 return TrainsetAttachmentResource::collection($this->trainsetAttachmentService->getAllPaginated($request->query(), $perPage));
         }
 
@@ -130,6 +136,7 @@ class ApiTrainsetAttachmentController extends ApiController {
                 if ($qr) {
                     if ($trainsetAttachment->qr_code == $qr) {
                         $request->merge(['intent' => IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_DETAILS->value]);
+
                         return TrainsetAttachmentResource::make($trainsetAttachment);
                     }
                     abort(400, 'Invalid KPM QR code');
@@ -154,24 +161,27 @@ class ApiTrainsetAttachmentController extends ApiController {
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK])) {
                     abort(403, 'Unauthorized');
                 }
+
                 return $this->trainsetAttachmentService->confirmKPM($trainsetAttachment, $request->validated());
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ATTACHMENT_STATUS->value:
                 if (!checkPermissions(PermissionEnum::TRAINSET_ATTACHMENT_UPDATE, true) && !\Auth::user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     return response()->json([
                         'message' => [
                             __('exception.auth.permission.permission_exception', ['permission' => PermissionEnum::TRAINSET_ATTACHMENT_UPDATE->value]),
-                            __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value])
+                            __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]),
                         ],
                     ], 403);
                 }
-                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated())->load('attachment_notes','trainset_attachment_handlers'));
+
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated())->load('attachment_notes', 'trainset_attachment_handlers'));
             case IntentEnum::API_TRAINSET_ATTACHMENT_UPDATE_ASSIGN_SPV_AND_RECEIVER->value:
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
+
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignSpvAndReceiver($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
             case IntentEnum::API_TRAINSET_ATTACHMENT_ASSIGN_HANDLER->value:
-                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignHandler($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));    
+                return TrainsetAttachmentResource::make($this->trainsetAttachmentService->assignHandler($trainsetAttachment, $request->validated())->load('trainset_attachment_handlers'));
             default:
                 return TrainsetAttachmentResource::make($this->trainsetAttachmentService->update($trainsetAttachment, $request->validated()));
         }

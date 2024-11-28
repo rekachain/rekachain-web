@@ -44,28 +44,28 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workstation.create.fields.name')} />
+                            <InputLabel value={t('pages.workstation.create.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="location" value={t('pages.workstation.create.fields.location')} />
+                            <InputLabel value={t('pages.workstation.create.fields.location')} htmlFor="location" />
                             <Input
-                                id="location"
-                                type="text"
-                                name="location"
                                 value={data.location}
+                                type="text"
+                                onChange={e => setData('location', e.target.value)}
+                                name="location"
+                                id="location"
                                 className="mt-1"
                                 autoComplete="location"
-                                onChange={e => setData('location', e.target.value)}
                             />
                         </div>
 
@@ -99,7 +99,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.workstation.create.buttons.submit')}
                         </Button>
                     </form>

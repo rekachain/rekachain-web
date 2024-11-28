@@ -67,7 +67,7 @@ export default function ({
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Components project={project} carriage={carriage} handleSyncProject={handleSyncProject} />
+                        <Components project={project} handleSyncProject={handleSyncProject} carriage={carriage} />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

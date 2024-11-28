@@ -34,8 +34,8 @@ export default function PanelTableView({
                             <TableCell>{panel.progress?.name}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PANELS}.edit`, panel.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

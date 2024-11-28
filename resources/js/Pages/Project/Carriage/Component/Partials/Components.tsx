@@ -61,12 +61,12 @@ export default function ({
                     <div className="hidden md:block">
                         <ComponentTableView
                             project={project}
-                            carriage={carriage}
                             componentResponse={componentResponse}
+                            carriage={carriage}
                         ></ComponentTableView>
                     </div>
                     <div className="block md:hidden">
-                        <ComponentCardView project={project} carriage={carriage} componentResponse={componentResponse}></ComponentCardView>
+                        <ComponentCardView project={project} componentResponse={componentResponse} carriage={carriage}></ComponentCardView>
                     </div>
                 </>
             )}

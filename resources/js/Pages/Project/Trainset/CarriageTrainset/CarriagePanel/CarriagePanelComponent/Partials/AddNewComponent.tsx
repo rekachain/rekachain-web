@@ -171,20 +171,20 @@ const AddNewComponent = ({
                             </Label>
                             <div className="flex gap-2">
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    data={progressResponse?.data}
-                                    onSearchChange={handleChangeSearchProgressName}
                                     setSelectedData={id => setData('progress_id', id)}
                                     selectedDataId={data.progress_id}
-                                    customSearchPlaceholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_search_placeholder',
-                                    )}
+                                    renderItem={item => item.name}
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_placeholder',
                                     )}
-                                    renderItem={item => item.name}
+                                    onSearchChange={handleChangeSearchProgressName}
+                                    id="progress_id"
+                                    data={progressResponse?.data}
+                                    customSearchPlaceholder={t(
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_search_placeholder',
+                                    )}
                                 />
-                                <Button type="button" variant="ghost" onClick={handleResetProgressSearch}>
+                                <Button variant="ghost" type="button" onClick={handleResetProgressSearch}>
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
@@ -195,15 +195,15 @@ const AddNewComponent = ({
                                 )}
                             </Label>
                             <GenericDataSelector
-                                id="component_id"
-                                fetchData={fetchComponents}
                                 setSelectedData={id => setData('new_component_id', id)}
                                 selectedDataId={data.new_component_id}
+                                renderItem={item => item.name}
                                 placeholder={t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_placeholder',
                                 )}
-                                renderItem={item => item.name}
                                 nullable
+                                id="component_id"
+                                fetchData={fetchComponents}
                             />
                         </div>
 
@@ -217,11 +217,11 @@ const AddNewComponent = ({
                                     )}
                                 </Label>
                                 <Input
-                                    type="text"
                                     value={data.new_component_name}
+                                    type="text"
+                                    required
                                     onChange={handleChangeNewComponentName}
                                     disabled={data.new_component_id !== null}
-                                    required
                                 />
                             </div>
                             <Label htmlFor="new-component-description">
@@ -230,11 +230,11 @@ const AddNewComponent = ({
                                 )}
                             </Label>
                             <Textarea
-                                id="new-component-description"
-                                className="p-2 rounded"
                                 value={data.new_component_description}
                                 onChange={handleChangeNewComponentDescription}
+                                id="new-component-description"
                                 disabled={data.new_component_id !== null}
+                                className="p-2 rounded"
                             />
                             <Label htmlFor="new-component-qty">
                                 {t(
@@ -242,12 +242,12 @@ const AddNewComponent = ({
                                 )}
                             </Label>
                             <Input
-                                id="new-component-qty"
-                                type="number"
-                                min={1}
                                 value={data.new_component_qty}
-                                onChange={handleChangeNewComponentQty}
+                                type="number"
                                 required
+                                onChange={handleChangeNewComponentQty}
+                                min={1}
+                                id="new-component-qty"
                             />
                         </div>
 

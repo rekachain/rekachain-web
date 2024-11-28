@@ -42,19 +42,19 @@ export default function ({ workDay }: { workDay: WorkDayResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="type" value={t('pages.work_day.edit.fields.name')} />
+                            <InputLabel value={t('pages.work_day.edit.fields.name')} htmlFor="type" />
                             <Input
-                                id="type"
-                                type="text"
-                                name="type"
                                 value={data.day}
+                                type="text"
+                                onChange={e => setData('day', e.target.value)}
+                                name="type"
+                                id="type"
                                 className="mt-1"
                                 autoComplete="type"
-                                onChange={e => setData('day', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.work_day.edit.buttons.submit')}
                         </Button>
                     </form>

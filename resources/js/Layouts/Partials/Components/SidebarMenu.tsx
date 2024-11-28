@@ -12,7 +12,7 @@ export default function ({ children, bordered, title }: SidebarMenuProps) {
     const displayTitle = title.toUpperCase();
     return hasChildren ? (
         <div className={`sidebar-menu w-full py-4 space-y-2 ${borderClass}`}>
-            <p className="sidebar-item-header text-sidebar-header-foreground px-4 truncate" title={displayTitle}>
+            <p title={displayTitle} className="sidebar-item-header text-sidebar-header-foreground px-4 truncate">
                 {displayTitle}
             </p>
             {children}

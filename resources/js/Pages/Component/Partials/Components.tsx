@@ -63,14 +63,14 @@ export default function () {
                     
                     <div className="hidden md:block">
                         <ComponentTableView
-                            componentResponse={componentResponse}
                             handleComponentDeletion={handleComponentDeletion}
+                            componentResponse={componentResponse}
                         ></ComponentTableView>
                     </div>
                     <div className="block md:hidden">
                         <ComponentCardView
-                            componentResponse={componentResponse}
                             handleComponentDeletion={handleComponentDeletion}
+                            componentResponse={componentResponse}
                         ></ComponentCardView>
                     </div>
                 </>

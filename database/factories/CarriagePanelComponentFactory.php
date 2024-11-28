@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\CarriagePanel;
 use App\Models\Component;
-use App\Models\Progress;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +17,7 @@ class CarriagePanelComponentFactory extends Factory {
      */
     public function definition(): array {
         $component = Component::inRandomOrder()->first();
+
         return [
             //
             'component_id' => $component->id,

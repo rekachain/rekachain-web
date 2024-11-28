@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\TrainsetAttachment;
+use App\Support\Enums\TrainsetAttachmentTypeEnum;
 
 beforeEach(function () {
     $this->dummy->createSupervisorMekanik();
@@ -33,6 +34,7 @@ test('store method creates new trainset attachment', function () {
         'source_workstation_id' => $sourceWorkstation->id,
         'destination_workstation_id' => $destinationWorkstation->id,
         'attachment_number' => 'TA001',
+        'type' => TrainsetAttachmentTypeEnum::MECHANIC,
         'qr_code' => 'qr_code_001',
         'qr_path' => 'path/to/qr/001',
         'status' => 'pending',
@@ -40,7 +42,7 @@ test('store method creates new trainset attachment', function () {
 
     $response = actAsSuperAdmin()->postJson('/trainset-attachments', $attachmentData);
 
-    $response->assertStatus(200)
+    $response->assertStatus(201)
         ->assertJsonStructure(['id', 'attachment_number', 'trainset_id', 'source_workstation_id', 'destination_workstation_id']);
     $this->assertDatabaseHas('trainset_attachments', $attachmentData);
 });

@@ -24,10 +24,10 @@ export default function CarriageCardView({
             {trainset?.carriage_trainsets?.map(carriage_trainset => (
                 <div key={carriage_trainset.id}>
                     <AnimateIn
-                        from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
-                        duration={300}
                         key={carriage_trainset.id}
+                        from="opacity-0 -translate-y-4"
+                        duration={300}
                     >
                         <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                             <div className="flex w-full justify-between items-scenter">
@@ -49,8 +49,8 @@ export default function CarriageCardView({
                                 ) : (
                                     <CarriageQty
                                         trainset={trainset}
-                                        carriage_trainset={carriage_trainset}
                                         handleSyncTrainset={handleSyncTrainset}
+                                        carriage_trainset={carriage_trainset}
                                     />
                                 )}
                             </div>
@@ -101,11 +101,11 @@ export default function CarriageCardView({
                                     {t('action.delete')}
                                 </Button>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
                                         [trainset.project_id, trainset.id, carriage_trainset.id],
                                     )}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.actions.panels',

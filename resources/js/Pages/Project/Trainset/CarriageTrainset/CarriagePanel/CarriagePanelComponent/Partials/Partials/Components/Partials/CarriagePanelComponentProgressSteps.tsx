@@ -105,8 +105,8 @@ export default function ({
                     {progress.progress_steps.map((progressStep, i) => (
                         <div key={progressStep.id}>
                             <Label
-                                className="hover:line-through cursor-pointer decoration-red-500 decoration-2"
                                 onClick={handleProgressStepDeletion.bind(null, progressStep)}
+                                className="hover:line-through cursor-pointer decoration-red-500 decoration-2"
                             >
                                 {i + 1}. {progressStep.step.name}
                             </Label>
@@ -117,18 +117,18 @@ export default function ({
                     <Label htmlFor="name">Step</Label>
                     <div className="flex items-center">
                         <GenericDataSelector
-                            id="step_id"
-                            onSearchChange={setSearchStep}
-                            data={stepResponse?.data}
                             setSelectedData={id => setData('step_id', id)}
                             selectedDataId={data.step_id ?? undefined}
+                            renderItem={(item: StepResource) => item.name}
                             placeholder={t(
                                 'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.step_placeholder',
                             )}
-                            renderItem={(item: StepResource) => item.name}
+                            onSearchChange={setSearchStep}
                             nullable
+                            id="step_id"
+                            data={stepResponse?.data}
                         />
-                        <Button type="button" variant="ghost" onClick={handleResetStepSelectionId}>
+                        <Button variant="ghost" type="button" onClick={handleResetStepSelectionId}>
                             <RefreshCcw />
                         </Button>
                     </div>
@@ -139,12 +139,12 @@ export default function ({
                         )}
                     </Label>
                     <Input
-                        id="name"
+                        value={data.step_name}
                         placeholder={t(
                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.name_placeholder',
                         )}
-                        value={data.step_name}
                         onChange={e => setData('step_name', e.target.value)}
+                        id="name"
                         disabled={data.step_id !== null}
                     />
 
@@ -154,12 +154,12 @@ export default function ({
                         )}
                     </Label>
                     <Input
-                        id="process"
+                        value={data.step_process}
                         placeholder={t(
                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.process_placeholder',
                         )}
-                        value={data.step_process}
                         onChange={e => setData('step_process', e.target.value)}
+                        id="process"
                         disabled={data.step_id !== null}
                     />
 
@@ -169,13 +169,13 @@ export default function ({
                         )}
                     </Label>
                     <Input
+                        value={data.step_estimated_time}
                         type="number"
-                        id="estimated_time"
                         placeholder={t(
                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.partials.carriage_panel_component_progress_steps.fields.estimated_time_placeholder',
                         )}
-                        value={data.step_estimated_time}
                         onChange={e => setData('step_estimated_time', parseInt(e.target.value))}
+                        id="estimated_time"
                         disabled={data.step_id !== null}
                     />
 

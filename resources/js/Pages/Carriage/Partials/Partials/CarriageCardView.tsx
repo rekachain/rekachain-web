@@ -27,8 +27,8 @@ export default function CarriageCardView({
                 //     key={carriage.id}
                 // >
                 <div
-                    className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3"
                     key={carriage.id}
+                    className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3"
                 >
                     <div className="flex w-full justify-between items-scenter">
                         <h4 className="font-bold text-base">{carriage.type}</h4>
@@ -50,8 +50,8 @@ export default function CarriageCardView({
                         <h5 className=" text-sm ">Lokasi : {carriage.location}</h5> */}
                     <div className="flex items-center justify-end w-full">
                         <Link
-                            className={buttonVariants({ variant: 'link' })}
                             href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
+                            className={buttonVariants({ variant: 'link' })}
                         >
                             {t('action.edit')}
                         </Link>

@@ -33,6 +33,7 @@ class ApiUserController extends ApiController {
      */
     public function store(StoreUserRequest $request) {
         checkPermissions(PermissionEnum::USER_CREATE);
+
         return $this->userService->create($request->validated());
     }
 
@@ -41,6 +42,7 @@ class ApiUserController extends ApiController {
      */
     public function show(User $user) {
         checkPermissions(PermissionEnum::USER_READ);
+
         return new UserResource($user->load(['roles' => ['division', 'permissions']]));
     }
 
@@ -62,6 +64,7 @@ class ApiUserController extends ApiController {
      */
     public function destroy(Request $request, User $user) {
         checkPermissions(PermissionEnum::USER_DELETE);
+
         return $this->userService->delete($user);
     }
 }
