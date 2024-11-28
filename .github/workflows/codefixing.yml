@@ -3,7 +3,6 @@ name: Codefixing
 on:
   push:
     branches:
-      - galur-cq
       - dev
 
 jobs:
