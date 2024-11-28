@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\DetailWorkerPanel;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDetailWorkerPanelRequest extends FormRequest {
     public function rules(): array {

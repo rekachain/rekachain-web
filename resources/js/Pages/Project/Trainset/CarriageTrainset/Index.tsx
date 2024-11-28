@@ -32,6 +32,7 @@ import GenerateAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partia
 import PreviewAttachments from '@/Pages/Project/Trainset/CarriageTrainset/Partials/PreviewAttachments';
 import { Button } from '@/Components/UI/button';
 import { trainsetService } from '@/Services/trainsetService';
+import ProgressAttachments from './Partials/ProgressAttachments';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -47,7 +48,8 @@ export default function ({
     const { t } = useLaravelReactI18n();
     const [trainset, setTrainset] = useState<TrainsetResource>(initialTrainset);
     const [carriageResponse, setCarriageResponse] = useState<PaginateResponse<CarriageResource>>();
-    const [presetTrainset, setPresetTrainset] = useState<PresetTrainsetResource[]>(initialPresetTrainset);
+    const [presetTrainset, setPresetTrainset] =
+        useState<PresetTrainsetResource[]>(initialPresetTrainset);
 
     const { data } = useForm({
         preset_trainset_id: trainset.preset_trainset_id ?? 0,
@@ -104,7 +106,9 @@ export default function ({
             title: t(
                 'pages.project.trainset.carriage_trainset.index.dialogs.export_serial_numbers.confirmations.title',
             ),
-            text: t('pages.project.trainset.carriage_trainset.index.dialogs.export_serial_numbers.confirmations.text'),
+            text: t(
+                'pages.project.trainset.carriage_trainset.index.dialogs.export_serial_numbers.confirmations.text',
+            ),
         },
     );
 
@@ -116,55 +120,72 @@ export default function ({
                 })}
             />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <div>
                             <Breadcrumb>
                                 <BreadcrumbList>
                                     <BreadcrumbItem>
                                         <Link href={route(`${ROUTES.PROJECTS}.index`)}>
-                                            {t('pages.project.trainset.carriage_trainset.index.breadcrumbs.home')}
+                                            {t(
+                                                'pages.project.trainset.carriage_trainset.index.breadcrumbs.home',
+                                            )}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
-                                        <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
-                                            {t('pages.project.trainset.carriage_trainset.index.breadcrumbs.project', {
-                                                project: project?.name,
-                                            })}
+                                        <Link
+                                            href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [
+                                                project.id,
+                                            ])}
+                                        >
+                                            {t(
+                                                'pages.project.trainset.carriage_trainset.index.breadcrumbs.project',
+                                                {
+                                                    project: project?.name,
+                                                },
+                                            )}
                                         </Link>
                                     </BreadcrumbItem>
                                     <BreadcrumbSeparator />
                                     <BreadcrumbItem>
                                         <BreadcrumbPage>
-                                            {t('pages.project.trainset.carriage_trainset.index.breadcrumbs.trainset', {
-                                                trainset: trainset?.name,
-                                            })}
+                                            {t(
+                                                'pages.project.trainset.carriage_trainset.index.breadcrumbs.trainset',
+                                                {
+                                                    trainset: trainset?.name,
+                                                },
+                                            )}
                                         </BreadcrumbPage>
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">
+                            <h1 className='text-page-header my-4'>
                                 {t('pages.project.trainset.carriage_trainset.index.title', {
                                     name: trainset.name,
                                 })}
                             </h1>
-                            <div className="flex flex-col gap-2 bg-background-2 p-5 rounded">
+                            <div className='flex flex-col gap-2 rounded bg-background-2 p-5'>
                                 {trainset.preset_name && (
-                                    <p className="text-page-subheader">
-                                        {t('pages.project.trainset.carriage_trainset.index.preset', {
-                                            preset: trainset.preset_name,
-                                        })}
+                                    <p className='text-page-subheader'>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.index.preset',
+                                            {
+                                                preset: trainset.preset_name,
+                                            },
+                                        )}
                                     </p>
                                 )}
 
                                 {trainset.status === TrainsetStatusEnum.PROGRESS && (
-                                    <p className="text-page-subheader">
-                                        {t('pages.project.trainset.carriage_trainset.index.status_in_progress')}
+                                    <p className='text-page-subheader'>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.index.status_in_progress',
+                                        )}
                                     </p>
                                 )}
 
-                                <div className="flex md:flex-row flex-col gap-2 md:items-end">
+                                <div className='flex flex-col gap-2 md:flex-row md:items-end'>
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS &&
                                         !trainset.has_mechanic_trainset_attachment &&
                                         !trainset.has_electric_trainset_attachment &&
@@ -182,7 +203,14 @@ export default function ({
                                     />
                                     {(trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
-                                        trainset.has_panel_attachment) && <PreviewAttachments trainset={trainset} />}
+                                        trainset.has_panel_attachment) && (
+                                        <PreviewAttachments trainset={trainset} />
+                                    )}
+                                    {(trainset.has_mechanic_trainset_attachment ||
+                                        trainset.has_electric_trainset_attachment ||
+                                        trainset.has_panel_attachment) && (
+                                        <ProgressAttachments trainset={trainset} />
+                                    )}
                                     <Button onClick={handleExportSerialNumbers}>
                                         {t(
                                             'pages.project.trainset.carriage_trainset.index.buttons.export_serial_numbers',
@@ -199,16 +227,23 @@ export default function ({
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
                         <AddCarriage
                             trainset={trainset}
+                            handleSyncTrainset={handleSyncTrainset}
                             handleSyncCarriages={handleSyncCarriages}
                             debouncedCarriageFilters={debouncedCarriageFilters}
-                            handleSyncTrainset={handleSyncTrainset}
                         />
                     )}
                 </div>
 
                 {isNewPreset() && (
-                    <CustomPresetAlert message={t('pages.project.trainset.carriage_trainset.index.new_preset_alert')}>
-                        <AddNewTrainsetPreset handleSyncTrainset={handleSyncTrainset} trainset={trainset} />
+                    <CustomPresetAlert
+                        message={t(
+                            'pages.project.trainset.carriage_trainset.index.new_preset_alert',
+                        )}
+                    >
+                        <AddNewTrainsetPreset
+                            trainset={trainset}
+                            handleSyncTrainset={handleSyncTrainset}
+                        />
                     </CustomPresetAlert>
                 )}
             </AuthenticatedLayout>

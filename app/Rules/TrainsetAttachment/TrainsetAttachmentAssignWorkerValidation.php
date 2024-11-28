@@ -21,8 +21,8 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.total_fulfilled_exception',
                 [
-                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
-                    'component'=>$trainsetAttachmentComponent->carriage_panel_component->component->name
+                    'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
+                    'component' => $trainsetAttachmentComponent->carriage_panel_component->component->name,
                 ]
             ));
         }
@@ -32,10 +32,11 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_invalid_exception',
                 [
-                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
-                    'step'=>$user->step->name
+                    'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
+                    'step' => $user->step->name,
                 ]
             ));
+
             return;
         }
 
@@ -44,7 +45,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
         $currentWorkerIndex = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;
 
-        //check if last work is completed but is not fulfilled yet
+        // check if last work is completed but is not fulfilled yet
         if (array_key_last($carriagePanelComponentProgressStepIds) === $lastWorkerIndex && $lastWorkerTrainsetCompleted) {
             $lastWorkerIndex = -1;
         }
@@ -52,15 +53,15 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_completed_exception',
                 [
-                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
-                    'step'=>$user->step->name
+                    'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
+                    'step' => $user->step->name,
                 ]
             ));
         } elseif ($currentWorkerIndex - $lastWorkerIndex > 1 || ($currentWorkerIndex > $lastWorkerIndex && !$lastWorkerTrainsetCompleted)) {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_ahead_exception',
                 [
-                    'progress'=>$trainsetAttachmentComponent->carriage_panel_component->progress->name,
+                    'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
                 ]
             ));
         }

@@ -6,7 +6,10 @@ import { FormEventHandler, useCallback, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import { roleService } from '@/Services/roleService';
-import { PermissionResource, PermissionResourceGrouped } from '@/Support/Interfaces/Resources/PermissionResource';
+import {
+    PermissionResource,
+    PermissionResourceGrouped,
+} from '@/Support/Interfaces/Resources/PermissionResource';
 import { Checkbox } from '@/Components/UI/checkbox';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { useLoading } from '@/Contexts/LoadingContext';
@@ -17,7 +20,10 @@ import GenericDataSelector from '@/Components/GenericDataSelector';
 import { divisionService } from '@/Services/divisionService';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 
-export default function (props: { permissions: PermissionResourceGrouped[]; divisions: DivisionResource[] }) {
+export default function (props: {
+    permissions: PermissionResourceGrouped[];
+    divisions: DivisionResource[];
+}) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
@@ -31,7 +37,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
     const [divisions] = useState<DivisionResource[]>(props.divisions);
     const [selectedPermissions, setSelectedPermissions] = useState<number[]>([]);
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await roleService.create({
@@ -50,85 +56,94 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
         } else {
             setData(
                 'permissions',
-                data.permissions.filter(id => id !== permission.id),
+                data.permissions.filter((id) => id !== permission.id),
             );
         }
     };
 
     const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
-        return await divisionService.getAll(filters).then(response => response.data);
+        return await divisionService.getAll(filters).then((response) => response.data);
     }, []);
 
     return (
         <>
             <Head title={t('pages.role.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.role.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.role.create.title')}</h1>
                     </div>
 
                     <form onSubmit={submit}>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.role.create.fields.name')} />
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.role.create.fields.name')} htmlFor='name' />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
                                 required
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="division" value={t('pages.role.create.fields.division')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.role.create.fields.division')}
+                                htmlFor='division'
+                            />
                             <GenericDataSelector
-                                id="division_id"
-                                fetchData={fetchDivisions}
-                                setSelectedData={id => setData('division_id', id)}
+                                setSelectedData={(id) => setData('division_id', id)}
                                 selectedDataId={data.division_id ?? undefined}
-                                placeholder={t('pages.role.create.fields.division_placeholder')}
                                 renderItem={(item: DivisionResource) => item.name}
-                                buttonClassName="mt-1"
+                                placeholder={t('pages.role.create.fields.division_placeholder')}
                                 nullable
+                                id='division_id'
+                                fetchData={fetchDivisions}
+                                buttonClassName='mt-1'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="level" value={t('pages.role.create.fields.level')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.role.create.fields.level')}
+                                htmlFor='level'
+                            />
                             <Input
-                                id="level"
-                                type="text"
-                                name="level"
                                 value={data.level}
-                                className="mt-1"
-                                autoComplete="level"
-                                onChange={e => setData('level', e.target.value)}
+                                type='text'
                                 required
+                                onChange={(e) => setData('level', e.target.value)}
+                                name='level'
+                                id='level'
+                                className='mt-1'
+                                autoComplete='level'
                             />
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-5">
+                        <div className='mt-4 rounded bg-background-2 p-5'>
                             <h1>{t('pages.role.create.fields.permissions')}</h1>
-                            <div className="mt-1">
-                                <div className="flex flex-wrap">
-                                    {permissions.map(permission => (
-                                        <div key={permission.group} className="w-full mt-2">
-                                            <h2 className="font-semibold">{permission.group}</h2>
-                                            <div className="grid grid-cols-4 gap-4 mt-2">
-                                                {permission.permissions.map(p => (
-                                                    <div key={p.id} className="flex items-center">
+                            <div className='mt-1'>
+                                <div className='flex flex-wrap'>
+                                    {permissions.map((permission) => (
+                                        <div key={permission.group} className='mt-2 w-full'>
+                                            <h2 className='font-semibold'>{permission.group}</h2>
+                                            <div className='mt-2 grid grid-cols-4 gap-4'>
+                                                {permission.permissions.map((p) => (
+                                                    <div key={p.id} className='flex items-center'>
                                                         <Checkbox
-                                                            id={`permission-${p.id}`}
-                                                            onCheckedChange={checked =>
+                                                            onCheckedChange={(checked) =>
                                                                 handlePermissionChange(checked, p)
                                                             }
-                                                            name="permissions"
+                                                            name='permissions'
+                                                            id={`permission-${p.id}`}
                                                         />
-                                                        <label htmlFor={`permission-${p.id}`} className="ml-2">
+                                                        <label
+                                                            htmlFor={`permission-${p.id}`}
+                                                            className='ml-2'
+                                                        >
                                                             {p.name}
                                                         </label>
                                                     </div>
@@ -139,7 +154,7 @@ export default function (props: { permissions: PermissionResourceGrouped[]; divi
                                 </div>
                             </div>
                         </div>
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.role.create.buttons.submit')}
                         </Button>
                     </form>

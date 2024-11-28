@@ -46,32 +46,32 @@ export default function ({
     return (
         <>
             {isEditing ? (
-                <form onSubmit={handleEditCarriageQty} className="flex gap-4">
+                <form onSubmit={handleEditCarriageQty} className='flex gap-4'>
                     <Input
-                        type="number"
+                        type='number'
+                        onChange={(e) => setData('panelComponentQty', +e.target.value)}
                         min={1}
-                        className="w-fit"
                         defaultValue={data.panelComponentQty}
-                        onChange={e => setData('panelComponentQty', +e.target.value)}
+                        className='w-fit'
                     />
-                    <Button type="submit" disabled={loading}>
+                    <Button type='submit' disabled={loading}>
                         {loading
                             ? t('action.loading')
                             : t(
                                   'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_qty.buttons.update_qty',
                               )}
                     </Button>
-                    <Button type="button" onClick={toggleEditMode}>
+                    <Button type='button' onClick={toggleEditMode}>
                         {t('action.cancel')}
                     </Button>
                 </form>
             ) : (
-                <div className="flex items-center gap-4">
+                <div className='flex items-center gap-4'>
                     <div>{carriagePanelComponent.qty}</div>
                     <Button
-                        variant="ghost"
+                        variant='ghost'
                         onClick={toggleEditMode}
-                        className="p-2 whitespace-normal h-fit rounded-full"
+                        className='h-fit whitespace-normal rounded-full p-2'
                     >
                         <PencilLine size={STYLING.ICON.SIZE.SMALL} />
                     </Button>

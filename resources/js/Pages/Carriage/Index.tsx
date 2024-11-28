@@ -12,14 +12,14 @@ export default function () {
     const Carriages = lazy(() => import('./Partials/Carriages'));
     return (
         <>
-            <Head title="Carriage" />
+            <Head title='Carriage' />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.carriage.index.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.carriage.index.title')}</h1>
                         <Link
-                            className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.CARRIAGES}.create`)}
+                            className={buttonVariants({ variant: 'default' })}
                         >
                             {t('pages.carriage.index.buttons.create')}
                         </Link>

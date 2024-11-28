@@ -1,4 +1,8 @@
-import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import PanelMaterialTableView from './Partials/PanelMaterialTableView';
@@ -29,24 +33,24 @@ export default function ({
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <PanelMaterialTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                     handlePanelMaterialDeletion={handlePanelMaterialDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanel={carriagePanel}
                 />
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <PanelMaterialCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
-                    carriagePanel={carriagePanel}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
                     handlePanelMaterialDeletion={handlePanelMaterialDeletion}
+                    carriageTrainset={carriageTrainset}
+                    carriagePanel={carriagePanel}
                 />
             </div>
         </div>

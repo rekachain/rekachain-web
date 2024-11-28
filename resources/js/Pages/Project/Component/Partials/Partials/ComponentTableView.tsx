@@ -1,4 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -18,25 +25,35 @@ export default function ComponentTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.component.partials.partials.component_table.headers.name')}
+                            {t(
+                                'pages.project.component.partials.partials.component_table.headers.name',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.component.partials.partials.component_table.headers.description')}
+                            {t(
+                                'pages.project.component.partials.partials.component_table.headers.description',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.component.partials.partials.component_table.headers.total_qty')}
+                            {t(
+                                'pages.project.component.partials.partials.component_table.headers.total_qty',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {componentResponse?.data.map(data => (
+                    {componentResponse?.data.map((data) => (
                         <TableRow key={data.component.id}>
                             <TableCell>{data.component.name}</TableCell>
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} component={data.component} hasMaterials={data.has_materials} />
+                                <Import
+                                    project={project}
+                                    hasMaterials={data.has_materials}
+                                    component={data.component}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}

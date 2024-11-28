@@ -14,13 +14,32 @@ import { PageProps } from '../../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Text, XAxis, YAxis } from 'recharts';
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    LabelList,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    Text,
+    XAxis,
+    YAxis,
+} from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 import { cn } from '@/Lib/Utils';
 import { Button } from '@/Components/UI/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { useCallback, useState } from 'react';
 
@@ -61,70 +80,81 @@ export default function Dashboard({ auth, data }: PageProps) {
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
-            <div className="py-12">
+            <div className='py-12'>
                 {/* <p>{value}</p> */}
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
-                    <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
+                <div className='mx-auto max-w-7xl sm:px-6 lg:px-5'>
+                    <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        <div className="">
-                            <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                            <div className="flex justify-between w-full items-start">
-                                <h2 className="text-xl my-2">
+                        <div className=''>
+                            <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
+                            <div className='flex w-full items-start justify-between'>
+                                <h2 className='my-2 text-xl'>
                                     {`Proyek ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
                                     {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
-                                <div className="flex flex-col gap-4 mb-5">
+                                <div className='mb-5 flex flex-col gap-4'>
                                     <Popover open={open} onOpenChange={setOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                variant="outline"
-                                                role="combobox"
+                                                variant='outline'
+                                                role='combobox'
+                                                className='w-40 justify-between'
                                                 aria-expanded={open}
-                                                className="w-40 justify-between"
                                             >
                                                 {value
                                                     ? data['projectList'].find(
                                                           // @ts-ignore
-                                                          projectItem => projectItem.name === value,
+                                                          (projectItem) =>
+                                                              projectItem.name === value,
                                                       )?.name
                                                     : 'Pilih Proyek'}
-                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-[200px] p-0">
+                                        <PopoverContent className='w-[200px] p-0'>
                                             <Command>
-                                                <CommandInput placeholder="Cari Projek..." />
+                                                <CommandInput placeholder='Cari Projek...' />
                                                 <CommandList>
-                                                    <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
+                                                    <CommandEmpty>
+                                                        Projek tidak ditemukan.
+                                                    </CommandEmpty>
                                                     <CommandGroup>
                                                         {
                                                             // @ts-ignore
-                                                            data['projectList'].map(projectItem => (
-                                                                <Link href={`/dashboard/${projectItem.id}`}>
-                                                                    <CommandItem
-                                                                        key={projectItem.name}
-                                                                        value={projectItem.name}
-                                                                        onSelect={currentValue => {
-                                                                            setValue(
-                                                                                currentValue === projectItem.name
-                                                                                    ? ''
-                                                                                    : currentValue,
-                                                                            );
-                                                                            setOpen(false);
-                                                                        }}
+                                                            data['projectList'].map(
+                                                                (projectItem) => (
+                                                                    <Link
+                                                                        href={`/dashboard/${projectItem.id}`}
                                                                     >
-                                                                        <Check
-                                                                            className={cn(
-                                                                                'mr-2 h-4 w-4',
-                                                                                value === projectItem.name
-                                                                                    ? 'opacity-100'
-                                                                                    : 'opacity-0',
-                                                                            )}
-                                                                        />
-                                                                        {projectItem.name}
-                                                                    </CommandItem>
-                                                                </Link>
-                                                            ))
+                                                                        <CommandItem
+                                                                            value={projectItem.name}
+                                                                            onSelect={(
+                                                                                currentValue,
+                                                                            ) => {
+                                                                                setValue(
+                                                                                    currentValue ===
+                                                                                        projectItem.name
+                                                                                        ? ''
+                                                                                        : currentValue,
+                                                                                );
+                                                                                setOpen(false);
+                                                                            }}
+                                                                            key={projectItem.name}
+                                                                        >
+                                                                            <Check
+                                                                                className={cn(
+                                                                                    'mr-2 h-4 w-4',
+                                                                                    value ===
+                                                                                        projectItem.name
+                                                                                        ? 'opacity-100'
+                                                                                        : 'opacity-0',
+                                                                                )}
+                                                                            />
+                                                                            {projectItem.name}
+                                                                        </CommandItem>
+                                                                    </Link>
+                                                                ),
+                                                            )
                                                         }
                                                     </CommandGroup>
                                                 </CommandList>
@@ -134,47 +164,52 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                variant="outline"
-                                                role="combobox"
+                                                variant='outline'
+                                                role='combobox'
+                                                className='w-40 justify-between'
                                                 aria-expanded={openTrainset}
-                                                className="w-40 justify-between"
                                             >
                                                 {valueTrainset
                                                     ? data['tsList'].find(
                                                           // @ts-ignore
-                                                          projectItem => projectItem.name === valueTrainset,
+                                                          (projectItem) =>
+                                                              projectItem.name === valueTrainset,
                                                       )?.name
                                                     : 'Pilih Trainset'}
-                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-[200px] p-0">
+                                        <PopoverContent className='w-[200px] p-0'>
                                             <Command>
-                                                <CommandInput placeholder="Cari Trainset..." />
+                                                <CommandInput placeholder='Cari Trainset...' />
                                                 <CommandList>
-                                                    <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                    <CommandEmpty>
+                                                        Trainset tidak ditemukan.
+                                                    </CommandEmpty>
                                                     <CommandGroup>
                                                         {// @ts-ignore
-                                                        data['tsList']?.map(projectItem => (
+                                                        data['tsList']?.map((projectItem) => (
                                                             <Link
                                                                 href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >
                                                                 <CommandItem
-                                                                    key={projectItem.id}
                                                                     value={projectItem.name}
-                                                                    onSelect={currentValue => {
+                                                                    onSelect={(currentValue) => {
                                                                         setValueTrainset(
-                                                                            currentValue === valueTrainset
+                                                                            currentValue ===
+                                                                                valueTrainset
                                                                                 ? ''
                                                                                 : currentValue,
                                                                         );
                                                                         setOpenTrainset(false);
                                                                     }}
+                                                                    key={projectItem.id}
                                                                 >
                                                                     <Check
                                                                         className={cn(
                                                                             'mr-2 h-4 w-4',
-                                                                            valueTrainset === projectItem.name
+                                                                            valueTrainset ===
+                                                                                projectItem.name
                                                                                 ? 'opacity-100'
                                                                                 : 'opacity-0',
                                                                         )}
@@ -190,46 +225,70 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     </Popover>
                                 </div>
                             </div>
-                            <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
-                                <BarChart accessibilityLayer data={data['carriages']}>
+                            <ChartContainer config={chartConfig} className='h-[200px] w-full pr-10'>
+                                <BarChart data={data['carriages']} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
-                                    <XAxis dataKey="type" tickLine={false} tickMargin={10} axisLine={false} />
+                                    <XAxis
+                                        tickMargin={10}
+                                        tickLine={false}
+                                        dataKey='type'
+                                        axisLine={false}
+                                    />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="qty" fill="var(--color-done)" radius={4} />
+                                    <Bar radius={4} fill='var(--color-done)' dataKey='qty' />
                                 </BarChart>
                             </ChartContainer>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
-                            <div className="">
-                                <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
-                                <h3 className="text-base">{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
-                                <ChartContainer config={chartConfig} className="h-[400px] w-full mt-5">
-                                    <BarChart className="" accessibilityLayer data={data['panel']}>
+                        <div className='mt-2 grid w-full grid-cols-1 md:grid-cols-2'>
+                            <div className=''>
+                                <h2 className='my-1 text-xl font-bold'>Panel Dalam Trainset</h2>
+                                <h3 className='text-base'>{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
+                                <ChartContainer
+                                    config={chartConfig}
+                                    className='mt-5 h-[400px] w-full'
+                                >
+                                    <BarChart data={data['panel']} className='' accessibilityLayer>
                                         <CartesianGrid vertical={false} />
                                         <XAxis
+                                            tickMargin={0}
+                                            tickLine={false}
+                                            textAnchor='end'
+                                            dataKey='name'
+                                            axisLine={false}
                                             // tick={<CustomizedAxisTick />}
                                             angle={-45}
-                                            textAnchor="end"
-                                            dataKey="name"
-                                            tickLine={false}
-                                            tickMargin={0}
-                                            axisLine={false}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar className="" dataKey="total" fill="var(--color-done)" radius={4} />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-done)'
+                                            dataKey='total'
+                                            className=''
+                                        />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
 
-                            <div className="">
-                                <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
-                                <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                                <ChartContainer config={panelChartConf} className="mx-auto aspect-square max-h-[250px]">
+                            <div className=''>
+                                <h2 className='my-1 text-xl font-bold'>Progress Tiap Panel</h2>
+                                <h3 className='text-base'>Panel panel pada WS Assembly</h3>
+                                <ChartContainer
+                                    config={panelChartConf}
+                                    className='mx-auto aspect-square max-h-[250px]'
+                                >
                                     <PieChart>
-                                        <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                                        <Pie data={data['total']} dataKey="" nameKey="status" innerRadius={60} />
+                                        <ChartTooltip
+                                            cursor={false}
+                                            content={<ChartTooltipContent hideLabel />}
+                                        />
+                                        <Pie
+                                            nameKey='status'
+                                            innerRadius={60}
+                                            dataKey=''
+                                            data={data['total']}
+                                        />
                                     </PieChart>
                                 </ChartContainer>
                             </div>
@@ -290,9 +349,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                             </PieChart>
                         </ChartContainer> */}
-                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                            <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                                <div className="p-6 text-gray-900 dark:text-gray-100">
+                        <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
+                            <div className='overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg'>
+                                <div className='p-6 text-gray-900 dark:text-gray-100'>
                                     {t('pages.dashboard.index.welcome')}
                                 </div>
                             </div>

@@ -1,0 +1,4 @@
+**/.github
+**/vendor
+/public/**/*
+/resources/js/Components/UI/**/*

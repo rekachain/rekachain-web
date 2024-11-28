@@ -17,34 +17,39 @@ export default function RawMaterialCardView({
     const { t } = useLaravelReactI18n();
     return (
         <div>
-            {rawMaterialResponse?.data.map(rawMaterial => (
+            {rawMaterialResponse?.data.map((rawMaterial) => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
-                    to="opacity-100 translate-y-0 translate-x-0 mt-3"
-                    duration={300}
+                    to='opacity-100 translate-y-0 translate-x-0 mt-3'
                     key={rawMaterial.id}
+                    from='opacity-0 -translate-y-4'
+                    duration={300}
                 >
                     <div
                         // key={permission.id}
-                        className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2"
+                        className='flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'
                     >
-                        <div className="flex w-full justify-between items-scenter">
-                            <h4 className="font-bold text-base">{rawMaterial.material_code}</h4>
-                            <h5 className="font-bold text-base items-center ">Unit : {rawMaterial.unit}</h5>
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-base font-bold'>{rawMaterial.material_code}</h4>
+                            <h5 className='items-center text-base font-bold'>
+                                Unit : {rawMaterial.unit}
+                            </h5>
                         </div>
                         {/* <h4 className="font-bold text-xl">{permission.group}</h4> */}
                         {/* <h4 className="font-bold text-xl">50349259</h4> */}
                         {/* <h4 className="text-md">{permission.name}</h4> */}
-                        <h4 className="text-sm w-[80%]">{rawMaterial.description}</h4>
-                        <div className="flex items-center justify-end w-full">
+                        <h4 className='w-[80%] text-sm'>{rawMaterial.description}</h4>
+                        <div className='flex w-full items-center justify-end'>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('action.edit')}
                             </Link>
                             {rawMaterial.can_be_deleted && (
-                                <Button variant="link" onClick={() => handleRawMaterialDeletion(rawMaterial.id)}>
+                                <Button
+                                    variant='link'
+                                    onClick={() => handleRawMaterialDeletion(rawMaterial.id)}
+                                >
                                     {t('action.delete')}
                                 </Button>
                             )}

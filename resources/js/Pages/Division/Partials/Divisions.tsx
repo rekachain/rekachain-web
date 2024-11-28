@@ -39,22 +39,22 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {divisionResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <DivisionTableView
-                            divisionResponse={divisionResponse}
                             handleDivisionDeletion={handleDivisionDeletion}
+                            divisionResponse={divisionResponse}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <DivisionCardView
-                            divisionResponse={divisionResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
                             handleDivisionDeletion={handleDivisionDeletion}
+                            divisionResponse={divisionResponse}
                             // auth={auth}
                         />
                     </div>

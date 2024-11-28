@@ -1,6 +1,10 @@
 import { Accordion } from '@radix-ui/react-accordion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
-import { CarriagePanelComponentResource, ProgressResource, StepResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriagePanelComponentResource,
+    ProgressResource,
+    StepResource,
+} from '@/Support/Interfaces/Resources';
 import {
     Dialog,
     DialogContent,
@@ -52,13 +56,17 @@ export default function ({
     const debouncedSearchProgress = useDebounce(searchProgress, 300);
 
     const handleSyncProgressResource = withLoading(async () => {
-        const filters: ServiceFilterOptions = { perPage: 100, search: debouncedSearchProgress, relations: 'steps' };
+        const filters: ServiceFilterOptions = {
+            perPage: 100,
+            search: debouncedSearchProgress,
+            relations: 'steps',
+        };
         const res = await progressService.getAll(filters);
         setProgressResponse(res);
     });
 
     useEffect(() => {
-        progressResponse?.data.find(progress => {
+        progressResponse?.data.find((progress) => {
             if (progress.id === data.progress_id) {
                 setProgressSteps(progress.steps);
             }
@@ -72,19 +80,19 @@ export default function ({
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="link">
+                <Button variant='link'>
                     {t(
                         'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_progress.buttons.progress',
                     )}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{progress.name}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
-                <Accordion type="single" collapsible>
-                    <AccordionItem value="item-1">
+                <Accordion type='single' collapsible>
+                    <AccordionItem value='item-1'>
                         <AccordionTrigger>
                             {t(
                                 'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_progress.accordions.progress',
@@ -98,7 +106,7 @@ export default function ({
                             />
                         </AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value="item-2">
+                    <AccordionItem value='item-2'>
                         <AccordionTrigger>
                             {t(
                                 'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.components.carriage_panel_component_progress.accordions.progress_steps',

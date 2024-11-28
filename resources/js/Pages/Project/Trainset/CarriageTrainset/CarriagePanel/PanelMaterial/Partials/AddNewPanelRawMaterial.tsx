@@ -89,27 +89,34 @@ const AddNewPanelRawMaterial = ({
                 <DialogHeader>
                     <DialogTitle>{data.new_raw_material_code}</DialogTitle>
                     <DialogDescription></DialogDescription>
-                    <form onSubmit={handleAddCarriagePanelRawMaterial} className="flex flex-col gap-4">
-                        <div className="flex flex-col bg-background-2 gap-4 p-4">
-                            <Label htmlFor="raw_material_id">
+                    <form
+                        onSubmit={handleAddCarriagePanelRawMaterial}
+                        className='flex flex-col gap-4'
+                    >
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <Label htmlFor='raw_material_id'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material',
                                 )}
                             </Label>
-                            <div className="flex gap-2">
+                            <div className='flex gap-2'>
                                 <GenericDataSelector
-                                    id="raw_material_id"
-                                    fetchData={fetchRawMaterials}
-                                    setSelectedData={id => setData('raw_material_id', id)}
+                                    setSelectedData={(id) => setData('raw_material_id', id)}
                                     selectedDataId={data.raw_material_id}
+                                    renderItem={(item) => item.description}
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material_placeholder',
                                     )}
-                                    renderItem={item => item.description}
-                                    labelKey={'description'}
                                     nullable
+                                    labelKey={'description'}
+                                    id='raw_material_id'
+                                    fetchData={fetchRawMaterials}
                                 />
-                                <Button type="button" variant="ghost" onClick={handleResetRawMaterialId}>
+                                <Button
+                                    variant='ghost'
+                                    type='button'
+                                    onClick={handleResetRawMaterialId}
+                                >
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
@@ -117,77 +124,81 @@ const AddNewPanelRawMaterial = ({
 
                         <Separator />
 
-                        <div className="flex flex-col gap-4 bg-background-2 p-4">
-                            <div className="flex flex-col gap-2">
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_code',
                                     )}
                                 </Label>
                                 <Input
-                                    type="text"
                                     value={data.new_raw_material_code}
-                                    onChange={e => setData('new_raw_material_code', e.target.value)}
-                                    disabled={data.raw_material_id !== null}
+                                    type='text'
                                     required
+                                    onChange={(e) =>
+                                        setData('new_raw_material_code', e.target.value)
+                                    }
+                                    disabled={data.raw_material_id !== null}
                                 />
                             </div>
 
-                            <Label htmlFor="new-component-description">
+                            <Label htmlFor='new-component-description'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_description',
                                 )}
                             </Label>
                             <Textarea
-                                id="new-component-description"
-                                className="p-2 rounded"
                                 value={data.new_raw_material_description}
-                                onChange={e => setData('new_raw_material_description', e.target.value)}
+                                onChange={(e) =>
+                                    setData('new_raw_material_description', e.target.value)
+                                }
+                                id='new-component-description'
                                 disabled={data.raw_material_id !== null}
+                                className='rounded p-2'
                             />
-                            <Label htmlFor="new-component-unit">
+                            <Label htmlFor='new-component-unit'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_unit',
                                 )}
                             </Label>
                             <Input
-                                id="new-component-unit"
-                                type="text"
                                 value={data.new_raw_material_unit}
-                                onChange={e => setData('new_raw_material_unit', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('new_raw_material_unit', e.target.value)}
+                                id='new-component-unit'
                                 disabled={data.raw_material_id !== null}
                             />
-                            <Label htmlFor="new-component-specs">
+                            <Label htmlFor='new-component-specs'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_specs',
                                 )}
                             </Label>
                             <Textarea
-                                id="new-component-specs"
-                                className="p-2 rounded"
                                 value={data.new_raw_material_specs}
-                                onChange={e => setData('new_raw_material_specs', e.target.value)}
+                                onChange={(e) => setData('new_raw_material_specs', e.target.value)}
+                                id='new-component-specs'
                                 disabled={data.raw_material_id !== null}
+                                className='rounded p-2'
                             />
-                            <Label htmlFor="new-component-qty">
+                            <Label htmlFor='new-component-qty'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_qty',
                                 )}
                             </Label>
                             <Input
-                                id="new-component-qty"
-                                type="number"
-                                min={1}
                                 value={data.new_raw_material_qty}
-                                onChange={e => setData('new_raw_material_qty', +e.target.value)}
+                                type='number'
                                 required
+                                onChange={(e) => setData('new_raw_material_qty', +e.target.value)}
+                                min={1}
+                                id='new-component-qty'
                             />
                         </div>
 
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                     {t('action.loading')}
                                 </>
                             ) : (

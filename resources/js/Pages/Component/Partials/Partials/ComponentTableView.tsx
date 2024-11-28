@@ -1,5 +1,12 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
@@ -21,29 +28,40 @@ export default function ComponentTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.component.partials.partials.component_table.headers.name')}</TableHead>
                         <TableHead>
-                            {t('pages.component.partials.partials.component_table.headers.description')}
+                            {t('pages.component.partials.partials.component_table.headers.name')}
                         </TableHead>
-                        <TableHead>{t('pages.component.partials.partials.component_table.headers.progress')}</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.component.partials.partials.component_table.headers.description',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.component.partials.partials.component_table.headers.progress',
+                            )}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {componentResponse?.data.map(component => (
+                    {componentResponse?.data.map((component) => (
                         <TableRow key={component.id}>
                             <TableCell>{component.name}</TableCell>
                             <TableCell>{component.description}</TableCell>
                             <TableCell>{component.progress?.name}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>
                                 {component.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleComponentDeletion(component.id)}>
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleComponentDeletion(component.id)}
+                                    >
                                         {t('action.delete')}
                                     </Button>
                                 )}

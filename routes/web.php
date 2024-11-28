@@ -1,40 +1,40 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\StepController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\WorkDayController;
+use App\Http\Controllers\Api\ApiSearchController;
 use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelComponentController;
+use App\Http\Controllers\CarriagePanelController;
+use App\Http\Controllers\CarriagePresetController;
+use App\Http\Controllers\CarriageTrainsetController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\ComponentMaterialController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetailWorkerPanelController;
+use App\Http\Controllers\DetailWorkerTrainsetController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\ProgressController;
-use App\Http\Controllers\TrainsetController;
-use App\Http\Controllers\WorkshopController;
-use App\Http\Controllers\ComponentController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\WorkAspectController;
-use App\Http\Controllers\RawMaterialController;
-use App\Http\Controllers\WorkDayTimeController;
-use App\Http\Controllers\WorkstationController;
-use App\Http\Controllers\ProgressStepController;
-use App\Http\Controllers\Api\ApiSearchController;
-use App\Http\Controllers\CarriagePanelController;
-use App\Http\Controllers\PanelMaterialController;
-use App\Http\Controllers\CarriagePresetController;
-use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\HelpdeskContactController;
 use App\Http\Controllers\PanelAttachmentController;
-use App\Http\Controllers\CarriageTrainsetController;
-use App\Http\Controllers\ComponentMaterialController;
-use App\Http\Controllers\DetailWorkerPanelController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PanelMaterialController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PresetTrainsetController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProgressStepController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\RawMaterialController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StepController;
 use App\Http\Controllers\TrainsetAttachmentController;
-use App\Http\Controllers\DetailWorkerTrainsetController;
-use App\Http\Controllers\CarriagePanelComponentController;
+use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkAspectController;
+use App\Http\Controllers\WorkDayController;
+use App\Http\Controllers\WorkDayTimeController;
+use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\WorkstationController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,7 +113,7 @@ Route::middleware('auth')->group(function () {
     // });
 
     Route::resource('work-days.work-day-times', WorkDayTimeController::class)->parameters([
-        'work-day-times' => 'work_day_time'
+        'work-day-times' => 'work_day_time',
     ])->except(['index', 'show']);
 
     Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {

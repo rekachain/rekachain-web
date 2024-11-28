@@ -11,7 +11,11 @@ export const LoadingContext = createContext<LoadingContextProps | undefined>(und
 export const LoadingProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
 
-    return <LoadingContext.Provider value={{ loading, setLoading }}>{children}</LoadingContext.Provider>;
+    return (
+        <LoadingContext.Provider value={{ loading, setLoading }}>
+            {children}
+        </LoadingContext.Provider>
+    );
 };
 
 export const useLoading = () => {

@@ -20,27 +20,29 @@ export default function ({
         await carriagePanelService.delete(carriageCarriageId);
         await handleSyncCarriage();
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.carriage_panel.partials.panels.messages.deleted'),
+            t(
+                'pages.project.trainset.carriage_trainset.carriage_panel.partials.panels.messages.deleted',
+            ),
         );
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <CarPanelTableView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
                     handleSyncCarriagePanel={handleSyncCarriage}
                     handlePanelDeletion={handlePanelDeletion}
+                    carriageTrainset={carriageTrainset}
                 ></CarPanelTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <CarPanelCardView
                     trainset={trainset}
-                    carriageTrainset={carriageTrainset}
                     handleSyncCarriage={handleSyncCarriage}
                     handlePanelDeletion={handlePanelDeletion}
+                    carriageTrainset={carriageTrainset}
                 ></CarPanelCardView>
             </div>
         </div>

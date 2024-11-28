@@ -24,20 +24,20 @@ export default function ({
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <TrainsetTableView
                     project={project}
-                    handleTrainsetDeletion={handleTrainsetDeletion}
                     loading={loading}
+                    handleTrainsetDeletion={handleTrainsetDeletion}
                 ></TrainsetTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <TrainsetCardView
                     project={project}
-                    handleTrainsetDeletion={handleTrainsetDeletion}
                     loading={loading}
+                    handleTrainsetDeletion={handleTrainsetDeletion}
                 ></TrainsetCardView>
             </div>
         </div>

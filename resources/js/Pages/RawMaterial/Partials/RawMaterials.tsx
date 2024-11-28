@@ -13,7 +13,8 @@ import Filters from '@/Pages/RawMaterial/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const [rawMaterialResponse, setRawMaterialResponse] = useState<PaginateResponse<RawMaterialResource>>();
+    const [rawMaterialResponse, setRawMaterialResponse] =
+        useState<PaginateResponse<RawMaterialResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
@@ -38,12 +39,12 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {rawMaterialResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
 
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <RawMaterialTableView
                             rawMaterialResponse={rawMaterialResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
@@ -51,7 +52,7 @@ export default function () {
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <RawMaterialCardView
                             rawMaterialResponse={rawMaterialResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
@@ -61,7 +62,10 @@ export default function () {
                 </>
             )}
 
-            <GenericPagination meta={rawMaterialResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination
+                meta={rawMaterialResponse?.meta}
+                handleChangePage={handlePageChange}
+            />
         </div>
     );
 }

@@ -33,8 +33,12 @@ export default function (props: SidebarLinkProps) {
     const handleSetSelectedMenu = () => sidebarContext?.setSelectedMenu('');
 
     return (
-        <div className="sidebar-item px-4" title={props.title}>
-            <Link href={route(props.routeName)} className={linkClass} onClick={handleSetSelectedMenu}>
+        <div title={props.title} className='sidebar-item px-4'>
+            <Link
+                onClick={handleSetSelectedMenu}
+                href={route(props.routeName)}
+                className={linkClass}
+            >
                 {props.icon}
                 <div className={titleClass}>{props.title}</div>
             </Link>

@@ -30,26 +30,26 @@ export default function ComponentMaterialCardView({
     return (
         <div>
             <>
-                {carriagePanelComponent.component_materials?.map(componentMaterial => (
+                {carriagePanelComponent.component_materials?.map((componentMaterial) => (
                     <div key={componentMaterial.id}>
                         <AnimateIn
-                            from="opacity-0 -translate-y-4"
-                            to="opacity-100 translate-y-0 translate-x-0"
-                            duration={300}
+                            to='opacity-100 translate-y-0 translate-x-0'
                             key={componentMaterial.id}
+                            from='opacity-0 -translate-y-4'
+                            duration={300}
                         >
-                            <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                                <div className="flex  justify-between items-scenter">
-                                    <h4 className="font-bold text-sm">
+                            <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                                <div className='items-scenter flex justify-between'>
+                                    <h4 className='text-sm font-bold'>
                                         {componentMaterial.raw_material.material_code}
                                     </h4>
-                                    <div className="text-end w-1/2">
-                                        <h5 className="font-bold text-sm ">
+                                    <div className='w-1/2 text-end'>
+                                        <h5 className='text-sm font-bold'>
                                             {componentMaterial.raw_material.description}
                                         </h5>
                                     </div>
                                 </div>
-                                <h5 className="text-sm">
+                                <h5 className='text-sm'>
                                     {trainset.status === TrainsetStatusEnum.PROGRESS ? (
                                         <span>{componentMaterial.qty}</span>
                                     ) : (
@@ -59,11 +59,15 @@ export default function ComponentMaterialCardView({
                                         />
                                     )}
                                 </h5>
-                                <div className="flex items-center justify-end w-full">
+                                <div className='flex w-full items-center justify-end'>
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button
-                                            variant="link"
-                                            onClick={() => handleComponentMaterialDeletion(componentMaterial.id)}
+                                            variant='link'
+                                            onClick={() =>
+                                                handleComponentMaterialDeletion(
+                                                    componentMaterial.id,
+                                                )
+                                            }
                                         >
                                             {t('action.delete')}
                                         </Button>

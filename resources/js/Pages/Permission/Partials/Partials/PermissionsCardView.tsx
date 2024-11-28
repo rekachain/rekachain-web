@@ -14,22 +14,22 @@ export default function PermissionsCardView({
 }) {
     return (
         <>
-            {permissionResponse?.data.map(permission => (
+            {permissionResponse?.data.map((permission) => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
-                    to="opacity-100 translate-y-0 translate-x-0 mt-3"
-                    duration={300}
+                    to='opacity-100 translate-y-0 translate-x-0 mt-3'
                     key={permission.id}
+                    from='opacity-0 -translate-y-4'
+                    duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2">
-                        <div className="flex w-full justify-between items-center">
-                            <div className="text-center">
+                    <div className='flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='flex w-full items-center justify-between'>
+                            <div className='text-center'>
                                 {/* <h5 className="font-bold text-xs items-center "> {division.role?.name}</h5> */}
                             </div>
                         </div>
-                        <h4 className="font-bold text-xl">{permission.group}</h4>
-                        <h4 className="text-md">{permission.name}</h4>
-                        <div className="flex items-center justify-end w-full">
+                        <h4 className='text-xl font-bold'>{permission.group}</h4>
+                        <h4 className='text-md'>{permission.name}</h4>
+                        <div className='flex w-full items-center justify-end'>
                             {/* <Link
                                 href=""
                                 // className={buttonVariants({ variant: 'link' })}

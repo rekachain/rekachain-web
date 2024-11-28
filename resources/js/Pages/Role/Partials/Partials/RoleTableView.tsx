@@ -1,5 +1,12 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RoleResource } from '@/Support/Interfaces/Resources';
@@ -20,16 +27,26 @@ export default function RoleTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.role.partials.partials.role_table.headers.name')}</TableHead>
-                        <TableHead>{t('pages.role.partials.partials.role_table.headers.division')}</TableHead>
-                        <TableHead>{t('pages.role.partials.partials.role_table.headers.level')}</TableHead>
-                        <TableHead>{t('pages.role.partials.partials.role_table.headers.users_count')}</TableHead>
-                        <TableHead>{t('pages.role.partials.partials.role_table.headers.permissions_count')}</TableHead>
+                        <TableHead>
+                            {t('pages.role.partials.partials.role_table.headers.name')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.role.partials.partials.role_table.headers.division')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.role.partials.partials.role_table.headers.level')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.role.partials.partials.role_table.headers.users_count')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.role.partials.partials.role_table.headers.permissions_count')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {roleResponse?.data.map(role => (
+                    {roleResponse?.data.map((role) => (
                         <TableRow key={role.id}>
                             <TableCell>{role.name}</TableCell>
                             <TableCell>{role.division?.name}</TableCell>
@@ -38,13 +55,16 @@ export default function RoleTableView({
                             <TableCell>{role.permissions_count}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.ROLES}.edit`, role.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>
                                 {role.users_count <= 0 && (
-                                    <Button variant="link" onClick={() => handleRoleDeletion(role.id)}>
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleRoleDeletion(role.id)}
+                                    >
                                         {t('action.delete')}
                                     </Button>
                                 )}

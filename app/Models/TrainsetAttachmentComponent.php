@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class TrainsetAttachmentComponent extends Model
-{
+class TrainsetAttachmentComponent extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -19,18 +18,15 @@ class TrainsetAttachmentComponent extends Model
         'total_failed',
     ];
 
-    public function trainset_attachment(): BelongsTo
-    {
+    public function trainset_attachment(): BelongsTo {
         return $this->belongsTo(TrainsetAttachment::class);
     }
 
-    public function carriage_panel_component(): BelongsTo
-    {
+    public function carriage_panel_component(): BelongsTo {
         return $this->belongsTo(CarriagePanelComponent::class);
     }
 
-    public function detail_worker_trainsets(): HasMany
-    {
+    public function detail_worker_trainsets(): HasMany {
         return $this->hasMany(DetailWorkerTrainset::class);
     }
 }

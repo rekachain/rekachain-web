@@ -1,4 +1,11 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PermissionResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
@@ -16,13 +23,17 @@ export default function PermissionsTableView({
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>{t('pages.permission.partials.partials.permission_table.headers.group')}</TableHead>
-                    <TableHead>{t('pages.permission.partials.partials.permission_table.headers.name')}</TableHead>
+                    <TableHead>
+                        {t('pages.permission.partials.partials.permission_table.headers.group')}
+                    </TableHead>
+                    <TableHead>
+                        {t('pages.permission.partials.partials.permission_table.headers.name')}
+                    </TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {permissionResponse?.data.map(permission => (
+                {permissionResponse?.data.map((permission) => (
                     <TableRow key={permission.id}>
                         <TableCell>{permission.group}</TableCell>
                         <TableCell>{permission.name}</TableCell>

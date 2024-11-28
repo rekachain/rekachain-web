@@ -1,5 +1,16 @@
-import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { Button } from '@/Components/UI/button';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -43,7 +54,7 @@ export default function PanelMaterialTableView({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriagePanel.panel_materials?.map(panelMaterial => (
+                    {carriagePanel.panel_materials?.map((panelMaterial) => (
                         <TableRow key={panelMaterial.id}>
                             <TableCell>{panelMaterial.raw_material?.material_code}</TableCell>
                             <TableCell>
@@ -51,8 +62,8 @@ export default function PanelMaterialTableView({
                                     <span>{panelMaterial.qty}</span>
                                 ) : (
                                     <PanelMaterialQty
-                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
                                         panelMaterial={panelMaterial}
+                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
                                     />
                                 )}
                             </TableCell>
@@ -67,8 +78,10 @@ export default function PanelMaterialTableView({
 
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button
-                                        variant="link"
-                                        onClick={() => handlePanelMaterialDeletion(panelMaterial.id)}
+                                        variant='link'
+                                        onClick={() =>
+                                            handlePanelMaterialDeletion(panelMaterial.id)
+                                        }
                                     >
                                         {t('action.delete')}
                                     </Button>

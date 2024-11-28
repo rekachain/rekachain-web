@@ -43,7 +43,7 @@ export default function ({ step }: { step: StepResource }) {
         void handleSyncProgress();
     }, [debouncedSearchProgress]);
 
-    const submit: FormEventHandler = withLoading(async event => {
+    const submit: FormEventHandler = withLoading(async (event) => {
         event.preventDefault();
         await stepService.update(step.id, data);
         router.visit(route(`${ROUTES.STEPS}.index`));
@@ -51,19 +51,21 @@ export default function ({ step }: { step: StepResource }) {
     });
 
     const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
-        return await progressService.getAll(filters).then(response => response.data);
+        return await progressService.getAll(filters).then((response) => response.data);
     }, []);
 
     return (
         <>
             <Head title={t('pages.step.edit.title', { name: step.name })} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.step.edit.title', { name: step.name })}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.step.edit.title', { name: step.name })}
+                        </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
+                    <form onSubmit={submit} encType='multipart/form-data'>
                         {/*<div className="mt-4">*/}
                         {/*    <GenericDataSelector*/}
                         {/*        id="workstation_id"*/}
@@ -78,49 +80,52 @@ export default function ({ step }: { step: StepResource }) {
                         {/*    />*/}
                         {/*</div>*/}
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.step.edit.fields.name')} />
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.step.edit.fields.name')} htmlFor='name' />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="process" value={t('pages.step.edit.fields.process')} />
-                            <Input
-                                id="process"
-                                type="text"
-                                name="process"
-                                value={data.process}
-                                className="mt-1"
-                                autoComplete="process"
-                                onChange={e => setData('process', e.target.value)}
-                            />
-                        </div>
-
-                        <div className="mt-4">
+                        <div className='mt-4'>
                             <InputLabel
-                                htmlFor="estimated_time"
-                                value={t('pages.step.edit.fields.estimated_manufacturing_time')}
+                                value={t('pages.step.edit.fields.process')}
+                                htmlFor='process'
                             />
                             <Input
-                                id="estimated_time"
-                                type="number"
-                                name="estimated_time"
-                                value={data.estimated_time}
-                                className="mt-1"
-                                autoComplete="estimated_time"
-                                onChange={e => setData('estimated_time', +e.target.value)}
+                                value={data.process}
+                                type='text'
+                                onChange={(e) => setData('process', e.target.value)}
+                                name='process'
+                                id='process'
+                                className='mt-1'
+                                autoComplete='process'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.step.edit.fields.estimated_manufacturing_time')}
+                                htmlFor='estimated_time'
+                            />
+                            <Input
+                                value={data.estimated_time}
+                                type='number'
+                                onChange={(e) => setData('estimated_time', +e.target.value)}
+                                name='estimated_time'
+                                id='estimated_time'
+                                className='mt-1'
+                                autoComplete='estimated_time'
+                            />
+                        </div>
+
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.step.edit.buttons.submit')}
                         </Button>
                     </form>

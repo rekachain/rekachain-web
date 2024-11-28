@@ -43,18 +43,22 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.panel.partials.import.buttons.import')}</Button>
+                <Button variant='tertiary'>
+                    {t('pages.panel.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{t('pages.panel.partials.import.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.panel.partials.import.description')}</DialogDescription>
+                    <DialogDescription>
+                        {t('pages.panel.partials.import.description')}
+                    </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col space-y-4">
+                <div className='flex flex-col space-y-4'>
                     <Label>{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
                     <Button
-                        type="button"
-                        variant="secondary"
+                        variant='secondary'
+                        type='button'
                         onClick={panelService.downloadImportDataTemplate}
                         disabled={loading}
                     >
@@ -63,18 +67,20 @@ export default function () {
                             : t('pages.panel.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
-                <form onSubmit={handleImportData} className="space-y-4">
-                    <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
+                <form onSubmit={handleImportData} className='space-y-4'>
+                    <div className='space-y-4'>
+                        <Label htmlFor='file'>
+                            {t('pages.panel.partials.import.dialogs.fields.file')}
+                        </Label>
                         <Input
-                            id="file"
-                            type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            type='file'
                             onChange={handleChangeImportFile}
+                            id='file'
+                            accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading
                                 ? t('pages.panel.partials.import.dialogs.buttons.processing')
                                 : t('pages.panel.partials.import.dialogs.buttons.import')}

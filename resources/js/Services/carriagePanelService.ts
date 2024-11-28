@@ -63,7 +63,7 @@ export const carriagePanelService = {
         progress_name: string,
         progress_work_aspect_id: number | null,
     ) => {
-        let formData = new FormData();
+        const formData = new FormData();
 
         if (progress_id) {
             formData.append('progress_id', progress_id.toString());
@@ -75,11 +75,15 @@ export const carriagePanelService = {
             formData.append('progress_work_aspect_id', progress_work_aspect_id!.toString());
         }
 
-        await window.axios.post(route(`${ROUTES.CARRIAGE_PANELS}.update`, carriagePanelId), formData, {
-            params: {
-                _method: 'PUT',
-                intent: IntentEnum.WEB_CARRIAGE_PANEL_CHANGE_PROGRESS,
+        await window.axios.post(
+            route(`${ROUTES.CARRIAGE_PANELS}.update`, carriagePanelId),
+            formData,
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_CARRIAGE_PANEL_CHANGE_PROGRESS,
+                },
             },
-        });
+        );
     },
 };

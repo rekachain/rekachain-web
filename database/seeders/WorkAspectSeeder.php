@@ -4,19 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\WorkAspect;
 use Database\Seeders\Helpers\CsvReader;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class WorkAspectSeeder extends Seeder
-{
+class WorkAspectSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $csvReader = new CsvReader('work_aspect');
         $csvData = $csvReader->getCsvData();
-        
+
         WorkAspect::factory()->create([
             'name' => 'Fabrikasi',
             'division_id' => 1,
@@ -37,6 +34,7 @@ class WorkAspectSeeder extends Seeder
             foreach ($csvData as $data) {
                 WorkAspect::factory()->create($data);
             }
+
             return;
         }
     }

@@ -20,7 +20,7 @@ export default function () {
 
     const { t } = useLaravelReactI18n();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await workDayService.create(data);
@@ -32,26 +32,31 @@ export default function () {
         <>
             <Head title={t('pages.work_day.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.work_day.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.work_day.create.title')}
+                        </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="type" value={t('pages.work_day.create.fields.name')} />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.work_day.create.fields.name')}
+                                htmlFor='type'
+                            />
                             <Input
-                                id="type"
-                                type="text"
-                                name="type"
                                 value={data.day}
-                                className="mt-1"
-                                autoComplete="type"
-                                onChange={e => setData('day', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('day', e.target.value)}
+                                name='type'
+                                id='type'
+                                className='mt-1'
+                                autoComplete='type'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.work_day.create.buttons.submit')}
                         </Button>
                     </form>

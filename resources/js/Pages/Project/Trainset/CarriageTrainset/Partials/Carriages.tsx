@@ -17,24 +17,26 @@ export default function ({
     const handleCarriageDeletion = withLoading(async (carriageTrainsetId: number) => {
         await carriageTrainsetService.delete(carriageTrainsetId);
         await handleSyncTrainset();
-        void useSuccessToast(t('pages.project.trainset.carriage_trainset.partials.carriages.messages.deleted'));
+        void useSuccessToast(
+            t('pages.project.trainset.carriage_trainset.partials.carriages.messages.deleted'),
+        );
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <CarriageTableView
-                    handleSyncTrainset={handleSyncTrainset}
                     trainset={trainset}
+                    handleSyncTrainset={handleSyncTrainset}
                     handleCarriageDeletion={handleCarriageDeletion}
                 ></CarriageTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <CarriageCardView
-                    handleSyncTrainset={handleSyncTrainset}
                     trainset={trainset}
                     handleTrainsetDeletion={handleCarriageDeletion}
+                    handleSyncTrainset={handleSyncTrainset}
                 ></CarriageCardView>
             </div>
         </div>

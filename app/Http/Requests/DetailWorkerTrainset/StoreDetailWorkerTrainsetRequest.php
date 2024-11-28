@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\DetailWorkerTrainset;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDetailWorkerTrainsetRequest extends FormRequest {
     public function rules(): array {

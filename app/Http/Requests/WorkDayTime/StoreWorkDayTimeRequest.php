@@ -29,6 +29,7 @@ class StoreWorkDayTimeRequest extends FormRequest {
                 'status' => 'required|string|in:' . implode(',', WorkDayTimeEnum::toArray()),
             ];
         }
+
         return [
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',

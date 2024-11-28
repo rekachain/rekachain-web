@@ -1,6 +1,13 @@
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/Components/TrainsetName';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { Link } from '@inertiajs/react';
@@ -23,16 +30,20 @@ export default function TrainsetTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.trainset.partials.partials.trainset_table.headers.name')}
+                            {t(
+                                'pages.project.trainset.partials.partials.trainset_table.headers.name',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.trainset.partials.partials.trainset_table.headers.trainset_carriage')}
+                            {t(
+                                'pages.project.trainset.partials.partials.trainset_table.headers.trainset_carriage',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {project?.trainsets?.map(trainset => (
+                    {project?.trainsets?.map((trainset) => (
                         <TableRow key={trainset.id}>
                             <TableCell>
                                 <TrainsetName trainset={trainset} />
@@ -57,38 +68,44 @@ export default function TrainsetTableView({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
                                 <Button
-                                    variant="link"
-                                    disabled={loading || !trainset.can_be_deleted}
+                                    variant='link'
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
+                                    disabled={loading || !trainset.can_be_deleted}
                                 >
                                     {t('action.delete')}
                                 </Button>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
+                                    {t(
+                                        'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
+                                    )}
                                 </Link>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.components')}
+                                    {t(
+                                        'pages.project.trainset.partials.partials.trainset_table.actions.components',
+                                    )}
                                 </Link>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.panels')}
+                                    {t(
+                                        'pages.project.trainset.partials.partials.trainset_table.actions.panels',
+                                    )}
                                 </Link>
                             </TableCell>
                         </TableRow>

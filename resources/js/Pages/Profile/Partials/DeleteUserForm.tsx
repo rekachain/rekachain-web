@@ -28,7 +28,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
         setConfirmingUserDeletion(true);
     };
 
-    const deleteUser: FormEventHandler = e => {
+    const deleteUser: FormEventHandler = (e) => {
         e.preventDefault();
 
         destroy(route('profile.destroy'), {
@@ -48,11 +48,11 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                <h2 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
                     {t('pages.profile.partials.delete_user_form.title')}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className='mt-1 text-sm text-gray-600 dark:text-gray-400'>
                     {t('pages.profile.partials.delete_user_form.description')}
                 </p>
             </header>
@@ -62,41 +62,43 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
             </DangerButton>
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                <form onSubmit={deleteUser} className='p-6'>
+                    <h2 className='text-lg font-medium text-gray-900 dark:text-gray-100'>
                         {t('pages.profile.partials.delete_user_form.dialogs.title')}
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    <p className='mt-1 text-sm text-gray-600 dark:text-gray-400'>
                         {t('pages.profile.partials.delete_user_form.dialogs.description')}
                     </p>
 
-                    <div className="mt-6">
-                        <Label htmlFor="password" className="sr-only">
+                    <div className='mt-6'>
+                        <Label htmlFor='password' className='sr-only'>
                             {t('pages.profile.partials.delete_user_form.dialogs.fields.password')}
                         </Label>
 
                         <Input
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
                             value={data.password}
-                            onChange={e => setData('password', e.target.value)}
-                            autoFocus
+                            type='password'
+                            ref={passwordInput}
                             placeholder={t(
                                 'pages.profile.partials.delete_user_form.dialogs.fields.password_placeholder',
                             )}
+                            onChange={(e) => setData('password', e.target.value)}
+                            name='password'
+                            id='password'
+                            autoFocus
                         />
 
-                        <InputError message={errors.password} className="mt-2" />
+                        <InputError message={errors.password} className='mt-2' />
                     </div>
 
-                    <div className="mt-6 flex justify-end">
+                    <div className='mt-6 flex justify-end'>
                         <Button onClick={closeModal}>{t('action.cancel')}</Button>
 
-                        <Button variant="destructive" className="ms-3" disabled={processing}>
-                            {t('pages.profile.partials.delete_user_form.dialogs.buttons.delete_account')}
+                        <Button variant='destructive' disabled={processing} className='ms-3'>
+                            {t(
+                                'pages.profile.partials.delete_user_form.dialogs.buttons.delete_account',
+                            )}
                         </Button>
                     </div>
                 </form>

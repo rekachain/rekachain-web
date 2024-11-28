@@ -41,14 +41,20 @@ export default function ({ project }: { project: ProjectResource }) {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {panelResponse && (
                 <>
-                    <div className="hidden md:block">
-                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
+                    <div className='hidden md:block'>
+                        <PanelTableView
+                            project={project}
+                            panelResponse={panelResponse}
+                        ></PanelTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
+                    <div className='block md:hidden'>
+                        <PanelCardView
+                            project={project}
+                            panelResponse={panelResponse}
+                        ></PanelCardView>
                     </div>
                 </>
             )}

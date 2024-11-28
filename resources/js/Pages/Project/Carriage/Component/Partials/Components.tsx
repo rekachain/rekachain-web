@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { CarriageResource, ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriageResource,
+    ProjectComponentResource,
+    ProjectResource,
+} from '@/Support/Interfaces/Resources';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { useLoading } from '@/Contexts/LoadingContext';
@@ -20,7 +24,8 @@ export default function ({
     handleSyncProject: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
-    const [componentResponse, setComponentResponse] = useState<PaginateResponse<ProjectComponentResource>>();
+    const [componentResponse, setComponentResponse] =
+        useState<PaginateResponse<ProjectComponentResource>>();
     const [componentResponseMeta, setComponentResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -55,18 +60,22 @@ export default function ({
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {componentResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <ComponentTableView
                             project={project}
-                            carriage={carriage}
                             componentResponse={componentResponse}
+                            carriage={carriage}
                         ></ComponentTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <ComponentCardView project={project} carriage={carriage} componentResponse={componentResponse}></ComponentCardView>
+                    <div className='block md:hidden'>
+                        <ComponentCardView
+                            project={project}
+                            componentResponse={componentResponse}
+                            carriage={carriage}
+                        ></ComponentCardView>
                     </div>
                 </>
             )}

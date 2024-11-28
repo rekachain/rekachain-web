@@ -15,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ProgressTemplateExport implements FromArray, WithTitle, WithHeadings, ShouldAutoSize, WithEvents, WithStyles {
+class ProgressTemplateExport implements FromArray, ShouldAutoSize, WithEvents, WithHeadings, WithStyles, WithTitle {
     use Exportable;
 
     public function __construct(protected ?Progress $progress) {}
@@ -40,8 +40,8 @@ class ProgressTemplateExport implements FromArray, WithTitle, WithHeadings, Shou
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '4F81BD']
-            ]
+                'startColor' => ['rgb' => '4F81BD'],
+            ],
         ]);
 
     }
@@ -51,7 +51,7 @@ class ProgressTemplateExport implements FromArray, WithTitle, WithHeadings, Shou
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
                 $highestRow = $sheet->getHighestRow();
-                
+
                 $table = new Table('A1:C' . $highestRow, 'Progress');
                 $tableStyle = new TableStyle(TableStyle::TABLE_STYLE_LIGHT15);
                 $tableStyle->setShowRowStripes(true);
@@ -62,7 +62,7 @@ class ProgressTemplateExport implements FromArray, WithTitle, WithHeadings, Shou
                 for ($row = 2; $row <= $highestRow; $row++) {
                     $sheet->setCellValue(
                         "A{$row}",
-                        "=ROW()-ROW(Progress[[#Headers],[Urutan]])"
+                        '=ROW()-ROW(Progress[[#Headers],[Urutan]])'
                     );
                 }
             },
@@ -71,8 +71,8 @@ class ProgressTemplateExport implements FromArray, WithTitle, WithHeadings, Shou
 
     public function array(): array {
         return $this->progress
-            ? $this->progress->progress_steps->map(fn($progressStep, $key) => [
-                $key+1,
+            ? $this->progress->progress_steps->map(fn ($progressStep, $key) => [
+                $key + 1,
                 $progressStep->step->name,
                 $progressStep->step->process,
             ])->toArray()

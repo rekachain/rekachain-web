@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-class ApiSearchController extends Controller
-{
-    public function search(Request $request)
-{
-    $query = strtolower($request->get('q'));
+class ApiSearchController extends Controller {
+    public function search(Request $request) {
+        $query = strtolower($request->get('q'));
 
     $standardRoutes = collect(Route::getRoutes())
         ->filter(function ($route) {

@@ -53,27 +53,27 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
 
     useEffect(() => {
         setData('toBeAssigned', panelAttachment.is_child ? false : true);
-    },[panelAttachment]);
+    }, [panelAttachment]);
 
     return (
         <>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button variant="tertiary">Tambah Material Baru</Button>
+                    <Button variant='tertiary'>Tambah Material Baru</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className='sm:max-w-[425px]'>
                     <DialogHeader>
                         <DialogTitle>Tambah Material Baru</DialogTitle>
                         <DialogDescription>
-                            Tambahkan material baru ke attachment ini dengan mengunggah file excel yang berisi data
-                            material
+                            Tambahkan material baru ke attachment ini dengan mengunggah file excel
+                            yang berisi data material
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="flex flex-col space-y-4">
+                    <div className='flex flex-col space-y-4'>
                         <Label>Unduh template excel</Label>
                         <Button
-                            type="button"
-                            variant="secondary"
+                            variant='secondary'
+                            type='button'
                             onClick={panelAttachmentService.downloadCustomAttachmentMaterialImportTemplate.bind(
                                 null,
                                 panelAttachment.id,
@@ -82,63 +82,75 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
                         >
                             {loading
                                 ? t('action.loading')
-                                : t('pages.panel.partials.import.dialogs.buttons.download_template')}
+                                : t(
+                                      'pages.panel.partials.import.dialogs.buttons.download_template',
+                                  )}
                         </Button>
                     </div>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="space-y-4">
-                            <Label htmlFor="file">{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
+                    <form onSubmit={handleSubmit} className='space-y-4'>
+                        <div className='space-y-4'>
+                            <Label htmlFor='file'>
+                                {t('pages.panel.partials.import.dialogs.fields.file')}
+                            </Label>
                             <Input
-                                id="file"
-                                type="file"
-                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                type='file'
                                 onChange={handleChangeImportFile}
+                                id='file'
+                                accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                             />
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className='flex items-center space-x-2'>
                             <Label
-                                htmlFor="to-be-assigned"
-                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                htmlFor='to-be-assigned'
+                                className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
                             >
                                 Buat KPM baru?
                             </Label>
 
                             <Checkbox
-                                id="to-be-assigned"
+                                onCheckedChange={(checked) =>
+                                    setData('toBeAssigned', checked as boolean)
+                                }
+                                id='to-be-assigned'
                                 checked={data.toBeAssigned}
-                                onCheckedChange={checked => setData('toBeAssigned', checked as boolean)}
                             />
                         </div>
 
                         {!data.toBeAssigned && (
-                            <div className="space-y-4">
+                            <div className='space-y-4'>
                                 <Label>override kah min?</Label>
-                                <div className="flex space-x-4">
+                                <div className='flex space-x-4'>
                                     <RadioGroup
                                         value={data.override}
-                                        className="flex justify-content-between"
-                                        onValueChange={override =>
-                                            setData('override', override as ProjectImportProgressMaterialOverride)
+                                        onValueChange={(override) =>
+                                            setData(
+                                                'override',
+                                                override as ProjectImportProgressMaterialOverride,
+                                            )
                                         }
+                                        className='justify-content-between flex'
                                     >
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="default" id="override-default" />
-                                            <Label htmlFor="override-default">Default</Label>
+                                        <div className='flex items-center space-x-2'>
+                                            <RadioGroupItem value='default' id='override-default' />
+                                            <Label htmlFor='override-default'>Default</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="override" id="override-override" />
-                                            <Label htmlFor="override-override">Override</Label>
+                                        <div className='flex items-center space-x-2'>
+                                            <RadioGroupItem
+                                                value='override'
+                                                id='override-override'
+                                            />
+                                            <Label htmlFor='override-override'>Override</Label>
                                         </div>
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="merge" id="override-merge" />
-                                            <Label htmlFor="override-merge">Merge</Label>
+                                        <div className='flex items-center space-x-2'>
+                                            <RadioGroupItem value='merge' id='override-merge' />
+                                            <Label htmlFor='override-merge'>Merge</Label>
                                         </div>
                                     </RadioGroup>
                                 </div>
                             </div>
                         )}
                         <DialogFooter>
-                            <Button type="submit" disabled={loading}>
+                            <Button type='submit' disabled={loading}>
                                 {loading
                                     ? t('pages.panel.partials.import.dialogs.buttons.processing')
                                     : t('pages.panel.partials.import.dialogs.buttons.import')}

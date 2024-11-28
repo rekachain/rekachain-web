@@ -36,7 +36,7 @@ export default function (props: {
     const { loading } = useLoading();
 
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
         await roleService.update(props.role.id, data);
         router.visit(route(`${ROUTES.ROLES}.index`));
@@ -49,94 +49,104 @@ export default function (props: {
         } else {
             setData(
                 'permissions',
-                data.permissions.filter(id => id !== permission.id),
+                data.permissions.filter((id) => id !== permission.id),
             );
         }
     };
 
     const fetchDivisions = useCallback(async (filters: ServiceFilterOptions) => {
-        return await divisionService.getAll(filters).then(response => response.data);
+        return await divisionService.getAll(filters).then((response) => response.data);
     }, []);
 
     return (
         <>
             <Head title={t('pages.role.edit.title', { name: props.role.name })} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
                             {t('pages.role.edit.title', { name: props.role.name })}
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
                             <InputLabel
-                                htmlFor="name"
                                 value={t('pages.role.edit.fields.name', { name: props.role.name })}
+                                htmlFor='name'
                             />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
+                                type='text'
                                 placeholder={props.role.name}
-                                onChange={e => setData('name', e.target.value)}
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="division" value={t('pages.role.edit.fields.division')} />
-                            <GenericDataSelector
-                                id="division_id"
-                                fetchData={fetchDivisions}
-                                setSelectedData={id => setData('division_id', id)}
-                                selectedDataId={data.division_id ?? undefined}
-                                placeholder={t('pages.role.edit.fields.division_placeholder')}
-                                renderItem={(item: DivisionResource) => item.name}
-                                buttonClassName="mt-1"
-                                initialSearch={props.role?.division?.name}
-                                nullable
-                            />
-                        </div>
-
-                        <div className="mt-4">
+                        <div className='mt-4'>
                             <InputLabel
-                                htmlFor="level"
-                                value={t('pages.role.edit.fields.level', { level: props.role?.level ?? '' })}
+                                value={t('pages.role.edit.fields.division')}
+                                htmlFor='division'
+                            />
+                            <GenericDataSelector
+                                setSelectedData={(id) => setData('division_id', id)}
+                                selectedDataId={data.division_id ?? undefined}
+                                renderItem={(item: DivisionResource) => item.name}
+                                placeholder={t('pages.role.edit.fields.division_placeholder')}
+                                nullable
+                                initialSearch={props.role?.division?.name}
+                                id='division_id'
+                                fetchData={fetchDivisions}
+                                buttonClassName='mt-1'
+                            />
+                        </div>
+
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.role.edit.fields.level', {
+                                    level: props.role?.level ?? '',
+                                })}
+                                htmlFor='level'
                             />
                             <Input
-                                id="level"
-                                type="text"
-                                name="level"
                                 value={data.level}
-                                className="mt-1"
-                                autoComplete="level"
-                                onChange={e => setData('level', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('level', e.target.value)}
+                                name='level'
+                                id='level'
+                                className='mt-1'
+                                autoComplete='level'
                             />
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-5">
+                        <div className='mt-4 rounded bg-background-2 p-5'>
                             <h1>{t('pages.role.edit.fields.permissions')}</h1>
-                            <div className="mt-1">
-                                <div className="flex flex-wrap">
-                                    {permissions.map(permission => (
-                                        <div key={permission.group} className="w-full mt-2">
-                                            <h2 className="font-semibold">{permission.group}</h2>
-                                            <div className="grid grid-cols-4 gap-4 mt-2">
-                                                {permission.permissions.map(p => (
-                                                    <div key={p.id} className="flex items-center">
+                            <div className='mt-1'>
+                                <div className='flex flex-wrap'>
+                                    {permissions.map((permission) => (
+                                        <div key={permission.group} className='mt-2 w-full'>
+                                            <h2 className='font-semibold'>{permission.group}</h2>
+                                            <div className='mt-2 grid grid-cols-4 gap-4'>
+                                                {permission.permissions.map((p) => (
+                                                    <div key={p.id} className='flex items-center'>
                                                         <Checkbox
-                                                            id={`permission-${p.id}`}
-                                                            checked={data.permissions.includes(p.id)}
-                                                            onCheckedChange={checked =>
+                                                            onCheckedChange={(checked) =>
                                                                 handlePermissionChange(checked, p)
                                                             }
-                                                            name="permissions"
+                                                            name='permissions'
+                                                            id={`permission-${p.id}`}
+                                                            checked={data.permissions.includes(
+                                                                p.id,
+                                                            )}
                                                         />
-                                                        <label htmlFor={`permission-${p.id}`} className="ml-2">
+                                                        <label
+                                                            htmlFor={`permission-${p.id}`}
+                                                            className='ml-2'
+                                                        >
                                                             {p.name}
                                                         </label>
                                                     </div>
@@ -148,7 +158,7 @@ export default function (props: {
                             </div>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.role.edit.buttons.submit')}
                         </Button>
                     </form>

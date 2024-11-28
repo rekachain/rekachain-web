@@ -1,7 +1,21 @@
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { useCallback, useEffect, useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import InputLabel from '@/Components/InputLabel';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { trainsetService } from '@/Services/trainsetService';
@@ -25,7 +39,11 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
 
     const fetchPanelRawMaterials = useCallback(async () => {
         if (!selectedCarriage || !selectedPanel) return;
-        const res = await trainsetService.getPanelRawMaterials(trainset.id, selectedCarriage, selectedPanel);
+        const res = await trainsetService.getPanelRawMaterials(
+            trainset.id,
+            selectedCarriage,
+            selectedPanel,
+        );
         setSelectedPanelRawMaterials(res.data);
     }, [selectedCarriage, selectedPanel, trainset.id]);
 
@@ -34,20 +52,20 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
     }, [fetchPanelRawMaterials]);
 
     return (
-        <div className="text-black dark:text-white" key={trainset.id}>
-            <div className="flex gap-4 mt-4">
+        <div key={trainset.id} className='text-black dark:text-white'>
+            <div className='ml-3 mt-4 flex gap-4'>
                 {trainset?.carriage_trainsets?.length > 0 && (
-                    <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="selected-carriage-id">
+                    <div className='flex flex-col gap-2'>
+                        <InputLabel htmlFor='selected-carriage-id'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.fields.carriage',
                             )}
                         </InputLabel>
                         <Select
                             value={selectedCarriage?.toString()}
-                            onValueChange={value => setSelectedCarriage(+value)}
+                            onValueChange={(value) => setSelectedCarriage(+value)}
                         >
-                            <SelectTrigger id="selected-carriage-id" className="w-[180px]">
+                            <SelectTrigger id='selected-carriage-id' className='w-[180px]'>
                                 <SelectValue
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.fields.carriage_placeholder',
@@ -55,7 +73,7 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
                                 />
                             </SelectTrigger>
                             <SelectContent>
-                                {trainset.carriage_trainsets.map(carriageTrainset => (
+                                {trainset.carriage_trainsets.map((carriageTrainset) => (
                                     <SelectItem
                                         value={carriageTrainset.carriage.id?.toString()}
                                         key={carriageTrainset.id}
@@ -69,14 +87,17 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
                 )}
 
                 {selectedCarriage && (
-                    <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="selected-panel-id">
+                    <div className='flex flex-col gap-2'>
+                        <InputLabel htmlFor='selected-panel-id'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.fields.panel',
                             )}
                         </InputLabel>
-                        <Select value={selectedPanel?.toString()} onValueChange={value => setSelectedPanel(+value)}>
-                            <SelectTrigger id="selected-panel-id" className="w-[180px]">
+                        <Select
+                            value={selectedPanel?.toString()}
+                            onValueChange={(value) => setSelectedPanel(+value)}
+                        >
+                            <SelectTrigger id='selected-panel-id' className='w-[180px]'>
                                 <SelectValue
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.fields.panel_placeholder',
@@ -85,9 +106,15 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
                             </SelectTrigger>
                             <SelectContent>
                                 {trainset.carriage_trainsets
-                                    .find(carriageTrainset => carriageTrainset.carriage.id === selectedCarriage)
-                                    ?.carriage_panels?.map(carriagePanel => (
-                                        <SelectItem value={carriagePanel.panel.id?.toString()} key={carriagePanel.id}>
+                                    .find(
+                                        (carriageTrainset) =>
+                                            carriageTrainset.carriage.id === selectedCarriage,
+                                    )
+                                    ?.carriage_panels?.map((carriagePanel) => (
+                                        <SelectItem
+                                            value={carriagePanel.panel.id?.toString()}
+                                            key={carriagePanel.id}
+                                        >
                                             {carriagePanel.panel.name}
                                         </SelectItem>
                                     ))}
@@ -99,20 +126,20 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
 
             {selectedPanelRawMaterials.length ? (
                 <>
-                    <h1 className="text-xl font-bold mt-3">
+                    <h1 className='mt-3 text-xl font-bold'>
                         {t(
                             'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
-                    <Table>
+                    <Table className='max-h-96'>
                         <TableCaption>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                             )}
                         </TableCaption>
-                        <TableHeader>
+                        <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
                             <TableRow>
-                                <TableHead className="">
+                                <TableHead className=''>
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.raw_material_table.headers.material_code',
                                     )}
@@ -140,9 +167,9 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {selectedPanelRawMaterials?.map(rawMaterial => (
+                            {selectedPanelRawMaterials?.map((rawMaterial) => (
                                 <TableRow key={rawMaterial.raw_material.id}>
-                                    <TableCell className="font-medium">
+                                    <TableCell className='font-medium'>
                                         {rawMaterial.raw_material.material_code}
                                     </TableCell>
                                     <TableCell>{rawMaterial.raw_material.description}</TableCell>
@@ -155,7 +182,7 @@ const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResour
                     </Table>
                 </>
             ) : (
-                <h1 className="text-red-500 font-bold mt-3">
+                <h1 className='mt-3 font-bold text-red-500'>
                     {t(
                         'pages.project.trainset.carriage_trainset.partials.components.preview_generate_panel_attachment.dialogs.messages.no_materials',
                     )}

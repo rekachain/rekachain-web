@@ -24,14 +24,18 @@ export const SetLocalization = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="ghost">
+                <Button variant='ghost' size='icon'>
                     <RiTranslate2 size={STYLING.ICON.SIZE.SMALL} />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>{t('components.navbar.localization.title')}</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => setPersistedLocale('en')}>English</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setPersistedLocale('id')}>Indonesia</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setPersistedLocale('en')}>
+                    English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setPersistedLocale('id')}>
+                    Indonesia
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     );

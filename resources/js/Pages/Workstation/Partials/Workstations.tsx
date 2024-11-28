@@ -13,7 +13,8 @@ import Filters from '@/Pages/Workstation/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
+    const [workstationResponse, setWorkstationResponse] =
+        useState<PaginateResponse<WorkstationResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
@@ -40,18 +41,18 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {workstationResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <WorkstationTableView
                             workstationResponse={workstationResponse}
                             handleWorkstationDeletion={handleWorkstationDeletion}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <WorkstationCardView
                             workstationResponse={workstationResponse}
                             handleWorkstationDeletion={handleWorkstationDeletion}
@@ -59,7 +60,10 @@ export default function () {
                     </div>
                 </>
             )}
-            <GenericPagination meta={workstationResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination
+                meta={workstationResponse?.meta}
+                handleChangePage={handlePageChange}
+            />
         </div>
     );
 }

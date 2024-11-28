@@ -44,19 +44,25 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.carriage.partials.import.buttons.import')}</Button>
+                <Button variant='tertiary'>
+                    {t('pages.carriage.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{t('pages.carriage.partials.import.dialogs.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.carriage.partials.import.dialogs.description')}</DialogDescription>
+                    <DialogDescription>
+                        {t('pages.carriage.partials.import.dialogs.description')}
+                    </DialogDescription>
                 </DialogHeader>
                 {/*Download template button*/}
-                <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.carriage.partials.import.dialogs.fields.download_template')}</Label>
+                <div className='flex flex-col space-y-4'>
+                    <Label>
+                        {t('pages.carriage.partials.import.dialogs.fields.download_template')}
+                    </Label>
                     <Button
-                        type="button"
-                        variant="secondary"
+                        variant='secondary'
+                        type='button'
                         onClick={carriageService.downloadImportDataTemplate}
                         disabled={loading}
                     >
@@ -65,19 +71,23 @@ export default function () {
                             : t('pages.carriage.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
-                <form onSubmit={handleImportData} className="space-y-4">
-                    <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.carriage.partials.import.dialogs.fields.file')}</Label>
+                <form onSubmit={handleImportData} className='space-y-4'>
+                    <div className='space-y-4'>
+                        <Label htmlFor='file'>
+                            {t('pages.carriage.partials.import.dialogs.fields.file')}
+                        </Label>
                         <Input
-                            id="file"
-                            type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            type='file'
                             onChange={handleChangeImportFile}
+                            id='file'
+                            accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? t('action.loading') : t('pages.carriage.partials.import.dialogs.buttons.import')}
+                        <Button type='submit' disabled={loading}>
+                            {loading
+                                ? t('action.loading')
+                                : t('pages.carriage.partials.import.dialogs.buttons.import')}
                         </Button>
                     </DialogFooter>
                 </form>

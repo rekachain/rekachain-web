@@ -39,20 +39,20 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             <Filters setFilters={setFilters} filters={filters} />
 
-            <div className="hidden md:block">
+            <div className='hidden md:block'>
                 <CarriageTableView
-                    carriageResponse={carriageResponse!}
                     handleCarriageDeletion={handleCarriageDeletion}
+                    carriageResponse={carriageResponse!}
                 ></CarriageTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <CarriageCardView
-                    carriageResponse={carriageResponse!}
                     handleCarriageDeletion={handleCarriageDeletion}
+                    carriageResponse={carriageResponse!}
                 ></CarriageCardView>
             </div>
             <GenericPagination meta={carriageResponse?.meta} handleChangePage={handlePageChange} />

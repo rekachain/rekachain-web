@@ -22,7 +22,7 @@ export default function ({ project }: { project: ProjectResource }) {
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await projectService.update(project.id, data);
@@ -38,43 +38,49 @@ export default function ({ project }: { project: ProjectResource }) {
                 })}
             />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
                             {t('pages.project.edit.title', {
                                 name: project.name,
                             })}
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.project.edit.fields.name')} />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.project.edit.fields.name')}
+                                htmlFor='name'
+                            />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="initial_date" value={t('pages.project.edit.fields.initial_date')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.project.edit.fields.initial_date')}
+                                htmlFor='initial_date'
+                            />
                             <Input
-                                id="initial_date"
-                                type="date"
-                                name="initial_date"
                                 value={data.initial_date}
-                                className="mt-1"
-                                autoComplete="initial_date"
-                                onChange={e => setData('initial_date', e.target.value)}
+                                type='date'
+                                onChange={(e) => setData('initial_date', e.target.value)}
+                                name='initial_date'
+                                id='initial_date'
+                                className='mt-1'
+                                autoComplete='initial_date'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.project.edit.buttons.submit')}
                         </Button>
                     </form>

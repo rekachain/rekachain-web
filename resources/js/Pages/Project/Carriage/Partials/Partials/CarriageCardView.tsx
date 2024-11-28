@@ -16,40 +16,45 @@ export default function ({
     const { t } = useLaravelReactI18n();
     return (
         <div>
-            {carriageResponse?.data.map(data => (
+            {carriageResponse?.data.map((data) => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
-                    to="opacity-100 translate-y-0 translate-x-0"
-                    duration={300}
+                    to='opacity-100 translate-y-0 translate-x-0'
                     key={data.carriage.id}
+                    from='opacity-0 -translate-y-4'
+                    duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                        <div className="flex w-full justify-between items-scenter">
-                            <h4 className="font-bold text-base">{data.carriage.type}</h4>
+                    <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-base font-bold'>{data.carriage.type}</h4>
                         </div>
-                        <p className="text-sm">{data.carriage.description}</p>
+                        <p className='text-sm'>{data.carriage.description}</p>
 
-                        <h5 className="font-bold text-sm ">
-                            {t('pages.project.carriage.partials.partials.carriage_card.headers.total_qty', {
-                                total_qty: data.total_qty,
-                            })}
+                        <h5 className='text-sm font-bold'>
+                            {t(
+                                'pages.project.carriage.partials.partials.carriage_card.headers.total_qty',
+                                {
+                                    total_qty: data.total_qty,
+                                },
+                            )}
                         </h5>
-                        <div className="flex items-center justify-end w-full">
+                        <div className='flex w-full items-center justify-end'>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
                                     project.id,
                                     data.carriage.id,
                                 ])}
+                                className={buttonVariants({ variant: 'link' })}
                             >
-                                {t('pages.project.partials.partials.project_table.actions.components')}
+                                {t(
+                                    'pages.project.partials.partials.project_table.actions.components',
+                                )}
                             </Link>
                             <Link
-                                className={buttonVariants({ variant: 'link' })}
                                 href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
                                     project.id,
                                     data.carriage.id,
                                 ])}
+                                className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('pages.project.partials.partials.project_table.actions.panels')}
                             </Link>

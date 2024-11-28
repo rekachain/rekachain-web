@@ -44,9 +44,11 @@ export default function ({
     carriagePanelComponent: CarriagePanelComponentResource;
 }) {
     const { t } = useLaravelReactI18n();
-    const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
+    const [carriageTrainset, setCarriageTrainset] =
+        useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [carriagePanel, setCarriagePanel] = useState<CarriagePanelResource>(initialCarriagePanel);
-    const [componentResource, setComponentResource] = useState<PaginateResponse<ComponentResource>>();
+    const [componentResource, setComponentResource] =
+        useState<PaginateResponse<ComponentResource>>();
     const [carriagePanelComponent, setCarriagePanelComponent] =
         useState<CarriagePanelComponentResource>(initialCarriagePanelComponent);
 
@@ -60,7 +62,9 @@ export default function ({
     }, []);
 
     const handleSyncCarriagePanelComponent = withLoading(async () => {
-        const data = await fetchGenericData<{ carriagePanelComponent: CarriagePanelComponentResource }>();
+        const data = await fetchGenericData<{
+            carriagePanelComponent: CarriagePanelComponentResource;
+        }>();
         setCarriagePanelComponent(data.carriagePanelComponent);
     });
 
@@ -72,8 +76,8 @@ export default function ({
                 )}
             />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
@@ -85,7 +89,11 @@ export default function ({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
+                                    <Link
+                                        href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [
+                                            project.id,
+                                        ])}
+                                    >
                                         {t(
                                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.project',
                                             {
@@ -97,10 +105,10 @@ export default function ({
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
                                     <Link
-                                        href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
-                                            project.id,
-                                            trainset.id,
-                                        ])}
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`,
+                                            [project.id, trainset.id],
+                                        )}
                                     >
                                         {t(
                                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.breadcrumbs.trainset',
@@ -131,7 +139,12 @@ export default function ({
                                     <Link
                                         href={route(
                                             `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,
-                                            [project.id, trainset.id, carriageTrainset.id, carriagePanel.id],
+                                            [
+                                                project.id,
+                                                trainset.id,
+                                                carriageTrainset.id,
+                                                carriagePanel.id,
+                                            ],
                                         )}
                                     >
                                         {t(
@@ -153,8 +166,8 @@ export default function ({
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
-                        <div className="flex items-center gap-4">
-                            <h1 className="text-page-header my-4">
+                        <div className='flex items-center gap-4'>
+                            <h1 className='text-page-header my-4'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.component_material.index.title',
                                 )}
@@ -165,20 +178,20 @@ export default function ({
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <ComponentMaterials
                             trainset={trainset}
+                            handleSyncCarriagePanelComponent={handleSyncCarriagePanelComponent}
                             carriageTrainset={carriageTrainset}
                             carriagePanelComponent={carriagePanelComponent}
                             carriagePanel={carriagePanel}
-                            handleSyncCarriagePanelComponent={handleSyncCarriagePanelComponent}
                         />
                     </Suspense>
 
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && componentResource && (
                         <AddNewComponentRawMaterial
-                            carriagePanel={carriagePanel}
-                            handleSyncCarriagePanelComponent={handleSyncCarriagePanelComponent}
-                            carriagePanelComponent={carriagePanelComponent}
-                            componentResource={componentResource}
                             setComponentResource={setComponentResource}
+                            handleSyncCarriagePanelComponent={handleSyncCarriagePanelComponent}
+                            componentResource={componentResource}
+                            carriagePanelComponent={carriagePanelComponent}
+                            carriagePanel={carriagePanel}
                         />
                     )}
                 </div>

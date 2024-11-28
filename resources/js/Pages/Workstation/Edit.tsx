@@ -5,7 +5,11 @@ import { Input } from '@/Components/UI/input';
 import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { DivisionResource, WorkshopResource, WorkstationResource } from '@/Support/Interfaces/Resources';
+import {
+    DivisionResource,
+    WorkshopResource,
+    WorkstationResource,
+} from '@/Support/Interfaces/Resources';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { Label } from '@/Components/UI/label';
 import { workstationService } from '@/Services/workstationService';
@@ -33,7 +37,7 @@ export default function ({
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await workstationService.update(workstation.id, data);
@@ -45,74 +49,91 @@ export default function ({
         <>
             <Head title={t('pages.workstation.edit.title', { name: workstation.name })} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
                             {t('pages.workstation.edit.title', { name: workstation.name })}
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workstation.edit.fields.name')} />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.workstation.edit.fields.name')}
+                                htmlFor='name'
+                            />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="location" value={t('pages.workstation.edit.fields.location')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.workstation.edit.fields.location')}
+                                htmlFor='location'
+                            />
                             <Input
-                                id="location"
-                                type="text"
-                                name="location"
                                 value={data.location}
-                                className="mt-1"
-                                autoComplete="location"
-                                onChange={e => setData('location', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('location', e.target.value)}
+                                name='location'
+                                id='location'
+                                className='mt-1'
+                                autoComplete='location'
                             />
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.workshop')}</h2>
+                        <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                            <h2 className='text-lg font-semibold'>
+                                {t('pages.workstation.edit.fields.workshop')}
+                            </h2>
                             <RadioGroup
+                                onValueChange={(v) => setData('workshop_id', v)}
                                 defaultValue={workstation.workshop_id.toString()}
-                                onValueChange={v => setData('workshop_id', v)}
                             >
-                                {workshops?.map(role => (
-                                    <div key={role.id} className="flex items-center space-x-2">
-                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
-                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
+                                {workshops?.map((role) => (
+                                    <div key={role.id} className='flex items-center space-x-2'>
+                                        <RadioGroupItem
+                                            value={role.id.toString()}
+                                            id={`role.${role.id.toString()}`}
+                                        />
+                                        <Label htmlFor={`role.${role.id.toString()}`}>
+                                            {role.name}
+                                        </Label>
                                     </div>
                                 ))}
                             </RadioGroup>
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.workstation.edit.fields.division')}</h2>
+                        <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                            <h2 className='text-lg font-semibold'>
+                                {t('pages.workstation.edit.fields.division')}
+                            </h2>
                             <RadioGroup
+                                onValueChange={(v) => setData('division_id', v)}
                                 defaultValue={workstation.division_id.toString()}
-                                onValueChange={v => setData('division_id', v)}
                             >
-                                {divisions?.map(division => (
-                                    <div key={division.id} className="flex items-center space-x-2">
+                                {divisions?.map((division) => (
+                                    <div key={division.id} className='flex items-center space-x-2'>
                                         <RadioGroupItem
                                             value={division.id.toString()}
                                             id={`division.${division.id.toString()}`}
                                         />
-                                        <Label htmlFor={`division.${division.id.toString()}`}>{division.name}</Label>
+                                        <Label htmlFor={`division.${division.id.toString()}`}>
+                                            {division.name}
+                                        </Label>
                                     </div>
                                 ))}
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.workstation.edit.buttons.submit')}
                         </Button>
                     </form>

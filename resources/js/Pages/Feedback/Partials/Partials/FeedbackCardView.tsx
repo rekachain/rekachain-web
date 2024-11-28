@@ -22,29 +22,30 @@ export default function FeedbackTableView({
     const auth = usePage().props.auth;
 
     const allowedToReadAll =
-        auth.user.role === RoleEnum.SUPER_ADMIN || checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
+        auth.user.role === RoleEnum.SUPER_ADMIN ||
+        checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
 
     return (
         <div>
-            {feedbackResponse?.data.map(feedback => (
+            {feedbackResponse?.data.map((feedback) => (
                 <AnimateIn
-                    from="opacity-0 -translate-y-4"
-                    to="opacity-100 translate-y-0 translate-x-0"
-                    duration={300}
+                    to='opacity-100 translate-y-0 translate-x-0'
                     key={feedback.id}
+                    from='opacity-0 -translate-y-4'
+                    duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-5">
-                        <div className="flex w-full justify-between items-center">
-                            <h4 className="font-bold text-lg">{feedback.name}</h4>
+                    <div className='mt-5 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='flex w-full items-center justify-between'>
+                            <h4 className='text-lg font-bold'>{feedback.name}</h4>
                             <Rating
                                 SVGclassName={'inline-block'}
                                 size={STYLING.ICON.SIZE.SMALL}
-                                initialValue={feedback.rating}
                                 readonly
+                                initialValue={feedback.rating}
                             />
                         </div>
                         <p> {feedback.message}</p>
-                        <div className="flex items-center justify-end w-full">
+                        <div className='flex w-full items-center justify-end'>
                             {/*<Link*/}
                             {/*    className={buttonVariants({ variant: 'link' })}*/}
                             {/*    href={route(`${ROUTES.FEEDBACK}.edit`, feedback.id)}*/}
@@ -52,7 +53,10 @@ export default function FeedbackTableView({
                             {/*    Edit*/}
                             {/*</Link>*/}
                             {feedback.can_be_deleted && allowedToReadAll && (
-                                <Button variant="link" onClick={() => handleFeedbackDeletion(feedback.id)}>
+                                <Button
+                                    variant='link'
+                                    onClick={() => handleFeedbackDeletion(feedback.id)}
+                                >
                                     {t('action.delete')}
                                 </Button>
                             )}

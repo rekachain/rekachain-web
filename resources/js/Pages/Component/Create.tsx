@@ -28,10 +28,10 @@ export default function () {
     });
 
     const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
-        return await progressService.getAll(filters).then(response => response.data);
+        return await progressService.getAll(filters).then((response) => response.data);
     }, []);
 
-    const submit: FormEventHandler = withLoading(async event => {
+    const submit: FormEventHandler = withLoading(async (event) => {
         event.preventDefault();
         await componentService.create(data);
         void useSuccessToast(t('pages.component.create.messages.created'));
@@ -42,56 +42,68 @@ export default function () {
         <>
             <Head title={t('pages.component.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.component.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.component.create.title')}
+                        </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="progress">{t('pages.component.create.fields.progress')}</InputLabel>
-                            <div className="mt-4">
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel htmlFor='progress'>
+                                {t('pages.component.create.fields.progress')}
+                            </InputLabel>
+                            <div className='mt-4'>
                                 <GenericDataSelector
-                                    id="progress_id"
-                                    fetchData={fetchProgress}
-                                    setSelectedData={id => setData('progress_id', id)}
+                                    setSelectedData={(id) => setData('progress_id', id)}
                                     selectedDataId={data.progress_id ?? undefined}
-                                    placeholder={t('pages.component.create.fields.progress_placeholder')}
                                     renderItem={(item: ProgressResource) => item.name}
-                                    buttonClassName="mt-1"
+                                    placeholder={t(
+                                        'pages.component.create.fields.progress_placeholder',
+                                    )}
                                     nullable
+                                    id='progress_id'
+                                    fetchData={fetchProgress}
+                                    buttonClassName='mt-1'
                                 />
                             </div>
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="description" value={t('pages.component.create.fields.description')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.component.create.fields.description')}
+                                htmlFor='description'
+                            />
                             <Textarea
-                                id="description"
-                                name="description"
                                 value={data.description}
-                                className="mt-1"
-                                autoComplete="description"
                                 required
-                                onChange={e => setData('description', e.target.value)}
+                                onChange={(e) => setData('description', e.target.value)}
+                                name='description'
+                                id='description'
+                                className='mt-1'
+                                autoComplete='description'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.component.create.fields.name')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.component.create.fields.name')}
+                                htmlFor='name'
+                            />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
+                                type='text'
                                 required
-                                onChange={e => setData('name', e.target.value)}
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={processing}>
+                        <Button disabled={processing} className='mt-4'>
                             {t('pages.component.create.buttons.submit')}
                         </Button>
                     </form>

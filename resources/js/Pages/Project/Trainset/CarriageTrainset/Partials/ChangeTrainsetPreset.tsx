@@ -32,7 +32,7 @@ const ChangeTrainsetPreset = ({
         setData('preset_trainset_id', trainset.preset_trainset_id ?? 0);
     }, [trainset]);
 
-    const selectedPreset = presetTrainset.find(preset => preset.id === data.preset_trainset_id);
+    const selectedPreset = presetTrainset.find((preset) => preset.id === data.preset_trainset_id);
 
     const handleChangePreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -41,7 +41,9 @@ const ChangeTrainsetPreset = ({
             await trainsetService.changePreset(trainset.id, data.preset_trainset_id);
             await handleSyncTrainset();
             void useSuccessToast(
-                t('pages.project.trainset.carriage_trainset.partials.change_trainset_preset.messages.changed'),
+                t(
+                    'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.messages.changed',
+                ),
             );
         }
     });
@@ -52,48 +54,50 @@ const ChangeTrainsetPreset = ({
                 ...filters,
                 relations: 'carriage_presets.carriage',
             })
-            .then(response => response.data);
+            .then((response) => response.data);
     }, []);
 
     const handleDeletePresetTrainset = withLoading(async () => {
         if (data.preset_trainset_id) {
             await presetTrainsetService.delete(data.preset_trainset_id);
             void useSuccessToast(
-                t('pages.project.trainset.carriage_trainset.partials.change_trainset_preset.messages.preset_deleted'),
+                t(
+                    'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.messages.preset_deleted',
+                ),
             );
             await handleSyncTrainset();
         }
     }, true);
 
     return (
-        <form onSubmit={handleChangePreset} className="flex gap-2">
+        <form onSubmit={handleChangePreset} className='flex gap-2'>
             <SelectGroup>
-                <div className="md:flex w-full md:flex-row gap-2">
+                <div className='w-full gap-2 md:flex md:flex-row'>
                     <GenericDataSelector
-                        id="preset-trainset_id"
-                        fetchData={fetchPresetTrainsets}
-                        setSelectedData={id => setData('preset_trainset_id', id)}
+                        setSelectedData={(id) => setData('preset_trainset_id', id)}
                         selectedDataId={data.preset_trainset_id}
-                        placeholder={t(
-                            'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.fields.preset_trainset_placeholder',
-                        )}
                         renderItem={(item: PresetTrainsetResource) => {
                             return `${item.name} (${item.carriage_presets.map((c, i) => {
                                 return `${c.qty} ${c.carriage.type}${i < item.carriage_presets!.length - 1 ? ' + ' : ''}`;
                             })})`;
                         }}
+                        placeholder={t(
+                            'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.fields.preset_trainset_placeholder',
+                        )}
+                        nullable
+                        initialSearch={trainset?.preset_name}
+                        id='preset-trainset_id'
+                        fetchData={fetchPresetTrainsets}
                         customLabel={(item: PresetTrainsetResource) => {
                             return `${item.name} (${item.carriage_presets.map((c, i) => {
                                 return `${c.qty} ${c.carriage.type}${i < item.carriage_presets!.length - 1 ? ' + ' : ''}`;
                             })})`;
                         }}
-                        initialSearch={trainset?.preset_name}
-                        nullable
                     />
 
-                    <div className="flex gap-2 mt-3 md:mt-0 items-center ">
+                    <div className='mt-3 flex items-center gap-2 md:mt-0'>
                         <Button
-                            type="submit"
+                            type='submit'
                             disabled={
                                 loading ||
                                 !data.preset_trainset_id ||
@@ -102,7 +106,7 @@ const ChangeTrainsetPreset = ({
                         >
                             {loading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                     {t('action.loading')}
                                 </>
                             ) : (
@@ -112,16 +116,18 @@ const ChangeTrainsetPreset = ({
                             )}
                         </Button>
                         <Button
-                            type="button"
-                            variant="destructive"
-                            disabled={
-                                loading || !data.preset_trainset_id || (selectedPreset && selectedPreset.has_trainsets)
-                            }
+                            variant='destructive'
+                            type='button'
                             onClick={handleDeletePresetTrainset}
+                            disabled={
+                                loading ||
+                                !data.preset_trainset_id ||
+                                (selectedPreset && selectedPreset.has_trainsets)
+                            }
                         >
                             {loading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                     {t('action.loading')}
                                 </>
                             ) : (

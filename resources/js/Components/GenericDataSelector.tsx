@@ -1,6 +1,12 @@
 import { ChangeEvent, memo, useEffect, useState } from 'react';
 import { useDebounce } from '@uidotdev/usehooks';
-import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import {
+    Command,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Button } from '@/Components/UI/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
@@ -184,38 +190,41 @@ const GenericDataSelector = <T extends Resource>({
             return customLabel(item);
         }
         const value = item[labelKey];
-        return typeof value === 'string' ? value : t('components.generic_data_selector.fields.select_placeholder');
+        return typeof value === 'string'
+            ? value
+            : t('components.generic_data_selector.fields.select_placeholder');
     };
 
     const items = data ?? fetchedData;
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            <PopoverTrigger asChild id={id} className="w-">
+            <PopoverTrigger id={id} className='w-' asChild>
                 <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={openPopover}
+                    variant='outline'
+                    role='combobox'
                     className={cn('w-40 justify-between', buttonClassName)}
+                    aria-expanded={openPopover}
                 >
                     {selectedDataId
-                        ? items.find(item => item.id === selectedDataId)
-                            ? getLabel(items.find(item => item.id === selectedDataId)!)
+                        ? items.find((item) => item.id === selectedDataId)
+                            ? getLabel(items.find((item) => item.id === selectedDataId)!)
                             : t('components.generic_data_selector.fields.select_placeholder')
                         : placeholder}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className={cn('w-[200px] p-0', popoverContentClassName)}>
                 <Command shouldFilter={false}>
                     <CommandInput
-                        placeholder={
-                            customSearchPlaceholder ?? t('components.generic_data_selector.fields.search_placeholder')
-                        }
                         value={searchTerm}
+                        placeholder={
+                            customSearchPlaceholder ??
+                            t('components.generic_data_selector.fields.search_placeholder')
+                        }
                         onInput={handleSearchChange}
-                        className="border-none focus:ring-0"
                         disabled={isFetching}
+                        className='border-none focus:ring-0'
                     />
                     <CommandList>
                         <CommandGroup>
@@ -235,12 +244,17 @@ const GenericDataSelector = <T extends Resource>({
                                 </CommandItem>
                             )}
                             {!isFetching &&
-                                items.map(item => (
-                                    <CommandItem key={item.id} onSelect={() => handleSelectItem(item.id)}>
+                                items.map((item) => (
+                                    <CommandItem
+                                        onSelect={() => handleSelectItem(item.id)}
+                                        key={item.id}
+                                    >
                                         <Check
                                             className={cn(
                                                 'mr-2 h-4 w-4',
-                                                selectedDataId === item.id ? 'opacity-100' : 'opacity-0',
+                                                selectedDataId === item.id
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0',
                                             )}
                                         />
                                         {renderItem(item)}

@@ -1,5 +1,16 @@
-import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
@@ -51,7 +62,7 @@ export default function CarriagePanelComponentTableView({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriagePanel.carriage_panel_components?.map(carriagePanelComponent => (
+                    {carriagePanel.carriage_panel_components?.map((carriagePanelComponent) => (
                         <TableRow key={carriagePanelComponent.id}>
                             <TableCell>{carriagePanelComponent.component?.name}</TableCell>
                             <TableCell>
@@ -76,15 +87,16 @@ export default function CarriagePanelComponentTableView({
 
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button
-                                        variant="link"
-                                        onClick={() => handlePanelComponentDeletion(carriagePanelComponent.id)}
+                                        variant='link'
+                                        onClick={() =>
+                                            handlePanelComponentDeletion(carriagePanelComponent.id)
+                                        }
                                     >
                                         {t('action.delete')}
                                     </Button>
                                 )}
 
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
                                         [
@@ -95,6 +107,7 @@ export default function CarriagePanelComponentTableView({
                                             carriagePanelComponent.id,
                                         ],
                                     )}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_table.actions.materials',
@@ -102,9 +115,9 @@ export default function CarriagePanelComponentTableView({
                                 </Link>
 
                                 <CarriagePanelComponentProgress
-                                    carriagePanelComponent={carriagePanelComponent}
-                                    handleSyncCarriagePanel={handleSyncCarriagePanel}
                                     progress={carriagePanelComponent.progress}
+                                    handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                    carriagePanelComponent={carriagePanelComponent}
                                 />
                             </TableCell>
                         </TableRow>

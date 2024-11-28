@@ -18,7 +18,9 @@ interface ConfirmationDialogContextProps {
     showConfirmation: ShowConfirmationProps;
 }
 
-const ConfirmationDialogContext = createContext<ConfirmationDialogContextProps | undefined>(undefined);
+const ConfirmationDialogContext = createContext<ConfirmationDialogContextProps | undefined>(
+    undefined,
+);
 
 export const useConfirmationDialog = () => {
     const { t } = useLaravelReactI18n();
@@ -42,7 +44,9 @@ export const ConfirmationDialogProvider = ({ children }: { children: ReactNode }
         confirmationDescription?: string,
     ) => {
         setTitle(confirmationTitle || t('contexts.confirmation_dialog_context.title'));
-        setDescription(confirmationDescription || t('contexts.confirmation_dialog_context.description'));
+        setDescription(
+            confirmationDescription || t('contexts.confirmation_dialog_context.description'),
+        );
         setOnConfirm(() => onConfirm);
         setIsOpen(true);
     };
@@ -56,16 +60,16 @@ export const ConfirmationDialogProvider = ({ children }: { children: ReactNode }
         <ConfirmationDialogContext.Provider value={{ showConfirmation }}>
             {children}
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogContent className="max-w-sm md:max-w-md">
+                <DialogContent className='max-w-sm md:max-w-md'>
                     <DialogHeader>
                         <DialogTitle>{title}</DialogTitle>
                         <DialogDescription>{description}</DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)}>
+                        <Button variant='ghost' size='sm' onClick={() => setIsOpen(false)}>
                             {t('action.cancel')}
                         </Button>
-                        <Button size="sm" onClick={handleConfirm}>
+                        <Button size='sm' onClick={handleConfirm}>
                             {t('action.confirm')}
                         </Button>
                     </DialogFooter>

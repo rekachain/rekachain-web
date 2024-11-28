@@ -58,23 +58,23 @@ export default function () {
     //     query: '(min-width: 900px)',
     // });
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             <Filters setFilters={setFilters} filters={filters} />
             {userResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <UserTableView
                             userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
                             handleUserForceDeletion={handleUserForceDeletion}
+                            handleUserDeletion={handleUserDeletion}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <UserCardView
                             userResponse={userResponse}
-                            handleUserDeletion={handleUserDeletion}
                             handleUserForceDeletion={handleUserForceDeletion}
+                            handleUserDeletion={handleUserDeletion}
                         />
                     </div>
                 </>
