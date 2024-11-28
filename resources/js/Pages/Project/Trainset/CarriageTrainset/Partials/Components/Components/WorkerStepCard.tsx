@@ -33,7 +33,7 @@ export default function ({
             <CardContent className='flex flex-col gap-1'>
                 <p className='text-sm'>{(step as unknown as StepResource).process}</p>
                 <small className='text-xs'>
-                    Status: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
+                    {t('pages.project.trainset.carriage_trainset.partials.components.components.worker_step_card.step_status')}: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
             </CardContent>
         </Card>
     );

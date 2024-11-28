@@ -1591,6 +1591,17 @@ return [
                                 'workers' => 'Pekerja:',
                             ]
                         ],
+                        'components' => [
+                            'worker_card' => [
+                                'worker_identification' => 'NIP: :worker_identification',
+                                'acceptance_status' => 'Status Penerimaan',
+                                'work_status' => 'Status Kerja',
+                                'start_at' => 'Dimulai Pada',
+                            ],
+                            'worker_step_card' => [
+                                'step_status' => 'Status',
+                            ],
+                        ],
                     ],
                 ],
             ],

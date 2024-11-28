@@ -1591,6 +1591,17 @@ return [
                                 'workers' => 'Workers:',
                             ]
                         ],
+                        'components' => [
+                            'worker_card' => [
+                                'worker_identification' => 'EIN: :worker_identification',
+                                'acceptance_status' => 'Acceptance Status',
+                                'work_status' => 'Work Status',
+                                'start_at' => 'Started At',
+                            ],
+                            'worker_step_card' => [
+                                'step_status' => 'Status',
+                            ],
+                        ],
                     ],
                 ],
             ],
