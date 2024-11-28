@@ -46,11 +46,11 @@ export default function (props: { roles: RoleResource[] }) {
     const { loading } = useLoading();
 
     const fetchWorkstations = useCallback(async (filters: ServiceFilterOptions) => {
-        return await workstationService.getAll(filters).then(response => response.data);
+        return await workstationService.getAll(filters).then((response) => response.data);
     }, []);
 
     const fetchSteps = useCallback(async (filters: ServiceFilterOptions) => {
-        return await stepService.getAll(filters).then(response => response.data);
+        return await stepService.getAll(filters).then((response) => response.data);
     }, []);
 
     const handleFileChange = (fileItems: any) => {
@@ -60,7 +60,7 @@ export default function (props: { roles: RoleResource[] }) {
         }));
     };
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -82,112 +82,134 @@ export default function (props: { roles: RoleResource[] }) {
         <>
             <Head title={t('pages.user.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.user.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.user.create.title')}</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.nip')} htmlFor="nip" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.user.create.fields.nip')} htmlFor='nip' />
                             <Input
                                 value={data.nip}
-                                type="number"
-                                required
-                                onChange={e => setData('nip', e.target.value)}
-                                name="nip"
+                                type='number'
+                                onChange={(e) => setData('nip', e.target.value)}
+                                name='nip'
                                 maxLength={18}
-                                id="nip"
-                                className="mt-1"
-                                autoComplete="nip"
+                                id='nip'
+                                className='mt-1'
+                                autoComplete='nip'
                             />
                         </div>
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.name')} htmlFor="name" />
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.user.create.fields.name')} htmlFor='name' />
                             <Input
                                 value={data.name}
-                                type="text"
+                                type='text'
                                 required
-                                onChange={e => setData('name', e.target.value)}
-                                name="name"
-                                id="name"
-                                className="mt-1"
-                                autoComplete="name"
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.email')} htmlFor="email" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.email')}
+                                htmlFor='email'
+                            />
                             <Input
                                 value={data.email}
-                                type="email"
+                                type='email'
                                 required
-                                onChange={e => setData('email', e.target.value)}
-                                name="email"
-                                id="email"
-                                className="mt-1"
-                                autoComplete="email"
+                                onChange={(e) => setData('email', e.target.value)}
+                                name='email'
+                                id='email'
+                                className='mt-1'
+                                autoComplete='email'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.phone_number')} htmlFor="phone_number" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.phone_number')}
+                                htmlFor='phone_number'
+                            />
                             <Input
                                 value={data.phone_number}
-                                type="text"
+                                type='text'
                                 required
-                                onChange={e => setData('phone_number', e.target.value)}
-                                name="phone_number"
-                                id="phone_number"
-                                className="mt-1"
-                                autoComplete="phone_number"
+                                onChange={(e) => setData('phone_number', e.target.value)}
+                                name='phone_number'
+                                id='phone_number'
+                                className='mt-1'
+                                autoComplete='phone_number'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.workstation')} htmlFor="workstation_id" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.workstation')}
+                                htmlFor='workstation_id'
+                            />
                             <GenericDataSelector
-                                setSelectedData={id => setData('workstation_id', id)}
+                                setSelectedData={(id) => setData('workstation_id', id)}
                                 selectedDataId={data.workstation_id ?? undefined}
-                                renderItem={(item: WorkstationResource) => `${item.name} - ${item.location}`} // Customize how to display the item
+                                renderItem={(item: WorkstationResource) =>
+                                    `${item.name} - ${item.location}`
+                                } // Customize how to display the item
                                 placeholder={t('pages.user.create.fields.workstation_placeholder')}
                                 nullable
-                                id="workstation_id"
+                                id='workstation_id'
                                 fetchData={fetchWorkstations}
-                                buttonClassName="mt-1"
+                                buttonClassName='mt-1'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.step')} htmlFor="step_id" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.step')}
+                                htmlFor='step_id'
+                            />
                             <GenericDataSelector
-                                setSelectedData={id => setData('step_id', id)}
+                                setSelectedData={(id) => setData('step_id', id)}
                                 selectedDataId={data.step_id}
-                                renderItem={item => item.name}
+                                renderItem={(item) => item.name}
                                 placeholder={t('pages.user.create.fields.step_placeholder')}
-                                id="step_id"
+                                nullable
+                                id='step_id'
                                 fetchData={fetchSteps}
-                                buttonClassName="mt-1"
+                                buttonClassName='mt-1'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.user.create.fields.password')} htmlFor="password" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.password')}
+                                htmlFor='password'
+                            />
                             <Input
                                 value={data.password}
-                                type="password"
+                                type='password'
                                 required
-                                onChange={e => setData('password', e.target.value)}
-                                name="password"
-                                id="password"
-                                className="mt-1"
-                                autoComplete="password"
+                                onChange={(e) => setData('password', e.target.value)}
+                                name='password'
+                                id='password'
+                                className='mt-1'
+                                autoComplete='password'
                             />
                         </div>
-                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <InputLabel value={t('pages.user.create.fields.avatar')} htmlFor="avatar" />
+                        <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.avatar')}
+                                htmlFor='avatar'
+                            />
                             <FilePond
                                 onupdatefiles={handleFileChange}
-                                labelIdle={t('pages.user.create.fields.avatar_filepond_placeholder')}
+                                labelIdle={t(
+                                    'pages.user.create.fields.avatar_filepond_placeholder'
+                                )}
                                 imagePreviewMaxHeight={400}
                                 files={data.image_path}
                                 filePosterMaxHeight={400}
@@ -195,25 +217,32 @@ export default function (props: { roles: RoleResource[] }) {
                                 allowMultiple={false}
                             />
                             {progress && (
-                                <progress value={progress.percentage} max="100">
+                                <progress value={progress.percentage} max='100'>
                                     {progress.percentage}%
                                 </progress>
                             )}
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.user.create.fields.role')}</h2>
-                            <RadioGroup onValueChange={v => setData('role_id', +v)}>
-                                {props.roles?.map(role => (
-                                    <div key={role.id} className="flex items-center space-x-2">
-                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
-                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
+                        <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                            <h2 className='text-lg font-semibold'>
+                                {t('pages.user.create.fields.role')}
+                            </h2>
+                            <RadioGroup onValueChange={(v) => setData('role_id', +v)}>
+                                {props.roles?.map((role) => (
+                                    <div key={role.id} className='flex items-center space-x-2'>
+                                        <RadioGroupItem
+                                            value={role.id.toString()}
+                                            id={`role.${role.id.toString()}`}
+                                        />
+                                        <Label htmlFor={`role.${role.id.toString()}`}>
+                                            {role.name}
+                                        </Label>
                                     </div>
                                 ))}
                             </RadioGroup>
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.user.create.buttons.submit')}
                         </Button>
                     </form>
