@@ -1390,9 +1390,9 @@ return [
                                 'tabs' => [
                                     'props' => [
                                         'tab_list' => [
-                                            'mechanic' => 'Mechanic Progresses',
-                                            'electric' => 'Electric Progresses',
-                                            'assembly' => 'Assembly Progresses',
+                                            'mechanic' => 'Mechanic Progress',
+                                            'electric' => 'Electric Progress',
+                                            'assembly' => 'Assembly Progress',
                                         ],
                                         'tab_content' => [
                                             'title' => [
@@ -1400,20 +1400,32 @@ return [
                                                 'electric' => 'Electric Progresses For :trainset Trainset',
                                                 'assembly' => 'Assembly Progresses For :trainset Trainset',
                                             ],
-                                            'progress_scroll_area' => [
-                                                'props' => [
-                                                    'trainset' => 'Trainset: :trainset',
-                                                    'component' => 'Component: :component',
-                                                    'panel' => 'Panel: :panel',
-                                                    'carriage' => 'Carriage: :carriage',
-                                                    'workers' => 'Workers:',
-                                                ]
-                                            ]
                                         ]
                                     ],
                                 ],
                             ],
                         ],
+                        'components' => [
+                            'progress_component' => [
+                                'props' => [
+                                    'trainset' => 'Trainset: :trainset',
+                                    'component' => 'Component: :component',
+                                    'panel' => 'Panel: :panel',
+                                    'carriage' => 'Carriage: :carriage',
+                                    'workers' => 'Workers:',
+                                ]
+                            ],
+                            'progress_panel' => [
+                                'props' => [
+                                    'trainset' => 'Trainset: :trainset',
+                                    'panel' => 'Panel: :panel',
+                                    'carriage' => 'Carriage: :carriage',
+                                    'serial_number' => 'Serial Number: :serial_number',
+                                    'product_number' => 'Product Number: :product_number',
+                                    'workers' => 'Workers:',
+                                ]
+                            ],
+                        ]
                     ],
                     'partials' => [
                         'carriage_table' => [

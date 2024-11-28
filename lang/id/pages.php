@@ -1390,9 +1390,9 @@ return [
                                 'tabs' => [
                                     'props' => [
                                         'tab_list' => [
-                                            'mechanic' => 'Progress Mekanik',
-                                            'electric' => 'Progress Elektrik',
-                                            'assembly' => 'Progress Assembly',
+                                            'mechanic' => 'Progres Mekanik',
+                                            'electric' => 'Progres Elektrik',
+                                            'assembly' => 'Progres Assembly',
                                         ],
                                         'tab_content' => [
                                             'title' => [
@@ -1400,20 +1400,32 @@ return [
                                                 'electric' => 'Progres Elektrik Untuk Trainset :trainset',
                                                 'assembly' => 'Progres Assembly Untuk Trainset :trainset',
                                             ],
-                                            'progress_scroll_area' => [
-                                                'props' => [
-                                                    'trainset' => 'Trainset: :trainset',
-                                                    'component' => 'Komponen: :component',
-                                                    'panel' => 'Panel: :panel',
-                                                    'carriage' => 'Gerbong: :carriage',
-                                                    'workers' => 'Pekerja:',
-                                                ]
-                                            ]
                                         ]
                                     ],
                                 ],
                             ],
                         ],
+                        'components' => [
+                            'progress_component' => [
+                                'props' => [
+                                    'trainset' => 'Trainset: :trainset',
+                                    'component' => 'Komponen: :component',
+                                    'panel' => 'Panel: :panel',
+                                    'carriage' => 'Gerbong: :carriage',
+                                    'workers' => 'Pekerja:',
+                                ]
+                            ],
+                            'progress_panel' => [
+                                'props' => [
+                                    'trainset' => 'Trainset: :trainset',
+                                    'panel' => 'Panel: :panel',
+                                    'carriage' => 'Gerbong: :carriage',
+                                    'serial_number' => 'Nomor Serial: :serial_number',
+                                    'product_number' => 'Nomor Produk: :product_number',
+                                    'workers' => 'Pekerja:',
+                                ]
+                            ],
+                        ]
                     ],
                     'partials' => [
                         'carriage_table' => [

@@ -57,19 +57,19 @@ const ProgressComponent = ({
                 ) || (trainsetAttachmentProgress &&
                     trainsetAttachmentProgress.map((progress) => (
                         <div key={progress.component.id}>
-                            <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.progress_scroll_area.props.component', { component: progress.component.name})}</h4>
+                            <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_component.props.component', { component: progress.component.name})}</h4>
                             <div className="flex flex-col gap-2">
                                 {progress.carriage_panel_components.map((componentProgress) => (
                                     <div key={`${componentProgress.carriage_panel_component_id}`}>
                                         <div className="flex items-center justify-center space-x-2 pb-1">
                                             <div className="flex-1">
-                                                <h3 className="text-right">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.progress_scroll_area.props.panel', { panel: componentProgress.panel.name})}</h3>
+                                                <h3 className="text-right">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_component.props.panel', { panel: componentProgress.panel.name})}</h3>
                                             </div>
                                             <div className="flex-none">
                                                 <h3 className="text-center">|</h3>
                                             </div>
                                             <div className="flex-1">
-                                                <h3 className="text-left">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.progress_scroll_area.props.carriage', { carriage: componentProgress.carriage.type})}</h3>
+                                                <h3 className="text-left">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_component.props.carriage', { carriage: componentProgress.carriage.type})}</h3>
                                             </div>
                                         </div>
                                         <ScrollArea className="w-full rounded-md border">
@@ -84,7 +84,7 @@ const ProgressComponent = ({
                                                                         <WorkerStepCard step={step as StepResource & { work_status: string | null; workers: DetailWorkerTrainsetResource[];}} />
                                                                     </PopoverTrigger>
                                                                     <PopoverContent className='flex flex-col gap-2'>
-                                                                        <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.progress_scroll_area.props.workers')}</h4>
+                                                                        <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_component.props.workers')}</h4>
                                                                         <ScrollArea className="max-h-[250px] overflow-y-auto">
                                                                             <div className="flex flex-col gap-2">
                                                                             {step.workers && step.workers.map(stepWorker => (

@@ -11,10 +11,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
 import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { DetailWorkerAcceptanceStatusEnum } from '@/Support/Enums/DetailWorkerAcceptanceStatusEnum';
+import WorkerStepCard from './Components/WorkerStepCard';
+import WorkerCard from './Components/WorkerCard';
 
 interface SerialPanelProgressResource {
     serial_number: number;
-    product_no: String;
+    product_no: string;
     steps: StepResource & { 
         work_status: string | null;
         workers: DetailWorkerPanelResource[]; 
@@ -69,20 +71,20 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
                             <h4 className="text-lg font-bold">
                                 <span>{progress.panel.name}</span> 
                                 <span className="mx-2">|</span> 
-                                <span>Gerbong: {progress.carriage.type}</span>
+                                <span>{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.carriage', { carriage: progress.carriage.type})}</span>
                             </h4>
                             <div className="flex flex-col gap-2">
                                 {progress.serial_panels.map((serialPanelProgress) => (
                                     <div key={`${progress.panel.name} ${serialPanelProgress.serial_number}`}>
                                         <div className="flex items-center justify-center space-x-2 pb-1">
                                             <div className="flex-1">
-                                                <h3 className="text-right">Serial Number: {serialPanelProgress.serial_number}</h3>
+                                                <h3 className="text-right">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.serial_number', { serial_number: serialPanelProgress.serial_number })}</h3>
                                             </div>
                                             <div className="flex-none">
                                                 <h3 className="text-center">|</h3>
                                             </div>
                                             <div className="flex-1">
-                                                <h3 className="text-left">Product Number: {serialPanelProgress.product_no}</h3>
+                                                <h3 className="text-left">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.product_number', { product_number: serialPanelProgress.product_no })}</h3>
                                             </div>
                                         </div>
                                         <ScrollArea className="w-full rounded-md border">
@@ -94,50 +96,14 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
                                                             <BreadcrumbItem>
                                                                 <Popover modal>
                                                                     <PopoverTrigger className='text-left'>
-                                                                        <Card className={`${getStatusColor(step.work_status)}`}>
-                                                                            <CardHeader className='pb-1'>
-                                                                                <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
-                                                                            </CardHeader>
-                                                                            <CardContent className='flex flex-col gap-1'>
-                                                                                <p className='text-sm'>{(step as unknown as StepResource).process}</p>
-                                                                                <small className='text-xs'>
-                                                                                    Status: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
-                                                                            </CardContent>
-                                                                        </Card>
+                                                                        <WorkerStepCard step={step as StepResource & { work_status: string | null; workers: DetailWorkerPanelResource[];}}/>
                                                                     </PopoverTrigger>
                                                                     <PopoverContent className='flex flex-col gap-2'>
-                                                                        <h4 className="text-lg font-bold">Workers🗿:</h4>
+                                                                        <h4 className="text-lg font-bold">{t('pages.project.trainset.carriage_trainset.partials.progress_attachments.components.progress_panel.props.workers')}</h4>
                                                                         <ScrollArea className="max-h-[250px] overflow-y-auto">
                                                                         <div className="flex flex-col gap-2">
                                                                             {step.workers && step.workers.map(stepWorker => (
-                                                                                <Card className="bg-background dark:bg-background-dark rounded-lg shadow-lg" key={stepWorker.id}>
-                                                                                    <CardHeader className="pb-2">
-                                                                                        <CardTitle className="text-lg font-bold text-black dark:text-white">{stepWorker.worker?.name}</CardTitle>
-                                                                                        <small className="text-sm text-gray-600 dark:text-gray-300">NIP: {stepWorker.worker?.nip}</small>
-                                                                                    </CardHeader>
-                                                                                    <CardContent className="flex flex-col gap-1">
-                                                                                        <p className="text-sm">
-                                                                                            Acceptance Status: <span className={stepWorker.acceptance_status === DetailWorkerAcceptanceStatusEnum.ACCEPTED ? 'text-green-500' : stepWorker.acceptance_status === DetailWorkerAcceptanceStatusEnum.DECLINED ? 'text-red-500' : ''}>{stepWorker.acceptance_status ?? 'N/A🗿'}</span>
-                                                                                        </p>
-                                                                                        <p className="text-sm">
-                                                                                            Work Status: <span className={stepWorker.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'text-green-500' : 'text-yellow-500'}>{stepWorker.work_status}</span>
-                                                                                        </p>
-                                                                                        <div className="flex flex-col gap-1">
-                                                                                            <p className="text-sm">Started At:</p>
-                                                                                            {/* <p className="text-sm">{stepWorker.created_at}</p> not work💀*/}
-                                                                                            <p className="text-sm">
-                                                                                                {new Intl.DateTimeFormat('en-US', {
-                                                                                                    year: 'numeric',
-                                                                                                    month: '2-digit',
-                                                                                                    day: '2-digit',
-                                                                                                    hour: '2-digit',
-                                                                                                    minute: '2-digit',
-                                                                                                    second: '2-digit',
-                                                                                                }).format(new Date(stepWorker.created_at))}
-                                                                                            </p>
-                                                                                        </div>
-                                                                                    </CardContent>
-                                                                                </Card>
+                                                                                <WorkerCard detailWorker={stepWorker} key={stepWorker.id} />
                                                                             ))}
                                                                             </div>
                                                                         </ScrollArea>
