@@ -1381,6 +1381,31 @@ return [
                             ],
                         ],
                     ],
+                    'progress_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'trigger' => 'Trainset Progresses',
+                            ],
+                            'components' => [
+                                'tabs' => [
+                                    'props' => [
+                                        'tab_list' => [
+                                            'mechanic' => 'Mechanic Progresses',
+                                            'electric' => 'Electric Progresses',
+                                            'assembly' => 'Assembly Progresses',
+                                        ],
+                                        'tab_content' => [
+                                            'title' => [
+                                                'mechanic' => 'Mechanic Progresses For :trainset Trainset',
+                                                'electric' => 'Electric Progresses For :trainset Trainset',
+                                                'assembly' => 'Assembly Progresses For :trainset Trainset',
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [

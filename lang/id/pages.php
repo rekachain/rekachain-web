@@ -1381,6 +1381,31 @@ return [
                             ],
                         ],
                     ],
+                    'progress_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'trigger' => 'Progres Trainset',
+                            ],
+                            'components' => [
+                                'tabs' => [
+                                    'props' => [
+                                        'tab_list' => [
+                                            'mechanic' => 'Progress Mekanik',
+                                            'electric' => 'Progress Elektrik',
+                                            'assembly' => 'Progress Assembly',
+                                        ],
+                                        'tab_content' => [
+                                            'title' => [
+                                                'mechanic' => 'Progres Mekanik Untuk Trainset :trainset',
+                                                'electric' => 'Progres Elektrik Untuk Trainset :trainset',
+                                                'assembly' => 'Progres Assembly Untuk Trainset :trainset',
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
