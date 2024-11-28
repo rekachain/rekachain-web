@@ -7,10 +7,9 @@ import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService'
 import { withLoading } from '@/Utils/withLoading';
 import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbSeparator } from '@/Components/UI/breadcrumb';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
-import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { DetailWorkerAcceptanceStatusEnum } from '@/Support/Enums/DetailWorkerAcceptanceStatusEnum';
+import WorkerCard from './Components/WorkerCard';
+import WorkerStepCard from './Components/WorkerStepCard';
 
 interface CarriagePanelComponentProgressResource {
     carriage_panel_component_id: number;
@@ -27,7 +26,7 @@ interface TrainsetAttachmentProgressResource {
     component: ComponentResource;
     carriage_panel_components: CarriagePanelComponentProgressResource[];
 }
-const ProgressTrainsetAttachment = ({
+const ProgressComponent = ({
     attachment,
     title,
 }: {
@@ -43,25 +42,11 @@ const ProgressTrainsetAttachment = ({
             intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS,
         }) as unknown as TrainsetAttachmentProgressResource[];
         setTrainsetAttachmentProgress(progress);
-        console.log(progress);
     });
 
     useEffect(() => {
         loadProgress();
-    }, []);
-    
-    const getStatusColor = (status: any) => {
-        switch (status) {
-            case 'completed':
-                return 'bg-tertiary text-black';
-            case 'in_progress':
-                return 'bg-warning text-black';
-            case 'failed':
-                return 'bg-destructive text-black';
-            default:
-                return 'bg-background dark:bg-background-dark border border-gray-300'; // Neutral background
-        }
-    };
+    }, []);    
 
     return (
         <div className="text-black dark:text-white" key={attachment.id}>
@@ -96,50 +81,14 @@ const ProgressTrainsetAttachment = ({
                                                             <BreadcrumbItem>
                                                                 <Popover modal>
                                                                     <PopoverTrigger className='text-left'>
-                                                                        <Card className={`${getStatusColor(step.work_status)}`}>
-                                                                            <CardHeader className='pb-1'>
-                                                                                <CardTitle className='text-sm'>{(step as unknown as StepResource).name}</CardTitle>
-                                                                            </CardHeader>
-                                                                            <CardContent className='flex flex-col gap-1'>
-                                                                                <p className='text-sm'>{(step as unknown as StepResource).process}</p>
-                                                                                <small className='text-xs'>
-                                                                                    Status: {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'Complete' : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS ? 'In Progress' : 'Nothing '}</small>
-                                                                            </CardContent>
-                                                                        </Card>
+                                                                        <WorkerStepCard step={step as StepResource & { work_status: string | null; workers: DetailWorkerTrainsetResource[];}} />
                                                                     </PopoverTrigger>
                                                                     <PopoverContent className='flex flex-col gap-2'>
                                                                         <h4 className="text-lg font-bold">Workers🗿:</h4>
                                                                         <ScrollArea className="max-h-[250px] overflow-y-auto">
                                                                             <div className="flex flex-col gap-2">
                                                                             {step.workers && step.workers.map(stepWorker => (
-                                                                                <Card className="bg-background dark:bg-background-dark rounded-lg shadow-lg" key={stepWorker.id}>
-                                                                                    <CardHeader className="pb-2">
-                                                                                        <CardTitle className="text-lg font-bold text-black dark:text-white">{stepWorker.worker?.name}</CardTitle>
-                                                                                        <small className="text-sm text-gray-600 dark:text-gray-300">NIP: {stepWorker.worker?.nip}</small>
-                                                                                    </CardHeader>
-                                                                                    <CardContent className="flex flex-col gap-1">
-                                                                                        <p className="text-sm">
-                                                                                            Acceptance Status: <span className={stepWorker.acceptance_status === DetailWorkerAcceptanceStatusEnum.ACCEPTED ? 'text-green-500' : stepWorker.acceptance_status === DetailWorkerAcceptanceStatusEnum.DECLINED ? 'text-red-500' : ''}>{stepWorker.acceptance_status ?? 'N/A🗿'}</span>
-                                                                                        </p>
-                                                                                        <p className="text-sm">
-                                                                                            Work Status: <span className={stepWorker.work_status === DetailWorkerWorkStatusEnum.COMPLETED ? 'text-green-500' : 'text-yellow-500'}>{stepWorker.work_status}</span>
-                                                                                        </p>
-                                                                                        <div className="flex flex-col gap-1">
-                                                                                            <p className="text-sm">Started At:</p>
-                                                                                            {/* <p className="text-sm">{stepWorker.created_at}</p> not work💀*/}
-                                                                                            <p className="text-sm">
-                                                                                                {new Intl.DateTimeFormat('en-US', {
-                                                                                                    year: 'numeric',
-                                                                                                    month: '2-digit',
-                                                                                                    day: '2-digit',
-                                                                                                    hour: '2-digit',
-                                                                                                    minute: '2-digit',
-                                                                                                    second: '2-digit',
-                                                                                                }).format(new Date(stepWorker.created_at))}
-                                                                                            </p>
-                                                                                        </div>
-                                                                                    </CardContent>
-                                                                                </Card>
+                                                                                <WorkerCard detailWorker={stepWorker} key={stepWorker.id} />
                                                                             ))}
                                                                             </div>
                                                                         </ScrollArea>
@@ -165,4 +114,4 @@ const ProgressTrainsetAttachment = ({
     );
 };
 
-export default ProgressTrainsetAttachment;
+export default ProgressComponent;

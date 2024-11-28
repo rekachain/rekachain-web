@@ -27,7 +27,7 @@ interface PanelProgressResource {
     total_steps: number;
     serial_panels: SerialPanelProgressResource[];
 }
-const ProgressPanel = ({ trainset }: { trainset: TrainsetResource }) => {
+const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title: string }) => {
     const { t } = useLaravelReactI18n();
 
     const [panelProgress, setPanelProgress] = useState<PanelProgressResource[]>();
@@ -59,7 +59,7 @@ const ProgressPanel = ({ trainset }: { trainset: TrainsetResource }) => {
 
     return (
         <div className="text-black dark:text-white" key={trainset.id}>
-            <h1 className="text-xl font-bold">{`PROGRESS ASSEMBLY ${trainset.name}`}</h1>
+            <h1 className="text-xl font-bold">{title}</h1>
             {(panelProgress == null || panelProgress.length === 0 && (
                 <h3>Kosong🗿</h3>
             )) ||
