@@ -1400,7 +1400,7 @@ return [
                                                 'electric' => 'Progres Elektrik Untuk Trainset :trainset',
                                                 'assembly' => 'Progres Assembly Untuk Trainset :trainset',
                                             ],
-                                        ]
+                                        ],
                                     ],
                                 ],
                             ],
@@ -1579,7 +1579,7 @@ return [
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Gerbong: :carriage',
                                 'workers' => 'Pekerja:',
-                            ]
+                            ],
                         ],
                         'progress_panel' => [
                             'props' => [
@@ -1589,7 +1589,7 @@ return [
                                 'serial_number' => 'Nomor Serial: :serial_number',
                                 'product_number' => 'Nomor Produk: :product_number',
                                 'workers' => 'Pekerja:',
-                            ]
+                            ],
                         ],
                         'components' => [
                             'worker_card' => [

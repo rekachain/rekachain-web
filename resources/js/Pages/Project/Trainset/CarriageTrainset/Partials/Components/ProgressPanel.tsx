@@ -30,7 +30,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
     }, []);
 
     return (
-        <div className="text-black dark:text-white" key={trainset.id}>
+        <div key={trainset.id} className="text-black dark:text-white">
             <h1 className="text-xl font-bold">{title}</h1>
             {(panelProgress == null || panelProgress.length === 0 && (
                 <h3>Kosong🗿</h3>
@@ -73,7 +73,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource, title:
                                                                         <ScrollArea className="max-h-[250px] overflow-y-auto">
                                                                         <div className="flex flex-col gap-2">
                                                                             {step.workers && step.workers.map(stepWorker => (
-                                                                                <WorkerCard detailWorker={stepWorker} key={stepWorker.id} />
+                                                                                <WorkerCard key={stepWorker.id} detailWorker={stepWorker} />
                                                                             ))}
                                                                             </div>
                                                                         </ScrollArea>

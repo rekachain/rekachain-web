@@ -127,7 +127,7 @@ class PanelAttachmentResource extends JsonResource {
                 });
                 unset($attachment->carriage_panel);
 
-                $serialPanels = $attachment->serial_panels->map(function ($serialPanel) use ($attachment, $panelSteps) {
+                $serialPanels = $attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
                     $steps = collect();
                     $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                         $workers = collect();
@@ -173,26 +173,27 @@ class PanelAttachmentResource extends JsonResource {
                         })->values(),
                     ];
                 });
+
                 return [
                     'panel' => PanelResource::make($attachment->carriage_panel->panel),
                     'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
                     'total_steps' => $attachment->carriage_panel->progress->progress_steps->count(),
-                    'serial_panels' => $serialPanels->toArray()
+                    'serial_panels' => $serialPanels->toArray(),
                 ];
-            // idonknowwhatisthissupposedtodo💀 seemssavetodeletebutmeh🗿
-            // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
-            //     $ancestor = $this->ancestor();
-            //     return [
-            //         'attachment_number' => $this->attachment_number,
-            //         'source_workstation' => $this->source_workstation->name,
-            //         'destination_workstation' => $this->destination_workstation->name,
-            //         'status' => $this->status,
-            //         'trainset' => $ancestor->carriage_panel->carriage_trainset->trainset->name,
-            //         'carriage' => $ancestor->carriage_panel->carriage_trainset->carriage->type,
-            //         'panel' => $ancestor->carriage_panel->panel->name,
-            //         'created_at' => $this->created_at,
-            //         'updated_at' => $this->updated_at,
-            //     ];
+                // idonknowwhatisthissupposedtodo💀 seemssavetodeletebutmeh🗿
+                // case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
+                //     $ancestor = $this->ancestor();
+                //     return [
+                //         'attachment_number' => $this->attachment_number,
+                //         'source_workstation' => $this->source_workstation->name,
+                //         'destination_workstation' => $this->destination_workstation->name,
+                //         'status' => $this->status,
+                //         'trainset' => $ancestor->carriage_panel->carriage_trainset->trainset->name,
+                //         'carriage' => $ancestor->carriage_panel->carriage_trainset->carriage->type,
+                //         'panel' => $ancestor->carriage_panel->panel->name,
+                //         'created_at' => $this->created_at,
+                //         'updated_at' => $this->updated_at,
+                //     ];
             case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
                 $panelAttachment = $this->ancestor()->load(['carriage_panel' => ['carriage_trainset', 'panel_materials']]);
 

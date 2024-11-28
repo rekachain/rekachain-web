@@ -35,7 +35,7 @@ const ProgressComponent = ({
     }, []);    
 
     return (
-        <div className="text-black dark:text-white" key={attachment.id}>
+        <div key={attachment.id} className="text-black dark:text-white">
             <h1 className="text-xl font-bold">{title}</h1>
             {trainsetAttachmentProgress == null ||
                 (trainsetAttachmentProgress.length === 0 && 
@@ -74,7 +74,7 @@ const ProgressComponent = ({
                                                                         <ScrollArea className="max-h-[250px] overflow-y-auto">
                                                                             <div className="flex flex-col gap-2">
                                                                             {step.workers && step.workers.map(stepWorker => (
-                                                                                <WorkerCard detailWorker={stepWorker} key={stepWorker.id} />
+                                                                                <WorkerCard key={stepWorker.id} detailWorker={stepWorker} />
                                                                             ))}
                                                                             </div>
                                                                         </ScrollArea>

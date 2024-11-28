@@ -73,10 +73,10 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     <DialogTitle></DialogTitle>
                     <DialogDescription className="w-full"></DialogDescription>
                     <Tabs
-                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                        className="w-full"
                         value={activeTab}
                         onValueChange={value => setActiveTab(value as GenerateAttachmentTabEnum)}
+                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                        className="w-full"
                     >
                         <TabsList>
                             <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
@@ -93,8 +93,8 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             <ScrollArea className="h-[600px] border p-4">
                             {mechanicAttachment &&
                                 <ProgressComponent
-                                    attachment={mechanicAttachment}
                                     title={t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.mechanic', { trainset: trainset.name })}
+                                    attachment={mechanicAttachment}
                                 />
                             }
                             </ScrollArea>
@@ -103,8 +103,8 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             <ScrollArea className="h-[600px] border p-4">
                             {electricAttachment &&
                                 <ProgressComponent
-                                    attachment={electricAttachment}
                                     title={t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.electric', { trainset: trainset.name })}
+                                    attachment={electricAttachment}
                                 />
                             }
                             </ScrollArea>

@@ -285,7 +285,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
                                 ...DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
                             ]);
                             // logger(DetailWorkerTrainsetResource::make(
                             //     $detailWorkerTrainset->fresh()
@@ -300,7 +300,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
                                 ...DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
                             ]);
                         }
                     });

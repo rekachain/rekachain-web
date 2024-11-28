@@ -184,7 +184,9 @@ class TrainsetResource extends JsonResource {
                 return ['components' => $mergedComponents->toArray()];
             case IntentEnum::WEB_TRAINSET_GET_PANEL_PROGRESS->value:
                 $attachments = $this->panel_attachments->map(function (PanelAttachment $panelAttachment) {
-                    if ($panelAttachment->is_ancestor()) return $panelAttachment;
+                    if ($panelAttachment->is_ancestor()) {
+                        return $panelAttachment;
+                    }
                 });
                 $panelProgress = $attachments->map(function (PanelAttachment $attachment) {
                     $panelSteps = $attachment->progress->progress_steps->map(function ($progressStep) use (&$panelSteps) {
@@ -194,7 +196,7 @@ class TrainsetResource extends JsonResource {
                         ];
                     });
 
-                    $serialPanels =$attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
+                    $serialPanels = $attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
                         $steps = collect();
                         $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                             $step = $steps->firstWhere('id', $detailWorkerPanel->progress_step->step_id);
@@ -225,13 +227,16 @@ class TrainsetResource extends JsonResource {
                         'carriage' => $attachment->carriage_panel->carriage_trainset->carriage,
                         'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
                         'total_steps' => $panelSteps->count(),
-                        'serial_panels' => $serialPanels
+                        'serial_panels' => $serialPanels,
                     ];
                 });
+
                 return $panelProgress->toArray();
             case IntentEnum::WEB_TRAINSET_GET_PANEL_PROGRESS_WITH_WORKER_STEPS->value:
                 $attachments = $this->panel_attachments->map(function (PanelAttachment $panelAttachment) {
-                    if ($panelAttachment->is_ancestor()) return $panelAttachment;
+                    if ($panelAttachment->is_ancestor()) {
+                        return $panelAttachment;
+                    }
                 });
                 $panelProgress = $attachments->map(function (PanelAttachment $attachment) {
                     $panelSteps = $attachment->progress->progress_steps->map(function ($progressStep) use (&$panelSteps) {
@@ -242,7 +247,7 @@ class TrainsetResource extends JsonResource {
                         ];
                     });
 
-                    $serialPanels =$attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
+                    $serialPanels = $attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
                         $steps = collect();
                         $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                             $workers = collect();
@@ -252,19 +257,19 @@ class TrainsetResource extends JsonResource {
                                     'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
                                     ...DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
-                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
                                 ]);
                                 $steps->push([
                                     ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                     'work_status' => $detailWorkerPanel->work_status->value,
-                                    'workers' => $workers
+                                    'workers' => $workers,
                                 ]);
                             } else {
                                 $step['workers']->push([
                                     'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
                                     ...DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
-                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
                                 ]);
                             }
                         });
@@ -287,9 +292,10 @@ class TrainsetResource extends JsonResource {
                         'carriage' => $attachment->carriage_panel->carriage_trainset->carriage,
                         'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
                         'total_steps' => $panelSteps->count(),
-                        'serial_panels' => $serialPanels
+                        'serial_panels' => $serialPanels,
                     ];
                 });
+
                 return $panelProgress->toArray();
         }
 
