@@ -5,7 +5,8 @@
         "dev": "vite",
         "transform-intent-enum": "node experimental/watch-intent-enum.js",
         "build": "tsc && vite build",
-        "lint": "eslint --fix"
+        "lint": "eslint --fix",
+        "prettier": "prettier --write ."
     },
     "devDependencies": {
         "@eslint/js": "^9.15.0",
