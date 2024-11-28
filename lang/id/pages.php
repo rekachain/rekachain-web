@@ -1400,6 +1400,15 @@ return [
                                                 'electric' => 'Progres Elektrik Untuk Trainset :trainset',
                                                 'assembly' => 'Progres Assembly Untuk Trainset :trainset',
                                             ],
+                                            'progress_scroll_area' => [
+                                                'props' => [
+                                                    'trainset' => 'Trainset: :trainset',
+                                                    'component' => 'Komponen: :component',
+                                                    'panel' => 'Panel: :panel',
+                                                    'carriage' => 'Gerbong: :carriage',
+                                                    'workers' => 'Pekerja:',
+                                                ]
+                                            ]
                                         ]
                                     ],
                                 ],

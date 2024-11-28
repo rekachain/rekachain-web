@@ -1400,6 +1400,15 @@ return [
                                                 'electric' => 'Electric Progresses For :trainset Trainset',
                                                 'assembly' => 'Assembly Progresses For :trainset Trainset',
                                             ],
+                                            'progress_scroll_area' => [
+                                                'props' => [
+                                                    'trainset' => 'Trainset: :trainset',
+                                                    'component' => 'Component: :component',
+                                                    'panel' => 'Panel: :panel',
+                                                    'carriage' => 'Carriage: :carriage',
+                                                    'workers' => 'Workers:',
+                                                ]
+                                            ]
                                         ]
                                     ],
                                 ],
