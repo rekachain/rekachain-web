@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class AttachmentNote extends Model
-{
+class AttachmentNote extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -15,8 +14,7 @@ class AttachmentNote extends Model
         'status',
     ];
 
-    public function attachment_noteable(): MorphTo
-    {
+    public function attachment_noteable(): MorphTo {
         return $this->morphTo();
     }
 }

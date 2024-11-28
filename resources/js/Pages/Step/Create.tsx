@@ -77,50 +77,50 @@ export default function () {
                         {/*</div>*/}
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.step.create.fields.name')} />
+                            <InputLabel value={t('pages.step.create.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
+                                type="text"
                                 required
                                 onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
+                                className="mt-1"
+                                autoComplete="name"
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="process" value={t('pages.step.create.fields.process')} />
+                            <InputLabel value={t('pages.step.create.fields.process')} htmlFor="process" />
                             <Input
-                                id="process"
-                                type="text"
-                                name="process"
                                 value={data.process}
-                                className="mt-1"
-                                autoComplete="process"
+                                type="text"
                                 required
                                 onChange={e => setData('process', e.target.value)}
+                                name="process"
+                                id="process"
+                                className="mt-1"
+                                autoComplete="process"
                             />
                         </div>
 
                         <div className="mt-4">
                             <InputLabel
-                                htmlFor="estimated_time"
                                 value={t('pages.step.create.fields.estimated_manufacturing_time')}
+                                htmlFor="estimated_time"
                             />
                             <Input
-                                id="estimated_time"
-                                type="number"
-                                name="estimated_time"
                                 value={data.estimated_time}
+                                type="number"
+                                onChange={e => setData('estimated_time', +e.target.value)}
+                                name="estimated_time"
+                                id="estimated_time"
                                 className="mt-1"
                                 autoComplete="estimated_time"
-                                onChange={e => setData('estimated_time', +e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.step.create.buttons.submit')}
                         </Button>
                     </form>

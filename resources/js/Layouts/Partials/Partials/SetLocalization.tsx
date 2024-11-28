@@ -24,7 +24,7 @@ export const SetLocalization = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="ghost">
+                <Button variant="ghost" size="icon">
                     <RiTranslate2 size={STYLING.ICON.SIZE.SMALL} />
                 </Button>
             </DropdownMenuTrigger>

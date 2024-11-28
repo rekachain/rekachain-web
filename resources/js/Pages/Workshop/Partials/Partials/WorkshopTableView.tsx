@@ -35,8 +35,8 @@ export default function WorkshopTableView({
                                 <TableCell>{workshop.address}</TableCell>
                                 <TableCell>
                                     <Link
-                                        className={buttonVariants({ variant: 'link' })}
                                         href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
                                         {t('action.edit')}
                                     </Link>

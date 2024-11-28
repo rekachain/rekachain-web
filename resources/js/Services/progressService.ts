@@ -12,7 +12,7 @@ export const progressService = {
         step_process: string | null,
         step_estimated_time: number | null,
     ) => {
-        let formData = new FormData();
+        const formData = new FormData();
 
         if (step_id) {
             formData.append('step_id', step_id.toString());

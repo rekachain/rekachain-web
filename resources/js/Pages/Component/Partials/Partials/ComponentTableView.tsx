@@ -37,8 +37,8 @@ export default function ComponentTableView({
                             <TableCell>{component.progress?.name}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

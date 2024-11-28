@@ -70,25 +70,25 @@ const ChangeTrainsetPreset = ({
             <SelectGroup>
                 <div className="md:flex w-full md:flex-row gap-2">
                     <GenericDataSelector
-                        id="preset-trainset_id"
-                        fetchData={fetchPresetTrainsets}
                         setSelectedData={id => setData('preset_trainset_id', id)}
                         selectedDataId={data.preset_trainset_id}
-                        placeholder={t(
-                            'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.fields.preset_trainset_placeholder',
-                        )}
                         renderItem={(item: PresetTrainsetResource) => {
                             return `${item.name} (${item.carriage_presets.map((c, i) => {
                                 return `${c.qty} ${c.carriage.type}${i < item.carriage_presets!.length - 1 ? ' + ' : ''}`;
                             })})`;
                         }}
+                        placeholder={t(
+                            'pages.project.trainset.carriage_trainset.partials.change_trainset_preset.fields.preset_trainset_placeholder',
+                        )}
+                        nullable
+                        initialSearch={trainset?.preset_name}
+                        id="preset-trainset_id"
+                        fetchData={fetchPresetTrainsets}
                         customLabel={(item: PresetTrainsetResource) => {
                             return `${item.name} (${item.carriage_presets.map((c, i) => {
                                 return `${c.qty} ${c.carriage.type}${i < item.carriage_presets!.length - 1 ? ' + ' : ''}`;
                             })})`;
                         }}
-                        initialSearch={trainset?.preset_name}
-                        nullable
                     />
 
                     <div className="flex gap-2 mt-3 md:mt-0 items-center ">
@@ -112,12 +112,12 @@ const ChangeTrainsetPreset = ({
                             )}
                         </Button>
                         <Button
-                            type="button"
                             variant="destructive"
+                            type="button"
+                            onClick={handleDeletePresetTrainset}
                             disabled={
                                 loading || !data.preset_trainset_id || (selectedPreset && selectedPreset.has_trainsets)
                             }
-                            onClick={handleDeletePresetTrainset}
                         >
                             {loading ? (
                                 <>

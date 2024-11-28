@@ -44,8 +44,8 @@ export default function RawMaterialTableView({
                             <TableCell>{rawMaterial.unit}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

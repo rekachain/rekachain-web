@@ -17,8 +17,8 @@ export default function () {
                     <div className="flex gap-5 items-center">
                         <h1 className="text-page-header my-4">{t('pages.component.index.title')}</h1>
                         <Link
-                            className={buttonVariants({ variant: 'default' })}
                             href={route(`${ROUTES.COMPONENTS}.create`)}
+                            className={buttonVariants({ variant: 'default' })}
                         >
                             {t('pages.component.index.buttons.create')}
                         </Link>

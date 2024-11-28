@@ -96,15 +96,15 @@ export default function UpdateProfileInformation({
                     </Label>
 
                     <Input
-                        id="name"
                         value={data.name}
-                        onChange={e => setData('name', e.target.value)}
                         required
+                        onChange={e => setData('name', e.target.value)}
+                        id="name"
                         autoFocus
                         autoComplete="name"
                     />
 
-                    <InputError className="mt-2" message={errors.name} />
+                    <InputError message={errors.name} className="mt-2" />
                 </div>
 
                 <div>
@@ -113,15 +113,15 @@ export default function UpdateProfileInformation({
                     </Label>
 
                     <Input
-                        id="email"
-                        type="email"
                         value={data.email}
-                        onChange={e => setData('email', e.target.value)}
+                        type="email"
                         required
+                        onChange={e => setData('email', e.target.value)}
+                        id="email"
                         autoComplete="username"
                     />
 
-                    <InputError className="mt-2" message={errors.email} />
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div>
@@ -129,15 +129,15 @@ export default function UpdateProfileInformation({
                         {t('pages.profile.partials.update_profile_information_form.fields.avatar')}
                     </Label>
                     <FilePond
-                        imagePreviewMaxHeight={400}
-                        filePosterMaxHeight={400}
-                        allowMultiple={false}
-                        files={data.image_path}
                         onupdatefiles={handleFileChange}
                         labelIdle={t(
                             'pages.profile.partials.update_profile_information_form.fields.avatar_filepond_placeholder',
                         )}
+                        imagePreviewMaxHeight={400}
+                        files={data.image_path}
+                        filePosterMaxHeight={400}
                         allowReplace
+                        allowMultiple={false}
                     />
                     {errors.image_path && `${errors.image_path}`}
                 </div>
@@ -147,10 +147,10 @@ export default function UpdateProfileInformation({
                         <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
                             {t('pages.profile.partials.update_profile_information_form.messages.verify_email')}
                             <Link
-                                href={route('verification.send')}
                                 method="post"
-                                as="button"
+                                href={route('verification.send')}
                                 className="underline text-sm hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                as="button"
                             >
                                 {t(
                                     'pages.profile.partials.update_profile_information_form.messages.resend_verification_email',
@@ -175,10 +175,10 @@ export default function UpdateProfileInformation({
 
                     <Transition
                         show={recentlySuccessful}
-                        enter="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        leave="transition ease-in-out"
                         leaveTo="opacity-0"
+                        leave="transition ease-in-out"
+                        enterFrom="opacity-0"
+                        enter="transition ease-in-out"
                     >
                         <p className="text-sm">
                             {t('pages.profile.partials.update_profile_information_form.messages.updated')}

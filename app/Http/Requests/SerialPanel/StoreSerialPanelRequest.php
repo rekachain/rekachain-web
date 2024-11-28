@@ -21,7 +21,7 @@ class StoreSerialPanelRequest extends FormRequest {
         return [
             'panel_attachment_id' => 'require|string|max:255',
             'qr_code' => 'require|string|max:255',
-            'qr_path'=> 'require|string|max:255',
+            'qr_path' => 'require|string|max:255',
             'manufacture_status' => 'require|string|max:255',
             'notes' => 'require|string|max:255',
         ];

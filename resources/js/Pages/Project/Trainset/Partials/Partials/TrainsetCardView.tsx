@@ -21,10 +21,10 @@ export default function TrainsetCardView({
             {project.trainsets.map(trainset => (
                 <div key={trainset.id}>
                     <AnimateIn
-                        from="opacity-0 -translate-y-4"
                         to="opacity-100 translate-y-0 translate-x-0"
-                        duration={300}
                         key={trainset.id}
+                        from="opacity-0 -translate-y-4"
+                        duration={300}
                     >
                         <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
                             <div className="flex w-full justify-between items-scenter">
@@ -64,17 +64,17 @@ export default function TrainsetCardView({
                             <div className="flex items-center justify-end w-full">
                                 <Button
                                     variant="link"
-                                    disabled={loading || !trainset.can_be_deleted}
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
+                                    disabled={loading || !trainset.can_be_deleted}
                                 >
                                     {t('action.delete')}
                                 </Button>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
                                 </Link>

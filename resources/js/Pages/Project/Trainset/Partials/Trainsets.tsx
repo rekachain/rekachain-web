@@ -28,16 +28,16 @@ export default function ({
             <div className="hidden md:block">
                 <TrainsetTableView
                     project={project}
-                    handleTrainsetDeletion={handleTrainsetDeletion}
                     loading={loading}
+                    handleTrainsetDeletion={handleTrainsetDeletion}
                 ></TrainsetTableView>
             </div>
 
             <div className="block md:hidden">
                 <TrainsetCardView
                     project={project}
-                    handleTrainsetDeletion={handleTrainsetDeletion}
                     loading={loading}
+                    handleTrainsetDeletion={handleTrainsetDeletion}
                 ></TrainsetCardView>
             </div>
         </div>

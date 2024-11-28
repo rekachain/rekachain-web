@@ -32,55 +32,55 @@ export default function ResetPassword({ token, email }: { token: string; email: 
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel value="Email" htmlFor="email" />
 
                     <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
                         value={data.email}
+                        type="email"
+                        onChange={e => setData('email', e.target.value)}
+                        name="email"
+                        id="email"
                         className="mt-1 block w-full"
                         autoComplete="username"
-                        onChange={e => setData('email', e.target.value)}
                     />
 
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel value="Password" htmlFor="password" />
 
                     <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
                         value={data.password}
+                        type="password"
+                        onChange={e => setData('password', e.target.value)}
+                        name="password"
+                        isFocused={true}
+                        id="password"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        isFocused={true}
-                        onChange={e => setData('password', e.target.value)}
                     />
 
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
+                    <InputLabel value="Confirm Password" htmlFor="password_confirmation" />
 
                     <TextInput
-                        type="password"
-                        name="password_confirmation"
                         value={data.password_confirmation}
+                        type="password"
+                        onChange={e => setData('password_confirmation', e.target.value)}
+                        name="password_confirmation"
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={e => setData('password_confirmation', e.target.value)}
                     />
 
                     <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <PrimaryButton disabled={processing} className="ms-4">
                         Reset Password
                     </PrimaryButton>
                 </div>

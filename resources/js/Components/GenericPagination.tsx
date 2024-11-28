@@ -36,7 +36,7 @@ export default function ({
 
     const ParsedPagination = ({ html }: { html: string }) => {
         const obj = { __html: html };
-        return <div dangerouslySetInnerHTML={obj} onClick={() => console.log(fixPagination(html))}></div>;
+        return <div onClick={() => console.log(fixPagination(html))} dangerouslySetInnerHTML={obj}></div>;
     };
 
     const ConditionallyRenderPagination = ({ link }: { link: PaginateMetaLink }) => {
@@ -75,10 +75,10 @@ export default function ({
                 return (
                     <PaginationItem key={link.label}>
                         <PaginationLink
-                            isActive={meta.current_page === fixPagination(link.label)}
                             onClick={() =>
                                 handleChangePage(fixPagination(link.label) ?? PAGINATION_NAVIGATOR.FIRST_PAGE)
                             }
+                            isActive={meta.current_page === fixPagination(link.label)}
                         >
                             <ParsedPagination html={link.label} />
                         </PaginationLink>
@@ -100,7 +100,7 @@ export default function ({
                 <PaginationContent className=" ">
                     <div className="grid grid-cols-8 md:flex">
                         {meta.links.map(link => (
-                            <ConditionallyRenderPagination key={link.label} link={link} />
+                            <ConditionallyRenderPagination link={link} key={link.label} />
                         ))}
                     </div>
                 </PaginationContent>

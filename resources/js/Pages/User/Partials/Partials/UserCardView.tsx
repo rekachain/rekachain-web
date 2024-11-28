@@ -30,7 +30,7 @@ export default function ({
                         <div className="flex flex-col items-center gap-4">
                             {user.image_path && (
                                 <Avatar className="w-16 h-16">
-                                    <AvatarImage className="object-cover" src={user.image} alt={user.name} />
+                                    <AvatarImage src={user.image} className="object-cover" alt={user.name} />
                                 </Avatar>
                             )}
                             <div className="flex flex-col items-start">
@@ -47,8 +47,8 @@ export default function ({
                             {canEditOrDelete(user) && (
                                 <div className="flex gap-4 items-center flex-wrap">
                                     <Link
-                                        className={buttonVariants({ variant: 'link' })}
                                         href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
                                         {t('action.edit')}
                                     </Link>

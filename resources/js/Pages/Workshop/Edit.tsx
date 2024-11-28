@@ -49,32 +49,32 @@ export default function ({ workshop }: { workshop: WorkshopResource }) {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workshop.edit.fields.name')} />
+                            <InputLabel value={t('pages.workshop.edit.fields.name')} htmlFor="name" />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="name"
+                                id="name"
                                 className="mt-1"
                                 autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="address" value={t('pages.workshop.edit.fields.address')} />
+                            <InputLabel value={t('pages.workshop.edit.fields.address')} htmlFor="address" />
                             <Input
-                                id="address"
-                                type="text"
-                                name="address"
                                 value={data.address}
+                                type="text"
+                                onChange={e => setData('address', e.target.value)}
+                                name="address"
+                                id="address"
                                 className="mt-1"
                                 autoComplete="address"
-                                onChange={e => setData('address', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             {t('pages.workshop.edit.buttons.submit')}
                         </Button>
                     </form>

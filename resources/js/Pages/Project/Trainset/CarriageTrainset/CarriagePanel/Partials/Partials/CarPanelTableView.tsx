@@ -94,29 +94,29 @@ export default function CarPanelTableView({
                                     )}
 
                                     <Link
-                                        className={buttonVariants({ variant: 'link' })}
                                         href={route(
                                             `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,
                                             [trainset.project_id, trainset.id, carriageTrainset.id, carriage_panel.id],
                                         )}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
                                         Components
                                     </Link>
 
                                     <Link
-                                        className={buttonVariants({ variant: 'link' })}
                                         href={route(
                                             `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS}.index`,
                                             [trainset.project_id, trainset.id, carriageTrainset.id, carriage_panel.id],
                                         )}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
                                         Materials
                                     </Link>
 
                                     <PanelProgress
                                         progress={carriage_panel.progress}
-                                        carriagePanel={carriage_panel}
                                         handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                        carriagePanel={carriage_panel}
                                     />
                                 </TableCell>
                             </TableRow>

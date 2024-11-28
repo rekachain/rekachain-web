@@ -116,8 +116,8 @@ export default function ({
                         {t('pages.project.carriage.component.partials.import.dialogs.fields.download_template')}
                     </Label>
                     <Button
-                        type="button"
                         variant="secondary"
+                        type="button"
                         onClick={componentService.downloadImportProgressRawMaterialTemplate.bind(null, component.id)}
                         disabled={loading}
                     >
@@ -131,14 +131,14 @@ export default function ({
                         {t('pages.project.carriage.component.partials.import.dialogs.fields.work_aspect')}
                     </Label>
                     <GenericDataSelector
-                        id="work_aspect_id"
-                        fetchData={fetchWorkAspects}
                         setSelectedData={id => setData('work_aspect_id', id)}
                         selectedDataId={data.work_aspect_id ?? null}
-                        placeholder={'Choose'}
                         renderItem={item => `${item.name}${item.division?.name ? ` - ${item.division.name}` : ''}`}
-                        buttonClassName="mt-1"
+                        placeholder={'Choose'}
                         nullable
+                        id="work_aspect_id"
+                        fetchData={fetchWorkAspects}
+                        buttonClassName="mt-1"
 
                         // TODO: possible minor issue: perform pre-search on the workstation if trainset attachment created
                         // initialSearch={}
@@ -150,10 +150,10 @@ export default function ({
                             {t('pages.project.carriage.component.partials.import.dialogs.fields.file')}
                         </Label>
                         <Input
-                            id="file"
                             type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             onChange={handleChangeImportFile}
+                            id="file"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                         />
                         {hasMaterials && (
                             <div className=" text-black rounded">
@@ -234,10 +234,10 @@ export default function ({
                                         </DropdownMenuLabel>
                                         <DropdownMenuSeparator />
                                         <RadioGroup
-                                            id="import-override"
-                                            className="flex justify-between mt-5"
                                             value={data.override}
                                             onValueChange={value => setData('override', value as any)}
+                                            id="import-override"
+                                            className="flex justify-between mt-5"
                                         >
                                             <div className="flex items-center space-x-2">
                                                 <RadioGroupItem

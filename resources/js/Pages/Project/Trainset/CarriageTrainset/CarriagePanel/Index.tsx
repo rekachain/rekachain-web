@@ -124,17 +124,17 @@ export default function ({
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Panels
                             trainset={trainset}
-                            carriageTrainset={carriageTrainset}
                             handleSyncCarriage={handleSyncCarriage}
+                            carriageTrainset={carriageTrainset}
                         />
                     </Suspense>
 
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && panelResponse && (
                         <AddNewPanel
-                            carriageTrainset={carriageTrainset}
-                            handleSyncCarriage={handleSyncCarriage}
-                            panelResponse={panelResponse}
                             setPanelResponse={setPanelResponse}
+                            panelResponse={panelResponse}
+                            handleSyncCarriage={handleSyncCarriage}
+                            carriageTrainset={carriageTrainset}
                         />
                     )}
                 </div>

@@ -58,35 +58,35 @@ export default function TrainsetTableView({
                                 {/*</Link>*/}
                                 <Button
                                     variant="link"
-                                    disabled={loading || !trainset.can_be_deleted}
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
+                                    disabled={loading || !trainset.can_be_deleted}
                                 >
                                     {t('action.delete')}
                                 </Button>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
                                 </Link>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('pages.project.trainset.partials.partials.trainset_table.actions.components')}
                                 </Link>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [
                                         project.id,
                                         trainset.id,
                                     ])}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('pages.project.trainset.partials.partials.trainset_table.actions.panels')}
                                 </Link>

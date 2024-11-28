@@ -9,13 +9,11 @@ use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use Illuminate\Database\Seeder;
 
-class DetailWorkerTrainsetSeeder extends Seeder
-{
+class DetailWorkerTrainsetSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         TrainsetAttachment::all()->each(function (TrainsetAttachment $trainsetAttachment, $trainsetAttachmentIndex) {
             $trainsetAttachmentCount = TrainsetAttachment::count();
             $trainsetAttachmentSeedBound = $trainsetAttachmentCount - 6;
@@ -24,20 +22,20 @@ class DetailWorkerTrainsetSeeder extends Seeder
                 // TrainsetAttachmentStatusEnum::PENDING->value => TrainsetAttachmentStatusEnum::PENDING->value,
                 TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value => TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT->value,
                 TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value => TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED->value,
-                null => null
+                null => null,
             ]);
-            if (!empty($randStatus)){
+            if (!empty($randStatus)) {
                 logger($randStatus);
                 $trainsetAttachment->update([
-                    'status' => $randStatus
+                    'status' => $randStatus,
                 ]);
-            } 
+            }
             $trainsetAttachmentComponents = collect();
             $trainsetAttachmentComponentsCount = $trainsetAttachment->trainset_attachment_components()->count();
             if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                 $trainsetAttachmentComponents = $trainsetAttachment->trainset_attachment_components()->get();
             } else {
-                if ($trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED 
+                if ($trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_ACCEPTED
                     && $trainsetAttachment->status != TrainsetAttachmentStatusEnum::MATERIAL_IN_TRANSIT
                     && $trainsetAttachment->status != null
                 ) {
@@ -68,9 +66,9 @@ class DetailWorkerTrainsetSeeder extends Seeder
                             ]);
                         }
                         $acceptanceStatus = $workStatus == DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value ? DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value : null;
-                        if($workStatus == DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value && $progressSteps->count() == $progressStepsCount) {
+                        if ($workStatus == DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value && $progressSteps->count() == $progressStepsCount) {
                             $trainsetAttachmentComponent->update([
-                               'total_fulfilled' => $trainsetAttachmentComponent->total_required 
+                                'total_fulfilled' => $trainsetAttachmentComponent->total_required,
                             ]);
                         }
                     }
@@ -83,13 +81,13 @@ class DetailWorkerTrainsetSeeder extends Seeder
                             'progress_step_id' => $progressStep->id,
                             'estimated_time' => $progressStep->step->estimated_time,
                             'work_status' => $workStatus,
-                            'acceptance_status' => $acceptanceStatus
+                            'acceptance_status' => $acceptanceStatus,
                         ]);
                     }
                 }
                 if ($trainsetAttachmentIndex < $trainsetAttachmentSeedBound) {
                     $trainsetAttachment->update([
-                        'status' => TrainsetAttachmentStatusEnum::DONE->value
+                        'status' => TrainsetAttachmentStatusEnum::DONE->value,
                     ]);
                 }
             }

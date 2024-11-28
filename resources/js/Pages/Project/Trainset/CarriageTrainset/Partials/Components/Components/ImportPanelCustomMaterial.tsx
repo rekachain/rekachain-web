@@ -72,8 +72,8 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
                     <div className="flex flex-col space-y-4">
                         <Label>Unduh template excel</Label>
                         <Button
-                            type="button"
                             variant="secondary"
+                            type="button"
                             onClick={panelAttachmentService.downloadCustomAttachmentMaterialImportTemplate.bind(
                                 null,
                                 panelAttachment.id,
@@ -89,10 +89,10 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
                         <div className="space-y-4">
                             <Label htmlFor="file">{t('pages.panel.partials.import.dialogs.fields.file')}</Label>
                             <Input
-                                id="file"
                                 type="file"
-                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                 onChange={handleChangeImportFile}
+                                id="file"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             />
                         </div>
                         <div className="flex items-center space-x-2">
@@ -104,9 +104,9 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
                             </Label>
 
                             <Checkbox
+                                onCheckedChange={checked => setData('toBeAssigned', checked as boolean)}
                                 id="to-be-assigned"
                                 checked={data.toBeAssigned}
-                                onCheckedChange={checked => setData('toBeAssigned', checked as boolean)}
                             />
                         </div>
 
@@ -116,10 +116,10 @@ export default function ({ panelAttachment }: { panelAttachment: PanelAttachment
                                 <div className="flex space-x-4">
                                     <RadioGroup
                                         value={data.override}
-                                        className="flex justify-content-between"
                                         onValueChange={override =>
                                             setData('override', override as ProjectImportProgressMaterialOverride)
                                         }
+                                        className="flex justify-content-between"
                                     >
                                         <div className="flex items-center space-x-2">
                                             <RadioGroupItem value="default" id="override-default" />

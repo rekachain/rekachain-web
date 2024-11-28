@@ -6,14 +6,12 @@ use App\Models\TrainsetAttachment;
 use App\Models\TrainsetAttachmentComponent;
 use Illuminate\Database\Seeder;
 
-class TrainsetAttachmentComponentSeeder extends Seeder
-{
+class TrainsetAttachmentComponentSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
-        $trainsetAttachmentTypes = ['mechanic'=>'1', 'electric'=>'2'];
+    public function run(): void {
+        $trainsetAttachmentTypes = ['mechanic' => '1', 'electric' => '2'];
         TrainsetAttachment::all()->each(function ($trainsetAttachment) use ($trainsetAttachmentTypes) {
             $trainsetAttachment->trainset->carriage_trainsets->each(function ($carriageTrainset) use ($trainsetAttachment, $trainsetAttachmentTypes) {
                 $carriageTrainset->carriage_panels->each(function ($carriagePanel) use ($trainsetAttachment, $carriageTrainset, $trainsetAttachmentTypes) {
@@ -25,7 +23,7 @@ class TrainsetAttachmentComponentSeeder extends Seeder
                                     'carriage_panel_component_id' => $carriagePanelComponent->id,
                                 ],
                                 [
-                                    'total_required' => \DB::raw('IFNULL(total_required, 0) + ' . $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty.''),
+                                    'total_required' => \DB::raw('IFNULL(total_required, 0) + ' . $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty . ''),
                                 ]
                             );
                         }

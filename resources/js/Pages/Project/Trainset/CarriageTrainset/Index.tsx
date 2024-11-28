@@ -32,6 +32,7 @@ import GenerateAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partia
 import PreviewAttachments from '@/Pages/Project/Trainset/CarriageTrainset/Partials/PreviewAttachments';
 import { Button } from '@/Components/UI/button';
 import { trainsetService } from '@/Services/trainsetService';
+import ProgressAttachments from './Partials/ProgressAttachments';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -183,6 +184,9 @@ export default function ({
                                     {(trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && <PreviewAttachments trainset={trainset} />}
+                                    {(trainset.has_mechanic_trainset_attachment ||
+                                        trainset.has_electric_trainset_attachment ||
+                                        trainset.has_panel_attachment) && <ProgressAttachments trainset={trainset} />}
                                     <Button onClick={handleExportSerialNumbers}>
                                         {t(
                                             'pages.project.trainset.carriage_trainset.index.buttons.export_serial_numbers',
@@ -199,16 +203,16 @@ export default function ({
                     {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
                         <AddCarriage
                             trainset={trainset}
+                            handleSyncTrainset={handleSyncTrainset}
                             handleSyncCarriages={handleSyncCarriages}
                             debouncedCarriageFilters={debouncedCarriageFilters}
-                            handleSyncTrainset={handleSyncTrainset}
                         />
                     )}
                 </div>
 
                 {isNewPreset() && (
                     <CustomPresetAlert message={t('pages.project.trainset.carriage_trainset.index.new_preset_alert')}>
-                        <AddNewTrainsetPreset handleSyncTrainset={handleSyncTrainset} trainset={trainset} />
+                        <AddNewTrainsetPreset trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </CustomPresetAlert>
                 )}
             </AuthenticatedLayout>

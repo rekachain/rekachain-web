@@ -44,8 +44,8 @@ export default function WDTableView({
                             <TableCell>{workDay.end_time}</TableCell>
                             <TableCell>
                                 <Link
-                                    className={buttonVariants({ variant: 'link' })}
                                     href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>

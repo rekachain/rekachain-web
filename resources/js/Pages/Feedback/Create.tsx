@@ -37,32 +37,32 @@ export default function () {
 
                     <form onSubmit={submit} encType="multipart/form-data">
                         <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                            <InputLabel value="Nama" htmlFor="nama" />
                             <Input
-                                id="nama"
-                                type="text"
-                                name="nama"
                                 value={data.name}
+                                type="text"
+                                onChange={e => setData('name', e.target.value)}
+                                name="nama"
+                                id="nama"
                                 className="mt-1"
                                 autoComplete="nama"
-                                onChange={e => setData('name', e.target.value)}
                             />
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="deskripsi" value="Deskripsi" />
+                            <InputLabel value="Deskripsi" htmlFor="deskripsi" />
                             <Input
-                                id="deskripsi"
-                                type="text"
-                                name="deskripsi"
                                 value={data.description}
+                                type="text"
+                                onChange={e => setData('description', e.target.value)}
+                                name="deskripsi"
+                                id="deskripsi"
                                 className="mt-1"
                                 autoComplete="deskripsi"
-                                onChange={e => setData('description', e.target.value)}
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className="mt-4">
                             Tambah Feedback
                         </Button>
                     </form>

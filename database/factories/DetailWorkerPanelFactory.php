@@ -3,12 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\ProgressStep;
-use App\Models\User;
 use App\Models\SerialPanel;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Models\User;
 use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\RoleEnum;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DetailWorkerPanel>

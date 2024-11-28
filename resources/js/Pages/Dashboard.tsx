@@ -232,10 +232,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
                             <div className="flex items-center gap-1.5">
                                 <div
-                                    className="h-2 w-2 shrink-0 rounded-[2px]"
                                     style={{
                                         backgroundColor: entry.color,
                                     }}
+                                    className="h-2 w-2 shrink-0 rounded-[2px]"
                                 />
                                 <span className="text-foreground">
                                     {attachmentStatusConfig[entry.dataKey].label}
@@ -340,12 +340,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 {data['project'] == null ? 'Semua Proyek' : `Proyek ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild className=" ">
+                                <PopoverTrigger className=" " asChild>
                                     <Button
                                         variant="outline"
                                         role="combobox"
-                                        aria-expanded={open}
                                         className="w-40 justify-between"
+                                        aria-expanded={open}
                                     >
                                         {value
                                             ? project.find(projectItem => projectItem.value === value)?.label
@@ -364,7 +364,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     data['projectDetail'].map(projectItem => (
                                                         <Link href={`/dashboard/${projectItem.id}`}>
                                                             <CommandItem
-                                                                key={projectItem.value}
                                                                 value={`/dashboard/${projectItem.name}`}
                                                                 onSelect={currentValue => {
                                                                     setValue(
@@ -372,6 +371,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     );
                                                                     setOpen(false);
                                                                 }}
+                                                                key={projectItem.value}
                                                             >
                                                                 <Check
                                                                     className={cn(
@@ -440,12 +440,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h2 className="text-lg">Status dari Trainset</h2>
                             <div className=" flex flex-col">
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                                    <PopoverTrigger asChild className={`${data['project'] == null ? 'hidden' : ' '}`}>
+                                    <PopoverTrigger className={`${data['project'] == null ? 'hidden' : ' '}`} asChild>
                                         <Button
                                             variant="outline"
                                             role="combobox"
-                                            aria-expanded={openTrainset}
                                             className="w-40 justify-between"
+                                            aria-expanded={openTrainset}
                                         >
                                             {valueTrainset
                                                 ? project.find(projectItem => projectItem.value === valueTrainset)
@@ -466,7 +466,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                         >
                                                             <CommandItem
-                                                                key={projectItem.id}
                                                                 value={projectItem.name}
                                                                 onSelect={currentValue => {
                                                                     setValueTrainset(
@@ -476,6 +475,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     );
                                                                     setOpenTrainset(false);
                                                                 }}
+                                                                key={projectItem.id}
                                                             >
                                                                 <Check
                                                                     className={cn(
@@ -510,18 +510,18 @@ export default function Dashboard({ auth, data }: PageProps) {
                         </div>
 
                         <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
-                            <BarChart accessibilityLayer data={data['ts']} className="h-1/4">
+                            <BarChart data={data['ts']} className="h-1/4" accessibilityLayer>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
-                                    dataKey="ts_name"
-                                    tickLine={false}
                                     tickMargin={10}
+                                    tickLine={false}
+                                    dataKey="ts_name"
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
                                 <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                                <Bar radius={4} fill="var(--color-done)" dataKey="done" />
+                                <Bar radius={4} fill="var(--color-in_progress)" dataKey="in_progress" />
                             </BarChart>
                         </ChartContainer>
                         {/* <ChartContainer
@@ -558,16 +558,16 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Workshop</h2>
                             <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
                             <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
-                                <BarChart accessibilityLayer data={data.ws} layout="vertical">
+                                <BarChart layout="vertical" data={data.ws} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
                                     <XAxis type="number" dataKey="in_progress"></XAxis>
                                     <XAxis type="number" dataKey="done"></XAxis>
                                     <YAxis
-                                        // max={10}
-                                        className=""
-                                        dataKey="name"
                                         type="category"
                                         tickLine={false}
+                                        dataKey="name"
+                                        // max={10}
+                                        className=""
                                         // tickSize={20}
                                         // tickCount={}
                                         // padding={}
@@ -577,8 +577,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                    <Bar radius={4} fill="var(--color-in_progress)" dataKey="in_progress" />
+                                    <Bar radius={4} fill="var(--color-done)" dataKey="done" />
                                 </BarChart>
                             </ChartContainer>
                         </div>
@@ -587,20 +587,20 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
                             <h3 className="text-base">Panel panel pada WS Assembly</h3>
                             <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
-                                <BarChart accessibilityLayer data={data['panel']}>
+                                <BarChart data={data['panel']} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
                                     <YAxis type="number" dataKey="in_progress"></YAxis>
                                     <XAxis
-                                        dataKey="name"
                                         tickLine={false}
+                                        tickFormatter={value => value.slice(0, 6)}
+                                        dataKey="name"
                                         // tickMargin={10}
                                         axisLine={false}
-                                        tickFormatter={value => value.slice(0, 6)}
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                    <Bar radius={4} fill="var(--color-in_progress)" dataKey="in_progress" />
+                                    <Bar radius={4} fill="var(--color-done)" dataKey="done" />
                                 </BarChart>
                             </ChartContainer>
                         </div>
@@ -612,20 +612,20 @@ export default function Dashboard({ auth, data }: PageProps) {
                             className="h-[300px] w-full mt-5"
                         >
                             <BarChart
-                                accessibilityLayer
-                                data={attachmentStatusOfWorkstationGraph.data}
                                 stackOffset='expand'
                                 layout="vertical"
+                                data={attachmentStatusOfWorkstationGraph.data}
+                                accessibilityLayer
                             >
                                 <CartesianGrid vertical={false} />
                                 <XAxis type="number" tickFormatter={value => toPercent(value, 0)} />
                                 <YAxis
-                                    className=""
-                                    dataKey="workstation_name"
-                                    type="category"
                                     width={150}
-                                    tickLine={false}
+                                    type="category"
                                     tickMargin={10}
+                                    tickLine={false}
+                                    dataKey="workstation_name"
+                                    className=""
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 6)} 
                                     />
@@ -634,11 +634,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
                                     <Bar
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        dataKey={dataKey}
-                                        fill={`var(--color-${dataKey})`}
-                                        stackId="1"
                                         type='monotone'
+                                        stackId="1"
+                                        key={`workstationPanelStatus-${dataKey}-key`}
+                                        fill={`var(--color-${dataKey})`}
+                                        dataKey={dataKey}
                                     />
                                 ))}
                             </BarChart>

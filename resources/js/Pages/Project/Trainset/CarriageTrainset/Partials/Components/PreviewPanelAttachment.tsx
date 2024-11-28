@@ -97,7 +97,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     }, [selectedAttachment]);
 
     return (
-        <div className="text-black dark:text-white" key={trainset.id}>
+        <div key={trainset.id} className="text-black dark:text-white">
             <h1 className="text-xl font-bold">
                 {t(
                     'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.title',
@@ -106,9 +106,9 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             {panelAttachmentAncestor && (
                 <div className="flex gap-4 my-4">
                     <Link
-                        className={buttonVariants()}
-                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
                         target="_blank"
+                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                        className={buttonVariants()}
                     >
                         {t(
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
@@ -258,11 +258,11 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                         {panelAttachment?.qr && (
                             <div className="flex flex-col gap-3 mt-5 text-white items-center">
                                 <div className="bg-white p-3">
-                                    <img src={panelAttachment.qr} alt="QR Code" width={200} />
+                                    <img width={200} src={panelAttachment.qr} alt="QR Code" />
                                 </div>
                                 <button
-                                    className={buttonVariants()}
                                     onClick={() => openImageAndPrint(panelAttachment.qr!)}
+                                    className={buttonVariants()}
                                 >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.buttons.print_qr',
@@ -277,13 +277,13 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
-                    <Table>
+                    <Table wrapperClassName='block max-h-96'>
                         <TableCaption>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                             )}
                         </TableCaption>
-                        <TableHeader>
+                        <TableHeader className="sticky top-0 bg-background dark:bg-background-dark">
                             <TableRow>
                                 <TableHead className="">
                                     {t(

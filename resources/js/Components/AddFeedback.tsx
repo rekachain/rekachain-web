@@ -41,7 +41,7 @@ const AddFeedback = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" title={t('components.add_feedback.title')}>
+                <Button variant="ghost" title={t('components.add_feedback.title')} size="icon">
                     <RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />
                 </Button>
             </DialogTrigger>
@@ -59,43 +59,43 @@ const AddFeedback = () => {
                             <>
                                 <Label htmlFor="name">{t('components.add_feedback.fields.name')}</Label>
                                 <Input
-                                    id="name"
-                                    name="name"
-                                    placeholder={t('components.add_feedback.fields.name_placeholder')}
                                     value={data.name}
+                                    placeholder={t('components.add_feedback.fields.name_placeholder')}
                                     onChange={e => setData('name', e.target.value)}
+                                    name="name"
+                                    id="name"
                                 />
                                 <Label htmlFor="email">{t('components.add_feedback.fields.email')}</Label>
                                 <Input
-                                    id="email"
-                                    name="email"
-                                    placeholder={t('components.add_feedback.fields.email_placeholder')}
                                     value={data.email}
+                                    placeholder={t('components.add_feedback.fields.email_placeholder')}
                                     onChange={e => setData('email', e.target.value)}
+                                    name="email"
+                                    id="email"
                                 />
                             </>
                         )}
 
                         <Label htmlFor="rating">{t('components.add_feedback.fields.rating')}</Label>
                         <Rating
-                            SVGclassName={'inline-block'}
-                            onClick={(rate: number) => setData('rating', rate)}
-                            allowFraction={false}
-                            initialValue={data.rating} // Multiplying by 20 to convert 5-star scale to 100 scale
                             transition
-                            showTooltip
                             tooltipArray={Object.values(FeedbackTooltipEnum)}
+                            SVGclassName={'inline-block'}
+                            showTooltip
+                            onClick={(rate: number) => setData('rating', rate)}
+                            initialValue={data.rating} // Multiplying by 20 to convert 5-star scale to 100 scale
                             fillColor="gold"
                             emptyColor="gray"
+                            allowFraction={false}
                         />
 
                         <Label htmlFor="message">{t('components.add_feedback.fields.message')}</Label>
                         <Input
-                            id="message"
-                            name="message"
-                            placeholder={t('components.add_feedback.fields.message_placeholder')}
                             value={data.message}
+                            placeholder={t('components.add_feedback.fields.message_placeholder')}
                             onChange={e => setData('message', e.target.value)}
+                            name="message"
+                            id="message"
                         />
                     </div>
                     <DialogFooter>
