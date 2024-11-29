@@ -250,8 +250,9 @@ class TrainsetResource extends JsonResource {
                             if (!$step) {
                                 $workers->push([
                                     'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
-                                    ...DetailWorkerPanelResource::make(
+                                    ...collect(DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
+                                    )->toArray(request()->merge(['intent' => '']))
                                     )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                                 ]);
                                 $steps->push([
@@ -262,8 +263,9 @@ class TrainsetResource extends JsonResource {
                             } else {
                                 $step['workers']->push([
                                     'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
-                                    ...DetailWorkerPanelResource::make(
+                                    ...collect(DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
+                                    )->toArray(request()->merge(['intent' => '']))
                                     )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                                 ]);
                             }

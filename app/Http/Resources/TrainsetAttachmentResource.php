@@ -283,8 +283,9 @@ class TrainsetAttachmentResource extends JsonResource {
                         if (!$step) {
                             $workers->push([
                                 'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
-                                ...DetailWorkerTrainsetResource::make(
+                                ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
+                                )->toArray(request()->merge(['intent' => '']))
                                 )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                             ]);
                             // logger(DetailWorkerTrainsetResource::make(
@@ -298,8 +299,9 @@ class TrainsetAttachmentResource extends JsonResource {
                         } else {
                             $step['workers']->push([
                                 'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
-                                ...DetailWorkerTrainsetResource::make(
+                                ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
+                                )->toArray(request()->merge(['intent' => '']))
                                 )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                             ]);
                         }
