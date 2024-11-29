@@ -8,29 +8,21 @@
 // In one trainset how is the panel condition
 // SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name
 
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { PageProps } from '../../Types';
-import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
-import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
-import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    LabelList,
-    Line,
-    LineChart,
-    Pie,
-    PieChart,
-    Text,
-    XAxis,
-    YAxis,
-} from 'recharts';
-import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis } from 'recharts';
+import { PageProps } from '../../Types';
 
-import { cn } from '@/Lib/Utils';
 import { Button } from '@/Components/UI/button';
 import {
     Command,
@@ -41,7 +33,8 @@ import {
     CommandList,
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { useCallback, useState } from 'react';
+import { cn } from '@/Lib/Utils';
+import { useState } from 'react';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
@@ -122,7 +115,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         {
                                                             // @ts-ignore
                                                             data['projectList'].map(
-                                                                (projectItem) => (
+                                                                (projectItem: any) => (
                                                                     <Link
                                                                         href={`/dashboard/${projectItem.id}`}
                                                                     >

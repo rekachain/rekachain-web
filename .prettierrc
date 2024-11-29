@@ -16,6 +16,7 @@
     "editorconfig": true,
     "bracketSameLine": false,
     "plugins": [
+        "prettier-plugin-organize-imports",
         "prettier-plugin-tailwindcss"
     ]
 }
