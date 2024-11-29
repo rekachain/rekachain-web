@@ -1,6 +1,6 @@
-import { Resource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { Resource } from '@/Support/Interfaces/Resources';
 import { AxiosRequestConfig } from 'axios';
 
 const DEBUG_MODE = true;

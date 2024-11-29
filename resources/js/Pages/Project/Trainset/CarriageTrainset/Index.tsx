@@ -1,16 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import {
-    CarriageResource,
-    PresetTrainsetResource,
-    ProjectResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
-import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { carriageService } from '@/Services/carriageService';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -18,20 +6,32 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
-import { ROUTES } from '@/Support/Constants/routes';
+import { Button } from '@/Components/UI/button';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { withLoading } from '@/Utils/withLoading';
-import ChangeTrainsetPreset from '@/Pages/Project/Trainset/CarriageTrainset/Partials/ChangeTrainsetPreset';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddCarriage from '@/Pages/Project/Trainset/CarriageTrainset/Partials/AddCarriage';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useDebounce } from '@uidotdev/usehooks';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/CarriageTrainset/Partials/AddNewTrainsetPreset';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import ChangeTrainsetPreset from '@/Pages/Project/Trainset/CarriageTrainset/Partials/ChangeTrainsetPreset';
 import GenerateAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/GenerateAttachment';
 import PreviewAttachments from '@/Pages/Project/Trainset/CarriageTrainset/Partials/PreviewAttachments';
-import { Button } from '@/Components/UI/button';
+import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAlert';
+import { carriageService } from '@/Services/carriageService';
 import { trainsetService } from '@/Services/trainsetService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import {
+    CarriageResource,
+    PresetTrainsetResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { useDebounce } from '@uidotdev/usehooks';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, memo, Suspense, useEffect, useState } from 'react';
 import ProgressAttachments from './Partials/ProgressAttachments';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));

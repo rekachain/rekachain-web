@@ -1,11 +1,11 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, Suspense } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import { buttonVariants } from '@/Components/UI/button';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Import from '@/Pages/Carriage/Partials/Import';
+import { ROUTES } from '@/Support/Constants/routes';
+import { Head, Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, Suspense } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();

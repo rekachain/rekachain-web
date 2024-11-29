@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -5,11 +6,10 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from '@/Components/UI/dropdown-menu';
-import { Button } from '@/Components/UI/button';
-import { RiTranslate2 } from '@remixicon/react';
 import { STYLING } from '@/Support/Constants/styling';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { RiTranslate2 } from '@remixicon/react';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect } from 'react';
 
 export const SetLocalization = () => {

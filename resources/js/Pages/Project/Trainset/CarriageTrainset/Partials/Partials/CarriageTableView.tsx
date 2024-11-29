@@ -1,4 +1,4 @@
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -7,12 +7,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
-import CarriageQty from '../Components/CarriageQty';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import CarriageQty from '../Components/CarriageQty';
 
 export default function CarriageTableView({
     trainset,

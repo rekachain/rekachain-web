@@ -1,8 +1,5 @@
-import { Label } from '@/Components/UI/label';
 import { Button } from '@/Components/UI/button';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { useForm } from '@inertiajs/react';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { Checkbox } from '@/Components/UI/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -13,14 +10,17 @@ import {
     DialogTrigger,
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
-import { ChangeEvent, FormEvent, useEffect } from 'react';
-import { PanelAttachmentResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { Checkbox } from '@/Components/UI/checkbox';
-import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
+import { Label } from '@/Components/UI/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
+import { PanelAttachmentResource } from '@/Support/Interfaces/Resources';
+import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 
 export default function ({ panelAttachment }: { panelAttachment: PanelAttachmentResource }) {
     const { t } = useLaravelReactI18n();

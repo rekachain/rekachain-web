@@ -1,4 +1,4 @@
-import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -7,13 +7,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Link } from '@inertiajs/react';
 import PanelProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelProgress';
+import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarPanelTableView({
     trainset,

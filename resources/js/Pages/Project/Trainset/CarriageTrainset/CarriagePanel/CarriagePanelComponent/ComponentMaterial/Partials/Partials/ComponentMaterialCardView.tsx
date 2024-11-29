@@ -1,5 +1,6 @@
 import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import ComponentMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/Partials/Components/ComponentMaterialQty';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelComponentResource,
@@ -7,9 +8,7 @@ import {
     CarriageTrainsetResource,
     TrainsetResource,
 } from '@/Support/Interfaces/Resources';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import ComponentMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/Partials/Components/ComponentMaterialQty';
 
 export default function ComponentMaterialCardView({
     trainset,

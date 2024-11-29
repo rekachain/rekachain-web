@@ -1,6 +1,6 @@
 import './axios';
-import './swal';
 import './filepond';
+import './swal';
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

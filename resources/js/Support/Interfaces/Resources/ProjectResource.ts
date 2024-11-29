@@ -1,5 +1,5 @@
-import { Resource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Project } from '@/Support/Interfaces/Models';
+import { Resource, TrainsetResource } from '@/Support/Interfaces/Resources';
 
 export interface ProjectResource extends Resource, Project {
     trainset_count: number;

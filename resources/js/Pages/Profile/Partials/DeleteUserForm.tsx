@@ -1,12 +1,12 @@
-import { FormEventHandler, useRef, useState } from 'react';
 import DangerButton from '@/Components/DangerButton';
 import InputError from '@/Components/InputError';
 import Modal from '@/Components/Modal';
-import { useForm } from '@inertiajs/react';
-import { Label } from '@/Components/UI/label';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useRef, useState } from 'react';
 
 export default function DeleteUserForm({ className = '' }: { className?: string }) {
     const { t } = useLaravelReactI18n();

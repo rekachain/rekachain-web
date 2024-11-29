@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { PanelResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { panelService } from '@/Services/panelService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import PanelCardView from './Partials/PanelCardView';
-import PanelTableView from './Partials/PanelTableView';
+import Filters from '@/Pages/Panel/Partials/Partials/Filters';
+import { panelService } from '@/Services/panelService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { PanelResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Panel/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import PanelCardView from './Partials/PanelCardView';
+import PanelTableView from './Partials/PanelTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();

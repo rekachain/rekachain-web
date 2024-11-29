@@ -8,7 +8,6 @@ import {
 } from '@/Components/UI/table';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PermissionResource } from '@/Support/Interfaces/Resources';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function PermissionsTableView({

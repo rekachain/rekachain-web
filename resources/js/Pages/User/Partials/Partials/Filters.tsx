@@ -1,6 +1,4 @@
 import GenericFilters from '@/Components/GenericFilters';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { memo } from 'react';
 import {
     Select,
     SelectContent,
@@ -10,8 +8,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/UI/select';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ServiceFilterTrashedType } from '@/Support/Interfaces/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { memo } from 'react';
 
 const Filters = ({
     setFilters,

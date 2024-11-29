@@ -7,8 +7,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { PreviewGenerateAttachmentRawMaterialResource } from '@/Support/Interfaces/Others';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 const PreviewGenerateTrainsetAttachment = ({
     rawMaterials,

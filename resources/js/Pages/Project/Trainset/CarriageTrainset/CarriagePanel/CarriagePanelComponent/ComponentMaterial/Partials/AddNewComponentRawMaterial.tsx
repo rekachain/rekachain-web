@@ -1,8 +1,5 @@
-import {
-    CarriagePanelComponentResource,
-    CarriagePanelResource,
-    ComponentResource,
-} from '@/Support/Interfaces/Resources';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -11,24 +8,27 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
-import { Loader2, RefreshCcw } from 'lucide-react';
 import { Input } from '@/Components/UI/input';
-import { Textarea } from '@/Components/UI/textarea';
-import { ChangeEvent, FormEvent, memo, useCallback } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { withLoading } from '@/Utils/withLoading';
-import { useLoading } from '@/Contexts/LoadingContext';
-import { useForm } from '@inertiajs/react';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { Label } from '@/Components/UI/label';
 import { Separator } from '@/Components/UI/separator';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Textarea } from '@/Components/UI/textarea';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import { STYLING } from '@/Support/Constants/styling';
-import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import {
+    CarriagePanelComponentResource,
+    CarriagePanelResource,
+    ComponentResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Loader2, RefreshCcw } from 'lucide-react';
+import { ChangeEvent, FormEvent, memo, useCallback } from 'react';
 
 const AddNewComponentRawMaterial = ({
     componentResource,

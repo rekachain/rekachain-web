@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import GenericPagination from '@/Components/GenericPagination';
+import { projectService } from '@/Services/projectService';
+import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import {
     CarriageResource,
     ProjectPanelResource,
     ProjectResource,
 } from '@/Support/Interfaces/Resources';
-import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
-import PanelTableView from './Partials/PanelTableView';
+import { useEffect, useState } from 'react';
 import PanelCardView from './Partials/PanelCardView';
-import GenericPagination from '@/Components/GenericPagination';
+import PanelTableView from './Partials/PanelTableView';
 
 export default function ({
     project,

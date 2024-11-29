@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { RawMaterialResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { rawMaterialService } from '@/Services/rawMaterialService';
-import RawMaterialCardView from './Partials/RawMaterialCardView';
-import RawMaterialTableView from './Partials/RawMaterialTableView';
 import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/RawMaterial/Partials/Partials/Filters';
+import { rawMaterialService } from '@/Services/rawMaterialService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/RawMaterial/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import RawMaterialCardView from './Partials/RawMaterialCardView';
+import RawMaterialTableView from './Partials/RawMaterialTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();

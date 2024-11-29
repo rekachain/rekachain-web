@@ -1,10 +1,10 @@
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
-import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriageCardView from './Partials/CarriageCardView';
 import CarriageTableView from './Partials/CarriageTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     trainset,

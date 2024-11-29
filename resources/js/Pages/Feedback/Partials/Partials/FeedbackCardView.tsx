@@ -1,15 +1,14 @@
 import { Button } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import AnimateIn from '@/Lib/AnimateIn';
+import { STYLING } from '@/Support/Constants/styling';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { RoleEnum } from '@/Support/Enums/roleEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { FeedbackResource } from '@/Support/Interfaces/Resources';
 import { usePage } from '@inertiajs/react';
-import React from 'react';
-import { Rating } from 'react-simple-star-rating';
-import { STYLING } from '@/Support/Constants/styling';
-import { RoleEnum } from '@/Support/Enums/roleEnum';
-import { checkPermission } from '@/Helpers/sidebarHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Rating } from 'react-simple-star-rating';
 
 export default function FeedbackTableView({
     feedbackResponse,

@@ -1,8 +1,12 @@
+import InputLabel from '@/Components/InputLabel';
+import { buttonVariants } from '@/Components/UI/button';
 import {
-    PanelAttachmentResource,
-    RawMaterialResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { Separator } from '@/Components/UI/separator';
 import {
     Table,
@@ -13,23 +17,19 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { useEffect, useState } from 'react';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/Components/UI/select';
-import InputLabel from '@/Components/InputLabel';
+import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportPanelCustomMaterial';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import {
+    PanelAttachmentResource,
+    RawMaterialResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportPanelCustomMaterial';
-import { withLoading } from '@/Utils/withLoading';
+import { useEffect, useState } from 'react';
 
 const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();

@@ -1,23 +1,23 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback } from 'react';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
-import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
-import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
-import { RoleResource, WorkstationResource } from '@/Support/Interfaces/Resources';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
-import { workstationService } from '@/Services/workstationService';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { stepService } from '@/Services/stepService';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { FilePond } from 'react-filepond';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { userService } from '@/Services/userService';
+import { workstationService } from '@/Services/workstationService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { RoleResource, WorkstationResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useCallback } from 'react';
+import { FilePond } from 'react-filepond';
 
 export default function (props: { roles: RoleResource[] }) {
     const { t } = useLaravelReactI18n();

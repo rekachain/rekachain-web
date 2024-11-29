@@ -1,7 +1,3 @@
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { ReactNode, useEffect } from 'react';
-import { useDebounce, useIsFirstRender } from '@uidotdev/usehooks';
-import { useForm } from '@inertiajs/react';
 import { Input } from '@/Components/UI/input';
 import {
     Select,
@@ -12,9 +8,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/UI/select';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { RiCloseLine, RiSearchLine } from '@remixicon/react';
 import { STYLING } from '@/Support/Constants/styling';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { useForm } from '@inertiajs/react';
+import { RiCloseLine, RiSearchLine } from '@remixicon/react';
+import { useDebounce, useIsFirstRender } from '@uidotdev/usehooks';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ReactNode, useEffect } from 'react';
 
 interface GenericFiltersProps {
     filters: ServiceFilterOptions;

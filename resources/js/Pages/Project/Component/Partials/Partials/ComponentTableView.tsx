@@ -6,8 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
 

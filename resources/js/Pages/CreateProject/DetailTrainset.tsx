@@ -1,14 +1,14 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import AnimateIn from '@/Lib/AnimateIn';
-import { Head, Link } from '@inertiajs/react';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from '@/Components/UI/accordion';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AnimateIn from '@/Lib/AnimateIn';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 
 type Gerbong = {

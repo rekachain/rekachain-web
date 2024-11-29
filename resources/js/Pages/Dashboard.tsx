@@ -1,30 +1,22 @@
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
-import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
-import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
-import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    LabelList,
-    Line,
-    LineChart,
-    Pie,
-    PieChart,
-    Tooltip,
-    XAxis,
-    YAxis,
-} from 'recharts';
-import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-import { cn } from '@/Lib/Utils';
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { Button } from '@/Components/UI/button';
 import {
     Command,
     CommandEmpty,
@@ -34,6 +26,7 @@ import {
     CommandList,
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { cn } from '@/Lib/Utils';
 // import { useState } from 'react';
 
 const project = [
@@ -71,13 +64,9 @@ const trainset = [
 // TODO : TS only available when project
 // TODO : show ts for each project
 
-import { useCallback, useEffect, useState } from 'react';
-import { ROUTES } from '@/Support/Constants/routes';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
-import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { ROUTES } from '@/Support/Constants/routes';
+import { useCallback, useEffect, useState } from 'react';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];

@@ -1,27 +1,27 @@
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
+import { ScrollArea } from '@/Components/UI/scroll-area';
+import { Separator } from '@/Components/UI/separator';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
+import { progressService } from '@/Services/progressService';
+import { workAspectService } from '@/Services/workAspectService';
+import { STYLING } from '@/Support/Constants/styling';
+import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     CarriagePanelComponentResource,
     ProgressResource,
     StepResource,
     WorkAspectResource,
 } from '@/Support/Interfaces/Resources';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
-import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { progressService } from '@/Services/progressService';
-import { useForm } from '@inertiajs/react';
-import { Separator } from '@/Components/UI/separator';
-import { RefreshCcw } from 'lucide-react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { STYLING } from '@/Support/Constants/styling';
-import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
-import { workAspectService } from '@/Services/workAspectService';
 import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
-import { ScrollArea } from '@/Components/UI/scroll-area';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { RefreshCcw } from 'lucide-react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 
 export default function ({
     carriagePanelComponent,

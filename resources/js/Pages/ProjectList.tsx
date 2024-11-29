@@ -1,16 +1,16 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Button } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { Button } from '@/Components/UI/button';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AnimateIn from '@/Lib/AnimateIn';
+import { Head, Link } from '@inertiajs/react';
+import { FileSearch } from 'lucide-react';
 //   No Proyek jumlah TS Detail
 
 type Proyek = {
@@ -23,8 +23,6 @@ const listProyek: Proyek[] = [
     { noProyek: 611, jumlahTS: 32 },
     { noProyek: 612, jumlahTS: 25 },
 ];
-import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/Lib/AnimateIn';
 
 export default function ProjectList() {
     const handleDownload = () => {

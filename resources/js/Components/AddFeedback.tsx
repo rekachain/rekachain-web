@@ -1,4 +1,4 @@
-import { FormEvent, memo } from 'react';
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -8,18 +8,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { RiFeedbackLine } from '@remixicon/react';
-import { useForm, usePage } from '@inertiajs/react';
-import { Rating } from 'react-simple-star-rating';
-import { withLoading } from '@/Utils/withLoading';
-import { feedbackService } from '@/Services/feedbackService';
+import { Label } from '@/Components/UI/label';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { FeedbackTooltipEnum } from '@/Support/Enums/feedbackTooltipEnum';
+import { feedbackService } from '@/Services/feedbackService';
 import { STYLING } from '@/Support/Constants/styling';
+import { FeedbackTooltipEnum } from '@/Support/Enums/feedbackTooltipEnum';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm, usePage } from '@inertiajs/react';
+import { RiFeedbackLine } from '@remixicon/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEvent, memo } from 'react';
+import { Rating } from 'react-simple-star-rating';
 
 const AddFeedback = () => {
     const auth = usePage().props.auth;

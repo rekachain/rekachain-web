@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -6,9 +7,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { createContext, ReactNode, useContext, useState } from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface ShowConfirmationProps {
     (onConfirm: () => void, confirmationTitle?: string, confirmationDescription?: string): void;

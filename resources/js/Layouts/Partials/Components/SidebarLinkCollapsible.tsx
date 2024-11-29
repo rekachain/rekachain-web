@@ -5,10 +5,10 @@ import {
     AccordionTrigger,
 } from '@/Components/UI/accordion';
 import { buttonVariants } from '@/Components/UI/button';
-import { Link } from '@inertiajs/react';
-import React, { useContext } from 'react';
-import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
 import { useSidebar } from '@/Contexts/SidebarContext';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
+import { Link } from '@inertiajs/react';
+import React from 'react';
 
 interface SidebarLinkCollapsibleItemProps {
     group: SIDEBAR_GROUP_ENUM;

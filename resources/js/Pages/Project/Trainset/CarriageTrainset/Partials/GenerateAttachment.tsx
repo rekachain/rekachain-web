@@ -1,3 +1,5 @@
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,26 +9,24 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
-import { Loader2 } from 'lucide-react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetService } from '@/Services/trainsetService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { memo, useCallback, useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { workstationService } from '@/Services/workstationService';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { ScrollArea } from '@/Components/UI/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
-import GenericDataSelector from '@/Components/GenericDataSelector';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import PreviewGeneratePanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGeneratePanelAttachment';
+import PreviewGenerateTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGenerateTrainsetAttachment';
+import { trainsetService } from '@/Services/trainsetService';
+import { workstationService } from '@/Services/workstationService';
 import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
 import { PreviewGenerateAttachmentRawMaterialResource } from '@/Support/Interfaces/Others';
-import PreviewGenerateTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGenerateTrainsetAttachment';
-import { ScrollArea } from '@/Components/UI/scroll-area';
-import PreviewGeneratePanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGeneratePanelAttachment';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Loader2 } from 'lucide-react';
+import { memo, useCallback, useState } from 'react';
 
 const GenerateAttachment = ({
     trainset,

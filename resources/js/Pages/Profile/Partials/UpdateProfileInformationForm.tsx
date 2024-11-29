@@ -1,16 +1,16 @@
 import InputError from '@/Components/InputError';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
-import { FormEventHandler, useEffect } from 'react';
-import { PageProps } from '@/Types';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
-import { FilePond } from 'react-filepond';
-import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PageProps } from '@/Types';
+import { withLoading } from '@/Utils/withLoading';
+import { Transition } from '@headlessui/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useEffect } from 'react';
+import { FilePond } from 'react-filepond';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,

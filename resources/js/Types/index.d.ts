@@ -1,5 +1,5 @@
-import { User } from '@/Support/Interfaces/Models';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { User } from '@/Support/Interfaces/Models';
 
 interface AuthenticatedUser extends User {
     role: string;

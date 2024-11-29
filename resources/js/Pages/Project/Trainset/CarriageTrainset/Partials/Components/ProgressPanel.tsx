@@ -1,28 +1,25 @@
 import {
-    CarriageResource,
-    DetailWorkerPanelResource,
-    PanelResource,
-    ProgressResource,
-    StepResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
-import { Separator } from '@/Components/UI/separator';
-import { Fragment, useEffect, useState } from 'react';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetService } from '@/Services/trainsetService';
-import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
-import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbList,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import WorkerStepCard from './Components/WorkerStepCard';
-import WorkerCard from './Components/WorkerCard';
+import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
+import { Separator } from '@/Components/UI/separator';
+import { trainsetService } from '@/Services/trainsetService';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { PanelProgressResource } from '@/Support/Interfaces/Others/PanelProgressResource';
+import {
+    DetailWorkerPanelResource,
+    StepResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Fragment, useEffect, useState } from 'react';
+import WorkerCard from './Components/WorkerCard';
+import WorkerStepCard from './Components/WorkerStepCard';
 
 const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title: string }) => {
     const { t } = useLaravelReactI18n();

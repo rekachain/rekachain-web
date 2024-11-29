@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import GenericPagination from '@/Components/GenericPagination';
+import { projectService } from '@/Services/projectService';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
-import PanelTableView from './Partials/PanelTableView';
+import { useEffect, useState } from 'react';
 import PanelCardView from './Partials/PanelCardView';
-import GenericPagination from '@/Components/GenericPagination';
+import PanelTableView from './Partials/PanelTableView';
 
 export default function ({ project }: { project: ProjectResource }) {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<ProjectPanelResource>>();

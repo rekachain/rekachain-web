@@ -1,9 +1,20 @@
 // TODO: i18n not implemented
 
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from '@/Components/UI/breadcrumb';
+import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AddNewComponentRawMaterial from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/AddNewComponentRawMaterial';
+import { componentService } from '@/Services/componentService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     CarriagePanelComponentResource,
     CarriagePanelResource,
@@ -12,21 +23,10 @@ import {
     ProjectResource,
     TrainsetResource,
 } from '@/Support/Interfaces/Resources';
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from '@/Components/UI/breadcrumb';
-import { ROUTES } from '@/Support/Constants/routes';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { fetchGenericData } from '@/Helpers/dataManagementHelper';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { componentService } from '@/Services/componentService';
-import AddNewComponentRawMaterial from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/AddNewComponentRawMaterial';
+import { lazy, memo, Suspense, useEffect, useState } from 'react';
 
 const ComponentMaterials = memo(lazy(() => import('./Partials/ComponentMaterials')));
 

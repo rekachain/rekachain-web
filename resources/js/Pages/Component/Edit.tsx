@@ -1,19 +1,19 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback } from 'react';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { componentService } from '@/Services/componentService';
-import { ROUTES } from '@/Support/Constants/routes';
+import { Input } from '@/Components/UI/input';
+import { Textarea } from '@/Components/UI/textarea';
 import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { componentService } from '@/Services/componentService';
+import { progressService } from '@/Services/progressService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { ComponentResource, ProgressResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { progressService } from '@/Services/progressService';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { Textarea } from '@/Components/UI/textarea';
+import { FormEventHandler, useCallback } from 'react';
 
 export default function ({ component }: { component: ComponentResource }) {
     const { t } = useLaravelReactI18n();

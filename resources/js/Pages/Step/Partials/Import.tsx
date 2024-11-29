@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,16 +8,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { ROUTES } from '@/Support/Constants/routes';
-import { router, useForm } from '@inertiajs/react';
-import { stepService } from '@/Services/stepService';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { ChangeEvent, FormEvent } from 'react';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { stepService } from '@/Services/stepService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { withLoading } from '@/Utils/withLoading';
+import { router, useForm } from '@inertiajs/react';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { data, setData } = useForm<{

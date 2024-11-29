@@ -6,12 +6,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     CarriageResource,
     ProjectPanelResource,
     ProjectResource,
 } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
 

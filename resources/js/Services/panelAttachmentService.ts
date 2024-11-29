@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { PanelAttachmentResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PanelAttachmentResource } from '@/Support/Interfaces/Resources';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
 
 export const panelAttachmentService = {

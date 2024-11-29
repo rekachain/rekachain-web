@@ -1,4 +1,11 @@
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import InputLabel from '@/Components/InputLabel';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import {
     Table,
     TableBody,
@@ -8,18 +15,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { useCallback, useEffect, useState } from 'react';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/Components/UI/select';
-import InputLabel from '@/Components/InputLabel';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { trainsetService } from '@/Services/trainsetService';
 import { PreviewGenerateAttachmentRawMaterialResource } from '@/Support/Interfaces/Others';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useCallback, useEffect, useState } from 'react';
 
 const PreviewGeneratePanelAttachment = ({ trainset }: { trainset: TrainsetResource }) => {
     console.log(trainset);

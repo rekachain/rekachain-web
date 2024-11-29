@@ -1,25 +1,25 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback, useState } from 'react';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
+import { Checkbox } from '@/Components/UI/checkbox';
+import { Input } from '@/Components/UI/input';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { divisionService } from '@/Services/divisionService';
+import { roleService } from '@/Services/roleService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import {
     DivisionResource,
     PermissionResource,
     PermissionResourceGrouped,
     RoleResource,
 } from '@/Support/Interfaces/Resources';
-import { Checkbox } from '@/Components/UI/checkbox';
-import { roleService } from '@/Services/roleService';
-import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { divisionService } from '@/Services/divisionService';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { FormEventHandler, useCallback, useState } from 'react';
 
 export default function (props: {
     role: RoleResource;

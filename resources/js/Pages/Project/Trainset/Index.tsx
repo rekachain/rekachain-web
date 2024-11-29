@@ -1,13 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useState } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Button } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { ProjectResource } from '@/Support/Interfaces/Resources';
-import { Label } from '@/Components/UI/label';
-import { Input } from '@/Components/UI/input';
-import { projectService } from '@/Services/projectService';
-import { Loader2 } from 'lucide-react';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -15,11 +6,20 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
-import { ROUTES } from '@/Support/Constants/routes';
+import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { projectService } from '@/Services/projectService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Loader2 } from 'lucide-react';
+import { lazy, memo, Suspense, useState } from 'react';
 
 const Trainsets = memo(lazy(() => import('./Partials/Trainsets')));
 

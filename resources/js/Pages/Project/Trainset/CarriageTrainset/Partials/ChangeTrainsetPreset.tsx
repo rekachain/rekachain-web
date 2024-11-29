@@ -1,17 +1,17 @@
-import { SelectGroup } from '@/Components/UI/select';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import { Button } from '@/Components/UI/button';
-import { Loader2 } from 'lucide-react';
-import { FormEvent, useCallback, useEffect } from 'react';
-import { PresetTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetService } from '@/Services/trainsetService';
+import { SelectGroup } from '@/Components/UI/select';
+import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { presetTrainsetService } from '@/Services/presetTrainsetService';
-import { useForm } from '@inertiajs/react';
+import { trainsetService } from '@/Services/trainsetService';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { PresetTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Loader2 } from 'lucide-react';
+import { FormEvent, useCallback, useEffect } from 'react';
 
 const ChangeTrainsetPreset = ({
     trainset,

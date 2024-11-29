@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
+import GenericPagination from '@/Components/GenericPagination';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { projectService } from '@/Services/projectService';
+import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import {
     CarriageResource,
     ProjectComponentResource,
     ProjectResource,
 } from '@/Support/Interfaces/Resources';
-import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
-import GenericPagination from '@/Components/GenericPagination';
 
 export default function ({
     project,

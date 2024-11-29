@@ -1,3 +1,4 @@
+import { buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -6,12 +7,11 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Link } from '@inertiajs/react';
-import { buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriageTableView({
     project,

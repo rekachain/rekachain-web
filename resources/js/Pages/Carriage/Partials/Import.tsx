@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,17 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { ROUTES } from '@/Support/Constants/routes';
-import { router, useForm } from '@inertiajs/react';
-import { carriageService } from '@/Services/carriageService';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriageService } from '@/Services/carriageService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { withLoading } from '@/Utils/withLoading';
-import { ChangeEvent, FormEvent } from 'react';
+import { router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();

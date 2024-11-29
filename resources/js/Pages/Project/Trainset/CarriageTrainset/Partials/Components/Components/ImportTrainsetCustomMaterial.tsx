@@ -1,8 +1,5 @@
-import { Label } from '@/Components/UI/label';
 import { Button } from '@/Components/UI/button';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { useForm } from '@inertiajs/react';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { Checkbox } from '@/Components/UI/checkbox';
 import {
     Dialog,
     DialogContent,
@@ -13,14 +10,17 @@ import {
     DialogTrigger,
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
-import { ChangeEvent, FormEvent, useEffect } from 'react';
+import { Label } from '@/Components/UI/label';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { Checkbox } from '@/Components/UI/checkbox';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
-import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ChangeEvent, FormEvent, useEffect } from 'react';
 
 export default function ({
     trainsetAttachment,

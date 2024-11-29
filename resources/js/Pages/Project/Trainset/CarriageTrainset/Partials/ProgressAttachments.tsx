@@ -1,3 +1,4 @@
+import { buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -6,18 +7,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { buttonVariants } from '@/Components/UI/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { useEffect, useState } from 'react';
-import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
-import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import ProgressComponent from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/ProgressComponent';
+import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { trainsetService } from '@/Services/trainsetService';
+import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
+import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import ProgressPanel from './Components/ProgressPanel';
 
 const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {

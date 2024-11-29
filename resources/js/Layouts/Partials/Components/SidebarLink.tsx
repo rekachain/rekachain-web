@@ -1,8 +1,7 @@
-import { Link } from '@inertiajs/react';
 import { buttonVariants } from '@/Components/UI/button';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { useContext } from 'react';
 import { useSidebar } from '@/Contexts/SidebarContext';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { Link } from '@inertiajs/react';
 
 interface SidebarLinkProps {
     routeName: string;

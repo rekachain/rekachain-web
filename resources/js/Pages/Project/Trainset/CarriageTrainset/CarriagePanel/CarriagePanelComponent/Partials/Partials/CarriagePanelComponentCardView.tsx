@@ -1,17 +1,16 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
+import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
+import { ROUTES } from '@/Support/Constants/routes';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelResource,
     CarriageTrainsetResource,
     TrainsetResource,
 } from '@/Support/Interfaces/Resources';
-import React from 'react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
 import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriagePanelComponentCardView({
     trainset,

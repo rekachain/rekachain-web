@@ -1,8 +1,7 @@
-import React from 'react';
-import { CarriageResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { ROUTES } from '@/Support/Constants/routes';
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { CarriageResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 

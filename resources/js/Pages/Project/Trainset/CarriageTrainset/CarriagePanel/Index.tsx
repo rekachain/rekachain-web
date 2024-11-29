@@ -1,13 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useEffect, useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import {
-    CarriageTrainsetResource,
-    PanelResource,
-    ProjectResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -15,14 +6,23 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
-import { ROUTES } from '@/Support/Constants/routes';
-import { panelService } from '@/Services/panelService';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewPanel from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/AddNewPanel';
+import { panelService } from '@/Services/panelService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import {
+    CarriageTrainsetResource,
+    PanelResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, memo, Suspense, useEffect, useState } from 'react';
 
 const Panels = memo(lazy(() => import('./Partials/Panels')));
 

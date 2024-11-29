@@ -1,12 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, Suspense, useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ProjectResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,6 +6,14 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { projectService } from '@/Services/projectService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, Suspense, useState } from 'react';
 
 export default function ({ project: initialProject }: { project: ProjectResource }) {
     const { t } = useLaravelReactI18n();

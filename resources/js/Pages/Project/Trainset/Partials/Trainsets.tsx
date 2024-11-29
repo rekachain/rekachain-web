@@ -1,11 +1,11 @@
-import { ProjectResource } from '@/Support/Interfaces/Resources';
-import { trainsetService } from '@/Services/trainsetService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { trainsetService } from '@/Services/trainsetService';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import TrainsetCardView from './Partials/TrainsetCardView';
 import TrainsetTableView from './Partials/TrainsetTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     project,

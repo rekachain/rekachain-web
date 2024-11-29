@@ -1,14 +1,14 @@
+import { Transition } from '@headlessui/react';
+import { InertiaLinkProps, Link } from '@inertiajs/react';
 import {
-    useState,
     createContext,
-    useContext,
+    Dispatch,
     Fragment,
     PropsWithChildren,
-    Dispatch,
     SetStateAction,
+    useContext,
+    useState,
 } from 'react';
-import { Link, InertiaLinkProps } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
 
 const DropDownContext = createContext<{
     open: boolean;

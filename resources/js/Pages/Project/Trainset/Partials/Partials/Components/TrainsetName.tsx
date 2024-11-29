@@ -1,14 +1,14 @@
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Button } from '@/Components/UI/button';
-import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
 import { Input } from '@/Components/UI/input';
-import { trainsetService } from '@/Services/trainsetService';
-import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { FormEvent, useState } from 'react';
+import { trainsetService } from '@/Services/trainsetService';
+import { STYLING } from '@/Support/Constants/styling';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { PencilLine } from 'lucide-react';
+import { FormEvent, useState } from 'react';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
     const { t } = useLaravelReactI18n();

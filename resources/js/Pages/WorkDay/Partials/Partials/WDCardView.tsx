@@ -5,7 +5,6 @@ import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkDayResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WDCardView({

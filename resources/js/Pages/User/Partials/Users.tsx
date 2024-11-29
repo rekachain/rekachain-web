@@ -1,15 +1,15 @@
-import { userService } from '@/Services/userService';
-import { useEffect, useState } from 'react';
-import { UserResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
-import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/User/Partials/Partials/Filters';
+import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
+import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
+import { userService } from '@/Services/userService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { UserResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/User/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();

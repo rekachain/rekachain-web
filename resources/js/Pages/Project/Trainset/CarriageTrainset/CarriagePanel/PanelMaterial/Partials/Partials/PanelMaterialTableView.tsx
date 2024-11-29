@@ -1,8 +1,4 @@
-import {
-    CarriagePanelResource,
-    CarriageTrainsetResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
+import { Button } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -11,10 +7,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { Button } from '@/Components/UI/button';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import PanelMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/Components/PanelMaterialQty';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function PanelMaterialTableView({
     trainset,

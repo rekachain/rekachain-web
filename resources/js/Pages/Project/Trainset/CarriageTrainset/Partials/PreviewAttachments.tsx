@@ -1,3 +1,4 @@
+import { buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -6,20 +7,19 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { buttonVariants } from '@/Components/UI/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { useEffect, useState } from 'react';
-import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
-import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
-import PreviewTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewTrainsetAttachment';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import PreviewPanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewPanelAttachment';
+import PreviewTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewTrainsetAttachment';
+import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { trainsetService } from '@/Services/trainsetService';
+import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();

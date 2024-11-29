@@ -1,17 +1,25 @@
+import { Button } from '@/Components/UI/button';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/Components/UI/sheet';
+import { ROUTES } from '@/Support/Constants/routes';
+import { STYLING } from '@/Support/Constants/styling';
+import { Link } from '@inertiajs/react';
 import {
     RiArtboard2Fill,
     RiBox3Line,
     RiCalendar2Line,
     RiCaravanLine,
-    RiContractLeftLine,
-    RiContractRightLine,
     RiDivideLine,
     RiExpandRightLine,
-    RiFlickrLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
-    RiLockLine,
     RiLockUnlockFill,
     RiQuestionLine,
     RiSettings3Line,
@@ -21,28 +29,9 @@ import {
     RiUser2Line,
     RiUserLine,
 } from '@remixicon/react';
-import { Button } from '@/Components/UI/button';
-import SidebarLink from './Components/SidebarLink';
-import SidebarMenu from './Components/SidebarMenu';
-import { ListOrdered } from 'lucide-react';
-import {
-    SidebarLinkCollapsible,
-    SidebarLinkCollapsibleItem,
-} from './Components/SidebarLinkCollapsible';
-import SidebarLogout from './Components/SidebarLogout';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useRef } from 'react';
-import { STYLING } from '@/Support/Constants/styling';
-import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/Components/UI/sheet';
+import SidebarLogout from './Components/SidebarLogout';
 
 import {
     Accordion,
@@ -50,10 +39,9 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/Components/UI/accordion';
+import { ScrollArea } from '@/Components/UI/scroll-area';
 import { checkPermission } from '@/Helpers/sidebarHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
-import { ScrollArea } from '@/Components/UI/scroll-area';
 
 export default function SidebarMobile() {
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse', true);

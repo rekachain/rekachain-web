@@ -5,8 +5,8 @@
  */
 
 import axios from 'axios';
-import withReactContent from 'sweetalert2-react-content';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 window.axios = axios;
 

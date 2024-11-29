@@ -1,4 +1,4 @@
-import { FormEvent, memo } from 'react';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,17 +7,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { Loader2 } from 'lucide-react';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useForm } from '@inertiajs/react';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetService } from '@/Services/trainsetService';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { trainsetService } from '@/Services/trainsetService';
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Loader2 } from 'lucide-react';
+import { FormEvent, memo } from 'react';
 
 const AddNewTrainsetPreset = ({
     trainset,

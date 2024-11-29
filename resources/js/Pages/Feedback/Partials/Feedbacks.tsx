@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { FeedbackResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { feedbackService } from '@/Services/feedbackService';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { feedbackService } from '@/Services/feedbackService';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { RoleEnum } from '@/Support/Enums/roleEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { FeedbackResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { usePage } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import FeedbackCardView from './Partials/FeedbackCardView';
 import FeedbackTableView from './Partials/FeedbackTableView';
-import { withLoading } from '@/Utils/withLoading';
-import { checkPermission } from '@/Helpers/sidebarHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { usePage } from '@inertiajs/react';
-import { RoleEnum } from '@/Support/Enums/roleEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
     const { t } = useLaravelReactI18n();

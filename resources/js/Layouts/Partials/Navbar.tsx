@@ -1,25 +1,7 @@
-import {
-    RiBook2Line,
-    RiDownload2Line,
-    RiMoonClearLine,
-    RiNotification4Line,
-    RiSearchLine,
-} from '@remixicon/react';
-import { Input } from '@/Components/UI/input';
-import { Separator } from '@/Components/UI/separator';
+import AddFeedback from '@/Components/AddFeedback';
+import { SearchResults } from '@/Components/SearchResult';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
-import { Link, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { Sun } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,16 +10,34 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/UI/dropdown-menu';
-import { STYLING } from '@/Support/Constants/styling';
-import { ROUTES } from '@/Support/Constants/routes';
-import { useMediaQuery } from 'react-responsive';
-import AddFeedback from '@/Components/AddFeedback';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Input } from '@/Components/UI/input';
+import { Separator } from '@/Components/UI/separator';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/Components/UI/sheet';
 import useDarkMode from '@/Hooks/useDarkMode';
-import axios from 'axios';
-import { SearchResults } from '@/Components/SearchResult';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { ROUTES } from '@/Support/Constants/routes';
+import { STYLING } from '@/Support/Constants/styling';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    RiBook2Line,
+    RiDownload2Line,
+    RiMoonClearLine,
+    RiNotification4Line,
+    RiSearchLine,
+} from '@remixicon/react';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import axios from 'axios';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();

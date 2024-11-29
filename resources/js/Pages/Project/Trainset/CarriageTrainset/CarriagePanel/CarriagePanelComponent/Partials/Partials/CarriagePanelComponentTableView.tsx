@@ -1,8 +1,4 @@
-import {
-    CarriagePanelResource,
-    CarriageTrainsetResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -11,13 +7,17 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
 import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
+import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriagePanelComponentTableView({
     trainset,

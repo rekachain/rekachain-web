@@ -1,5 +1,11 @@
-import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { buttonVariants } from '@/Components/UI/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { Separator } from '@/Components/UI/separator';
 import {
     Table,
@@ -10,21 +16,15 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Link } from '@inertiajs/react';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportTrainsetCustomMaterial';
-import { useEffect, useState } from 'react';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/Components/UI/select';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 const PreviewTrainsetAttachment = ({
     attachment,

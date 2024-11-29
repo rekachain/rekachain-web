@@ -1,14 +1,13 @@
 import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import PanelMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/Components/PanelMaterialQty';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelResource,
     CarriageTrainsetResource,
     TrainsetResource,
 } from '@/Support/Interfaces/Resources';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import PanelMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/Components/PanelMaterialQty';
 
 export default function PanelMaterialCardView({
     trainset,

@@ -1,16 +1,16 @@
-import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
+import { ROUTES } from '@/Support/Constants/routes.js';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import {
     ProjectCarriageResource,
     ProjectPanelResource,
     ProjectResource,
 } from '@/Support/Interfaces/Resources';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ProjectComponentResource } from '@/Support/Interfaces/Resources/ProjectComponentResource';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { AxiosRequestConfig } from 'axios';
 import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
+import { AxiosRequestConfig } from 'axios';
 
 export const projectService = {
     ...serviceFactory<ProjectResource>(ROUTES.PROJECTS),

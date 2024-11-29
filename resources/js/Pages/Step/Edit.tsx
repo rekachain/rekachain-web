@@ -1,20 +1,20 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { progressService } from '@/Services/progressService';
 import { stepService } from '@/Services/stepService';
 import { ROUTES } from '@/Support/Constants/routes';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
-import { ProgressResource, StepResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { withLoading } from '@/Utils/withLoading';
-import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { progressService } from '@/Services/progressService';
+import { ProgressResource, StepResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 
 export default function ({ step }: { step: StepResource }) {
     const { t } = useLaravelReactI18n();

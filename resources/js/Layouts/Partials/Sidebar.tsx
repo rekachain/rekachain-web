@@ -1,3 +1,11 @@
+import { Button } from '@/Components/UI/button';
+import { SidebarProvider } from '@/Contexts/SidebarContext';
+import { checkPermission } from '@/Helpers/sidebarHelper';
+import SidebarHelpdesk from '@/Layouts/Partials/Components/SidebarHelpdesk';
+import { ROUTES } from '@/Support/Constants/routes';
+import { STYLING } from '@/Support/Constants/styling';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
 import {
     RiArtboard2Fill,
     RiBox3Line,
@@ -19,24 +27,16 @@ import {
     RiUser2Line,
     RiUserLine,
 } from '@remixicon/react';
-import { Button } from '@/Components/UI/button';
+import { useLocalStorage } from '@uidotdev/usehooks';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useRef } from 'react';
 import SidebarLink from './Components/SidebarLink';
-import SidebarMenu from './Components/SidebarMenu';
 import {
     SidebarLinkCollapsible,
     SidebarLinkCollapsibleItem,
 } from './Components/SidebarLinkCollapsible';
 import SidebarLogout from './Components/SidebarLogout';
-import { useLocalStorage } from '@uidotdev/usehooks';
-import { useEffect, useRef } from 'react';
-import { STYLING } from '@/Support/Constants/styling';
-import { ROUTES } from '@/Support/Constants/routes';
-import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { checkPermission } from '@/Helpers/sidebarHelper';
-import { SidebarProvider } from '@/Contexts/SidebarContext';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import SidebarHelpdesk from '@/Layouts/Partials/Components/SidebarHelpdesk';
+import SidebarMenu from './Components/SidebarMenu';
 
 export default function Sidebar() {
     const { t } = useLaravelReactI18n();

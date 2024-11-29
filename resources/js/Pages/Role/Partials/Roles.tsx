@@ -1,15 +1,15 @@
-import { roleService } from '@/Services/roleService';
-import { useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
+import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/Role/Partials/Partials/Filters';
+import { roleService } from '@/Services/roleService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { RoleResource } from '@/Support/Interfaces/Resources/RoleResource';
-import RoleCardView from './Partials/RoleCardView';
-import RoleTableView from './Partials/RoleTableView';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Role/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import RoleCardView from './Partials/RoleCardView';
+import RoleTableView from './Partials/RoleTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();

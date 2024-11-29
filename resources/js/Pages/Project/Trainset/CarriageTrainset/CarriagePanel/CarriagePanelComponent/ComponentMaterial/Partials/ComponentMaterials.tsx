@@ -1,15 +1,15 @@
+import { useSuccessToast } from '@/Hooks/useToast';
+import { componentMaterialService } from '@/Services/componentMaterialService';
 import {
     CarriagePanelComponentResource,
     CarriagePanelResource,
     CarriageTrainsetResource,
     TrainsetResource,
 } from '@/Support/Interfaces/Resources';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import ComponentMaterialCardView from './Partials/ComponentMaterialCardView';
 import ComponentMaterialTableView from './Partials/ComponentMaterialTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { componentMaterialService } from '@/Services/componentMaterialService';
 
 export default function ({
     trainset,

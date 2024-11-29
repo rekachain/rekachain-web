@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { DivisionResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { divisionService } from '@/Services/divisionService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
 import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardView';
+import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
+import Filters from '@/Pages/Division/Partials/Partials/Filters';
+import { divisionService } from '@/Services/divisionService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Division/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();

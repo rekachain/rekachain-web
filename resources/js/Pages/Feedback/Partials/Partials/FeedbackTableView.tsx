@@ -1,4 +1,4 @@
-import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { Button } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -7,14 +7,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { FeedbackResource } from '@/Support/Interfaces/Resources';
-import React from 'react';
-import { Button } from '@/Components/UI/button';
-import { RoleEnum } from '@/Support/Enums/roleEnum';
 import { checkPermission } from '@/Helpers/sidebarHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { usePage } from '@inertiajs/react';
 import { FeedbackStatusEnum } from '@/Support/Enums/feedbackStatusEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { RoleEnum } from '@/Support/Enums/roleEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { FeedbackResource } from '@/Support/Interfaces/Resources';
+import { usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function FeedbackCardView({

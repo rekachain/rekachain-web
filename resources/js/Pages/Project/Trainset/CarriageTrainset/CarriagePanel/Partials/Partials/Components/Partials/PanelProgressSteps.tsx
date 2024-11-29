@@ -1,23 +1,23 @@
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { progressService } from '@/Services/progressService';
+import { progressStepService } from '@/Services/progressStepService';
+import { stepService } from '@/Services/stepService';
+import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     CarriagePanelResource,
     ProgressResource,
     StepResource,
 } from '@/Support/Interfaces/Resources';
-import { FormEvent, useCallback, useEffect, useState } from 'react';
-import { progressService } from '@/Services/progressService';
-import { useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { withLoading } from '@/Utils/withLoading';
-import { progressStepService } from '@/Services/progressStepService';
-import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { stepService } from '@/Services/stepService';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { RefreshCcw } from 'lucide-react';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { RefreshCcw } from 'lucide-react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 
 export default function ({
     carriagePanel,

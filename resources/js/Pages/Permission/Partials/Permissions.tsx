@@ -1,15 +1,15 @@
-import { permissionService } from '@/Services/permissionService';
-import { useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
+import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/Permission/Partials/Partials/Filters';
+import { permissionService } from '@/Services/permissionService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { PermissionResource } from '@/Support/Interfaces/Resources/PermissionResource';
-import PermissionsTableView from './Partials/PermissionsTableView';
-import PermissionsCardView from './Partials/PermissionsCardView';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Permission/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import PermissionsCardView from './Partials/PermissionsCardView';
+import PermissionsTableView from './Partials/PermissionsTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();

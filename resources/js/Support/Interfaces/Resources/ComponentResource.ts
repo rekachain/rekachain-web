@@ -1,5 +1,5 @@
-import { ProgressResource, Resource } from '@/Support/Interfaces/Resources';
 import { Component } from '@/Support/Interfaces/Models';
+import { ProgressResource, Resource } from '@/Support/Interfaces/Resources';
 
 export interface ComponentResource extends Resource, Component {
     progress?: ProgressResource;

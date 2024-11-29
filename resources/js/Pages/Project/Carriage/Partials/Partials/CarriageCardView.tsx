@@ -3,8 +3,8 @@ import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     project,

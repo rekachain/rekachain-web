@@ -1,16 +1,7 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import {
-    DivisionResource,
-    PermissionResource,
-    PermissionResourceGrouped,
-    RoleResource,
-} from '@/Support/Interfaces/Resources';
+import { Checkbox } from '@/Components/UI/checkbox';
+import { Input } from '@/Components/UI/input';
 import {
     Select,
     SelectContent,
@@ -18,11 +9,20 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/UI/select';
-import { Checkbox } from '@/Components/UI/checkbox';
-import { roleService } from '@/Services/roleService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { roleService } from '@/Services/roleService';
+import { ROUTES } from '@/Support/Constants/routes';
+import {
+    DivisionResource,
+    PermissionResource,
+    PermissionResourceGrouped,
+    RoleResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 
 export default function (props: {
     role: RoleResource;

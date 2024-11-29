@@ -1,8 +1,5 @@
-import {
-    CarriagePanelResource,
-    ComponentResource,
-    ProgressResource,
-} from '@/Support/Interfaces/Resources';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -11,26 +8,29 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
-import { Loader2, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
 import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
+import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { withLoading } from '@/Utils/withLoading';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriagePanelService } from '@/Services/carriagePanelService';
+import { componentService } from '@/Services/componentService';
+import { progressService } from '@/Services/progressService';
+import { STYLING } from '@/Support/Constants/styling';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import {
+    CarriagePanelResource,
+    ComponentResource,
+    ProgressResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { progressService } from '@/Services/progressService';
-import { Separator } from '@/Components/UI/separator';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { carriagePanelService } from '@/Services/carriagePanelService';
+import { Loader2, RefreshCcw } from 'lucide-react';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
 
 const AddNewComponent = ({
     componentResource,

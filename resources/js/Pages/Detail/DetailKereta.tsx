@@ -1,15 +1,15 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, usePage } from '@inertiajs/react';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AnimateIn from '@/Lib/AnimateIn';
+import { Head, Link } from '@inertiajs/react';
+import { FileSearch } from 'lucide-react';
 //   No Proyek jumlah TS Detail
 
 type KPM = {
@@ -41,8 +41,6 @@ const listTrainset: KPM[] = [
         panel: 'AC Dist P, Distribusi M, Pids M',
     },
 ];
-import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/Lib/AnimateIn';
 
 export default function DetailTS({ noProyek, detailTS, susunanKereta }: DetailKereta) {
     noProyek;

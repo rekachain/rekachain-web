@@ -1,3 +1,4 @@
+import { Separator } from '@/Components/UI/separator';
 import {
     Table,
     TableBody,
@@ -6,14 +7,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { useEffect, useState } from 'react';
-import { Head } from '@inertiajs/react';
-import { Separator } from '@/Components/UI/separator';
-import { RawMaterialResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { RawMaterialResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import { Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 const DocumentTrainsetAttachment = ({
     trainsetAttachment,

@@ -1,5 +1,4 @@
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { DivisionResource } from '@/Support/Interfaces/Resources';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -8,10 +7,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
-import React from 'react';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function DivisionTableView({

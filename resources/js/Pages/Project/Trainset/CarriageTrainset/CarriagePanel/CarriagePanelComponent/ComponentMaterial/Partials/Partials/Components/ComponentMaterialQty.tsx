@@ -1,15 +1,15 @@
-import { ComponentMaterialResource } from '@/Support/Interfaces/Resources';
-import { useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
-import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
+import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { FormEvent, useState } from 'react';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { componentMaterialService } from '@/Services/componentMaterialService';
+import { STYLING } from '@/Support/Constants/styling';
+import { ComponentMaterialResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { PencilLine } from 'lucide-react';
+import { FormEvent, useState } from 'react';
 
 export default function ({
     componentMaterial,

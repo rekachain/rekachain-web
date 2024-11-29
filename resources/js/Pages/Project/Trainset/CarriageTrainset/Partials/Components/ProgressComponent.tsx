@@ -1,29 +1,25 @@
 import {
-    CarriageResource,
-    ComponentResource,
-    DetailWorkerTrainsetResource,
-    PanelResource,
-    ProgressResource,
-    StepResource,
-    TrainsetAttachmentResource,
-} from '@/Support/Interfaces/Resources';
-import { Separator } from '@/Components/UI/separator';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Fragment, useEffect, useState } from 'react';
-import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
-import { withLoading } from '@/Utils/withLoading';
-import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
-import {
     Breadcrumb,
     BreadcrumbItem,
     BreadcrumbList,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
+import { Separator } from '@/Components/UI/separator';
+import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
+import {
+    DetailWorkerTrainsetResource,
+    StepResource,
+    TrainsetAttachmentResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Fragment, useEffect, useState } from 'react';
 import WorkerCard from './Components/WorkerCard';
 import WorkerStepCard from './Components/WorkerStepCard';
-import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
 
 const ProgressComponent = ({
     attachment,

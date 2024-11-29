@@ -1,15 +1,15 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, usePage } from '@inertiajs/react';
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import AnimateIn from '@/Lib/AnimateIn';
+import { Head, Link } from '@inertiajs/react';
+import { FileSearch } from 'lucide-react';
 //   No Proyek jumlah TS Detail
 
 type Trainset = {
@@ -26,8 +26,6 @@ const listTrainset: Trainset[] = [
     { kodeTrainset: 'TS2', susunanKereta: 'TSB 2 (4 K1 + 5 K3 + 1 M + 1 P)' },
     { kodeTrainset: 'TS3', susunanKereta: 'TSC 3 (8 K3 + 1 M + 1 P)' },
 ];
-import { Calculator, FileSearch } from 'lucide-react';
-import AnimateIn from '@/Lib/AnimateIn';
 
 export default function DetailProject({ detail }: DetailProject) {
     return (

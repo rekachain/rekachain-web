@@ -1,9 +1,9 @@
 import { Avatar, AvatarImage } from '@/Components/UI/avatar';
-import { Link, usePage } from '@inertiajs/react';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { UserResource } from '@/Support/Interfaces/Resources';
+import { Link, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({

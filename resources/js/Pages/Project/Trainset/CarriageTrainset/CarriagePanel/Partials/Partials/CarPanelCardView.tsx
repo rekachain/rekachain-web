@@ -1,9 +1,8 @@
 import { Button } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
+import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import React from 'react';
-import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarPanelCardView({

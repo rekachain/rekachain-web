@@ -1,10 +1,5 @@
-import { Accordion } from '@radix-ui/react-accordion';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
-import {
-    CarriagePanelResource,
-    ProgressResource,
-    StepResource,
-} from '@/Support/Interfaces/Resources';
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -13,16 +8,21 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { useDebounce } from '@uidotdev/usehooks';
-import { withLoading } from '@/Utils/withLoading';
-import { progressService } from '@/Services/progressService';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import PanelProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/Partials/PanelProgress';
 import PanelProgressSteps from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/Partials/PanelProgressSteps';
+import { progressService } from '@/Services/progressService';
+import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import {
+    CarriagePanelResource,
+    ProgressResource,
+    StepResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { Accordion } from '@radix-ui/react-accordion';
+import { useDebounce } from '@uidotdev/usehooks';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 export default function ({
     progress,

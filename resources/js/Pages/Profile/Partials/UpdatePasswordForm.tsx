@@ -1,11 +1,11 @@
-import { FormEventHandler, useRef } from 'react';
 import InputError from '@/Components/InputError';
-import { useForm } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
+import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
-import { Button } from '@/Components/UI/button';
+import { Transition } from '@headlessui/react';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useRef } from 'react';
 
 export default function UpdatePasswordForm({ className = '' }: { className?: string }) {
     const { t } = useLaravelReactI18n();

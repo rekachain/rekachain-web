@@ -4,9 +4,8 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
-import React from 'react';
-import CarriageQty from '../Components/CarriageQty';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import CarriageQty from '../Components/CarriageQty';
 
 export default function CarriageCardView({
     trainset,

@@ -1,15 +1,15 @@
-import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
-import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
-import { trainsetService } from '@/Services/trainsetService';
-import { FormEvent, useState } from 'react';
+import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { withLoading } from '@/Utils/withLoading';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { trainsetService } from '@/Services/trainsetService';
+import { STYLING } from '@/Support/Constants/styling';
+import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { PencilLine } from 'lucide-react';
+import { FormEvent, useState } from 'react';
 
 export default function ({
     trainset,

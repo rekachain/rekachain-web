@@ -1,5 +1,4 @@
-import { ChangeEvent, memo, useEffect, useState } from 'react';
-import { useDebounce } from '@uidotdev/usehooks';
+import { Button } from '@/Components/UI/button';
 import {
     Command,
     CommandGroup,
@@ -7,13 +6,14 @@ import {
     CommandItem,
     CommandList,
 } from '@/Components/UI/command';
-import { Button } from '@/Components/UI/button';
-import { Check, ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/Utils';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { Resource } from '@/Support/Interfaces/Resources';
+import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
 
 interface GenericDataSelectorProps<T extends Resource> {
     /**

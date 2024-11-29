@@ -1,5 +1,4 @@
-import { ProjectResource } from '@/Support/Interfaces/Resources';
-import React from 'react';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -9,9 +8,9 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/Components/TrainsetName';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Link } from '@inertiajs/react';
 import { ROUTES } from '@/Support/Constants/routes';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function TrainsetTableView({

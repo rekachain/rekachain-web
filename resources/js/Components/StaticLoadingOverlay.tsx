@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 export default function StaticLoadingOverlay({ variant = 2 }: { variant?: number }) {
     const variants: Record<number, ReactElement> = {

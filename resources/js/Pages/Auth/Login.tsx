@@ -1,17 +1,17 @@
-import { FormEventHandler, useEffect } from 'react';
+import AddFeedback from '@/Components/AddFeedback';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
-import { STYLING } from '@/Support/Constants/styling';
-import { RiMoonClearLine } from '@remixicon/react';
-import { Sun } from 'lucide-react';
-import AddFeedback from '@/Components/AddFeedback';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Input } from '@/Components/UI/input';
 import useDarkMode from '@/Hooks/useDarkMode';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { STYLING } from '@/Support/Constants/styling';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { RiMoonClearLine } from '@remixicon/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Sun } from 'lucide-react';
+import { FormEventHandler, useEffect } from 'react';
 
 export default function Login({
     status,

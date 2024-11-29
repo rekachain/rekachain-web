@@ -1,4 +1,4 @@
-import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Table,
     TableBody,
@@ -7,11 +7,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { PanelResource } from '@/Support/Interfaces/Resources';
-import React from 'react';
-import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { PanelResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function PanelTableView({
