@@ -67,10 +67,10 @@ class DetailWorkerTrainsetResource extends JsonResource {
                     'image_path' => $this->image_path,
                     'acceptance_status' => $this->acceptance_status,
                     'failed_component_manufactures' => FailedComponentManufactureResource::collection($this->whenLoaded('failed_component_manufactures')),
-                    // 'created_at' => $this->created_at->toDateTimeString(),
-                    // 'updated_at' => $this->updated_at->toDateTimeString(),
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
+                    'created_at' => $this->created_at->toDateTimeString(),
+                    'updated_at' => $this->updated_at->toDateTimeString(),
+                    // 'created_at' => $this->created_at,
+                    // 'updated_at' => $this->updated_at,
                 ];
         }
     }

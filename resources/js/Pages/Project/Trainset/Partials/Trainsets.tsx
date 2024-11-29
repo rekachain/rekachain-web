@@ -1,11 +1,11 @@
-import { ProjectResource } from '@/Support/Interfaces/Resources';
-import { trainsetService } from '@/Services/trainsetService';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { trainsetService } from '@/Services/trainsetService';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import TrainsetCardView from './Partials/TrainsetCardView';
 import TrainsetTableView from './Partials/TrainsetTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ({
     project,
@@ -24,8 +24,8 @@ export default function ({
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <TrainsetTableView
                     project={project}
                     loading={loading}
@@ -33,7 +33,7 @@ export default function ({
                 ></TrainsetTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <TrainsetCardView
                     project={project}
                     loading={loading}

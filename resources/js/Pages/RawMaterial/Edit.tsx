@@ -1,16 +1,16 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { RawMaterialResource } from '@/Support/Interfaces/Resources';
-import { rawMaterialService } from '@/Services/rawMaterialService';
+import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { rawMaterialService } from '@/Services/rawMaterialService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler } from 'react';
 
 export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) {
     const { t } = useLaravelReactI18n();
@@ -24,7 +24,7 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
         unit: rawMaterial.unit,
     });
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
         await rawMaterialService.update(rawMaterial.id, data);
         router.visit(route(`${ROUTES.RAW_MATERIALS}.index`));
@@ -35,70 +35,81 @@ export default function ({ rawMaterial }: { rawMaterial: RawMaterialResource }) 
         <>
             <Head title={t('pages.raw_material.edit.title', { name: rawMaterial.material_code })} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
-                            {t('pages.raw_material.edit.title', { name: rawMaterial.material_code })}
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.raw_material.edit.title', {
+                                name: rawMaterial.material_code,
+                            })}
                         </h1>
                     </div>
 
                     <form onSubmit={submit}>
-                        <div className="mt-4">
+                        <div className='mt-4'>
                             <InputLabel
                                 value={t('pages.raw_material.edit.fields.material_code')}
-                                htmlFor="material_code"
+                                htmlFor='material_code'
                             />
                             <Input
                                 value={data.material_code}
-                                type="text"
-                                onChange={e => setData('material_code', e.target.value)}
-                                name="material_code"
-                                id="material_code"
-                                className="mt-1"
-                                autoComplete="material_code"
+                                type='text'
+                                onChange={(e) => setData('material_code', e.target.value)}
+                                name='material_code'
+                                id='material_code'
+                                className='mt-1'
+                                autoComplete='material_code'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.raw_material.edit.fields.description')} htmlFor="description" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.raw_material.edit.fields.description')}
+                                htmlFor='description'
+                            />
                             <Input
                                 value={data.description}
-                                type="text"
-                                onChange={e => setData('description', e.target.value)}
-                                name="description"
-                                id="description"
-                                className="mt-1"
-                                autoComplete="description"
+                                type='text'
+                                onChange={(e) => setData('description', e.target.value)}
+                                name='description'
+                                id='description'
+                                className='mt-1'
+                                autoComplete='description'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.raw_material.edit.fields.specs')} htmlFor="specs" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.raw_material.edit.fields.specs')}
+                                htmlFor='specs'
+                            />
                             <Input
                                 value={data.specs}
-                                type="text"
-                                onChange={e => setData('specs', e.target.value)}
-                                name="specs"
-                                id="specs"
-                                className="mt-1"
-                                autoComplete="specs"
+                                type='text'
+                                onChange={(e) => setData('specs', e.target.value)}
+                                name='specs'
+                                id='specs'
+                                className='mt-1'
+                                autoComplete='specs'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.raw_material.edit.fields.unit')} htmlFor="unit" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.raw_material.edit.fields.unit')}
+                                htmlFor='unit'
+                            />
                             <Input
                                 value={data.unit}
-                                type="text"
-                                onChange={e => setData('unit', e.target.value)}
-                                name="unit"
-                                id="unit"
-                                className="mt-1"
-                                autoComplete="unit"
+                                type='text'
+                                onChange={(e) => setData('unit', e.target.value)}
+                                name='unit'
+                                id='unit'
+                                className='mt-1'
+                                autoComplete='unit'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.raw_material.edit.buttons.submit')}
                         </Button>
                     </form>

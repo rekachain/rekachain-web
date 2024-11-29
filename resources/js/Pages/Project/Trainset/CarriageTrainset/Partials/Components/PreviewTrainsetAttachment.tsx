@@ -1,16 +1,30 @@
-import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { buttonVariants } from '@/Components/UI/button';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { Separator } from '@/Components/UI/separator';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Link } from '@inertiajs/react';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportTrainsetCustomMaterial';
-import { useEffect, useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 const PreviewTrainsetAttachment = ({
     attachment,
@@ -32,7 +46,8 @@ const PreviewTrainsetAttachment = ({
         }
     };
 
-    const [trainsetAttachment, setTrainsetAttachment] = useState<TrainsetAttachmentResource>(attachment);
+    const [trainsetAttachment, setTrainsetAttachment] =
+        useState<TrainsetAttachmentResource>(attachment);
     const [selectedAttachment, setSelectedAttachment] = useState<number | null>(attachment.id);
 
     const loadAttachment = withLoading(async () => {
@@ -49,11 +64,11 @@ const PreviewTrainsetAttachment = ({
     }, [selectedAttachment]);
 
     return (
-        <div key={attachment.id} className="text-black dark:text-white">
-            <h1 className="text-xl font-bold">{title}</h1>
-            <div className="flex gap-4 my-4">
+        <div key={attachment.id} className='text-black dark:text-white'>
+            <h1 className='text-xl font-bold'>{title}</h1>
+            <div className='my-4 flex gap-4'>
                 <Link
-                    target="_blank"
+                    target='_blank'
                     href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
                     className={buttonVariants()}
                 >
@@ -61,14 +76,17 @@ const PreviewTrainsetAttachment = ({
                         'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
                     )}
                 </Link>
-                <ImportTrainsetCustomMaterial trainsetAttachment={trainsetAttachment} loadAttachment={loadAttachment} />
+                <ImportTrainsetCustomMaterial
+                    trainsetAttachment={trainsetAttachment}
+                    loadAttachment={loadAttachment}
+                />
                 {(trainsetAttachment.is_parent || trainsetAttachment.is_child) && (
-                    <div className="flex flex-col gap-2">
+                    <div className='flex flex-col gap-2'>
                         <Select
                             value={selectedAttachment?.toString()}
-                            onValueChange={value => setSelectedAttachment(+value)}
+                            onValueChange={(value) => setSelectedAttachment(+value)}
                         >
-                            <SelectTrigger id="selected-carriage-id" className="w-[180px]">
+                            <SelectTrigger id='selected-carriage-id' className='w-[180px]'>
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -80,11 +98,17 @@ const PreviewTrainsetAttachment = ({
                                         {trainsetAttachment.parent.attachment_number}
                                     </SelectItem>
                                 )}
-                                <SelectItem value={trainsetAttachment.id.toString()} key={trainsetAttachment.id}>
+                                <SelectItem
+                                    value={trainsetAttachment.id.toString()}
+                                    key={trainsetAttachment.id}
+                                >
                                     {trainsetAttachment.attachment_number}
                                 </SelectItem>
-                                {trainsetAttachment.childs?.map(childAttachment => (
-                                    <SelectItem value={childAttachment.id?.toString()} key={childAttachment.id}>
+                                {trainsetAttachment.childs?.map((childAttachment) => (
+                                    <SelectItem
+                                        value={childAttachment.id?.toString()}
+                                        key={childAttachment.id}
+                                    >
                                         {childAttachment.attachment_number}
                                     </SelectItem>
                                 ))}
@@ -93,10 +117,10 @@ const PreviewTrainsetAttachment = ({
                     </div>
                 )}
             </div>
-            <div className="grid grid-cols-3">
-                <div className="flex flex-col gap-3 mt-5">
-                    <div className="">
-                        <p className="font-bold">
+            <div className='grid grid-cols-3'>
+                <div className='mt-5 flex flex-col gap-3'>
+                    <div className=''>
+                        <p className='font-bold'>
                             {' '}
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.attachment_number',
@@ -104,16 +128,16 @@ const PreviewTrainsetAttachment = ({
                         </p>
                         <p>{trainsetAttachment.attachment_number}</p>
                     </div>
-                    <div className="">
-                        <p className="font-bold">
+                    <div className=''>
+                        <p className='font-bold'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.reservation_number',
                             )}
                         </p>
                         <p>-</p>
                     </div>
-                    <div className="">
-                        <p className="font-bold">
+                    <div className=''>
+                        <p className='font-bold'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.serial_number',
                             )}
@@ -121,17 +145,17 @@ const PreviewTrainsetAttachment = ({
                         <p>-</p>
                     </div>
                 </div>
-                <div className="flex flex-col gap-3 mt-5">
-                    <div className="">
-                        <p className="font-bold">
+                <div className='mt-5 flex flex-col gap-3'>
+                    <div className=''>
+                        <p className='font-bold'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.reference_number',
                             )}
                         </p>
                         <p>{trainsetAttachment.parent?.attachment_number ?? '-'}</p>
                     </div>
-                    <div className="">
-                        <p className="font-bold">
+                    <div className=''>
+                        <p className='font-bold'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.date',
                             )}
@@ -140,11 +164,14 @@ const PreviewTrainsetAttachment = ({
                     </div>
                 </div>
                 {trainsetAttachment?.qr && (
-                    <div className="flex flex-col gap-3 mt-5 text-white items-center">
-                        <div className="bg-white p-3">
-                            <img width={200} src={trainsetAttachment.qr} alt="QR Code" />
+                    <div className='mt-5 flex flex-col items-center gap-3 text-white'>
+                        <div className='bg-white p-3'>
+                            <img width={200} src={trainsetAttachment.qr} alt='QR Code' />
                         </div>
-                        <button onClick={() => openImageAndPrint(trainsetAttachment.qr!)} className={buttonVariants()}>
+                        <button
+                            onClick={() => openImageAndPrint(trainsetAttachment.qr!)}
+                            className={buttonVariants()}
+                        >
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.buttons.print_qr',
                             )}
@@ -152,21 +179,21 @@ const PreviewTrainsetAttachment = ({
                     </div>
                 )}
             </div>
-            <Separator className="h-1 my-6" />
-            <h1 className="text-xl font-bold mt-3">
+            <Separator className='my-6 h-1' />
+            <h1 className='mt-3 text-xl font-bold'>
                 {t(
                     'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.material_list',
                 )}
             </h1>
-            <Table>
+            <Table wrapperClassName='block max-h-96'>
                 <TableCaption>
                     {t(
                         'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
                     )}
                 </TableCaption>
-                <TableHeader>
+                <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
                     <TableRow>
-                        <TableHead className="">
+                        <TableHead className=''>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
                             )}
@@ -194,9 +221,11 @@ const PreviewTrainsetAttachment = ({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {trainsetAttachment.raw_materials.map(rawMaterial => (
+                    {trainsetAttachment.raw_materials.map((rawMaterial) => (
                         <TableRow key={rawMaterial.id}>
-                            <TableCell className="font-medium">{rawMaterial.material_code}</TableCell>
+                            <TableCell className='font-medium'>
+                                {rawMaterial.material_code}
+                            </TableCell>
                             <TableCell>{rawMaterial.description}</TableCell>
                             <TableCell>{rawMaterial.specs}</TableCell>
                             <TableCell>{rawMaterial.unit}</TableCell>

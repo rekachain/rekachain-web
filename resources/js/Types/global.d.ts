@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
+import Swal from 'sweetalert2';
 import { route as ziggyRoute } from 'ziggy-js';
 import { PageProps as AppPageProps } from './';
-import Swal from 'sweetalert2';
 
 declare global {
     interface Window {

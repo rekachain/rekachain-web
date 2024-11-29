@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,17 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { ROUTES } from '@/Support/Constants/routes';
-import { router, useForm } from '@inertiajs/react';
-import { rawMaterialService } from '@/Services/rawMaterialService';
-import { ChangeEvent, FormEvent } from 'react';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { rawMaterialService } from '@/Services/rawMaterialService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { withLoading } from '@/Utils/withLoading';
+import { router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -44,31 +44,45 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.raw_material.partials.import.buttons.import')}</Button>
+                <Button variant='tertiary'>
+                    {t('pages.raw_material.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
-                    <DialogTitle>{t('pages.raw_material.partials.import.dialogs.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.raw_material.partials.import.dialogs.description')}</DialogDescription>
+                    <DialogTitle>
+                        {t('pages.raw_material.partials.import.dialogs.title')}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {t('pages.raw_material.partials.import.dialogs.description')}
+                    </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.raw_material.partials.import.dialogs.fields.download_template')}</Label>
-                    <Button variant="secondary" type="button" onClick={rawMaterialService.downloadImportDataTemplate}>
+                <div className='flex flex-col space-y-4'>
+                    <Label>
+                        {t('pages.raw_material.partials.import.dialogs.fields.download_template')}
+                    </Label>
+                    <Button
+                        variant='secondary'
+                        type='button'
+                        onClick={rawMaterialService.downloadImportDataTemplate}
+                    >
                         {t('pages.raw_material.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
-                <form onSubmit={handleImportData} className="space-y-4">
-                    <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.raw_material.partials.import.dialogs.fields.file')}</Label>
+                <form onSubmit={handleImportData} className='space-y-4'>
+                    <div className='space-y-4'>
+                        <Label htmlFor='file'>
+                            {t('pages.raw_material.partials.import.dialogs.fields.file')}
+                        </Label>
                         <Input
-                            type="file"
+                            type='file'
                             onChange={handleChangeImportFile}
-                            id="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            id='file'
+                            accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading
                                 ? t('pages.raw_material.partials.import.dialogs.buttons.processing')
                                 : t('pages.raw_material.partials.import.dialogs.buttons.import')}

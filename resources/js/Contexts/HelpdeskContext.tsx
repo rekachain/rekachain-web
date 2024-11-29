@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { HelpdeskContactResource } from '@/Support/Interfaces/Resources';
 import { helpdeskContactService } from '@/Services/helpdeskContactService';
+import { HelpdeskContactResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface HelpdeskContextProps {
     helpdeskContactResponse?: HelpdeskContactResource;
@@ -11,7 +11,8 @@ interface HelpdeskContextProps {
 const HelpdeskContext = createContext<HelpdeskContextProps | undefined>(undefined);
 
 export const HelpdeskProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [helpdeskContactResponse, setHelpdeskContactResponse] = useState<HelpdeskContactResource>();
+    const [helpdeskContactResponse, setHelpdeskContactResponse] =
+        useState<HelpdeskContactResource>();
 
     const syncHelpdeskContacts = withLoading(async () => {
         const res = await helpdeskContactService.getAll();

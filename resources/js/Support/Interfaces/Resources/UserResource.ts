@@ -1,5 +1,10 @@
-import { Resource, RoleResource, StepResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { User } from '@/Support/Interfaces/Models';
+import {
+    Resource,
+    RoleResource,
+    StepResource,
+    WorkstationResource,
+} from '@/Support/Interfaces/Resources';
 
 export interface UserResource extends Resource, User {
     image: string;

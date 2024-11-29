@@ -1,24 +1,24 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback, useEffect } from 'react';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
-import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
-import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
-import { RoleResource, UserResource } from '@/Support/Interfaces/Resources';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
-import { workstationService } from '@/Services/workstationService';
-import { stepService } from '@/Services/stepService';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { FilePond } from 'react-filepond';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { parseFormData } from '@/Lib/Utils';
+import { stepService } from '@/Services/stepService';
+import { userService } from '@/Services/userService';
+import { workstationService } from '@/Services/workstationService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { RoleResource, UserResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useCallback, useEffect } from 'react';
+import { FilePond } from 'react-filepond';
 
 export default function EditUser(props: { user: UserResource; roles: RoleResource[] }) {
     const { t } = useLaravelReactI18n();
@@ -77,7 +77,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         e.preventDefault();
         const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
         const validImages = data.image_path.filter(
-            (file) => file.size !== null && validImageTypes.includes(file.type)
+            (file) => file.size !== null && validImageTypes.includes(file.type),
         );
 
         const formData = new FormData();
@@ -246,7 +246,8 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             </h2>
                             <RadioGroup
                                 value={data.role_id?.toString()}
-                                onValueChange={(v) => setData('role_id', +v)}>
+                                onValueChange={(v) => setData('role_id', +v)}
+                            >
                                 {props.roles?.map((role) => (
                                     <div key={role.id} className='flex items-center space-x-2'>
                                         <RadioGroupItem

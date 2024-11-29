@@ -1,4 +1,6 @@
 import { DetailWorkerTrainset } from '@/Support/Interfaces/Models';
-import { Resource } from '@/Support/Interfaces/Resources';
+import { Resource, UserResource } from '@/Support/Interfaces/Resources';
 
-export interface DetailWorkerTrainsetResource extends Resource, DetailWorkerTrainset {}
+export interface DetailWorkerTrainsetResource extends Resource, DetailWorkerTrainset {
+    worker?: UserResource;
+}

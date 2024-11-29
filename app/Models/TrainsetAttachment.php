@@ -180,6 +180,26 @@ class TrainsetAttachment extends Model {
         return $this->hasMany(TrainsetAttachmentComponent::class);
     }
 
+    public function components(): HasManyDeep {
+        return $this->hasManyDeep(
+            Component::class,
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+            ],
+            [
+                'trainset_attachment_id',
+                'id',
+                'id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'component_id',
+            ]
+        );
+    }
+
     public function carriage_panel_components(): HasManyThrough {
         return $this->hasManyThrough(CarriagePanelComponent::class, TrainsetAttachmentComponent::class, 'trainset_attachment_id', 'id', 'id', 'carriage_panel_component_id');
     }

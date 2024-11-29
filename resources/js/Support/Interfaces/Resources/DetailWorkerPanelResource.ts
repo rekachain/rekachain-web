@@ -1,4 +1,6 @@
-import { Resource } from '@/Support/Interfaces/Resources';
 import { DetailWorkerPanel } from '@/Support/Interfaces/Models';
+import { Resource, UserResource } from '@/Support/Interfaces/Resources';
 
-export interface DetailWorkerPanelResource extends Resource, DetailWorkerPanel {}
+export interface DetailWorkerPanelResource extends Resource, DetailWorkerPanel {
+    worker: UserResource;
+}

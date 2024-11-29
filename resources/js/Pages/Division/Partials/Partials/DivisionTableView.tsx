@@ -1,10 +1,16 @@
+import { Button, buttonVariants } from '@/Components/UI/button';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { ROUTES } from '@/Support/Constants/routes';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function DivisionTableView({
@@ -19,12 +25,14 @@ export default function DivisionTableView({
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead>{t('pages.division.partials.partials.division_table.headers.name')}</TableHead>
+                    <TableHead>
+                        {t('pages.division.partials.partials.division_table.headers.name')}
+                    </TableHead>
                     <TableHead></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {divisionResponse?.data.map(division => (
+                {divisionResponse?.data.map((division) => (
                     <TableRow key={division.id}>
                         <TableCell>{division.name}</TableCell>
                         <TableCell>
@@ -35,7 +43,10 @@ export default function DivisionTableView({
                                 {t('action.edit')}
                             </Link>
                             {division.can_be_deleted && (
-                                <Button variant="link" onClick={() => handleDivisionDeletion(division.id)}>
+                                <Button
+                                    variant='link'
+                                    onClick={() => handleDivisionDeletion(division.id)}
+                                >
                                     {t('action.delete')}
                                 </Button>
                             )}

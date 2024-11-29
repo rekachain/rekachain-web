@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ComponentResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { ComponentResource } from '@/Support/Interfaces/Resources';
 
 export const componentService = {
     ...serviceFactory<ComponentResource>(ROUTES.COMPONENTS),

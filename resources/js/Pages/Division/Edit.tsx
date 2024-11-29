@@ -1,16 +1,16 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { DivisionResource } from '@/Support/Interfaces/Resources';
-import { divisionService } from '@/Services/divisionService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
+import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { divisionService } from '@/Services/divisionService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler } from 'react';
 
 export default function ({ division }: { division: DivisionResource }) {
     const { t } = useLaravelReactI18n();
@@ -20,7 +20,7 @@ export default function ({ division }: { division: DivisionResource }) {
     });
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
         await divisionService.update(division.id, data);
         void useSuccessToast(t('pages.division.edit.messages.updated'));
@@ -31,28 +31,31 @@ export default function ({ division }: { division: DivisionResource }) {
         <>
             <Head title={t('pages.division.edit.title', { name: division.name })} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
                             {t('pages.division.edit.title', { name: division.name })}
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.division.edit.fields.name')} htmlFor="name" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.division.edit.fields.name')}
+                                htmlFor='name'
+                            />
                             <Input
                                 value={data.name}
-                                type="text"
-                                onChange={e => setData('name', e.target.value)}
-                                name="name"
-                                id="name"
-                                className="mt-1"
-                                autoComplete="name"
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.division.edit.buttons.submit')}
                         </Button>
                     </form>

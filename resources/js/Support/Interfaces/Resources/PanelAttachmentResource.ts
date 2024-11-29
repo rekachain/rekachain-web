@@ -1,5 +1,5 @@
-import { RawMaterialResource, Resource } from '@/Support/Interfaces/Resources';
 import { PanelAttachment } from '@/Support/Interfaces/Models';
+import { RawMaterialResource, Resource } from '@/Support/Interfaces/Resources';
 
 export interface PanelAttachmentResource extends Resource, PanelAttachment {
     formatted_created_at: string;
