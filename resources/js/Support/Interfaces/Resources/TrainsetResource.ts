@@ -1,3 +1,4 @@
+import { Trainset } from '@/Support/Interfaces/Models';
 import {
     CarriageResource,
     CarriageTrainsetResource,
@@ -5,7 +6,6 @@ import {
     Resource,
     TrainsetAttachmentResource,
 } from '@/Support/Interfaces/Resources';
-import { Trainset } from '@/Support/Interfaces/Models';
 
 export interface TrainsetResource extends Resource, Trainset {
     // carriages_count: number;

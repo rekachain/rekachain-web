@@ -1,10 +1,14 @@
-import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
-import PanelMaterialTableView from './Partials/PanelMaterialTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { panelMaterialService } from '@/Services/panelMaterialService';
 import PanelMaterialCardView from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/PanelMaterialCardView';
+import { panelMaterialService } from '@/Services/panelMaterialService';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import PanelMaterialTableView from './Partials/PanelMaterialTableView';
 
 export default function ({
     trainset,
@@ -29,8 +33,8 @@ export default function ({
     }, true);
 
     return (
-        <div className="space-y-4">
-            <div className="hidden md:block">
+        <div className='space-y-4'>
+            <div className='hidden md:block'>
                 <PanelMaterialTableView
                     trainset={trainset}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}
@@ -40,7 +44,7 @@ export default function ({
                 />
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <PanelMaterialCardView
                     trainset={trainset}
                     handleSyncCarriagePanel={handleSyncCarriagePanel}

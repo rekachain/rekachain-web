@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { CarriageTrainsetResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes.js';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { CarriageTrainsetResource } from '@/Support/Interfaces/Resources';
 
 export const carriageTrainsetService = {
     ...serviceFactory<CarriageTrainsetResource>(ROUTES.CARRIAGE_TRAINSETS),

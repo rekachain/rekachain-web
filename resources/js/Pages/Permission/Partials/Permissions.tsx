@@ -1,19 +1,20 @@
-import { permissionService } from '@/Services/permissionService';
-import { useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
+import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/Permission/Partials/Partials/Filters';
+import { permissionService } from '@/Services/permissionService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { PermissionResource } from '@/Support/Interfaces/Resources/PermissionResource';
-import PermissionsTableView from './Partials/PermissionsTableView';
-import PermissionsCardView from './Partials/PermissionsCardView';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Permission/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import PermissionsCardView from './Partials/PermissionsCardView';
+import PermissionsTableView from './Partials/PermissionsTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const [permissionResponse, setPermissionResponse] = useState<PaginateResponse<PermissionResource>>();
+    const [permissionResponse, setPermissionResponse] =
+        useState<PaginateResponse<PermissionResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         per_page: 10,
@@ -39,18 +40,18 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {permissionResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <PermissionsTableView
                             permissionResponse={permissionResponse}
                             handlePermissionDeletion={handlePermissionResourceDeletion}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <PermissionsCardView
                             permissionResponse={permissionResponse}
                             handlePermissionDeletion={handlePermissionResourceDeletion}
@@ -58,7 +59,10 @@ export default function () {
                     </div>
                 </>
             )}
-            <GenericPagination meta={permissionResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination
+                meta={permissionResponse?.meta}
+                handleChangePage={handlePageChange}
+            />
         </div>
     );
 }

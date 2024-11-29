@@ -1,12 +1,19 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { useEffect, useState } from 'react';
-import { Head } from '@inertiajs/react';
 import { Separator } from '@/Components/UI/separator';
-import { RawMaterialResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { RawMaterialResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import { Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 const DocumentTrainsetAttachment = ({
     trainsetAttachment,
@@ -29,16 +36,20 @@ const DocumentTrainsetAttachment = ({
             .get(trainsetAttachment.id, {
                 intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY,
             })
-            .then(response => {
+            .then((response) => {
                 setRawMaterials(response.raw_materials);
 
                 if (response.type === TrainsetAttachmentTypeEnum.MECHANIC) {
                     setPageTitle(
-                        t('pages.trainset_attachment.document_trainset_attachment.headers.mechanic_attachment'),
+                        t(
+                            'pages.trainset_attachment.document_trainset_attachment.headers.mechanic_attachment',
+                        ),
                     );
                 } else if (response.type === TrainsetAttachmentTypeEnum.ELECTRIC) {
                     setPageTitle(
-                        t('pages.trainset_attachment.document_trainset_attachment.headers.electric_attachment'),
+                        t(
+                            'pages.trainset_attachment.document_trainset_attachment.headers.electric_attachment',
+                        ),
                     );
                 }
 
@@ -56,52 +67,64 @@ const DocumentTrainsetAttachment = ({
     return (
         <>
             <Head title={pageTitle} />
-            <div key={trainsetAttachment.id} className="text-black dark:text-white">
-                <h1 className="text-xl font-bold">{pageTitle}</h1>
-                <div className="grid grid-cols-3">
-                    <div className="flex flex-col gap-3 mt-5">
-                        <div className="">
-                            <p className="font-bold">
-                                {t('pages.trainset_attachment.document_trainset_attachment.headers.attachment_number')}
+            <div key={trainsetAttachment.id} className='text-black dark:text-white'>
+                <h1 className='text-xl font-bold'>{pageTitle}</h1>
+                <div className='grid grid-cols-3'>
+                    <div className='mt-5 flex flex-col gap-3'>
+                        <div className=''>
+                            <p className='font-bold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.headers.attachment_number',
+                                )}
                             </p>
                             <p>{trainsetAttachment.attachment_number}</p>
                         </div>
-                        <div className="">
-                            <p className="font-bold">
-                                {t('pages.trainset_attachment.document_trainset_attachment.headers.reservation_number')}
+                        <div className=''>
+                            <p className='font-bold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.headers.reservation_number',
+                                )}
                             </p>
                             <p>-</p>
                         </div>
-                        <div className="">
-                            <p className="font-bold">
-                                {t('pages.trainset_attachment.document_trainset_attachment.headers.serial_number')}
+                        <div className=''>
+                            <p className='font-bold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.headers.serial_number',
+                                )}
                             </p>
                             <p>-</p>
                         </div>
                     </div>
-                    <div className="flex flex-col gap-3 mt-5">
-                        <div className="">
-                            <p className="font-bold">
-                                {t('pages.trainset_attachment.document_trainset_attachment.headers.reference_number')}
+                    <div className='mt-5 flex flex-col gap-3'>
+                        <div className=''>
+                            <p className='font-bold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.headers.reference_number',
+                                )}
                             </p>
                             <p>-</p>
                         </div>
-                        <div className="">
-                            <p className="font-bold">
-                                {t('pages.trainset_attachment.document_trainset_attachment.headers.date')}
+                        <div className=''>
+                            <p className='font-bold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.headers.date',
+                                )}
                             </p>
                             <p>{trainsetAttachment.formatted_created_at}</p>
                         </div>
                     </div>
                     {trainsetAttachment?.qr && (
-                        <div className="flex flex-col gap-3 mt-5 text-white items-center">
-                            <img width={200} src={trainsetAttachment.qr} alt="QR Code" />
+                        <div className='mt-5 flex flex-col items-center gap-3 text-white'>
+                            <img width={200} src={trainsetAttachment.qr} alt='QR Code' />
                         </div>
                     )}
                 </div>
-                <Separator className="h-1 my-6" />
-                <h1 className="text-xl font-bold mt-3">
-                    {t('pages.trainset_attachment.document_trainset_attachment.headers.material_list')}
+                <Separator className='my-6 h-1' />
+                <h1 className='mt-3 text-xl font-bold'>
+                    {t(
+                        'pages.trainset_attachment.document_trainset_attachment.headers.material_list',
+                    )}
                 </h1>
                 <Table>
                     <TableHeader>
@@ -134,9 +157,11 @@ const DocumentTrainsetAttachment = ({
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {rawMaterials.map(rawMaterial => (
+                        {rawMaterials.map((rawMaterial) => (
                             <TableRow key={rawMaterial.id}>
-                                <TableCell className="font-medium">{rawMaterial.material_code}</TableCell>
+                                <TableCell className='font-medium'>
+                                    {rawMaterial.material_code}
+                                </TableCell>
                                 <TableCell>{rawMaterial.description}</TableCell>
                                 <TableCell>{rawMaterial.specs}</TableCell>
                                 <TableCell>{rawMaterial.unit}</TableCell>

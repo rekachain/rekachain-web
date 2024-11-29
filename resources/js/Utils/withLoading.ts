@@ -1,5 +1,5 @@
-import { useLoading } from '@/Contexts/LoadingContext';
 import { useConfirmationDialog } from '@/Contexts/ConfirmationDialogContext';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export function withLoading(
     fn: (...args: any[]) => Promise<void>,

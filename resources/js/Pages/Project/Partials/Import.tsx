@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,17 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { ROUTES } from '@/Support/Constants/routes';
-import { router, useForm } from '@inertiajs/react';
-import { projectService } from '@/Services/projectService';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { projectService } from '@/Services/projectService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { withLoading } from '@/Utils/withLoading';
-import { ChangeEvent, FormEvent } from 'react';
+import { router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -44,19 +44,25 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">{t('pages.project.partials.import.buttons.import')}</Button>
+                <Button variant='tertiary'>
+                    {t('pages.project.partials.import.buttons.import')}
+                </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
-                    <DialogDescription>{t('pages.project.partials.import.dialogs.description')}</DialogDescription>
+                    <DialogDescription>
+                        {t('pages.project.partials.import.dialogs.description')}
+                    </DialogDescription>
                 </DialogHeader>
                 {/*Download template button*/}
-                <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.project.partials.import.dialogs.fields.download_template')}</Label>
+                <div className='flex flex-col space-y-4'>
+                    <Label>
+                        {t('pages.project.partials.import.dialogs.fields.download_template')}
+                    </Label>
                     <Button
-                        variant="secondary"
-                        type="button"
+                        variant='secondary'
+                        type='button'
                         onClick={projectService.downloadImportProjectTemplate}
                         disabled={loading}
                     >
@@ -65,19 +71,23 @@ export default function () {
                             : t('pages.project.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
-                <form onSubmit={handleImportData} className="space-y-4">
-                    <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.project.partials.import.dialogs.fields.file')}</Label>
+                <form onSubmit={handleImportData} className='space-y-4'>
+                    <div className='space-y-4'>
+                        <Label htmlFor='file'>
+                            {t('pages.project.partials.import.dialogs.fields.file')}
+                        </Label>
                         <Input
-                            type="file"
+                            type='file'
                             onChange={handleChangeImportFile}
-                            id="file"
-                            accept="application/vnd.ms-excel.sheet.macroEnabled.12"
+                            id='file'
+                            accept='application/vnd.ms-excel.sheet.macroEnabled.12'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? t('action.loading') : t('pages.project.partials.import.dialogs.buttons.import')}
+                        <Button type='submit' disabled={loading}>
+                            {loading
+                                ? t('action.loading')
+                                : t('pages.project.partials.import.dialogs.buttons.import')}
                         </Button>
                     </DialogFooter>
                 </form>

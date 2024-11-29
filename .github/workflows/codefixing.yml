@@ -30,6 +30,8 @@ jobs:
         run: npm install -D
       - name: Run NPM Lint
         run: npm run lint
+      - name: Run prettier
+        run: npm run prettier
       - name: Check for changes
         run: |
           git config --global user.name 'github-actions[bot]'

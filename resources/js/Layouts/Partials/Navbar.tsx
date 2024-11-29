@@ -1,25 +1,7 @@
-import {
-    RiBook2Line,
-    RiDownload2Line,
-    RiMoonClearLine,
-    RiNotification4Line,
-    RiSearchLine,
-} from '@remixicon/react';
-import { Input } from '@/Components/UI/input';
-import { Separator } from '@/Components/UI/separator';
+import AddFeedback from '@/Components/AddFeedback';
+import { SearchResults } from '@/Components/SearchResult';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
-import { Link, usePage } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from '@/Components/UI/sheet';
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { Sun } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,16 +10,34 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/UI/dropdown-menu';
-import { STYLING } from '@/Support/Constants/styling';
-import { ROUTES } from '@/Support/Constants/routes';
-import { useMediaQuery } from 'react-responsive';
-import AddFeedback from '@/Components/AddFeedback';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Input } from '@/Components/UI/input';
+import { Separator } from '@/Components/UI/separator';
+import {
+    Sheet,
+    SheetContent,
+    SheetDescription,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from '@/Components/UI/sheet';
 import useDarkMode from '@/Hooks/useDarkMode';
-import axios from 'axios';
-import { SearchResults } from '@/Components/SearchResult';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { ROUTES } from '@/Support/Constants/routes';
+import { STYLING } from '@/Support/Constants/styling';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    RiBook2Line,
+    RiDownload2Line,
+    RiMoonClearLine,
+    RiNotification4Line,
+    RiSearchLine,
+} from '@remixicon/react';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import axios from 'axios';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -171,7 +171,8 @@ export default function Navbar() {
                             <Link
                                 href={route(`${ROUTES.PROFILE}.edit`)}
                                 className='h-full w-full px-2 py-1.5 text-left'
-                                as='button'>
+                                as='button'
+                            >
                                 {t('components.navbar.profile.menus.profile')}
                             </Link>
                         </DropdownMenuItem>
@@ -180,7 +181,8 @@ export default function Navbar() {
                                 method='post'
                                 href={route(ROUTES.LOGOUT)}
                                 className='h-full w-full px-2 py-1.5 text-left'
-                                as='button'>
+                                as='button'
+                            >
                                 {t('components.navbar.profile.menus.logout')}
                             </Link>
                         </DropdownMenuItem>
@@ -199,7 +201,8 @@ const ToggleDarkMode = () => {
             variant='ghost'
             title={t('components.navbar.toggle_dark_mode.title')}
             size='icon'
-            onClick={toggleDarkMode}>
+            onClick={toggleDarkMode}
+        >
             {darkMode ? (
                 <Sun size={STYLING.ICON.SIZE.SMALL} />
             ) : (
@@ -215,7 +218,8 @@ const ViewManualBook = () => {
         <Link
             title={t('components.navbar.view_manual_book.title')}
             href='/'
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+        >
             <RiBook2Line />
         </Link>
     );
@@ -227,7 +231,8 @@ const DownloadApp = () => {
         <Link
             title={t('components.navbar.download_app.title')}
             href='/'
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}>
+            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+        >
             <RiDownload2Line />
         </Link>
     );
