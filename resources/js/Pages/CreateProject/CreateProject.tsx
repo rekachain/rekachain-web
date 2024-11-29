@@ -17,7 +17,7 @@ export default function CreateProject() {
         nomorProyek: project.nomorProyek,
         jumlahTrainset: project.jumlahTrainset,
     });
-    const submit: FormEventHandler = e => {
+    const submit: FormEventHandler = (e) => {
         e.preventDefault();
         // alert('halo');
         const newDate = new Date();
@@ -33,18 +33,18 @@ export default function CreateProject() {
     };
     return (
         <AuthenticatedLayout>
-            <Head title="Buat Proyek" />
-            <div className="py-12">
-                <div className="w-1/2 sm:min-w-full max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
+            <Head title='Buat Proyek' />
+            <div className='py-12'>
+                <div className='h-screen w-1/2 max-w-7xl space-y-6 sm:min-w-full sm:px-6 lg:px-8'>
                     <AnimateIn
-                        to="opacity-100 translate-y-0 translate-x-0"
-                        from="opacity-0 -translate-y-4"
+                        to='opacity-100 translate-y-0 translate-x-0'
+                        from='opacity-0 -translate-y-4'
                         duration={300}
                     >
                         <form onSubmit={submit}>
-                            <div className="p-4 sm:p-8 bg-white h-[20rem] dark:bg-gray-800 shadow sm:rounded-lg">
-                                <h1 className="text-2xl font-bold">Buat Proyek</h1>
-                                <h3 className="text-lg mt-2">Nomor Projek :</h3>
+                            <div className='h-[20rem] bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8'>
+                                <h1 className='text-2xl font-bold'>Buat Proyek</h1>
+                                <h3 className='mt-2 text-lg'>Nomor Projek :</h3>
 
                                 {/* <InputLabel htmlFor="name" value="Name" /> */}
 
@@ -57,30 +57,37 @@ export default function CreateProject() {
                         isFocused
                         autoComplete="name"
                     /> */}
-                                <div className="w-64 flex items-center rounded border-2 px-2 mt-3 ">
+                                <div className='mt-3 flex w-64 items-center rounded border-2 px-2'>
                                     <Input
                                         value={data.nomorProyek}
-                                        type="number"
-                                        placeholder="Buat Proyek"
-                                        onChange={e => setData('nomorProyek', Number(e.target.value))}
-                                        className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                        type='number'
+                                        placeholder='Buat Proyek'
+                                        onChange={(e) =>
+                                            setData('nomorProyek', Number(e.target.value))
+                                        }
+                                        className='h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0'
                                     />
                                 </div>
-                                <h3 className="text-lg mt-2">Jumlah Trainset :</h3>
+                                <h3 className='mt-2 text-lg'>Jumlah Trainset :</h3>
 
-                                <div className="w-64 flex items-center rounded border-2 px-2 mt-3 ">
+                                <div className='mt-3 flex w-64 items-center rounded border-2 px-2'>
                                     <Input
                                         value={data.jumlahTrainset}
-                                        type="number"
-                                        placeholder="Jumlah Trainset"
-                                        onChange={e => setData('jumlahTrainset', Number(e.target.value))}
-                                        className="h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                        type='number'
+                                        placeholder='Jumlah Trainset'
+                                        onChange={(e) =>
+                                            setData('jumlahTrainset', Number(e.target.value))
+                                        }
+                                        className='h-full border-none focus-visible:ring-0 focus-visible:ring-offset-0'
                                     />
                                 </div>
                             </div>
-                            <div className="flex justify-end">
+                            <div className='flex justify-end'>
                                 {/* <Link href={route(`buat-trainset`)}> */}
-                                <button type="submit" className="p-2 mt-5 bg-blue-600 rounded-md text-white">
+                                <button
+                                    type='submit'
+                                    className='mt-5 rounded-md bg-blue-600 p-2 text-white'
+                                >
                                     Buat Proyek
                                 </button>
                                 {/* </Link> */}

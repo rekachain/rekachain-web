@@ -40,17 +40,23 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {panelResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
 
-                    <div className="hidden md:block">
-                        <PanelTableView panelResponse={panelResponse} handlePanelDeletion={handlePanelDeletion} />
+                    <div className='hidden md:block'>
+                        <PanelTableView
+                            panelResponse={panelResponse}
+                            handlePanelDeletion={handlePanelDeletion}
+                        />
                     </div>
 
-                    <div className="block md:hidden">
-                        <PanelCardView panelResponse={panelResponse} handlePanelDeletion={handlePanelDeletion} />
+                    <div className='block md:hidden'>
+                        <PanelCardView
+                            panelResponse={panelResponse}
+                            handlePanelDeletion={handlePanelDeletion}
+                        />
                     </div>
                 </>
             )}

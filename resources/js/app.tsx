@@ -24,7 +24,8 @@ void createInertiaApp({
             <LaravelReactI18nProvider
                 locale={'en'}
                 files={import.meta.glob('/lang/*.json')}
-                fallbackLocale={'en'}>
+                fallbackLocale={'en'}
+            >
                 <LoadingProvider>
                     <ConfirmationDialogProvider>
                         <App {...props} />
@@ -32,7 +33,7 @@ void createInertiaApp({
                         <LoadingOverlay />
                     </ConfirmationDialogProvider>
                 </LoadingProvider>
-            </LaravelReactI18nProvider>
+            </LaravelReactI18nProvider>,
         );
     },
     progress: {

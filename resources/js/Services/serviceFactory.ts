@@ -17,7 +17,12 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
                 const res = await window.axios.get(url, { params: filters, ...config });
 
                 if (DEBUG_MODE)
-                    console.log(`Fetched resources from ${url} with filters:`, filters, 'and got:', res.data);
+                    console.log(
+                        `Fetched resources from ${url} with filters:`,
+                        filters,
+                        'and got:',
+                        res.data,
+                    );
 
                 return res.data;
             } catch (error) {
@@ -26,7 +31,11 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        get: async (id: number, filters: ServiceFilterOptions = {}, config: AxiosRequestConfig = {}): Promise<T> => {
+        get: async (
+            id: number,
+            filters: ServiceFilterOptions = {},
+            config: AxiosRequestConfig = {},
+        ): Promise<T> => {
             const url = route(`${baseRoute}.show`, id);
 
             try {
@@ -47,7 +56,13 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             try {
                 const res = await window.axios.post(url, data);
 
-                if (DEBUG_MODE) console.log(`Created resource at ${url} with data:`, data, 'and got:', res.data);
+                if (DEBUG_MODE)
+                    console.log(
+                        `Created resource at ${url} with data:`,
+                        data,
+                        'and got:',
+                        res.data,
+                    );
 
                 return res.data;
             } catch (error) {
@@ -65,7 +80,13 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
                     },
                 });
 
-                if (DEBUG_MODE) console.log(`Updated resource at ${url} with data:`, data, 'and got:', res.data);
+                if (DEBUG_MODE)
+                    console.log(
+                        `Updated resource at ${url} with data:`,
+                        data,
+                        'and got:',
+                        res.data,
+                    );
 
                 return res.data;
             } catch (error) {

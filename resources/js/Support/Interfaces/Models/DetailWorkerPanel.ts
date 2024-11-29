@@ -1,5 +1,5 @@
-import { DetailWorkerAcceptanceStatusEnum } from "@/Support/Enums/DetailWorkerAcceptanceStatusEnum";
-import { DetailWorkerWorkStatusEnum } from "@/Support/Enums/DetailWorkerWorkStatusEnum";
+import { DetailWorkerAcceptanceStatusEnum } from '@/Support/Enums/DetailWorkerAcceptanceStatusEnum';
+import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
 
 export interface DetailWorkerPanel {
     id: number;

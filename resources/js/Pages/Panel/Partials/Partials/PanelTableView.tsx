@@ -1,5 +1,12 @@
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { PanelResource } from '@/Support/Interfaces/Resources';
 import React from 'react';
 import { Link } from '@inertiajs/react';
@@ -20,14 +27,20 @@ export default function PanelTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.name')}</TableHead>
-                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.description')}</TableHead>
-                        <TableHead>{t('pages.panel.partials.partials.panel_table.headers.progress')}</TableHead>
+                        <TableHead>
+                            {t('pages.panel.partials.partials.panel_table.headers.name')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.panel.partials.partials.panel_table.headers.description')}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.panel.partials.partials.panel_table.headers.progress')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {panelResponse?.data.map(panel => (
+                    {panelResponse?.data.map((panel) => (
                         <TableRow key={panel.id}>
                             <TableCell>{panel.name}</TableCell>
                             <TableCell>{panel.description}</TableCell>
@@ -40,7 +53,10 @@ export default function PanelTableView({
                                     {t('action.edit')}
                                 </Link>
                                 {panel.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handlePanelDeletion(panel.id)}>
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handlePanelDeletion(panel.id)}
+                                    >
                                         {t('action.delete')}
                                     </Button>
                                 )}

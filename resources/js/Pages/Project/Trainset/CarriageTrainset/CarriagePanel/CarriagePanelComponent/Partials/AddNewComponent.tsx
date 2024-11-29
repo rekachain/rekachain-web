@@ -1,4 +1,8 @@
-import { CarriagePanelResource, ComponentResource, ProgressResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriagePanelResource,
+    ComponentResource,
+    ProgressResource,
+} from '@/Support/Interfaces/Resources';
 import {
     Dialog,
     DialogContent,
@@ -128,7 +132,7 @@ const AddNewComponent = ({
 
     const fetchComponentProgress = withLoading(async (componentId: number) => {
         const res = await componentService.get(componentId);
-        setData(prevData => ({
+        setData((prevData) => ({
             ...prevData,
             new_component_id: componentId,
             search_progress: res.progress?.name || '',
@@ -162,55 +166,59 @@ const AddNewComponent = ({
                 <DialogHeader>
                     <DialogTitle>{data.new_component_name}</DialogTitle>
                     <DialogDescription></DialogDescription>
-                    <form onSubmit={handleAddComponentCarriage} className="flex flex-col gap-4">
-                        <div className="flex flex-col bg-background-2 gap-4 p-4">
-                            <Label htmlFor="progress">
+                    <form onSubmit={handleAddComponentCarriage} className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <Label htmlFor='progress'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress',
                                 )}
                             </Label>
-                            <div className="flex gap-2">
+                            <div className='flex gap-2'>
                                 <GenericDataSelector
-                                    setSelectedData={id => setData('progress_id', id)}
+                                    setSelectedData={(id) => setData('progress_id', id)}
                                     selectedDataId={data.progress_id}
-                                    renderItem={item => item.name}
+                                    renderItem={(item) => item.name}
                                     placeholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_placeholder',
                                     )}
                                     onSearchChange={handleChangeSearchProgressName}
-                                    id="progress_id"
+                                    id='progress_id'
                                     data={progressResponse?.data}
                                     customSearchPlaceholder={t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_search_placeholder',
                                     )}
                                 />
-                                <Button variant="ghost" type="button" onClick={handleResetProgressSearch}>
+                                <Button
+                                    variant='ghost'
+                                    type='button'
+                                    onClick={handleResetProgressSearch}
+                                >
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
 
-                            <Label htmlFor="component">
+                            <Label htmlFor='component'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component',
                                 )}
                             </Label>
                             <GenericDataSelector
-                                setSelectedData={id => setData('new_component_id', id)}
+                                setSelectedData={(id) => setData('new_component_id', id)}
                                 selectedDataId={data.new_component_id}
-                                renderItem={item => item.name}
+                                renderItem={(item) => item.name}
                                 placeholder={t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_placeholder',
                                 )}
                                 nullable
-                                id="component_id"
+                                id='component_id'
                                 fetchData={fetchComponents}
                             />
                         </div>
 
                         <Separator />
 
-                        <div className="flex flex-col gap-4 bg-background-2 p-4">
-                            <div className="flex flex-col gap-2">
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
                                         'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_name',
@@ -218,13 +226,13 @@ const AddNewComponent = ({
                                 </Label>
                                 <Input
                                     value={data.new_component_name}
-                                    type="text"
+                                    type='text'
                                     required
                                     onChange={handleChangeNewComponentName}
                                     disabled={data.new_component_id !== null}
                                 />
                             </div>
-                            <Label htmlFor="new-component-description">
+                            <Label htmlFor='new-component-description'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_description',
                                 )}
@@ -232,29 +240,29 @@ const AddNewComponent = ({
                             <Textarea
                                 value={data.new_component_description}
                                 onChange={handleChangeNewComponentDescription}
-                                id="new-component-description"
+                                id='new-component-description'
                                 disabled={data.new_component_id !== null}
-                                className="p-2 rounded"
+                                className='rounded p-2'
                             />
-                            <Label htmlFor="new-component-qty">
+                            <Label htmlFor='new-component-qty'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_qty',
                                 )}
                             </Label>
                             <Input
                                 value={data.new_component_qty}
-                                type="number"
+                                type='number'
                                 required
                                 onChange={handleChangeNewComponentQty}
                                 min={1}
-                                id="new-component-qty"
+                                id='new-component-qty'
                             />
                         </div>
 
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                     {t('action.loading')}
                                 </>
                             ) : (

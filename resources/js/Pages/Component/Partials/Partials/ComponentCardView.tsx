@@ -18,16 +18,16 @@ export default function ({
     const { t } = useLaravelReactI18n();
     return (
         <div>
-            {componentResponse?.data.map(component => (
+            {componentResponse?.data.map((component) => (
                 <AnimateIn
-                    to="opacity-100 translate-y-0 translate-x-0"
+                    to='opacity-100 translate-y-0 translate-x-0'
                     key={component.id}
-                    from="opacity-0 -translate-y-4"
+                    from='opacity-0 -translate-y-4'
                     duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                        <div className="flex w-full justify-between items-scenter">
-                            <h4 className="font-bold text-base">{component.name}</h4>
+                    <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-base font-bold'>{component.name}</h4>
                             {/* <div className="text-center">
                                 <h4 className="font-bold text-base">Proses : {component.name}</h4> */}
                             {/* <h5 className="font-bold text-md items-center ">
@@ -36,26 +36,35 @@ export default function ({
                                 </h5> */}
                             {/* </div> */}
                         </div>
-                        <p className="text-sm">
-                            {t('pages.component.partials.partials.component_card.headers.description', {
-                                description: component.description ?? '-',
-                            })}
+                        <p className='text-sm'>
+                            {t(
+                                'pages.component.partials.partials.component_card.headers.description',
+                                {
+                                    description: component.description ?? '-',
+                                },
+                            )}
                         </p>
-                        <p className="text-sm">
-                            {t('pages.component.partials.partials.component_card.headers.progress', {
-                                progress: component.progress?.name ?? '-',
-                            })}
+                        <p className='text-sm'>
+                            {t(
+                                'pages.component.partials.partials.component_card.headers.progress',
+                                {
+                                    progress: component.progress?.name ?? '-',
+                                },
+                            )}
                         </p>
                         {/* <h5 className="font-bold text-sm ">Workshop : {component.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {component.location}</h5> */}
-                        <div className="flex items-center justify-end w-full">
+                        <div className='flex w-full items-center justify-end'>
                             <Link
                                 href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
                                 className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('action.edit')}
                             </Link>
-                            <Button variant="link" onClick={() => handleComponentDeletion(component.id)}>
+                            <Button
+                                variant='link'
+                                onClick={() => handleComponentDeletion(component.id)}
+                            >
                                 {t('action.delete')}
                             </Button>
                         </div>

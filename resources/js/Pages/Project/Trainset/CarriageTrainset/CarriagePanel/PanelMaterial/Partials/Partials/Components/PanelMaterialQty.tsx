@@ -46,32 +46,32 @@ export default function ({
     return (
         <>
             {isEditing ? (
-                <form onSubmit={handleEditMaterialQty} className="flex gap-4">
+                <form onSubmit={handleEditMaterialQty} className='flex gap-4'>
                     <Input
-                        type="number"
-                        onChange={e => setData('panelMaterialQty', +e.target.value)}
+                        type='number'
+                        onChange={(e) => setData('panelMaterialQty', +e.target.value)}
                         min={1}
                         defaultValue={data.panelMaterialQty}
-                        className="w-fit"
+                        className='w-fit'
                     />
-                    <Button type="submit" disabled={loading}>
+                    <Button type='submit' disabled={loading}>
                         {loading
                             ? t('action.loading')
                             : t(
                                   'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.partials.components.panel_material_qty.buttons.update_qty',
                               )}
                     </Button>
-                    <Button type="button" onClick={toggleEditMode}>
+                    <Button type='button' onClick={toggleEditMode}>
                         {t('action.cancel')}
                     </Button>
                 </form>
             ) : (
-                <div className="flex items-center gap-4">
+                <div className='flex items-center gap-4'>
                     <div>{panelMaterial.qty}</div>
                     <Button
-                        variant="ghost"
+                        variant='ghost'
                         onClick={toggleEditMode}
-                        className="p-2 whitespace-normal h-fit rounded-full"
+                        className='h-fit whitespace-normal rounded-full p-2'
                     >
                         <PencilLine size={STYLING.ICON.SIZE.SMALL} />
                     </Button>

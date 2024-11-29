@@ -39,19 +39,19 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4 pt-4">
+        <div className='space-y-4 pt-4'>
             {workshopResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    
-                    <div className="hidden md:block">
+
+                    <div className='hidden md:block'>
                         <WorkshopTableView
                             workshopResponse={workshopResponse}
                             handleWorkshopDeletion={handleWorkshopDeletion}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <WorkshopCardView
                             workshopResponse={workshopResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}

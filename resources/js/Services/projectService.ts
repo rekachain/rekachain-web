@@ -1,6 +1,10 @@
 import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProjectCarriageResource, ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import {
+    ProjectCarriageResource,
+    ProjectPanelResource,
+    ProjectResource,
+} from '@/Support/Interfaces/Resources';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ProjectComponentResource } from '@/Support/Interfaces/Resources/ProjectComponentResource';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
@@ -73,13 +77,16 @@ export const projectService = {
         filters: ServiceFilterOptions = {},
         config: AxiosRequestConfig = {},
     ): Promise<PaginateResponse<ProjectComponentResource>> => {
-        const response = await window.axios.get(route(`${ROUTES.PROJECTS_CARRIAGES}.show`, [projectId, carriageId]), {
-            params: {
-                intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY,
-                ...filters,
-                ...config,
+        const response = await window.axios.get(
+            route(`${ROUTES.PROJECTS_CARRIAGES}.show`, [projectId, carriageId]),
+            {
+                params: {
+                    intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY,
+                    ...filters,
+                    ...config,
+                },
             },
-        });
+        );
         return response.data;
     },
     getPanels: async (
@@ -102,13 +109,16 @@ export const projectService = {
         filters: ServiceFilterOptions = {},
         config: AxiosRequestConfig = {},
     ): Promise<PaginateResponse<ProjectPanelResource>> => {
-        const response = await window.axios.get(route(`${ROUTES.PROJECTS_CARRIAGES}.show`, [projectId, carriageId]), {
-            params: {
-                intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY,
-                ...filters,
-                ...config,
+        const response = await window.axios.get(
+            route(`${ROUTES.PROJECTS_CARRIAGES}.show`, [projectId, carriageId]),
+            {
+                params: {
+                    intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY,
+                    ...filters,
+                    ...config,
+                },
             },
-        });
+        );
         return response.data;
     },
     importComponentsProgressRawMaterial: async (

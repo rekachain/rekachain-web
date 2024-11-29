@@ -10,7 +10,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
         email: '',
     });
 
-    const submit: FormEventHandler = e => {
+    const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
         post(route('password.email'));
@@ -18,30 +18,34 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
     return (
         <GuestLayout>
-            <Head title="Forgot Password" />
+            <Head title='Forgot Password' />
 
-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password
-                reset link that will allow you to choose a new one.
+            <div className='mb-4 text-sm text-gray-600 dark:text-gray-400'>
+                Forgot your password? No problem. Just let us know your email address and we will
+                email you a password reset link that will allow you to choose a new one.
             </div>
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">{status}</div>}
+            {status && (
+                <div className='mb-4 text-sm font-medium text-green-600 dark:text-green-400'>
+                    {status}
+                </div>
+            )}
 
             <form onSubmit={submit}>
                 <TextInput
                     value={data.email}
-                    type="email"
-                    onChange={e => setData('email', e.target.value)}
-                    name="email"
+                    type='email'
+                    onChange={(e) => setData('email', e.target.value)}
+                    name='email'
                     isFocused={true}
-                    id="email"
-                    className="mt-1 block w-full"
+                    id='email'
+                    className='mt-1 block w-full'
                 />
 
-                <InputError message={errors.email} className="mt-2" />
+                <InputError message={errors.email} className='mt-2' />
 
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton disabled={processing} className="ms-4">
+                <div className='mt-4 flex items-center justify-end'>
+                    <PrimaryButton disabled={processing} className='ms-4'>
                         Email Password Reset Link
                     </PrimaryButton>
                 </div>

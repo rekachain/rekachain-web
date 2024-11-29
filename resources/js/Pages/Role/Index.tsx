@@ -13,10 +13,13 @@ export default function () {
         <>
             <Head title={t('pages.role.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.role.index.title')}</h1>
-                        <Link href={route(`${ROUTES.ROLES}.create`)} className={buttonVariants({ variant: 'default' })}>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.role.index.title')}</h1>
+                        <Link
+                            href={route(`${ROUTES.ROLES}.create`)}
+                            className={buttonVariants({ variant: 'default' })}
+                        >
                             {t('pages.role.index.buttons.create')}
                         </Link>
                     </div>

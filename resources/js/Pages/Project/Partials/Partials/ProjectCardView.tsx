@@ -17,33 +17,33 @@ export default function ProjectCardView({
     const { t } = useLaravelReactI18n();
     return (
         <div>
-            {projectResponse.data.map(project => (
+            {projectResponse.data.map((project) => (
                 <AnimateIn
-                    to="opacity-100 translate-y-0 translate-x-0"
+                    to='opacity-100 translate-y-0 translate-x-0'
                     key={project.id}
-                    from="opacity-0 -translate-y-4"
+                    from='opacity-0 -translate-y-4'
                     duration={300}
                 >
-                    <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-5">
-                        <div className="flex w-full justify-between items-center">
-                            <h4 className="font-bold text-lg">{project.name}</h4>
-                            <div className="text-center">
-                                <h5
-                                    className="font-bold text-base
-                             items-center "
-                                >
+                    <div className='mt-5 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                        <div className='flex w-full items-center justify-between'>
+                            <h4 className='text-lg font-bold'>{project.name}</h4>
+                            <div className='text-center'>
+                                <h5 className='items-center text-base font-bold'>
                                     {project.initial_date}
                                 </h5>
                             </div>
                         </div>
-                        <h4 className="text-base">
-                            {t('pages.project.partials.partials.project_card.headers.trainset_count', {
-                                trainset_count: project.trainset_count,
-                            })}
+                        <h4 className='text-base'>
+                            {t(
+                                'pages.project.partials.partials.project_card.headers.trainset_count',
+                                {
+                                    trainset_count: project.trainset_count,
+                                },
+                            )}
                         </h4>
                         {/* <p>Jumlah User :{project.users_count}</p>
                         <p>Jumlah Izin :{project.permissions_count}</p> */}
-                        <div className="flex items-center justify-end w-full">
+                        <div className='flex w-full items-center justify-end'>
                             <Link
                                 href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
                                 className={buttonVariants({ variant: 'link' })}
@@ -52,26 +52,35 @@ export default function ProjectCardView({
                             >
                                 {t('action.edit')}
                             </Link>
-                            <Button variant="link" onClick={() => handleProjectDeletion(project.id)}>
+                            <Button
+                                variant='link'
+                                onClick={() => handleProjectDeletion(project.id)}
+                            >
                                 {t('action.delete')}
                             </Button>
                             <Link
                                 href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, project.id)}
                                 className={buttonVariants({ variant: 'link' })}
                             >
-                                {t('pages.project.partials.partials.project_table.actions.carriages')}
+                                {t(
+                                    'pages.project.partials.partials.project_table.actions.carriages',
+                                )}
                             </Link>
                             <Link
                                 href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
                                 className={buttonVariants({ variant: 'link' })}
                             >
-                                {t('pages.project.partials.partials.project_card.actions.trainsets')}
+                                {t(
+                                    'pages.project.partials.partials.project_card.actions.trainsets',
+                                )}
                             </Link>
                             <Link
                                 href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
                                 className={buttonVariants({ variant: 'link' })}
                             >
-                                {t('pages.project.partials.partials.project_table.actions.components')}
+                                {t(
+                                    'pages.project.partials.partials.project_table.actions.components',
+                                )}
                             </Link>
                             <Link
                                 href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}

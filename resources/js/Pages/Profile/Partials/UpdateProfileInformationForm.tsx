@@ -51,7 +51,7 @@ export default function UpdateProfileInformation({
         }
     }, [user.image]);
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -67,7 +67,9 @@ export default function UpdateProfileInformation({
 
         router.reload();
 
-        void useSuccessToast(t('pages.profile.partials.update_profile_information_form.messages.updated'));
+        void useSuccessToast(
+            t('pages.profile.partials.update_profile_information_form.messages.updated'),
+        );
     });
 
     const handleFileChange = (fileItems: any) => {
@@ -80,52 +82,52 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium ">
+                <h2 className='text-lg font-medium'>
                     {t('pages.profile.partials.update_profile_information_form.title')}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p className='mt-1 text-sm text-gray-600 dark:text-gray-400'>
                     {t('pages.profile.partials.update_profile_information_form.description')}
                 </p>
             </header>
 
-            <form onSubmit={submit} className="mt-6 space-y-4">
+            <form onSubmit={submit} className='mt-6 space-y-4'>
                 <div>
-                    <Label htmlFor="name">
+                    <Label htmlFor='name'>
                         {t('pages.profile.partials.update_profile_information_form.fields.name')}
                     </Label>
 
                     <Input
                         value={data.name}
                         required
-                        onChange={e => setData('name', e.target.value)}
-                        id="name"
+                        onChange={(e) => setData('name', e.target.value)}
+                        id='name'
                         autoFocus
-                        autoComplete="name"
+                        autoComplete='name'
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.name} className='mt-2' />
                 </div>
 
                 <div>
-                    <Label htmlFor="email">
+                    <Label htmlFor='email'>
                         {t('pages.profile.partials.update_profile_information_form.fields.email')}
                     </Label>
 
                     <Input
                         value={data.email}
-                        type="email"
+                        type='email'
                         required
-                        onChange={e => setData('email', e.target.value)}
-                        id="email"
-                        autoComplete="username"
+                        onChange={(e) => setData('email', e.target.value)}
+                        id='email'
+                        autoComplete='username'
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.email} className='mt-2' />
                 </div>
 
                 <div>
-                    <Label htmlFor="image_path">
+                    <Label htmlFor='image_path'>
                         {t('pages.profile.partials.update_profile_information_form.fields.avatar')}
                     </Label>
                     <FilePond
@@ -144,13 +146,15 @@ export default function UpdateProfileInformation({
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                            {t('pages.profile.partials.update_profile_information_form.messages.verify_email')}
+                        <p className='mt-2 text-sm text-gray-800 dark:text-gray-200'>
+                            {t(
+                                'pages.profile.partials.update_profile_information_form.messages.verify_email',
+                            )}
                             <Link
-                                method="post"
+                                method='post'
                                 href={route('verification.send')}
-                                className="underline text-sm hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                                as="button"
+                                className='rounded-md text-sm underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800'
+                                as='button'
                             >
                                 {t(
                                     'pages.profile.partials.update_profile_information_form.messages.resend_verification_email',
@@ -159,7 +163,7 @@ export default function UpdateProfileInformation({
                         </p>
 
                         {status === 'verification-link-sent' && (
-                            <div className="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                            <div className='mt-2 text-sm font-medium text-green-600 dark:text-green-400'>
                                 {t(
                                     'pages.profile.partials.update_profile_information_form.messages.verification_email_sent',
                                 )}
@@ -168,20 +172,22 @@ export default function UpdateProfileInformation({
                     </div>
                 )}
 
-                <div className="flex items-center gap-4">
+                <div className='flex items-center gap-4'>
                     <Button disabled={processing}>
                         {t('pages.profile.partials.update_profile_information_form.buttons.submit')}
                     </Button>
 
                     <Transition
                         show={recentlySuccessful}
-                        leaveTo="opacity-0"
-                        leave="transition ease-in-out"
-                        enterFrom="opacity-0"
-                        enter="transition ease-in-out"
+                        leaveTo='opacity-0'
+                        leave='transition ease-in-out'
+                        enterFrom='opacity-0'
+                        enter='transition ease-in-out'
                     >
-                        <p className="text-sm">
-                            {t('pages.profile.partials.update_profile_information_form.messages.updated')}
+                        <p className='text-sm'>
+                            {t(
+                                'pages.profile.partials.update_profile_information_form.messages.updated',
+                            )}
                         </p>
                     </Transition>
                 </div>

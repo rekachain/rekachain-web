@@ -77,7 +77,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
         e.preventDefault();
         const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
         const validImages = data.image_path.filter(
-            (file) => file.size !== null && validImageTypes.includes(file.type)
+            (file) => file.size !== null && validImageTypes.includes(file.type),
         );
 
         const formData = new FormData();
@@ -246,7 +246,8 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             </h2>
                             <RadioGroup
                                 value={data.role_id?.toString()}
-                                onValueChange={(v) => setData('role_id', +v)}>
+                                onValueChange={(v) => setData('role_id', +v)}
+                            >
                                 {props.roles?.map((role) => (
                                     <div key={role.id} className='flex items-center space-x-2'>
                                         <RadioGroupItem

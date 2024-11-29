@@ -18,7 +18,7 @@ export default function () {
         description: '',
     });
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
         await carriageService.create(data);
         router.visit(route(`${ROUTES.CARRIAGES}.index`));
@@ -29,41 +29,49 @@ export default function () {
         <>
             <Head title={t('pages.carriage.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.carriage.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.carriage.create.title')}
+                        </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.carriage.create.fields.type')} htmlFor="type" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.carriage.create.fields.type')}
+                                htmlFor='type'
+                            />
                             <Input
                                 value={data.type}
-                                type="text"
-                                onChange={e => setData('type', e.target.value)}
-                                name="type"
-                                id="type"
-                                className="mt-1"
-                                autoComplete="type"
+                                type='text'
+                                onChange={(e) => setData('type', e.target.value)}
+                                name='type'
+                                id='type'
+                                className='mt-1'
+                                autoComplete='type'
                             />
-                            <InputError message={errors.type} className="mt-2" />
+                            <InputError message={errors.type} className='mt-2' />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.carriage.create.fields.description')} htmlFor="description" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.carriage.create.fields.description')}
+                                htmlFor='description'
+                            />
                             <Input
                                 value={data.description}
-                                type="text"
-                                onChange={e => setData('description', e.target.value)}
-                                name="description"
-                                id="description"
-                                className="mt-1"
-                                autoComplete="description"
+                                type='text'
+                                onChange={(e) => setData('description', e.target.value)}
+                                name='description'
+                                id='description'
+                                className='mt-1'
+                                autoComplete='description'
                             />
-                            <InputError message={errors.description} className="mt-2" />
+                            <InputError message={errors.description} className='mt-2' />
                         </div>
 
-                        <Button disabled={processing} className="mt-4">
+                        <Button disabled={processing} className='mt-4'>
                             {t('pages.carriage.create.buttons.submit')}
                         </Button>
                     </form>

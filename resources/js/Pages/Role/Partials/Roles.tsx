@@ -40,17 +40,23 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {roleResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    
-                    <div className="hidden md:block">
-                        <RoleTableView roleResponse={roleResponse} handleRoleDeletion={handleRoleResourceDeletion} />
+
+                    <div className='hidden md:block'>
+                        <RoleTableView
+                            roleResponse={roleResponse}
+                            handleRoleDeletion={handleRoleResourceDeletion}
+                        />
                     </div>
 
-                    <div className="block md:hidden">
-                        <RoleCardView roleResponse={roleResponse} handleRoleDeletion={handleRoleResourceDeletion} />
+                    <div className='block md:hidden'>
+                        <RoleCardView
+                            roleResponse={roleResponse}
+                            handleRoleDeletion={handleRoleResourceDeletion}
+                        />
                     </div>
                 </>
             )}

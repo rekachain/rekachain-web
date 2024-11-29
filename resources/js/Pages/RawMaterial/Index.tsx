@@ -14,9 +14,11 @@ export default function () {
         <>
             <Head title={t('pages.raw_material.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex flex-col md:flex-row gap-5 md:items-center">
-                        <h1 className="text-page-header my-4">{t('pages.raw_material.index.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex flex-col gap-5 md:flex-row md:items-center'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.raw_material.index.title')}
+                        </h1>
                         <Link
                             href={route(`${ROUTES.RAW_MATERIALS}.create`)}
                             className={buttonVariants({ variant: 'default' })}

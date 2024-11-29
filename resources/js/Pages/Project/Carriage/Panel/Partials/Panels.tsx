@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { CarriageResource, ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriageResource,
+    ProjectPanelResource,
+    ProjectResource,
+} from '@/Support/Interfaces/Resources';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { withLoading } from '@/Utils/withLoading';
@@ -8,7 +12,13 @@ import PanelTableView from './Partials/PanelTableView';
 import PanelCardView from './Partials/PanelCardView';
 import GenericPagination from '@/Components/GenericPagination';
 
-export default function ({ project, carriage }: { project: ProjectResource, carriage: CarriageResource }) {
+export default function ({
+    project,
+    carriage,
+}: {
+    project: ProjectResource;
+    carriage: CarriageResource;
+}) {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<ProjectPanelResource>>();
     const [panelResponseMeta, setPanelResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -41,18 +51,22 @@ export default function ({ project, carriage }: { project: ProjectResource, carr
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {panelResponse && (
                 <>
-                    <div className="hidden md:block">
-                        <PanelTableView 
-                            project={project} 
+                    <div className='hidden md:block'>
+                        <PanelTableView
+                            project={project}
                             panelResponse={panelResponse}
-                            carriage={carriage}>
-                        </PanelTableView>
+                            carriage={carriage}
+                        ></PanelTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <PanelCardView project={project} panelResponse={panelResponse} carriage={carriage}></PanelCardView>
+                    <div className='block md:hidden'>
+                        <PanelCardView
+                            project={project}
+                            panelResponse={panelResponse}
+                            carriage={carriage}
+                        ></PanelCardView>
                     </div>
                 </>
             )}

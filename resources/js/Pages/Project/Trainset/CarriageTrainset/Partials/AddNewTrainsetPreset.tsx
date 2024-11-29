@@ -35,10 +35,16 @@ const AddNewTrainsetPreset = ({
 
     const handleSaveTrainsetPreset = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await trainsetService.savePreset(trainset.id, trainset.project_id, data.new_carriage_preset_name);
+        await trainsetService.savePreset(
+            trainset.id,
+            trainset.project_id,
+            data.new_carriage_preset_name,
+        );
         await handleSyncTrainset();
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.messages.preset_added'),
+            t(
+                'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.messages.preset_added',
+            ),
         );
     });
 
@@ -49,31 +55,37 @@ const AddNewTrainsetPreset = ({
                     className: 'w-full',
                 })}
             >
-                {t('pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.buttons.add_new_preset')}
+                {t(
+                    'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.buttons.add_new_preset',
+                )}
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {t('pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.title')}
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.title',
+                        )}
                     </DialogTitle>
                     <DialogDescription></DialogDescription>
-                    <form onSubmit={handleSaveTrainsetPreset} className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-4">
+                    <form onSubmit={handleSaveTrainsetPreset} className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4'>
                             <Label>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.fields.preset_name',
                                 )}
                             </Label>
-                            <div className="flex gap-4">
+                            <div className='flex gap-4'>
                                 <Input
                                     value={data.new_carriage_preset_name}
-                                    type="text"
-                                    onChange={e => setData('new_carriage_preset_name', e.target.value)}
+                                    type='text'
+                                    onChange={(e) =>
+                                        setData('new_carriage_preset_name', e.target.value)
+                                    }
                                 />
-                                <Button type="submit" disabled={loading} className="w-fit">
+                                <Button type='submit' disabled={loading} className='w-fit'>
                                     {loading ? (
                                         <>
-                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                             {t(
                                                 'pages.project.trainset.carriage_trainset.partials.add_new_trainset_preset.dialogs.actions.saving',
                                             )}

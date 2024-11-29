@@ -28,8 +28,8 @@ export default function ({ project: initialProject }: { project: ProjectResource
         <>
             <Head title={t('pages.project.carriage.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <div>
                             <Breadcrumb>
                                 <BreadcrumbList>
@@ -48,7 +48,9 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">{t('pages.project.carriage.index.title')}</h1>
+                            <h1 className='text-page-header my-4'>
+                                {t('pages.project.carriage.index.title')}
+                            </h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

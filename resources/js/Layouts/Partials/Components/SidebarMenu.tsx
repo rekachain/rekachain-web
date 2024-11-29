@@ -11,8 +11,11 @@ export default function ({ children, bordered, title }: SidebarMenuProps) {
     const hasChildren = React.Children.toArray(children).length > 0;
     const displayTitle = title.toUpperCase();
     return hasChildren ? (
-        <div className={`sidebar-menu w-full py-4 space-y-2 ${borderClass}`}>
-            <p title={displayTitle} className="sidebar-item-header text-sidebar-header-foreground px-4 truncate">
+        <div className={`sidebar-menu w-full space-y-2 py-4 ${borderClass}`}>
+            <p
+                title={displayTitle}
+                className='sidebar-item-header truncate px-4 text-sidebar-header-foreground'
+            >
                 {displayTitle}
             </p>
             {children}
