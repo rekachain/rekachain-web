@@ -1,8 +1,5 @@
-import {
-    CarriageTrainsetResource,
-    PanelResource,
-    ProgressResource,
-} from '@/Support/Interfaces/Resources';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -11,26 +8,29 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
-import { Loader2, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
 import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
+import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { withLoading } from '@/Utils/withLoading';
-import { panelService } from '@/Services/panelService';
-import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriageTrainsetService } from '@/Services/carriageTrainsetService';
+import { panelService } from '@/Services/panelService';
+import { progressService } from '@/Services/progressService';
+import { STYLING } from '@/Support/Constants/styling';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import {
+    CarriageTrainsetResource,
+    PanelResource,
+    ProgressResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { progressService } from '@/Services/progressService';
-import { Separator } from '@/Components/UI/separator';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Loader2, RefreshCcw } from 'lucide-react';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
 
 const AddNewPanel = ({
     panelResponse,
@@ -117,7 +117,7 @@ const AddNewPanel = ({
             data.new_panel_id,
             data.new_panel_name,
             data.new_panel_description,
-            data.new_panel_qty
+            data.new_panel_qty,
         );
         handleResetAddCarriageSelection();
         handleResetProgressSearch();
@@ -125,8 +125,8 @@ const AddNewPanel = ({
         reset();
         void useSuccessToast(
             t(
-                'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.messages.panel_added'
-            )
+                'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.messages.panel_added',
+            ),
         );
     });
 
@@ -156,9 +156,10 @@ const AddNewPanel = ({
             <DialogTrigger
                 className={buttonVariants({
                     className: 'w-full',
-                })}>
+                })}
+            >
                 {t(
-                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.buttons.add_new_panel'
+                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.buttons.add_new_panel',
                 )}
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
@@ -169,7 +170,7 @@ const AddNewPanel = ({
                         <div className='flex flex-col gap-4 bg-background-2 p-4'>
                             <Label htmlFor='progress'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress',
                                 )}
                             </Label>
                             <div className='flex gap-2'>
@@ -178,26 +179,27 @@ const AddNewPanel = ({
                                     selectedDataId={data.progress_id}
                                     renderItem={(item) => item.name}
                                     placeholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_placeholder'
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_placeholder',
                                     )}
                                     onSearchChange={handleChangeSearchProgressName}
                                     id='progress_id'
                                     data={progressResponse?.data}
                                     customSearchPlaceholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_search'
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.progress_search',
                                     )}
                                 />
                                 <Button
                                     variant='ghost'
                                     type='button'
-                                    onClick={handleResetProgressSearch}>
+                                    onClick={handleResetProgressSearch}
+                                >
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
 
                             <Label htmlFor='panel'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel',
                                 )}
                             </Label>
                             <GenericDataSelector
@@ -205,7 +207,7 @@ const AddNewPanel = ({
                                 selectedDataId={data.new_panel_id}
                                 renderItem={(item) => item.name}
                                 placeholder={t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel_placeholder'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.panel_placeholder',
                                 )}
                                 nullable
                                 id='panel_id'
@@ -219,7 +221,7 @@ const AddNewPanel = ({
                             <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_name'
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_name',
                                     )}
                                 </Label>
                                 <Input
@@ -232,7 +234,7 @@ const AddNewPanel = ({
                             </div>
                             <Label htmlFor='new-panel-description'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_description'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_description',
                                 )}
                             </Label>
                             <Textarea
@@ -244,7 +246,7 @@ const AddNewPanel = ({
                             />
                             <Label htmlFor='new-panel-qty'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_qty'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.fields.new_panel_qty',
                                 )}
                             </Label>
                             <Input
@@ -265,7 +267,7 @@ const AddNewPanel = ({
                                 </>
                             ) : (
                                 t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.buttons.add_panel'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.partials.add_new_panel.dialogs.buttons.add_panel',
                                 )
                             )}
                         </Button>

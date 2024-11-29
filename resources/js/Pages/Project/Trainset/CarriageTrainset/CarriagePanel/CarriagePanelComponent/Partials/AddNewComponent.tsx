@@ -1,8 +1,5 @@
-import {
-    CarriagePanelResource,
-    ComponentResource,
-    ProgressResource,
-} from '@/Support/Interfaces/Resources';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -11,26 +8,29 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
-import { Loader2, RefreshCcw } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
 import { Input } from '@/Components/UI/input';
+import { Label } from '@/Components/UI/label';
+import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { withLoading } from '@/Utils/withLoading';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriagePanelService } from '@/Services/carriagePanelService';
+import { componentService } from '@/Services/componentService';
+import { progressService } from '@/Services/progressService';
+import { STYLING } from '@/Support/Constants/styling';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import {
+    CarriagePanelResource,
+    ComponentResource,
+    ProgressResource,
+} from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { progressService } from '@/Services/progressService';
-import { Separator } from '@/Components/UI/separator';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { carriagePanelService } from '@/Services/carriagePanelService';
+import { Loader2, RefreshCcw } from 'lucide-react';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
 
 const AddNewComponent = ({
     componentResource,
@@ -117,7 +117,7 @@ const AddNewComponent = ({
             data.new_component_id,
             data.new_component_name,
             data.new_component_description,
-            data.new_component_qty
+            data.new_component_qty,
         );
         handleResetAddCarriageSelection();
         handleResetProgressSearch();
@@ -125,8 +125,8 @@ const AddNewComponent = ({
         reset();
         void useSuccessToast(
             t(
-                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.messages.created'
-            )
+                'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.messages.created',
+            ),
         );
     });
 
@@ -156,9 +156,10 @@ const AddNewComponent = ({
             <DialogTrigger
                 className={buttonVariants({
                     className: 'w-full',
-                })}>
+                })}
+            >
                 {t(
-                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.buttons.add_component'
+                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.buttons.add_component',
                 )}
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
@@ -169,7 +170,7 @@ const AddNewComponent = ({
                         <div className='flex flex-col gap-4 bg-background-2 p-4'>
                             <Label htmlFor='progress'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress',
                                 )}
                             </Label>
                             <div className='flex gap-2'>
@@ -178,26 +179,27 @@ const AddNewComponent = ({
                                     selectedDataId={data.progress_id}
                                     renderItem={(item) => item.name}
                                     placeholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_placeholder'
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_placeholder',
                                     )}
                                     onSearchChange={handleChangeSearchProgressName}
                                     id='progress_id'
                                     data={progressResponse?.data}
                                     customSearchPlaceholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_search_placeholder'
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.progress_search_placeholder',
                                     )}
                                 />
                                 <Button
                                     variant='ghost'
                                     type='button'
-                                    onClick={handleResetProgressSearch}>
+                                    onClick={handleResetProgressSearch}
+                                >
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
 
                             <Label htmlFor='component'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component',
                                 )}
                             </Label>
                             <GenericDataSelector
@@ -205,7 +207,7 @@ const AddNewComponent = ({
                                 selectedDataId={data.new_component_id}
                                 renderItem={(item) => item.name}
                                 placeholder={t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_placeholder'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_placeholder',
                                 )}
                                 nullable
                                 id='component_id'
@@ -219,7 +221,7 @@ const AddNewComponent = ({
                             <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_name'
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_name',
                                     )}
                                 </Label>
                                 <Input
@@ -232,7 +234,7 @@ const AddNewComponent = ({
                             </div>
                             <Label htmlFor='new-component-description'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_description'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_description',
                                 )}
                             </Label>
                             <Textarea
@@ -244,7 +246,7 @@ const AddNewComponent = ({
                             />
                             <Label htmlFor='new-component-qty'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_qty'
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.add_new_component.dialogs.fields.component_qty',
                                 )}
                             </Label>
                             <Input
