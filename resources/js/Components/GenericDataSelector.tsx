@@ -1,4 +1,5 @@
-import { Button } from '@/Components/UI/button';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
+import { useDebounce } from '@uidotdev/usehooks';
 import {
     Command,
     CommandGroup,
@@ -6,14 +7,13 @@ import {
     CommandItem,
     CommandList,
 } from '@/Components/UI/command';
+import { Button } from '@/Components/UI/button';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/Utils';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { Resource } from '@/Support/Interfaces/Resources';
-import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import { ChangeEvent, memo, useEffect, useState } from 'react';
 
 interface GenericDataSelectorProps<T extends Resource> {
     /**
@@ -199,13 +199,12 @@ const GenericDataSelector = <T extends Resource>({
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            <PopoverTrigger id={id} className='w-' asChild>
+            <PopoverTrigger id={id} asChild>
                 <Button
                     variant='outline'
                     role='combobox'
-                    className={cn('w-40 justify-between', buttonClassName)}
-                    aria-expanded={openPopover}
-                >
+                    className={cn('w-full justify-between', buttonClassName)}
+                    aria-expanded={openPopover}>
                     {selectedDataId
                         ? items.find((item) => item.id === selectedDataId)
                             ? getLabel(items.find((item) => item.id === selectedDataId)!)
@@ -247,14 +246,13 @@ const GenericDataSelector = <T extends Resource>({
                                 items.map((item) => (
                                     <CommandItem
                                         onSelect={() => handleSelectItem(item.id)}
-                                        key={item.id}
-                                    >
+                                        key={item.id}>
                                         <Check
                                             className={cn(
                                                 'mr-2 h-4 w-4',
                                                 selectedDataId === item.id
                                                     ? 'opacity-100'
-                                                    : 'opacity-0',
+                                                    : 'opacity-0'
                                             )}
                                         />
                                         {renderItem(item)}

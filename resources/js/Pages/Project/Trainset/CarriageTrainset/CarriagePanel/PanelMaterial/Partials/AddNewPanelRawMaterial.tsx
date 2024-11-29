@@ -1,5 +1,4 @@
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
 import {
     Dialog,
     DialogContent,
@@ -8,22 +7,23 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Input } from '@/Components/UI/input';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
-import { Separator } from '@/Components/UI/separator';
+import { Loader2, RefreshCcw } from 'lucide-react';
+import { Input } from '@/Components/UI/input';
 import { Textarea } from '@/Components/UI/textarea';
+import { FormEvent, memo, useCallback } from 'react';
+import { withLoading } from '@/Utils/withLoading';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { carriagePanelService } from '@/Services/carriagePanelService';
+import { useForm } from '@inertiajs/react';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { Separator } from '@/Components/UI/separator';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import { rawMaterialService } from '@/Services/rawMaterialService';
 import { STYLING } from '@/Support/Constants/styling';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Loader2, RefreshCcw } from 'lucide-react';
-import { FormEvent, memo, useCallback } from 'react';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { carriagePanelService } from '@/Services/carriagePanelService';
 
 const AddNewPanelRawMaterial = ({
     carriagePanel,
@@ -59,14 +59,14 @@ const AddNewPanelRawMaterial = ({
             data.new_raw_material_description,
             data.new_raw_material_unit,
             data.new_raw_material_specs,
-            data.new_raw_material_qty,
+            data.new_raw_material_qty
         );
         await handleSyncCarriagePanel();
         reset();
         void useSuccessToast(
             t(
-                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.messages.panel_material_added',
-            ),
+                'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.messages.panel_material_added'
+            )
         );
     });
 
@@ -79,24 +79,22 @@ const AddNewPanelRawMaterial = ({
             <DialogTrigger
                 className={buttonVariants({
                     className: 'w-full',
-                })}
-            >
+                })}>
                 {t(
-                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.title',
+                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.title'
                 )}
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{data.new_raw_material_code}</DialogTitle>
                     <DialogDescription></DialogDescription>
                     <form
                         onSubmit={handleAddCarriagePanelRawMaterial}
-                        className='flex flex-col gap-4'
-                    >
+                        className='flex flex-col gap-4'>
                         <div className='flex flex-col gap-4 bg-background-2 p-4'>
                             <Label htmlFor='raw_material_id'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material',
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material'
                                 )}
                             </Label>
                             <div className='flex gap-2'>
@@ -105,7 +103,7 @@ const AddNewPanelRawMaterial = ({
                                     selectedDataId={data.raw_material_id}
                                     renderItem={(item) => item.description}
                                     placeholder={t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material_placeholder',
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.raw_material_placeholder'
                                     )}
                                     nullable
                                     labelKey={'description'}
@@ -115,8 +113,7 @@ const AddNewPanelRawMaterial = ({
                                 <Button
                                     variant='ghost'
                                     type='button'
-                                    onClick={handleResetRawMaterialId}
-                                >
+                                    onClick={handleResetRawMaterialId}>
                                     <RefreshCcw size={STYLING.ICON.SIZE.SMALL} />
                                 </Button>
                             </div>
@@ -128,7 +125,7 @@ const AddNewPanelRawMaterial = ({
                             <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
-                                        'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_code',
+                                        'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_code'
                                     )}
                                 </Label>
                                 <Input
@@ -144,7 +141,7 @@ const AddNewPanelRawMaterial = ({
 
                             <Label htmlFor='new-component-description'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_description',
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_description'
                                 )}
                             </Label>
                             <Textarea
@@ -158,7 +155,7 @@ const AddNewPanelRawMaterial = ({
                             />
                             <Label htmlFor='new-component-unit'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_unit',
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_unit'
                                 )}
                             </Label>
                             <Input
@@ -170,7 +167,7 @@ const AddNewPanelRawMaterial = ({
                             />
                             <Label htmlFor='new-component-specs'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_specs',
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_specs'
                                 )}
                             </Label>
                             <Textarea
@@ -182,7 +179,7 @@ const AddNewPanelRawMaterial = ({
                             />
                             <Label htmlFor='new-component-qty'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_qty',
+                                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.partials.add_new_panel_raw_material.dialogs.fields.new_raw_material_qty'
                                 )}
                             </Label>
                             <Input
