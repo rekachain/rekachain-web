@@ -48,7 +48,7 @@ const AddCarriage = ({
     const { loading } = useLoading();
 
     const fetchCarriages = useCallback(async (filters: ServiceFilterOptions) => {
-        return await carriageService.getAll(filters).then(response => response.data);
+        return await carriageService.getAll(filters).then((response) => response.data);
     }, []);
 
     useEffect(() => {
@@ -62,10 +62,12 @@ const AddCarriage = ({
             data.new_carriage_id!,
             data.new_carriage_type,
             data.new_carriage_description,
-            data.new_carriage_qty,
+            data.new_carriage_qty
         );
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.partials.add_carriage.messages.carriage_added'),
+            t(
+                'pages.project.trainset.carriage_trainset.partials.add_carriage.messages.carriage_added'
+            )
         );
         await handleSyncTrainset();
     });
@@ -75,95 +77,104 @@ const AddCarriage = ({
             <DialogTrigger
                 className={buttonVariants({
                     className: 'w-full',
-                })}
-            >
-                {t('pages.project.trainset.carriage_trainset.partials.add_carriage.buttons.add_carriage')}
+                })}>
+                {t(
+                    'pages.project.trainset.carriage_trainset.partials.add_carriage.buttons.add_carriage'
+                )}
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{data.new_carriage_type}</DialogTitle>
                     <DialogDescription></DialogDescription>
-                    <form onSubmit={handleAddCarriageTrainset} className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-4 bg-background-2 p-4">
-                            <Label htmlFor="carriage">
+                    <form onSubmit={handleAddCarriageTrainset} className='flex flex-col gap-4'>
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
+                            <Label htmlFor='carriage'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage'
                                 )}
                             </Label>
                             <GenericDataSelector
-                                setSelectedData={id => setData('new_carriage_id', id)}
+                                setSelectedData={(id) => setData('new_carriage_id', id)}
                                 selectedDataId={data.new_carriage_id ?? undefined}
-                                renderItem={(item: CarriageResource) => `${item.type} : ${item.description}`}
+                                renderItem={(item: CarriageResource) =>
+                                    `${item.type} : ${item.description}`
+                                }
                                 placeholder={t(
-                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage_placeholder',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.carriage_placeholder'
                                 )}
                                 nullable
-                                id="new_carriage_id"
+                                id='new_carriage_id'
                                 fetchData={fetchCarriages}
-                                customLabel={(item: CarriageResource) => `${item.type} : ${item.description}`}
+                                customLabel={(item: CarriageResource) =>
+                                    `${item.type} : ${item.description}`
+                                }
                             />
                         </div>
 
-                        <div className="flex gap-4 items-center">
-                            <div className=" flex-1">
+                        <div className='flex items-center gap-4'>
+                            <div className='flex-1'>
                                 <Separator />
                             </div>
-                            {t('pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.or')}
-                            <div className=" flex-1">
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.or'
+                            )}
+                            <div className='flex-1'>
                                 <Separator />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-4 bg-background-2 p-4">
+                        <div className='flex flex-col gap-4 bg-background-2 p-4'>
                             <Label>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_type',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_type'
                                 )}
                             </Label>
                             <Input
                                 value={data.new_carriage_type}
-                                type="text"
+                                type='text'
                                 required
-                                onChange={e => setData('new_carriage_type', e.target.value)}
+                                onChange={(e) => setData('new_carriage_type', e.target.value)}
                                 disabled={data.new_carriage_id !== null}
                             />
-                            <Label htmlFor="new-carriage-description">
+                            <Label htmlFor='new-carriage-description'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_description',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_description'
                                 )}
                             </Label>
                             <Textarea
                                 value={data.new_carriage_description}
-                                onChange={e => setData('new_carriage_description', e.target.value)}
-                                id="new-carriage-description"
+                                onChange={(e) =>
+                                    setData('new_carriage_description', e.target.value)
+                                }
+                                id='new-carriage-description'
                                 disabled={data.new_carriage_id !== null}
-                                className="p-2 rounded"
+                                className='rounded p-2'
                             />
-                            <Label htmlFor="new-carriage-qty">
+                            <Label htmlFor='new-carriage-qty'>
                                 {t(
-                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_qty',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.fields.new_carriage_qty'
                                 )}
                             </Label>
                             <Input
                                 value={data.new_carriage_qty}
-                                type="number"
+                                type='number'
                                 required
-                                onChange={e => setData('new_carriage_qty', +e.target.value)}
+                                onChange={(e) => setData('new_carriage_qty', +e.target.value)}
                                 min={1}
-                                id="new-carriage-qty"
+                                id='new-carriage-qty'
                             />
                         </div>
 
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading ? (
                                 <>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                     {t(
-                                        'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.actions.adding_carriage',
+                                        'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.actions.adding_carriage'
                                     )}
                                 </>
                             ) : (
                                 t(
-                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.buttons.add_carriage',
+                                    'pages.project.trainset.carriage_trainset.partials.add_carriage.dialogs.buttons.add_carriage'
                                 )
                             )}
                         </Button>
