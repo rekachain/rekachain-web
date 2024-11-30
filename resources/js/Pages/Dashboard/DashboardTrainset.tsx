@@ -22,13 +22,79 @@ import { cn } from '@/Lib/Utils';
 import { Button } from '@/Components/UI/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { withLoading } from '@/Utils/withLoading';
+import { trainsetService } from '@/Services/trainsetService';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { TrainsetComponentProgressResource } from '@/Support/Interfaces/Others/TrainsetComponentProgressResource';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(data['project'][0]['name']);
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
+    const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<TrainsetComponentProgressResource[]>([]);
+    const trainsetComponentProgressConfig: ChartConfig = {
+        total_plan_qty: {
+            label: 'Rencana',
+            color: 'hsl(var(--chart-2))',
+        },
+        total_fulfilled_qty: {
+            label: 'Done',
+            color: 'hsl(var(--chart-1))',
+        },
+        total_progress_qty: {
+            label: 'In Progress',
+            color: 'hsl(var(--chart-3))',
+        },
+        diff: {
+            label: 'To Be Fulfilled',
+            color: 'hsl(var(--chart-2))',
+        }
+    };
+
+    const toPercent = (decimal: number, fixed = 0) => {
+        return `${(decimal * 100).toFixed(fixed)}%`;
+    };
+    const getPercent = (value: number, total: number) => {
+        const ratio = total > 0 ? value / total : 0;
+        return toPercent(ratio,2);
+    };
+
+    const renderTrainsetComponentProgressTooltipContent = ({ payload, label }: any) => {
+        const total = payload.reduce((result: number, entry: any, index: number) => {
+            return entry.dataKey !== 'total_progress_qty' ? result + entry.value : result;
+        }, 0);
+        return (
+            <div className="grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
+                <p className="">{`${label} (Total Pesanan: ${total})`}</p>
+                <ul className="list">
+                    {payload.map((entry: any, index: number) => (
+                        <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
+                            <div className="flex items-center gap-1.5">
+                                {entry.dataKey !== 'diff' && <div
+                                    style={{
+                                        backgroundColor: entry.color,
+                                    }}
+                                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                                />}
+                                <span className="text-foreground">
+                                    {trainsetComponentProgressConfig[entry.dataKey].label}
+                                </span>
+                            </div>
+                            <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+    const renderTrainsetComponentProgressLegendContent = (value: string, entry: any) => {
+        return (
+            <span className="text-foreground">{trainsetComponentProgressConfig[value].label}</span>
+        );
+    };
+
     const chartConfig = {
         in_progress: {
             label: 'Progress',
@@ -58,6 +124,18 @@ export default function Dashboard({ auth, data }: PageProps) {
     } satisfies ChartConfig;
 
     const { t } = useLaravelReactI18n();
+
+    const loadTrainsetComponentProgress = withLoading(async () => {
+        const progress = await trainsetService.get(data['trainsetId'], {
+            intent: IntentEnum.WEB_TRAINSET_GET_ALL_COMPONENTS_PROGRESS,
+        }) as unknown as TrainsetComponentProgressResource[];
+        setTrainsetComponentProgress(progress);
+    });
+
+    useEffect(() => {
+        loadTrainsetComponentProgress();
+    }, []);
+
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
@@ -235,6 +313,43 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </ChartContainer>
                             </div>
                         </div>
+                        <div className="flex flex-col w-full mt-2 ">
+                            <h2 className="text-xl my-1 font-bold">Komponen Dalam Trainset</h2>
+                            <h3 className="text-base">{`Komponen yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
+                            <ChartContainer config={trainsetComponentProgressConfig} className="h-[900px] w-full mt-5">
+                                <BarChart 
+                                    data={trainsetComponentProgress} 
+                                    stackOffset='expand'
+                                    layout="vertical"
+                                    accessibilityLayer
+                                >
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                        type="number" 
+                                        tickFormatter={value => `${(value * 100).toFixed(0)}%`}
+                                    />
+                                    <YAxis
+                                        width={150}
+                                        type="category"
+                                        tickMargin={10}
+                                        tickLine={false}
+                                        dataKey="component.name"
+                                        className=""
+                                        axisLine={false}
+                                    />
+                                    <ChartTooltip content={renderTrainsetComponentProgressTooltipContent} />
+                                    <ChartLegend formatter={renderTrainsetComponentProgressLegendContent} />
+                                    {/* <Bar type='monotone'
+                                        stackId="1" radius={0} fill={`var(--color-total_plan_qty)`} dataKey={'total_plan_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} /> */}
+                                    <Bar type='monotone'
+                                        stackId="2" radius={0} fill={`var(--color-total_fulfilled_qty)`} dataKey={'total_fulfilled_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} />
+                                    <Bar type='monotone'
+                                        stackId="2" radius={[0,4,4,0]} fill={`var(--color-total_progress_qty)`} dataKey={'total_progress_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} />
+                                    <Bar type='monotone'
+                                        stackId="2" radius={4} fill={`var(--color-diff)`} className='hidden' dataKey={'diff'} legendType='none' />
+                                </BarChart>
+                            </ChartContainer>
+                        </div>
                         {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
 
                         <p>use the updated at and status</p>
@@ -291,13 +406,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                             </PieChart>
                         </ChartContainer> */}
-                        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 text-gray-900 dark:text-gray-100">
                                     {t('pages.dashboard.index.welcome')}
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

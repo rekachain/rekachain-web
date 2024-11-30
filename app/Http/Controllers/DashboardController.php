@@ -133,6 +133,7 @@ class DashboardController extends Controller {
         // dump($tsList);
         // dump($trainsets);
         $data = [
+            'trainsetId' => $trainset,
             'trainsets' => $trainsets,
             'carriages' => $carriages,
             'panel' => $trainsetPanel,
