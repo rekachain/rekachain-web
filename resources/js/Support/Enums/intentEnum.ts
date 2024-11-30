@@ -83,6 +83,7 @@ const intents = {
     "WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET": "web.trainset.delete.carriage.trainset",
     "WEB_TRAINSET_ADD_CARRIAGE_TRAINSET": "web.trainset.add.carriage.trainset",
     "WEB_TRAINSET_GET_ALL_COMPONENTS": "web.trainset.get.all.components",
+    "WEB_TRAINSET_GET_ALL_COMPONENTS_PROGRESS": "web.trainset.get.all.components.progress",
     "WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY": "web.trainset.get.all.components.with.qty",
     "WEB_TRAINSET_GET_ALL_PANELS": "web.trainset.get.all.panels",
     "WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY": "web.trainset.get.all.panels.with.qty",

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class TrainsetAttachmentComponent extends Model {
-    use HasFactory;
+    use HasFactory, HasRelationships;
 
     protected $fillable = [
         'trainset_attachment_id',
@@ -28,5 +31,20 @@ class TrainsetAttachmentComponent extends Model {
 
     public function detail_worker_trainsets(): HasMany {
         return $this->hasMany(DetailWorkerTrainset::class);
+    }
+
+    public function progress_steps(): HasManyDeep {
+        return $this->hasManyDeep(ProgressStep::class, [
+            CarriagePanelComponent::class,
+            Progress::class,
+        ], [
+            'id',
+            'id',
+            'progress_id',
+        ], [
+            'carriage_panel_component_id',
+            'progress_id',
+            'id',
+        ]);
     }
 }
