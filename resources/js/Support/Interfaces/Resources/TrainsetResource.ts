@@ -18,4 +18,5 @@ export interface TrainsetResource extends Resource, Trainset {
     has_mechanic_trainset_attachment: boolean;
     has_electric_trainset_attachment: boolean;
     has_panel_attachment: boolean;
+    localized_status: string;
 }

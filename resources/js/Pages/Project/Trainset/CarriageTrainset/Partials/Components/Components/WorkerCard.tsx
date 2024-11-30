@@ -44,7 +44,7 @@ export default function ({
                                   : ''
                         }
                     >
-                        {detailWorker.acceptance_status ?? 'N/A🗿'}
+                        {detailWorker.localized_acceptance_status}
                     </span>
                 </p>
                 <p className='text-sm'>
@@ -59,7 +59,7 @@ export default function ({
                                 : 'text-yellow-500'
                         }
                     >
-                        {detailWorker.work_status}
+                        {detailWorker.localized_work_status}
                     </span>
                 </p>
                 <div className='flex flex-col gap-1'>
