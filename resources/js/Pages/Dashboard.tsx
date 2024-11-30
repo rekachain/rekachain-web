@@ -387,8 +387,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     // @ts-ignore
                                                     data['projectDetail'].map((projectItem) => (
                                                         <Link
-                                                            href={`/dashboard/${projectItem.id}`}
                                                             key={projectItem.id}
+                                                            href={`/dashboard/${projectItem.id}`}
                                                         >
                                                             <CommandItem
                                                                 value={`/dashboard/${projectItem.name}`}
@@ -499,8 +499,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     {// @ts-ignore
                                                     data['tsList']?.map((projectItem) => (
                                                         <Link
-                                                            href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                             key={projectItem.id}
+                                                            href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                         >
                                                             <CommandItem
                                                                 value={projectItem.name}

@@ -286,7 +286,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
                                 )->toArray(request()->merge(['intent' => '']))
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
                             ]);
                             $steps->push([
                                 ...StepResource::make($detailWorkerTrainset->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
@@ -299,7 +299,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
                                 )->toArray(request()->merge(['intent' => '']))
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
                             ]);
                         }
                     });

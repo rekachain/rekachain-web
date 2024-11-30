@@ -196,6 +196,7 @@ class Trainset extends Model {
     public function trainset_attachment_components(): HasManyThrough {
         return $this->hasManyThrough(TrainsetAttachmentComponent::class, TrainsetAttachment::class);
     }
+
     /**
      * panel_attachments:
      * flow : trainset -> carriage_trainsets -> carriage_panel -> panel_attachments

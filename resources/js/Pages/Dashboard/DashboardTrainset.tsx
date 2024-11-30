@@ -34,6 +34,7 @@ import {
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { Separator } from '@/Components/UI/separator';
+import { cn } from '@/Lib/Utils';
 import { trainsetService } from '@/Services/trainsetService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import {
@@ -42,7 +43,6 @@ import {
 } from '@/Support/Interfaces/Others/TrainsetProgressResource';
 import { withLoading } from '@/Utils/withLoading';
 import { useEffect, useState } from 'react';
-import { cn } from '@/Lib/Utils';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
@@ -234,8 +234,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             data['projectList'].map(
                                                                 (projectItem: any) => (
                                                                     <Link
-                                                                        href={`/dashboard/${projectItem.id}`}
                                                                         key={projectItem.id}
+                                                                        href={`/dashboard/${projectItem.id}`}
                                                                     >
                                                                         <CommandItem
                                                                             value={projectItem.name}
@@ -301,8 +301,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         {// @ts-ignore
                                                         data['tsList']?.map((projectItem) => (
                                                             <Link
-                                                                href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                                 key={projectItem.id}
+                                                                href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >
                                                                 <CommandItem
                                                                     value={projectItem.name}
@@ -415,9 +415,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 className='mt-5 h-[900px] w-full'
                             >
                                 <BarChart
-                                    data={trainsetComponentProgress}
                                     stackOffset='expand'
                                     layout='vertical'
+                                    data={trainsetComponentProgress}
                                     accessibilityLayer
                                 >
                                     <CartesianGrid vertical={false} />
@@ -444,34 +444,34 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         type='monotone'
                                         stackId='2'
                                         radius={0}
-                                        fill={`var(--color-total_fulfilled_qty)`}
-                                        dataKey={'total_fulfilled_qty'}
                                         label={{
                                             position: 'right',
                                             formatter: (value: number) =>
                                                 `${(value * 100).toFixed(0)}%`,
                                         }}
+                                        fill={`var(--color-total_fulfilled_qty)`}
+                                        dataKey={'total_fulfilled_qty'}
                                     />
                                     <Bar
                                         type='monotone'
                                         stackId='2'
                                         radius={[0, 4, 4, 0]}
-                                        fill={`var(--color-total_progress_qty)`}
-                                        dataKey={'total_progress_qty'}
                                         label={{
                                             position: 'right',
                                             formatter: (value: number) =>
                                                 `${(value * 100).toFixed(0)}%`,
                                         }}
+                                        fill={`var(--color-total_progress_qty)`}
+                                        dataKey={'total_progress_qty'}
                                     />
                                     <Bar
                                         type='monotone'
                                         stackId='2'
                                         radius={4}
-                                        fill={`var(--color-diff)`}
-                                        className='hidden'
-                                        dataKey={'diff'}
                                         legendType='none'
+                                        fill={`var(--color-diff)`}
+                                        dataKey={'diff'}
+                                        className='hidden'
                                     />
                                 </BarChart>
                             </ChartContainer>
@@ -484,9 +484,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 className='mt-5 h-[500px] w-full'
                             >
                                 <BarChart
-                                    data={trainsetPanelProgress}
                                     stackOffset='expand'
                                     layout='vertical'
+                                    data={trainsetPanelProgress}
                                     accessibilityLayer
                                 >
                                     <CartesianGrid vertical={false} />
@@ -513,34 +513,34 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         type='monotone'
                                         stackId='2'
                                         radius={0}
-                                        fill={`var(--color-total_fulfilled_qty)`}
-                                        dataKey={'total_fulfilled_qty'}
                                         label={{
                                             position: 'right',
                                             formatter: (value: number) =>
                                                 `${(value * 100).toFixed(0)}%`,
                                         }}
+                                        fill={`var(--color-total_fulfilled_qty)`}
+                                        dataKey={'total_fulfilled_qty'}
                                     />
                                     <Bar
                                         type='monotone'
                                         stackId='2'
                                         radius={[0, 4, 4, 0]}
-                                        fill={`var(--color-total_progress_qty)`}
-                                        dataKey={'total_progress_qty'}
                                         label={{
                                             position: 'right',
                                             formatter: (value: number) =>
                                                 `${(value * 100).toFixed(0)}%`,
                                         }}
+                                        fill={`var(--color-total_progress_qty)`}
+                                        dataKey={'total_progress_qty'}
                                     />
                                     <Bar
                                         type='monotone'
                                         stackId='2'
                                         radius={4}
-                                        fill={`var(--color-diff)`}
-                                        className='hidden'
-                                        dataKey={'diff'}
                                         legendType='none'
+                                        fill={`var(--color-diff)`}
+                                        dataKey={'diff'}
+                                        className='hidden'
                                     />
                                 </BarChart>
                             </ChartContainer>
