@@ -104,7 +104,10 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                 )}
                             </TabsTrigger>
                         </TabsList>
-                        <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC} className='focus-visible:ring-0'>
+                        <TabsContent
+                            value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                            className='focus-visible:ring-0'
+                        >
                             <ScrollArea className='h-[600px] border p-4'>
                                 {mechanicAttachment && (
                                     <ProgressComponent
@@ -117,7 +120,10 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                 )}
                             </ScrollArea>
                         </TabsContent>
-                        <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC} className='focus-visible:ring-0'>
+                        <TabsContent
+                            value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
+                            className='focus-visible:ring-0'
+                        >
                             <ScrollArea className='h-[600px] border p-4'>
                                 {electricAttachment && (
                                     <ProgressComponent
@@ -130,7 +136,10 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                 )}
                             </ScrollArea>
                         </TabsContent>
-                        <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT} className='focus-visible:ring-0'>
+                        <TabsContent
+                            value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}
+                            className='focus-visible:ring-0'
+                        >
                             <ScrollArea className='h-[600px] border p-4'>
                                 <ProgressPanel
                                     trainset={trainset}

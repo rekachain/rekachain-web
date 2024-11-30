@@ -88,8 +88,8 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                                 </h3>
                                             </div>
                                         </div>
-                                        <div className="flex">
-                                            <ScrollArea className='flex flex-1 w-1 rounded-md border'>
+                                        <div className='flex'>
+                                            <ScrollArea className='flex w-1 flex-1 rounded-md border'>
                                                 <div className='flex w-max space-x-4 p-4'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
@@ -144,8 +144,8 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                                                             </Popover>
                                                                         </BreadcrumbItem>
                                                                         {index <
-                                                                            serialPanelProgress.steps
-                                                                                .length -
+                                                                            serialPanelProgress
+                                                                                .steps.length -
                                                                                 1 && (
                                                                             <BreadcrumbSeparator />
                                                                         )}

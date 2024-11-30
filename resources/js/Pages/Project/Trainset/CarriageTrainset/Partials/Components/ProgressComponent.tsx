@@ -87,8 +87,8 @@ const ProgressComponent = ({
                                                 </h3>
                                             </div>
                                         </div>
-                                        <div className="flex">
-                                            <ScrollArea className='flex flex-1 w-1 rounded-md border'>
+                                        <div className='flex'>
+                                            <ScrollArea className='flex w-1 flex-1 rounded-md border'>
                                                 <div className='flex w-max space-x-4 p-4'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
@@ -149,7 +149,8 @@ const ProgressComponent = ({
                                                                             <BreadcrumbSeparator
                                                                                 key={
                                                                                     componentProgress
-                                                                                        .panel.name +
+                                                                                        .panel
+                                                                                        .name +
                                                                                     (
                                                                                         step as unknown as StepResource
                                                                                     ).id +

@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/UI/card';
-import { DetailWorkerWorkStatusEnum } from '@/Support/Enums/DetailWorkerWorkStatusEnum';
 import { StepResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
