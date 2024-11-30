@@ -105,6 +105,9 @@ const ProgressComponent = ({
                                                                                             work_status:
                                                                                                 | string
                                                                                                 | null;
+                                                                                            localized_work_status:
+                                                                                                | string
+                                                                                                | null;
                                                                                             workers: DetailWorkerTrainsetResource[];
                                                                                         }
                                                                                     }

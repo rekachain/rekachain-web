@@ -106,6 +106,9 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                                                                             work_status:
                                                                                                 | string
                                                                                                 | null;
+                                                                                            localized_work_status:
+                                                                                                | string
+                                                                                                | null;
                                                                                             workers: DetailWorkerPanelResource[];
                                                                                         }
                                                                                     }

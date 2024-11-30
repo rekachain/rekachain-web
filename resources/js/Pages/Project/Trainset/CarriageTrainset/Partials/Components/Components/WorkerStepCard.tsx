@@ -8,6 +8,7 @@ export default function ({
 }: {
     step: StepResource & {
         work_status: string | null;
+        localized_work_status: string | null;
     };
 }) {
     const { t } = useLaravelReactI18n();
@@ -37,11 +38,9 @@ export default function ({
                         'pages.project.trainset.carriage_trainset.partials.components.components.worker_step_card.step_status',
                     )}
                     :{' '}
-                    {step.work_status === DetailWorkerWorkStatusEnum.COMPLETED
-                        ? 'Complete'
-                        : step.work_status === DetailWorkerWorkStatusEnum.IN_PROGRESS
-                          ? 'In Progress'
-                          : 'Nothing '}
+                    {step.work_status !== null
+                        ? step.localized_work_status
+                        : t('enums.others.null_work_status')}
                 </small>
             </CardContent>
         </Card>

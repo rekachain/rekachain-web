@@ -25,7 +25,7 @@ return [
         'in_progress' => 'In Progress',
         'completed' => 'Completed',
     ],
-    'other' => [
+    'others' => [
         'null_work_status' => 'Not Processed',
     ],
 ];

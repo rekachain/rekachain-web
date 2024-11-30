@@ -25,7 +25,7 @@ return [
         'in_progress' => 'Dalam Proses',
         'completed' => 'Selesai',
     ],
-    'other' => [
+    'others' => [
         'null_work_status' => 'Belum Diproses',
     ],
 ];
