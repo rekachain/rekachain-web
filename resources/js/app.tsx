@@ -1,15 +1,15 @@
-import './bootstrap';
 import 'spinkit/spinkit.min.css';
 import '../css/app.css';
+import './bootstrap';
 
-import { createRoot } from 'react-dom/client';
-import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { Toaster } from '@/Components/UI/toaster';
 import LoadingOverlay from '@/Components/LoadingOverlay';
-import { LoadingProvider } from '@/Contexts/LoadingContext';
-import { LaravelReactI18nProvider } from 'laravel-react-i18n';
+import { Toaster } from '@/Components/UI/toaster';
 import { ConfirmationDialogProvider } from '@/Contexts/ConfirmationDialogContext';
+import { LoadingProvider } from '@/Contexts/LoadingContext';
+import { createInertiaApp } from '@inertiajs/react';
+import { LaravelReactI18nProvider } from 'laravel-react-i18n';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createRoot } from 'react-dom/client';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -24,7 +24,8 @@ void createInertiaApp({
             <LaravelReactI18nProvider
                 locale={'en'}
                 files={import.meta.glob('/lang/*.json')}
-                fallbackLocale={'en'}>
+                fallbackLocale={'en'}
+            >
                 <LoadingProvider>
                     <ConfirmationDialogProvider>
                         <App {...props} />
@@ -32,7 +33,7 @@ void createInertiaApp({
                         <LoadingOverlay />
                     </ConfirmationDialogProvider>
                 </LoadingProvider>
-            </LaravelReactI18nProvider>
+            </LaravelReactI18nProvider>,
         );
     },
     progress: {

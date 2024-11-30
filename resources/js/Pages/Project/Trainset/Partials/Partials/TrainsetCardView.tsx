@@ -3,7 +3,6 @@ import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function TrainsetCardView({
@@ -18,26 +17,28 @@ export default function TrainsetCardView({
     const { t } = useLaravelReactI18n();
     return (
         <div>
-            {project.trainsets.map(trainset => (
+            {project.trainsets.map((trainset) => (
                 <div key={trainset.id}>
                     <AnimateIn
-                        to="opacity-100 translate-y-0 translate-x-0"
+                        to='opacity-100 translate-y-0 translate-x-0'
                         key={trainset.id}
-                        from="opacity-0 -translate-y-4"
+                        from='opacity-0 -translate-y-4'
                         duration={300}
                     >
-                        <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                            <div className="flex w-full justify-between items-scenter">
-                                <h4 className="font-bold text-xl">{trainset.name}</h4>
-                                <div className="text-center">
+                        <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                            <div className='items-scenter flex w-full justify-between'>
+                                <h4 className='text-xl font-bold'>{trainset.name}</h4>
+                                <div className='text-center'>
                                     {/* <h5 className="font-bold text-xs items-center "> {division.role?.name}</h5> */}
                                 </div>
                             </div>
 
-                            <h5 className="text-base">
-                                {t('pages.project.trainset.partials.partials.trainset_table.headers.trainset_carriage')}
+                            <h5 className='text-base'>
+                                {t(
+                                    'pages.project.trainset.partials.partials.trainset_table.headers.trainset_carriage',
+                                )}
                             </h5>
-                            <p className="text-sm">
+                            <p className='text-sm'>
                                 {trainset.preset_name && `(${trainset.preset_name}) `}
 
                                 {trainset.carriages &&
@@ -61,9 +62,9 @@ export default function TrainsetCardView({
                             </h5> */}
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
-                            <div className="flex items-center justify-end w-full">
+                            <div className='flex w-full items-center justify-end'>
                                 <Button
-                                    variant="link"
+                                    variant='link'
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
                                     disabled={loading || !trainset.can_be_deleted}
                                 >
@@ -76,7 +77,9 @@ export default function TrainsetCardView({
                                     ])}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('pages.project.trainset.partials.partials.trainset_table.actions.carriages')}
+                                    {t(
+                                        'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
+                                    )}
                                 </Link>
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                             Delete

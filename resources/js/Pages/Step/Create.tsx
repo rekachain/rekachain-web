@@ -1,20 +1,20 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { progressService } from '@/Services/progressService';
 import { stepService } from '@/Services/stepService';
 import { ROUTES } from '@/Support/Constants/routes';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
-import { ProgressResource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { withLoading } from '@/Utils/withLoading';
-import { useDebounce } from '@uidotdev/usehooks';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { progressService } from '@/Services/progressService';
+import { ProgressResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useCallback, useEffect, useState } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -42,7 +42,7 @@ export default function () {
         void handleSyncProgress();
     }, [debouncedSearchProgress]);
 
-    const submit: FormEventHandler = withLoading(async event => {
+    const submit: FormEventHandler = withLoading(async (event) => {
         event.preventDefault();
         await stepService.create(data);
         router.visit(route(`${ROUTES.STEPS}.index`));
@@ -50,19 +50,19 @@ export default function () {
     });
 
     const fetchProgress = useCallback(async (filters: ServiceFilterOptions) => {
-        return await progressService.getAll(filters).then(response => response.data);
+        return await progressService.getAll(filters).then((response) => response.data);
     }, []);
 
     return (
         <>
             <Head title={t('pages.step.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.step.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.step.create.title')}</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
+                    <form onSubmit={submit} encType='multipart/form-data'>
                         {/*<div className="mt-4">*/}
                         {/*    <GenericDataSelector*/}
                         {/*        id="progress_id"*/}
@@ -76,51 +76,54 @@ export default function () {
                         {/*    />*/}
                         {/*</div>*/}
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.step.create.fields.name')} htmlFor="name" />
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.step.create.fields.name')} htmlFor='name' />
                             <Input
                                 value={data.name}
-                                type="text"
+                                type='text'
                                 required
-                                onChange={e => setData('name', e.target.value)}
-                                name="name"
-                                id="name"
-                                className="mt-1"
-                                autoComplete="name"
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value={t('pages.step.create.fields.process')} htmlFor="process" />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.step.create.fields.process')}
+                                htmlFor='process'
+                            />
                             <Input
                                 value={data.process}
-                                type="text"
+                                type='text'
                                 required
-                                onChange={e => setData('process', e.target.value)}
-                                name="process"
-                                id="process"
-                                className="mt-1"
-                                autoComplete="process"
+                                onChange={(e) => setData('process', e.target.value)}
+                                name='process'
+                                id='process'
+                                className='mt-1'
+                                autoComplete='process'
                             />
                         </div>
 
-                        <div className="mt-4">
+                        <div className='mt-4'>
                             <InputLabel
                                 value={t('pages.step.create.fields.estimated_manufacturing_time')}
-                                htmlFor="estimated_time"
+                                htmlFor='estimated_time'
                             />
                             <Input
                                 value={data.estimated_time}
-                                type="number"
-                                onChange={e => setData('estimated_time', +e.target.value)}
-                                name="estimated_time"
-                                id="estimated_time"
-                                className="mt-1"
-                                autoComplete="estimated_time"
+                                type='number'
+                                onChange={(e) => setData('estimated_time', +e.target.value)}
+                                name='estimated_time'
+                                id='estimated_time'
+                                className='mt-1'
+                                autoComplete='estimated_time'
                             />
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.step.create.buttons.submit')}
                         </Button>
                     </form>

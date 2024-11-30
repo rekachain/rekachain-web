@@ -1,3 +1,4 @@
+import { buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -6,18 +7,17 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { buttonVariants } from '@/Components/UI/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { useEffect, useState } from 'react';
-import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
-import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import ProgressComponent from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/ProgressComponent';
+import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { trainsetService } from '@/Services/trainsetService';
+import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
+import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import ProgressPanel from './Components/ProgressPanel';
 
 const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
@@ -43,10 +43,13 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     const fetchAttachments = withLoading(async () => {
         const data = await trainsetService.get(trainset.id);
 
-        data.trainset_attachments.forEach(attachment => {
+        data.trainset_attachments.forEach((attachment) => {
             if (attachment.type === TrainsetAttachmentTypeEnum.MECHANIC && attachment.is_ancestor) {
                 setMechanicAttachmentId(attachment.id);
-            } else if (attachment.type === TrainsetAttachmentTypeEnum.ELECTRIC && attachment.is_ancestor) {
+            } else if (
+                attachment.type === TrainsetAttachmentTypeEnum.ELECTRIC &&
+                attachment.is_ancestor
+            ) {
                 setElectricAttachmentId(attachment.id);
             }
         });
@@ -66,54 +69,75 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     return (
         <Dialog>
             <DialogTrigger className={buttonVariants()}>
-                {t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.buttons.trigger')}
+                {t(
+                    'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.buttons.trigger',
+                )}
             </DialogTrigger>
-            <DialogContent className="w-[70%]">
+            <DialogContent className='w-[70%]'>
                 <DialogHeader className='overflow-auto'>
                     <DialogTitle></DialogTitle>
-                    <DialogDescription className="w-full"></DialogDescription>
+                    <DialogDescription className='w-full'></DialogDescription>
                     <Tabs
-                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                        className="w-full"
                         value={activeTab}
-                        onValueChange={value => setActiveTab(value as GenerateAttachmentTabEnum)}
+                        onValueChange={(value) => setActiveTab(value as GenerateAttachmentTabEnum)}
+                        defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                        className='w-full'
                     >
                         <TabsList>
-                            <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                                {t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_list.mechanic')}
+                            <TabsTrigger
+                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                            >
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_list.mechanic',
+                                )}
                             </TabsTrigger>
-                            <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
-                                {t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_list.electric')}
+                            <TabsTrigger
+                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
+                            >
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_list.electric',
+                                )}
                             </TabsTrigger>
                             <TabsTrigger value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                                {t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_list.assembly')}
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_list.assembly',
+                                )}
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                            <ScrollArea className="h-[600px] border p-4">
-                            {mechanicAttachment &&
-                                <ProgressComponent
-                                    attachment={mechanicAttachment}
-                                    title={t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.mechanic', { trainset: trainset.name })}
-                                />
-                            }
+                            <ScrollArea className='h-[600px] border p-4'>
+                                {mechanicAttachment && (
+                                    <ProgressComponent
+                                        title={t(
+                                            'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.mechanic',
+                                            { trainset: trainset.name },
+                                        )}
+                                        attachment={mechanicAttachment}
+                                    />
+                                )}
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
-                            <ScrollArea className="h-[600px] border p-4">
-                            {electricAttachment &&
-                                <ProgressComponent
-                                    attachment={electricAttachment}
-                                    title={t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.electric', { trainset: trainset.name })}
-                                />
-                            }
+                            <ScrollArea className='h-[600px] border p-4'>
+                                {electricAttachment && (
+                                    <ProgressComponent
+                                        title={t(
+                                            'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.electric',
+                                            { trainset: trainset.name },
+                                        )}
+                                        attachment={electricAttachment}
+                                    />
+                                )}
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                            <ScrollArea className="h-[600px] border p-4">
-                                <ProgressPanel 
-                                    trainset={trainset} 
-                                    title={t('pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.assembly', { trainset: trainset.name })} 
+                            <ScrollArea className='h-[600px] border p-4'>
+                                <ProgressPanel
+                                    trainset={trainset}
+                                    title={t(
+                                        'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.components.tabs.props.tab_content.title.assembly',
+                                        { trainset: trainset.name },
+                                    )}
                                 />
                             </ScrollArea>
                         </TabsContent>

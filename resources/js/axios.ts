@@ -5,8 +5,8 @@
  */
 
 import axios from 'axios';
-import withReactContent from 'sweetalert2-react-content';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 window.axios = axios;
 
@@ -15,7 +15,7 @@ function formatErrorMessages(error: any) {
 
     let errorHtml = '';
     if (error.response.data.errors) {
-        Object.keys(error.response.data.errors).forEach(key => {
+        Object.keys(error.response.data.errors).forEach((key) => {
             errorHtml += `<p>${error.response.data.errors[key][0]}</p>`;
         });
     }
@@ -61,7 +61,7 @@ function handleAxiosError(error: any) {
             icon: 'error',
             title: 'Unauthorized',
             text: error.response.data.message,
-            didOpen: toast => {
+            didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
             },
@@ -84,7 +84,7 @@ function handleAxiosError(error: any) {
             icon: 'error',
             title: 'Whoops...',
             text: error.response.data.message,
-            didOpen: toast => {
+            didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
             },
@@ -99,7 +99,7 @@ function handleAxiosError(error: any) {
     return Promise.reject(error);
 }
 
-window.axios.interceptors.response.use(res => res, handleAxiosError);
+window.axios.interceptors.response.use((res) => res, handleAxiosError);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Accept-Language'] = 'en';

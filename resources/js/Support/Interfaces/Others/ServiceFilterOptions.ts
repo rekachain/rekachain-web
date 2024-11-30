@@ -1,5 +1,8 @@
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { ServiceFilterSortDirectionType, ServiceFilterTrashedType } from '@/Support/Interfaces/Types';
+import {
+    ServiceFilterSortDirectionType,
+    ServiceFilterTrashedType,
+} from '@/Support/Interfaces/Types';
 
 export interface ServiceFilterOptions {
     page?: number;

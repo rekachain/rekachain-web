@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { StepResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { StepResource } from '@/Support/Interfaces/Resources';
 
 export const stepService = {
     ...serviceFactory<StepResource>(ROUTES.STEPS),

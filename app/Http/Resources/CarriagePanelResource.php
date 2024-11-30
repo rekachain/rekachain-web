@@ -40,7 +40,7 @@ class CarriagePanelResource extends JsonResource {
                 });
                 unset($attachment->carriage_panel);
 
-                $serialPanels = $attachment->serial_panels->map(function ($serialPanel) use ($attachment, $panelSteps) {
+                $serialPanels = $attachment->serial_panels->map(function ($serialPanel) use ($panelSteps) {
                     $steps = collect();
                     $serialPanel->detail_worker_panels->map(function ($detailWorkerPanel) use (&$steps) {
                         $workers = collect();
@@ -51,7 +51,7 @@ class CarriagePanelResource extends JsonResource {
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
                                 'acceptance_status' => $detailWorkerPanel->acceptance_status,
-                                'work_status' => $detailWorkerPanel->work_status
+                                'work_status' => $detailWorkerPanel->work_status,
                             ]);
                             $steps->push([
                                 'step_id' => $detailWorkerPanel->progress_step->step->id,
@@ -59,7 +59,7 @@ class CarriagePanelResource extends JsonResource {
                                 'step_name' => $detailWorkerPanel->progress_step->step->name,
                                 'step_process' => $detailWorkerPanel->progress_step->step->process,
                                 'estimated_time' => $detailWorkerPanel->progress_step->step->estimated_time,
-                                'workers' => $workers
+                                'workers' => $workers,
                             ]);
                         } else {
                             $step['workers']->push([
@@ -67,7 +67,7 @@ class CarriagePanelResource extends JsonResource {
                                 'name' => $detailWorkerPanel->worker->name,
                                 'started_at' => $detailWorkerPanel->created_at->toDateTimeString(),
                                 'acceptance_status' => $detailWorkerPanel->acceptance_status,
-                                'work_status' => $detailWorkerPanel->work_status
+                                'work_status' => $detailWorkerPanel->work_status,
                             ]);
                         }
                     });
@@ -77,6 +77,7 @@ class CarriagePanelResource extends JsonResource {
                             $steps->push($panelStep);
                         }
                     });
+
                     return [
                         'serial_number' => $serialPanel->id,
                         'product_number' => $serialPanel->product_no,
@@ -85,10 +86,11 @@ class CarriagePanelResource extends JsonResource {
                         })->values(),
                     ];
                 });
+
                 return [
                     'progress' => $attachment->carriage_panel->progress->fresh()->load('work_aspect'),
                     'total_steps' => $attachment->carriage_panel->progress->progress_steps->count(),
-                    'serial_panels' => $serialPanels->toArray()
+                    'serial_panels' => $serialPanels->toArray(),
                 ];
         }
 

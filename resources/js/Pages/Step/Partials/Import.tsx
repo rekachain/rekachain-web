@@ -1,3 +1,4 @@
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,16 +8,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { ROUTES } from '@/Support/Constants/routes';
-import { router, useForm } from '@inertiajs/react';
-import { stepService } from '@/Services/stepService';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { ChangeEvent, FormEvent } from 'react';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { stepService } from '@/Services/stepService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { withLoading } from '@/Utils/withLoading';
+import { router, useForm } from '@inertiajs/react';
+import { ChangeEvent, FormEvent } from 'react';
 
 export default function () {
     const { data, setData } = useForm<{
@@ -42,36 +42,38 @@ export default function () {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="tertiary">Import Data</Button>
+                <Button variant='tertiary'>Import Data</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>Import Data</DialogTitle>
-                    <DialogDescription>Import data from a file to populate the table.</DialogDescription>
+                    <DialogDescription>
+                        Import data from a file to populate the table.
+                    </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col space-y-4">
+                <div className='flex flex-col space-y-4'>
                     <Label>Download Template</Label>
                     <Button
-                        variant="secondary"
-                        type="button"
+                        variant='secondary'
+                        type='button'
                         onClick={stepService.downloadImportDataTemplate}
                         disabled={loading}
                     >
                         {loading ? 'Processing' : 'Download'}
                     </Button>
                 </div>
-                <form onSubmit={handleImportData} className="space-y-4">
-                    <div className="space-y-4">
-                        <Label htmlFor="file">File</Label>
+                <form onSubmit={handleImportData} className='space-y-4'>
+                    <div className='space-y-4'>
+                        <Label htmlFor='file'>File</Label>
                         <Input
-                            type="file"
+                            type='file'
                             onChange={handleChangeImportFile}
-                            id="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            id='file'
+                            accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
+                        <Button type='submit' disabled={loading}>
                             {loading ? 'Processing' : 'Import'}
                         </Button>
                     </DialogFooter>

@@ -1,13 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import {
-    CarriagePanelResource,
-    CarriageTrainsetResource,
-    ProjectResource,
-    TrainsetResource,
-} from '@/Support/Interfaces/Resources';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -15,11 +6,20 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
-import { ROUTES } from '@/Support/Constants/routes';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewPanelRawMaterial from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/AddNewPanelRawMaterial';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { Head, Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, memo, Suspense, useState } from 'react';
 
 const PanelMaterials = memo(lazy(() => import('./Partials/PanelMaterials')));
 
@@ -35,7 +35,8 @@ export default function ({
     carriagePanel: CarriagePanelResource;
 }) {
     const { t } = useLaravelReactI18n();
-    const [carriageTrainset, setCarriageTrainset] = useState<CarriageTrainsetResource>(initialCarriageTrainset);
+    const [carriageTrainset, setCarriageTrainset] =
+        useState<CarriageTrainsetResource>(initialCarriageTrainset);
     const [carriagePanel, setCarriagePanel] = useState<CarriagePanelResource>(initialCarriagePanel);
     const handleSyncCarriagePanel = async () => {
         const data = await fetchGenericData<{ carriagePanel: CarriagePanelResource }>();
@@ -44,10 +45,14 @@ export default function ({
 
     return (
         <>
-            <Head title={t('pages.project.trainset.carriage_trainset.carriage_panel.panel_material.index.title')} />
+            <Head
+                title={t(
+                    'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.index.title',
+                )}
+            />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem>
@@ -59,7 +64,11 @@ export default function ({
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
-                                    <Link href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [project.id])}>
+                                    <Link
+                                        href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, [
+                                            project.id,
+                                        ])}
+                                    >
                                         {t(
                                             'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.index.breadcrumbs.project',
                                             {
@@ -71,10 +80,10 @@ export default function ({
                                 <BreadcrumbSeparator />
                                 <BreadcrumbItem>
                                     <Link
-                                        href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
-                                            project.id,
-                                            trainset.id,
-                                        ])}
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`,
+                                            [project.id, trainset.id],
+                                        )}
                                     >
                                         {t(
                                             'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.index.breadcrumbs.trainset',
@@ -113,8 +122,8 @@ export default function ({
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
-                        <div className="flex items-center gap-4">
-                            <h1 className="text-page-header my-4">
+                        <div className='flex items-center gap-4'>
+                            <h1 className='text-page-header my-4'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.carriage_panel.panel_material.index.title',
                                     {

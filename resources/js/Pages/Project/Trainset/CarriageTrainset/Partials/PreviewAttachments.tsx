@@ -1,3 +1,4 @@
+import { buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -6,20 +7,19 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { buttonVariants } from '@/Components/UI/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { useEffect, useState } from 'react';
-import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
-import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
-import PreviewTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewTrainsetAttachment';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
 import PreviewPanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewPanelAttachment';
+import PreviewTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewTrainsetAttachment';
+import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
+import { trainsetService } from '@/Services/trainsetService';
+import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
+import { TrainsetAttachmentResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 
 const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     const { t } = useLaravelReactI18n();
@@ -57,15 +57,18 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
     const fetchAttachments = withLoading(async () => {
         const data = await trainsetService.get(trainset.id);
 
-        data.trainset_attachments.forEach(attachment => {
+        data.trainset_attachments.forEach((attachment) => {
             if (attachment.type === TrainsetAttachmentTypeEnum.MECHANIC && attachment.is_ancestor) {
                 setMechanicAttachmentIds([...mechanicAttachmentIds, attachment.id]);
-            } else if (attachment.type === TrainsetAttachmentTypeEnum.ELECTRIC && attachment.is_ancestor) {
+            } else if (
+                attachment.type === TrainsetAttachmentTypeEnum.ELECTRIC &&
+                attachment.is_ancestor
+            ) {
                 setElectricAttachmentIds([...electricAttachmentIds, attachment.id]);
             }
         });
 
-        data.panel_attachments.forEach(attachment => {
+        data.panel_attachments.forEach((attachment) => {
             setAssemblyAttachmentIds([...assemblyAttachmentIds, attachment.id]);
         });
     });
@@ -88,23 +91,27 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
                 )}
             </DialogTrigger>
-            <DialogContent className="w-[70%]">
+            <DialogContent className='w-[70%]'>
                 <DialogHeader>
                     <DialogTitle></DialogTitle>
-                    <DialogDescription className="w-full"></DialogDescription>
+                    <DialogDescription className='w-full'></DialogDescription>
                     <Tabs
                         value={activeTab}
-                        onValueChange={value => setActiveTab(value as GenerateAttachmentTabEnum)}
+                        onValueChange={(value) => setActiveTab(value as GenerateAttachmentTabEnum)}
                         defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                        className="w-full"
+                        className='w-full'
                     >
                         <TabsList>
-                            <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
+                            <TabsTrigger
+                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                            >
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.mechanic_attachment',
                                 )}
                             </TabsTrigger>
-                            <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
+                            <TabsTrigger
+                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
+                            >
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.electric_attachment',
                                 )}
@@ -116,7 +123,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
-                            <ScrollArea className="h-[400px] border p-4">
+                            <ScrollArea className='h-[400px] border p-4'>
                                 {mechanicAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
                                         title={t(
@@ -129,7 +136,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
-                            <ScrollArea className="h-[400px] border p-4">
+                            <ScrollArea className='h-[400px] border p-4'>
                                 {electricAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
                                         title={t(
@@ -142,7 +149,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                            <ScrollArea className="h-[400px] border p-4">
+                            <ScrollArea className='h-[400px] border p-4'>
                                 <PreviewPanelAttachment trainset={trainset} />
                             </ScrollArea>
                         </TabsContent>

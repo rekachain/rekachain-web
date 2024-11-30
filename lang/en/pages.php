@@ -1400,7 +1400,7 @@ return [
                                                 'electric' => 'Electric Progresses For :trainset Trainset',
                                                 'assembly' => 'Assembly Progresses For :trainset Trainset',
                                             ],
-                                        ]
+                                        ],
                                     ],
                                 ],
                             ],
@@ -1579,7 +1579,7 @@ return [
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Carriage: :carriage',
                                 'workers' => 'Workers:',
-                            ]
+                            ],
                         ],
                         'progress_panel' => [
                             'props' => [
@@ -1589,7 +1589,7 @@ return [
                                 'serial_number' => 'Serial Number: :serial_number',
                                 'product_number' => 'Product Number: :product_number',
                                 'workers' => 'Workers:',
-                            ]
+                            ],
                         ],
                         'components' => [
                             'worker_card' => [

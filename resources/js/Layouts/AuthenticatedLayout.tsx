@@ -1,9 +1,9 @@
-import { PropsWithChildren, useState } from 'react';
-import Sidebar from './Partials/Sidebar';
-import Navbar from './Partials/Navbar';
-import { useMediaQuery } from 'react-responsive';
-import SidebarMobile from './Partials/SidebarMobile';
 import { HelpdeskProvider } from '@/Contexts/HelpdeskContext';
+import { PropsWithChildren, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import Navbar from './Partials/Navbar';
+import Sidebar from './Partials/Sidebar';
+import SidebarMobile from './Partials/SidebarMobile';
 
 export default function Authenticated({ children }: PropsWithChildren) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);

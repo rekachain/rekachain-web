@@ -1,13 +1,19 @@
-import { ChangeEvent, memo, useEffect, useState } from 'react';
-import { useDebounce } from '@uidotdev/usehooks';
-import { Command, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Button } from '@/Components/UI/button';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import {
+    Command,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { Resource } from '@/Support/Interfaces/Resources';
 import { cn } from '@/Lib/Utils';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { Resource } from '@/Support/Interfaces/Resources';
+import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { ChangeEvent, memo, useEffect, useState } from 'react';
 
 interface GenericDataSelectorProps<T extends Resource> {
     /**
@@ -184,26 +190,28 @@ const GenericDataSelector = <T extends Resource>({
             return customLabel(item);
         }
         const value = item[labelKey];
-        return typeof value === 'string' ? value : t('components.generic_data_selector.fields.select_placeholder');
+        return typeof value === 'string'
+            ? value
+            : t('components.generic_data_selector.fields.select_placeholder');
     };
 
     const items = data ?? fetchedData;
 
     return (
         <Popover open={openPopover} onOpenChange={setOpenPopover}>
-            <PopoverTrigger id={id} className="w-" asChild>
+            <PopoverTrigger id={id} asChild>
                 <Button
-                    variant="outline"
-                    role="combobox"
-                    className={cn('w-40 justify-between', buttonClassName)}
+                    variant='outline'
+                    role='combobox'
+                    className={cn('w-full justify-between', buttonClassName)}
                     aria-expanded={openPopover}
                 >
                     {selectedDataId
-                        ? items.find(item => item.id === selectedDataId)
-                            ? getLabel(items.find(item => item.id === selectedDataId)!)
+                        ? items.find((item) => item.id === selectedDataId)
+                            ? getLabel(items.find((item) => item.id === selectedDataId)!)
                             : t('components.generic_data_selector.fields.select_placeholder')
                         : placeholder}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className={cn('w-[200px] p-0', popoverContentClassName)}>
@@ -211,11 +219,12 @@ const GenericDataSelector = <T extends Resource>({
                     <CommandInput
                         value={searchTerm}
                         placeholder={
-                            customSearchPlaceholder ?? t('components.generic_data_selector.fields.search_placeholder')
+                            customSearchPlaceholder ??
+                            t('components.generic_data_selector.fields.search_placeholder')
                         }
                         onInput={handleSearchChange}
                         disabled={isFetching}
-                        className="border-none focus:ring-0"
+                        className='border-none focus:ring-0'
                     />
                     <CommandList>
                         <CommandGroup>
@@ -235,12 +244,17 @@ const GenericDataSelector = <T extends Resource>({
                                 </CommandItem>
                             )}
                             {!isFetching &&
-                                items.map(item => (
-                                    <CommandItem onSelect={() => handleSelectItem(item.id)} key={item.id}>
+                                items.map((item) => (
+                                    <CommandItem
+                                        onSelect={() => handleSelectItem(item.id)}
+                                        key={item.id}
+                                    >
                                         <Check
                                             className={cn(
                                                 'mr-2 h-4 w-4',
-                                                selectedDataId === item.id ? 'opacity-100' : 'opacity-0',
+                                                selectedDataId === item.id
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0',
                                             )}
                                         />
                                         {renderItem(item)}

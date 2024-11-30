@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SidebarContextProps {
     selectedMenu: string;
@@ -10,7 +10,11 @@ export const SidebarContext = createContext<SidebarContextProps | undefined>(und
 export const SidebarProvider = ({ children }: { children: ReactNode }) => {
     const [selectedMenu, setSelectedMenu] = useState('');
 
-    return <SidebarContext.Provider value={{ selectedMenu, setSelectedMenu }}>{children}</SidebarContext.Provider>;
+    return (
+        <SidebarContext.Provider value={{ selectedMenu, setSelectedMenu }}>
+            {children}
+        </SidebarContext.Provider>
+    );
 };
 
 export const useSidebar = () => {

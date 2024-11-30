@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes.js';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
 
 export const carriagePanelService = {
     ...serviceFactory<CarriagePanelResource>(ROUTES.CARRIAGE_PANELS),
@@ -75,11 +75,15 @@ export const carriagePanelService = {
             formData.append('progress_work_aspect_id', progress_work_aspect_id!.toString());
         }
 
-        await window.axios.post(route(`${ROUTES.CARRIAGE_PANELS}.update`, carriagePanelId), formData, {
-            params: {
-                _method: 'PUT',
-                intent: IntentEnum.WEB_CARRIAGE_PANEL_CHANGE_PROGRESS,
+        await window.axios.post(
+            route(`${ROUTES.CARRIAGE_PANELS}.update`, carriagePanelId),
+            formData,
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_CARRIAGE_PANEL_CHANGE_PROGRESS,
+                },
             },
-        });
+        );
     },
 };

@@ -1,20 +1,32 @@
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
-import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
-import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
-import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Tooltip, XAxis, YAxis } from 'recharts';
-import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 // import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-import { cn } from '@/Lib/Utils';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Button } from '@/Components/UI/button';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { cn } from '@/Lib/Utils';
 // import { useState } from 'react';
 
 const project = [
@@ -52,13 +64,9 @@ const trainset = [
 // TODO : TS only available when project
 // TODO : show ts for each project
 
-import { useCallback, useEffect, useState } from 'react';
-import { ROUTES } from '@/Support/Constants/routes';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
-import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { ROUTES } from '@/Support/Constants/routes';
+import { useCallback, useEffect, useState } from 'react';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];
@@ -115,21 +123,22 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(false);
-    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
-        // data: useRaw
-        //     ? data.attachment_status_of_trainset
-        //     : data.attachment_status_of_trainset.map(
-        //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-        //             trainset_name,
-        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-        //         }),
-        //     ),
-        config: Object.fromEntries(
-            Object.entries(attachmentStatusConfig).filter(([key]) =>
-                useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] =
+        useState<AttachmentStatusBarGraph>({
+            // data: useRaw
+            //     ? data.attachment_status_of_trainset
+            //     : data.attachment_status_of_trainset.map(
+            //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+            //             trainset_name,
+            //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+            //         }),
+            //     ),
+            config: Object.fromEntries(
+                Object.entries(attachmentStatusConfig).filter(([key]) =>
+                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                ),
             ),
-        ),
-    });
+        });
     const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
         useState<AttachmentStatusBarGraph>({
             // data: data.attachment_status_of_workstation.map(
@@ -146,7 +155,9 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
-    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({});
+    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState(
+        {},
+    );
     const [maxWorkstationStatusValue, setMaxWorkstationStatusValue] = useState(10);
 
     useEffect(() => {
@@ -156,15 +167,17 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     useEffect(() => {
         setAttachmentStatusOfTrainsetFilter({ column_filters: { id: trainsetFilters?.id } });
-        setAttachmentStatusOfWorkstationFilter({ relation_column_filters: { trainset: { id: trainsetFilters?.id } } });
+        setAttachmentStatusOfWorkstationFilter({
+            relation_column_filters: { trainset: { id: trainsetFilters?.id } },
+        });
     }, [trainsetFilters]);
     useEffect(() => {
         syncAttachmentStatusData();
     }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
     useEffect(() => {
         let max = 0;
-        attachmentStatusOfWorkstationGraph.data?.forEach(trainset => {
-            Object.values(trainset).forEach(count => {
+        attachmentStatusOfWorkstationGraph.data?.forEach((trainset) => {
+            Object.values(trainset).forEach((count) => {
                 if (count > max) max = count + 1;
             });
         });
@@ -187,7 +200,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                 : res.data.attachment_status_of_trainset.map(
                       ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
                           trainset_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                          ...progress.reduce(
+                              (acc, { status, count }) => ({ ...acc, [status]: count }),
+                              {},
+                          ),
                       }),
                   ),
             config: Object.fromEntries(
@@ -202,7 +218,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                 : res.data.attachment_status_of_workstation.map(
                       ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
                           workstation_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                          ...progress.reduce(
+                              (acc, { status, count }) => ({ ...acc, [status]: count }),
+                              {},
+                          ),
                       }),
                   ),
             config: Object.fromEntries(
@@ -212,43 +231,44 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     };
-  
+
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
     };
     const getPercent = (value: number, total: number) => {
         const ratio = total > 0 ? value / total : 0;
-        return toPercent(ratio,2);
+        return toPercent(ratio, 2);
     };
-    
 
     const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
         const total = payload.reduce((result: number, entry: any) => result + entry.value, 0);
         return (
-            <div className="grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
-                <p className="">{`${label} (Total: ${total})`}</p>
-                <ul className="list">
+            <div className='grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl'>
+                <p className=''>{`${label} (Total: ${total})`}</p>
+                <ul className='list'>
                     {payload.map((entry: any, index: number) => (
-                        <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
-                            <div className="flex items-center gap-1.5">
+                        <li
+                            key={`item-${index}`}
+                            className='flex items-center justify-between gap-1.5'
+                        >
+                            <div className='flex items-center gap-1.5'>
                                 <div
                                     style={{
                                         backgroundColor: entry.color,
                                     }}
-                                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                                    className='h-2 w-2 shrink-0 rounded-[2px]'
                                 />
-                                <span className="text-foreground">
+                                <span className='text-foreground'>
                                     {attachmentStatusConfig[entry.dataKey].label}
                                 </span>
                             </div>
-                            <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                            <span className='text-foreground'>{`${entry.value} (${getPercent(entry.value, total)})`}</span>
                         </li>
                     ))}
                 </ul>
             </div>
         );
     };
-    
 
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
@@ -257,7 +277,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                 perPage: 100,
                 column_filters: { project_id: 1 }, // TODO: use project filter
             })
-            .then(response => response.data);
+            .then((response) => response.data);
     }, []);
 
     const chartConfig = {
@@ -330,44 +350,50 @@ export default function Dashboard({ auth, data }: PageProps) {
 
             {/* <div className="py-12"> */}
             {/* <p>{value}</p> */}
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
-                <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
+            <div className='mx-auto max-w-7xl sm:px-6 lg:px-5'>
+                <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                     {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                    <div className="">
-                        <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                        <div className="flex justify-between w-full items-center">
-                            <h2 className="text-xl my-2">
-                                {data['project'] == null ? 'Semua Proyek' : `Proyek ${data['project']}`}
+                    <div className=''>
+                        <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
+                        <div className='flex w-full items-center justify-between'>
+                            <h2 className='my-2 text-xl'>
+                                {data['project'] == null
+                                    ? 'Semua Proyek'
+                                    : `Proyek ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger className=" " asChild>
+                                <PopoverTrigger className=' ' asChild>
                                     <Button
-                                        variant="outline"
-                                        role="combobox"
-                                        className="w-40 justify-between"
+                                        variant='outline'
+                                        role='combobox'
+                                        className='w-40 justify-between'
                                         aria-expanded={open}
                                     >
                                         {value
-                                            ? project.find(projectItem => projectItem.value === value)?.label
+                                            ? project.find(
+                                                  (projectItem) => projectItem.value === value,
+                                              )?.label
                                             : 'Pilih Proyek'}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-[200px] p-0">
+                                <PopoverContent className='w-[200px] p-0'>
                                     <Command>
-                                        <CommandInput placeholder="Cari Projek..." />
+                                        <CommandInput placeholder='Cari Projek...' />
                                         <CommandList>
                                             <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
                                             <CommandGroup>
                                                 {
                                                     // @ts-ignore
-                                                    data['projectDetail'].map(projectItem => (
+                                                    data['projectDetail'].map((projectItem) => (
                                                         <Link href={`/dashboard/${projectItem.id}`} key={projectItem.id}>
                                                             <CommandItem
                                                                 value={`/dashboard/${projectItem.name}`}
-                                                                onSelect={currentValue => {
+                                                                onSelect={(currentValue) => {
                                                                     setValue(
-                                                                        currentValue === value ? '' : currentValue,
+                                                                        currentValue === value
+                                                                            ? ''
+                                                                            : currentValue,
                                                                     );
                                                                     setOpen(false);
                                                                 }}
@@ -436,41 +462,49 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                         </div> */}
                         {/* </ChartContainer> */}
-                        <div className="flex justify-between my-4 items-center">
-                            <h2 className="text-lg">Status dari Trainset</h2>
-                            <div className=" flex flex-col">
+                        <div className='my-4 flex items-center justify-between'>
+                            <h2 className='text-lg'>Status dari Trainset</h2>
+                            <div className='flex flex-col'>
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                                    <PopoverTrigger className={`${data['project'] == null ? 'hidden' : ' '}`} asChild>
+                                    <PopoverTrigger
+                                        className={`${data['project'] == null ? 'hidden' : ' '}`}
+                                        asChild
+                                    >
                                         <Button
-                                            variant="outline"
-                                            role="combobox"
-                                            className="w-40 justify-between"
+                                            variant='outline'
+                                            role='combobox'
+                                            className='w-40 justify-between'
                                             aria-expanded={openTrainset}
                                         >
                                             {valueTrainset
-                                                ? project.find(projectItem => projectItem.value === valueTrainset)
-                                                      ?.label
+                                                ? project.find(
+                                                      (projectItem) =>
+                                                          projectItem.value === valueTrainset,
+                                                  )?.label
                                                 : 'Pilih Trainset'}
-                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
+                                    <PopoverContent className='w-[200px] p-0'>
                                         <Command>
-                                            <CommandInput placeholder="Cari Trainset..." />
+                                            <CommandInput placeholder='Cari Trainset...' />
                                             <CommandList>
-                                                <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                <CommandEmpty>
+                                                    Trainset tidak ditemukan.
+                                                </CommandEmpty>
                                                 <CommandGroup>
                                                     {// @ts-ignore
-                                                    data['tsList']?.map(projectItem => (
+                                                    data['tsList']?.map((projectItem) => (
                                                         <Link
                                                             href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                             key={projectItem.id}
                                                         >
                                                             <CommandItem
                                                                 value={projectItem.name}
-                                                                onSelect={currentValue => {
+                                                                onSelect={(currentValue) => {
                                                                     setValueTrainset(
-                                                                        currentValue === valueTrainset
+                                                                        currentValue ===
+                                                                            valueTrainset
                                                                             ? ''
                                                                             : currentValue,
                                                                     );
@@ -481,7 +515,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 <Check
                                                                     className={cn(
                                                                         'mr-2 h-4 w-4',
-                                                                        valueTrainset === projectItem.name
+                                                                        valueTrainset ===
+                                                                            projectItem.name
                                                                             ? 'opacity-100'
                                                                             : 'opacity-0',
                                                                     )}
@@ -510,19 +545,26 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
                         </div>
 
-                        <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
-                            <BarChart data={data['ts']} className="h-1/4" accessibilityLayer>
+                        <ChartContainer config={chartConfigTrainset} className='h-[300px] w-full'>
+                            <BarChart data={data['ts']} className='h-1/4' accessibilityLayer>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
                                     tickMargin={10}
                                     tickLine={false}
-                                    dataKey="ts_name"
+                                    dataKey='ts_name'
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                                <Bar radius={4} fill="var(--color-done)" dataKey="done" />
-                                <Bar radius={4} fill="var(--color-in_progress)" dataKey="in_progress" />
+                                <ChartTooltip
+                                    cursor={false}
+                                    content={<ChartTooltipContent indicator='dashed' />}
+                                />
+                                <Bar radius={4} fill='var(--color-done)' dataKey='done' />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-in_progress)'
+                                    dataKey='in_progress'
+                                />
                             </BarChart>
                         </ChartContainer>
                         {/* <ChartContainer
@@ -554,21 +596,21 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </BarChart>
                         </ChartContainer> */}
                     </div>
-                    <div className="flex max-w-full mt-2 ">
-                        <div className="w-1/2">
-                            <h2 className="text-xl my-1 font-bold">Progress Tiap Workshop</h2>
-                            <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
-                            <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
-                                <BarChart layout="vertical" data={data.ws} accessibilityLayer>
+                    <div className='mt-2 flex max-w-full'>
+                        <div className='w-1/2'>
+                            <h2 className='my-1 text-xl font-bold'>Progress Tiap Workshop</h2>
+                            <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
+                            <ChartContainer config={chartConfig} className='mt-5 h-[300px] w-full'>
+                                <BarChart layout='vertical' data={data.ws} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
-                                    <XAxis type="number" dataKey="in_progress"></XAxis>
-                                    <XAxis type="number" dataKey="done"></XAxis>
+                                    <XAxis type='number' dataKey='in_progress'></XAxis>
+                                    <XAxis type='number' dataKey='done'></XAxis>
                                     <YAxis
-                                        type="category"
+                                        type='category'
                                         tickLine={false}
-                                        dataKey="name"
+                                        dataKey='name'
                                         // max={10}
-                                        className=""
+                                        className=''
                                         // tickSize={20}
                                         // tickCount={}
                                         // padding={}
@@ -578,70 +620,83 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar radius={4} fill="var(--color-in_progress)" dataKey="in_progress" />
-                                    <Bar radius={4} fill="var(--color-done)" dataKey="done" />
+                                    <Bar
+                                        radius={4}
+                                        fill='var(--color-in_progress)'
+                                        dataKey='in_progress'
+                                    />
+                                    <Bar radius={4} fill='var(--color-done)' dataKey='done' />
                                 </BarChart>
                             </ChartContainer>
                         </div>
 
-                        <div className=" ">
-                            <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
-                            <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                            <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
+                        <div className=' '>
+                            <h2 className='my-1 text-xl font-bold'>Progress Tiap Panel</h2>
+                            <h3 className='text-base'>Panel panel pada WS Assembly</h3>
+                            <ChartContainer config={chartConfig} className='mt-5 h-[300px] w-96'>
                                 <BarChart data={data['panel']} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
-                                    <YAxis type="number" dataKey="in_progress"></YAxis>
+                                    <YAxis type='number' dataKey='in_progress'></YAxis>
                                     <XAxis
                                         tickLine={false}
-                                        tickFormatter={value => value.slice(0, 6)}
-                                        dataKey="name"
+                                        tickFormatter={(value) => value.slice(0, 6)}
+                                        dataKey='name'
                                         // tickMargin={10}
                                         axisLine={false}
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar radius={4} fill="var(--color-in_progress)" dataKey="in_progress" />
-                                    <Bar radius={4} fill="var(--color-done)" dataKey="done" />
+                                    <Bar
+                                        radius={4}
+                                        fill='var(--color-in_progress)'
+                                        dataKey='in_progress'
+                                    />
+                                    <Bar radius={4} fill='var(--color-done)' dataKey='done' />
                                 </BarChart>
                             </ChartContainer>
                         </div>
                     </div>
-                    <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
-                    <div className="flex max-w-full mt-2">
+                    <h2 className='my-1 text-xl font-bold'>Progress Tiap Workstation</h2>
+                    <div className='mt-2 flex max-w-full'>
                         <ChartContainer
                             config={attachmentStatusOfWorkstationGraph.config}
-                            className="h-[300px] w-full mt-5"
+                            className='mt-5 h-[300px] w-full'
                         >
                             <BarChart
                                 stackOffset='expand'
-                                layout="vertical"
+                                layout='vertical'
                                 data={attachmentStatusOfWorkstationGraph.data}
                                 accessibilityLayer
                             >
                                 <CartesianGrid vertical={false} />
-                                <XAxis type="number" tickFormatter={value => toPercent(value, 0)} />
+                                <XAxis
+                                    type='number'
+                                    tickFormatter={(value) => toPercent(value, 0)}
+                                />
                                 <YAxis
                                     width={150}
-                                    type="category"
+                                    type='category'
                                     tickMargin={10}
                                     tickLine={false}
-                                    dataKey="workstation_name"
-                                    className=""
+                                    dataKey='workstation_name'
+                                    className=''
                                     axisLine={false}
-                                    // tickFormatter={value => value.slice(0, 6)} 
-                                    />
+                                    // tickFormatter={value => value.slice(0, 6)}
+                                />
                                 <ChartTooltip content={renderWorkstationProgressTooltipContent} />
                                 {/* <ChartTooltip content={<ChartTooltipContent formatter={(value, name) => name+' '+value} />} /> nyerah🗿 */}
                                 <ChartLegend content={<ChartLegendContent />} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                    <Bar
-                                        type='monotone'
-                                        stackId="1"
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        fill={`var(--color-${dataKey})`}
-                                        dataKey={dataKey}
-                                    />
-                                ))}
+                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(
+                                    (dataKey) => (
+                                        <Bar
+                                            type='monotone'
+                                            stackId='1'
+                                            key={`workstationPanelStatus-${dataKey}-key`}
+                                            fill={`var(--color-${dataKey})`}
+                                            dataKey={dataKey}
+                                        />
+                                    ),
+                                )}
                             </BarChart>
                         </ChartContainer>
                     </div>
@@ -701,9 +756,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                             </PieChart>
                         </ChartContainer> */}
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div className="p-6 text-gray-900 dark:text-gray-100">
+                    <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
+                        <div className='overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg'>
+                            <div className='p-6 text-gray-900 dark:text-gray-100'>
                                 {t('pages.dashboard.index.welcome')}
                             </div>
                         </div>

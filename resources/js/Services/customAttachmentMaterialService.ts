@@ -1,5 +1,5 @@
-import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
+import { ROUTES } from '@/Support/Constants/routes';
 import { CustomAttachmentMaterialResource } from '@/Support/Interfaces/Resources';
 
 export const customAttachmentMaterialService = {
