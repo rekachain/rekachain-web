@@ -56,8 +56,8 @@ class TrainsetResource extends JsonResource {
                 });
                 $data = $componentPlans->map(function ($componentPlan) use ($fulfilledComponents, $progressComponents) {
                     $componentPlan['total_fulfilled_qty'] = $fulfilledComponents->get($componentPlan['component']->id)['total_fulfilled_qty'] ?? 0;
-                    $componentPlan['diff'] = $componentPlan['total_plan_qty'] - $componentPlan['total_fulfilled_qty'];
                     $componentPlan['total_progress_qty'] = $progressComponents->get($componentPlan['component']->id)['total_progress_qty'] ?? 0;
+                    $componentPlan['diff'] = $componentPlan['total_plan_qty'] - $componentPlan['total_fulfilled_qty'] - $componentPlan['total_progress_qty'];
                     return $componentPlan;
                 })->values();
                 return $data->toArray();

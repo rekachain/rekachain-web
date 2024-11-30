@@ -26,7 +26,8 @@ import { useEffect, useState } from 'react';
 import { withLoading } from '@/Utils/withLoading';
 import { trainsetService } from '@/Services/trainsetService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { TrainsetComponentProgressResource } from '@/Support/Interfaces/Others/TrainsetComponentProgressResource';
+import { TrainsetComponentProgressResource, TrainsetPanelProgressResource } from '@/Support/Interfaces/Others/TrainsetProgressResource';
+import { Separator } from '@/Components/UI/separator';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
@@ -34,9 +35,9 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
     const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<TrainsetComponentProgressResource[]>([]);
-    const trainsetComponentProgressConfig: ChartConfig = {
+    const trainsetProgressConfig: ChartConfig = {
         total_plan_qty: {
-            label: 'Rencana',
+            label: 'Plan',
             color: 'hsl(var(--chart-2))',
         },
         total_fulfilled_qty: {
@@ -60,38 +61,41 @@ export default function Dashboard({ auth, data }: PageProps) {
         const ratio = total > 0 ? value / total : 0;
         return toPercent(ratio,2);
     };
-
-    const renderTrainsetComponentProgressTooltipContent = ({ payload, label }: any) => {
-        const total = payload.reduce((result: number, entry: any, index: number) => {
-            return entry.dataKey !== 'total_progress_qty' ? result + entry.value : result;
-        }, 0);
+    const renderTrainsetProgressTooltipContent = (trainsetProgress: any) => ({ payload, label}: any) => {
+        const total = trainsetProgress.find((progress: any) => progress.component?.name === label || progress.panel?.name === label)?.total_plan_qty || 0;
+        let diff = 0;
         return (
             <div className="grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
-                <p className="">{`${label} (Total Pesanan: ${total})`}</p>
+                <p className="">{`${label} (Total Pesanan/Rencana: ${total})`}</p>
                 <ul className="list">
                     {payload.map((entry: any, index: number) => (
+                        entry.dataKey === 'diff' && (diff += entry.value),
+                        entry.dataKey === 'total_progress_qty' && (diff += entry.value),
                         <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
-                            <div className="flex items-center gap-1.5">
-                                {entry.dataKey !== 'diff' && <div
-                                    style={{
-                                        backgroundColor: entry.color,
-                                    }}
-                                    className="h-2 w-2 shrink-0 rounded-[2px]"
-                                />}
-                                <span className="text-foreground">
-                                    {trainsetComponentProgressConfig[entry.dataKey].label}
-                                </span>
-                            </div>
-                            <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                            {entry.dataKey !== 'diff' && entry.dataKey !== 'total_plan_qty' && <>
+                                <div className="flex items-center gap-1.5">
+                                        <div
+                                            style={{
+                                                backgroundColor: entry.color,
+                                            }}
+                                            className="h-2 w-2 shrink-0 rounded-[2px]"
+                                        />
+                                    <span className="text-foreground">
+                                        {trainsetProgressConfig[entry.dataKey].label}
+                                    </span>
+                                </div>
+                                <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                            </>}
                         </li>
                     ))}
                 </ul>
+                <span className="text-foreground">Harus Diselesaikan: {diff} ({getPercent(diff, total)})</span>
             </div>
         );
     };
-    const renderTrainsetComponentProgressLegendContent = (value: string, entry: any) => {
+    const renderTrainsetProgressLegendContent = (value: string, entry: any) => {
         return (
-            <span className="text-foreground">{trainsetComponentProgressConfig[value].label}</span>
+            <span className="text-foreground">{trainsetProgressConfig[value].label}</span>
         );
     };
 
@@ -313,10 +317,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </ChartContainer>
                             </div>
                         </div>
+                        <Separator className='my-5 h-1'/>
+                        <h3>For Buyer</h3>
                         <div className="flex flex-col w-full mt-2 ">
                             <h2 className="text-xl my-1 font-bold">Komponen Dalam Trainset</h2>
                             <h3 className="text-base">{`Komponen yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
-                            <ChartContainer config={trainsetComponentProgressConfig} className="h-[900px] w-full mt-5">
+                            <ChartContainer config={trainsetProgressConfig} className="h-[900px] w-full mt-5">
                                 <BarChart 
                                     data={trainsetComponentProgress} 
                                     stackOffset='expand'
@@ -337,10 +343,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         className=""
                                         axisLine={false}
                                     />
-                                    <ChartTooltip content={renderTrainsetComponentProgressTooltipContent} />
-                                    <ChartLegend formatter={renderTrainsetComponentProgressLegendContent} />
-                                    {/* <Bar type='monotone'
-                                        stackId="1" radius={0} fill={`var(--color-total_plan_qty)`} dataKey={'total_plan_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} /> */}
+                                    <ChartTooltip content={renderTrainsetProgressTooltipContent(trainsetComponentProgress)} />
+                                    <ChartLegend formatter={renderTrainsetProgressLegendContent} />
                                     <Bar type='monotone'
                                         stackId="2" radius={0} fill={`var(--color-total_fulfilled_qty)`} dataKey={'total_fulfilled_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} />
                                     <Bar type='monotone'
