@@ -100,7 +100,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         {
                                                             // @ts-ignore
                                                             data['projectList'].map(projectItem => (
-                                                                <Link href={`/dashboard/${projectItem.id}`}>
+                                                                <Link href={`/dashboard/${projectItem.id}`} key={projectItem.id}>
                                                                     <CommandItem
                                                                         value={projectItem.name}
                                                                         onSelect={currentValue => {
@@ -158,6 +158,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         data['tsList']?.map(projectItem => (
                                                             <Link
                                                                 href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
+                                                                key={projectItem.id}
                                                             >
                                                                 <CommandItem
                                                                     value={projectItem.name}
