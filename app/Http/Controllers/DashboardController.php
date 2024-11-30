@@ -104,18 +104,18 @@ class DashboardController extends Controller {
         // ");
         $tsList = DB::select('SELECT * FROM `trainsets` WHERE trainsets.project_id = :id', ['id' => $project[0]->id]);
 
-        $panel = DB::select("SELECT 
-    'required' AS status, 
+        $panel = DB::select("SELECT
+    'required' AS status,
     SUM(total_required) AS total
     FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
     UNION ALL
-    SELECT 
-    'fulfilled' AS status, 
+    SELECT
+    'fulfilled' AS status,
     SUM(total_fulfilled) AS total
     FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
     UNION ALL
-    SELECT 
-    'failed' AS status, 
+    SELECT
+    'failed' AS status,
     SUM(total_failed) AS total
     FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1;");
 

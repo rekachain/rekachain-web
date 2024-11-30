@@ -25,9 +25,9 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
     const { user } = props;
 
     const { data, setData } = useForm({
-        nip: user.nip,
+        nip: user.nip as string | null,
         name: user.name,
-        email: user.email,
+        email: user.email as string | null,
         phone_number: user.phone_number,
         role_id: user.role_id as number | null,
         workstation_id: user.workstation_id as number | null,
@@ -117,7 +117,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         <div className='mt-4'>
                             <InputLabel value={t('pages.user.edit.fields.nip')} htmlFor='nip' />
                             <Input
-                                value={data.nip}
+                                value={data.nip ?? ''}
                                 type='number'
                                 onChange={(e) => setData('nip', e.target.value)}
                                 name='nip'
@@ -143,9 +143,8 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                         <div className='mt-4'>
                             <InputLabel value={t('pages.user.edit.fields.email')} htmlFor='email' />
                             <Input
-                                value={data.email}
+                                value={data.email ?? ''}
                                 type='email'
-                                required
                                 onChange={(e) => setData('email', e.target.value)}
                                 name='email'
                                 id='email'

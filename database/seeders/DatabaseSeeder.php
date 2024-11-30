@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder {
         $superadmin = User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'superadmin@rekaindo.com',
-            'nip' => fake()->unique()->randomNumber(8),
+            'nip' => null,
         ]);
 
         $superadmin->assignRole('Super Admin');

@@ -64,9 +64,9 @@ export default function (props: { roles: RoleResource[] }) {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('nip', data.nip);
+        if (data.nip.length > 0) formData.append('nip', data.nip);
         formData.append('name', data.name);
-        formData.append('email', data.email);
+        if (data.email.length > 0) formData.append('email', data.email);
         formData.append('phone_number', data.phone_number);
         formData.append('password', data.password);
         formData.append('role_id', data.role_id?.toString() ?? '');
@@ -122,7 +122,6 @@ export default function (props: { roles: RoleResource[] }) {
                             <Input
                                 value={data.email}
                                 type='email'
-                                required
                                 onChange={(e) => setData('email', e.target.value)}
                                 name='email'
                                 id='email'
