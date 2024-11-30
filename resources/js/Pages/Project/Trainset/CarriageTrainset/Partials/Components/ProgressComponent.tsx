@@ -87,83 +87,85 @@ const ProgressComponent = ({
                                                 </h3>
                                             </div>
                                         </div>
-                                        <ScrollArea className='w-full rounded-md border'>
-                                            <div className='flex w-max space-x-4 p-4'>
-                                                <Breadcrumb>
-                                                    <BreadcrumbList>
-                                                        {componentProgress.steps.map(
-                                                            (step, index) => (
-                                                                <Fragment
-                                                                    key={`${componentProgress.carriage_panel_component_id} ${(step as unknown as StepResource).id}`}
-                                                                >
-                                                                    <BreadcrumbItem>
-                                                                        <Popover modal>
-                                                                            <PopoverTrigger className='text-left'>
-                                                                                <WorkerStepCard
-                                                                                    step={
-                                                                                        step as StepResource & {
-                                                                                            work_status:
-                                                                                                | string
-                                                                                                | null;
-                                                                                            localized_work_status:
-                                                                                                | string
-                                                                                                | null;
-                                                                                            workers: DetailWorkerTrainsetResource[];
+                                        <div className="flex">
+                                            <ScrollArea className='flex flex-1 w-1 rounded-md border'>
+                                                <div className='flex w-max space-x-4 p-4'>
+                                                    <Breadcrumb>
+                                                        <BreadcrumbList>
+                                                            {componentProgress.steps.map(
+                                                                (step, index) => (
+                                                                    <Fragment
+                                                                        key={`${componentProgress.carriage_panel_component_id} ${(step as unknown as StepResource).id}`}
+                                                                    >
+                                                                        <BreadcrumbItem>
+                                                                            <Popover modal>
+                                                                                <PopoverTrigger className='text-left'>
+                                                                                    <WorkerStepCard
+                                                                                        step={
+                                                                                            step as StepResource & {
+                                                                                                work_status:
+                                                                                                    | string
+                                                                                                    | null;
+                                                                                                localized_work_status:
+                                                                                                    | string
+                                                                                                    | null;
+                                                                                                workers: DetailWorkerTrainsetResource[];
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                />
-                                                                            </PopoverTrigger>
-                                                                            <PopoverContent className='flex flex-col gap-2'>
-                                                                                <h4 className='text-lg font-bold'>
-                                                                                    {t(
-                                                                                        'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.workers',
-                                                                                    )}
-                                                                                </h4>
-                                                                                <ScrollArea className='max-h-[250px] overflow-y-auto'>
-                                                                                    <div className='flex flex-col gap-2'>
-                                                                                        {step.workers &&
-                                                                                            step.workers.map(
-                                                                                                (
-                                                                                                    stepWorker,
-                                                                                                ) => (
-                                                                                                    <WorkerCard
-                                                                                                        key={
-                                                                                                            stepWorker.id
-                                                                                                        }
-                                                                                                        detailWorker={
-                                                                                                            stepWorker
-                                                                                                        }
-                                                                                                    />
-                                                                                                ),
-                                                                                            )}
-                                                                                    </div>
-                                                                                </ScrollArea>
-                                                                            </PopoverContent>
-                                                                        </Popover>
-                                                                    </BreadcrumbItem>
-                                                                    {index <
-                                                                        componentProgress.steps
-                                                                            .length -
-                                                                            1 && (
-                                                                        <BreadcrumbSeparator
-                                                                            key={
-                                                                                componentProgress
-                                                                                    .panel.name +
-                                                                                (
-                                                                                    step as unknown as StepResource
-                                                                                ).id +
-                                                                                'sep'
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </Fragment>
-                                                            ),
-                                                        )}
-                                                    </BreadcrumbList>
-                                                </Breadcrumb>
-                                            </div>
-                                            <ScrollBar orientation='horizontal' />
-                                        </ScrollArea>
+                                                                                    />
+                                                                                </PopoverTrigger>
+                                                                                <PopoverContent className='flex flex-col gap-2'>
+                                                                                    <h4 className='text-lg font-bold'>
+                                                                                        {t(
+                                                                                            'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.workers',
+                                                                                        )}
+                                                                                    </h4>
+                                                                                    <ScrollArea className='max-h-[250px] overflow-y-auto'>
+                                                                                        <div className='flex flex-col gap-2'>
+                                                                                            {step.workers &&
+                                                                                                step.workers.map(
+                                                                                                    (
+                                                                                                        stepWorker,
+                                                                                                    ) => (
+                                                                                                        <WorkerCard
+                                                                                                            key={
+                                                                                                                stepWorker.id
+                                                                                                            }
+                                                                                                            detailWorker={
+                                                                                                                stepWorker
+                                                                                                            }
+                                                                                                        />
+                                                                                                    ),
+                                                                                                )}
+                                                                                        </div>
+                                                                                    </ScrollArea>
+                                                                                </PopoverContent>
+                                                                            </Popover>
+                                                                        </BreadcrumbItem>
+                                                                        {index <
+                                                                            componentProgress.steps
+                                                                                .length -
+                                                                                1 && (
+                                                                            <BreadcrumbSeparator
+                                                                                key={
+                                                                                    componentProgress
+                                                                                        .panel.name +
+                                                                                    (
+                                                                                        step as unknown as StepResource
+                                                                                    ).id +
+                                                                                    'sep'
+                                                                                }
+                                                                            />
+                                                                        )}
+                                                                    </Fragment>
+                                                                ),
+                                                            )}
+                                                        </BreadcrumbList>
+                                                    </Breadcrumb>
+                                                </div>
+                                                <ScrollBar orientation='horizontal' />
+                                            </ScrollArea>
+                                        </div>
                                     </div>
                                 ))}
                                 <Separator className='my-4 h-1' />
