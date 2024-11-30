@@ -83,7 +83,7 @@ class DashboardController extends Controller {
 
         $carriages = DB::select("SELECT qty, concat(type,' ',description) as type FROM `carriage_trainset` inner join carriages on carriage_trainset.carriage_id = carriages.id where trainset_id = :idTrainset", ['idTrainset' => $trainset]);
 
-        $trainsetPanel = DB::select('SELECT trainsets.name, carriage_panels.panel_id, panels.name ,count(carriage_panels.panel_id) as total FROM `carriage_trainset` INNER JOIN carriage_panels on carriage_panels.carriage_trainset_id = carriage_trainset.id inner join trainsets on trainsets.id = carriage_trainset.trainset_id inner JOIN panels on carriage_panels.panel_id = panels.id where trainset_id = :idTrainset GROUP by carriage_panels.panel_id, trainsets.name ORDER BY `carriage_panels`.`panel_id` ASC', ['idTrainset' => $trainset]);
+        $trainsetPanel = DB::select('SELECT trainsets.name, carriage_panels.panel_id, panels.name ,count(carriage_panels.panel_id) as total FROM `carriage_trainset` INNER JOIN carriage_panels on carriage_panels.carriage_trainset_id = carriage_trainset.id inner join trainsets on trainsets.id = carriage_trainset.trainset_id inner JOIN panels on carriage_panels.panel_id = panels.id where trainset_id = :idTrainset GROUP by carriage_panels.panel_id, panels.name, trainsets.name ORDER BY `carriage_panels`.`panel_id` ASC', ['idTrainset' => $trainset]);
 
         //         SELECT
         //     'total_required' AS status,
@@ -133,6 +133,7 @@ class DashboardController extends Controller {
         // dump($tsList);
         // dump($trainsets);
         $data = [
+            'trainsetId' => $trainset,
             'trainsets' => $trainsets,
             'carriages' => $carriages,
             'panel' => $trainsetPanel,

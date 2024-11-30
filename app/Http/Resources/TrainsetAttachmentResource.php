@@ -283,13 +283,11 @@ class TrainsetAttachmentResource extends JsonResource {
                         if (!$step) {
                             $workers->push([
                                 'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
-                                ...DetailWorkerTrainsetResource::make(
+                                ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
+                                )->toArray(request()->merge(['intent' => '']))
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                             ]);
-                            // logger(DetailWorkerTrainsetResource::make(
-                            //     $detailWorkerTrainset->fresh()
-                            // )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'));
                             $steps->push([
                                 ...StepResource::make($detailWorkerTrainset->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                 'work_status' => $detailWorkerTrainset->work_status->value,
@@ -298,9 +296,10 @@ class TrainsetAttachmentResource extends JsonResource {
                         } else {
                             $step['workers']->push([
                                 'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
-                                ...DetailWorkerTrainsetResource::make(
+                                ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
+                                )->toArray(request()->merge(['intent' => '']))
+                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                             ]);
                         }
                     });

@@ -6,7 +6,9 @@ use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Models\PanelAttachment;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,6 +23,81 @@ class TrainsetResource extends JsonResource {
         $intent = $request->get('intent');
 
         switch ($intent) {
+            case IntentEnum::WEB_TRAINSET_GET_ALL_COMPONENTS_PROGRESS->value:
+                $componentPlans = $this->carriage_panel_components
+                    ->groupBy('component_id')->map(function ($carriagePanelComponents){
+                    return [
+                        'component' => $carriagePanelComponents->first()->component,
+                        'total_plan_qty' => $carriagePanelComponents->sum(function ($carriagePanelComponent){
+                            return $carriagePanelComponent->qty * $carriagePanelComponent->carriage_panel->qty * $carriagePanelComponent->carriage_panel->carriage_trainset->qty;
+                        }),
+                    ];
+                });
+                $fulfilledComponents = $this->trainset_attachment_components
+                    ->groupBy('carriage_panel_component.component_id')->map(function ($trainsetAttachmentComponents) {
+                    return [
+                        'component' => $trainsetAttachmentComponents->first(),
+                        'total_fulfilled_qty' => $trainsetAttachmentComponents->sum('total_fulfilled'),
+                    ];
+                });
+                $progressComponents = $this->trainset_attachment_components
+                    ->groupBy('carriage_panel_component.component_id')->map(function ($trainsetAttachmentComponents) {
+                    return [
+                        'component' => $trainsetAttachmentComponents->first(),
+                        'total_progress_qty' => $trainsetAttachmentComponents->sum(function ($trainsetAttachmentComponent) {
+                            if ($trainsetAttachmentComponent->detail_worker_trainsets->isNotEmpty()) {
+                                $progressSteps = $trainsetAttachmentComponent->progress_steps;
+                                $lastWorker = $trainsetAttachmentComponent->detail_worker_trainsets->last();
+                                $isLastProgressStep = $progressSteps->last()->id === $lastWorker->progress_step->id;
+                                return !$isLastProgressStep ? 1 : (($lastWorker->work_status === DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS) ? 1 : 0);
+                            }
+                            return 0;
+                        }),
+                    ];
+                });
+                $data = $componentPlans->map(function ($componentPlan) use ($fulfilledComponents, $progressComponents) {
+                    $componentPlan['total_fulfilled_qty'] = $fulfilledComponents->get($componentPlan['component']->id)['total_fulfilled_qty'] ?? 0;
+                    $componentPlan['total_progress_qty'] = $progressComponents->get($componentPlan['component']->id)['total_progress_qty'] ?? 0;
+                    $componentPlan['diff'] = $componentPlan['total_plan_qty'] - $componentPlan['total_fulfilled_qty'] - $componentPlan['total_progress_qty'];
+                    return $componentPlan;
+                })->values();
+                return $data->toArray();
+            case IntentEnum::WEB_TRAINSET_GET_ALL_PANELS_PROGRESS->value:
+                $panelPlans = $this->carriage_panels
+                    ->groupBy('panel_id')->map(function ($carriagePanels){
+                    return [
+                        'panel' => $carriagePanels->first()->panel,
+                        'total_plan_qty' => $carriagePanels->sum(function ($carriagePanel){
+                            return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
+                        }),
+                    ];
+                });
+                $fulfilledPanels = $this->serial_panels
+                    ->groupBy('panel_attachment.carriage_panel.panel_id')->map(function ($serialPanels) {
+                    return [
+                        'panel' => $serialPanels->first(),
+                        'total_fulfilled_qty' => $serialPanels->sum(function ($serialPanel) {
+                            if ($serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::COMPLETED) return 1;
+                        }),
+                    ];
+                });
+                $progressPanels = $this->serial_panels
+                    ->groupBy('panel_attachment.carriage_panel.panel_id')->map(function ($serialPanels) {
+                    return [
+                        'panel' => $serialPanels->first(),
+                        'total_progress_qty' => $serialPanels->sum(function ($serialPanel) {
+                            if ($serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::IN_PROGRESS 
+                                || $serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::FAILED) return 1;
+                        }),
+                    ];
+                });
+                $data = $panelPlans->map(function ($panelPlan) use ($fulfilledPanels, $progressPanels) {
+                    $panelPlan['total_fulfilled_qty'] = $fulfilledPanels->get($panelPlan['panel']->id)['total_fulfilled_qty'] ?? 0;
+                    $panelPlan['total_progress_qty'] = $progressPanels->get($panelPlan['panel']->id)['total_progress_qty'] ?? 0;
+                    $panelPlan['diff'] = $panelPlan['total_plan_qty'] - $panelPlan['total_fulfilled_qty'] - $panelPlan['total_progress_qty'];
+                    return $panelPlan;
+                })->values();
+                return $data->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:
                 return [
                     'id' => $this->id,
@@ -255,9 +332,10 @@ class TrainsetResource extends JsonResource {
                             if (!$step) {
                                 $workers->push([
                                     'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
-                                    ...DetailWorkerPanelResource::make(
+                                    ...collect(DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
-                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
+                                    )->toArray(request()->merge(['intent' => '']))
+                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                                 ]);
                                 $steps->push([
                                     ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
@@ -267,9 +345,10 @@ class TrainsetResource extends JsonResource {
                             } else {
                                 $step['workers']->push([
                                     'worker' => UserResource::make($detailWorkerPanel->worker)->only('nip', 'name'),
-                                    ...DetailWorkerPanelResource::make(
+                                    ...collect(DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
-                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at'),
+                                    )->toArray(request()->merge(['intent' => '']))
+                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
                                 ]);
                             }
                         });

@@ -170,9 +170,13 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_GET_ALL_COMPONENTS = 'web.trainset.get.all.components';
 
+    case WEB_TRAINSET_GET_ALL_COMPONENTS_PROGRESS = 'web.trainset.get.all.components.progress';
+
     case WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY = 'web.trainset.get.all.components.with.qty';
 
     case WEB_TRAINSET_GET_ALL_PANELS = 'web.trainset.get.all.panels';
+
+    case WEB_TRAINSET_GET_ALL_PANELS_PROGRESS = 'web.trainset.get.all.panels.progress';
 
     case WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY = 'web.trainset.get.all.panels.with.qty';
 

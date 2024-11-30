@@ -12,7 +12,7 @@ export default function ({
 }: {
     detailWorker: DetailWorkerTrainsetResource | DetailWorkerPanelResource;
 }) {
-    const { t, currentLocale } = useLaravelReactI18n();
+    const { t } = useLaravelReactI18n();
 
     return (
         <Card className='dark:bg-background-dark rounded-lg bg-background shadow-lg'>
@@ -69,16 +69,7 @@ export default function ({
                         )}
                         :
                     </p>
-                    {/* <p className="text-sm">{detailWorker.created_at}</p> #resourcenotwork#idonknowhy💀*/}
-                    <p className='text-sm'>
-                        {new Intl.DateTimeFormat(currentLocale(), {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                        }).format(new Date(detailWorker.created_at))}
-                    </p>
+                    <p className='text-sm'>{detailWorker.created_at}</p>
                 </div>
             </CardContent>
         </Card>
