@@ -214,6 +214,7 @@ class TrainsetAttachmentResource extends JsonResource {
                             $componentSteps->push([
                                 ...StepResource::make($progressStep->step)->only('id', 'name', 'process', 'estimated_time'),
                                 'work_status' => null,
+                                'localized_work_status' => null,
                             ]);
                         }
                     });
@@ -227,6 +228,7 @@ class TrainsetAttachmentResource extends JsonResource {
                             $steps->push([
                                 ...StepResource::make($detailWorkerTrainset->progress_step->step)->only('id', 'name', 'process', 'estimated_time'),
                                 'work_status' => $detailWorkerTrainset->work_status->value,
+                                'localized_work_status' => $detailWorkerTrainset->work_status->getLabel(),
                             ]);
                         }
                     });
@@ -269,6 +271,7 @@ class TrainsetAttachmentResource extends JsonResource {
                             $componentSteps->push([
                                 ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
                                 'work_status' => null,
+                                'localized_work_status' => null,
                                 'workers' => collect(),
                             ]);
                         }
@@ -286,11 +289,12 @@ class TrainsetAttachmentResource extends JsonResource {
                                 ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
                                 )->toArray(request()->merge(['intent' => '']))
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                )->only('id', 'acceptance_status', 'localized_acceptance_status', 'work_status', 'localized_work_status', 'created_at', 'updated_at')
                             ]);
                             $steps->push([
                                 ...StepResource::make($detailWorkerTrainset->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                 'work_status' => $detailWorkerTrainset->work_status->value,
+                                'localized_work_status' => $detailWorkerTrainset->work_status->getLabel(),
                                 'workers' => $workers,
                             ]);
                         } else {
@@ -299,7 +303,7 @@ class TrainsetAttachmentResource extends JsonResource {
                                 ...collect(DetailWorkerTrainsetResource::make(
                                     $detailWorkerTrainset->fresh()
                                 )->toArray(request()->merge(['intent' => '']))
-                                )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                )->only('id', 'acceptance_status', 'localized_acceptance_status', 'work_status', 'localized_work_status', 'created_at', 'updated_at')
                             ]);
                         }
                     });

@@ -104,6 +104,7 @@ class TrainsetResource extends JsonResource {
                     'name' => $this->name,
                     'preset_trainset' => PresetTrainsetResource::make($this->preset_trainset),
                     'status' => $this->status,
+                    'localized_status' => $this->status->getLabel(),
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ];
@@ -270,6 +271,7 @@ class TrainsetResource extends JsonResource {
                         return [
                             ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
                             'work_status' => null,
+                            'localized_work_status' => null,
                         ];
                     });
 
@@ -281,6 +283,7 @@ class TrainsetResource extends JsonResource {
                                 $steps->push([
                                     ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                     'work_status' => $detailWorkerPanel->work_status->value,
+                                    'localized_work_status' => $detailWorkerPanel->work_status->getLabel(),
                                 ]);
                             }
                         });
@@ -320,6 +323,7 @@ class TrainsetResource extends JsonResource {
                         return [
                             ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
                             'work_status' => null,
+                            'localized_work_status' => null,
                             'workers' => collect(),
                         ];
                     });
@@ -335,11 +339,12 @@ class TrainsetResource extends JsonResource {
                                     ...collect(DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
                                     )->toArray(request()->merge(['intent' => '']))
-                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                    )->only('id', 'acceptance_status', 'localized_acceptance_status', 'work_status', 'localized_work_status', 'created_at', 'updated_at')
                                 ]);
                                 $steps->push([
                                     ...StepResource::make($detailWorkerPanel->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
                                     'work_status' => $detailWorkerPanel->work_status->value,
+                                    'localized_work_status' => $detailWorkerPanel->work_status->getLabel(),
                                     'workers' => $workers,
                                 ]);
                             } else {
@@ -348,7 +353,7 @@ class TrainsetResource extends JsonResource {
                                     ...collect(DetailWorkerPanelResource::make(
                                         $detailWorkerPanel->fresh()
                                     )->toArray(request()->merge(['intent' => '']))
-                                    )->only('id', 'acceptance_status', 'work_status', 'created_at', 'updated_at')
+                                    )->only('id', 'acceptance_status', 'localized_acceptance_status', 'work_status', 'localized_work_status', 'created_at', 'updated_at')
                                 ]);
                             }
                         });
@@ -391,6 +396,7 @@ class TrainsetResource extends JsonResource {
             'preset_trainset_id' => $this->preset_trainset_id,
             'preset_name' => $this->preset_trainset?->name,
             'status' => $this->status,
+            'localized_status' => $this->status->getLabel(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'can_be_deleted' => $this->canBeDeleted(),
