@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\TrainsetAttachment;
-use App\Models\TrainsetAttachmentComponent;
 use Illuminate\Database\Seeder;
 
 class TrainsetAttachmentComponentSeeder extends Seeder {
