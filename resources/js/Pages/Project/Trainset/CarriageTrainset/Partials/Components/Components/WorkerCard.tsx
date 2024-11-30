@@ -62,9 +62,14 @@ export default function ({
                         {detailWorker.work_status}
                     </span>
                 </p>
-                <div className="flex flex-col gap-1">
-                    <p className="text-sm">{t('pages.project.trainset.carriage_trainset.partials.components.components.worker_card.start_at')}:</p>
-                    <p className="text-sm">{detailWorker.created_at}</p>
+                <div className='flex flex-col gap-1'>
+                    <p className='text-sm'>
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.components.components.worker_card.start_at',
+                        )}
+                        :
+                    </p>
+                    <p className='text-sm'>{detailWorker.created_at}</p>
                 </div>
             </CardContent>
         </Card>

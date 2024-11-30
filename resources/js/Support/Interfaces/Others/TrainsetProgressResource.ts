@@ -1,4 +1,4 @@
-import { ComponentResource, PanelResource } from "../Resources";
+import { ComponentResource, PanelResource } from '../Resources';
 interface TrainsetProgressResource {
     total_plan_qty: number;
     total_fulfilled_qty: number;
