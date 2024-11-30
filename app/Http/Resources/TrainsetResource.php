@@ -8,6 +8,7 @@ use App\Models\CarriageTrainset;
 use App\Models\PanelAttachment;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -59,6 +60,42 @@ class TrainsetResource extends JsonResource {
                     $componentPlan['total_progress_qty'] = $progressComponents->get($componentPlan['component']->id)['total_progress_qty'] ?? 0;
                     $componentPlan['diff'] = $componentPlan['total_plan_qty'] - $componentPlan['total_fulfilled_qty'] - $componentPlan['total_progress_qty'];
                     return $componentPlan;
+                })->values();
+                return $data->toArray();
+            case IntentEnum::WEB_TRAINSET_GET_ALL_PANELS_PROGRESS->value:
+                $panelPlans = $this->carriage_panels
+                    ->groupBy('panel_id')->map(function ($carriagePanels){
+                    return [
+                        'panel' => $carriagePanels->first()->panel,
+                        'total_plan_qty' => $carriagePanels->sum(function ($carriagePanel){
+                            return $carriagePanel->qty * $carriagePanel->carriage_trainset->qty;
+                        }),
+                    ];
+                });
+                $fulfilledPanels = $this->serial_panels
+                    ->groupBy('panel_attachment.carriage_panel.panel_id')->map(function ($serialPanels) {
+                    return [
+                        'panel' => $serialPanels->first(),
+                        'total_fulfilled_qty' => $serialPanels->sum(function ($serialPanel) {
+                            if ($serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::COMPLETED) return 1;
+                        }),
+                    ];
+                });
+                $progressPanels = $this->serial_panels
+                    ->groupBy('panel_attachment.carriage_panel.panel_id')->map(function ($serialPanels) {
+                    return [
+                        'panel' => $serialPanels->first(),
+                        'total_progress_qty' => $serialPanels->sum(function ($serialPanel) {
+                            if ($serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::IN_PROGRESS 
+                                || $serialPanel->manufacture_status === SerialPanelManufactureStatusEnum::FAILED) return 1;
+                        }),
+                    ];
+                });
+                $data = $panelPlans->map(function ($panelPlan) use ($fulfilledPanels, $progressPanels) {
+                    $panelPlan['total_fulfilled_qty'] = $fulfilledPanels->get($panelPlan['panel']->id)['total_fulfilled_qty'] ?? 0;
+                    $panelPlan['total_progress_qty'] = $progressPanels->get($panelPlan['panel']->id)['total_progress_qty'] ?? 0;
+                    $panelPlan['diff'] = $panelPlan['total_plan_qty'] - $panelPlan['total_fulfilled_qty'] - $panelPlan['total_progress_qty'];
+                    return $panelPlan;
                 })->values();
                 return $data->toArray();
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_DETAILS->value:

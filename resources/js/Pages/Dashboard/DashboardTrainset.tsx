@@ -35,6 +35,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
     const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<TrainsetComponentProgressResource[]>([]);
+    const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<TrainsetPanelProgressResource[]>([]);
     const trainsetProgressConfig: ChartConfig = {
         total_plan_qty: {
             label: 'Plan',
@@ -135,9 +136,16 @@ export default function Dashboard({ auth, data }: PageProps) {
         }) as unknown as TrainsetComponentProgressResource[];
         setTrainsetComponentProgress(progress);
     });
+    const loadTrainsetPanelProgress = withLoading(async () => {
+        const progress = await trainsetService.get(data['trainsetId'], {
+            intent: IntentEnum.WEB_TRAINSET_GET_ALL_PANELS_PROGRESS,
+        }) as unknown as TrainsetPanelProgressResource[];
+        setTrainsetPanelProgress(progress);
+    });
 
     useEffect(() => {
         loadTrainsetComponentProgress();
+        loadTrainsetPanelProgress();
     }, []);
 
     return (
@@ -344,6 +352,41 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         axisLine={false}
                                     />
                                     <ChartTooltip content={renderTrainsetProgressTooltipContent(trainsetComponentProgress)} />
+                                    <ChartLegend formatter={renderTrainsetProgressLegendContent} />
+                                    <Bar type='monotone'
+                                        stackId="2" radius={0} fill={`var(--color-total_fulfilled_qty)`} dataKey={'total_fulfilled_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} />
+                                    <Bar type='monotone'
+                                        stackId="2" radius={[0,4,4,0]} fill={`var(--color-total_progress_qty)`} dataKey={'total_progress_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} />
+                                    <Bar type='monotone'
+                                        stackId="2" radius={4} fill={`var(--color-diff)`} className='hidden' dataKey={'diff'} legendType='none' />
+                                </BarChart>
+                            </ChartContainer>
+                        </div>
+                        <div className="flex flex-col w-full mt-2 ">
+                            <h2 className="text-xl my-1 font-bold">Panel Dalam Trainset</h2>
+                            <h3 className="text-base">{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
+                            <ChartContainer config={trainsetProgressConfig} className="h-[500px] w-full mt-5">
+                                <BarChart 
+                                    data={trainsetPanelProgress} 
+                                    stackOffset='expand'
+                                    layout="vertical"
+                                    accessibilityLayer
+                                >
+                                    <CartesianGrid vertical={false} />
+                                    <XAxis
+                                        type="number" 
+                                        tickFormatter={value => `${(value * 100).toFixed(0)}%`}
+                                    />
+                                    <YAxis
+                                        width={150}
+                                        type="category"
+                                        tickMargin={10}
+                                        tickLine={false}
+                                        dataKey="panel.name"
+                                        className=""
+                                        axisLine={false}
+                                    />
+                                    <ChartTooltip content={renderTrainsetProgressTooltipContent(trainsetPanelProgress)} />
                                     <ChartLegend formatter={renderTrainsetProgressLegendContent} />
                                     <Bar type='monotone'
                                         stackId="2" radius={0} fill={`var(--color-total_fulfilled_qty)`} dataKey={'total_fulfilled_qty'} label={{ position: 'right', formatter: (value: number) => `${(value * 100).toFixed(0)}%` }} />
