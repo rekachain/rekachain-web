@@ -86,6 +86,28 @@ class User extends Authenticatable {
         'deleted_at' => 'datetime',
     ];
 
+    protected $filterable = [
+        'searchs' => [
+            'name', 'nip', 'email', 'phone_number'
+        ],
+        'relation_searchs' => [],
+        'columns' => [
+            'step_id', 'workstation_id'
+        ],
+        'relation_columns' => [
+            'step' => [
+                'name', 'estimated_time'
+            ],
+            'workstation' => [
+                'workshop_id', 'division_id', 'name'
+            ],
+        ],
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
     public function workstation(): HasOne {
         return $this->hasOne(Workstation::class, 'id', 'workstation_id');
     }
