@@ -50,7 +50,10 @@ class ApiUserController extends ApiController {
      * Update the specified resource in storage.
      */
     public function update(UpdateUserRequest $request, User $user) {
-        checkPermissions(PermissionEnum::USER_UPDATE);
+        if ($user->id !== auth()->id()) {
+            checkPermissions(PermissionEnum::USER_UPDATE);
+        }
+
         $intent = request()->get('intent');
         if ($intent === IntentEnum::API_USER_UPDATE_PASSWORD->value) {
             return $this->userService->apiUpdatePassword($user, $request->validated());
