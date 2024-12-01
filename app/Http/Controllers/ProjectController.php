@@ -70,7 +70,7 @@ class ProjectController extends Controller {
 
             switch ($intent) {
                 case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
-                    return $this->projectService->importProject($request->file('file'));
+                    return $this->projectService->importProject($request->file('file'), $request->validated());
             }
 
             return $this->projectService->create($request->validated());

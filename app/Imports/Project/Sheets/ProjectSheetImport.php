@@ -28,6 +28,7 @@ class ProjectSheetImport implements ToModel, WithMappedCells {
             'initial_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['initial_date']),
             'estimated_start_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['estimated_start_date']),
             'estimated_end_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['estimated_end_date']),
+            'buyer_id' => $this->parent->buyer?->id ?? null,
         ]);
 
         $this->parent->setProject($project);
