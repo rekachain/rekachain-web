@@ -3,6 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 import i18n from 'laravel-react-i18n/vite';
 import os from 'os';
+import { unlinkSync, existsSync } from 'fs';
 
 const ip = Object.values(os.networkInterfaces())
     .flat()
@@ -10,6 +11,15 @@ const ip = Object.values(os.networkInterfaces())
 
 export default defineConfig(({ command }) => {
     console.log(`Running vite with command: ${command}`);
+    try {
+        // eslint-disable-next-line no-sync
+        if (existsSync('public/hot')) {
+            unlinkSync('public/hot');
+        }
+    } catch (err) {
+        console.error(err);
+    }
+
     const sharedConfig =
         // eslint-disable-next-line no-undef
         command === 'serve' && process.argv.includes('--host=0.0.0.0')
