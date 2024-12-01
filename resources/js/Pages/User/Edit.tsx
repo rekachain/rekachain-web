@@ -179,7 +179,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             <GenericDataSelector
                                 setSelectedData={(id) => setData('workstation_id', id)}
                                 selectedDataId={data.workstation_id}
-                                renderItem={(item) => `${item.name} - ${item.location}`}
+                                renderItem={(item) => `${item.name} - ${item.location} - ${item.workshop?.name}`}
                                 placeholder='Select Workstation'
                                 nullable
                                 initialSearch={user.workstation?.name}

@@ -17,6 +17,17 @@ class Workstation extends Model {
         'location',
     ];
 
+    protected $filterable = [
+        'search' => ['name', 'location'],
+        'relation_search' => [
+            'workshop' => ['name'],
+        ],
+    ];
+
+    public function getFilterable(): array {
+        return $this->filterable;
+    }
+
     public function workshop(): BelongsTo {
         return $this->belongsTo(Workshop::class);
     }
