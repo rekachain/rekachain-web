@@ -98,3 +98,129 @@ Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek, $detail_ts) {
 Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, $detail_ts, $detail_kereta) {
     return Inertia::render('Detail/DetailKereta', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek, 'susunanKereta' => $detail_kereta]);
 })->middleware(['auth', 'verified'])->name('detail-kereta');
+
+Route::get('/total-estimated-time/{project_id?}/{trainset_id?}', function ($project_id = null, $trainset_id = null) {
+    $mechanicTime = 0;
+    $electricalTime = 0;
+    $assemblyTime = 0;
+
+    if ($trainset_id) {
+        $trainset = \App\Models\Trainset::with(['carriage_trainsets' => [
+            'carriage_panels' => [
+                'progress.steps'
+            ]
+        ]])->findOrFail($trainset_id);
+
+        foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+            foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
+                $stepTime = 0;
+                foreach ($carriagePanel->progress->steps as $step) {
+                    $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
+                }
+
+                switch($carriagePanel->progress->work_aspect_id) {
+                    case 1: // Mechanic
+                        $mechanicTime += $stepTime;
+                        break;
+                    case 2: // Electric
+                        $electricalTime += $stepTime;
+                        break;
+                    case 3: // Assembly
+                        $assemblyTime += $stepTime;
+                        break;
+                }
+
+                foreach($carriagePanel->carriage_panel_components as $component) {
+                    $componentStepTime = 0;
+                    foreach ($component->progress->steps as $step) {
+                        $componentStepTime = $step->estimated_time * $component->qty * $carriagePanel->qty * $carriageTrainset->qty;
+                    }
+
+                    switch($component->progress->work_aspect_id) {
+                        case 1: // Mechanic
+                            $mechanicTime += $componentStepTime;
+                            break;
+                        case 2: // Electric
+                            $electricalTime += $componentStepTime;
+                            break;
+                        case 3: // Assembly
+                            $assemblyTime += $componentStepTime;
+                            break;
+                    }
+                }
+            }
+        }
+
+        $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
+
+        return response()->json([
+            'trainset_id' => $trainset_id,
+            'mechanical_time' => $mechanicTime,
+            'electrical_time' => $electricalTime,
+            'assembly_time' => $assemblyTime,
+            'total_estimated_time' => $totalTime
+        ]);
+    }
+
+    if ($project_id) {
+        $project = \App\Models\Project::with(['trainsets.carriage_trainsets' => [
+            'carriage_panels' => [
+                'progress.steps'
+            ]
+        ]])->findOrFail($project_id);
+
+        foreach ($project->trainsets as $trainset) {
+            foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+                foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
+                    $stepTime = 0;
+                    foreach ($carriagePanel->progress->steps as $step) {
+                        $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
+                    }
+
+                    switch($carriagePanel->progress->work_aspect_id) {
+                        case 1: // Mechanic
+                            $mechanicTime += $stepTime;
+                            break;
+                        case 2: // Electric
+                            $electricalTime += $stepTime;
+                            break;
+                        case 3: // Assembly
+                            $assemblyTime += $stepTime;
+                            break;
+                    }
+
+                    foreach ($carriagePanel->carriage_panel_components as $component) {
+                        $componentStepTime = 0;
+                        foreach ($component->progress->steps as $step) {
+                            $componentStepTime = $step->estimated_time * $component->qty * $carriagePanel->qty * $carriageTrainset->qty;
+                        }
+
+                        switch ($component->progress->work_aspect_id) {
+                            case 1: // Mechanic
+                                $mechanicTime += $componentStepTime;
+                                break;
+                            case 2: // Electric
+                                $electricalTime += $componentStepTime;
+                                break;
+                            case 3: // Assembly
+                                $assemblyTime += $componentStepTime;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
+
+        return response()->json([
+            'project_id' => $project_id,
+            'mechanical_time' => $mechanicTime,
+            'electrical_time' => $electricalTime,
+            'assembly_time' => $assemblyTime,
+            'total_estimated_time' => $totalTime
+        ]);
+    }
+
+    return response()->json(['message' => 'Please provide project_id or trainset_id']);
+})->name('estimated-time');
