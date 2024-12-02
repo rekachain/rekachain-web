@@ -140,7 +140,7 @@ class ApiDetailWorkerTrainsetController extends Controller {
                 return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset, $request);
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
-                    abort(403, 'Unauthorized');
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::QC_MEKANIK->value . ' / ' . RoleEnum::QC_ELEKTRIK->value . ' / ' . RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
 
                 return DetailWorkerTrainsetResource::make($this->detailWorkerTrainsetService->rejectWork($detailWorkerTrainset, $request->validated())->load('failed_component_manufactures'));

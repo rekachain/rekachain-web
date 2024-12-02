@@ -15,8 +15,8 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
         switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 return [
-                    'intent' => ['nullable', 'in:' . implode(',', array_column(IntentEnum::cases(), 'value'))],
                     'notes' => ['required', 'string'],
+                    'total_failed' => 'required|integer|min:1',
                 ];
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
@@ -33,6 +33,7 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
             'work_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerTrainsetWorkStatusEnum::cases(), 'value'))],
             'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerTrainsetAcceptanceStatusEnum::cases(), 'value'))],
             'failed_note' => 'nullable|string',
+            'total_failed' => 'required_if:failed_note,!=,null|integer|min:1',
         ];
     }
 
