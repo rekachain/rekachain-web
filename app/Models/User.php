@@ -89,13 +89,12 @@ class User extends Authenticatable {
 
     protected $filterable = [
         'searchs' => [
-            'name', 'nip', 'email', 'phone_number'
+            'name', 'nip', 'email', 'phone_number',
         ],
         'columns' => [
-            'step_id', 'workstation_id'
+            'step_id', 'workstation_id',
         ],
     ];
-
     protected $filterableRelations = [
         'step',
         'workstation',

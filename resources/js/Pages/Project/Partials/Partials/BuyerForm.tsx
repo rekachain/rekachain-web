@@ -5,9 +5,7 @@ import { Label } from '@/Components/UI/label';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { userService } from '@/Services/userService';
 import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import {
-    UserResource,
-} from '@/Support/Interfaces/Resources';
+import { UserResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
@@ -34,7 +32,7 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
         setUserResponse(res);
         return res.data;
     }, []);
-    
+
     useEffect(() => {
         void fetchUsers({ search: debouncedSearchUser });
     }, [debouncedSearchUser, fetchUsers]);
@@ -72,7 +70,7 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
 
     const handleAddUser = withLoading(async (e: FormEvent<HTMLDivElement>) => {
         e.preventDefault();
-        
+
         const formData = new FormData();
         data.user_name && formData.append('name', data.user_name);
         data.user_email && formData.append('email', data.user_email);
@@ -80,37 +78,37 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
         data.user_password && formData.append('password', data.user_password);
         const res = await userService.create(formData);
         void refreshUser(res);
-        void useSuccessToast(
-            'Sukses',
-        );
+        void useSuccessToast('Sukses');
     }, true);
 
     return (
         <form onSubmit={handleAddUser}>
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-4'>
-                    <Label htmlFor='user'>
-                        {'Pembeli: '}
-                    </Label>
+                    <Label htmlFor='user'>{'Pembeli: '}</Label>
                     <div className='flex items-center'>
                         <GenericDataSelector
                             setSelectedData={(id) => setData('buyer_id', id)}
                             selectedDataId={data.buyer_id ?? null}
                             renderItem={(item: UserResource) => item.name}
+                            placeholder={
+                                data.buyer_id !== null ? data.user_name : 'Pilih Pembeli...'
+                            }
                             onSearchChange={setSearchUser}
-                            placeholder={data.buyer_id !== null ? data.user_name : 'Pilih Pembeli...'}
                             nullable
                             id='user'
                             fetchData={fetchUsers}
                             data={userResponse?.data}
                         />
-                        <Button variant='ghost' type='button' onClick={() => setData('buyer_id', null)}>
+                        <Button
+                            variant='ghost'
+                            type='button'
+                            onClick={() => setData('buyer_id', null)}
+                        >
                             <RefreshCcw />
                         </Button>
                     </div>
-                    <Label htmlFor='email'>
-                        {'Email: '}
-                    </Label>
+                    <Label htmlFor='email'>{'Email: '}</Label>
                     <Input
                         value={data.user_email || ''}
                         type='email'
@@ -119,9 +117,7 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
                         id='email'
                         disabled={data.buyer_id !== null}
                     />
-                    <Label htmlFor='name'>
-                        {'Nama: '}
-                    </Label>
+                    <Label htmlFor='name'>{'Nama: '}</Label>
                     <Input
                         value={data.user_name}
                         placeholder={'Masukkan Nama...'}
@@ -129,33 +125,35 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
                         id='name'
                         disabled={data.buyer_id !== null}
                     />
-                    <Label htmlFor='phone_number'>
-                        {'Nomor Telepon: '}
-                    </Label>
+                    <Label htmlFor='phone_number'>{'Nomor Telepon: '}</Label>
                     <Input
                         value={data.user_phone_number || ''}
-                        placeholder={data.user_phone_number !== '' ? '-' : 'Masukkan Nomor Telepon...'}
+                        placeholder={
+                            data.user_phone_number !== '' ? '-' : 'Masukkan Nomor Telepon...'
+                        }
                         onChange={(e) => setData('user_phone_number', e.target.value)}
                         id='phone_number'
                         disabled={data.buyer_id !== null}
                     />
-                    {!data.buyer_id && <>
-                        <Label htmlFor='password'>
-                            {'Password: '}
-                        </Label>
-                        <Input
-                            value={data.user_password}
-                            type='password'
-                            placeholder={'Masukkan Password...'}
-                            onChange={(e) => setData('user_password', e.target.value)}
-                            id='password'
-                            disabled={data.buyer_id !== null}
+                    {!data.buyer_id && (
+                        <>
+                            <Label htmlFor='password'>{'Password: '}</Label>
+                            <Input
+                                value={data.user_password}
+                                type='password'
+                                placeholder={'Masukkan Password...'}
+                                onChange={(e) => setData('user_password', e.target.value)}
+                                id='password'
+                                disabled={data.buyer_id !== null}
                             />
-                    </>}
+                        </>
+                    )}
                 </div>
-                {!data.buyer_id && <div className='mr-auto flex gap-4'>
-                    <Button type='submit'>{t('action.save')}</Button>
-                </div>}
+                {!data.buyer_id && (
+                    <div className='mr-auto flex gap-4'>
+                        <Button type='submit'>{t('action.save')}</Button>
+                    </div>
+                )}
             </div>
         </form>
     );

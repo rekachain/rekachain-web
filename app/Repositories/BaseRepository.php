@@ -17,10 +17,10 @@ abstract class BaseRepository extends AdobrovolskyBaseRepository {
         $query = $this->getQuery();
 
         $filterable = method_exists($model, 'getFilterable') ? $model->getFilterable() : [];
-        
-        $query->where(function ($query) use ($searchParams, $model, $filterable) {
+
+        $query->where(function ($query) use ($searchParams, $filterable) {
             $query = $this->applySearchFilters($query, $searchParams, $filterable['searchs'] ?? []);
-            
+
             $query = $this->applyRelationSearchFilters($query, $searchParams, $filterable['relation_searchs'] ?? []);
         });
 
@@ -34,7 +34,7 @@ abstract class BaseRepository extends AdobrovolskyBaseRepository {
 
         return $query;
     }
-    
+
     public function useFilters(array $searchParams): Builder {
         return $this->applyFilters($searchParams);
     }

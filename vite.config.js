@@ -12,7 +12,7 @@ const ip = Object.values(os.networkInterfaces())
 export default defineConfig(({ command }) => {
     console.log(`Running vite with command: ${command}`);
     try {
-        // eslint-disable-next-line no-sync
+         
         if (existsSync('public/hot')) {
             unlinkSync('public/hot');
         }

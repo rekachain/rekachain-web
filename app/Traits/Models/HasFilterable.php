@@ -2,12 +2,11 @@
 
 namespace App\Traits\Models;
 
-trait HasFilterable
-{
+trait HasFilterable {
     public function getFilterableRelations(): array {
         return $this->filterableRelations ?? [];
     }
-    
+
     public function getFilterable(): array {
         $filterable = [];
 

@@ -15,10 +15,9 @@ class Step extends Model {
         'process',
         'estimated_time',
     ];
-
     protected $filterable = [
         'searchs' => [
-            'name', 
+            'name',
         ],
         'columns' => [
             'name',

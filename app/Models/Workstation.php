@@ -17,7 +17,6 @@ class Workstation extends Model {
         'name',
         'location',
     ];
-
     protected $filterable = [
         'searchs' => ['name', 'location'],
         'columns' => ['workshop_id', 'division_id', 'name', 'location'],

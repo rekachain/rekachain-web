@@ -1,4 +1,9 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/Components/UI/accordion';
 import { Button } from '@/Components/UI/button';
 import {
     Dialog,
@@ -89,16 +94,16 @@ export default function () {
                 </div>
                 <Accordion type='single' collapsible>
                     <AccordionItem value='item-1'>
-                        <AccordionTrigger>
-                            {'Pembeli (OPSIONAL)'}
-                        </AccordionTrigger>
+                        <AccordionTrigger>{'Pembeli (OPSIONAL)'}</AccordionTrigger>
                         <AccordionContent>
-                            <BuyerForm setBuyerId={(buyer_id: number) => setData('buyer_id', buyer_id)}/>
+                            <BuyerForm
+                                setBuyerId={(buyer_id: number) => setData('buyer_id', buyer_id)}
+                            />
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
                 <DialogFooter>
-                    <Button type='submit' disabled={loading} form='import-form'>
+                    <Button type='submit' form='import-form' disabled={loading}>
                         {loading
                             ? t('action.loading')
                             : t('pages.project.partials.import.dialogs.buttons.import')}
