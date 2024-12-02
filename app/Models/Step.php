@@ -2,17 +2,27 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Step extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'name',
         'process',
         'estimated_time',
+    ];
+
+    protected $filterable = [
+        'searchs' => [
+            'name', 
+        ],
+        'columns' => [
+            'name',
+        ],
     ];
 
     public function progress_steps(): HasMany {

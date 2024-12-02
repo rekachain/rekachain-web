@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -47,7 +48,7 @@ use Spatie\Permission\Traits\HasRoles;
  * )
  */
 class User extends Authenticatable {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, HasFilterable, HasRoles, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -84,6 +85,20 @@ class User extends Authenticatable {
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'deleted_at' => 'datetime',
+    ];
+
+    protected $filterable = [
+        'searchs' => [
+            'name', 'nip', 'email', 'phone_number'
+        ],
+        'columns' => [
+            'step_id', 'workstation_id'
+        ],
+    ];
+
+    protected $filterableRelations = [
+        'step',
+        'workstation',
     ];
 
     public function workstation(): HasOne {

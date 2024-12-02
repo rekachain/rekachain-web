@@ -13,12 +13,14 @@ use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use App\Support\Interfaces\Services\UserServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
     public function __construct(
+        protected UserServiceInterface $userService,
         protected TrainsetServiceInterface $trainsetService,
         protected PanelServiceInterface $panelService
     ) {
@@ -45,8 +47,12 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return $project;
     }
 
-    public function importProject(UploadedFile $file): bool {
-        Excel::import(new ProjectsImport($file), $file);
+    public function importProject(UploadedFile $file, array $data): bool {
+        $buyer = null;
+        if (array_key_exists('buyer_id', $data)) {
+            $buyer = $this->userService->findOrFail($data['buyer_id']);
+        }
+        Excel::import(new ProjectsImport($file, $buyer), $file);
 
         return true;
     }

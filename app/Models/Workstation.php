@@ -2,19 +2,25 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Workstation extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'workshop_id',
         'division_id',
         'name',
         'location',
+    ];
+
+    protected $filterable = [
+        'searchs' => ['name', 'location'],
+        'columns' => ['workshop_id', 'division_id', 'name', 'location'],
     ];
 
     public function workshop(): BelongsTo {

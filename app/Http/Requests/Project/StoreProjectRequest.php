@@ -25,6 +25,7 @@ class StoreProjectRequest extends FormRequest {
             case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
                 return [
                     'file' => 'required|file|mimes:xlsx,xlsm',
+                    'buyer_id' => 'nullable|exists:users,id',
                 ];
             default:
                 return [

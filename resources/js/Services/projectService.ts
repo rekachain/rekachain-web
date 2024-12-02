@@ -31,9 +31,12 @@ export const projectService = {
     downloadImportProjectTemplate: async () => {
         window.location.href = '/assets/excel-templates/imports/project/project-import.xlsm';
     },
-    importProject: async (file: File) => {
+    importProject: async (file: File, buyer_id: number | null) => {
         const formData = new FormData();
         formData.append('file', file);
+        if (buyer_id) {
+            formData.append('buyer_id', buyer_id.toString());
+        }
         return await window.axios.post(route(`${ROUTES.PROJECTS}.store`), formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
