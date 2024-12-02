@@ -4,6 +4,10 @@ namespace App\Traits\Models;
 
 trait HasFilterable
 {
+    public function getFilterableRelations(): array {
+        return $this->filterableRelations ?? [];
+    }
+    
     public function getFilterable(): array {
         $filterable = [];
 
@@ -15,7 +19,7 @@ trait HasFilterable
         $filterable['relation_searchs'] = [];
         $filterable['relation_columns'] = [];
 
-        foreach ($this->getRelations() as $relationName => $relationClass) {
+        foreach ($this->getFilterableRelations() as $relationName) {
             // Load the related model instance
             $relatedInstance = $this->$relationName()->getRelated();
 

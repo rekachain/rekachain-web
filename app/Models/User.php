@@ -96,9 +96,9 @@ class User extends Authenticatable {
         ],
     ];
 
-    protected $relations = [
-        'step' => Step::class,
-        'workstation' => Workstation::class,
+    protected $filterableRelations = [
+        'step',
+        'workstation',
     ];
 
     public function workstation(): HasOne {
