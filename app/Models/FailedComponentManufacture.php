@@ -12,6 +12,7 @@ class FailedComponentManufacture extends Model {
     protected $fillable = [
         'detail_worker_trainset_id',
         'notes',
+        'total_failed',
     ];
 
     public function detail_worker_trainset(): BelongsTo {
