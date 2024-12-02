@@ -8,13 +8,17 @@ use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
 use App\Support\Interfaces\Services\FailedComponentManufactureServiceInterface;
+use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
 use App\Traits\Services\HandlesImages;
 use Illuminate\Database\Eloquent\Model;
 
 class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorkerTrainsetServiceInterface {
     use HandlesImages;
 
-    public function __construct(protected FailedComponentManufactureServiceInterface $failedComponentManufactureService) {
+    public function __construct(
+        protected FailedComponentManufactureServiceInterface $failedComponentManufactureService,
+        protected TrainsetAttachmentComponentServiceInterface $trainsetAttachmentComponentService,
+    ) {
         parent::__construct();
     }
 
@@ -53,6 +57,8 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         $data['work_status'] = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
 
         $detailWorkerTrainset = parent::update($detailWorkerTrainset, $data);
+
+        $this->trainsetAttachmentComponentService->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
 
         return $detailWorkerTrainset;
     }
