@@ -1,3 +1,5 @@
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,26 +9,24 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button, buttonVariants } from '@/Components/UI/button';
 import { Label } from '@/Components/UI/label';
-import { Loader2 } from 'lucide-react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { trainsetService } from '@/Services/trainsetService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { memo, useCallback, useState } from 'react';
-import { useForm } from '@inertiajs/react';
-import { workstationService } from '@/Services/workstationService';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { ScrollArea } from '@/Components/UI/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/Components/UI/tabs';
-import GenericDataSelector from '@/Components/GenericDataSelector';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import PreviewGeneratePanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGeneratePanelAttachment';
+import PreviewGenerateTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGenerateTrainsetAttachment';
+import { trainsetService } from '@/Services/trainsetService';
+import { workstationService } from '@/Services/workstationService';
 import { GenerateAttachmentTabEnum } from '@/Support/Enums/generateAttachmentTabEnum';
 import { PreviewGenerateAttachmentRawMaterialResource } from '@/Support/Interfaces/Others';
-import PreviewGenerateTrainsetAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGenerateTrainsetAttachment';
-import { ScrollArea } from '@/Components/UI/scroll-area';
-import PreviewGeneratePanelAttachment from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/PreviewGeneratePanelAttachment';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Loader2 } from 'lucide-react';
+import { memo, useCallback, useState } from 'react';
 
 const GenerateAttachment = ({
     trainset,
@@ -42,28 +42,34 @@ const GenerateAttachment = ({
     const [activeTab, setActiveTab] = useState<GenerateAttachmentTabEnum>(
         GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC,
     );
-    const [previewGenerateAttachmentRawMaterials, setPreviewGenerateAttachmentRawMaterials] = useState<
-        PreviewGenerateAttachmentRawMaterialResource[]
-    >([]);
+    const [previewGenerateAttachmentRawMaterials, setPreviewGenerateAttachmentRawMaterials] =
+        useState<PreviewGenerateAttachmentRawMaterialResource[]>([]);
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
-    const [confirmationAction, setConfirmationAction] = useState<() => Promise<void>>(() => Promise.resolve);
+    const [confirmationAction, setConfirmationAction] = useState<() => Promise<void>>(
+        () => Promise.resolve,
+    );
 
-    const { data: generateAssemblyAttachmentData, setData: setGenerateAssemblyAttachmentData } = useForm({
-        assembly_source_workstation_id: null as number | null,
-        assembly_destination_workstation_id: null as number | null,
+    const { data: generateAssemblyAttachmentData, setData: setGenerateAssemblyAttachmentData } =
+        useForm({
+            assembly_source_workstation_id: null as number | null,
+            assembly_destination_workstation_id: null as number | null,
+        });
+
+    const {
+        data: generateMechanicTrainsetAttachmentData,
+        setData: setGenerateMechanicTrainsetAttachmentData,
+    } = useForm({
+        mechanic_source_workstation_id: null as number | null,
+        mechanic_destination_workstation_id: null as number | null,
     });
 
-    const { data: generateMechanicTrainsetAttachmentData, setData: setGenerateMechanicTrainsetAttachmentData } =
-        useForm({
-            mechanic_source_workstation_id: null as number | null,
-            mechanic_destination_workstation_id: null as number | null,
-        });
-
-    const { data: generateElectricTrainsetAttachmentData, setData: setGenerateElectricTrainsetAttachmentData } =
-        useForm({
-            electric_source_workstation_id: null as number | null,
-            electric_destination_workstation_id: null as number | null,
-        });
+    const {
+        data: generateElectricTrainsetAttachmentData,
+        setData: setGenerateElectricTrainsetAttachmentData,
+    } = useForm({
+        electric_source_workstation_id: null as number | null,
+        electric_destination_workstation_id: null as number | null,
+    });
 
     const fetchWorkstations = useCallback(async (filters: ServiceFilterOptions) => {
         return await workstationService
@@ -71,10 +77,10 @@ const GenerateAttachment = ({
                 ...filters,
                 relations: 'workshop',
             })
-            .then(response => response.data);
+            .then((response) => response.data);
     }, []);
 
-    const handleGenerateMechanicTrainsetAttachment = withLoading(async e => {
+    const handleGenerateMechanicTrainsetAttachment = withLoading(async (e) => {
         if (
             !generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id ||
             !generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id
@@ -90,12 +96,14 @@ const GenerateAttachment = ({
         await handleSyncTrainset();
         await handleSyncCarriages();
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated'),
+            t(
+                'pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated',
+            ),
         );
         setActiveTab(GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC);
     });
 
-    const handleGenerateElectricTrainsetAttachment = withLoading(async e => {
+    const handleGenerateElectricTrainsetAttachment = withLoading(async (e) => {
         if (
             !generateElectricTrainsetAttachmentData.electric_source_workstation_id ||
             !generateElectricTrainsetAttachmentData.electric_destination_workstation_id
@@ -111,12 +119,14 @@ const GenerateAttachment = ({
         await handleSyncTrainset();
         await handleSyncCarriages();
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated'),
+            t(
+                'pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated',
+            ),
         );
         setActiveTab(GenerateAttachmentTabEnum.PANEL_ATTACHMENT);
     });
 
-    const handleGenerateAssemblyAttachment = withLoading(async e => {
+    const handleGenerateAssemblyAttachment = withLoading(async (e) => {
         if (
             !generateAssemblyAttachmentData.assembly_source_workstation_id ||
             !generateAssemblyAttachmentData.assembly_destination_workstation_id
@@ -131,7 +141,9 @@ const GenerateAttachment = ({
         await handleSyncTrainset();
         await handleSyncCarriages();
         void useSuccessToast(
-            t('pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated'),
+            t(
+                'pages.project.trainset.carriage_trainset.partials.generate_attachment.messages.attachment_generated',
+            ),
         );
     });
 
@@ -172,7 +184,7 @@ const GenerateAttachment = ({
                         'pages.project.trainset.carriage_trainset.partials.generate_attachment.buttons.generate_attachment',
                     )}
                 </DialogTrigger>
-                <DialogContent className="max-w-fit">
+                <DialogContent className='max-w-fit'>
                     <DialogHeader>
                         <DialogTitle>
                             {t(
@@ -182,16 +194,22 @@ const GenerateAttachment = ({
                         <DialogDescription></DialogDescription>
                         <Tabs
                             value={activeTab}
-                            onValueChange={(value: string) => setActiveTab(value as GenerateAttachmentTabEnum)}
-                            className="w-[400px]"
+                            onValueChange={(value: string) =>
+                                setActiveTab(value as GenerateAttachmentTabEnum)
+                            }
+                            className='w-[400px]'
                         >
                             <TabsList>
-                                <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
+                                <TabsTrigger
+                                    value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                                >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.trainset_attachment_mechanic',
                                     )}
                                 </TabsTrigger>
-                                <TabsTrigger value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
+                                <TabsTrigger
+                                    value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
+                                >
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.buttons.trainset_attachment_electric',
                                     )}
@@ -209,23 +227,27 @@ const GenerateAttachment = ({
                                     )}
                                 </TabsTrigger>
                             </TabsList>
-                            <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}>
+                            <TabsContent
+                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                            >
                                 <form
-                                    onSubmit={e => {
+                                    onSubmit={(e) => {
                                         e.preventDefault();
-                                        void confirmAction(handleGenerateMechanicTrainsetAttachment);
+                                        void confirmAction(
+                                            handleGenerateMechanicTrainsetAttachment,
+                                        );
                                     }}
-                                    className="flex flex-col gap-4"
+                                    className='flex flex-col gap-4'
                                 >
-                                    <div className="flex flex-col gap-4">
-                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                    <div className='flex flex-col gap-4'>
+                                        <div className='flex flex-col gap-3 rounded bg-background-2 p-5'>
                                             <Label>
                                                 {t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                setSelectedData={id =>
+                                                setSelectedData={(id) =>
                                                     setGenerateMechanicTrainsetAttachmentData(
                                                         'mechanic_source_workstation_id',
                                                         id,
@@ -234,28 +256,30 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateMechanicTrainsetAttachmentData.mechanic_source_workstation_id
                                                 }
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
+                                                renderItem={(item) =>
+                                                    `${item.name} - ${item.workshop.name}`
+                                                }
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
                                                 nullable
-                                                id="mechanic_source_workstation_id"
+                                                id='mechanic_source_workstation_id'
                                                 fetchData={fetchWorkstations}
-                                                buttonClassName="mt-1"
+                                                buttonClassName='mt-1'
 
                                                 // TODO: possible minor issue: perform pre-search on the workstation if trainset attachment created
                                                 // initialSearch={}
                                             />
                                         </div>
 
-                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                        <div className='flex flex-col gap-3 rounded bg-background-2 p-5'>
                                             <Label>
                                                 {t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                setSelectedData={id =>
+                                                setSelectedData={(id) =>
                                                     setGenerateMechanicTrainsetAttachmentData(
                                                         'mechanic_destination_workstation_id',
                                                         id,
@@ -264,25 +288,29 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateMechanicTrainsetAttachmentData.mechanic_destination_workstation_id
                                                 }
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
+                                                renderItem={(item) =>
+                                                    `${item.name} - ${item.workshop.name}`
+                                                }
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
                                                 nullable
-                                                id="mechanic_destination_workstation_id"
+                                                id='mechanic_destination_workstation_id'
                                                 fetchData={fetchWorkstations}
-                                                buttonClassName="mt-1"
+                                                buttonClassName='mt-1'
                                             />
                                         </div>
                                     </div>
 
                                     <Button
-                                        type="submit"
-                                        disabled={loading || trainset.has_mechanic_trainset_attachment}
+                                        type='submit'
+                                        disabled={
+                                            loading || trainset.has_mechanic_trainset_attachment
+                                        }
                                     >
                                         {loading ? (
                                             <>
-                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                                 {t('action.loading')}
                                             </>
                                         ) : (
@@ -293,23 +321,27 @@ const GenerateAttachment = ({
                                     </Button>
                                 </form>
                             </TabsContent>
-                            <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
+                            <TabsContent
+                                value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
+                            >
                                 <form
-                                    onSubmit={e => {
+                                    onSubmit={(e) => {
                                         e.preventDefault();
-                                        void confirmAction(handleGenerateElectricTrainsetAttachment);
+                                        void confirmAction(
+                                            handleGenerateElectricTrainsetAttachment,
+                                        );
                                     }}
-                                    className="flex flex-col gap-4"
+                                    className='flex flex-col gap-4'
                                 >
-                                    <div className="flex flex-col gap-4">
-                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                    <div className='flex flex-col gap-4'>
+                                        <div className='flex flex-col gap-3 rounded bg-background-2 p-5'>
                                             <Label>
                                                 {t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                setSelectedData={id =>
+                                                setSelectedData={(id) =>
                                                     setGenerateElectricTrainsetAttachmentData(
                                                         'electric_source_workstation_id',
                                                         id,
@@ -318,25 +350,27 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateElectricTrainsetAttachmentData.electric_source_workstation_id
                                                 }
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
+                                                renderItem={(item) =>
+                                                    `${item.name} - ${item.workshop.name}`
+                                                }
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
                                                 nullable
-                                                id="electric_source_workstation_id"
+                                                id='electric_source_workstation_id'
                                                 fetchData={fetchWorkstations}
-                                                buttonClassName="mt-1"
+                                                buttonClassName='mt-1'
                                             />
                                         </div>
 
-                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                        <div className='flex flex-col gap-3 rounded bg-background-2 p-5'>
                                             <Label>
                                                 {t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                setSelectedData={id =>
+                                                setSelectedData={(id) =>
                                                     setGenerateElectricTrainsetAttachmentData(
                                                         'electric_destination_workstation_id',
                                                         id,
@@ -345,25 +379,29 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateElectricTrainsetAttachmentData.electric_destination_workstation_id
                                                 }
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
+                                                renderItem={(item) =>
+                                                    `${item.name} - ${item.workshop.name}`
+                                                }
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
                                                 nullable
-                                                id="electric_destination_workstation_id"
+                                                id='electric_destination_workstation_id'
                                                 fetchData={fetchWorkstations}
-                                                buttonClassName="mt-1"
+                                                buttonClassName='mt-1'
                                             />
                                         </div>
                                     </div>
 
                                     <Button
-                                        type="submit"
-                                        disabled={loading || trainset.has_electric_trainset_attachment}
+                                        type='submit'
+                                        disabled={
+                                            loading || trainset.has_electric_trainset_attachment
+                                        }
                                     >
                                         {loading ? (
                                             <>
-                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                                 {t('action.loading')}
                                             </>
                                         ) : (
@@ -376,21 +414,21 @@ const GenerateAttachment = ({
                             </TabsContent>
                             <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
                                 <form
-                                    onSubmit={e => {
+                                    onSubmit={(e) => {
                                         e.preventDefault();
                                         void confirmAction(handleGenerateAssemblyAttachment);
                                     }}
-                                    className="flex flex-col gap-4"
+                                    className='flex flex-col gap-4'
                                 >
-                                    <div className="flex flex-col gap-4">
-                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                    <div className='flex flex-col gap-4'>
+                                        <div className='flex flex-col gap-3 rounded bg-background-2 p-5'>
                                             <Label>
                                                 {t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                setSelectedData={id =>
+                                                setSelectedData={(id) =>
                                                     setGenerateAssemblyAttachmentData(
                                                         'assembly_source_workstation_id',
                                                         id,
@@ -399,25 +437,27 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateAssemblyAttachmentData.assembly_source_workstation_id
                                                 }
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
+                                                renderItem={(item) =>
+                                                    `${item.name} - ${item.workshop.name}`
+                                                }
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.source_workstation_placeholder',
                                                 )}
                                                 nullable
-                                                id="assembly_source_workstation_id"
+                                                id='assembly_source_workstation_id'
                                                 fetchData={fetchWorkstations}
-                                                buttonClassName="mt-1"
+                                                buttonClassName='mt-1'
                                             />
                                         </div>
 
-                                        <div className="flex rounded flex-col p-5 bg-background-2 gap-3">
+                                        <div className='flex flex-col gap-3 rounded bg-background-2 p-5'>
                                             <Label>
                                                 {t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation',
                                                 )}
                                             </Label>
                                             <GenericDataSelector
-                                                setSelectedData={id =>
+                                                setSelectedData={(id) =>
                                                     setGenerateAssemblyAttachmentData(
                                                         'assembly_destination_workstation_id',
                                                         id,
@@ -426,22 +466,27 @@ const GenerateAttachment = ({
                                                 selectedDataId={
                                                     generateAssemblyAttachmentData.assembly_destination_workstation_id
                                                 }
-                                                renderItem={item => `${item.name} - ${item.workshop.name}`}
+                                                renderItem={(item) =>
+                                                    `${item.name} - ${item.workshop.name}`
+                                                }
                                                 placeholder={t(
                                                     'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.fields.destination_workstation_placeholder',
                                                 )}
                                                 nullable
-                                                id="assembly_destination_workstation_id"
+                                                id='assembly_destination_workstation_id'
                                                 fetchData={fetchWorkstations}
-                                                buttonClassName="mt-1"
+                                                buttonClassName='mt-1'
                                             />
                                         </div>
                                     </div>
 
-                                    <Button type="submit" disabled={loading || trainset.has_panel_attachment}>
+                                    <Button
+                                        type='submit'
+                                        disabled={loading || trainset.has_panel_attachment}
+                                    >
                                         {loading ? (
                                             <>
-                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                                                 {t('action.loading')}
                                             </>
                                         ) : (
@@ -457,7 +502,7 @@ const GenerateAttachment = ({
                 </DialogContent>
             </Dialog>
             <Dialog open={showConfirmationDialog} onOpenChange={setShowConfirmationDialog}>
-                <DialogContent className="lg:max-w-[750px]">
+                <DialogContent className='lg:max-w-[750px]'>
                     <DialogHeader>
                         <DialogTitle>
                             {t(
@@ -469,7 +514,7 @@ const GenerateAttachment = ({
                                 'pages.project.trainset.carriage_trainset.partials.generate_attachment.dialogs.confirm_generate_attachment_raw_materials_description',
                             )}
                         </DialogDescription>
-                        <ScrollArea className="sm:max-h-[450px]">
+                        <ScrollArea className='sm:max-h-[450px]'>
                             {activeTab === GenerateAttachmentTabEnum.PANEL_ATTACHMENT ? (
                                 <PreviewGeneratePanelAttachment trainset={trainset} />
                             ) : (
@@ -480,7 +525,9 @@ const GenerateAttachment = ({
                         </ScrollArea>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button onClick={() => setShowConfirmationDialog(false)}>{t('action.cancel')}</Button>
+                        <Button onClick={() => setShowConfirmationDialog(false)}>
+                            {t('action.cancel')}
+                        </Button>
                         <Button
                             onClick={() => {
                                 setShowConfirmationDialog(false);

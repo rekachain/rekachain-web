@@ -106,6 +106,15 @@
             "command": "php artisan websocket:start"
         },
         {
+            "label": "Watch Intent",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm run transform-intent-enum",
+            "presentation": {
+                "group": "RUNAPP"
+            }
+        },
+        {
             "label": "App",
             "problemMatcher": [],
             "type": "shell",

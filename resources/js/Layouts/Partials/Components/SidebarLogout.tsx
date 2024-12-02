@@ -1,7 +1,7 @@
-import { Link } from '@inertiajs/react';
-import { RiLogoutBoxRLine } from '@remixicon/react';
 import { buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
+import { Link } from '@inertiajs/react';
+import { RiLogoutBoxRLine } from '@remixicon/react';
 
 import {
     AlertDialog,
@@ -20,7 +20,7 @@ export default function () {
     const { t } = useLaravelReactI18n();
     const linkClass = `${buttonVariants({ variant: 'sidebar' })} w-full pr-52 md:mr-0 `;
     return (
-        <div className=" md:px-4 ">
+        <div className='md:px-4'>
             {/* <Dialog>
                 <DialogTrigger>
 
@@ -37,35 +37,43 @@ export default function () {
                 </DialogContent>
             </Dialog> */}
             <AlertDialog>
-                <AlertDialogTrigger className=" w-full  md:w-fit">
+                <AlertDialogTrigger className='w-full md:w-fit'>
                     {/* <div className={linkClass}>
                         <RiLogoutBoxRLine size="30" className="block md:hidden" />
                         <RiLogoutBoxRLine size="20" className="hidden md:block" />
                         <span className="sidebar-item-text ml-2  md:mr-0">Logout</span>
                     </div> */}
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <div className={linkClass}>
-                            <RiLogoutBoxRLine size="20" className="" />
-                            <span className="sidebar-item-text ml-2  md:mr-0">
+                            <RiLogoutBoxRLine size='20' className='' />
+                            <span className='sidebar-item-text ml-2 md:mr-0'>
                                 {t('components.sidebar_logout.buttons.logout')}
                             </span>
                         </div>
                     </div>
-                    <div className=" md:hidden flex  items-center">
-                        <RiLogoutBoxRLine size="32" className="" />
-                        <span className="text-base ml-3  md:mr-0">{t('components.sidebar_logout.buttons.logout')}</span>
+                    <div className='flex items-center md:hidden'>
+                        <RiLogoutBoxRLine size='32' className='' />
+                        <span className='ml-3 text-base md:mr-0'>
+                            {t('components.sidebar_logout.buttons.logout')}
+                        </span>
                     </div>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>{t('components.sidebar_logout.title')}</AlertDialogTitle>
-                        <AlertDialogDescription>{t('components.sidebar_logout.description')}</AlertDialogDescription>
+                        <AlertDialogDescription>
+                            {t('components.sidebar_logout.description')}
+                        </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>{t('components.sidebar_logout.buttons.back')}</AlertDialogCancel>
+                        <AlertDialogCancel>
+                            {t('components.sidebar_logout.buttons.back')}
+                        </AlertDialogCancel>
 
-                        <Link method="post" href={route(ROUTES.LOGOUT)} as="button">
-                            <AlertDialogAction>{t('components.sidebar_logout.buttons.logout')}</AlertDialogAction>
+                        <Link method='post' href={route(ROUTES.LOGOUT)} as='button'>
+                            <AlertDialogAction>
+                                {t('components.sidebar_logout.buttons.logout')}
+                            </AlertDialogAction>
                         </Link>
                     </AlertDialogFooter>
                 </AlertDialogContent>

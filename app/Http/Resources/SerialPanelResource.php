@@ -19,6 +19,7 @@ class SerialPanelResource extends JsonResource {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER->value:
                 return [
                     'serial_number' => $this->id,
+                    'product_number' => $this->product_no,
                     'project' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->project->name,
                     'trainset' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
@@ -31,6 +32,7 @@ class SerialPanelResource extends JsonResource {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS->value:
                 return [
                     'serial_number' => $this->id,
+                    'product_number' => $this->product_no,
                     'project' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->project->name,
                     'trainset' => $this->panel_attachment?->carriage_panel->carriage_trainset->trainset->name,
                     'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
@@ -45,6 +47,7 @@ class SerialPanelResource extends JsonResource {
             case IntentEnum::API_PANEL_ATTACHMENT_GET_ATTACHMENT_SERIAL_NUMBERS->value:
                 return [
                     'serial_number' => $this->id,
+                    'product_number' => $this->product_no,
                     'panel' => $this->panel_attachment?->carriage_panel->panel->name,
                     'carriage' => $this->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
                     'qr_code' => $this->qr_code,
@@ -58,6 +61,7 @@ class SerialPanelResource extends JsonResource {
 
         return [
             'serial_number' => $this->id,
+            'product_number' => $this->product_no,
             'panel_attachment_id' => $this->panel_attachment_id,
             'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
             'qr_code' => $this->qr_code,

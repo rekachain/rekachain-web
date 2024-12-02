@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { WorkDayResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { workDayService } from '@/Services/workDayService';
 import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/WorkDay/Partials/Partials/Filters';
+import { workDayService } from '@/Services/workDayService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { WorkDayResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import WDCardView from './Partials/WDCardView';
 import WDTableView from './Partials/WDTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/WorkDay/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -40,17 +40,17 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             <Filters setFilters={setFilters} filters={filters} />
             <>
-                <div className="hidden md:block">
+                <div className='hidden md:block'>
                     <WDTableView
                         workDayResponse={workDayResponse!}
                         handleWorkDayDeletion={handleWorkDayDeletion}
                     ></WDTableView>
                 </div>
 
-                <div className="block md:hidden">
+                <div className='block md:hidden'>
                     <WDCardView
                         workDayResponse={workDayResponse!}
                         handleWorkDayDeletion={handleWorkDayDeletion}

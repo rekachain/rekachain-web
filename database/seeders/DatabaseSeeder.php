@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder {
@@ -11,6 +12,15 @@ class DatabaseSeeder extends Seeder {
      * Seed the application's database.
      */
     public function run(): void {
+
+        $isProduction = false;
+
+        if (app()->isProduction() || $isProduction) {
+            $this->initializeProductionData();
+
+            return;
+        }
+
         $this->call([
             WorkshopSeeder::class,
             DivisionSeeder::class,
@@ -48,5 +58,29 @@ class DatabaseSeeder extends Seeder {
             FeedbackSeeder::class,
             HelpdeskContactSeeder::class,
         ]);
+    }
+
+    private function initializeProductionData(): void {
+        $this->call([
+            DivisionSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
+
+            // Optional, but required 🗿
+            WorkDaySeeder::class,
+            WorkDayTimeSeeder::class,
+        ]);
+
+        $this->createSuperAdmin();
+    }
+
+    private function createSuperAdmin(): void {
+        $superadmin = User::factory()->create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@rekaindo.com',
+            'nip' => null,
+        ]);
+
+        $superadmin->assignRole('Super Admin');
     }
 }

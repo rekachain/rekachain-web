@@ -1,10 +1,17 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Link } from '@inertiajs/react';
 import { buttonVariants } from '@/Components/UI/button';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriageTableView({
     project,
@@ -20,19 +27,25 @@ export default function CarriageTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.carriage.partials.partials.carriage_table.headers.name')}
+                            {t(
+                                'pages.project.carriage.partials.partials.carriage_table.headers.name',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.carriage.partials.partials.carriage_table.headers.description')}
+                            {t(
+                                'pages.project.carriage.partials.partials.carriage_table.headers.description',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.carriage.partials.partials.carriage_table.headers.total_qty')}
+                            {t(
+                                'pages.project.carriage.partials.partials.carriage_table.headers.total_qty',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriageResponse?.data.map(data => (
+                    {carriageResponse?.data.map((data) => (
                         <TableRow key={data.carriage.id}>
                             <TableCell>{data.carriage.type}</TableCell>
                             <TableCell>{data.carriage.description}</TableCell>
@@ -45,7 +58,9 @@ export default function CarriageTableView({
                                     ])}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('pages.project.partials.partials.project_table.actions.components')}
+                                    {t(
+                                        'pages.project.partials.partials.project_table.actions.components',
+                                    )}
                                 </Link>
                                 <Link
                                     href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
@@ -54,7 +69,9 @@ export default function CarriageTableView({
                                     ])}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('pages.project.partials.partials.project_table.actions.panels')}
+                                    {t(
+                                        'pages.project.partials.partials.project_table.actions.panels',
+                                    )}
                                 </Link>
                             </TableCell>
                         </TableRow>

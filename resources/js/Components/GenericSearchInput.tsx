@@ -1,6 +1,6 @@
-import { ChangeEvent, memo, ReactNode, useEffect, useState } from 'react';
-import { useDebounce } from '@uidotdev/usehooks';
 import { Input } from '@/Components/UI/input';
+import { useDebounce } from '@uidotdev/usehooks';
+import { ChangeEvent, memo, ReactNode, useEffect, useState } from 'react';
 
 interface GenericSearchInputProps {
     setFilters: (filters: { search: string }) => void;

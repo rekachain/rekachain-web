@@ -1,22 +1,28 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
+import { Checkbox } from '@/Components/UI/checkbox';
+import { Input } from '@/Components/UI/input';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { roleService } from '@/Services/roleService';
+import { ROUTES } from '@/Support/Constants/routes';
 import {
     DivisionResource,
     PermissionResource,
     PermissionResourceGrouped,
     RoleResource,
 } from '@/Support/Interfaces/Resources';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
-import { Checkbox } from '@/Components/UI/checkbox';
-import { roleService } from '@/Services/roleService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { FormEventHandler, useState } from 'react';
 
 export default function (props: {
     role: RoleResource;
@@ -34,7 +40,7 @@ export default function (props: {
 
     const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await roleService.update(props.role.id, data);
@@ -48,49 +54,49 @@ export default function (props: {
         } else {
             setData(
                 'permissions',
-                data.permissions.filter(id => id !== permission.id),
+                data.permissions.filter((id) => id !== permission.id),
             );
         }
     };
 
     return (
         <>
-            <Head title="Tambah Role" />
+            <Head title='Tambah Role' />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Role: {props.role.name}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>Ubah Role: {props.role.name}</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel value="Nama" htmlFor="name" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel value='Nama' htmlFor='name' />
                             <Input
                                 value={data.name}
-                                type="text"
+                                type='text'
                                 placeholder={props.role.name}
-                                onChange={e => setData('name', e.target.value)}
-                                name="name"
-                                id="name"
-                                className="mt-1"
-                                autoComplete="name"
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value="Divisi" htmlFor="division" />
+                        <div className='mt-4'>
+                            <InputLabel value='Divisi' htmlFor='division' />
                             <Select
                                 value={data.division_id}
-                                onValueChange={v => setData('division_id', v !== 'none' ? v : '')}
-                                name="division"
+                                onValueChange={(v) => setData('division_id', v !== 'none' ? v : '')}
+                                name='division'
                             >
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Pilih divisi" />
+                                    <SelectValue placeholder='Pilih divisi' />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {/*none*/}
-                                    <SelectItem value="none">none</SelectItem>
-                                    {props.divisions.map(division => (
+                                    <SelectItem value='none'>none</SelectItem>
+                                    {props.divisions.map((division) => (
                                         <SelectItem
                                             value={division.id.toString()}
                                             key={division.id}
@@ -103,39 +109,44 @@ export default function (props: {
                             </Select>
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel value="Level" htmlFor="level" />
+                        <div className='mt-4'>
+                            <InputLabel value='Level' htmlFor='level' />
                             <Input
                                 value={data.level}
-                                type="text"
+                                type='text'
                                 required
-                                onChange={e => setData('level', e.target.value)}
-                                name="level"
-                                id="level"
-                                className="mt-1"
-                                autoComplete="level"
+                                onChange={(e) => setData('level', e.target.value)}
+                                name='level'
+                                id='level'
+                                className='mt-1'
+                                autoComplete='level'
                             />
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-5">
+                        <div className='mt-4 rounded bg-background-2 p-5'>
                             <h1>Permissions</h1>
-                            <div className="mt-1">
-                                <div className="flex flex-wrap">
-                                    {permissions.map(permission => (
-                                        <div key={permission.group} className="w-full mt-2">
-                                            <h2 className="font-semibold">{permission.group}</h2>
-                                            <div className="grid grid-cols-4 gap-4 mt-2">
-                                                {permission.permissions.map(p => (
-                                                    <div key={p.id} className="flex items-center">
+                            <div className='mt-1'>
+                                <div className='flex flex-wrap'>
+                                    {permissions.map((permission) => (
+                                        <div key={permission.group} className='mt-2 w-full'>
+                                            <h2 className='font-semibold'>{permission.group}</h2>
+                                            <div className='mt-2 grid grid-cols-4 gap-4'>
+                                                {permission.permissions.map((p) => (
+                                                    <div key={p.id} className='flex items-center'>
                                                         <Checkbox
-                                                            onCheckedChange={checked =>
+                                                            onCheckedChange={(checked) =>
                                                                 handlePermissionChange(checked, p)
                                                             }
-                                                            name="permissions"
+                                                            name='permissions'
                                                             id={`permission-${p.id}`}
-                                                            checked={data.permissions.includes(p.id)}
+                                                            checked={data.permissions.includes(
+                                                                p.id,
+                                                            )}
                                                         />
-                                                        <label htmlFor={`permission-${p.id}`} className="ml-2">
+                                                        <label
+                                                            htmlFor={`permission-${p.id}`}
+                                                            className='ml-2'
+                                                        >
                                                             {p.name}
                                                         </label>
                                                     </div>
@@ -147,7 +158,7 @@ export default function (props: {
                             </div>
                         </div>
 
-                        <Button disabled={loading} className="mt-4">
+                        <Button disabled={loading} className='mt-4'>
                             Ubah Role
                         </Button>
                     </form>

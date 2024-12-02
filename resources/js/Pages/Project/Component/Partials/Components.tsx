@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import GenericPagination from '@/Components/GenericPagination';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { componentService } from '@/Services/componentService';
+import { projectService } from '@/Services/projectService';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
-import GenericPagination from '@/Components/GenericPagination';
 
 export default function ({
     project,
@@ -21,7 +21,8 @@ export default function ({
     handleSyncProject: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
-    const [componentResponse, setComponentResponse] = useState<PaginateResponse<ProjectComponentResource>>();
+    const [componentResponse, setComponentResponse] =
+        useState<PaginateResponse<ProjectComponentResource>>();
     const [componentResponseMeta, setComponentResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -68,17 +69,20 @@ export default function ({
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {componentResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <ComponentTableView
                             project={project}
                             componentResponse={componentResponse}
                         ></ComponentTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <ComponentCardView project={project} componentResponse={componentResponse}></ComponentCardView>
+                    <div className='block md:hidden'>
+                        <ComponentCardView
+                            project={project}
+                            componentResponse={componentResponse}
+                        ></ComponentCardView>
                     </div>
                 </>
             )}

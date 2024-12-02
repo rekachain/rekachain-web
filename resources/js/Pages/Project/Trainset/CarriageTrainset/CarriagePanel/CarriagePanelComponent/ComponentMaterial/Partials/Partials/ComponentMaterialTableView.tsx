@@ -1,14 +1,21 @@
+import { Button } from '@/Components/UI/button';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
+import ComponentMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/Partials/Components/ComponentMaterialQty';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelComponentResource,
     CarriagePanelResource,
     CarriageTrainsetResource,
     TrainsetResource,
 } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { Button } from '@/Components/UI/button';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import ComponentMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/Partials/Components/ComponentMaterialQty';
 
 export default function ComponentMaterialTableView({
     trainset,
@@ -50,7 +57,7 @@ export default function ComponentMaterialTableView({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {carriagePanelComponent.component_materials?.map(componentMaterial => (
+                    {carriagePanelComponent.component_materials?.map((componentMaterial) => (
                         <TableRow key={componentMaterial.id}>
                             <TableCell>{componentMaterial.raw_material?.material_code}</TableCell>
                             <TableCell>
@@ -74,8 +81,10 @@ export default function ComponentMaterialTableView({
 
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button
-                                        variant="link"
-                                        onClick={() => handleComponentMaterialDeletion(componentMaterial.id)}
+                                        variant='link'
+                                        onClick={() =>
+                                            handleComponentMaterialDeletion(componentMaterial.id)
+                                        }
                                     >
                                         {t('action.delete')}
                                     </Button>
