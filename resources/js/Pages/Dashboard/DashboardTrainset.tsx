@@ -33,9 +33,9 @@ import {
     TrainsetPanelProgressResource,
 } from '@/Support/Interfaces/Others/TrainsetProgressResource';
 import { withLoading } from '@/Utils/withLoading';
+import { Separator } from '@radix-ui/react-select';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
-import { Separator } from '@radix-ui/react-select';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
@@ -457,7 +457,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </div>
                             </div>
                         </div>
-                         <Separator className='my-5 h-1' />
+                        <Separator className='my-5 h-1' />
                         <h3>For Buyer</h3>
                         <div className='mt-2 flex w-full flex-col'>
                             <h2 className='my-1 text-xl font-bold'>Komponen Dalam Trainset</h2>
