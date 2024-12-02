@@ -44,7 +44,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
             {panelProgress == null ||
                 (panelProgress.length === 0 && <h3>Kosong🗿</h3>) ||
                 (panelProgress &&
-                    panelProgress.map((progress) => (
+                    panelProgress.map((progress, index) => (
                         <div key={`${progress.panel.id} ${progress.carriage.id}`}>
                             <h4 className='text-lg font-bold'>
                                 <span>{progress.panel.name}</span>
@@ -56,7 +56,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                     )}
                                 </span>
                             </h4>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-4'>
                                 {progress.serial_panels.map((serialPanelProgress) => (
                                     <div
                                         key={`${progress.panel.name} ${serialPanelProgress.serial_number}`}
@@ -89,7 +89,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                             </div>
                                         </div>
                                         <div className='flex'>
-                                            <ScrollArea className='flex w-1 flex-1 rounded-md border'>
+                                            <ScrollArea className='flex w-1 flex-1'>
                                                 <div className='flex w-max space-x-4 p-4'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
@@ -160,8 +160,10 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                         </div>
                                     </div>
                                 ))}
-                                <Separator className='my-4 h-1' />
                             </div>
+                            {index < panelProgress.length - 1 && (
+                                <Separator className='my-4 h-1' />
+                            )}
                         </div>
                     )))}
         </div>
