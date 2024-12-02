@@ -10,12 +10,17 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 // import { Check, ChevronsUpDown } from 'lucide-react';
 // import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
-import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
-import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
-import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Tooltip, XAxis, YAxis } from 'recharts';
-import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -67,9 +72,8 @@ const trainset = [
 ];
 
 import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { useLocalStorage } from '@uidotdev/usehooks';
 import { ROUTES } from '@/Support/Constants/routes';
+import { useLocalStorage } from '@uidotdev/usehooks';
 import { useCallback, useEffect, useState } from 'react';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
@@ -306,13 +310,15 @@ export default function Dashboard({ auth, data }: PageProps) {
 
             {/* <div className="py-12"> */}
             {/* <p>{value}</p> */}
-            <div className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5 `}>
-                <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
+            <div
+                className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5`}
+            >
+                <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                     {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                    <div className="">
-                        <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                        <div className="flex justify-between w-full items-center">
-                            <h2 className="text-xl my-2">
+                    <div className=''>
+                        <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
+                        <div className='flex w-full items-center justify-between'>
+                            <h2 className='my-2 text-xl'>
                                 {data['project'] == null
                                     ? t('pages.dashboard.index.all_project')
                                     : `${t('pages.dashboard.index.project')} ${data['project']}`}
@@ -320,22 +326,28 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger className=' ' asChild>
                                     <Button
-                                        variant="outline"
-                                        role="combobox"
+                                        variant='outline'
+                                        role='combobox'
+                                        className='w-25 justify-between md:w-40'
                                         aria-expanded={open}
-                                        className="w-25 md:w-40 justify-between"
                                     >
                                         {value
-                                            ? project.find(projectItem => projectItem.value === value)?.label
+                                            ? project.find(
+                                                  (projectItem) => projectItem.value === value,
+                                              )?.label
                                             : t('pages.dashboard.index.select_project')}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className='w-[200px] p-0'>
                                     <Command>
-                                        <CommandInput placeholder={t('pages.dashboard.index.find_project')} />
+                                        <CommandInput
+                                            placeholder={t('pages.dashboard.index.find_project')}
+                                        />
                                         <CommandList>
-                                            <CommandEmpty>{t('pages.dashboard.index.project_not_found')}</CommandEmpty>
+                                            <CommandEmpty>
+                                                {t('pages.dashboard.index.project_not_found')}
+                                            </CommandEmpty>
                                             <CommandGroup>
                                                 {
                                                     // @ts-ignore
@@ -419,30 +431,36 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                         </div> */}
                         {/* </ChartContainer> */}
-                        <div className="flex justify-between my-4 items-center">
-                            <h2 className="text-lg">{t('pages.dashboard.index.all_trainset_status')}</h2>
-                            <div className=" flex flex-col">
+                        <div className='my-4 flex items-center justify-between'>
+                            <h2 className='text-lg'>
+                                {t('pages.dashboard.index.all_trainset_status')}
+                            </h2>
+                            <div className='flex flex-col'>
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
                                     <PopoverTrigger
                                         className={`${data['project'] == null ? 'hidden' : ' '}`}
                                         asChild
                                     >
                                         <Button
-                                            variant="outline"
-                                            role="combobox"
+                                            variant='outline'
+                                            role='combobox'
+                                            className='w-25 justify-between md:w-40'
                                             aria-expanded={openTrainset}
-                                            className="w-25 md:w-40 justify-between"
                                         >
                                             {valueTrainset
-                                                ? project.find(projectItem => projectItem.value === valueTrainset)
-                                                      ?.label
+                                                ? project.find(
+                                                      (projectItem) =>
+                                                          projectItem.value === valueTrainset,
+                                                  )?.label
                                                 : `${t('pages.dashboard.index.select_trainset')}`}
-                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className='w-[200px] p-0'>
                                         <Command>
-                                            <CommandInput placeholder={`${t('pages.dashboard.index.find_trainset')}`} />
+                                            <CommandInput
+                                                placeholder={`${t('pages.dashboard.index.find_trainset')}`}
+                                            />
                                             <CommandList>
                                                 <CommandEmpty>
                                                     Trainset tidak ditemukan.
@@ -510,12 +528,27 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                <Bar dataKey="material_in_transit" fill="var(--color-material_in_transit)" radius={4} />
-                                <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
-                                <Bar dataKey="material_accepted" fill="var(--color-material_accepted)" radius={4} />
+                                <ChartTooltip
+                                    cursor={false}
+                                    content={<ChartTooltipContent indicator='dashed' />}
+                                />
+                                <Bar radius={4} fill='var(--color-done)' dataKey='done' />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-in_progress)'
+                                    dataKey='in_progress'
+                                />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-material_in_transit)'
+                                    dataKey='material_in_transit'
+                                />
+                                <Bar radius={4} fill='var(--color-pending)' dataKey='pending' />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-material_accepted)'
+                                    dataKey='material_accepted'
+                                />
                             </BarChart>
                         </ChartContainer>
                         {/* <ChartContainer
@@ -551,23 +584,26 @@ export default function Dashboard({ auth, data }: PageProps) {
                     <div className="flex max-w-full mt-2">
                         {/* <div className="w-1/2"> */}
                         {/* <h3 className="text-base">Workstation Sukosari, Candisewu</h3> */}
-                        <div className="md:flex max-w-full mt-2 ">
-                            <div className="md:w-1/2 px-5">
-                                <h2 className="text-xl my-1 font-bold">
+                        <div className='mt-2 max-w-full md:flex'>
+                            <div className='px-5 md:w-1/2'>
+                                <h2 className='my-1 text-xl font-bold'>
                                     {t('pages.dashboard.index.progress_workshops')}
                                 </h2>
-                                <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
-                                <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full mt-5">
-                                    <BarChart accessibilityLayer data={data.ws} layout="vertical">
+                                <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
+                                <ChartContainer
+                                    config={chartConfigTrainset}
+                                    className='mt-5 h-[300px] w-full'
+                                >
+                                    <BarChart layout='vertical' data={data.ws} accessibilityLayer>
                                         <CartesianGrid vertical={false} />
-                                        <XAxis type="number" dataKey="in_progress"></XAxis>
-                                        <XAxis type="number" dataKey="done"></XAxis>
+                                        <XAxis type='number' dataKey='in_progress'></XAxis>
+                                        <XAxis type='number' dataKey='done'></XAxis>
                                         <YAxis
-                                            // max={10}
-                                            className=""
-                                            dataKey="name"
-                                            type="category"
+                                            type='category'
                                             tickLine={false}
+                                            dataKey='name'
+                                            // max={10}
+                                            className=''
                                             // tickSize={20}
                                             // tickCount={}
                                             // padding={}
@@ -577,65 +613,87 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                         <Bar
-                                            dataKey="material_in_transit"
-                                            fill="var(--color-material_in_transit)"
                                             radius={4}
+                                            fill='var(--color-in_progress)'
+                                            dataKey='in_progress'
+                                        />
+                                        <Bar radius={4} fill='var(--color-done)' dataKey='done' />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-material_in_transit)'
+                                            dataKey='material_in_transit'
                                         />
                                         <Bar
-                                            dataKey="material_accepted"
-                                            fill="var(--color-material_accepted)"
                                             radius={4}
+                                            fill='var(--color-material_accepted)'
+                                            dataKey='material_accepted'
                                         />
-                                        <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-pending)'
+                                            dataKey='pending'
+                                        />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
 
-                            <div className="md:px-5 ">
-                                <h2 className="text-xl my-1 font-bold">{t('pages.dashboard.index.progress_panels')}</h2>
-                                <h3 className="text-base">{t('pages.dashboard.index.panels_title')}</h3>
+                            <div className='md:px-5'>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.progress_panels')}
+                                </h2>
+                                <h3 className='text-base'>
+                                    {t('pages.dashboard.index.panels_title')}
+                                </h3>
 
                                 <ChartContainer
                                     config={chartConfigTrainset}
-                                    className="h-[400px] md:h-[400px] w-[300px] md:w-[90%] mt-5 text-"
+                                    className='text- mt-5 h-[400px] w-[300px] md:h-[400px] md:w-[90%]'
                                 >
-                                    <BarChart accessibilityLayer data={data['panel']}>
+                                    <BarChart data={data['panel']} accessibilityLayer>
                                         <CartesianGrid vertical={false} />
-                                        <YAxis type="number" dataKey="in_progress"></YAxis>
+                                        <YAxis type='number' dataKey='in_progress'></YAxis>
                                         <XAxis
-                                            height={110}
-                                            angle={-55}
-                                            dataKey="name"
-                                            textAnchor="end"
-                                            tickLine={false}
                                             tickMargin={15}
+                                            tickLine={false}
+                                            tickFormatter={(value) => value.slice(0, 20)}
+                                            textAnchor='end'
+                                            height={110}
+                                            dataKey='name'
                                             axisLine={false}
-                                            tickFormatter={value => value.slice(0, 20)}
+                                            angle={-55}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
                                         <Bar
-                                            dataKey="material_in_transit"
-                                            fill="var(--color-material_in_transit)"
                                             radius={4}
+                                            fill='var(--color-in_progress)'
+                                            dataKey='in_progress'
                                         />
-                                        <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                        <Bar radius={4} fill='var(--color-done)' dataKey='done' />
                                         <Bar
-                                            dataKey="material_accepted"
-                                            fill="var(--color-material_accepted)"
                                             radius={4}
+                                            fill='var(--color-material_in_transit)'
+                                            dataKey='material_in_transit'
+                                        />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-pending)'
+                                            dataKey='pending'
+                                        />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-material_accepted)'
+                                            dataKey='material_accepted'
                                         />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
                         </div>
-                        <h2 className="text-xl my-1 font-bold">{t('pages.dashboard.index.all_workstations')}</h2>
-                        <h3 className="text-base">{t('pages.dashboard.index.workstations_sub')}</h3>
+                        <h2 className='my-1 text-xl font-bold'>
+                            {t('pages.dashboard.index.all_workstations')}
+                        </h2>
+                        <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
                         <ChartContainer
                             config={attachmentStatusOfWorkstationGraph.config}
                             className='mt-5 h-[300px] w-full'
@@ -659,12 +717,17 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     dataKey='workstation_name'
                                     className=''
                                     axisLine={false}
-                                    // tickFormatter={value => value.slice(0, 6)} 
-                                    />
+                                    // tickFormatter={value => value.slice(0, 6)}
+                                />
                                 ))
                                 {
                                     // @ts-ignore
-                                    <YAxis className="" angle={-45} dataKey="workstation_name" type="category" />
+                                    <YAxis
+                                        type='category'
+                                        dataKey='workstation_name'
+                                        className=''
+                                        angle={-45}
+                                    />
                                 }
                                 <ChartTooltip content={<ChartTooltipContent />} />
                                 <ChartLegend content={<ChartLegendContent />} />

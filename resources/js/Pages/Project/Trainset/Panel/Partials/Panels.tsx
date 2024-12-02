@@ -1,17 +1,33 @@
-import { useEffect, useState } from 'react';
-import { ProjectPanelResource, ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { projectService } from '@/Services/projectService';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import {
+    ProjectPanelResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
+import { useEffect, useState } from 'react';
 // import PanelTableView from './Partials/PanelTableView';
 // import PanelCardView from './Partials/PanelCardView';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import GenericPagination from '@/Components/GenericPagination';
-import { filter } from 'lodash';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import Import from './Import';
 
-export default function Panels({ project, trainset }: { project: ProjectResource; trainset: TrainsetResource }) {
+export default function Panels({
+    project,
+    trainset,
+}: {
+    project: ProjectResource;
+    trainset: TrainsetResource;
+}) {
     const [panelResponse, setPanelResponse] = useState<PaginateResponse<ProjectPanelResource>>();
     const [panelResponseMeta, setPanelResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -47,7 +63,7 @@ export default function Panels({ project, trainset }: { project: ProjectResource
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {panelResponse && (
                 <>
                     <div>
@@ -61,15 +77,15 @@ export default function Panels({ project, trainset }: { project: ProjectResource
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {panelResponse?.data.map(data => (
+                                {panelResponse?.data.map((data) => (
                                     <TableRow key={data.panel.id}>
                                         <TableCell>{data.panel.name}</TableCell>
                                         <TableCell>{data.panel.description}</TableCell>
                                         <TableCell>{data.total_qty}</TableCell>
                                         <TableCell>
                                             <Import
-                                                project={project}
                                                 trainset={trainset}
+                                                project={project}
                                                 panel={data.panel}
                                                 hasMaterials={data.has_materials}
                                             />

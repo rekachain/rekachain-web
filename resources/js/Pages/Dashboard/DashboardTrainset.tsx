@@ -1,29 +1,18 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 // import { PageProps } from '../../Types';
-import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
-import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
-import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import {
-    // Bar,
-    // BarChart,
-    // CartesianGrid,
-    Cell,
-    LabelList,
-    Legend,
-    Line,
-    LineChart,
-    // Pie,
-    // PieChart,
-    Text,
-    Tooltip,
-    // XAxis,
-    // YAxis,
-} from 'recharts';
-import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Check, ChevronsUpDown } from 'lucide-react';
 // import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis } from 'recharts';
 import { PageProps } from '../../Types';
 
 import { Button } from '@/Components/UI/button';
@@ -36,9 +25,6 @@ import {
     CommandList,
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { useCallback} from 'react';
-import { useLocalStorage } from '@uidotdev/usehooks';
-import { Separator } from '@/Components/UI/separator';
 import { cn } from '@/Lib/Utils';
 import { trainsetService } from '@/Services/trainsetService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
@@ -47,6 +33,7 @@ import {
     TrainsetPanelProgressResource,
 } from '@/Support/Interfaces/Others/TrainsetProgressResource';
 import { withLoading } from '@/Utils/withLoading';
+import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
 
 export default function Dashboard({ auth, data }: PageProps) {
@@ -59,8 +46,12 @@ export default function Dashboard({ auth, data }: PageProps) {
     const label = ['fulfilled', 'required', 'failed'];
 
     // const chartConfigPie = {
-    const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<TrainsetComponentProgressResource[]>([]);
-    const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<TrainsetPanelProgressResource[]>([]);
+    const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<
+        TrainsetComponentProgressResource[]
+    >([]);
+    const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<
+        TrainsetPanelProgressResource[]
+    >([]);
 
     const trainsetProgressConfig: ChartConfig = {
         total_plan_qty: {
@@ -79,8 +70,7 @@ export default function Dashboard({ auth, data }: PageProps) {
             label: 'To Be Fulfilled',
             color: 'hsl(var(--chart-2))',
         },
-    }
-    
+    };
 
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
@@ -222,13 +212,15 @@ export default function Dashboard({ auth, data }: PageProps) {
             <Head title={t('pages.dashboard.index.title')} />
             <div className='py-12'>
                 {/* <p>{value}</p> */}
-                <div className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto sm:px-6 lg:px-5 `}>
-                    <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
+                <div
+                    className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto sm:px-6 lg:px-5`}
+                >
+                    <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        <div className="px-4">
-                            <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                            <div className="flex justify-between w-full items-start">
-                                <h2 className="text-xl my-2">
+                        <div className='px-4'>
+                            <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
+                            <div className='flex w-full items-start justify-between'>
+                                <h2 className='my-2 text-xl'>
                                     {`${t('pages.dashboard.index.project')} ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
                                     {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
@@ -236,10 +228,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <Popover open={open} onOpenChange={setOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                variant="outline"
-                                                role="combobox"
+                                                variant='outline'
+                                                role='combobox'
+                                                className='w-20 justify-between md:w-40'
                                                 aria-expanded={open}
-                                                className="w-20 md:w-40 justify-between"
                                             >
                                                 {value
                                                     ? data['projectList'].find(
@@ -258,7 +250,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 />
                                                 <CommandList>
                                                     <CommandEmpty>
-                                                        {t('pages.dashboard.index.project_not_found')}
+                                                        {t(
+                                                            'pages.dashboard.index.project_not_found',
+                                                        )}
                                                     </CommandEmpty>
                                                     <CommandGroup>
                                                         {
@@ -307,10 +301,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
                                         <PopoverTrigger asChild>
                                             <Button
-                                                variant="outline"
-                                                role="combobox"
+                                                variant='outline'
+                                                role='combobox'
+                                                className='w-20 justify-between md:w-40'
                                                 aria-expanded={openTrainset}
-                                                className="w-20 md:w-40 justify-between"
                                             >
                                                 {valueTrainset
                                                     ? data['tsList'].find(
@@ -319,7 +313,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                               projectItem.name === valueTrainset,
                                                       )?.name
                                                     : `${t('pages.dashboard.index.select_trainset')}`}
-                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className='w-[200px] p-0'>
@@ -329,7 +323,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 />
                                                 <CommandList>
                                                     <CommandEmpty>
-                                                        {t('pages.dashboard.index.trainset_not_found')}
+                                                        {t(
+                                                            'pages.dashboard.index.trainset_not_found',
+                                                        )}
                                                     </CommandEmpty>
                                                     <CommandGroup>
                                                         {// @ts-ignore
@@ -371,8 +367,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     </Popover>
                                 </div>
                             </div>
-                            <ChartContainer config={chartConfigTrainsetCarriage} className="h-[200px] w-full pr-10">
-                                <BarChart accessibilityLayer data={data['carriages']}>
+                            <ChartContainer
+                                config={chartConfigTrainsetCarriage}
+                                className='h-[200px] w-full pr-10'
+                            >
+                                <BarChart data={data['carriages']} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
                                     <XAxis
                                         tickMargin={10}
@@ -382,56 +381,78 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="qty" fill="var(--color-qty)" radius={4} />
+                                    <Bar radius={4} fill='var(--color-qty)' dataKey='qty' />
                                 </BarChart>
                             </ChartContainer>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 w-full mt-2 ">
-                            <div className="px-4">
-                                <h2 className="text-xl my-1 font-bold">{t('pages.dashboard.index.panel_trainset')}</h2>
-                                <h3 className="text-base">{`${t('pages.dashboard.index.panel_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
-                                <ChartContainer config={chartConfigPanelInTrainset} className="h-[400px] w-full mt-5">
-                                    <BarChart className="h-[300px]" accessibilityLayer data={data['panel']}>
+                        <div className='mt-2 grid w-full grid-cols-1 md:grid-cols-2'>
+                            <div className='px-4'>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.panel_trainset')}
+                                </h2>
+                                <h3 className='text-base'>{`${t('pages.dashboard.index.panel_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
+                                <ChartContainer
+                                    config={chartConfigPanelInTrainset}
+                                    className='mt-5 h-[400px] w-full'
+                                >
+                                    <BarChart
+                                        data={data['panel']}
+                                        className='h-[300px]'
+                                        accessibilityLayer
+                                    >
                                         <CartesianGrid vertical={false} />
                                         <XAxis
+                                            width={0}
+                                            textAnchor='end'
+                                            height={100}
+                                            dataKey='name'
+                                            axisLine={false}
                                             // tick={<CustomizedAxisTick />}
                                             angle={-55}
-                                            textAnchor="end"
-                                            dataKey="name"
-                                            axisLine={false}
-                                            height={100}
-                                            width={0}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Bar className="" dataKey="total" fill="var(--color-total)" radius={4} />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-total)'
+                                            dataKey='total'
+                                            className=''
+                                        />
                                     </BarChart>
                                 </ChartContainer>
                             </div>
 
-                            <div className="px-4">
-                                <h2 className="text-xl my-1 font-bold">
+                            <div className='px-4'>
+                                <h2 className='my-1 text-xl font-bold'>
                                     {t('pages.dashboard.index.panel_progress_trainset')}
                                 </h2>
-                                <h3 className="text-base">{`${t('pages.dashboard.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
-                                <div className="h-[400px] flex flex-col items-center">
-                                    <ChartContainer config={panelChartConf} className=" min-h-[300px] ">
+                                <h3 className='text-base'>{`${t('pages.dashboard.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
+                                <div className='flex h-[400px] flex-col items-center'>
+                                    <ChartContainer
+                                        config={panelChartConf}
+                                        className='min-h-[300px]'
+                                    >
                                         <PieChart>
-                                            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                            <ChartTooltip
+                                                cursor={false}
+                                                content={<ChartTooltipContent hideLabel />}
+                                            />
                                             <Pie
-                                                data={totalUpdated}
-                                                dataKey="total"
-                                                nameKey="status"
+                                                nameKey='status'
                                                 innerRadius={60}
+                                                dataKey='total'
+                                                data={totalUpdated}
                                             />
                                         </PieChart>
                                     </ChartContainer>
-                                    <h4 className="font-bold text-center">
+                                    <h4 className='text-center font-bold'>
                                         {data['total'][0].total == 0
                                             ? 'Kebutuhan terpenuhi'
                                             : `Kebutuhan panel sejumlah ${data['total'][0].total} masih belum terpenuhi`}
                                     </h4>
-                                    <p className="text-sm">Menunjukkan progress dari status kebutuhan panel.</p>
+                                    <p className='text-sm'>
+                                        Menunjukkan progress dari status kebutuhan panel.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -448,4 +469,3 @@ export default function Dashboard({ auth, data }: PageProps) {
         </AuthenticatedLayout>
     );
 }
-
