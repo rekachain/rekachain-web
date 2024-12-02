@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->string('name');
             // $table->integer('trainset_qty'); // antara manual atau count ts dalam 1 proyek
             $table->date('initial_date')->nullable();
+            $table->date('calculated_estimate_time')->nullable();
+            $table->date('estimated_end_date')->nullable();
             $table->timestamps();
         });
     }

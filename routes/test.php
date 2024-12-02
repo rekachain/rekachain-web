@@ -158,7 +158,7 @@ Route::get('/total-estimated-time/{project_id?}/{trainset_id?}', function ($proj
         $totalWorkingDays = ceil($totalTime / $minutesPerWorkingDay);
 
         // Get project start date
-        $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
+        $startDate = $trainset->project->initial_date; // Assuming you have initial_date in your Project model
         $endDate = Carbon::parse($startDate);
 
         // Add working days considering only Monday-Friday

@@ -164,6 +164,8 @@ enum IntentEnum: string {
 
     case WEB_PROJECT_IMPORT_PROJECT_TEMPLATE = 'web.project.import.project.template';
 
+    case WEB_PROJECT_UPDATE_INITIAL_DATE = 'web.project.update.initial.date';
+
     case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';

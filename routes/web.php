@@ -119,6 +119,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
         Route::get('components', 'project_components')->name('components.index');
         Route::get('panels', 'project_panels')->name('panels.index');
+        Route::get('estimated-time/{trainset?}', 'getEstimatedTime')->name('estimated-time');
 
         Route::group(['prefix' => 'carriages', 'as' => 'carriages.'], function () {
             Route::get('/', 'project_carriages')->name('index');

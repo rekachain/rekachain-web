@@ -128,6 +128,8 @@ class ProjectController extends Controller {
                 return $this->projectService->importProjectPanelProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL->value:
                 return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->validated());
+            case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
+                return $this->projectService->updateInitialDate($project, $request->validated());
         }
 
         if ($this->ajax()) {
@@ -142,6 +144,10 @@ class ProjectController extends Controller {
         if ($this->ajax()) {
             return $this->projectService->delete($project);
         }
+    }
+
+    public function getEstimatedTime(Request $request, $project_id = null, $trainset_id = null) {
+        return $this->projectService->getEstimatedTime($project_id, $trainset_id);
     }
 
     public function project_trainsets(Request $request, Project $project) {
