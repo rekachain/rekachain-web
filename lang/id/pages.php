@@ -814,8 +814,11 @@ return [
             'title' => 'Buat Proyek',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'trainset_needed' => 'Trainset Diperlukan',
                 'initial_date' => 'Tanggal Awal',
+                'estimated_start_date' => 'Estimasi Tanggal Mulai',
+                'estimated_end_date' => 'Estimasi Tanggal Selesai',
             ],
             'buttons' => [
                 'submit' => 'Buat Proyek',

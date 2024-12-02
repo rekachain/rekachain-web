@@ -814,8 +814,11 @@ return [
             'title' => 'Create Project',
             'fields' => [
                 'name' => 'Name',
+                'description' => 'Description',
                 'trainset_needed' => 'Trainset Needed',
                 'initial_date' => 'Initial Date',
+                'estimated_start_date' => 'Estimated Start Date',
+                'estimated_end_date' => 'Estimated End Date',
             ],
             'buttons' => [
                 'submit' => 'Create Project',
