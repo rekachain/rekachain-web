@@ -116,12 +116,13 @@ class TrainsetAttachmentResource extends JsonResource {
                     ];
                 });
                 if (isset($request->unique)) {
-                    if ($request->get('unique') == true) $components = $components->unique('component');
+                    if ($request->get('unique') == true) {
+                        $components = $components->unique('component');
+                    }
                 } else {
                     $components = $components->unique('component');
                 }
                 $components = $components->values();
-
 
                 return [
                     'attachment_number' => $this->attachment_number,

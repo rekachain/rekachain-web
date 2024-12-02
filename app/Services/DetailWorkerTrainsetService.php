@@ -38,6 +38,7 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         $detailWorkerTrainset->trainset_attachment_component()->update([
             'total_failed' => $detailWorkerTrainset->trainset_attachment_component->total_failed + $data['total_failed'],
         ]);
+
         return $this->failedComponentManufactureService->create([
             'detail_worker_trainset_id' => $detailWorkerTrainset->id,
             'notes' => $data['failed_note'] ?? $data['notes'],
