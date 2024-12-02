@@ -719,17 +719,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 6)}
                                 />
-                                ))
-                                {
-                                    // @ts-ignore
-                                    <YAxis
-                                        type='category'
-                                        dataKey='workstation_name'
-                                        className=''
-                                        angle={-45}
-                                    />
-                                }
-                                <ChartTooltip content={<ChartTooltipContent />} />
+                                <ChartTooltip content={renderWorkstationProgressTooltipContent} />
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(
                                     (dataKey) => (
