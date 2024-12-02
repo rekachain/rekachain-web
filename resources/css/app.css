@@ -125,7 +125,7 @@
     }
 
     .sidebar-collapse .sidebar-collapsible-menu {
-        @apply flex-none w-fit pl-4 mx-auto;
+        @apply mx-auto w-fit flex-none pl-4;
     }
 
     .sidebar-collapse-toggle {
@@ -133,7 +133,7 @@
     }
 
     .sidebar-collapse-toggle-mobile {
-        @apply text-zinc-400 flex mx-auto;
+        @apply mx-auto flex text-zinc-400;
     }
 
     .sidebar-collapse .sidebar-collapse-toggle {
@@ -141,7 +141,7 @@
     }
 
     .sidebar-collapse .sidebar-item {
-        @apply w-fit mx-auto;
+        @apply mx-auto w-fit;
     }
 
     .sidebar-collapse .sidebar-menu {

@@ -1,14 +1,14 @@
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Button } from '@/Components/UI/button';
-import { PencilLine } from 'lucide-react';
-import { STYLING } from '@/Support/Constants/styling';
 import { Input } from '@/Components/UI/input';
-import { trainsetService } from '@/Services/trainsetService';
-import { useForm } from '@inertiajs/react';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { FormEvent, useState } from 'react';
+import { trainsetService } from '@/Services/trainsetService';
+import { STYLING } from '@/Support/Constants/styling';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { PencilLine } from 'lucide-react';
+import { FormEvent, useState } from 'react';
 
 export default function ({ trainset }: { trainset: TrainsetResource }) {
     const { t } = useLaravelReactI18n();
@@ -32,41 +32,45 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
     return (
         <>
             {isEditing ? (
-                <form onSubmit={handleEditTrainsetName} className="flex gap-4 group">
-                    <div className="">
+                <form onSubmit={handleEditTrainsetName} className='group flex gap-4'>
+                    <div className=''>
                         <Input
-                            type="text"
+                            type='text'
                             required
-                            pattern="^(?!\s*$).+"
-                            onChange={e => setData('trainsetName', e.target.value)}
+                            pattern='^(?!\s*$).+'
+                            onChange={(e) => setData('trainsetName', e.target.value)}
                             // className="w-fit"
                             defaultValue={data.trainsetName}
-                            className="invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500 w-fit peer"
+                            className='peer w-fit invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500'
                         />
-                        <span className="mt-2 text-sm hidden text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
-                            {t('pages.project.trainset.partials.partials.components.trainset_name.trainset_error')}
+                        <span className='mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block'>
+                            {t(
+                                'pages.project.trainset.partials.partials.components.trainset_name.trainset_error',
+                            )}
                         </span>
                     </div>
                     <Button
-                        type="submit"
+                        type='submit'
                         disabled={loading}
-                        className="group-invalid:pointer-events-none group-invalid:opacity-30"
+                        className='group-invalid:pointer-events-none group-invalid:opacity-30'
                     >
                         {loading
                             ? t('action.loading')
-                            : t('pages.project.trainset.partials.partials.components.trainset_name.buttons.submit')}
+                            : t(
+                                  'pages.project.trainset.partials.partials.components.trainset_name.buttons.submit',
+                              )}
                     </Button>
-                    <Button type="button" onClick={toggleEditMode}>
+                    <Button type='button' onClick={toggleEditMode}>
                         {t('action.cancel')}
                     </Button>
                 </form>
             ) : (
-                <div className="flex items-center gap-4">
+                <div className='flex items-center gap-4'>
                     <div>{trainset.name}</div>
                     <Button
-                        variant="ghost"
+                        variant='ghost'
                         onClick={toggleEditMode}
-                        className="p-2 whitespace-normal h-fit rounded-full"
+                        className='h-fit whitespace-normal rounded-full p-2'
                     >
                         <PencilLine size={STYLING.ICON.SIZE.SMALL} />
                     </Button>

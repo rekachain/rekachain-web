@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
-import { ComponentResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useConfirmation } from '@/Hooks/useConfirmation';
+import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/Component/Partials/Partials/Filters';
+import { componentService } from '@/Services/componentService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { ComponentResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { withLoading } from '@/Utils/withLoading';
-import Filters from '@/Pages/Component/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const [componentResponse, setComponentResponse] = useState<PaginateResponse<ComponentResource>>();
+    const [componentResponse, setComponentResponse] =
+        useState<PaginateResponse<ComponentResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
@@ -56,18 +57,18 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {componentResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    
-                    <div className="hidden md:block">
+
+                    <div className='hidden md:block'>
                         <ComponentTableView
                             handleComponentDeletion={handleComponentDeletion}
                             componentResponse={componentResponse}
                         ></ComponentTableView>
                     </div>
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <ComponentCardView
                             handleComponentDeletion={handleComponentDeletion}
                             componentResponse={componentResponse}

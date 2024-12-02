@@ -1,11 +1,18 @@
-import { TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { Link } from '@inertiajs/react';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
-import CarriageQty from '../Components/CarriageQty';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import CarriageQty from '../Components/CarriageQty';
 
 export default function CarriageTableView({
     trainset,
@@ -28,7 +35,9 @@ export default function CarriageTableView({
                             )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.trainset.carriage_trainset.partials.partials.carriage_table.headers.qty')}
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.headers.qty',
+                            )}
                         </TableHead>
                         <TableHead>
                             {t(
@@ -39,7 +48,7 @@ export default function CarriageTableView({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {trainset?.carriage_trainsets?.map(carriage_trainset => (
+                    {trainset?.carriage_trainsets?.map((carriage_trainset) => (
                         <TableRow key={carriage_trainset.id}>
                             <TableCell>{carriage_trainset.carriage.type}</TableCell>
                             <TableCell>
@@ -54,7 +63,7 @@ export default function CarriageTableView({
                                 )}
                             </TableCell>
                             <TableCell>
-                                {carriage_trainset.carriage_panels?.map(panel => (
+                                {carriage_trainset.carriage_panels?.map((panel) => (
                                     <div key={panel.id}>
                                         <span>
                                             {panel.qty} x {panel.panel.name}
@@ -70,7 +79,10 @@ export default function CarriageTableView({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
                                 {trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                    <Button variant="link" onClick={() => handleCarriageDeletion(carriage_trainset.id)}>
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleCarriageDeletion(carriage_trainset.id)}
+                                    >
                                         {t('action.delete')}
                                     </Button>
                                 )}

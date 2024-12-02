@@ -1,5 +1,5 @@
-import { ComponentResource, PanelResource, Resource } from '@/Support/Interfaces/Resources';
 import { RawMaterial } from '@/Support/Interfaces/Models';
+import { ComponentResource, PanelResource, Resource } from '@/Support/Interfaces/Resources';
 
 export interface RawMaterialResource extends Resource, RawMaterial {
     panels: PanelResource[];

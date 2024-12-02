@@ -22,13 +22,32 @@ import {
 } from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { PageProps } from '../../Types';
 
-import { cn } from '@/Lib/Utils';
 import { Button } from '@/Components/UI/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { useCallback, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import { Separator } from '@/Components/UI/separator';
+import { cn } from '@/Lib/Utils';
+import { trainsetService } from '@/Services/trainsetService';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import {
+    TrainsetComponentProgressResource,
+    TrainsetPanelProgressResource,
+} from '@/Support/Interfaces/Others/TrainsetProgressResource';
+import { withLoading } from '@/Utils/withLoading';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
@@ -40,6 +59,107 @@ export default function Dashboard({ auth, data }: PageProps) {
     const label = ['fulfilled', 'required', 'failed'];
 
     const chartConfigPie = {
+    const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<
+        TrainsetComponentProgressResource[]
+    >([]);
+    const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<
+        TrainsetPanelProgressResource[]
+    >([]);
+    const trainsetProgressConfig: ChartConfig = {
+        total_plan_qty: {
+            label: 'Plan',
+            color: 'hsl(var(--chart-2))',
+        },
+        total_fulfilled_qty: {
+            label: 'Done',
+            color: 'hsl(var(--chart-1))',
+        },
+        total_progress_qty: {
+            label: 'In Progress',
+            color: 'hsl(var(--chart-3))',
+        },
+        diff: {
+            label: 'To Be Fulfilled',
+            color: 'hsl(var(--chart-2))',
+        },
+    };
+
+    const toPercent = (decimal: number, fixed = 0) => {
+        return `${(decimal * 100).toFixed(fixed)}%`;
+    };
+    const getPercent = (value: number, total: number) => {
+        const ratio = total > 0 ? value / total : 0;
+        return toPercent(ratio, 2);
+    };
+    const renderTrainsetProgressTooltipContent =
+        (trainsetProgress: any) =>
+        ({ payload, label }: any) => {
+            const total =
+                trainsetProgress.find(
+                    (progress: any) =>
+                        progress.component?.name === label || progress.panel?.name === label,
+                )?.total_plan_qty || 0;
+            let diff = 0;
+            return (
+                <div className='grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl'>
+                    <p className=''>{`${label} (Total Pesanan/Rencana: ${total})`}</p>
+                    <ul className='list'>
+                        {payload.map(
+                            (entry: any, index: number) => (
+                                entry.dataKey === 'diff' && (diff += entry.value),
+                                entry.dataKey === 'total_progress_qty' && (diff += entry.value),
+                                (
+                                    <li
+                                        key={`item-${index}`}
+                                        className='flex items-center justify-between gap-1.5'
+                                    >
+                                        {entry.dataKey !== 'diff' &&
+                                            entry.dataKey !== 'total_plan_qty' && (
+                                                <>
+                                                    <div className='flex items-center gap-1.5'>
+                                                        <div
+                                                            style={{
+                                                                backgroundColor: entry.color,
+                                                            }}
+                                                            className='h-2 w-2 shrink-0 rounded-[2px]'
+                                                        />
+                                                        <span className='text-foreground'>
+                                                            {
+                                                                trainsetProgressConfig[
+                                                                    entry.dataKey
+                                                                ].label
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                    <span className='text-foreground'>{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                                                </>
+                                            )}
+                                    </li>
+                                )
+                            ),
+                        )}
+                    </ul>
+                    <span className='text-foreground'>
+                        Harus Diselesaikan: {diff} ({getPercent(diff, total)})
+                    </span>
+                </div>
+            );
+        };
+    const renderTrainsetProgressLegendContent = (value: string, entry: any) => {
+        return <span className='text-foreground'>{trainsetProgressConfig[value].label}</span>;
+    };
+
+    const chartConfig = {
+        in_progress: {
+            label: 'Progress',
+            color: '#fd2c59',
+        },
+        done: {
+            label: 'Done',
+            color: '#00C3FF',
+        },
+    } satisfies ChartConfig;
+    const panelChartConf = {
         total: {
             label: 'Total',
         },
@@ -80,10 +200,29 @@ export default function Dashboard({ auth, data }: PageProps) {
     console.log(totalUpdated);
     console.log('makan');
     const { t } = useLaravelReactI18n();
+
+    const loadTrainsetComponentProgress = withLoading(async () => {
+        const progress = (await trainsetService.get(data['trainsetId'], {
+            intent: IntentEnum.WEB_TRAINSET_GET_ALL_COMPONENTS_PROGRESS,
+        })) as unknown as TrainsetComponentProgressResource[];
+        setTrainsetComponentProgress(progress);
+    });
+    const loadTrainsetPanelProgress = withLoading(async () => {
+        const progress = (await trainsetService.get(data['trainsetId'], {
+            intent: IntentEnum.WEB_TRAINSET_GET_ALL_PANELS_PROGRESS,
+        })) as unknown as TrainsetPanelProgressResource[];
+        setTrainsetPanelProgress(progress);
+    });
+
+    useEffect(() => {
+        loadTrainsetComponentProgress();
+        loadTrainsetPanelProgress();
+    }, []);
+
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
-            <div className="py-12">
+            <div className='py-12'>
                 {/* <p>{value}</p> */}
                 <div className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto sm:px-6 lg:px-5 `}>
                     <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
@@ -95,7 +234,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     {`${t('pages.dashboard.index.project')} ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
                                     {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
-                                <div className="flex flex-col gap-4 mb-5">
+                                <div className='mb-5 flex flex-col gap-4'>
                                     <Popover open={open} onOpenChange={setOpen}>
                                         <PopoverTrigger asChild>
                                             <Button
@@ -107,13 +246,14 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 {value
                                                     ? data['projectList'].find(
                                                           // @ts-ignore
-                                                          projectItem => projectItem.name === value,
+                                                          (projectItem) =>
+                                                              projectItem.name === value,
                                                       )?.name
                                                     : 'Pilih Proyek'}
-                                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-[200px] p-0">
+                                        <PopoverContent className='w-[200px] p-0'>
                                             <Command>
                                                 <CommandInput
                                                     placeholder={`${t('pages.dashboard.index.find_project')}`}
@@ -125,32 +265,41 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     <CommandGroup>
                                                         {
                                                             // @ts-ignore
-                                                            data['projectList'].map(projectItem => (
-                                                                <Link href={`/dashboard/${projectItem.id}`}>
-                                                                    <CommandItem
-                                                                        value={projectItem.name}
-                                                                        onSelect={currentValue => {
-                                                                            setValue(
-                                                                                currentValue === projectItem.name
-                                                                                    ? ''
-                                                                                    : currentValue,
-                                                                            );
-                                                                            setOpen(false);
-                                                                        }}
-                                                                        key={projectItem.name}
+                                                            data['projectList'].map(
+                                                                (projectItem: any) => (
+                                                                    <Link
+                                                                        key={projectItem.id}
+                                                                        href={`/dashboard/${projectItem.id}`}
                                                                     >
-                                                                        <Check
-                                                                            className={cn(
-                                                                                'mr-2 h-4 w-4',
-                                                                                value === projectItem.name
-                                                                                    ? 'opacity-100'
-                                                                                    : 'opacity-0',
-                                                                            )}
-                                                                        />
-                                                                        {projectItem.name}
-                                                                    </CommandItem>
-                                                                </Link>
-                                                            ))
+                                                                        <CommandItem
+                                                                            value={projectItem.name}
+                                                                            onSelect={(
+                                                                                currentValue,
+                                                                            ) => {
+                                                                                setValue(
+                                                                                    currentValue ===
+                                                                                        projectItem.name
+                                                                                        ? ''
+                                                                                        : currentValue,
+                                                                                );
+                                                                                setOpen(false);
+                                                                            }}
+                                                                            key={projectItem.name}
+                                                                        >
+                                                                            <Check
+                                                                                className={cn(
+                                                                                    'mr-2 h-4 w-4',
+                                                                                    value ===
+                                                                                        projectItem.name
+                                                                                        ? 'opacity-100'
+                                                                                        : 'opacity-0',
+                                                                                )}
+                                                                            />
+                                                                            {projectItem.name}
+                                                                        </CommandItem>
+                                                                    </Link>
+                                                                ),
+                                                            )
                                                         }
                                                     </CommandGroup>
                                                 </CommandList>
@@ -168,13 +317,14 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 {valueTrainset
                                                     ? data['tsList'].find(
                                                           // @ts-ignore
-                                                          projectItem => projectItem.name === valueTrainset,
+                                                          (projectItem) =>
+                                                              projectItem.name === valueTrainset,
                                                       )?.name
                                                     : `${t('pages.dashboard.index.select_trainset')}`}
                                                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                             </Button>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-[200px] p-0">
+                                        <PopoverContent className='w-[200px] p-0'>
                                             <Command>
                                                 <CommandInput
                                                     placeholder={`${t('pages.dashboard.index.find_trainset')}`}
@@ -185,15 +335,17 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     </CommandEmpty>
                                                     <CommandGroup>
                                                         {// @ts-ignore
-                                                        data['tsList']?.map(projectItem => (
+                                                        data['tsList']?.map((projectItem) => (
                                                             <Link
+                                                                key={projectItem.id}
                                                                 href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                             >
                                                                 <CommandItem
                                                                     value={projectItem.name}
-                                                                    onSelect={currentValue => {
+                                                                    onSelect={(currentValue) => {
                                                                         setValueTrainset(
-                                                                            currentValue === valueTrainset
+                                                                            currentValue ===
+                                                                                valueTrainset
                                                                                 ? ''
                                                                                 : currentValue,
                                                                         );
@@ -204,7 +356,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     <Check
                                                                         className={cn(
                                                                             'mr-2 h-4 w-4',
-                                                                            valueTrainset === projectItem.name
+                                                                            valueTrainset ===
+                                                                                projectItem.name
                                                                                 ? 'opacity-100'
                                                                                 : 'opacity-0',
                                                                         )}
@@ -223,7 +376,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <ChartContainer config={chartConfigTrainsetCarriage} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['carriages']}>
                                     <CartesianGrid vertical={false} />
-                                    <XAxis tickMargin={10} tickLine={false} dataKey="type" axisLine={false} />
+                                    <XAxis
+                                        tickMargin={10}
+                                        tickLine={false}
+                                        dataKey='type'
+                                        axisLine={false}
+                                    />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
                                     <Bar dataKey="qty" fill="var(--color-qty)" radius={4} />

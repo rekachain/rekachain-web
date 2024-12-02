@@ -1,5 +1,15 @@
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
@@ -10,10 +20,17 @@ import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-import { cn } from '@/Lib/Utils';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Button } from '@/Components/UI/button';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { cn } from '@/Lib/Utils';
 // import { useState } from 'react';
 
 const project = [
@@ -49,14 +66,11 @@ const trainset = [
     },
 ];
 
-import { useCallback, useEffect, useState } from 'react';
-import { ROUTES } from '@/Support/Constants/routes';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
-import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { useLocalStorage } from '@uidotdev/usehooks';
+import { ROUTES } from '@/Support/Constants/routes';
+import { useCallback, useEffect, useState } from 'react';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];
@@ -126,21 +140,22 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(false);
-    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
-        // data: useRaw
-        //     ? data.attachment_status_of_trainset
-        //     : data.attachment_status_of_trainset.map(
-        //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-        //             trainset_name,
-        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-        //         }),
-        //     ),
-        config: Object.fromEntries(
-            Object.entries(attachmentStatusConfig).filter(([key]) =>
-                useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] =
+        useState<AttachmentStatusBarGraph>({
+            // data: useRaw
+            //     ? data.attachment_status_of_trainset
+            //     : data.attachment_status_of_trainset.map(
+            //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+            //             trainset_name,
+            //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+            //         }),
+            //     ),
+            config: Object.fromEntries(
+                Object.entries(attachmentStatusConfig).filter(([key]) =>
+                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                ),
             ),
-        ),
-    });
+        });
     const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
         useState<AttachmentStatusBarGraph>({
             // data: data.attachment_status_of_workstation.map(
@@ -157,7 +172,9 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
-    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({});
+    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState(
+        {},
+    );
     const [maxWorkstationStatusValue, setMaxWorkstationStatusValue] = useState(10);
 
     useEffect(() => {
@@ -167,15 +184,17 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     useEffect(() => {
         setAttachmentStatusOfTrainsetFilter({ column_filters: { id: trainsetFilters?.id } });
-        setAttachmentStatusOfWorkstationFilter({ relation_column_filters: { trainset: { id: trainsetFilters?.id } } });
+        setAttachmentStatusOfWorkstationFilter({
+            relation_column_filters: { trainset: { id: trainsetFilters?.id } },
+        });
     }, [trainsetFilters]);
     useEffect(() => {
         syncAttachmentStatusData();
     }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
     useEffect(() => {
         let max = 0;
-        attachmentStatusOfWorkstationGraph.data?.forEach(trainset => {
-            Object.values(trainset).forEach(count => {
+        attachmentStatusOfWorkstationGraph.data?.forEach((trainset) => {
+            Object.values(trainset).forEach((count) => {
                 if (count > max) max = count + 1;
             });
         });
@@ -198,7 +217,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                 : res.data.attachment_status_of_trainset.map(
                       ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
                           trainset_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                          ...progress.reduce(
+                              (acc, { status, count }) => ({ ...acc, [status]: count }),
+                              {},
+                          ),
                       }),
                   ),
             config: Object.fromEntries(
@@ -213,7 +235,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                 : res.data.attachment_status_of_workstation.map(
                       ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
                           workstation_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                          ...progress.reduce(
+                              (acc, { status, count }) => ({ ...acc, [status]: count }),
+                              {},
+                          ),
                       }),
                   ),
             config: Object.fromEntries(
@@ -223,43 +248,44 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     };
-  
+
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
     };
     const getPercent = (value: number, total: number) => {
         const ratio = total > 0 ? value / total : 0;
-        return toPercent(ratio,2);
+        return toPercent(ratio, 2);
     };
-    
 
     const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
         const total = payload.reduce((result: number, entry: any) => result + entry.value, 0);
         return (
-            <div className="grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl">
-                <p className="">{`${label} (Total: ${total})`}</p>
-                <ul className="list">
+            <div className='grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl'>
+                <p className=''>{`${label} (Total: ${total})`}</p>
+                <ul className='list'>
                     {payload.map((entry: any, index: number) => (
-                        <li key={`item-${index}`} className="flex items-center gap-1.5 justify-between">
-                            <div className="flex items-center gap-1.5">
+                        <li
+                            key={`item-${index}`}
+                            className='flex items-center justify-between gap-1.5'
+                        >
+                            <div className='flex items-center gap-1.5'>
                                 <div
                                     style={{
                                         backgroundColor: entry.color,
                                     }}
-                                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                                    className='h-2 w-2 shrink-0 rounded-[2px]'
                                 />
-                                <span className="text-foreground">
+                                <span className='text-foreground'>
                                     {attachmentStatusConfig[entry.dataKey].label}
                                 </span>
                             </div>
-                            <span className="text-foreground">{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                            <span className='text-foreground'>{`${entry.value} (${getPercent(entry.value, total)})`}</span>
                         </li>
                     ))}
                 </ul>
             </div>
         );
     };
-    
 
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
@@ -268,7 +294,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                 perPage: 100,
                 column_filters: { project_id: 1 }, // TODO: use project filter
             })
-            .then(response => response.data);
+            .then((response) => response.data);
     }, []);
 
     // alert(sidebarCollapse);
@@ -292,7 +318,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     : `${t('pages.dashboard.index.project')} ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger className=" " asChild>
+                                <PopoverTrigger className=' ' asChild>
                                     <Button
                                         variant="outline"
                                         role="combobox"
@@ -305,7 +331,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-[200px] p-0">
+                                <PopoverContent className='w-[200px] p-0'>
                                     <Command>
                                         <CommandInput placeholder={t('pages.dashboard.index.find_project')} />
                                         <CommandList>
@@ -313,13 +339,18 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <CommandGroup>
                                                 {
                                                     // @ts-ignore
-                                                    data['projectDetail'].map(projectItem => (
-                                                        <Link href={`/dashboard/${projectItem.id}`}>
+                                                    data['projectDetail'].map((projectItem) => (
+                                                        <Link
+                                                            key={projectItem.id}
+                                                            href={`/dashboard/${projectItem.id}`}
+                                                        >
                                                             <CommandItem
                                                                 value={`/dashboard/${projectItem.name}`}
-                                                                onSelect={currentValue => {
+                                                                onSelect={(currentValue) => {
                                                                     setValue(
-                                                                        currentValue === value ? '' : currentValue,
+                                                                        currentValue === value
+                                                                            ? ''
+                                                                            : currentValue,
                                                                     );
                                                                     setOpen(false);
                                                                 }}
@@ -392,7 +423,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <h2 className="text-lg">{t('pages.dashboard.index.all_trainset_status')}</h2>
                             <div className=" flex flex-col">
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                                    <PopoverTrigger className={`${data['project'] == null ? 'hidden' : ' '}`} asChild>
+                                    <PopoverTrigger
+                                        className={`${data['project'] == null ? 'hidden' : ' '}`}
+                                        asChild
+                                    >
                                         <Button
                                             variant="outline"
                                             role="combobox"
@@ -406,22 +440,26 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
+                                    <PopoverContent className='w-[200px] p-0'>
                                         <Command>
                                             <CommandInput placeholder={`${t('pages.dashboard.index.find_trainset')}`} />
                                             <CommandList>
-                                                <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                <CommandEmpty>
+                                                    Trainset tidak ditemukan.
+                                                </CommandEmpty>
                                                 <CommandGroup>
                                                     {// @ts-ignore
-                                                    data['tsList']?.map(projectItem => (
+                                                    data['tsList']?.map((projectItem) => (
                                                         <Link
+                                                            key={projectItem.id}
                                                             href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                         >
                                                             <CommandItem
                                                                 value={projectItem.name}
-                                                                onSelect={currentValue => {
+                                                                onSelect={(currentValue) => {
                                                                     setValueTrainset(
-                                                                        currentValue === valueTrainset
+                                                                        currentValue ===
+                                                                            valueTrainset
                                                                             ? ''
                                                                             : currentValue,
                                                                     );
@@ -432,7 +470,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 <Check
                                                                     className={cn(
                                                                         'mr-2 h-4 w-4',
-                                                                        valueTrainset === projectItem.name
+                                                                        valueTrainset ===
+                                                                            projectItem.name
                                                                             ? 'opacity-100'
                                                                             : 'opacity-0',
                                                                     )}
@@ -461,13 +500,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
                         </div>
 
-                        <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
-                            <BarChart data={data['ts']} className="h-1/4" accessibilityLayer>
+                        <ChartContainer config={chartConfigTrainset} className='h-[300px] w-full'>
+                            <BarChart data={data['ts']} className='h-1/4' accessibilityLayer>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
                                     tickMargin={10}
                                     tickLine={false}
-                                    dataKey="ts_name"
+                                    dataKey='ts_name'
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
@@ -599,23 +638,26 @@ export default function Dashboard({ auth, data }: PageProps) {
                         <h3 className="text-base">{t('pages.dashboard.index.workstations_sub')}</h3>
                         <ChartContainer
                             config={attachmentStatusOfWorkstationGraph.config}
-                            className="h-[300px] w-full mt-5"
+                            className='mt-5 h-[300px] w-full'
                         >
                             <BarChart
                                 stackOffset='expand'
-                                layout="vertical"
+                                layout='vertical'
                                 data={attachmentStatusOfWorkstationGraph.data}
                                 accessibilityLayer
                             >
                                 <CartesianGrid vertical={false} />
-                                <XAxis type="number" tickFormatter={value => toPercent(value, 0)} />
+                                <XAxis
+                                    type='number'
+                                    tickFormatter={(value) => toPercent(value, 0)}
+                                />
                                 <YAxis
                                     width={150}
-                                    type="category"
+                                    type='category'
                                     tickMargin={10}
                                     tickLine={false}
-                                    dataKey="workstation_name"
-                                    className=""
+                                    dataKey='workstation_name'
+                                    className=''
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 6)} 
                                     />
@@ -626,15 +668,17 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 }
                                 <ChartTooltip content={<ChartTooltipContent />} />
                                 <ChartLegend content={<ChartLegendContent />} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                    <Bar
-                                        type='monotone'
-                                        stackId="1"
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        fill={`var(--color-${dataKey})`}
-                                        dataKey={dataKey}
-                                    />
-                                ))}
+                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(
+                                    (dataKey) => (
+                                        <Bar
+                                            type='monotone'
+                                            stackId='1'
+                                            key={`workstationPanelStatus-${dataKey}-key`}
+                                            fill={`var(--color-${dataKey})`}
+                                            dataKey={dataKey}
+                                        />
+                                    ),
+                                )}
                             </BarChart>
                         </ChartContainer>
                     </div>

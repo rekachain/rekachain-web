@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { StepResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { stepService } from '@/Services/stepService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import StepCardView from './Partials/StepCardView';
-import StepTableView from './Partials/StepTableView';
+import Filters from '@/Pages/Step/Partials/Partials/Filters';
+import { stepService } from '@/Services/stepService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { StepResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Step/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import StepCardView from './Partials/StepCardView';
+import StepTableView from './Partials/StepTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -39,12 +39,12 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {stepResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    
-                    <div className="hidden md:block">
+
+                    <div className='hidden md:block'>
                         <StepTableView
                             stepResponse={stepResponse}
                             handleStepDeletion={handleStepDeletion}
@@ -56,7 +56,7 @@ export default function () {
                 ></WorkstationTableView> */}
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <StepCardView
                             stepResponse={stepResponse}
                             handleStepDeletion={handleStepDeletion}

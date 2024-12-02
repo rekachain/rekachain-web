@@ -1,10 +1,16 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkshopResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WorkshopTableView({
@@ -21,15 +27,19 @@ export default function WorkshopTableView({
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>{t('pages.workshop.partials.partials.workshop_table.headers.name')}</TableHead>
                             <TableHead>
-                                {t('pages.workshop.partials.partials.workshop_table.headers.address')}
+                                {t('pages.workshop.partials.partials.workshop_table.headers.name')}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.workshop.partials.partials.workshop_table.headers.address',
+                                )}
                             </TableHead>
                             <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {workshopResponse?.data.map(workshop => (
+                        {workshopResponse?.data.map((workshop) => (
                             <TableRow key={workshop.id}>
                                 <TableCell>{workshop.name}</TableCell>
                                 <TableCell>{workshop.address}</TableCell>
@@ -41,7 +51,10 @@ export default function WorkshopTableView({
                                         {t('action.edit')}
                                     </Link>
                                     {workshop.can_be_deleted && (
-                                        <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleWorkshopDeletion(workshop.id)}
+                                        >
                                             {t('action.delete')}
                                         </Button>
                                     )}

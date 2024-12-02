@@ -1398,6 +1398,31 @@ return [
                             ],
                         ],
                     ],
+                    'progress_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'trigger' => 'Progres Trainset',
+                            ],
+                            'components' => [
+                                'tabs' => [
+                                    'props' => [
+                                        'tab_list' => [
+                                            'mechanic' => 'Progres Mekanik',
+                                            'electric' => 'Progres Elektrik',
+                                            'assembly' => 'Progres Assembly',
+                                        ],
+                                        'tab_content' => [
+                                            'title' => [
+                                                'mechanic' => 'Progres Mekanik Untuk Trainset :trainset',
+                                                'electric' => 'Progres Elektrik Untuk Trainset :trainset',
+                                                'assembly' => 'Progres Assembly Untuk Trainset :trainset',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
@@ -1562,6 +1587,36 @@ return [
                                         ],
                                     ],
                                 ],
+                            ],
+                        ],
+                        'progress_component' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'component' => 'Komponen: :component',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Gerbong: :carriage',
+                                'workers' => 'Pekerja:',
+                            ],
+                        ],
+                        'progress_panel' => [
+                            'props' => [
+                                'trainset' => 'Trainset: :trainset',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Gerbong: :carriage',
+                                'serial_number' => 'Nomor Serial: :serial_number',
+                                'product_number' => 'Nomor Produk: :product_number',
+                                'workers' => 'Pekerja:',
+                            ],
+                        ],
+                        'components' => [
+                            'worker_card' => [
+                                'worker_identification' => 'NIP: :worker_identification',
+                                'acceptance_status' => 'Status Penerimaan',
+                                'work_status' => 'Status Kerja',
+                                'start_at' => 'Dimulai Pada',
+                            ],
+                            'worker_step_card' => [
+                                'step_status' => 'Status',
                             ],
                         ],
                     ],

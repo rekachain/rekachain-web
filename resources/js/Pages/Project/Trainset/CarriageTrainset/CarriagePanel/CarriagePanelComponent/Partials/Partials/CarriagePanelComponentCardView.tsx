@@ -1,13 +1,16 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
 import AnimateIn from '@/Lib/AnimateIn';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
-import { CarriagePanelResource, CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import React from 'react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
-import { Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
 import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
+import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
+import { ROUTES } from '@/Support/Constants/routes';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import {
+    CarriagePanelResource,
+    CarriageTrainsetResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function CarriagePanelComponentCardView({
     trainset,
@@ -26,24 +29,26 @@ export default function CarriagePanelComponentCardView({
     return (
         <div>
             <>
-                {carriagePanel.carriage_panel_components?.map(carriagePanelComponent => (
+                {carriagePanel.carriage_panel_components?.map((carriagePanelComponent) => (
                     <div key={carriagePanelComponent.id}>
                         <AnimateIn
-                            to="opacity-100 translate-y-0 translate-x-0"
+                            to='opacity-100 translate-y-0 translate-x-0'
                             key={carriagePanelComponent.id}
-                            from="opacity-0 -translate-y-4"
+                            from='opacity-0 -translate-y-4'
                             duration={300}
                         >
-                            <div className="border-black dark:border-white border-2 rounded-md p-2 flex flex-col gap-2 mt-3">
-                                <div className="flex  justify-between items-scenter">
-                                    <h4 className="font-bold text-sm">{carriagePanelComponent.component.name}</h4>
-                                    <div className="text-end w-1/2">
-                                        <h5 className="font-bold text-sm ">
+                            <div className='mt-3 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
+                                <div className='items-scenter flex justify-between'>
+                                    <h4 className='text-sm font-bold'>
+                                        {carriagePanelComponent.component.name}
+                                    </h4>
+                                    <div className='w-1/2 text-end'>
+                                        <h5 className='text-sm font-bold'>
                                             {carriagePanelComponent.component.description}
                                         </h5>
                                     </div>
                                 </div>
-                                <h5 className="text-sm">
+                                <h5 className='text-sm'>
                                     {trainset.status === TrainsetStatusEnum.PROGRESS ? (
                                         <span>{carriagePanelComponent.qty}</span>
                                     ) : (
@@ -53,12 +58,18 @@ export default function CarriagePanelComponentCardView({
                                         />
                                     )}
                                 </h5>
-                                <p className="text-sm">{carriagePanelComponent.component.description}</p>
-                                <div className="flex items-center justify-end w-full">
+                                <p className='text-sm'>
+                                    {carriagePanelComponent.component.description}
+                                </p>
+                                <div className='flex w-full items-center justify-end'>
                                     {trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button
-                                            variant="link"
-                                            onClick={() => handlePanelComponentDeletion(carriagePanelComponent.id)}
+                                            variant='link'
+                                            onClick={() =>
+                                                handlePanelComponentDeletion(
+                                                    carriagePanelComponent.id,
+                                                )
+                                            }
                                         >
                                             {t('action.delete')}
                                         </Button>

@@ -199,71 +199,136 @@ class TrainsetAttachmentResource extends JsonResource {
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                 $attachment = $this->ancestor();
+                $components = $attachment->components()->distinct()->get();
+                $attachmentProgress = $components->map(function ($component) use (&$componentSteps) {
+                    return [
+                        'component' => $component,
+                        'carriage_panel_components' => collect(),
+                    ];
+                });
                 $componentSteps = collect();
                 $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
                     $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
-                        $step = $componentSteps->firstWhere('step_id', $progressStep->step_id);
+                        $step = $componentSteps->firstWhere('id', $progressStep->step_id);
                         if (!$step) {
                             $componentSteps->push([
-                                'step_id' => $progressStep->step_id,
-                                // 'progress_step_id' => $progressStep->id,
-                                'step_name' => $progressStep->step->name,
-                                'step_process' => $progressStep->step->process,
-                                'estimated_time' => $progressStep->step->estimated_time,
-                                'workers' => collect(),
+                                ...StepResource::make($progressStep->step)->only('id', 'name', 'process', 'estimated_time'),
+                                'work_status' => null,
+                                'localized_work_status' => null,
                             ]);
                         }
                     });
                 });
-                // return $componentSteps->toArray();
-                $trainsetAttachmentComponents = $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($componentSteps) {
+
+                $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($attachmentProgress, $componentSteps) {
                     $steps = collect();
                     $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
-                        $workers = collect();
-                        $step = $steps->firstWhere('step_id', $detailWorkerTrainset->progress_step->step_id);
+                        $step = $steps->firstWhere('id', $detailWorkerTrainset->progress_step->step_id);
                         if (!$step) {
-                            $workers->push([
-                                'nip' => $detailWorkerTrainset->worker->nip,
-                                'name' => $detailWorkerTrainset->worker->name,
-                                'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
-                                'acceptance_status' => $detailWorkerTrainset->acceptance_status,
-                                'work_status' => $detailWorkerTrainset->work_status,
-                            ]);
                             $steps->push([
-                                'step_id' => $detailWorkerTrainset->progress_step->step_id,
-                                // 'progress_step_id' => $detailWorkerTrainset->progress_step->id,
-                                'step_name' => $detailWorkerTrainset->progress_step->step->name,
-                                'step_process' => $detailWorkerTrainset->progress_step->step->process,
-                                'estimated_time' => $detailWorkerTrainset->progress_step->step->estimated_time,
-                                'workers' => $workers,
-                            ]);
-                        } else {
-                            $step['workers']->push([
-                                'nip' => $detailWorkerTrainset->worker->nip,
-                                'name' => $detailWorkerTrainset->worker->name,
-                                'started_at' => $detailWorkerTrainset->created_at->toDateTimeString(),
-                                'acceptance_status' => $detailWorkerTrainset->acceptance_status,
-                                'work_status' => $detailWorkerTrainset->work_status,
+                                ...StepResource::make($detailWorkerTrainset->progress_step->step)->only('id', 'name', 'process', 'estimated_time'),
+                                'work_status' => $detailWorkerTrainset->work_status->value,
+                                'localized_work_status' => $detailWorkerTrainset->work_status->getLabel(),
                             ]);
                         }
                     });
                     $componentSteps->each(function ($componentStep) use (&$steps) {
-                        $step = $steps->firstWhere('step_id', $componentStep['step_id']);
+                        $step = $steps->firstWhere('id', $componentStep['id']);
                         if (!$step) {
                             $steps->push($componentStep);
                         }
                     });
 
-                    return [
-                        'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
-                        'component' => ComponentResource::make($trainsetAttachmentComponent->carriage_panel_component->component),
-                        'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
-                        'total_steps' => $steps->count(),
-                        'steps' => $steps->sortBy('step_id')->map(fn ($step) => $step)->values(),
-                    ];
+                    $attachmentProgress->each(function ($attachmentProgress) use ($steps, &$componentSteps, $trainsetAttachmentComponent) {
+                        if ($attachmentProgress['component']->id === $trainsetAttachmentComponent->carriage_panel_component->component_id) {
+                            $attachmentProgress['carriage_panel_components']->push([
+                                'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                                'panel' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->panel,
+                                'carriage' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->carriage_trainset->carriage,
+                                'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
+                                'total_steps' => $steps->count(),
+                                'steps' => $steps->sortBy('id')->map(fn ($step) => $step)->values(),
+                            ]);
+                        }
+                    });
                 });
 
-                return $trainsetAttachmentComponents->toArray();
+                return $attachmentProgress->toArray();
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS->value:
+                $attachment = $this->ancestor();
+                $components = $attachment->components()->distinct()->get();
+                $attachmentProgress = $components->map(function ($component) use (&$componentSteps) {
+                    return [
+                        'component' => $component,
+                        'carriage_panel_components' => collect(),
+                    ];
+                });
+                $componentSteps = collect();
+                $attachment->progresses()->distinct()->get()->map(function ($progress) use (&$componentSteps) {
+                    $progress->progress_steps->map(function ($progressStep) use (&$componentSteps) {
+                        $step = $componentSteps->firstWhere('id', $progressStep->step_id);
+                        if (!$step) {
+                            $componentSteps->push([
+                                ...StepResource::make($progressStep->step)->only(['id', 'name', 'process', 'estimated_time']),
+                                'work_status' => null,
+                                'localized_work_status' => null,
+                                'workers' => collect(),
+                            ]);
+                        }
+                    });
+                });
+
+                $attachment->trainset_attachment_components->map(function ($trainsetAttachmentComponent) use ($attachmentProgress, $componentSteps) {
+                    $steps = collect();
+                    $trainsetAttachmentComponent->detail_worker_trainsets->map(function ($detailWorkerTrainset) use (&$steps) {
+                        $workers = collect();
+                        $step = $steps->firstWhere('id', $detailWorkerTrainset->progress_step->step_id);
+                        if (!$step) {
+                            $workers->push([
+                                'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
+                                ...collect(DetailWorkerTrainsetResource::make(
+                                    $detailWorkerTrainset->fresh()
+                                )->toArray(request()->merge(['intent' => '']))
+                                )->only('id', 'acceptance_status', 'localized_acceptance_status', 'work_status', 'localized_work_status', 'created_at', 'updated_at'),
+                            ]);
+                            $steps->push([
+                                ...StepResource::make($detailWorkerTrainset->progress_step->step)->only(['id', 'name', 'process', 'estimated_time']),
+                                'work_status' => $detailWorkerTrainset->work_status->value,
+                                'localized_work_status' => $detailWorkerTrainset->work_status->getLabel(),
+                                'workers' => $workers,
+                            ]);
+                        } else {
+                            $step['workers']->push([
+                                'worker' => UserResource::make($detailWorkerTrainset->worker)->only('nip', 'name'),
+                                ...collect(DetailWorkerTrainsetResource::make(
+                                    $detailWorkerTrainset->fresh()
+                                )->toArray(request()->merge(['intent' => '']))
+                                )->only('id', 'acceptance_status', 'localized_acceptance_status', 'work_status', 'localized_work_status', 'created_at', 'updated_at'),
+                            ]);
+                        }
+                    });
+                    $componentSteps->each(function ($componentStep) use (&$steps) {
+                        $step = $steps->firstWhere('id', $componentStep['id']);
+                        if (!$step) {
+                            $steps->push($componentStep);
+                        }
+                    });
+
+                    $attachmentProgress->each(function ($attachmentProgress) use ($steps, &$componentSteps, $trainsetAttachmentComponent) {
+                        if ($attachmentProgress['component']->id === $trainsetAttachmentComponent->carriage_panel_component->component_id) {
+                            $attachmentProgress['carriage_panel_components']->push([
+                                'carriage_panel_component_id' => $trainsetAttachmentComponent->carriage_panel_component_id,
+                                'panel' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->panel,
+                                'carriage' => $trainsetAttachmentComponent->carriage_panel_component->carriage_panel->carriage_trainset->carriage,
+                                'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->load('work_aspect'),
+                                'total_steps' => $steps->count(),
+                                'steps' => $steps->sortBy('id')->map(fn ($step) => $step)->values(),
+                            ]);
+                        }
+                    });
+                });
+
+                return $attachmentProgress->toArray();
             default:
                 return [
                     'id' => $this->id,

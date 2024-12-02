@@ -1,5 +1,5 @@
-import { ProgressStepResource, Resource, StepResource } from '@/Support/Interfaces/Resources';
 import { Progress } from '@/Support/Interfaces/Models';
+import { ProgressStepResource, Resource, StepResource } from '@/Support/Interfaces/Resources';
 
 export interface ProgressResource extends Resource, Progress {
     steps: StepResource[];

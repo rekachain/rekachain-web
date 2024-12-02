@@ -1,9 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { PageProps } from '@/Types';
+import { Head } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
-import { Head } from '@inertiajs/react';
-import { PageProps } from '@/Types';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Edit({
     auth,
@@ -18,12 +18,15 @@ export default function Edit({
         <AuthenticatedLayout>
             <Head title={t('pages.profile.edit.title')} />
 
-            <div className="p-5 space-y-6">
-                <div className="p-4 sm:p-8 bg-background-2 shadow sm:rounded-lg">
-                    <UpdateProfileInformationForm status={status} mustVerifyEmail={mustVerifyEmail} />
+            <div className='space-y-6 p-5'>
+                <div className='bg-background-2 p-4 shadow sm:rounded-lg sm:p-8'>
+                    <UpdateProfileInformationForm
+                        status={status}
+                        mustVerifyEmail={mustVerifyEmail}
+                    />
                 </div>
 
-                <div className="p-4 sm:p-8 bg-background-2 shadow sm:rounded-lg">
+                <div className='bg-background-2 p-4 shadow sm:rounded-lg sm:p-8'>
                     <UpdatePasswordForm />
                 </div>
 

@@ -1,19 +1,20 @@
-import { workstationService } from '@/Services/workstationService';
-import { useEffect, useState } from 'react';
-import { WorkstationResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import WorkstationTableView from './Partials/WorkstationTableView';
-import WorkstationCardView from './Partials/WorkstationCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/Workstation/Partials/Partials/Filters';
+import { workstationService } from '@/Services/workstationService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { WorkstationResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Workstation/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
+import WorkstationCardView from './Partials/WorkstationCardView';
+import WorkstationTableView from './Partials/WorkstationTableView';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const [workstationResponse, setWorkstationResponse] = useState<PaginateResponse<WorkstationResource>>();
+    const [workstationResponse, setWorkstationResponse] =
+        useState<PaginateResponse<WorkstationResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
@@ -40,18 +41,18 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {workstationResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <WorkstationTableView
                             workstationResponse={workstationResponse}
                             handleWorkstationDeletion={handleWorkstationDeletion}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <WorkstationCardView
                             workstationResponse={workstationResponse}
                             handleWorkstationDeletion={handleWorkstationDeletion}
@@ -59,7 +60,10 @@ export default function () {
                     </div>
                 </>
             )}
-            <GenericPagination meta={workstationResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination
+                meta={workstationResponse?.meta}
+                handleChangePage={handlePageChange}
+            />
         </div>
     );
 }
