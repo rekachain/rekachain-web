@@ -1,22 +1,23 @@
 <?php
 
-use App\Http\Controllers\CarriageController;
-use App\Http\Controllers\CarriagePanelComponentController;
-use App\Http\Controllers\CarriagePanelController;
-use App\Http\Controllers\ComponentController;
-use App\Http\Controllers\PanelAttachmentController;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\ProgressController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\StepController;
-use App\Http\Controllers\TrainsetAttachmentController;
-use App\Http\Controllers\TrainsetController;
-use App\Http\Controllers\WorkAspectController;
+use Carbon\Carbon;
+use Inertia\Inertia;
 use App\Models\CarriagePanel;
-use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Models\CarriagePanelComponent;
+use App\Http\Controllers\StepController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\WorkAspectController;
+use App\Http\Controllers\CarriagePanelController;
+use App\Http\Controllers\PanelAttachmentController;
+use App\Http\Controllers\TrainsetAttachmentController;
+use App\Http\Controllers\CarriagePanelComponentController;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     Route::get('/', function (\App\Support\Interfaces\Services\CarriageTrainsetServiceInterface $carriageTrainsetService, \App\Support\Interfaces\Services\TrainsetServiceInterface $trainsetService) {
@@ -153,12 +154,31 @@ Route::get('/total-estimated-time/{project_id?}/{trainset_id?}', function ($proj
 
         $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
 
+        $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+        $totalWorkingDays = ceil($totalTime / $minutesPerWorkingDay);
+
+        // Get project start date
+        $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
+        $endDate = Carbon::parse($startDate);
+
+        // Add working days considering only Monday-Friday
+        for ($i = 0; $i < $totalWorkingDays; $i++) {
+            $endDate->addDay();
+            // Skip weekends
+            while ($endDate->isWeekend()) {
+                $endDate->addDay();
+            }
+        }
+
         return response()->json([
             'trainset_id' => $trainset_id,
             'mechanical_time' => $mechanicTime,
             'electrical_time' => $electricalTime,
             'assembly_time' => $assemblyTime,
-            'total_estimated_time' => $totalTime
+            'total_estimated_time' => $totalTime,
+            'total_working_days' => $totalWorkingDays,
+            'initial_date' => $startDate,
+            'estimated_end_date' => $endDate->format('Y-m-d')
         ]);
     }
 
@@ -213,12 +233,31 @@ Route::get('/total-estimated-time/{project_id?}/{trainset_id?}', function ($proj
 
         $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
 
+        $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+        $totalWorkingDays = ceil($totalTime / $minutesPerWorkingDay);
+
+        // Get project start date
+        $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
+        $endDate = Carbon::parse($startDate);
+
+        // Add working days considering only Monday-Friday
+        for ($i = 0; $i < $totalWorkingDays; $i++) {
+            $endDate->addDay();
+            // Skip weekends
+            while ($endDate->isWeekend()) {
+                $endDate->addDay();
+            }
+        }
+
         return response()->json([
             'project_id' => $project_id,
             'mechanical_time' => $mechanicTime,
             'electrical_time' => $electricalTime,
             'assembly_time' => $assemblyTime,
-            'total_estimated_time' => $totalTime
+            'total_estimated_time' => $totalTime,
+            'total_working_days' => $totalWorkingDays,
+            'initial_date' => $startDate,
+            'estimated_end_date' => $endDate->format('Y-m-d')
         ]);
     }
 
