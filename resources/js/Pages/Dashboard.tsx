@@ -1,15 +1,15 @@
-import {
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from '@/Components/UI/chart';
+// import {
+//     ChartContainer,
+//     ChartLegend,
+//     ChartLegendContent,
+//     ChartTooltip,
+//     ChartTooltipContent,
+//     type ChartConfig,
+// } from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+// import { Check, ChevronsUpDown } from 'lucide-react';
+// import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';

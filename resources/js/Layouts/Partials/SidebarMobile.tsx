@@ -39,7 +39,6 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/Components/UI/accordion';
-import { ScrollArea } from '@/Components/UI/scroll-area';
 import { checkPermission } from '@/Helpers/sidebarHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';

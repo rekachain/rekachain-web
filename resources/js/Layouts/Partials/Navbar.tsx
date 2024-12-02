@@ -1,5 +1,3 @@
-import AddFeedback from '@/Components/AddFeedback';
-import { SearchResults } from '@/Components/SearchResult';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import { useLocalStorage } from '@uidotdev/usehooks';
@@ -34,10 +32,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/Components/UI/sheet';
-import useDarkMode from '@/Hooks/useDarkMode';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { ROUTES } from '@/Support/Constants/routes';
-import { STYLING } from '@/Support/Constants/styling';
 import { Link, usePage } from '@inertiajs/react';
 import {
     RiBook2Line,
@@ -46,12 +40,7 @@ import {
     RiNotification4Line,
     RiSearchLine,
 } from '@remixicon/react';
-import { useLocalStorage } from '@uidotdev/usehooks';
-import axios from 'axios';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -110,7 +99,7 @@ export default function Navbar() {
     return (
         <nav className="flex h-16 border-b-2 justify-between items-center px-4 py-3  w-full">
             <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
-                <label htmlFor="search" children={<RiSearchLine className="w-3 h-3 md:5 md:h-5" />} />
+                 <label htmlFor="search"><RiSearchLine className="w-3 h-3 md:5 md:h-5" /></label>
                 <Input
                     value={searchQuery}
                     placeholder={t('action.search')}

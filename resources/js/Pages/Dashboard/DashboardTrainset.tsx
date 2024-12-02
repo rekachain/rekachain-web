@@ -1,28 +1,28 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { PageProps } from '../../Types';
+// import { PageProps } from '../../Types';
 import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
 import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
 import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import {
-    Bar,
-    BarChart,
-    CartesianGrid,
+    // Bar,
+    // BarChart,
+    // CartesianGrid,
     Cell,
     LabelList,
     Legend,
     Line,
     LineChart,
-    Pie,
-    PieChart,
+    // Pie,
+    // PieChart,
     Text,
     Tooltip,
-    XAxis,
-    YAxis,
+    // XAxis,
+    // YAxis,
 } from 'recharts';
 import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Check, ChevronsUpDown } from 'lucide-react';
+// import { Check, ChevronsUpDown } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../../Types';
 
@@ -36,7 +36,7 @@ import {
     CommandList,
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { useCallback, useState } from 'react';
+import { useCallback} from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { Separator } from '@/Components/UI/separator';
 import { cn } from '@/Lib/Utils';
@@ -58,13 +58,10 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     const label = ['fulfilled', 'required', 'failed'];
 
-    const chartConfigPie = {
-    const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<
-        TrainsetComponentProgressResource[]
-    >([]);
-    const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<
-        TrainsetPanelProgressResource[]
-    >([]);
+    // const chartConfigPie = {
+    const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<TrainsetComponentProgressResource[]>([]);
+    const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<TrainsetPanelProgressResource[]>([]);
+
     const trainsetProgressConfig: ChartConfig = {
         total_plan_qty: {
             label: 'Plan',
@@ -82,7 +79,8 @@ export default function Dashboard({ auth, data }: PageProps) {
             label: 'To Be Fulfilled',
             color: 'hsl(var(--chart-2))',
         },
-    };
+    }
+    
 
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
@@ -417,7 +415,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </h2>
                                 <h3 className="text-base">{`${t('pages.dashboard.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                 <div className="h-[400px] flex flex-col items-center">
-                                    <ChartContainer config={chartConfigPie} className=" min-h-[300px] ">
+                                    <ChartContainer config={panelChartConf} className=" min-h-[300px] ">
                                         <PieChart>
                                             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                                             <Pie
@@ -450,3 +448,4 @@ export default function Dashboard({ auth, data }: PageProps) {
         </AuthenticatedLayout>
     );
 }
+
