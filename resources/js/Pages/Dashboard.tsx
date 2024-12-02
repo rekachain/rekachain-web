@@ -1,17 +1,21 @@
-import {
-    ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from '@/Components/UI/chart';
+// import {
+//     ChartContainer,
+//     ChartLegend,
+//     ChartLegendContent,
+//     ChartTooltip,
+//     ChartTooltipContent,
+//     type ChartConfig,
+// } from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
-import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+// import { Check, ChevronsUpDown } from 'lucide-react';
+// import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
-// import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
+import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
+import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
+import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
+import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
 
 // import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -61,10 +65,10 @@ const trainset = [
         link: '/dashboard/1/3',
     },
 ];
-// TODO : TS only available when project
-// TODO : show ts for each project
 
 import { trainsetService } from '@/Services/trainsetService';
+import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { useLocalStorage } from '@uidotdev/usehooks';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useCallback, useEffect, useState } from 'react';
 interface AttachmentStatusOfTrainsetResource {
@@ -85,6 +89,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [valueTrainset, setValueTrainset] = useState('');
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
     console.log(data);
 
@@ -118,6 +123,18 @@ export default function Dashboard({ auth, data }: PageProps) {
         in_progress: {
             label: 'In Progress',
             color: 'hsl(var(--chart-2))',
+        },
+        pending: {
+            label: 'Pending',
+            color: 'hsl(var(--chart-3))',
+        },
+        material_in_transit: {
+            label: 'Material In Transit',
+            color: 'hsl(var(--chart-4))',
+        },
+        material_accepted: {
+            label: 'Material Accepted',
+            color: 'hsl(var(--chart-5))',
         },
     } satisfies ChartConfig;
 
@@ -280,69 +297,8 @@ export default function Dashboard({ auth, data }: PageProps) {
             .then((response) => response.data);
     }, []);
 
-    const chartConfig = {
-        in_progress: {
-            label: 'Progress',
-            color: '#fd2c59',
-        },
-        done: {
-            label: 'Done',
-            color: '#00C3FF',
-        },
-    } satisfies ChartConfig;
-    // from panel_attachment get status
-    // from carriage panel get carriage_trainset_id
-    // from trainset get trainset id
-    console.log(data['ts']);
-    //  TS
-    // this is correct
-    // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;
+    // alert(sidebarCollapse);
 
-    // new with project ID
-    // SELECT trainsets.name, projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name,trainsets.name;
-
-    // SELECT count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id where panel_attachments.status = "done" GROUP BY trainsets.name;
-
-    // SELECT panel_attachments.status, count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id GROUP BY trainsets.name, panel_attachments.status;
-
-    const chartDataWS = [
-        { ts: 'WS Candisewu Lt1', progress: 186, done: 80 },
-        { ts: 'WS Candisewu Lt2', progress: 86, done: 80 },
-        { ts: 'WS Candisewu Lt3', progress: 20, done: 50 },
-        { ts: 'WS Sukosari', progress: 36, done: 50 },
-        { ts: 'WS Harmonika', progress: 45, done: 70 },
-    ];
-
-    // this is correct
-    // SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id where workshops.id <3 GROUP by workshops.name;
-
-    // Correct with project 612
-    //SELECT projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name
-
-    // INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id
-
-    // panel attachment source workstation in progress and done
-    // workstation id
-    // SELECT * FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id;
-    // SELECT count(panel_attachments.status) workstations.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id where status = "done" GROUP by workstations.name;
-    // for above need change in workstation and workshop.
-
-    const chartDataPanel = [
-        { panel: 'Panel PIDS A', progress: 186, done: 80 },
-        { panel: 'Panel PIDS B', progress: 86, done: 30 },
-        { panel: 'Panel PIDS C', progress: 16, done: 80 },
-        { panel: 'Panel PIDS D', progress: 18, done: 90 },
-    ];
-
-    // Correct with project name
-    // SELECT projects.name, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id GROUP by panels.name,projects.name, panel_attachments.status ORDER BY `panels`.`name` ASC
-
-    // SELECT count(panel_attachments.status), panel_attachments.status, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status;
-
-    //     With seperated done and in progress
-    // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status ORDER BY `panels`.`name` ASC
-
-    // export default function Dashboard({ auth }: PageProps) {
     const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
@@ -350,38 +306,36 @@ export default function Dashboard({ auth, data }: PageProps) {
 
             {/* <div className="py-12"> */}
             {/* <p>{value}</p> */}
-            <div className='mx-auto max-w-7xl sm:px-6 lg:px-5'>
-                <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
+            <div className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5 `}>
+                <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
                     {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                    <div className=''>
-                        <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
-                        <div className='flex w-full items-center justify-between'>
-                            <h2 className='my-2 text-xl'>
+                    <div className="">
+                        <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
+                        <div className="flex justify-between w-full items-center">
+                            <h2 className="text-xl my-2">
                                 {data['project'] == null
-                                    ? 'Semua Proyek'
-                                    : `Proyek ${data['project']}`}
+                                    ? t('pages.dashboard.index.all_project')
+                                    : `${t('pages.dashboard.index.project')} ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger className=' ' asChild>
                                     <Button
-                                        variant='outline'
-                                        role='combobox'
-                                        className='w-40 justify-between'
+                                        variant="outline"
+                                        role="combobox"
                                         aria-expanded={open}
+                                        className="w-25 md:w-40 justify-between"
                                     >
                                         {value
-                                            ? project.find(
-                                                  (projectItem) => projectItem.value === value,
-                                              )?.label
-                                            : 'Pilih Proyek'}
-                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                            ? project.find(projectItem => projectItem.value === value)?.label
+                                            : t('pages.dashboard.index.select_project')}
+                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className='w-[200px] p-0'>
                                     <Command>
-                                        <CommandInput placeholder='Cari Projek...' />
+                                        <CommandInput placeholder={t('pages.dashboard.index.find_project')} />
                                         <CommandList>
-                                            <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
+                                            <CommandEmpty>{t('pages.dashboard.index.project_not_found')}</CommandEmpty>
                                             <CommandGroup>
                                                 {
                                                     // @ts-ignore
@@ -465,32 +419,30 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                         </div> */}
                         {/* </ChartContainer> */}
-                        <div className='my-4 flex items-center justify-between'>
-                            <h2 className='text-lg'>Status dari Trainset</h2>
-                            <div className='flex flex-col'>
+                        <div className="flex justify-between my-4 items-center">
+                            <h2 className="text-lg">{t('pages.dashboard.index.all_trainset_status')}</h2>
+                            <div className=" flex flex-col">
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
                                     <PopoverTrigger
                                         className={`${data['project'] == null ? 'hidden' : ' '}`}
                                         asChild
                                     >
                                         <Button
-                                            variant='outline'
-                                            role='combobox'
-                                            className='w-40 justify-between'
+                                            variant="outline"
+                                            role="combobox"
                                             aria-expanded={openTrainset}
+                                            className="w-25 md:w-40 justify-between"
                                         >
                                             {valueTrainset
-                                                ? project.find(
-                                                      (projectItem) =>
-                                                          projectItem.value === valueTrainset,
-                                                  )?.label
-                                                : 'Pilih Trainset'}
-                                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                                ? project.find(projectItem => projectItem.value === valueTrainset)
+                                                      ?.label
+                                                : `${t('pages.dashboard.index.select_trainset')}`}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className='w-[200px] p-0'>
                                         <Command>
-                                            <CommandInput placeholder='Cari Trainset...' />
+                                            <CommandInput placeholder={`${t('pages.dashboard.index.find_trainset')}`} />
                                             <CommandList>
                                                 <CommandEmpty>
                                                     Trainset tidak ditemukan.
@@ -558,16 +510,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
-                                <ChartTooltip
-                                    cursor={false}
-                                    content={<ChartTooltipContent indicator='dashed' />}
-                                />
-                                <Bar radius={4} fill='var(--color-done)' dataKey='done' />
-                                <Bar
-                                    radius={4}
-                                    fill='var(--color-in_progress)'
-                                    dataKey='in_progress'
-                                />
+                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
+                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                                <Bar dataKey="material_in_transit" fill="var(--color-material_in_transit)" radius={4} />
+                                <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                <Bar dataKey="material_accepted" fill="var(--color-material_accepted)" radius={4} />
                             </BarChart>
                         </ChartContainer>
                         {/* <ChartContainer
@@ -597,70 +545,97 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                 ))}
                             </BarChart>
-                        </ChartContainer> */}
+                            
                     </div>
-                    <div className='mt-2 flex max-w-full'>
-                        <div className='w-1/2'>
-                            <h2 className='my-1 text-xl font-bold'>Progress Tiap Workshop</h2>
-                            <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
-                            <ChartContainer config={chartConfig} className='mt-5 h-[300px] w-full'>
-                                <BarChart layout='vertical' data={data.ws} accessibilityLayer>
-                                    <CartesianGrid vertical={false} />
-                                    <XAxis type='number' dataKey='in_progress'></XAxis>
-                                    <XAxis type='number' dataKey='done'></XAxis>
-                                    <YAxis
-                                        type='category'
-                                        tickLine={false}
-                                        dataKey='name'
-                                        // max={10}
-                                        className=''
-                                        // tickSize={20}
-                                        // tickCount={}
-                                        // padding={}
-                                        // minTickGap={0}
-                                        // tickMargin={1}
-                                        axisLine={false}
-                                    />
-                                    <ChartTooltip content={<ChartTooltipContent />} />
-                                    <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar
-                                        radius={4}
-                                        fill='var(--color-in_progress)'
-                                        dataKey='in_progress'
-                                    />
-                                    <Bar radius={4} fill='var(--color-done)' dataKey='done' />
-                                </BarChart>
-                            </ChartContainer>
-                        </div>
+                    <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
+                    <div className="flex max-w-full mt-2">
+                        {/* <div className="w-1/2"> */}
+                        {/* <h3 className="text-base">Workstation Sukosari, Candisewu</h3> */}
+                        <div className="md:flex max-w-full mt-2 ">
+                            <div className="md:w-1/2 px-5">
+                                <h2 className="text-xl my-1 font-bold">
+                                    {t('pages.dashboard.index.progress_workshops')}
+                                </h2>
+                                <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
+                                <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full mt-5">
+                                    <BarChart accessibilityLayer data={data.ws} layout="vertical">
+                                        <CartesianGrid vertical={false} />
+                                        <XAxis type="number" dataKey="in_progress"></XAxis>
+                                        <XAxis type="number" dataKey="done"></XAxis>
+                                        <YAxis
+                                            // max={10}
+                                            className=""
+                                            dataKey="name"
+                                            type="category"
+                                            tickLine={false}
+                                            // tickSize={20}
+                                            // tickCount={}
+                                            // padding={}
+                                            // minTickGap={0}
+                                            // tickMargin={1}
+                                            axisLine={false}
+                                        />
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                        <Bar
+                                            dataKey="material_in_transit"
+                                            fill="var(--color-material_in_transit)"
+                                            radius={4}
+                                        />
+                                        <Bar
+                                            dataKey="material_accepted"
+                                            fill="var(--color-material_accepted)"
+                                            radius={4}
+                                        />
+                                        <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                    </BarChart>
+                                </ChartContainer>
+                            </div>
 
-                        <div className=' '>
-                            <h2 className='my-1 text-xl font-bold'>Progress Tiap Panel</h2>
-                            <h3 className='text-base'>Panel panel pada WS Assembly</h3>
-                            <ChartContainer config={chartConfig} className='mt-5 h-[300px] w-96'>
-                                <BarChart data={data['panel']} accessibilityLayer>
-                                    <CartesianGrid vertical={false} />
-                                    <YAxis type='number' dataKey='in_progress'></YAxis>
-                                    <XAxis
-                                        tickLine={false}
-                                        tickFormatter={(value) => value.slice(0, 6)}
-                                        dataKey='name'
-                                        // tickMargin={10}
-                                        axisLine={false}
-                                    />
-                                    <ChartTooltip content={<ChartTooltipContent />} />
-                                    <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar
-                                        radius={4}
-                                        fill='var(--color-in_progress)'
-                                        dataKey='in_progress'
-                                    />
-                                    <Bar radius={4} fill='var(--color-done)' dataKey='done' />
-                                </BarChart>
-                            </ChartContainer>
+                            <div className="md:px-5 ">
+                                <h2 className="text-xl my-1 font-bold">{t('pages.dashboard.index.progress_panels')}</h2>
+                                <h3 className="text-base">{t('pages.dashboard.index.panels_title')}</h3>
+
+                                <ChartContainer
+                                    config={chartConfigTrainset}
+                                    className="h-[400px] md:h-[400px] w-[300px] md:w-[90%] mt-5 text-"
+                                >
+                                    <BarChart accessibilityLayer data={data['panel']}>
+                                        <CartesianGrid vertical={false} />
+                                        <YAxis type="number" dataKey="in_progress"></YAxis>
+                                        <XAxis
+                                            height={110}
+                                            angle={-55}
+                                            dataKey="name"
+                                            textAnchor="end"
+                                            tickLine={false}
+                                            tickMargin={15}
+                                            axisLine={false}
+                                            tickFormatter={value => value.slice(0, 20)}
+                                        />
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                                        <Bar dataKey="done" fill="var(--color-done)" radius={4} />
+                                        <Bar
+                                            dataKey="material_in_transit"
+                                            fill="var(--color-material_in_transit)"
+                                            radius={4}
+                                        />
+                                        <Bar dataKey="pending" fill="var(--color-pending)" radius={4} />
+                                        <Bar
+                                            dataKey="material_accepted"
+                                            fill="var(--color-material_accepted)"
+                                            radius={4}
+                                        />
+                                    </BarChart>
+                                </ChartContainer>
+                            </div>
                         </div>
-                    </div>
-                    <h2 className='my-1 text-xl font-bold'>Progress Tiap Workstation</h2>
-                    <div className='mt-2 flex max-w-full'>
+                        <h2 className="text-xl my-1 font-bold">{t('pages.dashboard.index.all_workstations')}</h2>
+                        <h3 className="text-base">{t('pages.dashboard.index.workstations_sub')}</h3>
                         <ChartContainer
                             config={attachmentStatusOfWorkstationGraph.config}
                             className='mt-5 h-[300px] w-full'
@@ -684,10 +659,14 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     dataKey='workstation_name'
                                     className=''
                                     axisLine={false}
-                                    // tickFormatter={value => value.slice(0, 6)}
-                                />
-                                <ChartTooltip content={renderWorkstationProgressTooltipContent} />
-                                {/* <ChartTooltip content={<ChartTooltipContent formatter={(value, name) => name+' '+value} />} /> nyerah🗿 */}
+                                    // tickFormatter={value => value.slice(0, 6)} 
+                                    />
+                                ))
+                                {
+                                    // @ts-ignore
+                                    <YAxis className="" angle={-45} dataKey="workstation_name" type="category" />
+                                }
+                                <ChartTooltip content={<ChartTooltipContent />} />
                                 <ChartLegend content={<ChartLegendContent />} />
                                 {Object.keys(attachmentStatusOfWorkstationGraph.config).map(
                                     (dataKey) => (
@@ -759,13 +738,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </Pie>
                             </PieChart>
                         </ChartContainer> */}
-                    <div className='mx-auto max-w-7xl sm:px-6 lg:px-8'>
-                        <div className='overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg'>
-                            <div className='p-6 text-gray-900 dark:text-gray-100'>
+                    {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                            <div className="p-6 text-gray-900 dark:text-gray-100">
                                 {t('pages.dashboard.index.welcome')}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {/* </div> */}

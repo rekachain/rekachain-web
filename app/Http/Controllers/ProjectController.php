@@ -303,8 +303,9 @@ class ProjectController extends Controller {
                 'trainset' => $trainset,
             ];
         }
+        // return ;
 
-        return inertia('Project/Trainset/Panel/Index', compact('project', 'trainset'));
+        return inertia('Project/Trainset/Panel/Index', compact('project','trainset'));
     }
 
     public function project_trainset_carriageTrainsets(Request $request, Project $project, Trainset $trainset) {

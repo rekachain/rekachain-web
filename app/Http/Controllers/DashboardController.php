@@ -25,7 +25,7 @@ class DashboardController extends Controller {
         }
 
         $project = DB::select('SELECT * FROM `projects` ');
-        $ts = DB::select('SELECT trainsets.name as ts_name, projects.name as pj_name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name,trainsets.name;');
+        $ts = DB::select('SELECT trainsets.name as ts_name, projects.name as pj_name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name ,SUM(case when panel_attachments.status = "pending" then 1 else 0 end) as pending ,SUM(case when panel_attachments.status = "material_in_transit" then 1 else 0 end) as material_in_transit, SUM(case when panel_attachments.status = "material_accepted" then 1 else 0 end) as material_accepted FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name,trainsets.name;');
 
         // array_push($data, $project);
         $data['projectDetail'] = $project;
@@ -43,12 +43,15 @@ class DashboardController extends Controller {
 
         // SELECT * FROM `trainsets` WHERE trainsets.project_id = 1
 
-        $ts = DB::select('SELECT trainsets.name as ts_name , projects.name as project, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by projects.name,trainsets.name;', ['project' => $name]);
-        $ws = DB::select(
-            'SELECT projects.name as project,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by workshops.name, projects.name ;', ['project' => $name]
-        );
-        $panel = DB::select(' SELECT projects.name, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where projects.name = :project GROUP by panels.name,projects.name, panel_attachments.status ORDER BY `panels`.`name` ASC', ['project' => $name]);
-        //  dump($panel);
+        //SELECT * FROM `trainsets` WHERE trainsets.project_id = 1 
+
+
+        $ts=DB::select('SELECT trainsets.name as ts_name , projects.name as project, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress ,SUM(case when panel_attachments.status = "pending" then 1 else 0 end) as pending ,SUM(case when panel_attachments.status = "material_in_transit" then 1 else 0 end) as material_in_transit, SUM(case when panel_attachments.status = "material_accepted" then 1 else 0 end) as material_accepted   FROM `panel_attachments`inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by projects.name,trainsets.name;',['project'=>$name]);
+        // dump($ts);
+         $ws = DB::select(
+             'SELECT projects.name as project,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name ,SUM(case when panel_attachments.status = "pending" then 1 else 0 end) as pending ,SUM(case when panel_attachments.status = "material_in_transit" then 1 else 0 end) as material_in_transit, SUM(case when panel_attachments.status = "material_accepted" then 1 else 0 end) as material_accepted  FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 AND projects.name = :project GROUP by workshops.name, projects.name ;',['project'=>$name]
+         );
+         $panel = DB::select(' SELECT projects.name, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name,SUM(case when panel_attachments.status = "pending" then 1 else 0 end) as pending ,SUM(case when panel_attachments.status = "material_in_transit" then 1 else 0 end) as material_in_transit, SUM(case when panel_attachments.status = "material_accepted" then 1 else 0 end) as material_accepted  FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where projects.name = :project GROUP by panels.name,projects.name, panel_attachments.status ORDER BY `panels`.`name` ASC',['project'=>$name]);
         // $data = $this->dashboardService->showGraph($request->query());
 
         $data = [
@@ -104,20 +107,40 @@ class DashboardController extends Controller {
         // ");
         $tsList = DB::select('SELECT * FROM `trainsets` WHERE trainsets.project_id = :id', ['id' => $project[0]->id]);
 
-        $panel = DB::select("SELECT
-    'required' AS status,
-    SUM(total_required) AS total
-    FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+        // status for each panel
+    //    $panel = DB::select("SELECT 
+    // 'required' AS status, 
+    // SUM(total_required) AS total
+    // FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    // UNION ALL
+    // SELECT 
+    // 'fulfilled' AS status, 
+    // SUM(total_fulfilled) AS total
+    // FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    // UNION ALL
+    // SELECT 
+    // 'failed' AS status, 
+    // SUM(total_failed) AS total
+    // FROM trainset_attachment_components where trainset_attachment_coomponents.trainset_attachment_id = 1;");
+    
+    // Trainset Panel 
+    $panel = DB::select("WITH attachment_data AS (
+        SELECT 
+            trainset_attachment_components.total_required,
+            trainset_attachment_components.total_fulfilled,
+            trainset_attachment_components.total_failed
+        FROM trainset_attachment_components
+        INNER JOIN trainset_attachments 
+            ON trainset_attachment_components.trainset_attachment_id = trainset_attachments.id
+        WHERE trainset_attachments.trainset_id = :trainset
+    )
+    SELECT 'required' AS status, SUM(total_required-total_fulfilled) AS total FROM attachment_data
     UNION ALL
-    SELECT
-    'fulfilled' AS status,
-    SUM(total_fulfilled) AS total
-    FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1
+    SELECT 'fulfilled' AS status, SUM(total_fulfilled) AS total FROM attachment_data
     UNION ALL
-    SELECT
-    'failed' AS status,
-    SUM(total_failed) AS total
-    FROM trainset_attachment_components where trainset_attachment_components.trainset_attachment_id = 1;");
+    SELECT 'failed' AS status, SUM(total_failed) AS total FROM attachment_data;", ["trainset" => $trainset]);
+
+    // $panel = DB::select('SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name');
 
         // dump($panel);
 

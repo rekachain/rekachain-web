@@ -1,7 +1,7 @@
-import AddFeedback from '@/Components/AddFeedback';
-import { SearchResults } from '@/Components/SearchResult';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/UI/avatar';
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { useLocalStorage } from '@uidotdev/usehooks';
+import { Menu, Sun } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,6 +10,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/Components/UI/dropdown-menu';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+
+import { STYLING } from '@/Support/Constants/styling';
+import { ROUTES } from '@/Support/Constants/routes';
+import { useMediaQuery } from 'react-responsive';
+import AddFeedback from '@/Components/AddFeedback';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import useDarkMode from '@/Hooks/useDarkMode';
+import axios from 'axios';
+import { SearchResults } from '@/Components/SearchResult';
+// import { useLocalStorage } from '@uidotdev/usehooks';
 import { Input } from '@/Components/UI/input';
 import { Separator } from '@/Components/UI/separator';
 import {
@@ -20,10 +32,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/Components/UI/sheet';
-import useDarkMode from '@/Hooks/useDarkMode';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { ROUTES } from '@/Support/Constants/routes';
-import { STYLING } from '@/Support/Constants/styling';
 import { Link, usePage } from '@inertiajs/react';
 import {
     RiBook2Line,
@@ -32,12 +40,7 @@ import {
     RiNotification4Line,
     RiSearchLine,
 } from '@remixicon/react';
-import { useLocalStorage } from '@uidotdev/usehooks';
-import axios from 'axios';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'react-responsive';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -94,11 +97,9 @@ export default function Navbar() {
         changeHtmlClass();
     };
     return (
-        <nav className='flex h-16 items-center justify-between border-b-2 px-4 py-3'>
-            <div className='relative flex h-full w-28 items-center rounded border-2 px-2 sm:w-64'>
-                <label htmlFor='search'>
-                    <RiSearchLine className='md:5 h-3 w-3 md:h-5' />
-                </label>
+        <nav className="flex h-16 border-b-2 justify-between items-center px-4 py-3  w-full">
+            <div className="w-28 sm:w-64 h-full flex items-center rounded border-2 px-2">
+                 <label htmlFor="search"><RiSearchLine className="w-3 h-3 md:5 md:h-5" /></label>
                 <Input
                     value={searchQuery}
                     placeholder={t('action.search')}
@@ -117,33 +118,27 @@ export default function Navbar() {
                     )}
                 </label>
             </div>
-            <div className='flex h-full w-fit items-center gap-1 md:gap-2'>
-                <ViewManualBook />
 
-                <DownloadApp />
-
-                <ToggleDarkMode />
-
-                <Sheet>
-                    <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
-                        <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
-                    </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
-                            <SheetDescription>
-                                {t('components.navbar.notification.empty')}
-                            </SheetDescription>
-                        </SheetHeader>
-                    </SheetContent>
-                </Sheet>
-
-                <SetLocalization />
-
-                <AddFeedback />
-
-                <Separator orientation='vertical' className='w-[2px]' />
-
+            <div className="w-fit flex h-full items-center gap-1 md:gap-2">
+                <div className="hidden md:flex">
+                    <ViewManualBook />
+                    <DownloadApp />
+                    <ToggleDarkMode />
+                    <Sheet>
+                        <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                            <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
+                                <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                            </SheetHeader>
+                        </SheetContent>
+                    </Sheet>
+                    <SetLocalization />
+                    <AddFeedback />
+                    <Separator orientation="vertical" className="w-[2px]" />
+                </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <div className='flex justify-start gap-1 md:gap-2'>
@@ -188,12 +183,40 @@ export default function Navbar() {
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Separator orientation="vertical" className="w-[2px] md:hidden" />
+                <Select>
+                    <SelectTrigger className="w-fit border-none md:hidden">
+                        <Menu size={STYLING.ICON.SIZE.SMALL}></Menu>
+                    </SelectTrigger>
+                    <SelectContent className="w-fit">
+                        <div className="">
+                            <ViewManualBook />
+
+                            <DownloadApp />
+
+                            <ToggleDarkMode />
+                            <Sheet>
+                                <SheetTrigger className={buttonVariants({ variant: 'ghost', size: 'icon' })}>
+                                    <RiNotification4Line size={STYLING.ICON.SIZE.SMALL} />
+                                </SheetTrigger>
+                                <SheetContent>
+                                    <SheetHeader>
+                                        <SheetTitle>{t('components.navbar.notification.title')}</SheetTitle>
+                                        <SheetDescription>{t('components.navbar.notification.empty')}</SheetDescription>
+                                    </SheetHeader>
+                                </SheetContent>
+                            </Sheet>
+                            <SetLocalization />
+                            <AddFeedback />
+                        </div>
+                    </SelectContent>
+                </Select>
             </div>
         </nav>
     );
 }
 
-const ToggleDarkMode = () => {
+export const ToggleDarkMode = () => {
     const { t } = useLaravelReactI18n();
     const { darkMode, toggleDarkMode } = useDarkMode();
     return (
@@ -212,7 +235,7 @@ const ToggleDarkMode = () => {
     );
 };
 
-const ViewManualBook = () => {
+export const ViewManualBook = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
@@ -225,7 +248,7 @@ const ViewManualBook = () => {
     );
 };
 
-const DownloadApp = () => {
+export const DownloadApp = () => {
     const { t } = useLaravelReactI18n();
     return (
         <Link
