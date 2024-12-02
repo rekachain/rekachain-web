@@ -52,9 +52,11 @@ trait HandlesFiltering {
         if (isset($searchParams['search'])) {
             foreach ($relationFilterableColumns as $relation => $columns) {
                 $query->orWhereHas($relation, function ($query) use ($searchParams, $columns) {
-                    foreach ($columns as $column) {
-                        $query->where($column, 'like', '%' . $searchParams['search'] . '%');
-                    }
+                    $query->where(function ($query) use ($columns, $searchParams) {
+                        foreach ($columns as $column) {
+                            $query->orWhere($column, 'like', '%' . $searchParams['search'] . '%');
+                        }
+                    });
                 });
             }
         }
