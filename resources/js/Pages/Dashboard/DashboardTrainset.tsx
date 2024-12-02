@@ -12,7 +12,7 @@ import {
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
 // import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../../Types';
 
 import { Button } from '@/Components/UI/button';
@@ -35,6 +35,7 @@ import {
 import { withLoading } from '@/Utils/withLoading';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
+import { Separator } from '@radix-ui/react-select';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
