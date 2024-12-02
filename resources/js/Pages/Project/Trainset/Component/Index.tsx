@@ -1,12 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, Suspense, useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,6 +6,14 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { projectService } from '@/Services/projectService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Suspense, useState } from 'react';
 import Components from './Partials/Components';
 
 export default function ({
@@ -35,8 +35,8 @@ export default function ({
         <>
             <Head title={t('pages.project.component.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <div>
                             <Breadcrumb>
                                 <BreadcrumbList>
@@ -57,11 +57,13 @@ export default function ({
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">Komponen untuk {trainset.name}</h1>
+                            <h1 className='text-page-header my-4'>
+                                Komponen untuk {trainset.name}
+                            </h1>
                         </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Components project={project} trainset={trainset} />
+                        <Components trainset={trainset} project={project} />
                         {/* <Components project={project} handleSyncProject={handleSyncProject} /> */}
                     </Suspense>
                 </div>

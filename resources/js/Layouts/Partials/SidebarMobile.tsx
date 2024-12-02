@@ -39,10 +39,9 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/Components/UI/accordion';
+import { ScrollArea } from '@/Components/UI/scroll-area';
 import { checkPermission } from '@/Helpers/sidebarHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
-import { ScrollArea } from '@/Components/UI/scroll-area';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function SidebarMobile() {
@@ -91,7 +90,9 @@ export default function SidebarMobile() {
                                         <Link href={'dashboard'} className='mt-5'>
                                             <div className='flex items-center gap-2'>
                                                 <RiHome8Line size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.dashboard')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.dashboard')}
+                                                </p>
                                             </div>
                                         </Link>
                                         <Link
@@ -100,7 +101,9 @@ export default function SidebarMobile() {
                                         >
                                             <div className='flex items-center gap-2'>
                                                 <RiCalendar2Line size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.work_days')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.work_days')}
+                                                </p>
                                             </div>
                                         </Link>
                                         <Accordion type='single' collapsible>
@@ -108,8 +111,10 @@ export default function SidebarMobile() {
                                                 <AccordionTrigger>
                                                     <div className='flex items-center gap-2'>
                                                         <RiUser2Line size={35} />
-                                                        <p className="text-base">
-                                                            {t('components.sidebar.links.staff_management')}
+                                                        <p className='text-base'>
+                                                            {t(
+                                                                'components.sidebar.links.staff_management',
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </AccordionTrigger>
@@ -123,9 +128,13 @@ export default function SidebarMobile() {
                                                             )}
                                                             className='flex items-center gap-2'
                                                         >
-                                                            <RiDivideLine size={STYLING.ICON.SIZE.SMALL} />
-                                                            <p className="text-base">
-                                                                {t('components.sidebar.links.divisions')}
+                                                            <RiDivideLine
+                                                                size={STYLING.ICON.SIZE.SMALL}
+                                                            />
+                                                            <p className='text-base'>
+                                                                {t(
+                                                                    'components.sidebar.links.divisions',
+                                                                )}
                                                             </p>
                                                         </Link>
                                                     )}
@@ -139,9 +148,13 @@ export default function SidebarMobile() {
                                                             )}
                                                             className='flex items-center gap-2'
                                                         >
-                                                            <RiHome2Line size={STYLING.ICON.SIZE.SMALL} />
-                                                            <p className="text-base">
-                                                                {t('components.sidebar.links.workshops')}
+                                                            <RiHome2Line
+                                                                size={STYLING.ICON.SIZE.SMALL}
+                                                            />
+                                                            <p className='text-base'>
+                                                                {t(
+                                                                    'components.sidebar.links.workshops',
+                                                                )}
                                                             </p>
                                                         </Link>
                                                     )}
@@ -155,9 +168,13 @@ export default function SidebarMobile() {
                                                             )}
                                                             className='flex items-center gap-2'
                                                         >
-                                                            <RiToolsFill size={STYLING.ICON.SIZE.SMALL} />
-                                                            <p className="text-base">
-                                                                {t('components.sidebar.links.workstations')}
+                                                            <RiToolsFill
+                                                                size={STYLING.ICON.SIZE.SMALL}
+                                                            />
+                                                            <p className='text-base'>
+                                                                {t(
+                                                                    'components.sidebar.links.workstations',
+                                                                )}
                                                             </p>
                                                         </Link>
                                                     )}
@@ -167,9 +184,13 @@ export default function SidebarMobile() {
                                                             href={route(`${ROUTES.USERS}.index`)}
                                                             className='flex items-center gap-2'
                                                         >
-                                                            <RiUserLine size={STYLING.ICON.SIZE.SMALL} />
-                                                            <p className="text-base">
-                                                                {t('components.sidebar.links.staff')}
+                                                            <RiUserLine
+                                                                size={STYLING.ICON.SIZE.SMALL}
+                                                            />
+                                                            <p className='text-base'>
+                                                                {t(
+                                                                    'components.sidebar.links.staff',
+                                                                )}
                                                             </p>
                                                         </Link>
                                                     )}
@@ -182,8 +203,10 @@ export default function SidebarMobile() {
                                                 <AccordionTrigger>
                                                     <div className='flex items-center gap-2'>
                                                         <RiBox3Line size={35} />
-                                                        <p className="text-base">
-                                                            {t('components.sidebar.links.access_control')}
+                                                        <p className='text-base'>
+                                                            {t(
+                                                                'components.sidebar.links.access_control',
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </AccordionTrigger>
@@ -193,16 +216,18 @@ export default function SidebarMobile() {
                                                         className='flex items-center gap-2'
                                                     >
                                                         <RiLockUnlockFill size={25} />
-                                                        <p className="text-base">
-                                                            {t('components.sidebar.links.permissions')}
+                                                        <p className='text-base'>
+                                                            {t(
+                                                                'components.sidebar.links.permissions',
+                                                            )}
                                                         </p>
                                                     </Link>
                                                     <Link
                                                         href={route(`${ROUTES.ROLES}.index`)}
                                                         className='flex items-center gap-2'
                                                     >
-                                                        <RiShieldLine className="mt-2" size={25} />
-                                                        <p className="text-base">
+                                                        <RiShieldLine size={25} className='mt-2' />
+                                                        <p className='text-base'>
                                                             {t('components.sidebar.links.roles')}
                                                         </p>
                                                     </Link>
@@ -228,7 +253,7 @@ export default function SidebarMobile() {
                                                 className='flex items-center gap-2'
                                             >
                                                 <RiInstanceLine size={35} />
-                                                <p className="text-base">
+                                                <p className='text-base'>
                                                     {t('components.sidebar.links.raw_materials')}
                                                 </p>
                                             </Link>
@@ -239,7 +264,9 @@ export default function SidebarMobile() {
                                                 className='flex items-center gap-2'
                                             >
                                                 <RiStackLine size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.components')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.components')}
+                                                </p>
                                             </Link>
                                         )}
                                         {checkPermission(PERMISSION_ENUM.PANEL_READ) && (
@@ -248,7 +275,9 @@ export default function SidebarMobile() {
                                                 className='flex items-center gap-2'
                                             >
                                                 <RiArtboard2Fill size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.panels')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.panels')}
+                                                </p>
                                             </Link>
                                         )}
                                         {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
@@ -257,7 +286,9 @@ export default function SidebarMobile() {
                                                 className='flex items-center gap-2'
                                             >
                                                 <RiBox3Line size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.projects')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.projects')}
+                                                </p>
                                             </Link>
                                         )}
                                         {checkPermission(PERMISSION_ENUM.CARRIAGE_READ) && (
@@ -266,7 +297,9 @@ export default function SidebarMobile() {
                                                 className='flex items-center gap-2'
                                             >
                                                 <RiCaravanLine size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.carriages')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.carriages')}
+                                                </p>
                                             </Link>
                                         )}
 
@@ -276,14 +309,18 @@ export default function SidebarMobile() {
                                                 className='m flex items-center gap-2'
                                             >
                                                 <RiSettings3Line size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.settings')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.settings')}
+                                                </p>
                                             </Link>
                                             <Link
                                                 href={route(`${ROUTES.PROFILE}.edit`)}
                                                 className='flex items-center gap-2'
                                             >
                                                 <RiQuestionLine size={35} />
-                                                <p className="text-base">{t('components.sidebar.links.feedback')}</p>
+                                                <p className='text-base'>
+                                                    {t('components.sidebar.links.feedback')}
+                                                </p>
                                             </Link>
                                             <SidebarLogout />
                                         </div>

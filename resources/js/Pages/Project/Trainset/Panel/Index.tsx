@@ -1,13 +1,4 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, memo, Suspense, useState } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Button } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import { ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import { Label } from '@/Components/UI/label';
-import { Input } from '@/Components/UI/input';
-import { projectService } from '@/Services/projectService';
-import { Loader2 } from 'lucide-react';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -15,17 +6,25 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
-import { ROUTES } from '@/Support/Constants/routes';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { ROUTES } from '@/Support/Constants/routes';
+import { ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Carriage } from '@/Support/Interfaces/Models';
+import { lazy, memo, Suspense } from 'react';
 import Panels from './Partials/Panels';
 
 const Trainsets = memo(lazy(() => import('../Partials/Trainsets')));
 
-export default function ({ trainset, project }: { trainset: TrainsetResource; project: ProjectResource }) {
+export default function ({
+    trainset,
+    project,
+}: {
+    trainset: TrainsetResource;
+    project: ProjectResource;
+}) {
     const { t } = useLaravelReactI18n();
     // const [project, setProject] = useState<ProjectResource>(initialProject);
     const { data, setData, reset } = useForm({
@@ -34,7 +33,7 @@ export default function ({ trainset, project }: { trainset: TrainsetResource; pr
 
     const { loading } = useLoading();
 
-    const handleAddTrainset = withLoading(async e => {
+    const handleAddTrainset = withLoading(async (e) => {
         e.preventDefault();
         console.log('==========');
         console.log(trainset);
@@ -53,8 +52,8 @@ export default function ({ trainset, project }: { trainset: TrainsetResource; pr
         <>
             <Head title={'Trainset Component'} />
             <AuthenticatedLayout>
-                <div className="p-4 space-y-4">
-                    <div className="flex flex-col gap-2">
+                <div className='space-y-4 p-4'>
+                    <div className='flex flex-col gap-2'>
                         <div>
                             <Breadcrumb>
                                 <BreadcrumbList>
@@ -75,7 +74,7 @@ export default function ({ trainset, project }: { trainset: TrainsetResource; pr
                                     </BreadcrumbItem>
                                 </BreadcrumbList>
                             </Breadcrumb>
-                            <h1 className="text-page-header my-4">Panel untuk {trainset.name}</h1>
+                            <h1 className='text-page-header my-4'>Panel untuk {trainset.name}</h1>
 
                             {/* <h1 className="text-page-header my-4">
                                 {t('pages.project.trainset.index.title', { name: project.name })}
@@ -130,7 +129,7 @@ export default function ({ trainset, project }: { trainset: TrainsetResource; pr
                         </div> */}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <Panels project={project} trainset={trainset}></Panels>
+                        <Panels trainset={trainset} project={project}></Panels>
                         {/* <Trainsets project={project} handleSyncProject={handleSyncProject} /> */}
                     </Suspense>
                 </div>
