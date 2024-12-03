@@ -94,10 +94,9 @@ class User extends Authenticatable {
         'columns' => [
             'step_id', 'workstation_id',
         ],
-    ];
-    protected $filterableRelations = [
-        'step',
-        'workstation',
+        'relations' => [
+            'step', 'workstation',
+        ],
     ];
 
     public function workstation(): HasOne {
