@@ -63,7 +63,7 @@ const ProgressComponent = ({
                             <div className='flex flex-col gap-4'>
                                 {progress.carriage_panel_components.map((componentProgress) => (
                                     <div key={`${componentProgress.carriage_panel_component_id}`}>
-                                        <div className='flex items-center justify-center space-x-2 pb-1'>
+                                        <div className='flex items-center justify-center space-x-2'>
                                             <div className='flex-1'>
                                                 <h3 className='text-right'>
                                                     {t(
@@ -89,7 +89,7 @@ const ProgressComponent = ({
                                         </div>
                                         <div className='flex'>
                                             <ScrollArea className='flex w-1 flex-1'>
-                                                <div className='flex w-max space-x-4 p-4'>
+                                                <div className='flex w-max space-x-4 p-4 mx-auto'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
                                                             {componentProgress.steps.map(

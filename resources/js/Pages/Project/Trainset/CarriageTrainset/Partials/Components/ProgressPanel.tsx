@@ -61,7 +61,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                     <div
                                         key={`${progress.panel.name} ${serialPanelProgress.serial_number}`}
                                     >
-                                        <div className='flex items-center justify-center space-x-2 pb-1'>
+                                        <div className='flex items-center justify-center space-x-2'>
                                             <div className='flex-1'>
                                                 <h3 className='text-right'>
                                                     {t(
@@ -90,7 +90,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                         </div>
                                         <div className='flex'>
                                             <ScrollArea className='flex w-1 flex-1'>
-                                                <div className='flex w-max space-x-4 p-4'>
+                                                <div className='flex w-max space-x-4 p-4 mx-auto'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
                                                             {serialPanelProgress.steps.map(
