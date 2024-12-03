@@ -131,7 +131,6 @@ class TrainsetAttachmentResource extends JsonResource {
                 }
                 $components = $components->values();
 
-
                 return [
                     'attachment_number' => $this->attachment_number,
                     'components' => $components,
