@@ -817,8 +817,9 @@ return [
                 'description' => 'Description',
                 'trainset_needed' => 'Trainset Needed',
                 'initial_date' => 'Initial Date',
-                'estimated_start_date' => 'Estimated Start Date',
-                'estimated_end_date' => 'Estimated End Date',
+                'estimated_start_date' => 'Estimated Start Date (OPTIONAL)',
+                'estimated_end_date' => 'Estimated End Date (OPTIONAL)',
+                'buyer_selection' => 'Customer (OPTIONAL)',
             ],
             'buttons' => [
                 'submit' => 'Create Project',
@@ -2021,6 +2022,25 @@ return [
                         'trainsets' => 'Trainsets',
                         'components' => 'Components',
                         'panels' => 'Panels',
+                    ],
+                ],
+                'buyer_form' => [
+                    'fields' => [
+                        'buyer' => 'Customer',
+                        'name' => 'Name',
+                        'email' => 'Email',
+                        'phone_number' => 'Phone Number',
+                        'password' => 'Password',
+                    ],
+                    'placeholders' => [
+                        'buyer' => 'Select Customer...',
+                        'name' => 'Input Name...',
+                        'email' => 'Input Email...',
+                        'phone_number' => 'Input Phone Number...',
+                        'password' => 'Input Password...',
+                    ],
+                    'messages' => [
+                        'created' => 'Buyer created successfully!',
                     ],
                 ],
             ],

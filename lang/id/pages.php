@@ -817,8 +817,9 @@ return [
                 'description' => 'Deskripsi',
                 'trainset_needed' => 'Trainset Diperlukan',
                 'initial_date' => 'Tanggal Awal',
-                'estimated_start_date' => 'Estimasi Tanggal Mulai',
-                'estimated_end_date' => 'Estimasi Tanggal Selesai',
+                'estimated_start_date' => 'Estimasi Tanggal Mulai (OPSIONAL)',
+                'estimated_end_date' => 'Estimasi Tanggal Selesai (OPSIONAL)',
+                'buyer_selection' => 'Pembeli (OPSIONAL)',
             ],
             'buttons' => [
                 'submit' => 'Buat Proyek',
@@ -2021,6 +2022,25 @@ return [
                         'trainsets' => 'Trainset',
                         'components' => 'Komponen',
                         'panels' => 'Panel',
+                    ],
+                ],
+                'buyer_form' => [
+                    'fields' => [
+                        'buyer' => 'Pembeli',
+                        'name' => 'Nama',
+                        'email' => 'Email',
+                        'phone_number' => 'Nomor Telepon',
+                        'password' => 'Kata Sandi',
+                    ],
+                    'placeholders' => [
+                        'buyer' => 'Pilih Pembeli...',
+                        'name' => 'Masukkan Nama...',
+                        'email' => 'Masukkan Email...',
+                        'phone_number' => 'Masukkan Nomor Telepon...',
+                        'password' => 'Masukkan Kata Sandi...',
+                    ],
+                    'messages' => [
+                        'created' => 'Pembeli berhasil dibuat!',
                     ],
                 ],
             ],

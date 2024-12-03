@@ -32,6 +32,9 @@ class StoreProjectRequest extends FormRequest {
                     'name' => 'required',
                     'trainset_needed' => 'required|numeric|min:0',
                     'initial_date' => 'required|date',
+                    'estimated_start_date' => 'nullable|date',
+                    'estimated_end_date' => 'nullable|date',
+                    'buyer_id' => 'nullable|exists:users,id',
                 ];
         }
     }

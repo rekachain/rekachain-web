@@ -98,75 +98,79 @@ export default function () {
                             autoComplete='description'
                         />
                     </div>
+                    <div className="mt-4 flex flex-row gap-4">
+                        <div className='w-1/2'>
+                            <InputLabel
+                                value={t('pages.project.create.fields.trainset_needed')}
+                                htmlFor='trainset_needed'
+                            />
+                            <Input
+                                value={data.trainset_needed}
+                                type='number'
+                                required
+                                onChange={(e) => setData('trainset_needed', +e.target.value)}
+                                name='trainset_needed'
+                                id='trainset_needed'
+                                className='mt-1'
+                                autoComplete='trainset_needed'
+                            />
+                        </div>
 
-                    <div className='mt-4'>
-                        <InputLabel
-                            value={t('pages.project.create.fields.trainset_needed')}
-                            htmlFor='trainset_needed'
-                        />
-                        <Input
-                            value={data.trainset_needed}
-                            type='number'
-                            required
-                            onChange={(e) => setData('trainset_needed', +e.target.value)}
-                            name='trainset_needed'
-                            id='trainset_needed'
-                            className='mt-1'
-                            autoComplete='trainset_needed'
-                        />
+                        <div className='w-1/2'>
+                            <InputLabel
+                                value={t('pages.project.create.fields.estimated_start_date')}
+                                htmlFor='estimated_start_date'
+                            />
+                            <Input
+                                value={data.estimated_start_date || ''}
+                                type='date'
+                                onChange={(e) => setData('estimated_start_date', e.target.value)}
+                                name='estimated_start_date'
+                                id='estimated_start_date'
+                                className='mt-1'
+                                autoComplete='estimated_start_date'
+                            />
+                        </div>
                     </div>
 
-                    <div className='mt-4'>
-                        <InputLabel
-                            value={t('pages.project.create.fields.initial_date')}
-                            htmlFor='initial_date'
-                        />
-                        <Input
-                            value={data.initial_date}
-                            type='date'
-                            required
-                            onChange={(e) => setData('initial_date', e.target.value)}
-                            name='initial_date'
-                            id='initial_date'
-                            className='mt-1'
-                            autoComplete='initial_date'
-                        />
+                    <div className="mt-4 flex flex-row gap-4">
+                        <div className='w-1/2'>
+                            <InputLabel
+                                value={t('pages.project.create.fields.initial_date')}
+                                htmlFor='initial_date'
+                            />
+                            <Input
+                                value={data.initial_date}
+                                type='date'
+                                required
+                                onChange={(e) => setData('initial_date', e.target.value)}
+                                name='initial_date'
+                                id='initial_date'
+                                className='mt-1'
+                                autoComplete='initial_date'
+                            />
+                        </div>
+
+                        <div className='w-1/2'>
+                            <InputLabel
+                                value={t('pages.project.create.fields.estimated_end_date')}
+                                htmlFor='estimated_end_date'
+                            />
+                            <Input
+                                value={data.estimated_end_date || ''}
+                                type='date'
+                                onChange={(e) => setData('estimated_end_date', e.target.value)}
+                                name='estimated_end_date'
+                                id='estimated_end_date'
+                                className='mt-1'
+                                autoComplete='estimated_end_date'
+                            />
+                        </div>
                     </div>
 
-                    <div className='mt-4'>
-                        <InputLabel
-                            value={t('pages.project.create.fields.estimated_start_date')}
-                            htmlFor='estimated_start_date'
-                        />
-                        <Input
-                            value={data.estimated_start_date || ''}
-                            type='date'
-                            onChange={(e) => setData('estimated_start_date', e.target.value)}
-                            name='estimated_start_date'
-                            id='estimated_start_date'
-                            className='mt-1'
-                            autoComplete='estimated_start_date'
-                        />
-                    </div>
-
-                    <div className='mt-4'>
-                        <InputLabel
-                            value={t('pages.project.create.fields.estimated_end_date')}
-                            htmlFor='estimated_end_date'
-                        />
-                        <Input
-                            value={data.estimated_end_date || ''}
-                            type='date'
-                            onChange={(e) => setData('estimated_end_date', e.target.value)}
-                            name='estimated_end_date'
-                            id='estimated_end_date'
-                            className='mt-1'
-                            autoComplete='estimated_end_date'
-                        />
-                    </div>
-                    <Accordion type='single' collapsible>
+                    <Accordion type='single' collapsible className='mt-4'>
                         <AccordionItem value='item-1'>
-                            <AccordionTrigger>{'Pembeli (OPSIONAL)'}</AccordionTrigger>
+                            <AccordionTrigger>{t('pages.project.create.fields.buyer_selection')}</AccordionTrigger>
                             <AccordionContent>
                                 <BuyerForm
                                     setBuyerId={(buyer_id: number) => setData('buyer_id', buyer_id)}
