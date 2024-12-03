@@ -115,9 +115,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
                     ];
                 });
-                if (isset($request->unique)) {
-                    if ($request->get('unique') == true) $components = $components->unique('component');
-                } else {
+                if (!isset($request->unique) || $request->get('unique') == true) {
                     $components = $components->unique('component');
                 }
                 $components = $components->values();
