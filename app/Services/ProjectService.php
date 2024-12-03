@@ -106,87 +106,10 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return true;
     }
 
-    public function calculateEstimatedTime($project_id = null, $trainset_id = null) {
+    public function calculateEstimatedTime($project_id = null) {
         $mechanicTime = 0;
         $electricalTime = 0;
         $assemblyTime = 0;
-
-        if ($trainset_id) {
-            $trainset = \App\Models\Trainset::with(['carriage_trainsets' => [
-                'carriage_panels' => [
-                    'progress.steps'
-                ]
-            ]])->findOrFail($trainset_id);
-
-            foreach ($trainset->carriage_trainsets as $carriageTrainset) {
-                foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
-                    $stepTime = 0;
-                    foreach ($carriagePanel->progress->steps as $step) {
-                        $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
-                    }
-
-                    switch($carriagePanel->progress->work_aspect_id) {
-                        case 1: // Mechanic
-                            $mechanicTime += $stepTime;
-                            break;
-                        case 2: // Electric
-                            $electricalTime += $stepTime;
-                            break;
-                        case 3: // Assembly
-                            $assemblyTime += $stepTime;
-                            break;
-                    }
-
-                    foreach($carriagePanel->carriage_panel_components as $component) {
-                        $componentStepTime = 0;
-                        foreach ($component->progress->steps as $step) {
-                            $componentStepTime = $step->estimated_time * $component->qty * $carriagePanel->qty * $carriageTrainset->qty;
-                        }
-
-                        switch($component->progress->work_aspect_id) {
-                            case 1: // Mechanic
-                                $mechanicTime += $componentStepTime;
-                                break;
-                            case 2: // Electric
-                                $electricalTime += $componentStepTime;
-                                break;
-                            case 3: // Assembly
-                                $assemblyTime += $componentStepTime;
-                                break;
-                        }
-                    }
-                }
-            }
-
-            $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
-
-            $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
-            $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
-
-            // Get project start date
-            $startDate = $trainset->project->initial_date;
-            $endDate = Carbon::parse($startDate);
-
-            // Add working days considering only Monday-Friday
-            for ($i = 0; $i < $calculatedEstimateTime; $i++) {
-                $endDate->addDay();
-                // Skip weekends
-                while ($endDate->isWeekend()) {
-                    $endDate->addDay();
-                }
-            }
-
-            return response()->json([
-                'trainset_id' => $trainset_id,
-                'mechanical_time' => $mechanicTime,
-                'electrical_time' => $electricalTime,
-                'assembly_time' => $assemblyTime,
-                'total_estimated_time' => $totalTime,
-                'calculated_estimate_time' => $calculatedEstimateTime,
-                'initial_date' => $startDate,
-                'estimated_end_date' => $endDate->format('Y-m-d')
-            ]);
-        }
 
         if ($project_id) {
             $project = \App\Models\Project::with(['trainsets.carriage_trainsets' => [
@@ -194,6 +117,8 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                     'progress.steps'
                 ]
             ]])->findOrFail($project_id);
+
+            $lastTrainset = $project->trainsets->last();
 
             foreach ($project->trainsets as $trainset) {
                 foreach ($trainset->carriage_trainsets as $carriageTrainset) {
@@ -211,7 +136,9 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                                 $electricalTime += $stepTime;
                                 break;
                             case 3: // Assembly
-                                $assemblyTime += $stepTime;
+                                if ($trainset->id === $lastTrainset->id) {
+                                    $assemblyTime += $stepTime;
+                                }
                                 break;
                         }
 
@@ -229,7 +156,9 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                                     $electricalTime += $componentStepTime;
                                     break;
                                 case 3: // Assembly
-                                    $assemblyTime += $componentStepTime;
+                                    if ($trainset->id === $lastTrainset->id) {
+                                        $assemblyTime += $stepTime;
+                                    }
                                     break;
                             }
                         }
@@ -254,25 +183,28 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                     $endDate->addDay();
                 }
             }
-            
-            // Save calculated estimate time and end date to the project
-            $project->calculated_estimate_time = $calculatedEstimateTime;
-            $project->estimated_end_date = $endDate->format('Y-m-d');
-            $project->save();
 
-            return response()->json([
-                'project_id' => $project_id,
-                'mechanical_time' => $mechanicTime,
-                'electrical_time' => $electricalTime,
-                'assembly_time' => $assemblyTime,
-                'total_estimated_time' => $totalTime,
+            // Save calculated estimate time and end date to the project
+            $project->update([
                 'calculated_estimate_time' => $calculatedEstimateTime,
-                'initial_date' => $startDate,
                 'estimated_end_date' => $endDate->format('Y-m-d')
             ]);
+            
+            return true;
+
+            // return response()->json([
+            //     'project_id' => $project_id,
+            //     'mechanical_time' => $mechanicTime,
+            //     'electrical_time' => $electricalTime,
+            //     'assembly_time' => $assemblyTime,
+            //     'total_estimated_time' => $totalTime,
+            //     'calculated_estimate_time' => $calculatedEstimateTime,
+            //     'initial_date' => $startDate,
+            //     'estimated_end_date' => $endDate->format('Y-m-d')
+            // ]);
         }
 
-        return response()->json(['message' => 'Please provide project_id or trainset_id']);
+        return response()->json(['message' => 'Please provide project_id']);
     }
 
     public function updateInitialDate(Project $project, array $data): bool {
