@@ -28,9 +28,11 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         return DetailWorkerTrainsetRepositoryInterface::class;
     }
 
-    public function rejectWork($detailWorkerTrainset, $data) {
+    public function rejectWork(DetailWorkerTrainset $detailWorkerTrainset, array $data) {
         $this->createFailedComponentManufacture($detailWorkerTrainset, $data);
-
+        $detailWorkerTrainset->update([
+            'work_status' => DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value,
+        ]);
         return $detailWorkerTrainset;
     }
 
