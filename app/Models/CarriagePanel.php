@@ -25,6 +25,7 @@ class CarriagePanel extends Model {
             'progress_id',
             'carriage_trainset_id',
             'panel_id',
+            'qty',
         ],
         'relations' => ['carriage_trainset'],
     ];
