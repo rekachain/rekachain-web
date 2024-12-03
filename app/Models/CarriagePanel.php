@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,13 +10,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class CarriagePanel extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'progress_id',
         'carriage_trainset_id',
         'panel_id',
         'qty',
+    ];
+
+    protected $filterable = [
+        'searchs' => [],
+        'columns' => [
+            'progress_id',
+            'carriage_trainset_id',
+            'panel_id',
+        ],
+        'relations' => ['carriage_trainset'],
     ];
 
     public function progress(): BelongsTo {
