@@ -30,14 +30,14 @@ const ProgressComponent = ({
 }) => {
     const { t } = useLaravelReactI18n();
 
-    const [trainsetAttachmentProgress, setTrainsetAttachmentProgress] =
+    const [componentProgress, setComponentProgress] =
         useState<ComponentProgressResource[]>();
 
     const loadProgress = withLoading(async () => {
         const progress = (await trainsetAttachmentService.get(attachment.id, {
             intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS,
         })) as unknown as ComponentProgressResource[];
-        setTrainsetAttachmentProgress(progress);
+        setComponentProgress(progress);
     });
 
     useEffect(() => {
@@ -47,12 +47,12 @@ const ProgressComponent = ({
     return (
         <div key={attachment.id} className='text-black dark:text-white'>
             <h1 className='text-xl font-bold'>{title}</h1>
-            {trainsetAttachmentProgress == null ||
-                (trainsetAttachmentProgress.length === 0 && (
+            {componentProgress == null ||
+                (componentProgress.length === 0 && (
                     <h3>{'Kososng🗿' + attachment.status}</h3>
                 )) ||
-                (trainsetAttachmentProgress &&
-                    trainsetAttachmentProgress.map((progress) => (
+                (componentProgress &&
+                    componentProgress.map((progress, index) => (
                         <div key={progress.component.id}>
                             <h4 className='text-lg font-bold'>
                                 {t(
@@ -60,10 +60,10 @@ const ProgressComponent = ({
                                     { component: progress.component.name },
                                 )}
                             </h4>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-4'>
                                 {progress.carriage_panel_components.map((componentProgress) => (
                                     <div key={`${componentProgress.carriage_panel_component_id}`}>
-                                        <div className='flex items-center justify-center space-x-2 pb-1'>
+                                        <div className='flex items-center justify-center space-x-2'>
                                             <div className='flex-1'>
                                                 <h3 className='text-right'>
                                                     {t(
@@ -88,8 +88,8 @@ const ProgressComponent = ({
                                             </div>
                                         </div>
                                         <div className='flex'>
-                                            <ScrollArea className='flex w-1 flex-1 rounded-md border'>
-                                                <div className='flex w-max space-x-4 p-4'>
+                                            <ScrollArea className='flex w-1 flex-1'>
+                                                <div className='flex w-max space-x-4 p-4 mx-auto'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
                                                             {componentProgress.steps.map(
@@ -169,8 +169,10 @@ const ProgressComponent = ({
                                         </div>
                                     </div>
                                 ))}
-                                <Separator className='my-4 h-1' />
                             </div>
+                            {index < componentProgress.length - 1 && (
+                                <Separator className='my-4 h-1' />
+                            )}
                         </div>
                     )))}
         </div>

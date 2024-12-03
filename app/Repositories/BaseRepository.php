@@ -3,12 +3,13 @@
 namespace App\Repositories;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository as AdobrovolskyBaseRepository;
+use App\Support\Interfaces\Repositories\BaseRepositoryInterface;
 use App\Traits\Repositories\HandlesFiltering;
 use App\Traits\Repositories\HandlesRelations;
 use App\Traits\Repositories\HandlesSorting;
 use Illuminate\Database\Eloquent\Builder;
 
-abstract class BaseRepository extends AdobrovolskyBaseRepository {
+abstract class BaseRepository extends AdobrovolskyBaseRepository implements BaseRepositoryInterface {
     use HandlesFiltering, HandlesRelations, HandlesSorting;
 
     protected function applyFilters(array $searchParams = []): Builder {

@@ -108,8 +108,8 @@ export default function ({
             <Pagination>
                 <PaginationContent className=' '>
                     <div className='grid grid-cols-8 md:flex'>
-                        {meta.links.map((link) => (
-                            <ConditionallyRenderPagination link={link} key={link.label} />
+                        {meta.links.map((link, index) => (
+                            <ConditionallyRenderPagination link={link} key={`${link.label}-${index}`} />
                         ))}
                     </div>
                 </PaginationContent>

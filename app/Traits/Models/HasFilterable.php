@@ -4,7 +4,7 @@ namespace App\Traits\Models;
 
 trait HasFilterable {
     public function getFilterableRelations(): array {
-        return $this->filterableRelations ?? [];
+        return $this->filterable['relations'] ?? [];
     }
 
     public function getFilterable(): array {

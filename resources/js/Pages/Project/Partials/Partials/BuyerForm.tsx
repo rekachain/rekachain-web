@@ -78,21 +78,23 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
         data.user_password && formData.append('password', data.user_password);
         const res = await userService.create(formData);
         void refreshUser(res);
-        void useSuccessToast('Sukses');
+        void useSuccessToast(t('pages.project.partials.partials.buyer_form.messages.created'));
     }, true);
 
     return (
         <form onSubmit={handleAddUser}>
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-4'>
-                    <Label htmlFor='user'>{'Pembeli: '}</Label>
+                    <Label htmlFor='user'>{t('pages.project.partials.partials.buyer_form.fields.buyer')}: </Label>
                     <div className='flex items-center'>
                         <GenericDataSelector
                             setSelectedData={(id) => setData('buyer_id', id)}
                             selectedDataId={data.buyer_id ?? null}
                             renderItem={(item: UserResource) => item.name}
                             placeholder={
-                                data.buyer_id !== null ? data.user_name : 'Pilih Pembeli...'
+                                data.buyer_id !== null ? data.user_name : t(
+                                    'pages.project.partials.partials.buyer_form.placeholders.buyer',
+                                )
                             }
                             onSearchChange={setSearchUser}
                             nullable
@@ -108,28 +110,34 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
                             <RefreshCcw />
                         </Button>
                     </div>
-                    <Label htmlFor='email'>{'Email: '}</Label>
+                    <Label htmlFor='email'>{t('pages.project.partials.partials.buyer_form.fields.email')}: </Label>
                     <Input
                         value={data.user_email || ''}
                         type='email'
-                        placeholder={data.user_email !== '' ? '-' : 'Masukkan Email...'}
+                        required
+                        placeholder={data.user_email !== '' ? '-' : t(
+                            'pages.project.partials.partials.buyer_form.placeholders.email',
+                        )}
                         onChange={(e) => setData('user_email', e.target.value)}
                         id='email'
                         disabled={data.buyer_id !== null}
                     />
-                    <Label htmlFor='name'>{'Nama: '}</Label>
+                    <Label htmlFor='buyer_name'>{t('pages.project.partials.partials.buyer_form.fields.name')}: </Label>
                     <Input
                         value={data.user_name}
-                        placeholder={'Masukkan Nama...'}
+                        required
+                        placeholder={t('pages.project.partials.partials.buyer_form.placeholders.name')}
                         onChange={(e) => setData('user_name', e.target.value)}
-                        id='name'
+                        id='buyer_name'
                         disabled={data.buyer_id !== null}
                     />
-                    <Label htmlFor='phone_number'>{'Nomor Telepon: '}</Label>
+                    <Label htmlFor='phone_number'>{t('pages.project.partials.partials.buyer_form.fields.phone_number')}: </Label>
                     <Input
                         value={data.user_phone_number || ''}
                         placeholder={
-                            data.user_phone_number !== '' ? '-' : 'Masukkan Nomor Telepon...'
+                            data.user_phone_number !== '' ? '-' : t(
+                                'pages.project.partials.partials.buyer_form.placeholders.phone_number',
+                            )
                         }
                         onChange={(e) => setData('user_phone_number', e.target.value)}
                         id='phone_number'
@@ -137,11 +145,12 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
                     />
                     {!data.buyer_id && (
                         <>
-                            <Label htmlFor='password'>{'Password: '}</Label>
+                            <Label htmlFor='password'>{t('pages.project.partials.partials.buyer_form.fields.password')}: </Label>
                             <Input
                                 value={data.user_password}
+                                required
                                 type='password'
-                                placeholder={'Masukkan Password...'}
+                                placeholder={t('pages.project.partials.partials.buyer_form.placeholders.password')}
                                 onChange={(e) => setData('user_password', e.target.value)}
                                 id='password'
                                 disabled={data.buyer_id !== null}
