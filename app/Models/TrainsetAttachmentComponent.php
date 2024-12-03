@@ -13,7 +13,7 @@ use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class TrainsetAttachmentComponent extends Model {
-    use HasFactory, HasRelationships, HasFilterable;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'trainset_attachment_id',
@@ -22,13 +22,12 @@ class TrainsetAttachmentComponent extends Model {
         'total_fulfilled',
         'total_failed',
     ];
-
     protected $filterable = [
         'search' => [],
         'columns' => ['trainset_attachment_id', 'carriage_panel_component_id'],
         'relations' => [
-            'carriage_panel', 
-            'carriage_trainset'
+            'carriage_panel',
+            'carriage_trainset',
         ],
     ];
 

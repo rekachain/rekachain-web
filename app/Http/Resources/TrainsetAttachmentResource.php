@@ -12,6 +12,7 @@ class TrainsetAttachmentResource extends JsonResource {
         parent::__construct($resource);
         $this->trainsetAttachmentComponentRepository = app(TrainsetAttachmentComponentRepositoryInterface::class);
     }
+
     public function toArray(Request $request): array {
         $intent = $request->get('intent');
 
@@ -111,7 +112,7 @@ class TrainsetAttachmentResource extends JsonResource {
                 $trainsetAttachmentComponents = $this->trainsetAttachmentComponentRepository
                     ->useFilters(array_merge_recursive($request->query(), [
                         'column_filters' => [
-                            'trainset_attachment_id' => $trainsetAttachment->id
+                            'trainset_attachment_id' => $trainsetAttachment->id,
                         ],
                     ]))->get();
                 $components = $trainsetAttachmentComponents->filter(function ($trainset_attachment_component) {

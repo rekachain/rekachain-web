@@ -17,15 +17,14 @@ class CarriageTrainset extends Pivot {
         'carriage_id',
         'qty',
     ];
-
     protected $filterable = [
         'searchs' => [],
         'columns' => [
-            'trainset_id', 
+            'trainset_id',
             'carriage_id',
             'qty',
         ],
-        'relations' => []
+        'relations' => [],
     ];
 
     public function trainset(): BelongsTo {
