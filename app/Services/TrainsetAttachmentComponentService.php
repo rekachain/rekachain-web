@@ -7,8 +7,10 @@ use App\Models\TrainsetAttachmentComponent;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
+use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 
 class TrainsetAttachmentComponentService extends BaseCrudService implements TrainsetAttachmentComponentServiceInterface {
+    public function __construct(protected TrainsetAttachmentServiceInterface $trainsetAttachmentService) {}
     protected function getRepositoryClass(): string {
         return TrainsetAttachmentComponentRepositoryInterface::class;
     }
@@ -32,5 +34,6 @@ class TrainsetAttachmentComponentService extends BaseCrudService implements Trai
                 ]);
             }
         }
+        $this->trainsetAttachmentService->checkProgressAttachment($trainsetAttachmentComponent->trainset_attachment);
     }
 }
