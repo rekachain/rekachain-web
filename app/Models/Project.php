@@ -15,6 +15,8 @@ class Project extends Model {
     protected $fillable = [
         'name',
         'initial_date',
+        'calculated_estimate_time',
+        'estimated_end_date',
     ];
     protected $filterable = [
         'searchs' => [

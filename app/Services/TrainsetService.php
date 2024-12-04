@@ -717,8 +717,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
             $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
 
-            // $startDate = $trainset->project->initial_date;
-            $startDate = $this->getInitialDate($trainset);
+            $startDate = $this->getInitialDate($trainset);;
             $endDate = Carbon::parse($startDate);
 
             // Add working days considering only Monday-Friday
@@ -729,7 +728,6 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     $endDate->addDay();
                 }
             }
-
             $trainset->update([
                 'mechanical_time' => $mechanicTime,
                 'electrical_time' => $electricalTime,
@@ -761,26 +759,24 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             return $trainset->project->initial_date;
         } else {
             $previousTrainset = $trainsets[$currentTrainsetIndex - 1];
-
-            if ($previousTrainset->mechanic_time && $previousTrainset->electrical_time) {
-                $totalTime = max($previousTrainset->mechanic_time, $previousTrainset->electrical_time);
+            if ($previousTrainset->mechanical_time && $previousTrainset->electrical_time && $previousTrainset->initial_date) {
+                $totalTime = max($previousTrainset->mechanical_time, $previousTrainset->electrical_time);
                 $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
                 $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
 
                 $startDate = $previousTrainset->initial_date;
                 $endDate = Carbon::parse($startDate);
 
-                for ($i = 0; $i < $project->calculated_estimate_time; $i++) {
+                for ($i = 0; $i < $calculatedEstimateTime; $i++) {
                     $endDate->addDay();
                     // Skip weekends
                     while ($endDate->isWeekend()) {
                         $endDate->addDay();
                     }
                 }
-
                 return $endDate->format('Y-m-d');
             } else {
-                return $this->calculateEstimatedTime($previousTrainset->id);
+                $this->calculateEstimatedTime($previousTrainset->id);
             }
         }
     }

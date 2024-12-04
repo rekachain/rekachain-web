@@ -16,6 +16,12 @@ return new class extends Migration {
             $table->enum('status', TrainsetStatusEnum::toArray())->default(TrainsetStatusEnum::DRAFT->value);
             $table->foreignId('project_id')->constrained();
             $table->foreignId('preset_trainset_id')->nullable()->constrained();
+            $table->integer('mechanical_time')->nullable();
+            $table->integer('electrical_time')->nullable();
+            $table->integer('assembly_time')->nullable();
+            $table->integer('calculated_estimate_time')->nullable();
+            $table->date('initial_date')->nullable();
+            $table->date('estimated_end_date')->nullable();
             $table->timestamps();
         });
     }

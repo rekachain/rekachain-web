@@ -189,7 +189,11 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                 'calculated_estimate_time' => $calculatedEstimateTime,
                 'estimated_end_date' => $endDate->format('Y-m-d')
             ]);
-            
+
+            if($project->update()) {
+                $this->trainsetService->calculateEstimatedTime($project->trainsets->last()->id);
+            }
+
             return true;
 
             // return response()->json([
