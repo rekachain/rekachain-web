@@ -18,9 +18,11 @@ class TrainsetAttachmentComponent extends Model {
     protected $fillable = [
         'trainset_attachment_id',
         'carriage_panel_component_id',
+        'total_plan',
         'total_required',
         'total_fulfilled',
         'total_failed',
+        'total_current_work_progress',
     ];
     protected $filterable = [
         'search' => [],

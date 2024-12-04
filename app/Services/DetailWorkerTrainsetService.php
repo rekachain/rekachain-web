@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\DetailWorkerTrainset;
+use App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
@@ -29,17 +30,18 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
     }
 
     public function rejectWork(DetailWorkerTrainset $detailWorkerTrainset, array $data) {
-        $this->createFailedComponentManufacture($detailWorkerTrainset, $data);
-        $detailWorkerTrainset->update([
-            'work_status' => DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value,
-        ]);
+        $data['work_status'] = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
+        $data['failed_note'] = $data['notes'];
 
-        return $detailWorkerTrainset;
+        $detailWorkerTrainset = $this->update($detailWorkerTrainset, $data);
+
+        return $detailWorkerTrainset->fresh()->load('failed_component_manufactures');
     }
 
     public function createFailedComponentManufacture(DetailWorkerTrainset $detailWorkerTrainset, array $data) {
         $detailWorkerTrainset->trainset_attachment_component()->update([
             'total_failed' => $detailWorkerTrainset->trainset_attachment_component->total_failed + $data['total_failed'],
+            'total_current_work_progress' => $detailWorkerTrainset->trainset_attachment_component->total_current_work_progress - $data['total_failed'],
         ]);
 
         return $this->failedComponentManufactureService->create([
@@ -59,26 +61,34 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
     }
 
     public function updateAndAcceptWorkWithImage($detailWorkerTrainset, array $data): ?Model {
+        $data['work_status'] = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
 
+        $detailWorkerTrainset = $this->update($detailWorkerTrainset, $data);
+
+        return $detailWorkerTrainset->fresh();
+    }
+    
+    public function update($detailWorkerTrainset, array $data): ?Model {
         $data = $this->handleImageUpload($data, $detailWorkerTrainset);
 
-        $data['work_status'] = DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value;
+        if (is_null($detailWorkerTrainset->acceptance_status) 
+            && array_key_exists('work_status', $data)
+            && $data['work_status'] == DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value
+        ) {
+            $data['acceptance_status'] = DetailWorkerTrainsetAcceptanceStatusEnum::ACCEPTED->value;
+        }
 
         $detailWorkerTrainset = parent::update($detailWorkerTrainset, $data);
 
-        $this->trainsetAttachmentComponentService->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
-
-        return $detailWorkerTrainset;
-    }
-
-    public function update($detailWorkerTrainset, array $data): ?Model {
-        $data = $this->handleImageUpload($data, $detailWorkerTrainset);
         if (array_key_exists('failed_note', $data)) {
             $this->createFailedComponentManufacture($detailWorkerTrainset, $data);
-
-            return parent::update($detailWorkerTrainset, $data)->load('failed_component_manufactures');
+            $this->trainsetAttachmentComponentService->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
+    
+            return $detailWorkerTrainset->fresh()->load('failed_component_manufactures');
         }
 
-        return parent::update($detailWorkerTrainset, $data);
+        $this->trainsetAttachmentComponentService->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
+
+        return $detailWorkerTrainset->fresh();
     }
 }

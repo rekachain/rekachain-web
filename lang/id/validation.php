@@ -208,6 +208,7 @@ return [
                 'step_completed_exception' => 'Langkah :step sudah selesai di :progress',
                 'step_ahead_exception' => 'Masih ada langkah yang sedang berlangsung pada :progress saat ini',
                 'total_fulfilled_exception' => 'Komponen :component di :progress sudah terpenuhi',
+                'current_progress_failed_exception' => 'Progress :progress saat ini telah gagal',
             ],
         ],
         'detail_worker_trainset' => [
