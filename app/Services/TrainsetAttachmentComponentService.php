@@ -11,6 +11,7 @@ use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 
 class TrainsetAttachmentComponentService extends BaseCrudService implements TrainsetAttachmentComponentServiceInterface {
     public function __construct(protected TrainsetAttachmentServiceInterface $trainsetAttachmentService) {}
+
     protected function getRepositoryClass(): string {
         return TrainsetAttachmentComponentRepositoryInterface::class;
     }

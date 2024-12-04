@@ -33,6 +33,7 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         $detailWorkerTrainset->update([
             'work_status' => DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value,
         ]);
+
         return $detailWorkerTrainset;
     }
 
