@@ -40,6 +40,7 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
     public function createFailedComponentManufacture(DetailWorkerTrainset $detailWorkerTrainset, array $data) {
         $detailWorkerTrainset->trainset_attachment_component()->update([
             'total_failed' => $detailWorkerTrainset->trainset_attachment_component->total_failed + $data['total_failed'],
+            'total_current_work_progress' => $detailWorkerTrainset->trainset_attachment_component->total_current_work_progress - $data['total_failed'],
         ]);
 
         return $this->failedComponentManufactureService->create([
@@ -67,12 +68,13 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         $detailWorkerTrainset = parent::update($detailWorkerTrainset, $data);
 
         $this->trainsetAttachmentComponentService->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
-
+        
         return $detailWorkerTrainset;
     }
-
+    
     public function update($detailWorkerTrainset, array $data): ?Model {
         $data = $this->handleImageUpload($data, $detailWorkerTrainset);
+        $this->trainsetAttachmentComponentService->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
         if (array_key_exists('failed_note', $data)) {
             $this->createFailedComponentManufacture($detailWorkerTrainset, $data);
 

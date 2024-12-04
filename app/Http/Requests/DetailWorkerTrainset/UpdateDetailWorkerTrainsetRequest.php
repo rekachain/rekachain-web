@@ -16,7 +16,7 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 return [
                     'notes' => ['required', 'string'],
-                    'total_failed' => 'required|integer|min:1',
+                    'total_failed' => 'required|integer|min:1|max:' . $this->route('detail_worker_trainset')->trainset_attachment_component->total_current_work_progress,
                 ];
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
