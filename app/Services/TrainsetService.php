@@ -736,8 +736,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 'initial_date' => $startDate,
                 'estimated_end_date' => $endDate->format('Y-m-d')
             ]);
-            
-            return true;
+
+            $trainsets = $trainset->project->trainsets()->orderBy('id')->get();
+            $currentTrainsetIndex = $trainsets->search(fn($t) => $t->id === $trainset->id);
+            if ($currentTrainsetIndex !== false && $currentTrainsetIndex < count($trainsets) - 1) {
+                return $this->getInitialDate($trainsets[$currentTrainsetIndex + 1]);
+            }
+
+            return $endDate->format('Y-m-d');
             // return response()->json([
             //     'trainset_id' => $trainset_id,
             //     'mechanical_time' => $mechanicTime,
@@ -776,7 +782,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 }
                 return $endDate->format('Y-m-d');
             } else {
-                $this->calculateEstimatedTime($previousTrainset->id);
+                return $this->calculateEstimatedTime($previousTrainset->id);
             }
         }
     }

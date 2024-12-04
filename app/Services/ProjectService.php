@@ -107,9 +107,6 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
     }
 
     public function calculateEstimatedTime($project_id = null) {
-        $mechanicTime = 0;
-        $electricalTime = 0;
-        $assemblyTime = 0;
 
         if ($project_id) {
             $project = \App\Models\Project::with(['trainsets.carriage_trainsets' => [
@@ -118,9 +115,17 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                 ]
             ]])->findOrFail($project_id);
 
+            // Get project start date
+            $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
+            $endDate = Carbon::parse($startDate);
+            $totalCalculatedEstimatedTime = 0;
             $lastTrainset = $project->trainsets->last();
 
             foreach ($project->trainsets as $trainset) {
+                $mechanicTime = 0;
+                $electricalTime = 0;
+                $assemblyTime = 0;
+
                 foreach ($trainset->carriage_trainsets as $carriageTrainset) {
                     foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
                         $stepTime = 0;
@@ -164,34 +169,33 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                         }
                     }
                 }
-            }
 
-            $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
+                $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
 
-            $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
-            $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
+                $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+                $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
 
-            // Get project start date
-            $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
-            $endDate = Carbon::parse($startDate);
-
-            // Add working days considering only Monday-Friday
-            for ($i = 0; $i < $calculatedEstimateTime; $i++) {
-                $endDate->addDay();
-                // Skip weekends
-                while ($endDate->isWeekend()) {
+                // Add working days considering only Monday-Friday
+                for ($i = 0; $i < $calculatedEstimateTime; $i++) {
                     $endDate->addDay();
+                    // Skip weekends
+                    while ($endDate->isWeekend()) {
+                        $endDate->addDay();
+                    }
                 }
+                $totalCalculatedEstimatedTime += $calculatedEstimateTime;
+
             }
+
 
             // Save calculated estimate time and end date to the project
             $project->update([
-                'calculated_estimate_time' => $calculatedEstimateTime,
+                'calculated_estimate_time' => $totalCalculatedEstimatedTime,
                 'estimated_end_date' => $endDate->format('Y-m-d')
             ]);
 
-            if($project->update()) {
-                $this->trainsetService->calculateEstimatedTime($project->trainsets->last()->id);
+            foreach($project->trainsets as $trainset) {
+                $this->trainsetService->calculateEstimatedTime($trainset->id);
             }
 
             return true;
@@ -213,7 +217,8 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
 
     public function updateInitialDate(Project $project, array $data): bool {
         // Get update initial date
-        $endDate = Carbon::parse($data['initial_date']);
+        $startDate = Carbon::parse($data['initial_date']);
+        $endDate = $startDate;
 
         // Add working days considering only Monday-Friday
         for ($i = 0; $i < $project->calculated_estimate_time; $i++) {
@@ -224,8 +229,12 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             }
         }
 
-        $project->end_date = $endDate->format('Y-m-d');
-        $project->save();
+        $project->update([
+            'initial_date' => $startDate->format('Y-m-d'),
+            'estimated_end_date' => $endDate->format('Y-m-d')
+        ]);
+
+        $this->calculateEstimatedTime($project->id);
 
         return true;
     }

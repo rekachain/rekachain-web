@@ -105,3 +105,4 @@ Route::get('/test-estimation/{project_id?}', function ($project_id = null) {
     $projectService = app()->make(ProjectService::class);
     return $projectService->calculateEstimatedTime($project_id);
 });
+Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('update-initial-date');
