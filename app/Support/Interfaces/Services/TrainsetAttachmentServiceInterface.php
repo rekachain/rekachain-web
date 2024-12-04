@@ -16,4 +16,6 @@ interface TrainsetAttachmentServiceInterface extends BaseCrudServiceInterface {
     public function assignSpvAndReceiver(TrainsetAttachment $trainsetAttachment, array $data);
 
     public function assignHandler(TrainsetAttachment $trainsetAttachment, array $data);
+
+    public function checkProgressAttachment(TrainsetAttachment $trainsetAttachment);
 }
