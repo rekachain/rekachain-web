@@ -23,10 +23,13 @@ class TrainsetAttachmentComponentService extends BaseCrudService implements Trai
             && $lastProgressStep->work_status == DetailWorkerTrainsetWorkStatusEnum::COMPLETED
         ) {
             $totalFulfilled = $trainsetAttachmentComponent->total_required;
-            if ($trainsetAttachmentComponent->total_current_work_progress !== $trainsetAttachmentComponent->total_required) {
+            $totalRequired = $trainsetAttachmentComponent->total_required;
+            if ($trainsetAttachmentComponent->total_current_work_progress !== $totalRequired) {
                 $totalFulfilled -= $trainsetAttachmentComponent->total_failed;
+                $totalRequired = $trainsetAttachmentComponent->total_plan - $totalFulfilled;
             }
             $trainsetAttachmentComponent->update([
+                'total_required' => $totalRequired,
                 'total_fulfilled' => $totalFulfilled,
                 'total_current_work_progress' => 0,
             ]);
