@@ -11,17 +11,13 @@ use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\Project\ProjectsImport;
 use Illuminate\Database\Eloquent\Model;
+use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
+use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\UploadedFile;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
-use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
     public function __construct(
