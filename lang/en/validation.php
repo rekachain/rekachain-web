@@ -208,6 +208,7 @@ return [
                 'step_completed_exception' => 'Step :step already completed in :progress progress',
                 'step_ahead_exception' => 'There is still an under progress step on the current :progress progress',
                 'total_fulfilled_exception' => 'Component :component in :progress already fulfilled',
+                'current_progress_failed_exception' => 'Current progress :progress has failed',
             ],
         ],
         'detail_worker_trainset' => [
