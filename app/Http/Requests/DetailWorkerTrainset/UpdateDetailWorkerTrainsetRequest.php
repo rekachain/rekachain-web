@@ -33,7 +33,7 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
             'work_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerTrainsetWorkStatusEnum::cases(), 'value'))],
             'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerTrainsetAcceptanceStatusEnum::cases(), 'value'))],
             'failed_note' => 'nullable|string',
-            'total_failed' => 'required_if:failed_note,!=,null|integer|min:1',
+            'total_failed' => 'required_if:failed_note,!=,null|integer|min:1|max:' . $this->route('detail_worker_trainset')->trainset_attachment_component->total_current_work_progress,
         ];
     }
 
