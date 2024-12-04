@@ -28,7 +28,7 @@ class TrainsetAttachmentComponent extends Model {
         'columns' => ['trainset_attachment_id', 'carriage_panel_component_id'],
         'relations' => [
             'carriage_panel', 
-            'carriage_trainset'
+            'carriage_trainset',
         ],
     ];
 
