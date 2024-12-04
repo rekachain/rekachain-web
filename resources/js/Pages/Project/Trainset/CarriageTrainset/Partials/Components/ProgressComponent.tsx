@@ -30,8 +30,7 @@ const ProgressComponent = ({
 }) => {
     const { t } = useLaravelReactI18n();
 
-    const [componentProgress, setComponentProgress] =
-        useState<ComponentProgressResource[]>();
+    const [componentProgress, setComponentProgress] = useState<ComponentProgressResource[]>();
 
     const loadProgress = withLoading(async () => {
         const progress = (await trainsetAttachmentService.get(attachment.id, {
@@ -48,9 +47,7 @@ const ProgressComponent = ({
         <div key={attachment.id} className='text-black dark:text-white'>
             <h1 className='text-xl font-bold'>{title}</h1>
             {componentProgress == null ||
-                (componentProgress.length === 0 && (
-                    <h3>{'Kososng🗿' + attachment.status}</h3>
-                )) ||
+                (componentProgress.length === 0 && <h3>{'Kososng🗿' + attachment.status}</h3>) ||
                 (componentProgress &&
                     componentProgress.map((progress, index) => (
                         <div key={progress.component.id}>
@@ -89,7 +86,7 @@ const ProgressComponent = ({
                                         </div>
                                         <div className='flex'>
                                             <ScrollArea className='flex w-1 flex-1'>
-                                                <div className='flex w-max space-x-4 p-4 mx-auto'>
+                                                <div className='mx-auto flex w-max space-x-4 p-4'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
                                                             {componentProgress.steps.map(

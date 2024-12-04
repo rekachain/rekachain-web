@@ -17,7 +17,6 @@ class CarriagePanelComponent extends Model {
         'progress_id',
         'qty',
     ];
-
     protected $filterable = [
         'searchs' => [],
         'columns' => [

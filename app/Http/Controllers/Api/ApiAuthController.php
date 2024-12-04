@@ -61,7 +61,7 @@ class ApiAuthController extends ApiController {
         }
 
         return response()->json([
-            'message' => __('auth.failed')
+            'message' => __('auth.failed'),
         ], 401);
     }
 

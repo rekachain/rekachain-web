@@ -90,7 +90,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                         </div>
                                         <div className='flex'>
                                             <ScrollArea className='flex w-1 flex-1'>
-                                                <div className='flex w-max space-x-4 p-4 mx-auto'>
+                                                <div className='mx-auto flex w-max space-x-4 p-4'>
                                                     <Breadcrumb>
                                                         <BreadcrumbList>
                                                             {serialPanelProgress.steps.map(
@@ -161,9 +161,7 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
                                     </div>
                                 ))}
                             </div>
-                            {index < panelProgress.length - 1 && (
-                                <Separator className='my-4 h-1' />
-                            )}
+                            {index < panelProgress.length - 1 && <Separator className='my-4 h-1' />}
                         </div>
                     )))}
         </div>

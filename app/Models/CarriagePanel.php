@@ -18,7 +18,6 @@ class CarriagePanel extends Model {
         'panel_id',
         'qty',
     ];
-
     protected $filterable = [
         'searchs' => [],
         'columns' => [
