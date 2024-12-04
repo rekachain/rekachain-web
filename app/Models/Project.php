@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -14,9 +15,12 @@ class Project extends Model {
 
     protected $fillable = [
         'name',
+        'description',
         'initial_date',
-        'calculated_estimate_time',
+        'estimated_start_date',
         'estimated_end_date',
+        'calculated_estimate_time',
+        'buyer_id',
     ];
     protected $filterable = [
         'searchs' => [
@@ -200,8 +204,7 @@ class Project extends Model {
         return true;
     }
 
-    // public function projectAttachments(): HasMany
-    // {
-    //     return $this->hasMany(ProjectAttachment::class, 'id_project', 'id');
-    // }
+    public function buyer(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
 }

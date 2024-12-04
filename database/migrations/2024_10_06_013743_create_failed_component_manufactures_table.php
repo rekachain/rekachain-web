@@ -12,7 +12,8 @@ return new class extends Migration {
         Schema::create('failed_component_manufactures', function (Blueprint $table) {
             $table->id();
             $table->foreignId('detail_worker_trainset_id')->constrained();
-            $table->text('notes')->nullable();
+            $table->text('notes');
+            $table->integer('total_failed')->default(1);
             $table->timestamps();
         });
     }

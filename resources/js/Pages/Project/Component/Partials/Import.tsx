@@ -16,10 +16,9 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { componentService } from '@/Services/componentService';
 import { projectService } from '@/Services/projectService';
 import { workAspectService } from '@/Services/workAspectService';
-import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { withLoading } from '@/Utils/withLoading';
-import { router, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 
@@ -60,7 +59,7 @@ export default function ({
             data.work_aspect_id as number,
         );
         await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
-        router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
+        // router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
         return await workAspectService

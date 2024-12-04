@@ -1,13 +1,6 @@
-// In one trainset, what are the Carriages and how many of them
-// SELECT * FROM `carriage_trainset` inner join carriages on carriage_trainset.carriage_id = carriages.id where trainset_id = '1'
-//
-
-// In one trainset, what kind of panel that is in there
-// SELECT trainsets.name, carriage_panels.panel_id, panels.name ,count(carriage_panels.panel_id) FROM `carriage_trainset` INNER JOIN carriage_panels on carriage_panels.carriage_trainset_id = carriage_trainset.id inner join trainsets on trainsets.id = carriage_trainset.trainset_id inner JOIN panels on carriage_panels.panel_id = panels.id where trainset_id = '1' GROUP by carriage_panels.panel_id ORDER BY `carriage_panels`.`panel_id` ASC
-
-// In one trainset how is the panel condition
-// SELECT trainsets.name, components.name, sum(trainset_attachment_components.total_required) as required, sum(trainset_attachment_components.total_fulfilled) as fulfilled, sum(trainset_attachment_components.total_failed) as failed FROM `trainset_attachment_components` inner JOIN carriage_panel_components on trainset_attachment_components.carriage_panel_component_id = carriage_panel_components.id inner join components on components.id = carriage_panel_components.component_id inner JOIN trainset_attachments on trainset_attachments.id = trainset_attachment_components.trainset_attachment_id inner join trainsets on trainsets.id = trainset_attachments.trainset_id where trainsets.id = 1 group by trainset_attachment_components.total_required, trainset_attachment_components.total_fulfilled,trainset_attachment_components.total_failed, components.name, trainsets.name, trainsets.name, components.name
-
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
+// import { PageProps } from '../../Types';
 import {
     ChartContainer,
     ChartLegend,
@@ -16,10 +9,9 @@ import {
     ChartTooltipContent,
     type ChartConfig,
 } from '@/Components/UI/chart';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
+// import { Check, ChevronsUpDown } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../../Types';
 
@@ -33,7 +25,6 @@ import {
     CommandList,
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-import { Separator } from '@/Components/UI/separator';
 import { cn } from '@/Lib/Utils';
 import { trainsetService } from '@/Services/trainsetService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
@@ -42,6 +33,8 @@ import {
     TrainsetPanelProgressResource,
 } from '@/Support/Interfaces/Others/TrainsetProgressResource';
 import { withLoading } from '@/Utils/withLoading';
+import { Separator } from '@radix-ui/react-select';
+import { useLocalStorage } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
 
 export default function Dashboard({ auth, data }: PageProps) {
@@ -49,12 +42,18 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [value, setValue] = useState(data['project'][0]['name']);
     const [openTrainset, setOpenTrainset] = useState(false);
     const [valueTrainset, setValueTrainset] = useState(data['trainsets'][0]['ts_name']);
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
+
+    const label = ['fulfilled', 'required', 'failed'];
+
+    // const chartConfigPie = {
     const [trainsetComponentProgress, setTrainsetComponentProgress] = useState<
         TrainsetComponentProgressResource[]
     >([]);
     const [trainsetPanelProgress, setTrainsetPanelProgress] = useState<
         TrainsetPanelProgressResource[]
     >([]);
+
     const trainsetProgressConfig: ChartConfig = {
         total_plan_qty: {
             label: 'Plan',
@@ -153,20 +152,42 @@ export default function Dashboard({ auth, data }: PageProps) {
         total: {
             label: 'Total',
         },
-        chrome: {
-            label: 'required',
+        fulfilled: {
+            label: 'Fulffilled',
             color: 'hsl(var(--chart-1))',
         },
-        safari: {
-            label: 'fulfilled',
+        required: {
+            label: 'Required',
             color: 'hsl(var(--chart-2))',
         },
-        firefox: {
-            label: 'failed',
+        failed: {
+            label: 'Failed',
             color: 'hsl(var(--chart-3))',
         },
     } satisfies ChartConfig;
 
+    const chartConfigTrainsetCarriage = {
+        qty: {
+            label: 'Quantity',
+            color: 'hsl(var(--chart-1))',
+        },
+    } satisfies ChartConfig;
+
+    const chartConfigPanelInTrainset = {
+        total: {
+            label: 'Total',
+            color: 'hsl(var(--chart-2))',
+        },
+    } satisfies ChartConfig;
+
+    // @ts-ignore
+    const totalUpdated = data['total'].map((item, index) => ({
+        ...item,
+        total: parseInt(item.total),
+        fill: `var(--color-${label[index]})`,
+    }));
+    console.log(totalUpdated);
+    console.log('makan');
     const { t } = useLaravelReactI18n();
 
     const loadTrainsetComponentProgress = withLoading(async () => {
@@ -192,14 +213,16 @@ export default function Dashboard({ auth, data }: PageProps) {
             <Head title={t('pages.dashboard.index.title')} />
             <div className='py-12'>
                 {/* <p>{value}</p> */}
-                <div className='mx-auto max-w-7xl sm:px-6 lg:px-5'>
+                <div
+                    className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto sm:px-6 lg:px-5`}
+                >
                     <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                         {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        <div className=''>
+                        <div className='px-4'>
                             <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
                             <div className='flex w-full items-start justify-between'>
                                 <h2 className='my-2 text-xl'>
-                                    {`Proyek ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
+                                    {`${t('pages.dashboard.index.project')} ${data['trainsets'][0].pj_name} - ${data['trainsets'][0].ts_name}`}
                                     {/* {data['project'] == null ? 'Proyek 612 - TS 11' : `Proyek ${data['project']}`} */}
                                 </h2>
                                 <div className='mb-5 flex flex-col gap-4'>
@@ -208,7 +231,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <Button
                                                 variant='outline'
                                                 role='combobox'
-                                                className='w-40 justify-between'
+                                                className='w-20 justify-between md:w-40'
                                                 aria-expanded={open}
                                             >
                                                 {value
@@ -223,10 +246,14 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         </PopoverTrigger>
                                         <PopoverContent className='w-[200px] p-0'>
                                             <Command>
-                                                <CommandInput placeholder='Cari Projek...' />
+                                                <CommandInput
+                                                    placeholder={`${t('pages.dashboard.index.find_project')}`}
+                                                />
                                                 <CommandList>
                                                     <CommandEmpty>
-                                                        Projek tidak ditemukan.
+                                                        {t(
+                                                            'pages.dashboard.index.project_not_found',
+                                                        )}
                                                     </CommandEmpty>
                                                     <CommandGroup>
                                                         {
@@ -277,7 +304,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             <Button
                                                 variant='outline'
                                                 role='combobox'
-                                                className='w-40 justify-between'
+                                                className='w-20 justify-between md:w-40'
                                                 aria-expanded={openTrainset}
                                             >
                                                 {valueTrainset
@@ -286,16 +313,20 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                           (projectItem) =>
                                                               projectItem.name === valueTrainset,
                                                       )?.name
-                                                    : 'Pilih Trainset'}
+                                                    : `${t('pages.dashboard.index.select_trainset')}`}
                                                 <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className='w-[200px] p-0'>
                                             <Command>
-                                                <CommandInput placeholder='Cari Trainset...' />
+                                                <CommandInput
+                                                    placeholder={`${t('pages.dashboard.index.find_trainset')}`}
+                                                />
                                                 <CommandList>
                                                     <CommandEmpty>
-                                                        Trainset tidak ditemukan.
+                                                        {t(
+                                                            'pages.dashboard.index.trainset_not_found',
+                                                        )}
                                                     </CommandEmpty>
                                                     <CommandGroup>
                                                         {// @ts-ignore
@@ -337,7 +368,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     </Popover>
                                 </div>
                             </div>
-                            <ChartContainer config={chartConfig} className='h-[200px] w-full pr-10'>
+                            <ChartContainer
+                                config={chartConfigTrainsetCarriage}
+                                className='h-[200px] w-full pr-10'
+                            >
                                 <BarChart data={data['carriages']} accessibilityLayer>
                                     <CartesianGrid vertical={false} />
                                     <XAxis
@@ -348,34 +382,40 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                     <ChartTooltip content={<ChartTooltipContent />} />
                                     <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar radius={4} fill='var(--color-done)' dataKey='qty' />
+                                    <Bar radius={4} fill='var(--color-qty)' dataKey='qty' />
                                 </BarChart>
                             </ChartContainer>
                         </div>
                         <div className='mt-2 grid w-full grid-cols-1 md:grid-cols-2'>
-                            <div className=''>
-                                <h2 className='my-1 text-xl font-bold'>Panel Dalam Trainset</h2>
-                                <h3 className='text-base'>{`Panel yang ada pada ${data['trainsets'][0].ts_name}`}</h3>
+                            <div className='px-4'>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.panel_trainset')}
+                                </h2>
+                                <h3 className='text-base'>{`${t('pages.dashboard.index.panel_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                 <ChartContainer
-                                    config={chartConfig}
+                                    config={chartConfigPanelInTrainset}
                                     className='mt-5 h-[400px] w-full'
                                 >
-                                    <BarChart data={data['panel']} className='' accessibilityLayer>
+                                    <BarChart
+                                        data={data['panel']}
+                                        className='h-[300px]'
+                                        accessibilityLayer
+                                    >
                                         <CartesianGrid vertical={false} />
                                         <XAxis
-                                            tickMargin={0}
-                                            tickLine={false}
+                                            width={0}
                                             textAnchor='end'
+                                            height={100}
                                             dataKey='name'
                                             axisLine={false}
                                             // tick={<CustomizedAxisTick />}
-                                            angle={-45}
+                                            angle={-55}
                                         />
                                         <ChartTooltip content={<ChartTooltipContent />} />
                                         <ChartLegend content={<ChartLegendContent />} />
                                         <Bar
                                             radius={4}
-                                            fill='var(--color-done)'
+                                            fill='var(--color-total)'
                                             dataKey='total'
                                             className=''
                                         />
@@ -383,26 +423,38 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </ChartContainer>
                             </div>
 
-                            <div className=''>
-                                <h2 className='my-1 text-xl font-bold'>Progress Tiap Panel</h2>
-                                <h3 className='text-base'>Panel panel pada WS Assembly</h3>
-                                <ChartContainer
-                                    config={panelChartConf}
-                                    className='mx-auto aspect-square max-h-[250px]'
-                                >
-                                    <PieChart>
-                                        <ChartTooltip
-                                            cursor={false}
-                                            content={<ChartTooltipContent hideLabel />}
-                                        />
-                                        <Pie
-                                            nameKey='status'
-                                            innerRadius={60}
-                                            dataKey=''
-                                            data={data['total']}
-                                        />
-                                    </PieChart>
-                                </ChartContainer>
+                            <div className='px-4'>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.panel_progress_trainset')}
+                                </h2>
+                                <h3 className='text-base'>{`${t('pages.dashboard.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
+                                <div className='flex h-[400px] flex-col items-center'>
+                                    <ChartContainer
+                                        config={panelChartConf}
+                                        className='min-h-[300px]'
+                                    >
+                                        <PieChart>
+                                            <ChartTooltip
+                                                cursor={false}
+                                                content={<ChartTooltipContent hideLabel />}
+                                            />
+                                            <Pie
+                                                nameKey='status'
+                                                innerRadius={60}
+                                                dataKey='total'
+                                                data={totalUpdated}
+                                            />
+                                        </PieChart>
+                                    </ChartContainer>
+                                    <h4 className='text-center font-bold'>
+                                        {data['total'][0].total == 0
+                                            ? 'Kebutuhan terpenuhi'
+                                            : `Kebutuhan panel sejumlah ${data['total'][0].total} masih belum terpenuhi`}
+                                    </h4>
+                                    <p className='text-sm'>
+                                        Menunjukkan progress dari status kebutuhan panel.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                         <Separator className='my-5 h-1' />
@@ -545,62 +597,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </BarChart>
                             </ChartContainer>
                         </div>
-                        {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
-
-                        <p>use the updated at and status</p>
-                        <p>can be differentiate between Electric and Mechanic</p>
-                        <p>X Axis use date. 30 day before </p>
-                        <ChartContainer config={chartConfig}>
-                            <LineChart
-                                accessibilityLayer
-                                data={chartDataLine}
-                                margin={{
-                                    left: 12,
-                                    right: 12,
-                                }}
-                            >
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="tanggal"
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tickMargin={8}
-                                    tickFormatter={value => value.slice(0, 3)}
-                                />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                <Line
-                                    dataKey="inProgress"
-                                    type="monotone"
-                                    stroke="var(--color-desktop)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                                <Line
-                                    dataKey="Done"
-                                    type="monotone"
-                                    stroke="var(--color-mobile)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                            </LineChart>
-                        </ChartContainer>
-                        <ChartContainer
-                            config={chartConfigPie}
-                            className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
-                        >
-                            <PieChart>
-                                <ChartTooltip content={<ChartTooltipContent nameKey="visitors" hideLabel />} />
-                                <Pie data={chartDataPie} dataKey="visitors">
-                                    <LabelList
-                                        dataKey="browser"
-                                        className="fill-background"
-                                        stroke="none"
-                                        fontSize={12}
-                                        formatter={(value: keyof typeof chartConfigPie) => chartConfigPie[value]?.label}
-                                    />
-                                </Pie>
-                            </PieChart>
-                        </ChartContainer> */}
                         {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 text-gray-900 dark:text-gray-100">

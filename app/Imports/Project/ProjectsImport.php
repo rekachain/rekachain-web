@@ -13,6 +13,7 @@ use App\Models\CarriagePreset;
 use App\Models\Panel;
 use App\Models\PresetTrainset;
 use App\Models\Trainset;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -25,7 +26,7 @@ class ProjectsImport implements WithMultipleSheets {
     private Collection $trainsets;
     private Collection $panels;
 
-    public function __construct(public UploadedFile $file) {
+    public function __construct(public UploadedFile $file, public ?User $buyer = null) {
         $this->carriages = collect();
         $this->presets = collect();
         $this->carriagePresets = collect();

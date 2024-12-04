@@ -18,7 +18,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
-                    'localized_acceptance_status' => $this->acceptance_status->getLabel(),
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                 ];
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 return [
@@ -35,7 +35,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
-                    'localized_acceptance_status' => $this->acceptance_status->getLabel(),
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                 ];
             case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_WORK_DETAIL->value:
                 return [
@@ -57,7 +57,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
-                    'localized_acceptance_status' => $this->acceptance_status->getLabel(),
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
@@ -72,7 +72,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
-                    'localized_acceptance_status' => $this->acceptance_status->getLabel(),
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                     'image_path' => $this->image_path,
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
@@ -92,7 +92,7 @@ class DetailWorkerPanelResource extends JsonResource {
                     'work_status' => $this->work_status,
                     'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
-                    'localized_acceptance_status' => $this->acceptance_status->getLabel(),
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];

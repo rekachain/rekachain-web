@@ -12,6 +12,7 @@ class FailedComponentManufactureResource extends JsonResource {
             'detail_worker_trainset' => DetailWorkerTrainsetResource::make($this->whenLoaded('detail_worker_trainset')),
             'trainset_attachment_component' => TrainsetAttachmentComponentResource::make($this->whenLoaded('detail_worker_trainset.trainset_attachment_component')),
             'notes' => $this->notes,
+            'total_failed' => $this->total_failed,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
