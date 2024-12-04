@@ -146,8 +146,8 @@ class ProjectController extends Controller {
         }
     }
 
-    public function getEstimatedTime(Request $request, $project_id = null, $trainset_id = null) {
-        return $this->projectService->getEstimatedTime($project_id, $trainset_id);
+    public function getEstimatedTime($project_id = null) {
+        return $this->projectService->calculateEstimatedTime($project_id);
     }
 
     public function project_trainsets(Request $request, Project $project) {

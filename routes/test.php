@@ -105,4 +105,12 @@ Route::get('/test-estimation/{project_id?}', function ($project_id = null) {
     $projectService = app()->make(ProjectService::class);
     return $projectService->calculateEstimatedTime($project_id);
 });
-Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('update-initial-date');
+// Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('update-initial-date');
+// Route::controller(ProjectController::class)->group(function () {
+//     // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update']);
+//     Route::put('/update-initial-date/{project}', 'project_carriage')->name('update');
+// });
+Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
+    // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update']);
+    Route::put('/update-initial-date', 'update')->name('update.initial-date');
+});

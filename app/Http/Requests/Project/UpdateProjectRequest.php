@@ -42,7 +42,6 @@ class UpdateProjectRequest extends FormRequest {
             case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
                 return [
                     'initial_date' => 'required|date',
-                    'calculated_estimate_time' => 'required|numeric',
                 ];
         }
 

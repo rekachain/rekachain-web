@@ -223,9 +223,9 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
 
     public function updateInitialDate(Project $project, array $data): bool {
         // Get update initial date
-        $startDate = Carbon::parse($data['initial_date']);
-        $endDate = $startDate;
-
+        $endDate = Carbon::parse($data['initial_date']);
+        // $endDate = $startDate;
+        // dd($project);
         // Add working days considering only Monday-Friday
         for ($i = 0; $i < $project->calculated_estimate_time; $i++) {
             $endDate->addDay();
@@ -236,7 +236,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         }
 
         $project->update([
-            'initial_date' => $startDate->format('Y-m-d'),
+            'initial_date' => Carbon::parse($data['initial_date'])->format('Y-m-d'),
             'estimated_end_date' => $endDate->format('Y-m-d')
         ]);
 
