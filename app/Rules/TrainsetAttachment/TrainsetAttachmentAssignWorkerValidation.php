@@ -17,7 +17,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
         [$trainsetAttachment, $carriagePanelComponentId, $user] = $value;
         $trainsetAttachmentComponent = TrainsetAttachmentComponent::whereCarriagePanelComponentId($carriagePanelComponentId)->whereTrainsetAttachmentId($trainsetAttachment->id)->first();
 
-        if ($trainsetAttachmentComponent->total_fulfilled == $trainsetAttachmentComponent->total_required) {
+        if ($trainsetAttachmentComponent->total_fulfilled == $trainsetAttachmentComponent->total_plan) {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.total_fulfilled_exception',
                 [
