@@ -15,6 +15,7 @@ class TrainsetAttachmentComponentService extends BaseCrudService implements Trai
     // ) {
     //     parent::__construct();
     // }
+
     protected function getRepositoryClass(): string {
         return TrainsetAttachmentComponentRepositoryInterface::class;
     }

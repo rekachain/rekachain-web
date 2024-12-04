@@ -77,6 +77,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
                     'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
                 ]);
             }
+
             return $this->detailWorkerTrainsetService->create([
                 'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
                 'worker_id' => $user->id,
