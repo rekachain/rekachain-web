@@ -153,10 +153,10 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     }
 
     public function checkProgressAttachment(TrainsetAttachment $trainsetAttachment) {
-        $totalSumRequired = $trainsetAttachment->trainset_attachment_components()->sum('total_required');
+        $totalSumPlan = $trainsetAttachment->trainset_attachment_components()->sum('total_plan');
         $totalSumFulfilled = $trainsetAttachment->trainset_attachment_components()->sum('total_fulfilled');
-
-        if ($totalSumRequired == $totalSumFulfilled) {
+        
+        if ($totalSumPlan == $totalSumFulfilled) {
             $trainsetAttachment->update([
                 'status' => TrainsetAttachmentStatusEnum::DONE->value,
             ]);

@@ -16,13 +16,13 @@ class TrainsetAttachmentComponentService extends BaseCrudService implements Trai
 
     public function checkProgressFulfillment(TrainsetAttachmentComponent $trainsetAttachmentComponent): void {
         logger('Checking progress fulfillment for trainset attachment component ' . $trainsetAttachmentComponent);
-        $lastProgressStep = $trainsetAttachmentComponent->progress_steps->last()->load('step');
+        $lastProgressStep = $trainsetAttachmentComponent->progress_steps->last();
         $lastDetailWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets->last();
         if ($lastProgressStep && $lastDetailWorkerTrainset
             && $lastDetailWorkerTrainset->step_id == $lastProgressStep->step_id
             && $lastProgressStep->work_status == DetailWorkerTrainsetWorkStatusEnum::COMPLETED
         ) {
-            if (empty($lastDetailWorkerTrainset->image_path)) {
+            if ($trainsetAttachmentComponent->total_current_work_progress !== $trainsetAttachmentComponent->total_required) {
                 $trainsetAttachmentComponent->update([
                     'total_fulfilled' => $trainsetAttachmentComponent->total_required
                         - $trainsetAttachmentComponent->total_failed,
