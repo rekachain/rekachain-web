@@ -120,7 +120,7 @@ class TrainsetAttachmentResource extends JsonResource {
                         ],
                     ]))->get();
                 $components = $trainsetAttachmentComponents->filter(function ($trainset_attachment_component) {
-                    return $trainset_attachment_component->total_fulfilled !== $trainset_attachment_component->total_required;
+                    return $trainset_attachment_component->total_fulfilled !== $trainset_attachment_component->total_plan;
                 })->map(function ($trainset_attachment_component) {
                     return [
                         'carriage_panel_component_id' => $trainset_attachment_component->carriage_panel_component_id,
