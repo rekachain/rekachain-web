@@ -70,6 +70,10 @@ class DetailWorkerTrainsetSeeder extends Seeder {
                             $trainsetAttachmentComponent->update([
                                 'total_fulfilled' => $trainsetAttachmentComponent->total_required,
                             ]);
+                        } else {
+                            $trainsetAttachmentComponent->update([
+                                'total_current_work_progress' => $trainsetAttachmentComponent->total_required,
+                            ]);
                         }
                     }
                     $users = User::whereStepId($progressStep->step_id)

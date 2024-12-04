@@ -88,18 +88,22 @@ class TrainsetAttachmentResource extends JsonResource {
                         $trainset_attachment_component->carriage_panel_component->component->id => [
                             'id' => $trainset_attachment_component->carriage_panel_component->component->id,
                             'component_name' => $trainset_attachment_component->carriage_panel_component->component->name,
+                            'total_plan' => $trainset_attachment_component->total_plan,
                             'total_required' => $trainset_attachment_component->total_required,
                             'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
                             'total_failed' => $trainset_attachment_component->total_failed,
+                            'total_current_work_progress' => $trainset_attachment_component->total_current_work_progress,
                         ],
                     ];
                 })->map(function ($components) {
                     return [
                         'id' => $components->first()['id'],
                         'component_name' => $components->first()['component_name'],
+                        'total_plan' => $components->sum('total_plan'),
                         'total_required' => $components->sum('total_required'),
                         'total_fulfilled' => $components->sum('total_fulfilled'),
                         'total_failed' => $components->sum('total_failed'),
+                        'total_current_work_progress' => $components->sum('total_current_work_progress'),
                     ];
                 })->values();
 
@@ -123,8 +127,11 @@ class TrainsetAttachmentResource extends JsonResource {
                         'carriage' => CarriageResource::make($trainset_attachment_component->carriage_panel_component->carriage_panel->carriage_trainset->carriage),
                         'panel' => PanelResource::make($trainset_attachment_component->carriage_panel_component->carriage_panel->panel),
                         'component' => ComponentResource::make($trainset_attachment_component->carriage_panel_component->component),
+                        'total_plan' => $trainset_attachment_component->total_plan,
                         'total_required' => $trainset_attachment_component->total_required,
                         'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
+                        'total_failed' => $trainset_attachment_component->total_failed,
+                        'total_current_work_progress' => $trainset_attachment_component->total_current_work_progress,
                     ];
                 });
                 if (!isset($request->unique) || $request->get('unique') == true) {
