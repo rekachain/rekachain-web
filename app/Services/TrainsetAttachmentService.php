@@ -72,7 +72,11 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
             if ($workerTrainset) {
                 return $workerTrainset;
             }
-
+            if ($trainsetAttachmentComponent->detail_worker_trainsets()->count() === 0) {
+                $trainsetAttachment->update([
+                    'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
+                ]);
+            }
             return $this->detailWorkerTrainsetService->create([
                 'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
                 'worker_id' => $user->id,
