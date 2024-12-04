@@ -17,7 +17,7 @@ interface ProjectServiceInterface extends BaseCrudServiceInterface {
      */
     public function addTrainsets(Project $project, array $data): bool;
 
-    public function importProject(UploadedFile $file): bool;
+    public function importProject(UploadedFile $file, array $data): bool;
 
     public function importProjectPanelProgressMaterial(Project $project, UploadedFile $file, array $data): bool;
 

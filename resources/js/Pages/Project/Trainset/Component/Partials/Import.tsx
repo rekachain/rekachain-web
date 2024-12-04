@@ -16,18 +16,21 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { componentService } from '@/Services/componentService';
 import { projectService } from '@/Services/projectService';
 import { workAspectService } from '@/Services/workAspectService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { withLoading } from '@/Utils/withLoading';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 
 export default function ({
     project,
+    trainset,
     component,
     hasMaterials = false,
 }: {
     project: any;
+    trainset: any;
     component: any;
     hasMaterials?: boolean;
 }) {
@@ -52,14 +55,15 @@ export default function ({
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await projectService.importComponentsProgressRawMaterial(
+        await projectService.importTrainsetComponentsProgressRawMaterial(
             project.id,
+            trainset.id,
             data.file as File,
             component.id,
             data.work_aspect_id as number,
         );
         await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
-        // router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
+        router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
         return await workAspectService
@@ -84,8 +88,9 @@ export default function ({
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
-                    <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
+                    <DialogTitle>{'Import Komponen'}</DialogTitle>
                     <DialogDescription>
+                        {/* Import komponen dan progress untuk trainset */}
                         {t('pages.project.component.partials.import.dialogs.description', {
                             component_name: component.name,
                             project_name: project.name,

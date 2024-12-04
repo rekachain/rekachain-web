@@ -61,7 +61,7 @@ class ApiAuthController extends ApiController {
         }
 
         return response()->json([
-            'message' => 'Invalid login details',
+            'message' => __('auth.failed'),
         ], 401);
     }
 
@@ -97,7 +97,7 @@ class ApiAuthController extends ApiController {
         auth()->user()->tokens()->delete();
 
         return response()->json([
-            'message' => 'Logged out',
+            'message' => __('auth.logout'),
         ]);
     }
 }

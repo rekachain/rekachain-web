@@ -31,9 +31,12 @@ export const projectService = {
     downloadImportProjectTemplate: async () => {
         window.location.href = '/assets/excel-templates/imports/project/project-import.xlsm';
     },
-    importProject: async (file: File) => {
+    importProject: async (file: File, buyer_id: number | null) => {
         const formData = new FormData();
         formData.append('file', file);
+        if (buyer_id) {
+            formData.append('buyer_id', buyer_id.toString());
+        }
         return await window.axios.post(route(`${ROUTES.PROJECTS}.store`), formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -141,6 +144,32 @@ export const projectService = {
             },
         });
     },
+    importTrainsetComponentsProgressRawMaterial: async (
+        projectId: number,
+        trainsetId: number,
+        file: File,
+        componentId: number,
+        workAspectId: number,
+    ) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('component_id', componentId.toString());
+        formData.append('work_aspect_id', workAspectId.toString());
+        return await window.axios.post(
+            route(`${ROUTES.PROJECTS}.update`, [projectId, trainsetId]),
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL,
+                },
+            },
+        );
+    },
+
     importPanelsProgressRawMaterial: async (projectId: number, file: File, panelId: number) => {
         const formData = new FormData();
         formData.append('file', file);
@@ -154,6 +183,29 @@ export const projectService = {
                 intent: IntentEnum.WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL,
             },
         });
+    },
+    importTrainsetPanelsProgressRawMaterial: async (
+        projectId: number,
+        trainsetId: number,
+        file: File,
+        panelId: number,
+    ) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('panel_id', panelId.toString());
+        return await window.axios.post(
+            route(`${ROUTES.PROJECTS}.update`, [projectId, trainsetId]),
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL,
+                },
+            },
+        );
     },
     importCarriageComponentsProgressRawMaterial: async (
         projectId: number,

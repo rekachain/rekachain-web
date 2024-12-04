@@ -1,3 +1,9 @@
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/Components/UI/accordion';
 import { Button } from '@/Components/UI/button';
 import {
     Dialog,
@@ -18,20 +24,23 @@ import { withLoading } from '@/Utils/withLoading';
 import { router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ChangeEvent, FormEvent } from 'react';
+import BuyerForm from './Partials/BuyerForm';
 
 export default function () {
     const { t } = useLaravelReactI18n();
 
     const { data, setData } = useForm<{
         file: File | null;
+        buyer_id: number | null;
     }>({
         file: null,
+        buyer_id: null,
     });
     const { loading } = useLoading();
 
     const handleImportData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await projectService.importProject(data.file as File);
+        await projectService.importProject(data.file as File, data.buyer_id);
         router.visit(route(`${ROUTES.PROJECTS}.index`));
         void useSuccessToast(t('pages.project.partials.import.messages.imported'));
     });
@@ -71,26 +80,35 @@ export default function () {
                             : t('pages.project.partials.import.dialogs.buttons.download_template')}
                     </Button>
                 </div>
-                <form onSubmit={handleImportData} className='space-y-4'>
-                    <div className='space-y-4'>
-                        <Label htmlFor='file'>
-                            {t('pages.project.partials.import.dialogs.fields.file')}
-                        </Label>
-                        <Input
-                            type='file'
-                            onChange={handleChangeImportFile}
-                            id='file'
-                            accept='application/vnd.ms-excel.sheet.macroEnabled.12'
-                        />
-                    </div>
-                    <DialogFooter>
-                        <Button type='submit' disabled={loading}>
-                            {loading
-                                ? t('action.loading')
-                                : t('pages.project.partials.import.dialogs.buttons.import')}
-                        </Button>
-                    </DialogFooter>
-                </form>
+                <form onSubmit={handleImportData} id='import-form' className='hidden'></form>
+                <div className='space-y-4'>
+                    <Label htmlFor='file'>
+                        {t('pages.project.partials.import.dialogs.fields.file')}
+                    </Label>
+                    <Input
+                        type='file'
+                        onChange={handleChangeImportFile}
+                        id='file'
+                        accept='application/vnd.ms-excel.sheet.macroEnabled.12'
+                    />
+                </div>
+                <Accordion type='single' collapsible>
+                    <AccordionItem value='item-1'>
+                        <AccordionTrigger>{'Pembeli (OPSIONAL)'}</AccordionTrigger>
+                        <AccordionContent>
+                            <BuyerForm
+                                setBuyerId={(buyer_id: number) => setData('buyer_id', buyer_id)}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+                <DialogFooter>
+                    <Button type='submit' form='import-form' disabled={loading}>
+                        {loading
+                            ? t('action.loading')
+                            : t('pages.project.partials.import.dialogs.buttons.import')}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

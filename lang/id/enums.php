@@ -8,12 +8,10 @@ return [
         'done' => 'Selesai',
     ],
     'App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum' => [
-        null => 'Belum Diproses',
         'accepted' => 'Diterima',
         'declined' => 'Ditolak',
     ],
     'App\Support\Enums\DetailWorkerTrainsetAcceptanceStatusEnum' => [
-        null => 'Belum Diproses',
         'accepted' => 'Diterima',
         'declined' => 'Ditolak',
     ],
@@ -27,5 +25,6 @@ return [
     ],
     'others' => [
         'null_work_status' => 'Belum Diproses',
+        'null_acceptance_status' => 'Belum Diproses',
     ],
 ];

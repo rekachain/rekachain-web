@@ -28,7 +28,9 @@ class WorkstationController extends Controller {
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
 
-            return WorkstationResource::collection($this->workstationService->getAllPaginated($request->query(), $perPage));
+            return WorkstationResource::collection(
+                $this->workstationService->with(['workshop', 'division'])->getAllPaginated($request->query(), $perPage)
+            );
         }
 
         return inertia('Workstation/Index');

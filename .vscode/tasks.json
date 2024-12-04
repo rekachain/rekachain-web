@@ -133,6 +133,12 @@
                 "Laravel NPM Run Dev - Shared"
             ]
         },
+        {
+            "label": "NPM Run Build",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm run build"
+        },
         // ----------------------------------------------------------------
 
         {
@@ -140,6 +146,18 @@
             "problemMatcher": [],
             "type": "shell",
             "command": "./vendor/bin/pint"
+        },
+        {
+            "label": "Prettier: Fix",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm run prettier"
+        },
+        {
+            "label": "Lint: Fix",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm run lint"
         },
 
         {

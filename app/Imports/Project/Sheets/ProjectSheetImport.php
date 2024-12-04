@@ -13,7 +13,10 @@ class ProjectSheetImport implements ToModel, WithMappedCells {
     public function mapping(): array {
         return [
             'name' => 'B1',
+            'description' => 'B2',
             'initial_date' => 'B3',
+            'estimated_start_date' => 'B4',
+            'estimated_end_date' => 'B5',
             'trainset_needed' => 'B6',
         ];
     }
@@ -21,7 +24,11 @@ class ProjectSheetImport implements ToModel, WithMappedCells {
     public function model(array $row) {
         $project = Project::create([
             'name' => $row['name'],
+            'description' => $row['description'],
             'initial_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['initial_date']),
+            'estimated_start_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['estimated_start_date']),
+            'estimated_end_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['estimated_end_date']),
+            'buyer_id' => $this->parent->buyer?->id ?? null,
         ]);
 
         $this->parent->setProject($project);

@@ -36,7 +36,7 @@ class ApiProjectController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
-                $this->projectService->importProject($request->file('file'));
+                $this->projectService->importProject($request->file('file'), $request->validated());
 
                 return response()->json(['message' => 'Success'], 200);
             default:
