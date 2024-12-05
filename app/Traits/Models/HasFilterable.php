@@ -19,12 +19,16 @@ trait HasFilterable {
         $filterable['relation_columns'] = [];
 
         foreach ($this->getFilterableRelations() as $relationName) {
-            // Load the related model instance
-            $relatedInstance = $this->$relationName()->getRelated();
+            $explodedRelation = explode('.', $relationName);
+            $latestRelatedModel = $this;
 
-            // Check if the related model has a getFilterable method
-            if (method_exists($relatedInstance, 'getFilterable')) {
-                $relatedFilterable = $relatedInstance->getFilterable();
+            foreach ($explodedRelation as $relationPart) {
+                $latestRelatedModel = $latestRelatedModel->$relationPart()->getRelated();
+            }
+            
+            // Check if the latest related model has a getFilterable method
+            if (method_exists($latestRelatedModel, 'getFilterable')) {
+                $relatedFilterable = $latestRelatedModel->getFilterable();
 
                 // Add related model's filterable columns to the current model's filterable columns
                 $filterable['relation_searchs'][$relationName] = $relatedFilterable['searchs'] ?? [];
