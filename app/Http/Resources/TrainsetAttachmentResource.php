@@ -122,6 +122,7 @@ class TrainsetAttachmentResource extends JsonResource {
                 $components = $trainsetAttachmentComponents->filter(function ($trainset_attachment_component) {
                     return $trainset_attachment_component->total_fulfilled !== $trainset_attachment_component->total_plan;
                 })->map(function ($trainset_attachment_component) {
+                    $lastWorker = $trainset_attachment_component->detail_worker_trainsets->last();
                     return [
                         'carriage_panel_component_id' => $trainset_attachment_component->carriage_panel_component_id,
                         'carriage' => CarriageResource::make($trainset_attachment_component->carriage_panel_component->carriage_panel->carriage_trainset->carriage),
@@ -132,6 +133,20 @@ class TrainsetAttachmentResource extends JsonResource {
                         'total_fulfilled' => $trainset_attachment_component->total_fulfilled,
                         'total_failed' => $trainset_attachment_component->total_failed,
                         'total_current_work_progress' => $trainset_attachment_component->total_current_work_progress,
+                        'last_work_step' => $lastWorker?->progress_step->step ?? null,
+                        'last_work_status' => $lastWorker?->work_status->value ?? null,
+                        'localized_last_work_status' => $lastWorker?->work_status->getLabel() ?? __('enums.others.null_work_status'),
+                        'next_work_step' => $this->when(true, function () use ($lastWorker, $trainset_attachment_component) {
+                            $componentProgressSteps = $trainset_attachment_component->carriage_panel_component->progress->progress_steps;
+                            if (!$lastWorker) {
+                                return $componentProgressSteps->first()->step;
+                            }
+                            $currentProgressStepId = $lastWorker->progress_step_id;
+                            if ($currentProgressStepId == $componentProgressSteps->pluck('id')->last()) {
+                                return null;
+                            }
+                            return $componentProgressSteps->where('id', '>', $currentProgressStepId)->first()->step;
+                        }),
                     ];
                 });
                 if (!isset($request->unique) || $request->get('unique') == true) {
