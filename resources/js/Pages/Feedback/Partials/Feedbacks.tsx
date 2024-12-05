@@ -1,5 +1,5 @@
 import GenericPagination from '@/Components/GenericPagination';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { feedbackService } from '@/Services/feedbackService';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';

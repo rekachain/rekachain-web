@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { FeedbackStatusEnum } from '@/Support/Enums/feedbackStatusEnum';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { RoleEnum } from '@/Support/Enums/roleEnum';
