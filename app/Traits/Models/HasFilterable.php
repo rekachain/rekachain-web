@@ -3,10 +3,24 @@
 namespace App\Traits\Models;
 
 trait HasFilterable {
-    public function getFilterableRelations(): array {
-        return $this->filterable['relations'] ?? [];
-    }
-
+    /**
+     * Returns an array of filterable columns and relations for the current model.
+     *
+     * The array contains the following structure:
+     * [
+     *     'searchs' => [],
+     *     'columns' => [],
+     *     'relation_searchs' => [],
+     *     'relation_columns' => [],
+     * ]
+     *
+     * To use this in a model, define a $filterable property with at least 'searchs' and 'columns' values.
+     * Add property 'relations' values to use search and column filter on related models.
+     * You can also define 'relation_searchs' and 'relation_columns' values to decide which columns 
+     * to filter on related models.
+     *
+     * @return array
+     */
     public function getFilterable(): array {
         $filterable = [];
 
@@ -23,14 +37,15 @@ trait HasFilterable {
         }
 
         foreach ($this->getFilterableRelations() as $relationName) {
+            // Get the latest related model
             $explodedRelation = explode('.', $relationName);
             $latestRelatedModel = $this;
 
             foreach ($explodedRelation as $relationPart) {
                 $latestRelatedModel = $latestRelatedModel->$relationPart()->getRelated();
             }
-            
-            // Check if the latest related model has a getFilterable method
+
+            // Check if the latest related model has a implemented this trait
             if (method_exists($latestRelatedModel, 'getFilterable')) {
                 $relatedFilterable = $latestRelatedModel->getFilterable();
 
@@ -51,6 +66,11 @@ trait HasFilterable {
     protected function getColumnFilterableColumns(): array {
         // Return the filterable columns for the current model
         return $this->filterable['columns'] ?? [];
+    }
+
+    protected function getFilterableRelations(): array {
+        // Return the filterable relations for the current model
+        return $this->filterable['relations'] ?? [];
     }
 
     protected function getRelatedSearchFilterableColumns(): array {
