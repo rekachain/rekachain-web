@@ -20,7 +20,10 @@ export default function () {
     const auth = usePage().props.auth;
     const allowedToReadAll =
         auth.user.role === RoleEnum.SUPER_ADMIN ||
-        checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
+        checkPermission([
+            PERMISSION_ENUM.FEEDBACK_READ,
+            PERMISSION_ENUM.FEEDBACK_READ_ALL,
+        ], true);
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
