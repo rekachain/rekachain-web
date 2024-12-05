@@ -2,6 +2,38 @@
 
 namespace App\Traits\Models;
 
+/**
+ * To use this in a model, define a $filterable property with at least 'searchs' and 'columns' values.
+ * $filerable = [
+ *     'searchs' => [],
+ *     'columns' => [],
+ * ]
+ * 
+ * Add property 'relations' values to use search and column filter on related models.
+ * $filerable = [
+ *     'searchs' => [],
+ *     'columns' => [],
+ *     'relations' => ['relation'],
+ * ]
+ * 
+ * You can also define 'relation_searchs' and 'relation_columns' values to decide which columns 
+ * to filter on related models.
+ * $filerable = [
+ *     'searchs' => [],
+ *     'columns' => [],
+ *     'relations' => ['relation'],
+ *     'relation_searchs' => [
+ *         'relation' => [
+ *             'column',
+ *         ],
+ *     ],
+ *     'relation_columns' => [
+ *         'relation' => [
+ *             'column',
+ *         ],
+ *     ],
+ * ]
+ */
 trait HasFilterable {
     /**
      * Returns an array of filterable columns and relations for the current model.
@@ -10,15 +42,17 @@ trait HasFilterable {
      * [
      *     'searchs' => [],
      *     'columns' => [],
-     *     'relation_searchs' => [],
-     *     'relation_columns' => [],
+     *     'relation_searchs' => [
+     *         'relation' => [
+     *             'column',
+     *         ],
+     *     ],
+     *     'relation_columns' => [
+     *         'relation' => [
+     *             'column',
+     *         ],
+     *     ],
      * ]
-     *
-     * To use this in a model, define a $filterable property with at least 'searchs' and 'columns' values.
-     * Add property 'relations' values to use search and column filter on related models.
-     * You can also define 'relation_searchs' and 'relation_columns' values to decide which columns 
-     * to filter on related models.
-     *
      * @return array
      */
     public function getFilterable(): array {
@@ -31,10 +65,6 @@ trait HasFilterable {
         // Get filterable columns for related models
         $filterable['relation_searchs'] = $filterableRelatedSearchs = $this->getRelatedSearchFilterableColumns();
         $filterable['relation_columns'] = $filterableRelatedColumns = $this->getRelatedColumnFilterableColumns();
-
-        if (!empty($filterableRelatedSearchs) && !empty($filterableRelatedColumns)) {
-            return $filterable;
-        }
 
         foreach ($this->getFilterableRelations() as $relationName) {
             // Get the latest related model
@@ -50,8 +80,13 @@ trait HasFilterable {
                 $relatedFilterable = $latestRelatedModel->getFilterable();
 
                 // Add related model's filterable columns to the current model's filterable columns
-                if (empty($filterableRelatedSearchs)) $filterable['relation_searchs'][$relationName] = $relatedFilterable['searchs'] ?? [];
-                if (empty($filterableRelatedColumns)) $filterable['relation_columns'][$relationName] = $relatedFilterable['columns'] ?? [];
+                if (!array_key_exists($relationName, array: $filterableRelatedSearchs)) {
+                    $filterable['relation_searchs'][$relationName] = $relatedFilterable['searchs'] ?? [];
+                }
+
+                if (!array_key_exists($relationName,$filterableRelatedColumns)) {
+                    $filterable['relation_columns'][$relationName] = $relatedFilterable['columns'] ?? [];
+                }
             }
         }
 
