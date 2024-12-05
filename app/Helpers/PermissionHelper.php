@@ -57,10 +57,10 @@ class PermissionHelper {
                 if ($returnBool) {
                     return false;
                 }
-                abort(403, __('exception.auth.permission.role_exception', ['role' => $role->value]));
+                abort(403, __('exception.auth.role.role_exception', ['role' => $role->value]));
             }
         }
 
-        return $returnBool ? false : abort(403, __('exception.auth.permission.role_exception', ['role' => implode(', ', array_map(fn ($role) => $role->value, $roles))]));
+        return $returnBool ? false : abort(403, __('exception.auth.role.role_exception', ['role' => implode(', ', array_map(fn ($role) => $role->value, $roles))]));
     }
 }
