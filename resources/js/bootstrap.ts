@@ -1,4 +1,4 @@
-import './axios';
+import './axios.tsx';
 import './filepond';
 import './swal';
 
