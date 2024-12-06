@@ -57,11 +57,11 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
 
         return $detailWorkerTrainset->fresh();
     }
-    
+
     public function update($detailWorkerTrainset, array $data): ?Model {
         $data = $this->handleImageUpload($data, $detailWorkerTrainset);
 
-        if (is_null($detailWorkerTrainset->acceptance_status) 
+        if (is_null($detailWorkerTrainset->acceptance_status)
             && array_key_exists('work_status', $data)
             && $data['work_status'] == DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value
         ) {
@@ -73,7 +73,7 @@ class DetailWorkerTrainsetService extends BaseCrudService implements DetailWorke
         if (array_key_exists('failed_note', $data)) {
             $this->createFailedComponentManufacture($detailWorkerTrainset, $data);
             $this->trainsetAttachmentComponentService()->checkProgressFulfillment($detailWorkerTrainset->trainset_attachment_component);
-    
+
             return $detailWorkerTrainset->fresh()->load('failed_component_manufactures');
         }
 

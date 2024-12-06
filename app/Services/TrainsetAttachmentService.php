@@ -66,7 +66,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
             $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets->last();
             $workerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->whereWorkerId($user->id)->get()->last();
             // check if same worker but different progress sequence (failed component)
-            if ($workerTrainset && $trainsetAttachmentComponent->total_current_work_progress > 0 
+            if ($workerTrainset && $trainsetAttachmentComponent->total_current_work_progress > 0
                 && $workerTrainset->created_at->gte($lastWorkerTrainset->created_at)
             ) {
                 return $workerTrainset;
@@ -85,7 +85,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
                 'progress_step_id' => $this->progressStepRepository->findFirst(['progress_id' => $trainsetAttachmentComponent->carriage_panel_component->progress_id, 'step_id' => $user->step->id])->id,
                 'estimated_time' => $user->step->estimated_time,
             ]);
-            // update current progress if there are no workers 
+            // update current progress if there are no workers
             // or if there are workers but the current progress is 0 (after last progress sequence is completed and has failed components)
             if (($workerCount === 0) || ($workerCount > 0 && $trainsetAttachmentComponent->total_current_work_progress === 0 && $trainsetAttachmentComponent->total_required > 0)) {
                 $trainsetAttachmentComponent->update([
@@ -162,7 +162,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     public function checkProgressAttachment(TrainsetAttachment $trainsetAttachment) {
         $totalSumPlan = $trainsetAttachment->trainset_attachment_components()->sum('total_plan');
         $totalSumFulfilled = $trainsetAttachment->trainset_attachment_components()->sum('total_fulfilled');
-        
+
         if ($totalSumPlan == $totalSumFulfilled) {
             $trainsetAttachment->update([
                 'status' => TrainsetAttachmentStatusEnum::DONE->value,

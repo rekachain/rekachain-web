@@ -123,6 +123,7 @@ class TrainsetAttachmentResource extends JsonResource {
                     return $trainset_attachment_component->total_fulfilled !== $trainset_attachment_component->total_plan;
                 })->map(function ($trainset_attachment_component) {
                     $lastWorker = $trainset_attachment_component->detail_worker_trainsets->last();
+
                     return [
                         'carriage_panel_component_id' => $trainset_attachment_component->carriage_panel_component_id,
                         'carriage' => CarriageResource::make($trainset_attachment_component->carriage_panel_component->carriage_panel->carriage_trainset->carriage),
@@ -145,6 +146,7 @@ class TrainsetAttachmentResource extends JsonResource {
                             if ($currentProgressStepId == $componentProgressSteps->pluck('id')->last()) {
                                 return null;
                             }
+
                             return $componentProgressSteps->where('id', '>', $currentProgressStepId)->first()->step;
                         }),
                     ];

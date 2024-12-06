@@ -1,6 +1,5 @@
 import GenericPagination from '@/Components/GenericPagination';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useConfirmation } from '@/Hooks/useConfirmation';
 import { useSuccessToast } from '@/Hooks/useToast';
 import Filters from '@/Pages/Component/Partials/Partials/Filters';
 import { componentService } from '@/Services/componentService';
@@ -40,17 +39,11 @@ export default function () {
         void syncComponents();
     }, [filters]);
 
-    const handleComponentDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await componentService.delete(id);
-                await syncComponents();
-                void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-                setLoading(false);
-            }
-        });
-    };
+    const handleComponentDeletion = withLoading(async (id: number) => {
+        await componentService.delete(id);
+        await syncComponents();
+        void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
+    }, true);
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });

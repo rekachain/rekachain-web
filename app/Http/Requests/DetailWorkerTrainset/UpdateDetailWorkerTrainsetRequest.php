@@ -26,8 +26,8 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
 
         return [
             'image_path' => [
-                'required_if:work_status,' . DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value, 
-                'image', 'mimes:jpeg,png,jpg', 'max:2048'
+                'required_if:work_status,' . DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value,
+                'image', 'mimes:jpeg,png,jpg', 'max:2048',
             ],
             'trainset_attachment_id' => 'nullable|exists:trainset_attachments,id',
             'worker_id' => 'nullable|exists:users,id',

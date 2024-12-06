@@ -6,7 +6,6 @@ use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Models\PanelAttachment;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
