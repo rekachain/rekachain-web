@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ComponentMaterial extends Pivot {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $table = 'component_materials';
     public $incrementing = true;
@@ -15,6 +16,16 @@ class ComponentMaterial extends Pivot {
         'carriage_panel_component_id',
         'raw_material_id',
         'qty',
+    ];
+
+    protected $filterable = [
+        'searchs' => [
+            'qty',
+        ],
+        'columns' => [
+            'carriage_panel_component_id',
+            'raw_material_id',
+        ],
     ];
 
     public function carriage_panel_component(): BelongsTo {

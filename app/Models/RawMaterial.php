@@ -2,18 +2,24 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RawMaterial extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'material_code',
         'description',
         'unit',
         'specs',
+    ];
+
+    protected $filterable = [
+        'searchs' => ['material_code', 'description', 'unit', 'specs'],
+        'columns' => ['unit'],
     ];
 
     /**

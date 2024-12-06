@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,12 +10,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Progress extends Model {
+    use HasFactory, HasFilterable;
+
     protected $fillable = [
         'name',
         'work_aspect_id',
     ];
 
-    use HasFactory;
+    protected $filterable = [
+        'searchs' => ['name'],
+        'columns' => ['work_aspect_id'],
+    ];
 
     public function panels(): HasMany {
         return $this->hasMany(Panel::class);
