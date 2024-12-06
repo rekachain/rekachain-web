@@ -2,20 +2,30 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CarriagePanelComponent extends Model {
-    //
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'component_id',
         'carriage_panel_id',
         'progress_id',
         'qty',
+    ];
+    protected $filterable = [
+        'searchs' => [],
+        'columns' => [
+            'component_id',
+            'carriage_panel_id',
+            'progress_id',
+            'qty',
+        ],
+        'relations' => [],
     ];
 
     public function component(): BelongsTo {

@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { FeedbackStatusEnum } from '@/Support/Enums/feedbackStatusEnum';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { RoleEnum } from '@/Support/Enums/roleEnum';
@@ -29,7 +29,7 @@ export default function FeedbackCardView({
 
     const allowedToReadAll =
         auth.user.role === RoleEnum.SUPER_ADMIN ||
-        checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
+        checkPermission([PERMISSION_ENUM.FEEDBACK_READ, PERMISSION_ENUM.FEEDBACK_READ_ALL], true);
 
     return (
         <div>

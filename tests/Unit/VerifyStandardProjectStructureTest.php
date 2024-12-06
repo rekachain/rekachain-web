@@ -5,6 +5,8 @@ use Illuminate\Support\Str;
 // Exclude certain folders or files
 $excludedControllers = ['Api', 'Auth', 'Controller.php', 'ProfileController.php', 'DashboardController.php', 'TestController.php'];
 $excludedRequests = ['Auth', 'ApiAuthLoginRequest.php', 'ProfileUpdateRequest.php', 'CarriageProjectRequest.php', 'TrainsetProjectRequest.php'];
+$excludedRepositories = ['BaseRepository.php'];
+$excludedRepositoryInterfaces = ['BaseRepositoryInterface.php'];
 $excludedServices = ['TrainsetAttachmentComponent', 'DashboardService.php'];
 $excludedReactModelInterfaces = ['index.ts'];
 $excludedReactResources = ['index.ts', 'Resource.ts', 'ProjectCarriageResource.ts', 'ProjectComponentResource.ts', 'ProjectPanelResource.ts'];
@@ -286,7 +288,7 @@ test('ensure no other files in App\Support\Interfaces folder', function () {
 });
 
 // Test that models have corresponding controllers, form requests, resources, services, and repositories
-test('model should have controllers, form request, resource, service interface, repository interface, service, and repository', function () use ($excludedControllers, $excludedRequests, $excludedServices, $excludedReactModelInterfaces, $excludedReactResources, $excludedReactServices) {
+test('model should have controllers, form request, resource, service interface, repository interface, service, and repository', function () use ($excludedControllers, $excludedRequests, $excludedRepositories, $excludedRepositoryInterfaces, $excludedServices, $excludedReactModelInterfaces, $excludedReactResources, $excludedReactServices) {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
 
     $modelDir = $baseDir . '/app/Models';
@@ -303,9 +305,9 @@ test('model should have controllers, form request, resource, service interface, 
     $requestCount = countFilesInDirectory($requestDir, $excludedRequests);
     $resourceCount = countFilesInDirectory($resourceDir);
     $serviceInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Services');
-    $repositoryInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Repositories');
+    $repositoryInterfaceCount = countFilesInDirectory($baseDir . '/app/Support/Interfaces/Repositories', $excludedRepositoryInterfaces);
     $serviceCount = countFilesInDirectory($baseDir . '/app/Services', $excludedServices);
-    $repositoryCount = countFilesInDirectory($baseDir . '/app/Repositories');
+    $repositoryCount = countFilesInDirectory($baseDir . '/app/Repositories', $excludedRepositories);
     $reactModelInterfaceCount = countFilesInDirectory($reactModelInterfaceDir, $excludedReactModelInterfaces);
     $reactResourceCount = countFilesInDirectory($reactResourceDir, $excludedReactResources);
     $reactServiceCount = countFilesInDirectory($reactServiceDir, $excludedReactServices);
@@ -335,7 +337,7 @@ test('model should have controllers, form request, resource, service interface, 
     $this->assertEquals($modelCount, $reactServiceCount);
 });
 
-test('detect extra files and anomalies in project structure', function () use ($excludedControllers, $excludedRequests, $excludedServices) {
+test('detect extra files and anomalies in project structure', function () use ($excludedControllers, $excludedRequests, $excludedRepositories, $excludedRepositoryInterfaces, $excludedServices) {
     $baseDir = realpath(__DIR__ . '/../../'); // Adjust to get the project root directory
 
     $modelDir = $baseDir . '/app/Models';
@@ -433,7 +435,7 @@ test('detect extra files and anomalies in project structure', function () use ($
         if ($repositoryFile->isFile()) {
             $repositoryName = pathinfo($repositoryFile->getFilename(), PATHINFO_FILENAME);
             $modelName = str_replace('Repository', '', $repositoryName);
-            if (!in_array($modelName, $modelNames)) {
+            if (!in_array($modelName, $modelNames) && !in_array($repositoryFile->getFilename(), $excludedRepositories)) {
                 $anomalies[] = "Repository $repositoryName does not have a corresponding model.";
             }
         }
@@ -457,7 +459,7 @@ test('detect extra files and anomalies in project structure', function () use ($
         if ($repositoryInterfaceFile->isFile()) {
             $repositoryInterfaceName = pathinfo($repositoryInterfaceFile->getFilename(), PATHINFO_FILENAME);
             $modelName = str_replace('RepositoryInterface', '', $repositoryInterfaceName);
-            if (!in_array($modelName, $modelNames)) {
+            if (!in_array($modelName, $modelNames) && !in_array($repositoryInterfaceFile->getFilename(), $excludedRepositoryInterfaces)) {
                 $anomalies[] = "Repository interface $repositoryInterfaceName does not have a corresponding model.";
             }
         }

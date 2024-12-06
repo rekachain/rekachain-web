@@ -1,5 +1,5 @@
 import { Button } from '@/Components/UI/button';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { STYLING } from '@/Support/Constants/styling';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
@@ -22,7 +22,7 @@ export default function FeedbackTableView({
 
     const allowedToReadAll =
         auth.user.role === RoleEnum.SUPER_ADMIN ||
-        checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
+        checkPermission([PERMISSION_ENUM.FEEDBACK_READ, PERMISSION_ENUM.FEEDBACK_READ_ALL], true);
 
     return (
         <div>

@@ -86,11 +86,13 @@ class TrainsetAttachmentComponentGenerator {
                     ),
                 ];
             }
+            $totalPlan = $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty;
             if ($carriagePanelComponent->progress->work_aspect_id === $workAspect->id) {
                 $this->trainsetAttachmentComponentService->create([
                     'trainset_attachment_id' => $trainsetAttachment->id,
                     'carriage_panel_component_id' => $carriagePanelComponent->id,
-                    'total_required' => $carriageTrainset->qty * $carriagePanel->qty * $carriagePanelComponent->qty,
+                    'total_plan' => $totalPlan,
+                    'total_required' => $totalPlan,
                 ]);
             }
         }

@@ -8,7 +8,6 @@ use App\Models\TrainsetAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
-use App\Support\Interfaces\Repositories\DetailWorkerTrainsetRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
@@ -20,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttachmentServiceInterface {
     public function __construct(
-        protected DetailWorkerTrainsetRepositoryInterface $detailWorkerTrainsetRepository,
         protected ProgressStepRepositoryInterface $progressStepRepository,
         protected TrainsetAttachmentComponentRepositoryInterface $trainsetAttachmentComponentRepository,
         protected UserRepositoryInterface $userRepositoryInterface,
@@ -66,19 +64,39 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
     public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data) {
         $userId = $data['worker_id'] ?? auth()->user()->id;
         $user = $this->userRepositoryInterface->find($userId);
-        $trainsetAttachmentComponent = $this->trainsetAttachmentComponentRepository->findFirst(['carriage_panel_component_id' => $data['carriage_panel_component_id'], 'trainset_attachment_id' => $trainsetAttachment->id]);
+        $trainsetAttachmentComponent = $trainsetAttachment->trainset_attachment_components()->whereCarriagePanelComponentId($data['carriage_panel_component_id'])->firstOrFail();
         if ($trainsetAttachmentComponent) {
-            $workerTrainset = $this->detailWorkerTrainsetRepository->findFirst(['trainset_attachment_component_id' => $trainsetAttachmentComponent->id, 'worker_id' => $user->id]);
-            if ($workerTrainset) {
+            $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets->last();
+            $workerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets()->whereWorkerId($user->id)->get()->last();
+            // check if same worker but different progress sequence (failed component)
+            if ($workerTrainset && $trainsetAttachmentComponent->total_current_work_progress > 0
+                && $workerTrainset->created_at->gte($lastWorkerTrainset->created_at)
+            ) {
                 return $workerTrainset;
             }
 
-            return $this->detailWorkerTrainsetService->create([
+            $workerCount = $trainsetAttachmentComponent->detail_worker_trainsets()->count();
+            if ($workerCount === 0) {
+                $trainsetAttachment->update([
+                    'status' => TrainsetAttachmentStatusEnum::IN_PROGRESS->value,
+                ]);
+            }
+
+            $detailWorkerTrainset = $this->detailWorkerTrainsetService->create([
                 'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
                 'worker_id' => $user->id,
                 'progress_step_id' => $this->progressStepRepository->findFirst(['progress_id' => $trainsetAttachmentComponent->carriage_panel_component->progress_id, 'step_id' => $user->step->id])->id,
                 'estimated_time' => $user->step->estimated_time,
             ]);
+            // update current progress if there are no workers
+            // or if there are workers but the current progress is 0 (after last progress sequence is completed and has failed components)
+            if (($workerCount === 0) || ($workerCount > 0 && $trainsetAttachmentComponent->total_current_work_progress === 0 && $trainsetAttachmentComponent->total_required > 0)) {
+                $trainsetAttachmentComponent->update([
+                    'total_current_work_progress' => $trainsetAttachmentComponent->total_required,
+                ]);
+            }
+
+            return $detailWorkerTrainset;
         }
     }
 
@@ -142,5 +160,16 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
         $trainsetAttachment->save();
 
         return $trainsetAttachment;
+    }
+
+    public function checkProgressAttachment(TrainsetAttachment $trainsetAttachment) {
+        $totalSumPlan = $trainsetAttachment->trainset_attachment_components()->sum('total_plan');
+        $totalSumFulfilled = $trainsetAttachment->trainset_attachment_components()->sum('total_fulfilled');
+
+        if ($totalSumPlan == $totalSumFulfilled) {
+            $trainsetAttachment->update([
+                'status' => TrainsetAttachmentStatusEnum::DONE->value,
+            ]);
+        }
     }
 }
