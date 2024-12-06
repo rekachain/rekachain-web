@@ -38,6 +38,7 @@ export default function GenericFilters({ filters, setFilters, children }: Generi
             ...filters,
             search: debouncedSearch,
             page_size: data.perPage,
+            page: debouncedSearch ? 1 : filters.page,
         });
     }, [debouncedSearch, data.perPage]);
 
