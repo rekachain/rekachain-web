@@ -2,17 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Carriage extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'type',
         'description',
+    ];
+
+    protected $filterable = [
+        'searchs' => ['type', 'description'],
     ];
 
     public function trainsets(): BelongsToMany {

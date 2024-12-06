@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,12 +11,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Panel extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'name',
         'description',
         'progress_id',
+    ];
+
+    protected $filterable = [
+        'searchs' => ['name', 'description'],
+        'columns' => ['progress_id'],
     ];
 
     public function progress(): BelongsTo {

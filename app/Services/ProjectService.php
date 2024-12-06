@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
 use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 use App\Imports\Project\ProjectsImport;
@@ -10,23 +9,12 @@ use App\Models\Carriage;
 use App\Models\Project;
 use App\Models\Trainset;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
-use App\Support\Interfaces\Services\TrainsetServiceInterface;
-use App\Support\Interfaces\Services\UserServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
-    public function __construct(
-        protected UserServiceInterface $userService,
-        protected TrainsetServiceInterface $trainsetService,
-        protected PanelServiceInterface $panelService
-    ) {
-        parent::__construct();
-    }
-
     private function createTrainsets(Project $project, $trainsetNeeded): void {
         if ($trainsetNeeded <= 0) {
             return;
@@ -36,7 +24,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             ->map(fn ($i) => ['project_id' => $project->id])
             ->toArray();
 
-        $this->trainsetService->createMany($trainsets);
+        $this->trainsetService()->createMany($trainsets);
     }
 
     public function create(array $data): ?Model {
@@ -50,7 +38,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
     public function importProject(UploadedFile $file, array $data): bool {
         $buyer = null;
         if (array_key_exists('buyer_id', $data)) {
-            $buyer = $this->userService->findOrFail($data['buyer_id']);
+            $buyer = $this->userService()->findOrFail($data['buyer_id']);
         }
         Excel::import(new ProjectsImport($file, $buyer), $file);
 

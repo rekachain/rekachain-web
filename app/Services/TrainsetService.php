@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Trainset\TrainsetsExport;
 use App\Exports\Trainset\TrainsetsTemplateExport;
 use App\Helpers\NumberHelper;
@@ -10,21 +9,11 @@ use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
-use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
-use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
-use App\Support\Interfaces\Services\CarriageServiceInterface;
-use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
-use App\Support\Interfaces\Services\SerialPanelServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use File;
 use Illuminate\Database\Eloquent\Model;
@@ -42,30 +31,15 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
-    public function __construct(
-        protected PresetTrainsetServiceInterface $presetTrainsetService,
-        protected CarriageServiceInterface $carriageService,
-        protected CarriageTrainsetServiceInterface $carriageTrainsetService,
-        protected PanelAttachmentServiceInterface $panelAttachmentService,
-        protected SerialPanelServiceInterface $serialPanelService,
-        protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
-        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
-        protected PanelAttachmentHandlerServiceInterface $panelAttachmentHandlerService,
-        protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
-        protected CarriagePanelServiceInterface $carriagePanelService,
-    ) {
-        parent::__construct();
-    }
-
     public function updatePreset(Trainset $trainset, array $data): bool {
         return DB::transaction(function () use ($trainset, $data) {
             Model::withoutEvents(function () use ($trainset, $data) {
                 // Step 1: Delete nested data related to the carriages
                 $preset_trainset_id = $data['preset_trainset_id'];
-                $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
+                $presetTrainset = $this->presetTrainsetService()->findOrFail($preset_trainset_id);
 
                 $trainset->carriage_trainsets()->each(function ($carriageTrainset) {
-                    $this->carriageTrainsetService->delete($carriageTrainset);
+                    $this->carriageTrainsetService()->delete($carriageTrainset);
                 });
 
                 // Step 2: Detach existing carriages from the trainset
@@ -103,7 +77,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $carriages = $trainset->carriages;
 
             // Step 2: Create a new preset trainset
-            $presetTrainset = $this->presetTrainsetService->create([
+            $presetTrainset = $this->presetTrainsetService()->create([
                 'name' => $presetName,
                 'project_id' => $projectId,
             ]);
@@ -159,10 +133,10 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
             if ($carriageId) {
                 // Step 1: Find the carriage by ID
-                $carriage = $this->carriageService->findOrFail($carriageId);
+                $carriage = $this->carriageService()->findOrFail($carriageId);
             } else {
                 // Step 1: Create a new carriage
-                $carriage = $this->carriageService->create([
+                $carriage = $this->carriageService()->create([
                     'type' => $carriageType,
                     'description' => $carriageDescription,
                 ]);
@@ -278,7 +252,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $destinationWorkstationId = $data["{$division}_destination_workstation_id"];
 
             // $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
-            $trainsetAttachment = $this->trainsetAttachmentService->create([
+            $trainsetAttachment = $this->trainsetAttachmentService()->create([
                 'trainset_id' => $trainset->id,
                 'source_workstation_id' => $sourceWorkstationId,
                 'destination_workstation_id' => $destinationWorkstationId,
@@ -286,7 +260,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ]);
 
             // CREATE TRAINSET ATTACHMENT HANDLER
-            $this->trainsetAttachmentHandlerService->create([
+            $this->trainsetAttachmentHandlerService()->create([
                 'user_id' => auth()->user()->id,
                 'handler_name' => auth()->user()->name,
                 'trainset_attachment_id' => $trainsetAttachment->id,
@@ -294,7 +268,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ]);
 
             $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
-            $generateResult = $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
+            $generateResult = $this->trainsetAttachmentComponentGenerator()->generate($trainsetAttachment);
 
             if ($generateResult['success'] === false) {
                 logger('Failed to generate trainset attachment');
@@ -336,14 +310,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     $sourceWorkstationId = $data['assembly_source_workstation_id'];
                     $destinationWorkstationId = $data['assembly_destination_workstation_id'];
 
-                    $panelAttachment = $this->panelAttachmentService->create([
+                    $panelAttachment = $this->panelAttachmentService()->create([
                         'carriage_panel_id' => $carriagePanel->id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
                     ]);
 
                     // CREATE PANEL ATTACHMENT HANDLER
-                    $this->panelAttachmentHandlerService->create([
+                    $this->panelAttachmentHandlerService()->create([
                         'user_id' => auth()->user()->id,
                         'handler_name' => auth()->user()->name,
                         'panel_attachment_id' => $panelAttachment->id,
@@ -383,7 +357,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $qty = $carriagePanel->carriage_trainset->qty * $carriagePanel->qty;
         logger('Qty: ' . $qty);
         for ($i = 0; $i < $qty; $i++) {
-            $serialPanel = $this->serialPanelService->create([
+            $serialPanel = $this->serialPanelService()->create([
                 'panel_attachment_id' => $panelAttachment->id,
                 'manufacture_status' => SerialPanelManufactureStatusEnum::IN_PROGRESS,
             ]);
@@ -394,7 +368,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $path = "serial_panels/qr_images/{$serialPanel->id}.svg";
             $this->generateQrCode($qrCode, $path);
 
-            $this->serialPanelService->update($serialPanel, [
+            $this->serialPanelService()->update($serialPanel, [
                 'product_no' => $panelAttachment->trainset->project->id .
                     $panelAttachment->trainset->id .
                     $panelAttachment->carriage_panel->carriage->id .
@@ -433,11 +407,11 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
     public function generateAttachmentNumber(Model $model) {
 
         if ($model instanceof PanelAttachment) {
-            $carriagePanelIds = $this->carriagePanelService->find([
+            $carriagePanelIds = $this->carriagePanelService()->find([
                 'carriage_trainset_id' => $model->carriage_panel->carriage_trainset_id,
             ])->pluck('id')->toArray();
 
-            $numberAttachmentOnTrainset = $this->panelAttachmentService->find([
+            $numberAttachmentOnTrainset = $this->panelAttachmentService()->find([
                 ['carriage_panel_id', 'in', $carriagePanelIds],
             ]);
 
@@ -451,7 +425,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             return $attachmentNumber;
         }
 
-        $numberAttachmentOnTrainset = $this->trainsetAttachmentService->find([
+        $numberAttachmentOnTrainset = $this->trainsetAttachmentService()->find([
             'trainset_id' => $model->trainset_id,
         ])->count();
 
@@ -468,18 +442,18 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $totalRequiredAttachment = 2; // base total required trainset attachment in 1 trainset
         $totalGeneratedAttachment = 0;
         $carriageTrainsetsIds = $trainset->carriage_trainsets()->pluck('id')->toArray();
-        $carriagePanelsIds = $this->carriagePanelService->find([
+        $carriagePanelsIds = $this->carriagePanelService()->find([
             'carriage_trainset_id', 'in', $carriageTrainsetsIds,
         ])->pluck('id')->toArray();
 
         $totalRequiredAttachment += count($carriagePanelsIds);
 
-        $trainsetAttachments = $this->trainsetAttachmentService->find([
+        $trainsetAttachments = $this->trainsetAttachmentService()->find([
             'trainset_id' => $trainset->id,
         ]);
         $totalGeneratedAttachment = $trainsetAttachments->count(); // should be 2
 
-        $panelAttachments = $this->panelAttachmentService->find([
+        $panelAttachments = $this->panelAttachmentService()->find([
             ['carriage_panel_id', 'in', $carriagePanelsIds],
         ]);
         $totalGeneratedAttachment += $panelAttachments->count();
@@ -653,7 +627,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
 
         $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
-            $this->carriageTrainsetService->delete($carriageTrainset);
+            $this->carriageTrainsetService()->delete($carriageTrainset);
         });
 
         return parent::delete($keyOrModel);

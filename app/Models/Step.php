@@ -18,6 +18,7 @@ class Step extends Model {
     protected $filterable = [
         'searchs' => [
             'name',
+            'process',
         ],
         'columns' => [
             'name',

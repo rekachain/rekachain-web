@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\TrainsetAttachmentComponent;
 use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 
 class TrainsetAttachmentComponentService extends BaseCrudService implements TrainsetAttachmentComponentServiceInterface {
     protected function getRepositoryClass(): string {
@@ -31,7 +29,6 @@ class TrainsetAttachmentComponentService extends BaseCrudService implements Trai
                 'total_current_work_progress' => 0,
             ]);
         }
-        $trainsetAttachmentService = app(TrainsetAttachmentServiceInterface::class);
-        $trainsetAttachmentService->checkProgressAttachment($trainsetAttachmentComponent->trainset_attachment);
+        $this->trainsetAttachmentService()->checkProgressAttachment($trainsetAttachmentComponent->trainset_attachment);
     }
 }
