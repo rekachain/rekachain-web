@@ -14,7 +14,6 @@ class AttachmentNote extends Model {
         'note',
         'status',
     ];
-
     protected $filterable = [
         'searchs' => [
             'note',

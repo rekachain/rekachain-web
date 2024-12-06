@@ -17,11 +17,9 @@ class PanelAttachmentHandler extends Model {
         'panel_attachment_id',
         'handles',
     ];
-
     protected $casts = [
         'handles' => PanelAttachmentHandlerHandlesEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => ['handler_name', 'handles'],
         'columns' => ['panel_attachment_id', 'user_id', 'handles'],

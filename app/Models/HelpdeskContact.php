@@ -15,7 +15,6 @@ class HelpdeskContact extends Model {
         'phone_number',
         'notice',
     ];
-
     protected $filterable = [
         'searchs' => [
             'email',

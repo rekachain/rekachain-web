@@ -16,7 +16,6 @@ class TrainsetAttachmentHandler extends Model {
         'trainset_attachment_id',
         'handles',
     ];
-
     protected $filterable = [
         'searchs' => ['handler_name', 'handles'],
         'columns' => ['trainset_attachment_id', 'user_id', 'handles'],

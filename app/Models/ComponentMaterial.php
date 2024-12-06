@@ -17,7 +17,6 @@ class ComponentMaterial extends Pivot {
         'raw_material_id',
         'qty',
     ];
-
     protected $filterable = [
         'searchs' => [
             'qty',

@@ -33,58 +33,47 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
     ) {
         parent::__construct();
     }
-    
+
     /**
      * Get service instance by interface
      *
-     * @param string $interface
      *
      * @return mixed
      */
     protected function getService(string $interface) {
         return $this->container->get($interface);
     }
-    
+
     /**
      * Get TrainsetAttachment service instance
-     *
-     * @return \App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface
      */
     protected function trainsetAttachmentService(): TrainsetAttachmentServiceInterface {
         return $this->getService(TrainsetAttachmentServiceInterface::class);
     }
-    
+
     /**
      * Get TrainsetAttachmentComponent service instance
-     *
-     * @return \App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface
      */
     protected function trainsetAttachmentComponentService(): TrainsetAttachmentComponentServiceInterface {
         return $this->getService(TrainsetAttachmentComponentServiceInterface::class);
     }
-    
+
     /**
      * Get DetailWorkerTrainset service instance
-     *
-     * @return \App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface
      */
     protected function detailWorkerTrainsetService(): DetailWorkerTrainsetServiceInterface {
         return $this->getService(DetailWorkerTrainsetServiceInterface::class);
     }
-    
+
     /**
      * Get TrainsetAttachmentHandler service instance
-     *
-     * @return \App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface
      */
     protected function trainsetAttachmentHandlerService(): TrainsetAttachmentHandlerServiceInterface {
         return $this->getService(TrainsetAttachmentHandlerServiceInterface::class);
     }
-    
+
     /**
      * Get FailedComponentManufacture service instance
-     *
-     * @return \App\Support\Interfaces\Services\FailedComponentManufactureServiceInterface
      */
     protected function failedComponentManufactureService(): FailedComponentManufactureServiceInterface {
         return $this->getService(FailedComponentManufactureServiceInterface::class);
@@ -92,8 +81,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get PresetTrainset service instance
-     *
-     * @return \App\Support\Interfaces\Services\PresetTrainsetServiceInterface
      */
     protected function presetTrainsetService(): PresetTrainsetServiceInterface {
         return $this->getService(PresetTrainsetServiceInterface::class);
@@ -101,8 +88,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get Carriage service instance
-     *
-     * @return \App\Support\Interfaces\Services\CarriageServiceInterface
      */
     protected function carriageService(): CarriageServiceInterface {
         return $this->getService(CarriageServiceInterface::class);
@@ -110,8 +95,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get CarriageTrainset service instance
-     *
-     * @return \App\Support\Interfaces\Services\CarriageTrainsetServiceInterface
      */
     protected function carriageTrainsetService(): CarriageTrainsetServiceInterface {
         return $this->getService(CarriageTrainsetServiceInterface::class);
@@ -119,8 +102,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get PanelAttachment service instance
-     *
-     * @return \App\Support\Interfaces\Services\PanelAttachmentServiceInterface
      */
     protected function panelAttachmentService(): PanelAttachmentServiceInterface {
         return $this->getService(PanelAttachmentServiceInterface::class);
@@ -128,8 +109,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get PanelAttachmentHandler service instance
-     *
-     * @return \App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface
      */
     protected function panelAttachmentHandlerService(): PanelAttachmentHandlerServiceInterface {
         return $this->getService(PanelAttachmentHandlerServiceInterface::class);
@@ -137,8 +116,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get SerialPanel service instance
-     *
-     * @return \App\Support\Interfaces\Services\SerialPanelServiceInterface
      */
     protected function serialPanelService(): SerialPanelServiceInterface {
         return $this->getService(SerialPanelServiceInterface::class);
@@ -146,8 +123,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get TrainsetAttachmentComponentGenerator service instance
-     *
-     * @return \App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator
      */
     protected function trainsetAttachmentComponentGenerator(): TrainsetAttachmentComponentGenerator {
         return $this->getService(TrainsetAttachmentComponentGenerator::class);
@@ -155,8 +130,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get CarriagePanel service instance
-     *
-     * @return \App\Support\Interfaces\Services\CarriagePanelServiceInterface
      */
     protected function carriagePanelService(): CarriagePanelServiceInterface {
         return $this->getService(CarriagePanelServiceInterface::class);
@@ -164,8 +137,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get DetailWorkerPanel service instance
-     *
-     * @return \App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface
      */
     protected function detailWorkerPanelService(): DetailWorkerPanelServiceInterface {
         return $this->getService(DetailWorkerPanelServiceInterface::class);
@@ -173,8 +144,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get User service instance
-     *
-     * @return \App\Support\Interfaces\Services\UserServiceInterface
      */
     protected function userService(): UserServiceInterface {
         return $this->getService(UserServiceInterface::class);
@@ -182,8 +151,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get Trainset service instance
-     *
-     * @return \App\Support\Interfaces\Services\TrainsetServiceInterface
      */
     protected function trainsetService(): TrainsetServiceInterface {
         return $this->getService(TrainsetServiceInterface::class);
@@ -191,8 +158,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get Panel service instance
-     *
-     * @return \App\Support\Interfaces\Services\PanelServiceInterface
      */
     protected function panelService(): PanelServiceInterface {
         return $this->getService(PanelServiceInterface::class);
@@ -200,8 +165,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get Component service instance
-     *
-     * @return \App\Support\Interfaces\Services\ComponentServiceInterface
      */
     protected function componentService(): ComponentServiceInterface {
         return $this->getService(ComponentServiceInterface::class);
@@ -209,8 +172,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get RawMaterial service instance
-     *
-     * @return \App\Support\Interfaces\Services\RawMaterialServiceInterface
      */
     protected function rawMaterialService(): RawMaterialServiceInterface {
         return $this->getService(RawMaterialServiceInterface::class);
@@ -218,8 +179,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get RawMaterial service instance
-     *
-     * @return \App\Support\Interfaces\Services\ProgressServiceInterface
      */
     protected function progressService(): ProgressServiceInterface {
         return $this->getService(ProgressServiceInterface::class);
@@ -227,8 +186,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get RawMaterial service instance
-     *
-     * @return \App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface
      */
     protected function carriagePanelComponentService(): CarriagePanelComponentServiceInterface {
         return $this->getService(CarriagePanelComponentServiceInterface::class);
@@ -236,11 +193,8 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
 
     /**
      * Get RawMaterial service instance
-     *
-     * @return \App\Support\Interfaces\Services\PanelMaterialServiceInterface
      */
     protected function panelMaterialService(): PanelMaterialServiceInterface {
         return $this->getService(PanelMaterialServiceInterface::class);
     }
 }
-

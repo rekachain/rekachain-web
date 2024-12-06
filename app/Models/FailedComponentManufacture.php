@@ -14,7 +14,6 @@ class FailedComponentManufacture extends Model {
         'notes',
         'total_failed',
     ];
-
     protected $filterable = [
         'searchs' => [
             'notes',

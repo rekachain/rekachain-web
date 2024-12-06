@@ -16,7 +16,6 @@ class Progress extends Model {
         'name',
         'work_aspect_id',
     ];
-
     protected $filterable = [
         'searchs' => ['name'],
         'columns' => ['work_aspect_id'],

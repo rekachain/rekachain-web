@@ -15,13 +15,12 @@ class PanelMaterial extends Model {
         'raw_material_id',
         'qty',
     ];
-
     protected $filterable = [
         'searchs' => ['qty'],
         'columns' => [
             'carriage_panel_id',
             'raw_material_id',
-        ]
+        ],
     ];
 
     public function raw_material(): BelongsTo {

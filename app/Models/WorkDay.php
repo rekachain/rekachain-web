@@ -13,7 +13,6 @@ class WorkDay extends Model {
     protected $fillable = [
         'day',
     ];
-
     protected $filterable = [
         'searchs' => ['day'],
     ];

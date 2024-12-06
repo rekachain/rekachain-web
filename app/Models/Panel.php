@@ -18,7 +18,6 @@ class Panel extends Model {
         'description',
         'progress_id',
     ];
-
     protected $filterable = [
         'searchs' => ['name', 'description'],
         'columns' => ['progress_id'],

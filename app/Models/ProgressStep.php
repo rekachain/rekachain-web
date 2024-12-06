@@ -14,7 +14,6 @@ class ProgressStep extends Model {
         'progress_id',
         'step_id',
     ];
-
     protected $filterable = [
         'columns' => [
             'progress_id',

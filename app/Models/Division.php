@@ -13,7 +13,6 @@ class Division extends Model {
     protected $fillable = [
         'name',
     ];
-
     protected $filterable = [
         'searchs' => ['name'],
     ];

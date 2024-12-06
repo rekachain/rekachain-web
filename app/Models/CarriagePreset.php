@@ -15,7 +15,6 @@ class CarriagePreset extends Model {
         'carriage_id',
         'qty',
     ];
-
     protected $filterable = [
         'searchs' => ['qty'],
         'columns' => [

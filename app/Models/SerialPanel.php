@@ -23,7 +23,6 @@ class SerialPanel extends Model {
     protected $casts = [
         'manufacture_status' => SerialPanelManufactureStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => ['product_no', 'notes', 'manufacture_status'],
         'columns' => ['panel_attachment_id', 'manufacture_status'],

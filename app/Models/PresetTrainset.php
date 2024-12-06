@@ -14,7 +14,6 @@ class PresetTrainset extends Model {
         'name',
         'project_id',
     ];
-
     protected $filterable = [
         'searchs' => ['name'],
         'columns' => ['project_id'],

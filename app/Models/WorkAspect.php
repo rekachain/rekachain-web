@@ -16,7 +16,6 @@ class WorkAspect extends Model {
         'description',
         'division_id',
     ];
-
     protected $filterable = [
         'searchs' => ['name'],
         'columns' => ['division_id'],

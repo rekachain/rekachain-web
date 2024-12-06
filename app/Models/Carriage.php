@@ -15,7 +15,6 @@ class Carriage extends Model {
         'type',
         'description',
     ];
-
     protected $filterable = [
         'searchs' => ['type', 'description'],
     ];

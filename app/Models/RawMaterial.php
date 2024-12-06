@@ -16,7 +16,6 @@ class RawMaterial extends Model {
         'unit',
         'specs',
     ];
-
     protected $filterable = [
         'searchs' => ['material_code', 'description', 'unit', 'specs'],
         'columns' => ['unit'],

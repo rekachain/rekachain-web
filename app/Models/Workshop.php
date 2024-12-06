@@ -14,7 +14,6 @@ class Workshop extends Model {
         'name',
         'address',
     ];
-
     protected $filterable = [
         'searchs' => [
             'name',

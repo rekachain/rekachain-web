@@ -51,7 +51,6 @@ class Role extends SpatieRole {
         'division_id',
         'level',
     ];
-
     protected $filterable = [
         'searchs' => ['name', 'level'],
         'columns' => ['division_id', 'level'],
