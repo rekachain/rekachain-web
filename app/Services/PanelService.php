@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Panel\PanelsExport;
 use App\Exports\Panel\PanelsTemplateExport;
 use App\Exports\RawMaterialProgressStep\RawMaterialProgressStepsTemplateExport;

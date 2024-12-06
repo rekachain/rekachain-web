@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\Repositories\RoleRepositoryInterface;
 use App\Support\Interfaces\Services\RoleServiceInterface;
 use Illuminate\Database\Eloquent\Model;

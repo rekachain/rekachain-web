@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\CustomAttachmentMaterial\CustomAttachmentMaterialsTemplateExport;
 use App\Imports\CustomAttachmentMaterial\CustomAttachmentMaterialsImport;
 use App\Models\PanelAttachment;
@@ -11,7 +10,6 @@ use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Interfaces\Repositories\CustomAttachmentMaterialRepositoryInterface;
 use App\Support\Interfaces\Services\CustomAttachmentMaterialServiceInterface;
-use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -19,10 +17,6 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CustomAttachmentMaterialService extends BaseCrudService implements CustomAttachmentMaterialServiceInterface {
-    public function __construct(
-        protected TrainsetServiceInterface $trainsetService
-    ) {}
-
     protected function getRepositoryClass(): string {
         return CustomAttachmentMaterialRepositoryInterface::class;
     }
@@ -65,7 +59,7 @@ class CustomAttachmentMaterialService extends BaseCrudService implements CustomA
                 'handles' => TrainsetAttachmentHandlerHandlesEnum::PREPARE->value,
             ]);
         }
-        $newTrainsetAttachment->update(['attachment_number' => $this->trainsetService->generateAttachmentNumber($newTrainsetAttachment)]);
+        $newTrainsetAttachment->update(['attachment_number' => $this->trainsetService()->generateAttachmentNumber($newTrainsetAttachment)]);
         $this->generateAttachmentQrCode($newTrainsetAttachment);
 
         return $newTrainsetAttachment;
