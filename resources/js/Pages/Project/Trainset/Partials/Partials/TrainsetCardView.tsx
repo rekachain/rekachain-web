@@ -62,7 +62,7 @@ export default function TrainsetCardView({
                             </h5> */}
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
-                            <div className='flex w-full items-center justify-end'>
+                            <div className='flex w-full items-center justify-center'>
                                 <Button
                                     variant='link'
                                     onClick={() => handleTrainsetDeletion(trainset.id)}
@@ -79,6 +79,28 @@ export default function TrainsetCardView({
                                 >
                                     {t(
                                         'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [
+                                        project.id,
+                                        trainset.id,
+                                    ])}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t(
+                                        'pages.project.trainset.partials.partials.trainset_table.actions.components',
+                                    )}
+                                </Link>
+                                <Link
+                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [
+                                        project.id,
+                                        trainset.id,
+                                    ])}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t(
+                                        'pages.project.trainset.partials.partials.trainset_table.actions.panels',
                                     )}
                                 </Link>
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>

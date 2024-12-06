@@ -80,7 +80,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                             </p>
                         </div>
 
-                        <div className='rounded bg-background-2 p-5'>
+                        <div className='rounded bg-background-2 p-5 '>
                             <form
                                 onSubmit={handleAddTrainset}
                                 noValidate
@@ -89,7 +89,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                 <Label htmlFor='add-trainset'>
                                     {t('pages.project.trainset.index.buttons.add_trainset')}
                                 </Label>
-                                <div className='flex gap-2'>
+                                <div className='flex gap-2 flex-col md:flex-row'>
                                     <div className=''>
                                         <Input
                                             value={data.trainsetNeeded}
