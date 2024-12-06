@@ -1,14 +1,9 @@
 import GenericPagination from '@/Components/GenericPagination';
-import { useLoading } from '@/Contexts/LoadingContext';
-import { useConfirmation } from '@/Hooks/useConfirmation';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { componentService } from '@/Services/componentService';
 import { projectService } from '@/Services/projectService';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
@@ -20,7 +15,6 @@ export default function ({
     project: ProjectResource;
     handleSyncProject: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
     const [componentResponse, setComponentResponse] =
         useState<PaginateResponse<ProjectComponentResource>>();
     const [componentResponseMeta, setComponentResponseMeta] = useState<PaginateMeta>();
@@ -28,8 +22,6 @@ export default function ({
         page: 1,
         perPage: 10,
     });
-
-    const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
         const data = await projectService.getComponents(project.id, filters);
@@ -51,18 +43,6 @@ export default function ({
     useEffect(() => {
         void syncComponents();
     }, [filters]);
-
-    const handleComponentDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await componentService.delete(id);
-                await syncComponents();
-                void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-                setLoading(false);
-            }
-        });
-    };
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
