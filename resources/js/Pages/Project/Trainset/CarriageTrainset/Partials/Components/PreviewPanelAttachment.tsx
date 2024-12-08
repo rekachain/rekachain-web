@@ -128,7 +128,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                 )}
             </h1>
             {panelAttachmentAncestor && (
-                <div className='my-4 flex gap-4'>
+                <div className='my-4 flex gap-4 flex-col md:flex-row'>
                     <Link
                         target='_blank'
                         href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
@@ -145,7 +145,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     />
                 </div>
             )}
-            <div className='mt-4 flex gap-4'>
+            <div className='mt-4 flex gap-4 flex-col md:flex items-center md:items-start '>
                 {trainset?.carriage_trainsets?.length > 0 && (
                     <div className='flex flex-col gap-2'>
                         <InputLabel htmlFor='selected-carriage-id'>
@@ -248,7 +248,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
 
             {panelAttachment ? (
                 <>
-                    <div className='grid grid-cols-3'>
+                    <div className='grid grid-cols-1 md:grid-cols-3'>
                         <div className='mt-5 flex flex-col gap-3'>
                             <div className=''>
                                 <p className='font-bold'>
@@ -315,6 +315,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
+                    <div className="hidden md:block">
+
                     <Table wrapperClassName='block max-h-96'>
                         <TableCaption>
                             {t(
@@ -364,6 +366,37 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             ))}
                         </TableBody>
                     </Table>
+                    </div>
+            <div className="grid grid-cols-1 gap-2 md:hidden">
+                    {selectedPanelRawMaterials.map((rawMaterial) => (
+                    <div
+                        // key={permission.id}
+                        className='flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'
+                    >
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-base font-bold'>{rawMaterial.material_code}</h4>
+                            <h5 className='items-center text-base font-bold'>
+                                Unit : {rawMaterial.unit}
+                            </h5>
+                        </div>
+                        {/* <h4 className="font-bold text-xl">{permission.group}</h4> */}
+                        {/* <h4 className="font-bold text-xl">50349259</h4> */}
+                        {/* <h4 className="text-md">{permission.name}</h4> */}
+                        <h4 className='w-[80%] text-sm'>{rawMaterial.description}</h4>
+                        <div className='flex w-full items-center justify-end'>
+                            <Link
+                                href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                className={buttonVariants({ variant: 'link' })}
+                            >
+                                {t('action.edit')}
+                            </Link>
+                        </div>
+                    </div>
+
+
+                    ))}
+
+            </div>
                 </>
             ) : (
                 <h1 className='mt-3 font-bold text-red-500'>
