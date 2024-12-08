@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import ComponentMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/Partials/Components/ComponentMaterialQty';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelComponentResource,
@@ -79,7 +81,8 @@ export default function ComponentMaterialTableView({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
 
-                                {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_DELETE) &&
+                                    trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button
                                         variant='link'
                                         onClick={() =>

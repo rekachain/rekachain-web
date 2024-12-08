@@ -267,11 +267,13 @@ export default function Sidebar() {
                             routeName={`${ROUTES.PROFILE}.edit`}
                             icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
+                        {checkPermission(PERMISSION_ENUM.FEEDBACK_READ) && (
                         <SidebarLink
                             title={t('components.sidebar.links.feedback')}
                             routeName={`${ROUTES.FEEDBACK}.index`}
                             icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
                         />
+                        )}
 
                         <SidebarHelpdesk />
 

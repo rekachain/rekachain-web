@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PanelResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -45,13 +47,15 @@ export default function PanelTableView({
                             <TableCell>{panel.description}</TableCell>
                             <TableCell>{panel.progress?.name}</TableCell>
                             <TableCell>
+                            {checkPermission(PERMISSION_ENUM.PANEL_UPDATE) && (
                                 <Link
                                     href={route(`${ROUTES.PANELS}.edit`, panel.id)}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>
-                                {panel.can_be_deleted && (
+                            )}
+                                {checkPermission(PERMISSION_ENUM.PANEL_DELETE) && panel.can_be_deleted && (
                                     <Button
                                         variant='link'
                                         onClick={() => handlePanelDeletion(panel.id)}

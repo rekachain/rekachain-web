@@ -7,10 +7,12 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewPanel from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/AddNewPanel';
 import { panelService } from '@/Services/panelService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
@@ -137,7 +139,8 @@ export default function ({
                         />
                     </Suspense>
 
-                    {trainset.status !== TrainsetStatusEnum.PROGRESS && panelResponse && (
+                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_CREATE) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS && panelResponse && (
                         <AddNewPanel
                             setPanelResponse={setPanelResponse}
                             panelResponse={panelResponse}

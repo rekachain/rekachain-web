@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkstationResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -58,13 +60,15 @@ export default function WorkstationTableView({
                             <TableCell>{workstation.division.name}</TableCell>
 
                             <TableCell>
+                                {checkPermission(PERMISSION_ENUM.WORKSTATION_UPDATE) && (
                                 <Link
                                     href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}
                                 </Link>
-                                {workstation.can_be_deleted && (
+                                )}
+                                {checkPermission(PERMISSION_ENUM.WORKSTATION_DELETE) &&workstation.can_be_deleted && (
                                     <Button
                                         variant='link'
                                         onClick={() => handleWorkstationDeletion(workstation.id)}

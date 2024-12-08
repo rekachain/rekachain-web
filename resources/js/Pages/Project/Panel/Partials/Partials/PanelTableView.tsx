@@ -10,6 +10,8 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
+import { checkPermission } from '@/Helpers/sidebarHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function PanelTableView({
     project,
@@ -47,11 +49,13 @@ export default function PanelTableView({
                             <TableCell>{data.panel.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    project={project}
-                                    panel={data.panel}
-                                    hasMaterials={data.has_materials}
-                                />
+                                {checkPermission(PERMISSION_ENUM.PROJECT_PANEL_IMPORT) && (
+                                    <Import
+                                        project={project}
+                                        panel={data.panel}
+                                        hasMaterials={data.has_materials}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

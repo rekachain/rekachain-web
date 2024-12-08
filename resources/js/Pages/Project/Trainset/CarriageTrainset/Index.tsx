@@ -33,6 +33,8 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, memo, Suspense, useEffect, useState } from 'react';
 import ProgressAttachments from './Partials/ProgressAttachments';
+import { checkPermission } from '@/Helpers/sidebarHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -186,7 +188,8 @@ export default function ({
                                 )}
 
                                 <div className='flex flex-col gap-2 md:flex-row md:items-end'>
-                                    {trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CHANGE) &&
+                                        trainset.status !== TrainsetStatusEnum.PROGRESS &&
                                         !trainset.has_mechanic_trainset_attachment &&
                                         !trainset.has_electric_trainset_attachment &&
                                         !trainset.has_panel_attachment && (
@@ -196,26 +199,32 @@ export default function ({
                                                 handleSyncTrainset={handleSyncTrainset}
                                             />
                                         )}
-                                    <GenerateAttachment
-                                        trainset={trainset}
-                                        handleSyncTrainset={handleSyncTrainset}
-                                        handleSyncCarriages={handleSyncCarriages}
-                                    />
-                                    {(trainset.has_mechanic_trainset_attachment ||
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_GENERATE) && (
+                                        <GenerateAttachment
+                                            trainset={trainset}
+                                            handleSyncTrainset={handleSyncTrainset}
+                                            handleSyncCarriages={handleSyncCarriages}
+                                        />
+                                    )}
+                                    {(checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_READ) &&
+                                        trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && (
                                         <PreviewAttachments trainset={trainset} />
                                     )}
-                                    {(trainset.has_mechanic_trainset_attachment ||
+                                    {(checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_PROGRESS_READ) &&
+                                        trainset.has_mechanic_trainset_attachment ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && (
                                         <ProgressAttachments trainset={trainset} />
                                     )}
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_SERIAL_EXPORT) && (
                                     <Button onClick={handleExportSerialNumbers}>
                                         {t(
                                             'pages.project.trainset.carriage_trainset.index.buttons.export_serial_numbers',
                                         )}
                                     </Button>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -224,7 +233,8 @@ export default function ({
                         <Carriages trainset={trainset} handleSyncTrainset={handleSyncTrainset} />
                     </Suspense>
 
-                    {trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
+                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_CREATE) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
                         <AddCarriage
                             trainset={trainset}
                             handleSyncTrainset={handleSyncTrainset}
@@ -234,7 +244,8 @@ export default function ({
                     )}
                 </div>
 
-                {isNewPreset() && (
+                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CREATE) &&
+                    isNewPreset() && (
                     <CustomPresetAlert
                         message={t(
                             'pages.project.trainset.carriage_trainset.index.new_preset_alert',

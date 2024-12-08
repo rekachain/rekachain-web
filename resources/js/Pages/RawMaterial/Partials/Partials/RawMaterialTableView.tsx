@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -57,13 +59,15 @@ export default function RawMaterialTableView({
                             <TableCell>{rawMaterial.specs}</TableCell>
                             <TableCell>{rawMaterial.unit}</TableCell>
                             <TableCell>
-                                <Link
+                                {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_UPDATE) && (
+                                    <Link
                                     href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
                                     className={buttonVariants({ variant: 'link' })}
-                                >
+                                    >
                                     {t('action.edit')}
                                 </Link>
-                                {rawMaterial.can_be_deleted && (
+                                )}
+                                {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_DELETE) && rawMaterial.can_be_deleted && (
                                     <Button
                                         variant='link'
                                         onClick={() => handleRawMaterialDeletion(rawMaterial.id)}

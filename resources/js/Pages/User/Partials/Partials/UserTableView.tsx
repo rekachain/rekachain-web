@@ -8,7 +8,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { UserResource } from '@/Support/Interfaces/Resources';
 import { Link, usePage } from '@inertiajs/react';
@@ -85,13 +87,15 @@ export default function ({
                         <TableCell>{user.step?.name}</TableCell>
                         {canEditOrDelete(user) ? (
                             <TableCell>
-                                <Link
+                                {checkPermission(PERMISSION_ENUM.USER_UPDATE) && (
+                                    <Link
                                     href={route(`${ROUTES.USERS}.edit`, user.id)}
                                     className={buttonVariants({ variant: 'link' })}
-                                >
+                                    >
                                     {t('action.edit')}
                                 </Link>
-                                {user.is_trashed && user.can_be_deleted ? (
+                                )}
+                                {checkPermission(PERMISSION_ENUM.USER_DELETE) && user.is_trashed && user.can_be_deleted ? (
                                     <Button
                                         variant='link'
                                         onClick={() => handleUserForceDeletion(user.id)}

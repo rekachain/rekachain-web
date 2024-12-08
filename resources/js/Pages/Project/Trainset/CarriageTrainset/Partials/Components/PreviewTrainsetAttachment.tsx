@@ -16,10 +16,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportTrainsetCustomMaterial';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Link } from '@inertiajs/react';
@@ -67,6 +69,7 @@ const PreviewTrainsetAttachment = ({
         <div key={attachment.id} className='text-black dark:text-white'>
             <h1 className='text-xl font-bold'>{title}</h1>
             <div className='my-4 flex gap-4'>
+                {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_DOWNLOAD) && (
                 <Link
                     target='_blank'
                     href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
@@ -76,10 +79,13 @@ const PreviewTrainsetAttachment = ({
                         'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
                     )}
                 </Link>
-                <ImportTrainsetCustomMaterial
-                    trainsetAttachment={trainsetAttachment}
-                    loadAttachment={loadAttachment}
-                />
+                )}
+                {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_IMPORT) && (
+                    <ImportTrainsetCustomMaterial
+                        trainsetAttachment={trainsetAttachment}
+                        loadAttachment={loadAttachment}
+                    />
+                )}
                 {(trainsetAttachment.is_parent || trainsetAttachment.is_child) && (
                     <div className='flex flex-col gap-2'>
                         <Select

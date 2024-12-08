@@ -1,9 +1,11 @@
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { trainsetService } from '@/Services/trainsetService';
 import { STYLING } from '@/Support/Constants/styling';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
@@ -69,6 +71,7 @@ export default function ({
             ) : (
                 <div className='flex items-center gap-4'>
                     <div>{carriage_trainset.qty}</div>
+                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_UPDATE) && (
                     <Button
                         variant='ghost'
                         onClick={toggleEditMode}
@@ -76,6 +79,7 @@ export default function ({
                     >
                         <PencilLine size={STYLING.ICON.SIZE.SMALL} />
                     </Button>
+                    )}
                 </div>
             )}
         </>

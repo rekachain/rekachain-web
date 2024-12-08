@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkshopResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -38,13 +40,15 @@ export default function WorkshopCardView({
                         </h5>
 
                         <div className='flex w-full items-center justify-end'>
+                            {checkPermission(PERMISSION_ENUM.WORKSHOP_UPDATE) && (
                             <Link
                                 href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
                                 className={buttonVariants({ variant: 'link' })}
                             >
                                 {t('action.edit')}
                             </Link>
-                            {workshop.can_be_deleted && (
+                            )}
+                            {checkPermission(PERMISSION_ENUM.WORKSHOP_DELETE) && workshop.can_be_deleted && (
                                 <Button
                                     variant='link'
                                     onClick={() => handleWorkshopDeletion(workshop.id)}

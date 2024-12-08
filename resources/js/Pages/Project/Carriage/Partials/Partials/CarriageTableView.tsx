@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectCarriageResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -51,6 +53,7 @@ export default function CarriageTableView({
                             <TableCell>{data.carriage.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
+                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_READ) && (
                                 <Link
                                     href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
                                         project.id,
@@ -62,6 +65,8 @@ export default function CarriageTableView({
                                         'pages.project.partials.partials.project_table.actions.components',
                                     )}
                                 </Link>
+                                )}
+                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_PANEL_READ) && (
                                 <Link
                                     href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
                                         project.id,
@@ -73,6 +78,7 @@ export default function CarriageTableView({
                                         'pages.project.partials.partials.project_table.actions.panels',
                                     )}
                                 </Link>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

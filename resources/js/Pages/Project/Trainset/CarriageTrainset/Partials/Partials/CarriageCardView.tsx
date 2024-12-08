@@ -6,6 +6,8 @@ import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriageQty from '../Components/CarriageQty';
+import { checkPermission } from '@/Helpers/sidebarHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function CarriageCardView({
     trainset,
@@ -94,6 +96,7 @@ export default function CarriageCardView({
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
                             <div className='flex w-full items-center justify-end'>
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE) && (
                                 <Button
                                     variant='link'
                                     // disabled={loading || !trainset.can_be_deleted}
@@ -101,6 +104,8 @@ export default function CarriageCardView({
                                 >
                                     {t('action.delete')}
                                 </Button>
+                                )}
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ) && (
                                 <Link
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
@@ -112,6 +117,7 @@ export default function CarriageCardView({
                                         'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.actions.panels',
                                     )}
                                 </Link>
+                                )}
                                 {/* <Link
                                     className={buttonVariants({ variant: 'link' })}
                                     // href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [project.id, trainset.id])}

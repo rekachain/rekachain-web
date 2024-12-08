@@ -7,9 +7,11 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { checkPermission } from '@/Helpers/sidebarHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewPanelRawMaterial from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/AddNewPanelRawMaterial';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelResource,
@@ -143,7 +145,8 @@ export default function ({
                         />
                     </Suspense>
 
-                    {trainset.status !== TrainsetStatusEnum.PROGRESS && carriagePanel && (
+                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_CREATE) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS && carriagePanel && (
                         <AddNewPanelRawMaterial
                             handleSyncCarriagePanel={handleSyncCarriagePanel}
                             carriagePanel={carriagePanel}
