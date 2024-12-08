@@ -19,6 +19,8 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import Import from './Import';
+import TableView from './Partials/TableView';
+import CardView from './Partials/CardView';
 // import Import from '../Import';
 
 export default function Components({
@@ -77,48 +79,65 @@ export default function Components({
 
     const { t } = useLaravelReactI18n();
     return (
-        <div>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>
-                            {t(
-                                'pages.project.component.partials.partials.component_table.headers.name',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.project.component.partials.partials.component_table.headers.description',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.project.component.partials.partials.component_table.headers.total_qty',
-                            )}
-                        </TableHead>
-                        <TableHead></TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {componentResponse?.data.map((data) => (
-                        <TableRow key={data.component.id}>
-                            <TableCell>{data.component.name}</TableCell>
-                            <TableCell>{data.component.description}</TableCell>
-                            <TableCell>{data.total_qty}</TableCell>
-                            <TableCell>
-                                <Import
-                                    trainset={trainset}
-                                    project={project}
-                                    hasMaterials={data.has_materials}
-                                    component={data.component}
-                                />
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
+        <div className='space-y-4'>
+             {componentResponse && (
+                
+                // <TableView project={project} trainset={trainset}></TableView>
+             <>
+             <div className="hidden md:block">
+                 <TableView project={project} trainset={trainset} componentResponse={componentResponse}></TableView>
+             </div>
+             <div className="block md:hidden">
+                 <CardView project={project} trainset={trainset} componentResponse={componentResponse}></CardView>
+             </div>
             <GenericPagination meta={componentResponse} handleChangePage={handlePageChange} />
+ </>
+            )} 
+
+
+
         </div>
+        
+
+        //     <Table>
+        //         <TableHeader>
+        //             <TableRow>
+        //                 <TableHead>
+        //                     {t(
+        //                         'pages.project.component.partials.partials.component_table.headers.name',
+        //                     )}
+        //                 </TableHead>
+        //                 <TableHead>
+        //                     {t(
+        //                         'pages.project.component.partials.partials.component_table.headers.description',
+        //                     )}
+        //                 </TableHead>
+        //                 <TableHead>
+        //                     {t(
+        //                         'pages.project.component.partials.partials.component_table.headers.total_qty',
+        //                     )}
+        //                 </TableHead>
+        //                 <TableHead></TableHead>
+        //             </TableRow>
+        //         </TableHeader>
+        //         <TableBody>
+        //             {componentResponse?.data.map((data) => (
+        //                 <TableRow key={data.component.id}>
+        //                     <TableCell>{data.component.name}</TableCell>
+        //                     <TableCell>{data.component.description}</TableCell>
+        //                     <TableCell>{data.total_qty}</TableCell>
+        //                     <TableCell>
+        //                         <Import
+        //                             trainset={trainset}
+        //                             project={project}
+        //                             hasMaterials={data.has_materials}
+        //                             component={data.component}
+        //                         />
+        //                     </TableCell>
+        //                 </TableRow>
+        //             ))}
+        //         </TableBody>
+        //     </Table>
+
     );
 }

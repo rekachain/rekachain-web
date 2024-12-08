@@ -81,45 +81,6 @@ export default function Panels({
              </div>
  </>
             )} 
-            {/* {panelResponse && (
-                <>
-                    <div>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Nama Panel</TableHead>
-                                    <TableHead>Deskripsi</TableHead>
-                                    <TableHead>Total Quantity</TableHead>
-                                    <TableHead></TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {panelResponse?.data.map((data) => (
-                                    <TableRow key={data.panel.id}>
-                                        <TableCell>{data.panel.name}</TableCell>
-                                        <TableCell>{data.panel.description}</TableCell>
-                                        <TableCell>{data.total_qty}</TableCell>
-                                        <TableCell>
-                                            <Import
-                                                trainset={trainset}
-                                                project={project}
-                                                panel={data.panel}
-                                                hasMaterials={data.has_materials}
-                                            />
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </div> */}
-                    {/* <div className="hidden md:block">
-                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
-                    </div>
-                    <div className="block md:hidden">
-                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
-                    </div> */}
-                {/* </>
-            )} */}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );
