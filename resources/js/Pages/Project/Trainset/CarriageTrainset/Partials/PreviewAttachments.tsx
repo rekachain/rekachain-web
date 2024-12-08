@@ -91,7 +91,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
                 )}
             </DialogTrigger>
-            <DialogContent className='w-[70%]'>
+            <DialogContent className='md:w-[70%] w-[350px] flex flex-col md:flex-row'>
                 <DialogHeader>
                     <DialogTitle></DialogTitle>
                     <DialogDescription className='w-full'></DialogDescription>
@@ -99,9 +99,9 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                         value={activeTab}
                         onValueChange={(value) => setActiveTab(value as GenerateAttachmentTabEnum)}
                         defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                        className='w-full'
+                        className='w-full '
                     >
-                        <TabsList>
+                        <TabsList className='flex md:flex-row flex-col h-fit w-full items-center md:items-start md:w-fit'>
                             <TabsTrigger
                                 value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
                             >

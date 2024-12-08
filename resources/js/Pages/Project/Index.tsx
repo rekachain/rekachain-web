@@ -15,15 +15,17 @@ export default function () {
             <Head title={t('pages.project.index.title')} />
             <AuthenticatedLayout>
                 <div className='p-4'>
-                    <div className='flex items-center gap-5'>
-                        <h1 className='text-page-header my-4'>{t('pages.project.index.title')}</h1>
-                        <Link
-                            href={route(`${ROUTES.PROJECTS}.create`)}
-                            className={buttonVariants({ variant: 'default' })}
-                        >
-                            {t('pages.project.index.buttons.create')}
-                        </Link>
-                        <Import />
+                    <div className='flex items-start md:items-center gap-5'>
+                        <h1 className='text-page-header md:my-4'>{t('pages.project.index.title')}</h1>
+                        <div className="flex flex-col md:flex-row gap-2 justify-end">
+                            <Link
+                                href={route(`${ROUTES.PROJECTS}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
+                            >
+                                {t('pages.project.index.buttons.create')}
+                            </Link>
+                            <Import />
+                        </div>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Projects />
