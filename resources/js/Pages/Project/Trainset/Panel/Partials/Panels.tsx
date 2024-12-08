@@ -20,6 +20,9 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import Import from './Import';
+import TableView from './Partials/TableView';
+import CardView from './Partials/CardView';
+import { useLoading } from '@/Contexts/LoadingContext';
 
 export default function Panels({
     project,
@@ -62,9 +65,23 @@ export default function Panels({
         setFilters({ ...filters, page });
     };
 
+    const { loading } = useLoading();
+
     return (
         <div className='space-y-4'>
-            {panelResponse && (
+             {panelResponse && (
+                
+                // <TableView project={project} trainset={trainset}></TableView>
+             <>
+             <div className="hidden md:block">
+                 <TableView project={project} trainset={trainset} panelResponse={panelResponse}></TableView>
+             </div>
+             <div className="block md:hidden">
+                 <CardView project={project} trainset={trainset} panelResponse={panelResponse}></CardView>
+             </div>
+ </>
+            )} 
+            {/* {panelResponse && (
                 <>
                     <div>
                         <Table>
@@ -94,15 +111,15 @@ export default function Panels({
                                 ))}
                             </TableBody>
                         </Table>
-                    </div>
+                    </div> */}
                     {/* <div className="hidden md:block">
                         <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
                     </div>
                     <div className="block md:hidden">
                         <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
                     </div> */}
-                </>
-            )}
+                {/* </>
+            )} */}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );
