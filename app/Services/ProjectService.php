@@ -2,17 +2,18 @@
 
 namespace App\Services;
 
-use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
-use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
-use App\Imports\Project\ProjectsImport;
-use App\Models\Carriage;
+use Carbon\Carbon;
 use App\Models\Project;
+use App\Models\Carriage;
 use App\Models\Trainset;
-use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use App\Support\Interfaces\Services\ProjectServiceInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\Project\ProjectsImport;
+use Illuminate\Database\Eloquent\Model;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
     private function createTrainsets(Project $project, $trainsetNeeded): void {
@@ -99,7 +100,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return true;
     }
 
-    public function calculateEstimatedTime($project_id = null) {
+    public function calculateEstimatedTime($project_id = null){
 
         if ($project_id) {
             $project = \App\Models\Project::with(['trainsets.carriage_trainsets' => [
@@ -188,7 +189,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             ]);
 
             foreach($project->trainsets as $trainset) {
-                $this->trainsetService->calculateEstimatedTime($trainset->id);
+                $this->trainsetService()->calculateEstimatedTime($trainset->id);
             }
 
             return true;

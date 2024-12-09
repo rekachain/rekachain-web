@@ -7,6 +7,7 @@ use App\Http\Requests\PresetTrainset\UpdatePresetTrainsetRequest;
 use App\Http\Resources\PresetTrainsetResource;
 use App\Models\PresetTrainset;
 use App\Support\Enums\PermissionEnum;
+use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class PresetTrainsetController extends Controller {
      */
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_READ);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
@@ -38,7 +39,7 @@ class PresetTrainsetController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_CREATE);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_CREATE);
 
         return inertia('PresetTrainset/Create');
     }
@@ -48,7 +49,7 @@ class PresetTrainsetController extends Controller {
      */
     public function store(StorePresetTrainsetRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_CREATE);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_CREATE);
 
         return new PresetTrainsetResource($this->presetTrainsetService->create($request->validated()));
     }
@@ -58,7 +59,7 @@ class PresetTrainsetController extends Controller {
      */
     public function show(Request $request, PresetTrainset $presetTrainset) {
 
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_READ);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_READ);
 
         if ($this->ajax()) {
             return new PresetTrainsetResource($presetTrainset);
@@ -72,7 +73,7 @@ class PresetTrainsetController extends Controller {
      */
     public function edit(Request $request, PresetTrainset $presetTrainset) {
 
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_UPDATE);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_UPDATE);
 
         return inertia('PresetTrainset/Edit', compact('presetTrainset'));
     }
@@ -82,7 +83,7 @@ class PresetTrainsetController extends Controller {
      */
     public function update(UpdatePresetTrainsetRequest $request, PresetTrainset $presetTrainset) {
 
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_UPDATE);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_UPDATE);
 
         return new PresetTrainsetResource($this->presetTrainsetService->update($presetTrainset, $request->validated()));
     }
@@ -91,7 +92,7 @@ class PresetTrainsetController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, PresetTrainset $presetTrainset) {
-        $request->checkPermissionEnum(PermissionEnum::PRESET_TRAINSET_DELETE);
+        PermissionHelper::check(PermissionEnum::PRESET_TRAINSET_DELETE);
 
         $this->presetTrainsetService->delete($presetTrainset);
 

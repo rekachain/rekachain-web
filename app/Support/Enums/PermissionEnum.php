@@ -149,11 +149,14 @@ enum PermissionEnum: string {
     case STEP_READ = 'step-read';
     case STEP_UPDATE = 'step-update';
     case STEP_DELETE = 'step-delete';
+    case STEP_IMPORT = 'step-import';
+
 
     case COMPONENT_CREATE = 'component-create';
     case COMPONENT_READ = 'component-read';
     case COMPONENT_UPDATE = 'component-update';
     case COMPONENT_DELETE = 'component-delete';
+    case COMPONENT_IMPORT = 'component-import';
 
     case FEEDBACK_CREATE = 'feedback-create';
     case FEEDBACK_READ = 'feedback-read';

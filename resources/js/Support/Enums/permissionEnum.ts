@@ -128,11 +128,13 @@ export enum PERMISSION_ENUM {
     STEP_READ = 'step-read',
     STEP_UPDATE = 'step-update',
     STEP_DELETE = 'step-delete',
+    STEP_IMPORT = 'step-import',
 
     COMPONENT_CREATE = 'component-create',
     COMPONENT_READ = 'component-read',
     COMPONENT_UPDATE = 'component-update',
     COMPONENT_DELETE = 'component-delete',
+    COMPONENT_IMPORT = 'component-import',
 
     FEEDBACK_CREATE = 'feedback-create',
     FEEDBACK_READ = 'feedback-read',
