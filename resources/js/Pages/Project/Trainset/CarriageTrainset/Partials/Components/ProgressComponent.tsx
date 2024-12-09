@@ -34,7 +34,7 @@ const ProgressComponent = ({
     const { t } = useLaravelReactI18n();
 
     const [components, setComponents] = useState<ComponentResource[]>();
-    const [selectedComponent, setSelectedComponent] = useState<number | null>();
+    const [selectedComponent, setSelectedComponent] = useState<number | null>(0);
     const [componentProgress, setComponentProgress] = useState<ComponentProgressResource[]>();
 
     const loadComponents = withLoading(async () => {
@@ -42,7 +42,6 @@ const ProgressComponent = ({
             intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS,
         })) as unknown as ComponentResource[];
         setComponents(components);
-        setSelectedComponent(components[0]?.id);
     })
     const loadProgress = withLoading(async () => {
         const progress = (await trainsetAttachmentService.get(attachment.id, {
@@ -73,7 +72,7 @@ const ProgressComponent = ({
                 <h1 className='text-xl font-bold flex my-auto'>{title}</h1>
                 <div className='flex'>
                     <InputLabel id='selected-component-id-label' className='mr-2 my-auto text-lg font-bold'>
-                        {'Select Component'}:
+                        {t('pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component_placeholder')}:
                     </InputLabel>
                     
                     <Select
@@ -82,7 +81,7 @@ const ProgressComponent = ({
                     >
                         <SelectTrigger id='selected-component-id' className='min-w-[200px] w-max focus:ring-0'>
                             <SelectValue
-                                placeholder={'Select Component'}
+                                placeholder={`${t('pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component_placeholder')}...`}
                             />
                         </SelectTrigger>
                         <SelectContent>
@@ -90,7 +89,7 @@ const ProgressComponent = ({
                                 value={'0'}
                                 key={'select-all'}
                             >
-                                {'All Components'}
+                                {t('pages.project.trainset.carriage_trainset.partials.components.progress_component.props.select_all_components')}
                             </SelectItem>
                             {components?.map((component) => (
                                 <SelectItem
@@ -105,7 +104,7 @@ const ProgressComponent = ({
                 </div>
             </div>
             {componentProgress == null ||
-                (componentProgress.length === 0 && <h3>{'Kososng🗿' + attachment.status}</h3>) ||
+                (componentProgress.length === 0 && <h3>{t('pages.project.trainset.carriage_trainset.partials.components.progress_component.props.none',{status:attachment.status})}</h3>) ||
                 (componentProgress &&
                     componentProgress.map((progress, index) => (
                         <div key={progress.component.id}>

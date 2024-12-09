@@ -1595,8 +1595,11 @@ return [
                         ],
                         'progress_component' => [
                             'props' => [
+                                'none' => 'No Progress Found (:status)',
                                 'trainset' => 'Trainset: :trainset',
                                 'component' => 'Component: :component',
+                                'component_placeholder' => 'Select Component',
+                                'select_all_components' => 'All Components',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Carriage: :carriage',
                                 'workers' => 'Workers:',
@@ -1604,6 +1607,7 @@ return [
                         ],
                         'progress_panel' => [
                             'props' => [
+                                'none' => 'No Progress Found',
                                 'trainset' => 'Trainset: :trainset',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Carriage: :carriage',

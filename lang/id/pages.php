@@ -1595,8 +1595,11 @@ return [
                         ],
                         'progress_component' => [
                             'props' => [
+                                'none' => 'Tidak Ada Progres Ditemukan (:status)',
                                 'trainset' => 'Trainset: :trainset',
                                 'component' => 'Komponen: :component',
+                                'component_placeholder' => 'Pilih Komponen',
+                                'select_all_components' => 'Semua Komponen',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Gerbong: :carriage',
                                 'workers' => 'Pekerja:',
@@ -1604,6 +1607,7 @@ return [
                         ],
                         'progress_panel' => [
                             'props' => [
+                                'none' => 'Tidak Ada Progres Ditemukan',
                                 'trainset' => 'Trainset: :trainset',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Gerbong: :carriage',
