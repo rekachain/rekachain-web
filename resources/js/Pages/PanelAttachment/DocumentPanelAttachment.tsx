@@ -208,7 +208,7 @@ const DocumentAttachment = ({
                         ))}
                     </TableBody>
                 </Table>
-                <div className='grid grid-cols-3 gap-4 mt-10'>
+                <div className='grid grid-cols-3 gap-4 mt-10' style={{pageBreakInside: 'avoid'}}>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
                             <div className='border-b border-gray-500 h-10' />
