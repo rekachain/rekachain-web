@@ -40,7 +40,7 @@ import {
     AccordionTrigger,
 } from '@/Components/UI/accordion';
 import { ScrollArea } from '@/Components/UI/scroll-area';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 

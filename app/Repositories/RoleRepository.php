@@ -2,18 +2,11 @@
 
 namespace App\Repositories;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
 use App\Models\Role;
 use App\Support\Interfaces\Repositories\RoleRepositoryInterface;
-use App\Traits\Repositories\HandlesFiltering;
-use App\Traits\Repositories\HandlesRelations;
-use App\Traits\Repositories\HandlesSorting;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class RoleRepository extends BaseRepository implements RoleRepositoryInterface {
-    use HandlesFiltering, HandlesRelations, HandlesSorting;
-
     public function create(array $data): ?Model {
         $role = parent::create($data);
 
@@ -36,18 +29,6 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface {
 
     public function forceUpdate(mixed $keyOrModel, array $data): ?Model {
         return Role::find($keyOrModel->id)->update($data) ? Role::find($keyOrModel->id) : null;
-    }
-
-    protected function applyFilters(array $searchParams = []): Builder {
-        $query = $this->getQuery();
-
-        $query = $this->applySearchFilters($query, $searchParams, ['name', 'level']);
-
-        $query = $this->applyResolvedRelations($query, $searchParams);
-
-        $query = $this->applySorting($query, $searchParams);
-
-        return $query;
     }
 
     protected function getModelClass(): string {

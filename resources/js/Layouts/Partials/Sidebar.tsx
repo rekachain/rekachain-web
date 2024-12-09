@@ -1,6 +1,6 @@
 import { Button } from '@/Components/UI/button';
 import { SidebarProvider } from '@/Contexts/SidebarContext';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import SidebarHelpdesk from '@/Layouts/Partials/Components/SidebarHelpdesk';
 import { ROUTES } from '@/Support/Constants/routes';
 import { STYLING } from '@/Support/Constants/styling';

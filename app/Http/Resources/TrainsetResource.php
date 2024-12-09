@@ -6,7 +6,6 @@ use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Models\PanelAttachment;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,17 +43,7 @@ class TrainsetResource extends JsonResource {
                     ->groupBy('carriage_panel_component.component_id')->map(function ($trainsetAttachmentComponents) {
                         return [
                             'component' => $trainsetAttachmentComponents->first(),
-                            'total_progress_qty' => $trainsetAttachmentComponents->sum(function ($trainsetAttachmentComponent) {
-                                if ($trainsetAttachmentComponent->detail_worker_trainsets->isNotEmpty()) {
-                                    $progressSteps = $trainsetAttachmentComponent->progress_steps;
-                                    $lastWorker = $trainsetAttachmentComponent->detail_worker_trainsets->last();
-                                    $isLastProgressStep = $progressSteps->last()->id === $lastWorker->progress_step->id;
-
-                                    return !$isLastProgressStep ? 1 : (($lastWorker->work_status === DetailWorkerTrainsetWorkStatusEnum::IN_PROGRESS) ? 1 : 0);
-                                }
-
-                                return 0;
-                            }),
+                            'total_progress_qty' => $trainsetAttachmentComponents->sum('total_current_work_progress'),
                         ];
                     });
                 $data = $componentPlans->map(function ($componentPlan) use ($fulfilledComponents, $progressComponents) {

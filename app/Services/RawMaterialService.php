@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\RawMaterial\RawMaterialsExport;
 use App\Exports\RawMaterial\RawMaterialsTemplateExport;
 use App\Imports\RawMaterial\RawMaterialsImport;

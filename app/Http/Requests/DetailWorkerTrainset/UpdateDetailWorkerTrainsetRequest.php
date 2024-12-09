@@ -16,7 +16,7 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 return [
                     'notes' => ['required', 'string'],
-                    'total_failed' => 'required|integer|min:1',
+                    'total_failed' => 'required|integer|min:1|max:' . $this->route('detail_worker_trainset')->trainset_attachment_component->total_current_work_progress,
                 ];
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
@@ -25,15 +25,26 @@ class UpdateDetailWorkerTrainsetRequest extends FormRequest {
         }
 
         return [
-            'image_path' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'image_path' => [
+                'required_if:work_status,' . DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value,
+                'image', 'mimes:jpeg,png,jpg', 'max:2048',
+            ],
             'trainset_attachment_id' => 'nullable|exists:trainset_attachments,id',
             'worker_id' => 'nullable|exists:users,id',
             'progress_step_id' => 'nullable|exists:progress_steps,id',
             'estimated_time' => 'nullable|integer',
-            'work_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerTrainsetWorkStatusEnum::cases(), 'value'))],
-            'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerTrainsetAcceptanceStatusEnum::cases(), 'value'))],
+            'work_status' => [
+                'required_with:image_path,failed_note',
+                'in:' . implode(',', DetailWorkerTrainsetWorkStatusEnum::toArray()),
+            ],
+            'acceptance_status' => ['nullable', 'in:' . implode(',', DetailWorkerTrainsetAcceptanceStatusEnum::toArray())],
             'failed_note' => 'nullable|string',
-            'total_failed' => 'required_if:failed_note,!=,null|integer|min:1',
+            'total_failed' => [
+                'required_with:failed_note',
+                'integer',
+                'min:1',
+                'max:' . $this->route('detail_worker_trainset')->trainset_attachment_component->total_current_work_progress,
+            ],
         ];
     }
 

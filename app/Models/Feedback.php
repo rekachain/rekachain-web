@@ -22,6 +22,10 @@ class Feedback extends Model {
         'rating' => 'integer',
         'status' => FeedbackStatusEnum::class,
     ];
+    protected $filterable = [
+        'searchs' => ['name'],
+        'columns' => ['user_id'],
+    ];
 
     public function user(): BelongsTo {
         return $this->belongsTo(User::class);

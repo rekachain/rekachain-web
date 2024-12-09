@@ -2,37 +2,34 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\SerialPanel;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
 use App\Support\Interfaces\Repositories\SerialPanelRepositoryInterface;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
-use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
-use App\Support\Interfaces\Services\UserServiceInterface;
+use Psr\Container\ContainerInterface;
 
 class SerialPanelService extends BaseCrudService implements SerialPanelServiceInterface {
     public function __construct(
+        protected ContainerInterface $container,
         protected DetailWorkerPanelRepositoryInterface $detailWorkerPanelRepository,
         protected ProgressStepRepositoryInterface $progressStepRepository,
-        protected UserServiceInterface $userService,
         protected UserRepositoryInterface $userRepository,
-        protected DetailWorkerPanelServiceInterface $detailWorkerPanelService
     ) {
-        parent::__construct();
+        parent::__construct($container);
     }
 
     public function assignWorker(SerialPanel $serialPanel, array $data) {
         $userId = $data['worker_id'] ?? auth()->user()->id;
-        $user = $this->userService->find(['id' => $userId])->first();
+        $user = $this->userService()->find(['id' => $userId])->first();
         $workerPanel = $this->detailWorkerPanelRepository->findFirst(['serial_panel_id' => $serialPanel->id, 'worker_id' => $user->id]);
         if ($workerPanel) {
             return $workerPanel;
         }
 
-        return $this->detailWorkerPanelService->create([
+        return $this->detailWorkerPanelService()->create([
             'serial_panel_id' => $serialPanel->id,
             'worker_id' => $user->id,
             'progress_step_id' => $this->progressStepRepository->findFirst(['progress_id' => $serialPanel->panel_attachment->carriage_panel->progress_id, 'step_id' => $user->step->id])->id,
@@ -42,7 +39,7 @@ class SerialPanelService extends BaseCrudService implements SerialPanelServiceIn
 
     public function delete($keyOrModel): bool {
         $keyOrModel->detail_worker_panels()->each(function ($detailWorkerPanel) {
-            $this->detailWorkerPanelService->delete($detailWorkerPanel);
+            $this->detailWorkerPanelService()->delete($detailWorkerPanel);
         });
 
         return parent::delete($keyOrModel);

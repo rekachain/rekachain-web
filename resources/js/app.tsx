@@ -3,6 +3,7 @@ import '../css/app.css';
 import './bootstrap';
 
 import LoadingOverlay from '@/Components/LoadingOverlay';
+import { Toaster as SonnerToaster } from '@/Components/UI/sonner';
 import { Toaster } from '@/Components/UI/toaster';
 import { ConfirmationDialogProvider } from '@/Contexts/ConfirmationDialogContext';
 import { LoadingProvider } from '@/Contexts/LoadingContext';
@@ -29,6 +30,17 @@ void createInertiaApp({
                 <LoadingProvider>
                     <ConfirmationDialogProvider>
                         <App {...props} />
+                        <SonnerToaster
+                            toastOptions={
+                                {
+                                    // https://github.com/shadcn-ui/ui/issues/2234
+                                }
+                            }
+                            theme='light'
+                            richColors
+                            duration={2000}
+                            closeButton
+                        />
                         <Toaster />
                         <LoadingOverlay />
                     </ConfirmationDialogProvider>
