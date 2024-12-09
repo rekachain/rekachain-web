@@ -1469,6 +1469,7 @@ return [
                                     'no_attachments' => 'Tidak ada lampiran yang ditemukan.',
                                 ],
                                 'headers' => [
+                                    'handlers' => 'Penanggung Jawab',
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
                                     'serial_number' => 'Nomor Seri',

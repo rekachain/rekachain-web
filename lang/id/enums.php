@@ -28,6 +28,11 @@ return [
         'send' => 'Pengirim',
         'receive' => 'Penerima',
     ],
+    'App\Support\Enums\PanelAttachmentHandlerHandlesEnum' => [
+        'prepare' => 'Perencana',
+        'send' => 'Pengirim',
+        'receive' => 'Penerima',
+    ],
     'others' => [
         'null_work_status' => 'Belum Diproses',
         'null_acceptance_status' => 'Belum Diproses',

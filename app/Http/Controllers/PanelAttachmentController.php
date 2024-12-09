@@ -58,6 +58,8 @@ class PanelAttachmentController extends Controller {
                     return PanelAttachmentResource::make($panelAttachment);
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS->value:
                     return SerialPanelResource::collection($panelAttachment->serial_panels);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS->value:
+                    return PanelAttachmentHandlerResource::collection($panelAttachment->panel_attachment_handlers->load('user'));
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                     return PanelAttachmentResource::make($panelAttachment);
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:

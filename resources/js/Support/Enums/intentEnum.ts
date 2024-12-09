@@ -198,6 +198,7 @@ const intents = {
         'web.trainset.attachment.assign.referenced.attachment.and.material.import',
     WEB_PANEL_ATTACHMENT_GET_PANEL: 'web.panel.attachment.get.panel',
     WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS: 'web.panel.attachment.get.serial.panels',
+    WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS: 'web.panel.attachment.get.attachment.handlers',
     WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS: 'web.panel.attachment.get.attachment.progress',
     WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY: 'web.panel.attachment.get.panel.with.qty',
     WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT:

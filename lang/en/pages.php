@@ -1469,6 +1469,7 @@ return [
                                     'no_attachments' => 'No attachments found for the selected panel and carriage.',
                                 ],
                                 'headers' => [
+                                    'handlers' => 'Attachment Handler',
                                     'attachment_number' => 'Attachment Number',
                                     'reservation_number' => 'Reservation Number',
                                     'serial_number' => 'Serial Number',
