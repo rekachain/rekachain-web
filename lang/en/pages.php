@@ -2240,7 +2240,7 @@ return [
     ],
     'trainset_attachment' => [
         'document_trainset_attachment' => [
-            'title' => 'Trainset Attachment',
+            'title' => 'Material Withdrawal Card (MWC)',
             'headers' => [
                 'mechanic_attachment' => 'Mechanic Attachment',
                 'electric_attachment' => 'Electric Attachment',
@@ -2249,15 +2249,20 @@ return [
                 'serial_number' => 'Serial Number',
                 'reference_number' => 'Reference Number',
                 'date' => 'Date',
+                'source_workstation' => 'Source Workstation',
+                'destination_workstation' => 'Destination Workstation',
                 'material_list' => 'Material List',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Material Code',
                     'description' => 'Description',
                     'specs' => 'Specs',
                     'unit' => 'Unit',
-                    'total_qty' => 'Total Qty',
+                    'total_required' => 'Total Requested',
+                    'total_received' => 'Total Received',
+                    'lot' => 'Lot/TS',
                 ],
             ],
             'props' => [
@@ -2272,7 +2277,7 @@ return [
     ],
     'panel_attachment' => [
         'document_panel_attachment' => [
-            'title' => 'Trainset Attachment',
+            'title' => 'Material Withdrawal Card (MWC)',
             'headers' => [
                 'kpm_assembly' => 'Assembly Attachment',
                 'attachment_number' => 'Attachment Number',
@@ -2280,15 +2285,21 @@ return [
                 'serial_number' => 'Serial Number',
                 'reference_number' => 'Reference Number',
                 'date' => 'Date',
+                'source_workstation' => 'Source Workstation',
+                'destination_workstation' => 'Destination Workstation',
+                'description' => 'Description',
                 'material_list' => 'Material List',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Material Code',
                     'description' => 'Description',
                     'specs' => 'Specs',
                     'unit' => 'Unit',
-                    'total_qty' => 'Total Qty',
+                    'total_required' => 'Total Requested',
+                    'total_received' => 'Total Received',
+                    'lot' => 'Lot/TS',
                 ],
             ],
             'props' => [

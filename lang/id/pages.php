@@ -2240,7 +2240,7 @@ return [
     ],
     'trainset_attachment' => [
         'document_trainset_attachment' => [
-            'title' => 'Lampiran Trainset',
+            'title' => 'Kartu Penarikan Material (KPM)',
             'headers' => [
                 'mechanic_attachment' => 'Lampiran Mekanik',
                 'electric_attachment' => 'Lampiran Elektrik',
@@ -2249,15 +2249,20 @@ return [
                 'serial_number' => 'Nomor Seri',
                 'reference_number' => 'Nomor Referensi',
                 'date' => 'Tanggal',
+                'source_workstation' => 'Workstation Asal',
+                'destination_workstation' => 'Workstation Tujuan',
                 'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Kode Material',
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Total',
+                    'total_required' => 'Jumlah Diminta',
+                    'total_received' => 'Jumlah Diserahkan',
+                    'lot' => 'Lot/TS',
                 ],
             ],
             'props' => [
@@ -2272,7 +2277,7 @@ return [
     ],
     'panel_attachment' => [
         'document_panel_attachment' => [
-            'title' => 'KPM Assembly',
+            'title' => 'Kartu Penarikan Material (KPM)',
             'headers' => [
                 'kpm_assembly' => 'KPM Assembly',
                 'attachment_number' => 'Nomor Lampiran',
@@ -2280,24 +2285,30 @@ return [
                 'serial_number' => 'Nomor Seri',
                 'reference_number' => 'Nomor Referensi',
                 'date' => 'Tanggal',
+                'source_workstation' => 'Workstation Asal',
+                'destination_workstation' => 'Workstation Tujuan',
+                'description' => 'Deskripsi',
                 'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Kode Material',
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Total',
+                    'total_required' => 'Jumlah Diminta',
+                    'total_received' => 'Jumlah Diserahkan',
+                    'lot' => 'Lot/TS',
                 ],
             ],
-        ],
-        'props' => [
-            'signatures' => [
-                'prepare' => 'Dibuat Oleh',
-                'send' => 'Dikirim Oleh',
-                'receive' => 'Diterima Oleh',
-                'identifier' => 'NIP',
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Dibuat Oleh',
+                    'send' => 'Dikirim Oleh',
+                    'receive' => 'Diterima Oleh',
+                    'identifier' => 'NIP',
+                ],
             ],
         ],
     ],
