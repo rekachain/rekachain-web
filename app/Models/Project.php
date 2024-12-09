@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Project extends Model {
-    use HasFactory, HasRelationships;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'name',
@@ -29,6 +30,7 @@ class Project extends Model {
         'columns' => [
             'name',
             'initial_date',
+            'buyer_id',
         ],
         'relation_columns' => [
             // 'carriages' => [
@@ -39,10 +41,6 @@ class Project extends Model {
             // ]
         ],
     ];
-
-    public function getFilterable(): array {
-        return $this->filterable;
-    }
 
     public function carriages(): HasManyDeep {
         return $this->hasManyDeep(

@@ -14,6 +14,15 @@ class FailedComponentManufacture extends Model {
         'notes',
         'total_failed',
     ];
+    protected $filterable = [
+        'searchs' => [
+            'notes',
+            'total_failed',
+        ],
+        'columns' => [
+            'detail_worker_trainset_id',
+        ],
+    ];
 
     public function detail_worker_trainset(): BelongsTo {
         return $this->belongsTo(DetailWorkerTrainset::class);

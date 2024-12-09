@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Component\ComponentsExport;
 use App\Exports\Component\ComponentsTemplateExport;
 use App\Exports\RawMaterialProgressStep\RawMaterialProgressStepsTemplateExport;

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\DetailWorkerPanel;
 use App\Models\ProgressStep;
 use App\Models\SerialPanel;
