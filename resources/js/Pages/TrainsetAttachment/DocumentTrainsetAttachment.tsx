@@ -41,17 +41,9 @@ const DocumentTrainsetAttachment = ({
                 setRawMaterials(response.raw_materials);
 
                 if (response.type === TrainsetAttachmentTypeEnum.MECHANIC) {
-                    setPageTitle(
-                        t(
-                            'pages.trainset_attachment.document_trainset_attachment.title',
-                        ),
-                    );
+                    setPageTitle(t('pages.trainset_attachment.document_trainset_attachment.title'));
                 } else if (response.type === TrainsetAttachmentTypeEnum.ELECTRIC) {
-                    setPageTitle(
-                        t(
-                            'pages.trainset_attachment.document_trainset_attachment.title',
-                        ),
-                    );
+                    setPageTitle(t('pages.trainset_attachment.document_trainset_attachment.title'));
                 }
 
                 setTimeout(() => {
@@ -96,7 +88,11 @@ const DocumentTrainsetAttachment = ({
                                     'pages.trainset_attachment.document_trainset_attachment.headers.source_workstation',
                                 )}
                             </p>
-                            <p>{trainsetAttachment.source_workstation?.name} {trainsetAttachment.source_workstation?.location}, {trainsetAttachment.source_workstation?.workshop.name}</p>
+                            <p>
+                                {trainsetAttachment.source_workstation?.name}{' '}
+                                {trainsetAttachment.source_workstation?.location},{' '}
+                                {trainsetAttachment.source_workstation?.workshop.name}
+                            </p>
                         </div>
                         <div className=''>
                             <p className='font-bold'>
@@ -104,7 +100,11 @@ const DocumentTrainsetAttachment = ({
                                     'pages.trainset_attachment.document_trainset_attachment.headers.destination_workstation',
                                 )}
                             </p>
-                            <p>{trainsetAttachment.destination_workstation?.name} {trainsetAttachment.destination_workstation?.location}, {trainsetAttachment.destination_workstation?.workshop.name}</p>
+                            <p>
+                                {trainsetAttachment.destination_workstation?.name}{' '}
+                                {trainsetAttachment.destination_workstation?.location},{' '}
+                                {trainsetAttachment.destination_workstation?.workshop.name}
+                            </p>
                         </div>
                     </div>
                     <div className='mt-5 flex flex-col gap-3'>
@@ -132,7 +132,7 @@ const DocumentTrainsetAttachment = ({
                     )}
                 </div>
                 <Separator className='my-6 h-1' />
-                <h1 className='mt-3 text-xl font-bold mb-1'>
+                <h1 className='mb-1 mt-3 text-xl font-bold'>
                     {t(
                         'pages.trainset_attachment.document_trainset_attachment.headers.material_list',
                     )}
@@ -179,10 +179,11 @@ const DocumentTrainsetAttachment = ({
                     </TableHeader>
                     <TableBody>
                         {rawMaterials.map((rawMaterial, index) => (
-                            <TableRow key={rawMaterial.id} className='divide-x divide-black border-black'>
-                                <TableCell>
-                                    {index+1}
-                                </TableCell>
+                            <TableRow
+                                key={rawMaterial.id}
+                                className='divide-x divide-black border-black'
+                            >
+                                <TableCell>{index + 1}</TableCell>
                                 <TableCell className='font-medium'>
                                     {rawMaterial.material_code}
                                 </TableCell>
@@ -195,60 +196,101 @@ const DocumentTrainsetAttachment = ({
                         ))}
                     </TableBody>
                 </Table>
-                <div className='grid grid-cols-3 gap-4 mt-10' style={{pageBreakInside: 'avoid'}}>
+                <div style={{ pageBreakInside: 'avoid' }} className='mt-10 grid grid-cols-3 gap-4'>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-10' />
+                            <div className='h-10 border-b border-gray-500' />
                         </div>
                         <div className='w-full text-center'>
-                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.prepare')}:</p>
+                            <p className='font-semibold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.props.signatures.prepare',
+                                )}
+                                :
+                            </p>
                         </div>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-32' />
+                            <div className='h-32 border-b border-gray-500' />
                         </div>
                         {trainsetAttachment.trainset_attachment_handlers
-                            ?.filter((handler) => handler.handles === TrainsetAttachmentHandlerHandlesEnum.PREPARE)
+                            ?.filter(
+                                (handler) =>
+                                    handler.handles ===
+                                    TrainsetAttachmentHandlerHandlesEnum.PREPARE,
+                            )
                             .map((trainsetAttachmentHandler) => (
-                                <div key={trainsetAttachmentHandler.id} className='w-full text-center'>
-                                    <p className='font-semibold'>{trainsetAttachmentHandler.user?.name}</p>
+                                <div
+                                    key={trainsetAttachmentHandler.id}
+                                    className='w-full text-center'
+                                >
+                                    <p className='font-semibold'>
+                                        {trainsetAttachmentHandler.user?.name}
+                                    </p>
                                     <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${trainsetAttachmentHandler.user?.nip})`}</p>
                                 </div>
                             ))}
                     </div>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-10' />
+                            <div className='h-10 border-b border-gray-500' />
                         </div>
                         <div className='w-full text-center'>
-                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.send')}:</p>
+                            <p className='font-semibold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.props.signatures.send',
+                                )}
+                                :
+                            </p>
                         </div>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-32' />
+                            <div className='h-32 border-b border-gray-500' />
                         </div>
                         {trainsetAttachment.trainset_attachment_handlers
-                            ?.filter((handler) => handler.handles === TrainsetAttachmentHandlerHandlesEnum.SEND)
+                            ?.filter(
+                                (handler) =>
+                                    handler.handles === TrainsetAttachmentHandlerHandlesEnum.SEND,
+                            )
                             .map((trainsetAttachmentHandler) => (
-                                <div key={trainsetAttachmentHandler.id} className='w-full text-center'>
-                                    <p className='font-semibold'>{trainsetAttachmentHandler.user?.name}</p>
+                                <div
+                                    key={trainsetAttachmentHandler.id}
+                                    className='w-full text-center'
+                                >
+                                    <p className='font-semibold'>
+                                        {trainsetAttachmentHandler.user?.name}
+                                    </p>
                                     <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${trainsetAttachmentHandler.user?.nip})`}</p>
                                 </div>
                             ))}
                     </div>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-10' />
+                            <div className='h-10 border-b border-gray-500' />
                         </div>
                         <div className='w-full text-center'>
-                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.receive')}:</p>
+                            <p className='font-semibold'>
+                                {t(
+                                    'pages.trainset_attachment.document_trainset_attachment.props.signatures.receive',
+                                )}
+                                :
+                            </p>
                         </div>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-32' />
+                            <div className='h-32 border-b border-gray-500' />
                         </div>
                         {trainsetAttachment.trainset_attachment_handlers
-                            ?.filter((handler) => handler.handles === TrainsetAttachmentHandlerHandlesEnum.RECEIVE)
+                            ?.filter(
+                                (handler) =>
+                                    handler.handles ===
+                                    TrainsetAttachmentHandlerHandlesEnum.RECEIVE,
+                            )
                             .map((trainsetAttachmentHandler) => (
-                                <div key={trainsetAttachmentHandler.id} className='w-full text-center'>
-                                    <p className='font-semibold'>{trainsetAttachmentHandler.user?.name}</p>
+                                <div
+                                    key={trainsetAttachmentHandler.id}
+                                    className='w-full text-center'
+                                >
+                                    <p className='font-semibold'>
+                                        {trainsetAttachmentHandler.user?.name}
+                                    </p>
                                     <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${trainsetAttachmentHandler.user?.nip})`}</p>
                                 </div>
                             ))}

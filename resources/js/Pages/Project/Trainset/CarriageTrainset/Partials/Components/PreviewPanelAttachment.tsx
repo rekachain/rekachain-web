@@ -38,7 +38,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     const [panelAttachmentAncestor, setPanelAttachmentAncestor] =
         useState<PanelAttachmentResource>();
     const [panelAttachment, setPanelAttachment] = useState<PanelAttachmentResource>();
-    const [panelAttachmentHandlers, setPanelAttachmentHandlers] = useState<PanelAttachmentHandlerResource[]>();
+    const [panelAttachmentHandlers, setPanelAttachmentHandlers] =
+        useState<PanelAttachmentHandlerResource[]>();
 
     const [selectedCarriage, setSelectedCarriage] = useState<number | null>(
         Object.values(trainset?.carriage_trainsets)[0]?.carriage.id,
@@ -286,17 +287,21 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             </div>
                             {panelAttachmentHandlers && panelAttachmentHandlers.length > 0 && (
                                 <>
-                                    <p className='font-bold text-lg'>
+                                    <p className='text-lg font-bold'>
                                         {t(
                                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.handlers',
                                         )}
                                     </p>
                                     {panelAttachmentHandlers.map((handler) => (
-                                    <div className='flex items-center gap-1' key={handler.id}>
-                                        <span className='font-bold'>{handler.localized_handles}</span>
-                                        <span className=''>:</span>
-                                        <span className=''>{handler.user?.nip} - {handler.user?.name}</span>
-                                    </div>
+                                        <div key={handler.id} className='flex items-center gap-1'>
+                                            <span className='font-bold'>
+                                                {handler.localized_handles}
+                                            </span>
+                                            <span className=''>:</span>
+                                            <span className=''>
+                                                {handler.user?.nip} - {handler.user?.name}
+                                            </span>
+                                        </div>
                                     ))}
                                 </>
                             )}

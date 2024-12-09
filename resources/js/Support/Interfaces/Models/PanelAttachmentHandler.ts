@@ -1,4 +1,4 @@
-import { PanelAttachmentHandlerHandlesEnum } from "@/Support/Enums/panelAttachmentHandlerHandlesEnum";
+import { PanelAttachmentHandlerHandlesEnum } from '@/Support/Enums/panelAttachmentHandlerHandlesEnum';
 
 export interface PanelAttachmentHandler {
     id: number;

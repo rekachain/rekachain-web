@@ -20,7 +20,6 @@ class TrainsetAttachmentHandler extends Model {
     protected $casts = [
         'handles' => TrainsetAttachmentHandlerHandlesEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => ['handler_name', 'handles'],
         'columns' => ['trainset_attachment_id', 'user_id', 'handles'],

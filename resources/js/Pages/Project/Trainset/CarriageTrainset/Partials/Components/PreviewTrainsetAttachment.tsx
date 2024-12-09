@@ -20,7 +20,10 @@ import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/CarriageTrain
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { TrainsetAttachmentHandlerResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import {
+    TrainsetAttachmentHandlerResource,
+    TrainsetAttachmentResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -148,17 +151,19 @@ const PreviewTrainsetAttachment = ({
                     </div>
                     {trainsetAttachmentHandlers && trainsetAttachmentHandlers.length > 0 && (
                         <>
-                            <p className='font-bold text-lg'>
+                            <p className='text-lg font-bold'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.handlers',
                                 )}
                             </p>
                             {trainsetAttachmentHandlers.map((handler) => (
-                            <div className='flex items-center gap-1' key={handler.id}>
-                                <span className='font-bold'>{handler.localized_handles}</span>
-                                <span className=''>:</span>
-                                <span className=''>{handler.user?.nip} - {handler.user?.name}</span>
-                            </div>
+                                <div key={handler.id} className='flex items-center gap-1'>
+                                    <span className='font-bold'>{handler.localized_handles}</span>
+                                    <span className=''>:</span>
+                                    <span className=''>
+                                        {handler.user?.nip} - {handler.user?.name}
+                                    </span>
+                                </div>
                             ))}
                         </>
                     )}
