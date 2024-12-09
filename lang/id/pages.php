@@ -1508,6 +1508,7 @@ return [
                             'dialogs' => [
                                 'title' => 'Lampiran Trainset',
                                 'headers' => [
+                                    'handlers' => 'Penanggung Jawab',
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
                                     'serial_number' => 'Nomor Seri',

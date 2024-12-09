@@ -23,6 +23,11 @@ return [
         'in_progress' => 'Dalam Proses',
         'completed' => 'Selesai',
     ],
+    'App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum' => [
+        'prepare' => 'Perencana',
+        'send' => 'Pengirim',
+        'receive' => 'Penerima',
+    ],
     'others' => [
         'null_work_status' => 'Belum Diproses',
         'null_acceptance_status' => 'Belum Diproses',

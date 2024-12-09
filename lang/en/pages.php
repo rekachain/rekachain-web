@@ -1508,6 +1508,7 @@ return [
                             'dialogs' => [
                                 'title' => 'Trainset Attachment',
                                 'headers' => [
+                                    'handlers' => 'Attachment Handler',
                                     'attachment_number' => 'Attachment Number',
                                     'reservation_number' => 'Reservation Number',
                                     'serial_number' => 'Serial Number',

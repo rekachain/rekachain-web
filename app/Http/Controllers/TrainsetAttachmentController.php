@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TrainsetAttachment\StoreTrainsetAttachmentRequest;
 use App\Http\Requests\TrainsetAttachment\UpdateTrainsetAttachmentRequest;
 use App\Http\Resources\RawMaterialResource;
+use App\Http\Resources\TrainsetAttachmentHandlerResource;
 use App\Http\Resources\TrainsetAttachmentResource;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\IntentEnum;
@@ -45,6 +46,8 @@ class TrainsetAttachmentController extends Controller {
         switch ($intent) {
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                 return TrainsetAttachmentResource::make($trainsetAttachment);
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_HANDLERS->value:
+                return TrainsetAttachmentHandlerResource::collection($trainsetAttachment->trainset_attachment_handlers->load('user'));
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS->value:
                 return RawMaterialResource::collection($trainsetAttachment->raw_materials);
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY->value:

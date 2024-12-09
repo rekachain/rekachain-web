@@ -176,6 +176,8 @@ const intents = {
     WEB_TRAINSET_GET_PANEL_PROGRESS: 'web.trainset.get.panel.progress',
     WEB_TRAINSET_GET_PANEL_PROGRESS_WITH_WORKER_STEPS:
         'web.trainset.get.panel.progress.with.worker.steps',
+    WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_HANDLERS:
+        'web.trainset.attachment.get.attachment.handlers',
     WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS:
         'web.trainset.attachment.get.attachment.progress',
     WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS:
