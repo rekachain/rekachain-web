@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Support\Enums\IntentEnum;
+use App\Support\Interfaces\Repositories\ComponentRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -11,6 +12,7 @@ class TrainsetAttachmentResource extends JsonResource {
     public function __construct($resource) {
         parent::__construct($resource);
         $this->trainsetAttachmentComponentRepository = app(TrainsetAttachmentComponentRepositoryInterface::class);
+        $this->componentRepository = app(ComponentRepositoryInterface::class);
     }
 
     public function toArray(Request $request): array {
@@ -111,6 +113,9 @@ class TrainsetAttachmentResource extends JsonResource {
                     'attachment_number' => $this->attachment_number,
                     'components' => $components,
                 ];
+            case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
+                $trainsetAttachment = $this->ancestor();
+                return $trainsetAttachment->components()->distinct()->get()->toArray();
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_REQUIRED_COMPONENTS->value:
                 $trainsetAttachment = $this->ancestor();
                 $trainsetAttachmentComponents = $this->trainsetAttachmentComponentRepository
@@ -298,7 +303,13 @@ class TrainsetAttachmentResource extends JsonResource {
                 return $attachmentProgress->toArray();
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS->value:
                 $attachment = $this->ancestor();
-                $components = $attachment->components()->distinct()->get();
+                $components = $this->componentRepository->useFilters(array_merge_recursive($request->query(), [
+                    'relation_column_filters' => [
+                        'trainset_attachments' => [
+                            'id' => $attachment->id,
+                        ],
+                    ],
+                ]))->distinct()->get();
                 $attachmentProgress = $components->map(function ($component) use (&$componentSteps) {
                     return [
                         'component' => $component,
