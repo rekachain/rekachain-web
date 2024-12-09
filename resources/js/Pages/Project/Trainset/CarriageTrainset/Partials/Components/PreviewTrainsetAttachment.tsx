@@ -16,7 +16,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportTrainsetCustomMaterial';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';

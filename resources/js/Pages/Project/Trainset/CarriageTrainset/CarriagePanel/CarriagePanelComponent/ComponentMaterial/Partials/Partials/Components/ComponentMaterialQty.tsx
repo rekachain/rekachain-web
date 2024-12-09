@@ -1,7 +1,7 @@
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { componentMaterialService } from '@/Services/componentMaterialService';
 import { STYLING } from '@/Support/Constants/styling';

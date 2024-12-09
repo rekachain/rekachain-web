@@ -19,7 +19,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import Import from './Import';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 // import Import from '../Import';
 

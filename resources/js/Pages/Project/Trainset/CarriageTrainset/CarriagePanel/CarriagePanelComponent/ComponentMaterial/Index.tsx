@@ -9,7 +9,7 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewComponentRawMaterial from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Partials/AddNewComponentRawMaterial';
 import { componentService } from '@/Services/componentService';

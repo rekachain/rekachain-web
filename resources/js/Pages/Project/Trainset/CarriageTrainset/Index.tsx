@@ -33,7 +33,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, memo, Suspense, useEffect, useState } from 'react';
 import ProgressAttachments from './Partials/ProgressAttachments';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));

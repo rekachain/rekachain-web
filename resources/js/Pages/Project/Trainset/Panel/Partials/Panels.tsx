@@ -20,7 +20,7 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import Import from './Import';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function Panels({

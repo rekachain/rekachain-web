@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import PanelMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/Components/PanelMaterialQty';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';

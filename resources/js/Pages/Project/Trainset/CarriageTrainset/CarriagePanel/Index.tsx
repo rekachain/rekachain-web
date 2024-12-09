@@ -7,7 +7,7 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewPanel from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/AddNewPanel';
 import { panelService } from '@/Services/panelService';

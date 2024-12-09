@@ -17,7 +17,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportPanelCustomMaterial';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';

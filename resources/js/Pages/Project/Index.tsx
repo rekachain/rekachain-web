@@ -6,7 +6,7 @@ import { Head, Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense } from 'react';
 import Import from './Partials/Import';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function () {

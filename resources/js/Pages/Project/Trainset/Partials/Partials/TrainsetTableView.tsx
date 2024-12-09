@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/Components/TrainsetName';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';

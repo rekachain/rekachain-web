@@ -1,5 +1,5 @@
 import { Button } from '@/Components/UI/button';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import PanelMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/Components/PanelMaterialQty';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';

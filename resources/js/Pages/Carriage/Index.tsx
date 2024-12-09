@@ -1,6 +1,6 @@
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import { buttonVariants } from '@/Components/UI/button';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Import from '@/Pages/Carriage/Partials/Import';
 import { ROUTES } from '@/Support/Constants/routes';

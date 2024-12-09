@@ -6,7 +6,7 @@ import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriageQty from '../Components/CarriageQty';
-import { checkPermission } from '@/Helpers/sidebarHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function CarriageCardView({
