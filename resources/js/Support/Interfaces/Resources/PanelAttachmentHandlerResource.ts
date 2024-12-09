@@ -1,4 +1,8 @@
 import { PanelAttachmentHandler } from '@/Support/Interfaces/Models';
-import { Resource } from '@/Support/Interfaces/Resources';
+import { PanelAttachmentResource, Resource, UserResource } from '@/Support/Interfaces/Resources';
 
-export interface PanelAttachmentHandlerResource extends Resource, PanelAttachmentHandler {}
+export interface PanelAttachmentHandlerResource extends Resource, PanelAttachmentHandler {
+    panel_attachment?: PanelAttachmentResource;
+    user?: UserResource;
+    localized_handles: string;
+}

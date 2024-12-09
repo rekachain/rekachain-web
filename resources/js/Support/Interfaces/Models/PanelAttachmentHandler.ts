@@ -1,8 +1,11 @@
+import { PanelAttachmentHandlerHandlesEnum } from "@/Support/Enums/panelAttachmentHandlerHandlesEnum";
+
 export interface PanelAttachmentHandler {
     id: number;
     user_id: number;
+    handler_name: string;
     panel_attachment_id: number;
-    handle: string;
+    handles: PanelAttachmentHandlerHandlesEnum;
     created_at: string;
     updated_at: string;
 }

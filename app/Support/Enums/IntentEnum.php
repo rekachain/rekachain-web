@@ -262,6 +262,8 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_GET_PANEL_PROGRESS_WITH_WORKER_STEPS = 'web.trainset.get.panel.progress.with.worker.steps';
 
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_HANDLERS = 'web.trainset.attachment.get.attachment.handlers';
+
     case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.trainset.attachment.get.attachment.progress';
 
     case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS = 'web.trainset.attachment.get.attachment.progress.with.worker.steps';
@@ -284,6 +286,8 @@ enum IntentEnum: string {
 
     case WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS = 'web.panel.attachment.get.serial.panels';
 
+    case WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS = 'web.panel.attachment.get.attachment.handlers';
+    
     case WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.panel.attachment.get.attachment.progress';
 
     case WEB_PANEL_ATTACHMENT_GET_PANEL_WITH_QTY = 'web.panel.attachment.get.panel.with.qty';

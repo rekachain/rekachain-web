@@ -18,7 +18,8 @@ class PanelAttachmentHandlerResource extends JsonResource {
             'user' => UserResource::make($this->whenLoaded('user')),
             'handler_name' => $this->handler_name,
             'panel_attachment_id' => $this->panel_attachment_id,
-            'handles' => $this->handles,
+            'handles' => $this->handles->value,
+            'localized_handles' => $this->handles->getLabel(),
         ];
     }
 }
