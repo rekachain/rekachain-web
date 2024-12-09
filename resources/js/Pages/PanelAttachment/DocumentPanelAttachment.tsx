@@ -9,6 +9,7 @@ import {
 } from '@/Components/UI/table';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PanelAttachmentHandlerHandlesEnum } from '@/Support/Enums/panelAttachmentHandlerHandlesEnum';
 import { PanelAttachmentResource, RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -167,6 +168,65 @@ const DocumentAttachment = ({
                         ))}
                     </TableBody>
                 </Table>
+                <div className='grid grid-cols-3 gap-4 mt-10'>
+                    <div className='flex flex-col items-center gap-1'>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-10' />
+                        </div>
+                        <div className='w-full text-center'>
+                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.prepare')}:</p>
+                        </div>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-32' />
+                        </div>
+                        {panelAttachment.panel_attachment_handlers
+                            ?.filter((handler) => handler.handles === PanelAttachmentHandlerHandlesEnum.PREPARE)
+                            .map((panelAttachmentHandler) => (
+                                <div key={panelAttachmentHandler.id} className='w-full text-center'>
+                                    <p className='font-semibold'>{panelAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${panelAttachmentHandler.user?.nip})`}</p>
+                                </div>
+                            ))}
+                    </div>
+                    <div className='flex flex-col items-center gap-1'>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-10' />
+                        </div>
+                        <div className='w-full text-center'>
+                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.send')}:</p>
+                        </div>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-32' />
+                        </div>
+                        {panelAttachment.panel_attachment_handlers
+                            ?.filter((handler) => handler.handles === PanelAttachmentHandlerHandlesEnum.SEND)
+                            .map((panelAttachmentHandler) => (
+                                <div key={panelAttachmentHandler.id} className='w-full text-center'>
+                                    <p className='font-semibold'>{panelAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${panelAttachmentHandler.user?.nip})`}</p>
+                                </div>
+                            ))}
+                    </div>
+                    <div className='flex flex-col items-center gap-1'>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-10' />
+                        </div>
+                        <div className='w-full text-center'>
+                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.receive')}:</p>
+                        </div>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-32' />
+                        </div>
+                        {panelAttachment.panel_attachment_handlers
+                            ?.filter((handler) => handler.handles === PanelAttachmentHandlerHandlesEnum.RECEIVE)
+                            .map((panelAttachmentHandler) => (
+                                <div key={panelAttachmentHandler.id} className='w-full text-center'>
+                                    <p className='font-semibold'>{panelAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${panelAttachmentHandler.user?.nip})`}</p>
+                                </div>
+                            ))}
+                    </div>
+                </div>
             </div>
         </>
     );

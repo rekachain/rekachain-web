@@ -9,6 +9,7 @@ import {
 } from '@/Components/UI/table';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { TrainsetAttachmentHandlerHandlesEnum } from '@/Support/Enums/trainsetAttachmentHandlerHandlesEnum';
 import { TrainsetAttachmentTypeEnum } from '@/Support/Enums/trainsetAttachmentTypeEnum';
 import { RawMaterialResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
 import { Head } from '@inertiajs/react';
@@ -170,6 +171,65 @@ const DocumentTrainsetAttachment = ({
                         ))}
                     </TableBody>
                 </Table>
+                <div className='grid grid-cols-3 gap-4 mt-10'>
+                    <div className='flex flex-col items-center gap-1'>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-10' />
+                        </div>
+                        <div className='w-full text-center'>
+                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.prepare')}:</p>
+                        </div>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-32' />
+                        </div>
+                        {trainsetAttachment.trainset_attachment_handlers
+                            ?.filter((handler) => handler.handles === TrainsetAttachmentHandlerHandlesEnum.PREPARE)
+                            .map((trainsetAttachmentHandler) => (
+                                <div key={trainsetAttachmentHandler.id} className='w-full text-center'>
+                                    <p className='font-semibold'>{trainsetAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${trainsetAttachmentHandler.user?.nip})`}</p>
+                                </div>
+                            ))}
+                    </div>
+                    <div className='flex flex-col items-center gap-1'>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-10' />
+                        </div>
+                        <div className='w-full text-center'>
+                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.send')}:</p>
+                        </div>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-32' />
+                        </div>
+                        {trainsetAttachment.trainset_attachment_handlers
+                            ?.filter((handler) => handler.handles === TrainsetAttachmentHandlerHandlesEnum.SEND)
+                            .map((trainsetAttachmentHandler) => (
+                                <div key={trainsetAttachmentHandler.id} className='w-full text-center'>
+                                    <p className='font-semibold'>{trainsetAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${trainsetAttachmentHandler.user?.nip})`}</p>
+                                </div>
+                            ))}
+                    </div>
+                    <div className='flex flex-col items-center gap-1'>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-10' />
+                        </div>
+                        <div className='w-full text-center'>
+                            <p className='font-semibold'>{t('pages.trainset_attachment.document_trainset_attachment.props.signatures.receive')}:</p>
+                        </div>
+                        <div className='w-full'>
+                            <div className='border-b border-gray-500 h-32' />
+                        </div>
+                        {trainsetAttachment.trainset_attachment_handlers
+                            ?.filter((handler) => handler.handles === TrainsetAttachmentHandlerHandlesEnum.RECEIVE)
+                            .map((trainsetAttachmentHandler) => (
+                                <div key={trainsetAttachmentHandler.id} className='w-full text-center'>
+                                    <p className='font-semibold'>{trainsetAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>{`(${t('pages.trainset_attachment.document_trainset_attachment.props.signatures.identifier')}: ${trainsetAttachmentHandler.user?.nip})`}</p>
+                                </div>
+                            ))}
+                    </div>
+                </div>
             </div>
         </>
     );

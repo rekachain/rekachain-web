@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
+use App\Http\Resources\PanelAttachmentHandlerResource;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\PanelResource;
 use App\Http\Resources\RawMaterialResource;
@@ -75,7 +76,7 @@ class PanelAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT->value:
-                $panelAttachment = PanelAttachmentResource::make($panelAttachment->load('raw_materials'));
+                $panelAttachment = PanelAttachmentResource::make($panelAttachment->load(['raw_materials','panel_attachment_handlers.user']));
 
                 return inertia('PanelAttachment/DocumentPanelAttachment', compact('panelAttachment'));
         }

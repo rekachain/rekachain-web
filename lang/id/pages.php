@@ -2260,6 +2260,14 @@ return [
                     'total_qty' => 'Total',
                 ],
             ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Dibuat Oleh',
+                    'send' => 'Dikirim Oleh',
+                    'receive' => 'Diterima Oleh',
+                    'identifier' => 'NIP',
+                ],
+            ],
         ],
     ],
     'panel_attachment' => [
@@ -2282,6 +2290,14 @@ return [
                     'unit' => 'Satuan',
                     'total_qty' => 'Total',
                 ],
+            ],
+        ],
+        'props' => [
+            'signatures' => [
+                'prepare' => 'Dibuat Oleh',
+                'send' => 'Dikirim Oleh',
+                'receive' => 'Diterima Oleh',
+                'identifier' => 'NIP',
             ],
         ],
     ],

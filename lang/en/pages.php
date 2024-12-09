@@ -2260,6 +2260,14 @@ return [
                     'total_qty' => 'Total Qty',
                 ],
             ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Prepared By',
+                    'send' => 'Sended By',
+                    'receive' => 'Received By',
+                    'identifier' => 'EID',
+                ],
+            ],
         ],
     ],
     'panel_attachment' => [
@@ -2281,6 +2289,14 @@ return [
                     'specs' => 'Specs',
                     'unit' => 'Unit',
                     'total_qty' => 'Total Qty',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Prepared By',
+                    'send' => 'Sended By',
+                    'receive' => 'Received By',
+                    'identifier' => 'EID',
                 ],
             ],
         ],
