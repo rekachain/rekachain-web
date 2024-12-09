@@ -24,6 +24,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import {
+    PanelAttachmentHandlerResource,
     PanelAttachmentResource,
     RawMaterialResource,
     TrainsetResource,
@@ -39,6 +40,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     const [panelAttachmentAncestor, setPanelAttachmentAncestor] =
         useState<PanelAttachmentResource>();
     const [panelAttachment, setPanelAttachment] = useState<PanelAttachmentResource>();
+    const [panelAttachmentHandlers, setPanelAttachmentHandlers] =
+        useState<PanelAttachmentHandlerResource[]>();
 
     const [selectedCarriage, setSelectedCarriage] = useState<number | null>(
         Object.values(trainset?.carriage_trainsets)[0]?.carriage.id,
@@ -107,6 +110,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             const attachment = await panelAttachmentService.get(selectedAttachment);
             setPanelAttachment(attachment);
             if (attachment) {
+                loadAttachmentHandlers(attachment);
                 panelAttachmentService
                     .get(attachment.id, {
                         intent: IntentEnum.WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY,
@@ -116,6 +120,13 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     });
             }
         }
+    });
+
+    const loadAttachmentHandlers = withLoading(async (attachment: PanelAttachmentResource) => {
+        const handlers = (await panelAttachmentService.get(attachment.id, {
+            intent: IntentEnum.WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS,
+        })) as unknown as PanelAttachmentHandlerResource[];
+        setPanelAttachmentHandlers(handlers);
     });
 
     useEffect(() => {
@@ -272,7 +283,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 </p>
                                 <p>-</p>
                             </div>
-                            <div className=''>
+                            <div className='mb-2'>
                                 <p className='font-bold'>
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.serial_number',
@@ -280,6 +291,26 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 </p>
                                 <p>{showSerialPanels()}</p>
                             </div>
+                            {panelAttachmentHandlers && panelAttachmentHandlers.length > 0 && (
+                                <>
+                                    <p className='text-lg font-bold'>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.handlers',
+                                        )}
+                                    </p>
+                                    {panelAttachmentHandlers.map((handler) => (
+                                        <div key={handler.id} className='flex items-center gap-1'>
+                                            <span className='font-bold'>
+                                                {handler.localized_handles}
+                                            </span>
+                                            <span className=''>:</span>
+                                            <span className=''>
+                                                {handler.user?.nip} - {handler.user?.name}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                         </div>
                         <div className='mt-5 flex flex-col gap-3'>
                             <div className=''>

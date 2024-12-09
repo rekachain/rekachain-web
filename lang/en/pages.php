@@ -1469,6 +1469,7 @@ return [
                                     'no_attachments' => 'No attachments found for the selected panel and carriage.',
                                 ],
                                 'headers' => [
+                                    'handlers' => 'Attachment Handler',
                                     'attachment_number' => 'Attachment Number',
                                     'reservation_number' => 'Reservation Number',
                                     'serial_number' => 'Serial Number',
@@ -1508,6 +1509,7 @@ return [
                             'dialogs' => [
                                 'title' => 'Trainset Attachment',
                                 'headers' => [
+                                    'handlers' => 'Attachment Handler',
                                     'attachment_number' => 'Attachment Number',
                                     'reservation_number' => 'Reservation Number',
                                     'serial_number' => 'Serial Number',
@@ -1595,8 +1597,11 @@ return [
                         ],
                         'progress_component' => [
                             'props' => [
+                                'none' => 'No Progress Found (:status)',
                                 'trainset' => 'Trainset: :trainset',
                                 'component' => 'Component: :component',
+                                'component_placeholder' => 'Select Component',
+                                'select_all_components' => 'All Components',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Carriage: :carriage',
                                 'workers' => 'Workers:',
@@ -1604,6 +1609,7 @@ return [
                         ],
                         'progress_panel' => [
                             'props' => [
+                                'none' => 'No Progress Found',
                                 'trainset' => 'Trainset: :trainset',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Carriage: :carriage',
@@ -2234,7 +2240,7 @@ return [
     ],
     'trainset_attachment' => [
         'document_trainset_attachment' => [
-            'title' => 'Trainset Attachment',
+            'title' => 'Material Withdrawal Card (MWC)',
             'headers' => [
                 'mechanic_attachment' => 'Mechanic Attachment',
                 'electric_attachment' => 'Electric Attachment',
@@ -2243,22 +2249,35 @@ return [
                 'serial_number' => 'Serial Number',
                 'reference_number' => 'Reference Number',
                 'date' => 'Date',
+                'source_workstation' => 'Source Workstation',
+                'destination_workstation' => 'Destination Workstation',
                 'material_list' => 'Material List',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Material Code',
                     'description' => 'Description',
                     'specs' => 'Specs',
                     'unit' => 'Unit',
-                    'total_qty' => 'Total Qty',
+                    'total_required' => 'Total Requested',
+                    'total_received' => 'Total Received',
+                    'lot' => 'Lot/TS',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Prepared By',
+                    'send' => 'Sended By',
+                    'receive' => 'Received By',
+                    'identifier' => 'EID',
                 ],
             ],
         ],
     ],
     'panel_attachment' => [
         'document_panel_attachment' => [
-            'title' => 'Trainset Attachment',
+            'title' => 'Material Withdrawal Card (MWC)',
             'headers' => [
                 'kpm_assembly' => 'Assembly Attachment',
                 'attachment_number' => 'Attachment Number',
@@ -2266,15 +2285,29 @@ return [
                 'serial_number' => 'Serial Number',
                 'reference_number' => 'Reference Number',
                 'date' => 'Date',
+                'source_workstation' => 'Source Workstation',
+                'destination_workstation' => 'Destination Workstation',
+                'description' => 'Description',
                 'material_list' => 'Material List',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Material Code',
                     'description' => 'Description',
                     'specs' => 'Specs',
                     'unit' => 'Unit',
-                    'total_qty' => 'Total Qty',
+                    'total_required' => 'Total Requested',
+                    'total_received' => 'Total Received',
+                    'lot' => 'Lot/TS',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Prepared By',
+                    'send' => 'Sended By',
+                    'receive' => 'Received By',
+                    'identifier' => 'EID',
                 ],
             ],
         ],

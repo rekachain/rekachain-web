@@ -22,7 +22,10 @@ import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService'
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import {
+    TrainsetAttachmentHandlerResource,
+    TrainsetAttachmentResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -50,6 +53,8 @@ const PreviewTrainsetAttachment = ({
 
     const [trainsetAttachment, setTrainsetAttachment] =
         useState<TrainsetAttachmentResource>(attachment);
+    const [trainsetAttachmentHandlers, setTrainsetAttachmentHandlers] =
+        useState<TrainsetAttachmentHandlerResource[]>();
     const [selectedAttachment, setSelectedAttachment] = useState<number | null>(attachment.id);
 
     const loadAttachment = withLoading(async () => {
@@ -61,8 +66,16 @@ const PreviewTrainsetAttachment = ({
         }
     });
 
+    const loadAttachmentHandlers = withLoading(async () => {
+        const handlers = (await trainsetAttachmentService.get(attachment.id, {
+            intent: IntentEnum.WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_HANDLERS,
+        })) as unknown as TrainsetAttachmentHandlerResource[];
+        setTrainsetAttachmentHandlers(handlers);
+    });
+
     useEffect(() => {
         loadAttachment();
+        loadAttachmentHandlers();
     }, [selectedAttachment]);
 
     return (
@@ -134,7 +147,7 @@ const PreviewTrainsetAttachment = ({
                         </p>
                         <p>{trainsetAttachment.attachment_number}</p>
                     </div>
-                    <div className=''>
+                    <div className='mb-2'>
                         <p className='font-bold'>
                             {t(
                                 'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.reservation_number',
@@ -142,14 +155,24 @@ const PreviewTrainsetAttachment = ({
                         </p>
                         <p>-</p>
                     </div>
-                    <div className=''>
-                        <p className='font-bold'>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.serial_number',
-                            )}
-                        </p>
-                        <p>-</p>
-                    </div>
+                    {trainsetAttachmentHandlers && trainsetAttachmentHandlers.length > 0 && (
+                        <>
+                            <p className='text-lg font-bold'>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.handlers',
+                                )}
+                            </p>
+                            {trainsetAttachmentHandlers.map((handler) => (
+                                <div key={handler.id} className='flex items-center gap-1'>
+                                    <span className='font-bold'>{handler.localized_handles}</span>
+                                    <span className=''>:</span>
+                                    <span className=''>
+                                        {handler.user?.nip} - {handler.user?.name}
+                                    </span>
+                                </div>
+                            ))}
+                        </>
+                    )}
                 </div>
                 <div className='mt-5 flex flex-col gap-3'>
                     <div className=''>

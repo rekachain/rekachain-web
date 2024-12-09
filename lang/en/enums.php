@@ -23,6 +23,16 @@ return [
         'in_progress' => 'In Progress',
         'completed' => 'Completed',
     ],
+    'App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum' => [
+        'prepare' => 'Prepare',
+        'send' => 'Sender',
+        'receive' => 'Receiver',
+    ],
+    'App\Support\Enums\PanelAttachmentHandlerHandlesEnum' => [
+        'prepare' => 'Prepare',
+        'send' => 'Sender',
+        'receive' => 'Receiver',
+    ],
     'others' => [
         'null_work_status' => 'Not Processed',
         'null_acceptance_status' => 'Not Processed',

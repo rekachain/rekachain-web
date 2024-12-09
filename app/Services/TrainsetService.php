@@ -8,6 +8,7 @@ use App\Helpers\NumberHelper;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
+use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
@@ -273,7 +274,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ]);
 
             $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
-            $generateResult = $this->trainsetAttachmentComponentGenerator()->generate($trainsetAttachment);
+            $generateResult = app(TrainsetAttachmentComponentGenerator::class)->generate($trainsetAttachment);
 
             if ($generateResult['success'] === false) {
                 logger('Failed to generate trainset attachment');

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,9 @@ class TrainsetAttachmentHandler extends Model {
         'handler_name',
         'trainset_attachment_id',
         'handles',
+    ];
+    protected $casts = [
+        'handles' => TrainsetAttachmentHandlerHandlesEnum::class,
     ];
     protected $filterable = [
         'searchs' => ['handler_name', 'handles'],
