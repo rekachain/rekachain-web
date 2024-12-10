@@ -30,11 +30,8 @@ export default function Panels({
     });
 
     const syncPanels = withLoading(async () => {
-        // const data = await projectService.getPanels(project.id, filters);
-        const data = await projectService.getCarriagePanels(project.id, trainset.id, filters);
+        const data = await projectService.getTrainsetPanels(project.id, trainset.id, filters);
         setPanelResponse(data);
-        console.log('==========aa');
-        console.log(panelResponse);
 
         setPanelResponseMeta({
             current_page: data.current_page,
@@ -114,15 +111,9 @@ export default function Panels({
                                 ))}
                             </TableBody>
                         </Table>
-                    </div> */}
-            {/* <div className="hidden md:block">
-                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
-                    </div> */}
-            {/* </>
-            )} */}
+                </>
+            )}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );

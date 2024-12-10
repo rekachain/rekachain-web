@@ -92,6 +92,24 @@ export const projectService = {
         );
         return response.data;
     },
+    getTrainsetComponents: async (
+        projectId: number,
+        trainsetId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectComponentResource>> => {
+        const response = await window.axios.get(
+            route(`${ROUTES.PROJECTS_TRAINSETS}.show`, [projectId, trainsetId]),
+            {
+                params: {
+                    intent: IntentEnum.WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY,
+                    ...filters,
+                    ...config,
+                },
+            },
+        );
+        return response.data;
+    },
     getPanels: async (
         projectId: number,
         filters: ServiceFilterOptions = {},
@@ -117,6 +135,24 @@ export const projectService = {
             {
                 params: {
                     intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY,
+                    ...filters,
+                    ...config,
+                },
+            },
+        );
+        return response.data;
+    },
+    getTrainsetPanels: async (
+        projectId: number,
+        trainsetId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectPanelResource>> => {
+        const response = await window.axios.get(
+            route(`${ROUTES.PROJECTS_TRAINSETS}.show`, [projectId, trainsetId]),
+            {
+                params: {
+                    intent: IntentEnum.WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY,
                     ...filters,
                     ...config,
                 },

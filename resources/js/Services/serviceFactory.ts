@@ -50,11 +50,14 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        create: async (data: Partial<any> | FormData): Promise<T> => {
+        create: async (
+            data: Partial<any> | FormData,
+            filters: ServiceFilterOptions = {},
+        ): Promise<T> => {
             const url = route(`${baseRoute}.store`);
 
             try {
-                const res = await window.axios.post(url, data);
+                const res = await window.axios.post(url, data, { params: filters });
 
                 if (DEBUG_MODE)
                     console.log(

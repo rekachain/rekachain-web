@@ -115,6 +115,15 @@
             }
         },
         {
+            "label": "Watch Permission",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "npm run transform-permission-enum",
+            "presentation": {
+                "group": "RUNAPP"
+            }
+        },
+        {
             "label": "App",
             "problemMatcher": [],
             "type": "shell",
