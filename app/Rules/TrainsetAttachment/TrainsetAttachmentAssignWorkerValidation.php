@@ -25,6 +25,8 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                     'component' => $trainsetAttachmentComponent->carriage_panel_component->component->name,
                 ]
             ));
+
+            return;
         }
 
         $carriagePanelComponentProgressStepIds = $trainsetAttachmentComponent->carriage_panel_component->progress->progress_steps->pluck('step_id')->toArray(); // TODO: check order of steps inside progress
@@ -44,15 +46,6 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
         $lastWorkerIndex = array_search($lastWorkerTrainset?->progress_step->step_id ?? 0, $carriagePanelComponentProgressStepIds);
         $currentWorkerIndex = array_search($user->step->id, $carriagePanelComponentProgressStepIds);
 
-        if ($trainsetAttachmentComponent->total_current_work_progress === 0 && $currentWorkerIndex !== 0) {
-            $fail(__(
-                'validation.custom.trainset_attachment.assign_worker.current_progress_failed_exception',
-                [
-                    'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
-                ]
-            ));
-        }
-
         $lastWorkerTrainsetCompleted = $lastWorkerTrainset ? $lastWorkerTrainset->work_status->value === DetailWorkerTrainsetWorkStatusEnum::COMPLETED->value : false;
         // check if last work is completed but is not fulfilled yet
         if (array_key_last($carriagePanelComponentProgressStepIds) === $lastWorkerIndex && $lastWorkerTrainsetCompleted) {
@@ -68,6 +61,8 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                     'step' => $user->step->name,
                 ]
             ));
+
+            return;
         } elseif ($currentWorkerIndex - $lastWorkerIndex > 1 || ($currentWorkerIndex > $lastWorkerIndex && !$lastWorkerTrainsetCompleted)) {
             $fail(__(
                 'validation.custom.trainset_attachment.assign_worker.step_ahead_exception',
@@ -75,6 +70,19 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                     'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
                 ]
             ));
+
+            return;
+        }
+
+        if ($trainsetAttachmentComponent->total_current_work_progress === 0 && $currentWorkerIndex !== 0) {
+            $fail(__(
+                'validation.custom.trainset_attachment.assign_worker.current_progress_failed_exception',
+                [
+                    'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
+                ]
+            ));
+
+            return;
         }
     }
 }
