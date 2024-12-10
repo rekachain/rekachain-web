@@ -19,9 +19,7 @@ function transformEnum() {
         return acc;
     }, {});
 
-    const fixedIntents = JSON.stringify(intents, null, 4).replace(/"([^"]+)":/g, '$1:').replace(/"/g, "'");
-
-    const tsEnumContent = `const intents = ${fixedIntents};
+    const tsEnumContent = `const intents = ${JSON.stringify(intents, null, 4)};
 
 export const IntentEnum = intents;
 
