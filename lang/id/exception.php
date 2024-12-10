@@ -9,6 +9,9 @@ return [
         'permission' => [
             'permission_exception' => 'Pengguna harus memiliki izin ":permission"',
         ],
+        'permission_and_role' => [
+            'permission_and_role_exception' => 'Pengguna harus memiliki izin ":permission" :conjunction peran ":role"',
+        ],
     ],
     'services' => [
         'trainset_service' => [

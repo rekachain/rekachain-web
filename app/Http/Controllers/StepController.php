@@ -9,6 +9,7 @@ use App\Http\Resources\StepResource;
 use App\Models\Step;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\StepServiceInterface;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class StepController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        PermissionHelper::check(PermissionEnum::STEP_READ);
+        PermissionHelper::check(PermissionEnum::STEP_READ, [RoleEnum::PPC_PENGENDALIAN, RoleEnum::PPC_PERENCANAAN]);
         $intent = $request->get('intent');
         $perPage = request()->get('perPage', 5);
 

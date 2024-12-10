@@ -45,6 +45,7 @@ return [
             'all_workstations' => 'Progress for All Workstation',
             'workstations_sub' => 'Progress from All Workstation',
             'project_not_found' => 'Project Not Found',
+            'trainset_not_found' => 'Trainset Not Found',
             'find_project' => 'Find Project...',
             'find_trainset' => 'Find Trainset...',
             'select_trainset' => 'Choose Trainset...',
