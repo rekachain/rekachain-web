@@ -17,10 +17,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportPanelCustomMaterial';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import {
     PanelAttachmentHandlerResource,
     PanelAttachmentResource,
@@ -38,7 +40,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     const [panelAttachmentAncestor, setPanelAttachmentAncestor] =
         useState<PanelAttachmentResource>();
     const [panelAttachment, setPanelAttachment] = useState<PanelAttachmentResource>();
-    const [panelAttachmentHandlers, setPanelAttachmentHandlers] = useState<PanelAttachmentHandlerResource[]>();
+    const [panelAttachmentHandlers, setPanelAttachmentHandlers] =
+        useState<PanelAttachmentHandlerResource[]>();
 
     const [selectedCarriage, setSelectedCarriage] = useState<number | null>(
         Object.values(trainset?.carriage_trainsets)[0]?.carriage.id,
@@ -139,20 +142,24 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             </h1>
             {panelAttachmentAncestor && (
                 <div className='my-4 flex gap-4'>
-                    <Link
-                        target='_blank'
-                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
-                        className={buttonVariants()}
-                    >
-                        {t(
-                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
-                        )}
-                    </Link>
-                    <ImportPanelCustomMaterial
-                        panelAttachment={
-                            panelAttachment ? panelAttachment : panelAttachmentAncestor
-                        }
-                    />
+                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_DOWNLOAD) && (
+                        <Link
+                            target='_blank'
+                            href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                            className={buttonVariants()}
+                        >
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
+                            )}
+                        </Link>
+                    )}
+                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_IMPORT) && (
+                        <ImportPanelCustomMaterial
+                            panelAttachment={
+                                panelAttachment ? panelAttachment : panelAttachmentAncestor
+                            }
+                        />
+                    )}
                 </div>
             )}
             <div className='mt-4 flex gap-4'>
@@ -286,17 +293,21 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             </div>
                             {panelAttachmentHandlers && panelAttachmentHandlers.length > 0 && (
                                 <>
-                                    <p className='font-bold text-lg'>
+                                    <p className='text-lg font-bold'>
                                         {t(
                                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.handlers',
                                         )}
                                     </p>
                                     {panelAttachmentHandlers.map((handler) => (
-                                    <div className='flex items-center gap-1' key={handler.id}>
-                                        <span className='font-bold'>{handler.localized_handles}</span>
-                                        <span className=''>:</span>
-                                        <span className=''>{handler.user?.nip} - {handler.user?.name}</span>
-                                    </div>
+                                        <div key={handler.id} className='flex items-center gap-1'>
+                                            <span className='font-bold'>
+                                                {handler.localized_handles}
+                                            </span>
+                                            <span className=''>:</span>
+                                            <span className=''>
+                                                {handler.user?.nip} - {handler.user?.name}
+                                            </span>
+                                        </div>
                                     ))}
                                 </>
                             )}

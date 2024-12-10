@@ -16,11 +16,16 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import ImportTrainsetCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportTrainsetCustomMaterial';
 import { trainsetAttachmentService } from '@/Services/trainsetAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { TrainsetAttachmentHandlerResource, TrainsetAttachmentResource } from '@/Support/Interfaces/Resources';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import {
+    TrainsetAttachmentHandlerResource,
+    TrainsetAttachmentResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -77,19 +82,23 @@ const PreviewTrainsetAttachment = ({
         <div key={attachment.id} className='text-black dark:text-white'>
             <h1 className='text-xl font-bold'>{title}</h1>
             <div className='my-4 flex gap-4'>
-                <Link
-                    target='_blank'
-                    href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
-                    className={buttonVariants()}
-                >
-                    {t(
-                        'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
-                    )}
-                </Link>
-                <ImportTrainsetCustomMaterial
-                    trainsetAttachment={trainsetAttachment}
-                    loadAttachment={loadAttachment}
-                />
+                {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_DOWNLOAD) && (
+                    <Link
+                        target='_blank'
+                        href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
+                        className={buttonVariants()}
+                    >
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
+                        )}
+                    </Link>
+                )}
+                {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_IMPORT) && (
+                    <ImportTrainsetCustomMaterial
+                        trainsetAttachment={trainsetAttachment}
+                        loadAttachment={loadAttachment}
+                    />
+                )}
                 {(trainsetAttachment.is_parent || trainsetAttachment.is_child) && (
                     <div className='flex flex-col gap-2'>
                         <Select
@@ -148,17 +157,19 @@ const PreviewTrainsetAttachment = ({
                     </div>
                     {trainsetAttachmentHandlers && trainsetAttachmentHandlers.length > 0 && (
                         <>
-                            <p className='font-bold text-lg'>
+                            <p className='text-lg font-bold'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.handlers',
                                 )}
                             </p>
                             {trainsetAttachmentHandlers.map((handler) => (
-                            <div className='flex items-center gap-1' key={handler.id}>
-                                <span className='font-bold'>{handler.localized_handles}</span>
-                                <span className=''>:</span>
-                                <span className=''>{handler.user?.nip} - {handler.user?.name}</span>
-                            </div>
+                                <div key={handler.id} className='flex items-center gap-1'>
+                                    <span className='font-bold'>{handler.localized_handles}</span>
+                                    <span className=''>:</span>
+                                    <span className=''>
+                                        {handler.user?.nip} - {handler.user?.name}
+                                    </span>
+                                </div>
                             ))}
                         </>
                     )}

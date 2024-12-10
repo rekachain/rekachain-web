@@ -32,6 +32,53 @@ enum PermissionEnum: string {
     case PROJECT_READ = 'project-read';
     case PROJECT_UPDATE = 'project-update';
     case PROJECT_DELETE = 'project-delete';
+    case PROJECT_IMPORT = 'project-import';
+    case PROJECT_COMPONENT_READ = 'project-component-read'; // open component view by project
+    case PROJECT_COMPONENT_IMPORT = 'project-component-import'; // import component from component view by project
+    case PROJECT_PANEL_READ = 'project-panel-read'; // open panel view by project
+    case PROJECT_PANEL_IMPORT = 'project-panel-import'; // import panel from panel view by project
+    case PROJECT_CARRIAGE_READ = 'project-carriage-read'; // open carriage view by project
+    case PROJECT_CARRIAGE_COMPONENT_READ = 'project-carriage-component-read'; // open component view by carriage by project
+    case PROJECT_CARRIAGE_COMPONENT_IMPORT = 'project-carriage-component-import'; // import component by carriage by project
+    case PROJECT_CARRIAGE_PANEL_READ = 'project-carriage-panel-read'; // open panel view by carriage by project
+    case PROJECT_CARRIAGE_PANEL_IMPORT = 'project-carriage-panel-import'; // import  panel by carriage by project
+    case PROJECT_TRAINSET_CREATE = 'project-trainset-create'; // add trainset in trainset by project view
+    case PROJECT_TRAINSET_READ = 'project-trainset-read'; // open trainset view by project
+    case PROJECT_TRAINSET_UPDATE = 'project-trainset-update'; // toggle edit name for trainset by project view
+    case PROJECT_TRAINSET_DELETE = 'project-trainset-delete'; // delete trainset by project
+    case PROJECT_TRAINSET_COMPONENT_READ = 'project-trainset-component-read'; // open component by trainset by project view
+    case PROJECT_TRAINSET_COMPONENT_IMPORT = 'project-trainset-component-import'; // import component by trainset by project
+    case PROJECT_TRAINSET_PANEL_READ = 'project-trainset-panel-read'; // open panel by trainset by project view
+    case PROJECT_TRAINSET_PANEL_IMPORT = 'project-trainset-panel-import'; // import panel by trainset by project
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_CREATE = 'project-trainset-carriage-trainset-create'; // add carriage-trainset
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ = 'project-trainset-carriage-trainset-read'; // open carriage-trainset by trainset by project view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_UPDATE = 'project-trainset-carriage-trainset-update'; // toggle edit carriage qty
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE = 'project-trainset-carriage-trainset-delete'; // delete carriage-trainset by trainset by project
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_SERIAL_EXPORT = 'project-trainset-carriage-trainset-serial-export'; // export serial carriage-trainset
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CREATE = 'project-trainset-carriage-trainset-preset-create'; // create carriage-trainset preset
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CHANGE = 'project-trainset-carriage-trainset-preset-change'; // change carriage-trainset preset
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_READ = 'project-trainset-carriage-trainset-attachment-read'; // open carriage-trainset attachment detail
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_GENERATE = 'project-trainset-carriage-trainset-attachment-generate'; // generate carriage-trainset attachment
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_PROGRESS_READ = 'project-trainset-carriage-trainset-attachment-progress-read'; // open carriage-trainset attachment progress
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_CREATE = 'project-trainset-carriage-trainset-panel-create'; // add panel to panel by carriage-trainet by trainset by project
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ = 'project-trainset-carriage-trainset-panel-read'; // open panel by carriage-trainset by trainset by project view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_UPDATE = 'project-trainset-carriage-trainset-panel-update'; // toggle edit panel qty
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE = 'project-trainset-carriage-trainset-panel-delete'; // delete panel in panel by carriage-trainset by trainset by project
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_PROGRESS_UPDATE = 'project-trainset-carriage-trainset-panel-progress-update'; // update progress for panel
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_CREATE = 'project-trainset-carriage-trainset-panel-material-create'; // add raw material for material by panel view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_READ = 'project-trainset-carriage-trainset-panel-material-read'; // open materials for panel view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_UPDATE = 'project-trainset-carriage-trainset-panel-material-update'; // toggle edit material qty
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_DELETE = 'project-trainset-carriage-trainset-panel-material-delete'; // delete material in material by panel view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_CREATE = 'project-trainset-carriage-trainset-panel-component-create'; // add component to panel
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_READ = 'project-trainset-carriage-trainset-panel-component-read'; // open components for panel view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_UPDATE = 'project-trainset-carriage-trainset-panel-component-update'; // toggle edit component qty
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_DELETE = 'project-trainset-carriage-trainset-panel-component-delete'; // delete component in component by panel view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_PROGRESS_UPDATE = 'project-trainset-carriage-trainset-panel-component-progress-update'; // update progress for component
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_CREATE = 'project-trainset-carriage-trainset-panel-component-material-create'; // add raw material for material by component view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_READ = 'project-trainset-carriage-trainset-panel-component-material-read'; // open materials for component view
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_UPDATE = 'project-trainset-carriage-trainset-panel-component-material-update'; // toggle edit material qty
+    case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_DELETE = 'project-trainset-carriage-trainset-panel-component-material-delete'; // delete material in material by component view
+    // case PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_PROGRESS_UPDATE = 'project-trainset-carriage-trainset-panel-component-material-progress-update';
 
     case PERMISSION_CREATE = 'permission-create';
     case PERMISSION_READ = 'permission-read';
@@ -43,6 +90,7 @@ enum PermissionEnum: string {
     case CARRIAGE_PRESET_UPDATE = 'carriage-preset-update';
     case CARRIAGE_PRESET_DELETE = 'carriage-preset-delete';
 
+    // PRESET RELATED - NOT CHANGING
     case PRESET_TRAINSET_CREATE = 'preset-trainset-create';
     case PRESET_TRAINSET_READ = 'preset-trainset-read';
     case PRESET_TRAINSET_UPDATE = 'preset-trainset-update';
@@ -52,16 +100,23 @@ enum PermissionEnum: string {
     case PANEL_READ = 'panel-read';
     case PANEL_UPDATE = 'panel-update';
     case PANEL_DELETE = 'panel-delete';
+    case PANEL_IMPORT = 'panel-import';
 
+    // KPM MECHANIC / ELECTRIC RELATED
     case TRAINSET_ATTACHMENT_CREATE = 'trainset-attachment-create';
     case TRAINSET_ATTACHMENT_READ = 'trainset-attachment-read';
     case TRAINSET_ATTACHMENT_UPDATE = 'trainset-attachment-update';
     case TRAINSET_ATTACHMENT_DELETE = 'trainset-attachment-delete';
+    case TRAINSET_ATTACHMENT_DOWNLOAD = 'trainset-attachment-download'; // download attachment in preview attachment
+    case TRAINSET_ATTACHMENT_IMPORT = 'trainset-attachment-import'; // import material in preview attachment
 
+    // KPM ASSEMBLY RELATED
     case PANEL_ATTACHMENT_CREATE = 'panel-attachment-create';
     case PANEL_ATTACHMENT_READ = 'panel-attachment-read';
     case PANEL_ATTACHMENT_UPDATE = 'panel-attachment-update';
     case PANEL_ATTACHMENT_DELETE = 'panel-attachment-delete';
+    case PANEL_ATTACHMENT_DOWNLOAD = 'panel-attachment-download'; // download attachment in preview attachment
+    case PANEL_ATTACHMENT_IMPORT = 'panel-attachment-import'; // import material in preview attachment
 
     case CARRIAGE_PANEL_CREATE = 'carriage-panel-create';
     case CARRIAGE_PANEL_READ = 'carriage-panel-read';
@@ -72,11 +127,13 @@ enum PermissionEnum: string {
     case RAW_MATERIAL_READ = 'raw-material-read';
     case RAW_MATERIAL_UPDATE = 'raw-material-update';
     case RAW_MATERIAL_DELETE = 'raw-material-delete';
+    case RAW_MATERIAL_IMPORT = 'raw-material-import';
 
     case CARRIAGE_CREATE = 'carriage-create';
     case CARRIAGE_READ = 'carriage-read';
     case CARRIAGE_UPDATE = 'carriage-update';
     case CARRIAGE_DELETE = 'carriage-delete';
+    case CARRIAGE_IMPORT = 'carriage-import';
 
     case WORK_DAY_CREATE = 'work-day-create';
     case WORK_DAY_READ = 'work-day-read';
@@ -92,11 +149,13 @@ enum PermissionEnum: string {
     case STEP_READ = 'step-read';
     case STEP_UPDATE = 'step-update';
     case STEP_DELETE = 'step-delete';
+    case STEP_IMPORT = 'step-import';
 
     case COMPONENT_CREATE = 'component-create';
     case COMPONENT_READ = 'component-read';
     case COMPONENT_UPDATE = 'component-update';
     case COMPONENT_DELETE = 'component-delete';
+    case COMPONENT_IMPORT = 'component-import';
 
     case FEEDBACK_CREATE = 'feedback-create';
     case FEEDBACK_READ = 'feedback-read';

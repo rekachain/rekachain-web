@@ -1,5 +1,11 @@
 import { PanelAttachment } from '@/Support/Interfaces/Models';
-import { CarriagePanelResource, PanelAttachmentHandlerResource, RawMaterialResource, Resource, WorkstationResource } from '@/Support/Interfaces/Resources';
+import {
+    CarriagePanelResource,
+    PanelAttachmentHandlerResource,
+    RawMaterialResource,
+    Resource,
+    WorkstationResource,
+} from '@/Support/Interfaces/Resources';
 
 export interface PanelAttachmentResource extends Resource, PanelAttachment {
     formatted_created_at: string;

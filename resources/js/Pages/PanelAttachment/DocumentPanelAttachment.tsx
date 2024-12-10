@@ -42,9 +42,7 @@ const DocumentAttachment = ({
                 setselectedPanelRawMaterials(response as unknown as RawMaterialResource[]);
 
                 if (!pageTitle)
-                    setPageTitle(
-                        t('pages.panel_attachment.document_panel_attachment.title'),
-                    );
+                    setPageTitle(t('pages.panel_attachment.document_panel_attachment.title'));
 
                 setTimeout(() => {
                     temporaryChangeThemeToLightMode();
@@ -105,7 +103,11 @@ const DocumentAttachment = ({
                                     'pages.panel_attachment.document_panel_attachment.headers.source_workstation',
                                 )}
                             </p>
-                            <p>{panelAttachment.source_workstation?.name} {panelAttachment.source_workstation?.location}, {panelAttachment.source_workstation?.workshop.name}</p>
+                            <p>
+                                {panelAttachment.source_workstation?.name}{' '}
+                                {panelAttachment.source_workstation?.location},{' '}
+                                {panelAttachment.source_workstation?.workshop.name}
+                            </p>
                         </div>
                         <div className=''>
                             <p className='font-bold'>
@@ -113,7 +115,11 @@ const DocumentAttachment = ({
                                     'pages.panel_attachment.document_panel_attachment.headers.destination_workstation',
                                 )}
                             </p>
-                            <p>{panelAttachment.destination_workstation?.name} {panelAttachment.destination_workstation?.location}, {panelAttachment.destination_workstation?.workshop.name}</p>
+                            <p>
+                                {panelAttachment.destination_workstation?.name}{' '}
+                                {panelAttachment.destination_workstation?.location},{' '}
+                                {panelAttachment.destination_workstation?.workshop.name}
+                            </p>
                         </div>
                         <div className=''>
                             <p className='font-bold'>
@@ -121,7 +127,11 @@ const DocumentAttachment = ({
                                     'pages.panel_attachment.document_panel_attachment.headers.description',
                                 )}
                             </p>
-                            <p>{panelAttachment.carriage_panel?.panel.name} {panelAttachment?.serial_numbers?.length}{panelAttachment.carriage_panel?.carriage_trainset?.carriage.type}</p>
+                            <p>
+                                {panelAttachment.carriage_panel?.panel.name}{' '}
+                                {panelAttachment?.serial_numbers?.length}
+                                {panelAttachment.carriage_panel?.carriage_trainset?.carriage.type}
+                            </p>
                         </div>
                     </div>
                     <div className='mt-5 flex flex-col gap-3'>
@@ -151,7 +161,7 @@ const DocumentAttachment = ({
                     {t('pages.panel_attachment.document_panel_attachment.headers.material_list')}
                 </h1>
                 <Table>
-                <TableHeader>
+                    <TableHeader>
                         <TableRow className='divide-x divide-black border-black text-base'>
                             <TableHead className='text-black'>
                                 {t(
@@ -192,10 +202,11 @@ const DocumentAttachment = ({
                     </TableHeader>
                     <TableBody>
                         {selectedPanelRawMaterials.map((rawMaterial, index) => (
-                            <TableRow key={rawMaterial.id} className='divide-x divide-black border-black'>
-                                <TableCell>
-                                    {index+1}
-                                </TableCell>
+                            <TableRow
+                                key={rawMaterial.id}
+                                className='divide-x divide-black border-black'
+                            >
+                                <TableCell>{index + 1}</TableCell>
                                 <TableCell className='font-medium'>
                                     {rawMaterial.material_code}
                                 </TableCell>
@@ -208,60 +219,90 @@ const DocumentAttachment = ({
                         ))}
                     </TableBody>
                 </Table>
-                <div className='grid grid-cols-3 gap-4 mt-10' style={{pageBreakInside: 'avoid'}}>
+                <div style={{ pageBreakInside: 'avoid' }} className='mt-10 grid grid-cols-3 gap-4'>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-10' />
+                            <div className='h-10 border-b border-gray-500' />
                         </div>
                         <div className='w-full text-center'>
-                            <p className='font-semibold'>{t('pages.panel_attachment.document_panel_attachment.props.signatures.prepare')}:</p>
+                            <p className='font-semibold'>
+                                {t(
+                                    'pages.panel_attachment.document_panel_attachment.props.signatures.prepare',
+                                )}
+                                :
+                            </p>
                         </div>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-32' />
+                            <div className='h-32 border-b border-gray-500' />
                         </div>
                         {panelAttachment.panel_attachment_handlers
-                            ?.filter((handler) => handler.handles === PanelAttachmentHandlerHandlesEnum.PREPARE)
+                            ?.filter(
+                                (handler) =>
+                                    handler.handles === PanelAttachmentHandlerHandlesEnum.PREPARE,
+                            )
                             .map((panelAttachmentHandler) => (
                                 <div key={panelAttachmentHandler.id} className='w-full text-center'>
-                                    <p className='font-semibold'>{panelAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>
+                                        {panelAttachmentHandler.user?.name}
+                                    </p>
                                     <p className='font-semibold'>{`(${t('pages.panel_attachment.document_panel_attachment.props.signatures.identifier')}: ${panelAttachmentHandler.user?.nip})`}</p>
                                 </div>
                             ))}
                     </div>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-10' />
+                            <div className='h-10 border-b border-gray-500' />
                         </div>
                         <div className='w-full text-center'>
-                            <p className='font-semibold'>{t('pages.panel_attachment.document_panel_attachment.props.signatures.send')}:</p>
+                            <p className='font-semibold'>
+                                {t(
+                                    'pages.panel_attachment.document_panel_attachment.props.signatures.send',
+                                )}
+                                :
+                            </p>
                         </div>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-32' />
+                            <div className='h-32 border-b border-gray-500' />
                         </div>
                         {panelAttachment.panel_attachment_handlers
-                            ?.filter((handler) => handler.handles === PanelAttachmentHandlerHandlesEnum.SEND)
+                            ?.filter(
+                                (handler) =>
+                                    handler.handles === PanelAttachmentHandlerHandlesEnum.SEND,
+                            )
                             .map((panelAttachmentHandler) => (
                                 <div key={panelAttachmentHandler.id} className='w-full text-center'>
-                                    <p className='font-semibold'>{panelAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>
+                                        {panelAttachmentHandler.user?.name}
+                                    </p>
                                     <p className='font-semibold'>{`(${t('pages.panel_attachment.document_panel_attachment.props.signatures.identifier')}: ${panelAttachmentHandler.user?.nip})`}</p>
                                 </div>
                             ))}
                     </div>
                     <div className='flex flex-col items-center gap-1'>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-10' />
+                            <div className='h-10 border-b border-gray-500' />
                         </div>
                         <div className='w-full text-center'>
-                            <p className='font-semibold'>{t('pages.panel_attachment.document_panel_attachment.props.signatures.receive')}:</p>
+                            <p className='font-semibold'>
+                                {t(
+                                    'pages.panel_attachment.document_panel_attachment.props.signatures.receive',
+                                )}
+                                :
+                            </p>
                         </div>
                         <div className='w-full'>
-                            <div className='border-b border-gray-500 h-32' />
+                            <div className='h-32 border-b border-gray-500' />
                         </div>
                         {panelAttachment.panel_attachment_handlers
-                            ?.filter((handler) => handler.handles === PanelAttachmentHandlerHandlesEnum.RECEIVE)
+                            ?.filter(
+                                (handler) =>
+                                    handler.handles === PanelAttachmentHandlerHandlesEnum.RECEIVE,
+                            )
                             .map((panelAttachmentHandler) => (
                                 <div key={panelAttachmentHandler.id} className='w-full text-center'>
-                                    <p className='font-semibold'>{panelAttachmentHandler.user?.name}</p>
+                                    <p className='font-semibold'>
+                                        {panelAttachmentHandler.user?.name}
+                                    </p>
                                     <p className='font-semibold'>{`(${t('pages.panel_attachment.document_panel_attachment.props.signatures.identifier')}: ${panelAttachmentHandler.user?.nip})`}</p>
                                 </div>
                             ))}

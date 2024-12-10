@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->date('initial_date')->nullable();
             $table->date('estimated_start_date')->nullable();
             $table->date('estimated_end_date')->nullable();
+            $table->integer('calculated_estimate_time')->nullable();
             $table->foreignId('buyer_id')->nullable()->constrained('users');
             $table->timestamps();
         });

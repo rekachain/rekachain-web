@@ -115,6 +115,7 @@ class TrainsetAttachmentResource extends JsonResource {
                 ];
             case IntentEnum::WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS->value:
                 $trainsetAttachment = $this->ancestor();
+
                 return $trainsetAttachment->components()->distinct()->get()->toArray();
             case IntentEnum::API_TRAINSET_ATTACHMENT_GET_ATTACHMENT_REQUIRED_COMPONENTS->value:
                 $trainsetAttachment = $this->ancestor();

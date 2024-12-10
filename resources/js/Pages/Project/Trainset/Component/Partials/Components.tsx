@@ -8,7 +8,9 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { projectService } from '@/Services/projectService';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateMeta, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     ProjectComponentResource,
@@ -106,12 +108,16 @@ export default function Components({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    trainset={trainset}
-                                    project={project}
-                                    hasMaterials={data.has_materials}
-                                    component={data.component}
-                                />
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT,
+                                ) && (
+                                    <Import
+                                        trainset={trainset}
+                                        project={project}
+                                        hasMaterials={data.has_materials}
+                                        component={data.component}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

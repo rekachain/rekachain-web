@@ -18,7 +18,6 @@ class Component extends Model {
         'progress_id',
         'description',
     ];
-
     protected $filterable = [
         'searchs' => [
             'name',
@@ -38,7 +37,7 @@ class Component extends Model {
     }
 
     public function trainset_attachments(): HasOneDeep {
-        return $this->hasOneDeep(TrainsetAttachment::class,[
+        return $this->hasOneDeep(TrainsetAttachment::class, [
             CarriagePanelComponent::class,
             TrainsetAttachmentComponent::class,
         ], [

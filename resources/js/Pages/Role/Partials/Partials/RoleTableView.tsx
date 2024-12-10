@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RoleResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -53,20 +55,23 @@ export default function RoleTableView({
                             <TableCell>{role.users_count}</TableCell>
                             <TableCell>{role.permissions_count}</TableCell>
                             <TableCell>
-                                <Link
-                                    href={route(`${ROUTES.ROLES}.edit`, role.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                                {role.users_count <= 0 && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleRoleDeletion(role.id)}
+                                {checkPermission(PERMISSION_ENUM.ROLE_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.ROLES}.edit`, role.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.ROLE_DELETE) &&
+                                    role.users_count <= 0 && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleRoleDeletion(role.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

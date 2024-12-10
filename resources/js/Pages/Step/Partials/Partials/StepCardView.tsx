@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { StepResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -53,15 +55,19 @@ export default function StepCardView({
                         {/* <h5 className="font-bold text-sm ">Workshop : {step.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {step.location}</h5> */}
                         <div className='flex w-full items-center justify-end'>
-                            <Link
-                                href={route(`${ROUTES.STEPS}.edit`, step.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                            <Button variant='link' onClick={() => handleStepDeletion(step.id)}>
-                                {t('action.delete')}
-                            </Button>
+                            {checkPermission(PERMISSION_ENUM.STEP_UPDATE) && (
+                                <Link
+                                    href={route(`${ROUTES.STEPS}.edit`, step.id)}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t('action.edit')}
+                                </Link>
+                            )}
+                            {checkPermission(PERMISSION_ENUM.STEP_DELETE) && (
+                                <Button variant='link' onClick={() => handleStepDeletion(step.id)}>
+                                    {t('action.delete')}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

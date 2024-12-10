@@ -1,4 +1,6 @@
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     CarriageResource,
@@ -50,12 +52,14 @@ export default function ({
                         </h5>
                         {/* <h5 className=" text-sm ">Lokasi : {panel.location}</h5> */}
                         <div className='flex w-full items-center justify-end'>
-                            <Import
-                                project={project}
-                                panel={data.panel}
-                                hasMaterials={data.has_materials}
-                                carriage={carriage}
-                            />
+                            {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_PANEL_IMPORT) && (
+                                <Import
+                                    project={project}
+                                    panel={data.panel}
+                                    hasMaterials={data.has_materials}
+                                    carriage={carriage}
+                                />
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

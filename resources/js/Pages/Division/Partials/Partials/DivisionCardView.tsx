@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -31,20 +33,23 @@ export default function DivisionCardView({
                             </div>
                         </div>
                         <div className='flex w-full items-center justify-end'>
-                            <Link
-                                href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                            {division.can_be_deleted && (
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleDivisionDeletion(division.id)}
+                            {checkPermission(PERMISSION_ENUM.DIVISION_UPDATE) && (
+                                <Link
+                                    href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('action.delete')}
-                                </Button>
+                                    {t('action.edit')}
+                                </Link>
                             )}
+                            {checkPermission(PERMISSION_ENUM.DIVISION_DELETE) &&
+                                division.can_be_deleted && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleDivisionDeletion(division.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                         </div>
                     </div>
                 </AnimateIn>

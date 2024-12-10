@@ -1,4 +1,4 @@
-import { TrainsetAttachmentHandlerHandlesEnum } from "@/Support/Enums/trainsetAttachmentHandlerHandlesEnum";
+import { TrainsetAttachmentHandlerHandlesEnum } from '@/Support/Enums/trainsetAttachmentHandlerHandlesEnum';
 
 export interface TrainsetAttachmentHandler {
     id: number;
