@@ -23,7 +23,7 @@ export default function ({
     const canEditOrDelete = (user: UserResource) => {
         return (
             user.id !== auth.user.id &&
-            (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin')
+            (auth.user.role === 'Super Admin' || user.role?.name !== 'Super Admin')
         );
     };
 
