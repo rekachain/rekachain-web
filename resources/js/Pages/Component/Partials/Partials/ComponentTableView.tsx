@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ComponentResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -50,20 +52,23 @@ export default function ComponentTableView({
                             <TableCell>{component.description}</TableCell>
                             <TableCell>{component.progress?.name}</TableCell>
                             <TableCell>
-                                <Link
-                                    href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                                {component.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleComponentDeletion(component.id)}
+                                {checkPermission(PERMISSION_ENUM.COMPONENT_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.COMPONENT_DELETE) &&
+                                    component.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleComponentDeletion(component.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

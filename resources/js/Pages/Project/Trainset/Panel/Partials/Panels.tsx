@@ -11,18 +11,9 @@ import { useEffect, useState } from 'react';
 // import PanelTableView from './Partials/PanelTableView';
 // import PanelCardView from './Partials/PanelCardView';
 import GenericPagination from '@/Components/GenericPagination';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/Components/UI/table';
-import Import from './Import';
-import TableView from './Partials/TableView';
-import CardView from './Partials/CardView';
 import { useLoading } from '@/Contexts/LoadingContext';
+import CardView from './Partials/CardView';
+import TableView from './Partials/TableView';
 
 export default function Panels({
     project,
@@ -69,18 +60,69 @@ export default function Panels({
 
     return (
         <div className='space-y-4'>
-             {panelResponse && (
-                
+            {panelResponse && (
                 // <TableView project={project} trainset={trainset}></TableView>
-             <>
-             <div className="hidden md:block">
-                 <TableView project={project} trainset={trainset} panelResponse={panelResponse}></TableView>
-             </div>
-             <div className="block md:hidden">
-                 <CardView project={project} trainset={trainset} panelResponse={panelResponse}></CardView>
-             </div>
- </>
-            )} 
+                <>
+                    <div className='hidden md:block'>
+                        <TableView
+                            project={project}
+                            trainset={trainset}
+                            panelResponse={panelResponse}
+                        ></TableView>
+                    </div>
+                    <div className='block md:hidden'>
+                        <CardView
+                            project={project}
+                            trainset={trainset}
+                            panelResponse={panelResponse}
+                        ></CardView>
+                    </div>
+                </>
+            )}
+            {/* Check Permission */}
+            {/* {panelResponse && (
+                <>
+                    <div>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Nama Panel</TableHead>
+                                    <TableHead>Deskripsi</TableHead>
+                                    <TableHead>Total Quantity</TableHead>
+                                    <TableHead></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {panelResponse?.data.map((data) => (
+                                    <TableRow key={data.panel.id}>
+                                        <TableCell>{data.panel.name}</TableCell>
+                                        <TableCell>{data.panel.description}</TableCell>
+                                        <TableCell>{data.total_qty}</TableCell>
+                                        <TableCell>
+                                            {checkPermission(
+                                                PERMISSION_ENUM.PROJECT_TRAINSET_PANEL_IMPORT,
+                                            ) && (
+                                                <Import
+                                                    trainset={trainset}
+                                                    project={project}
+                                                    panel={data.panel}
+                                                    hasMaterials={data.has_materials}
+                                                />
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div> */}
+            {/* <div className="hidden md:block">
+                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
+                    </div>
+                    <div className="block md:hidden">
+                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
+                    </div> */}
+            {/* </>
+            )} */}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );

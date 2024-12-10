@@ -6,6 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     CarriageResource,
@@ -55,12 +57,14 @@ export default function PanelTableView({
                             <TableCell>{data.panel.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    project={project}
-                                    panel={data.panel}
-                                    hasMaterials={data.has_materials}
-                                    carriage={carriage}
-                                />
+                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_PANEL_IMPORT) && (
+                                    <Import
+                                        project={project}
+                                        panel={data.panel}
+                                        hasMaterials={data.has_materials}
+                                        carriage={carriage}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

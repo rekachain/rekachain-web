@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkstationResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -55,20 +57,23 @@ export default function WorkstationCardView({
                             )}
                         </h5>
                         <div className='flex w-full items-center justify-end'>
-                            <Link
-                                href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                            {workstation.can_be_deleted && (
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleWorkstationDeletion(workstation.id)}
+                            {checkPermission(PERMISSION_ENUM.WORKSTATION_UPDATE) && (
+                                <Link
+                                    href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('action.delete')}
-                                </Button>
+                                    {t('action.edit')}
+                                </Link>
                             )}
+                            {checkPermission(PERMISSION_ENUM.WORKSTATION_DELETE) &&
+                                workstation.can_be_deleted && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleWorkstationDeletion(workstation.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                         </div>
                     </div>
                 </AnimateIn>

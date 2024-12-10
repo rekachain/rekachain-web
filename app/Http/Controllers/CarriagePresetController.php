@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\CarriagePreset\StoreCarriagePresetRequest;
 use App\Http\Requests\CarriagePreset\UpdateCarriagePresetRequest;
 use App\Http\Resources\CarriagePresetResource;
@@ -18,7 +19,7 @@ class CarriagePresetController extends Controller {
      */
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_READ);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 'All');
@@ -38,7 +39,7 @@ class CarriagePresetController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_CREATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_CREATE);
 
         return inertia('CarriagePreset/Create');
     }
@@ -48,7 +49,7 @@ class CarriagePresetController extends Controller {
      */
     public function store(StoreCarriagePresetRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_CREATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_CREATE);
 
         return new CarriagePresetResource($this->carriagePresetService->create($request->validated()));
     }
@@ -58,7 +59,7 @@ class CarriagePresetController extends Controller {
      */
     public function show(Request $request, CarriagePreset $carriagePreset) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_READ);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_READ);
 
         if ($this->ajax()) {
             return new CarriagePresetResource($carriagePreset);
@@ -72,7 +73,7 @@ class CarriagePresetController extends Controller {
      */
     public function edit(Request $request, CarriagePreset $carriagePreset) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_UPDATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_UPDATE);
 
         return inertia('CarriagePreset/Edit', compact('carriagePreset'));
     }
@@ -82,7 +83,7 @@ class CarriagePresetController extends Controller {
      */
     public function update(UpdateCarriagePresetRequest $request, CarriagePreset $carriagePreset) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_UPDATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_UPDATE);
 
         return new CarriagePresetResource($this->carriagePresetService->update($carriagePreset, $request->validated()));
     }
@@ -91,7 +92,7 @@ class CarriagePresetController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, CarriagePreset $carriagePreset) {
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_DELETE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_DELETE);
 
         $this->carriagePresetService->delete($carriagePreset);
 

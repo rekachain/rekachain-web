@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -36,20 +38,23 @@ export default function DivisionTableView({
                     <TableRow key={division.id}>
                         <TableCell>{division.name}</TableCell>
                         <TableCell>
-                            <Link
-                                href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                            {division.can_be_deleted && (
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleDivisionDeletion(division.id)}
+                            {checkPermission(PERMISSION_ENUM.DIVISION_UPDATE) && (
+                                <Link
+                                    href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('action.delete')}
-                                </Button>
+                                    {t('action.edit')}
+                                </Link>
                             )}
+                            {checkPermission(PERMISSION_ENUM.DIVISION_DELETE) &&
+                                division.can_be_deleted && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleDivisionDeletion(division.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                         </TableCell>
                     </TableRow>
                 ))}

@@ -1,7 +1,9 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -69,17 +71,20 @@ export default function CarPanelCardView({
                                     ))}
                                 </div>
                                 <div className='flex w-full items-center justify-end'>
-                                    {trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                        <>
-                                        
-                                        <Button
-                                            variant='link'
-                                            onClick={() => handlePanelDeletion(carriage_panel.id)}
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
-                                        </>
-                                    )}
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE,
+                                    ) &&
+                                        trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                            <Button
+                                                variant='link'
+                                                onClick={() =>
+                                                    handlePanelDeletion(carriage_panel.id)
+                                                }
+                                            >
+                                                {t('action.delete')}
+                                            </Button>
+                                        )}
+
                                     <Link
                                         href={route(
                                             `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,

@@ -1,6 +1,8 @@
 import { buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkDayResource } from '@/Support/Interfaces/Resources';
@@ -58,12 +60,14 @@ export default function WDCardView({
                             </h5>
 
                             <div className='flex w-full items-center justify-end'>
-                                <Link
-                                    href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
+                                {checkPermission(PERMISSION_ENUM.WORK_DAY_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.edit')}
+                                    </Link>
+                                )}
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                             Delete
                         </Button> */}

@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { CarriageResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -46,20 +48,23 @@ export default function CarriageTableView({
                             <TableCell>{carriage.type}</TableCell>
                             <TableCell>{carriage.description}</TableCell>
                             <TableCell>
-                                <Link
-                                    href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                                {carriage.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleCarriageDeletion(carriage.id)}
+                                {checkPermission(PERMISSION_ENUM.CARRIAGE_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.CARRIAGE_UPDATE) &&
+                                    carriage.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleCarriageDeletion(carriage.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

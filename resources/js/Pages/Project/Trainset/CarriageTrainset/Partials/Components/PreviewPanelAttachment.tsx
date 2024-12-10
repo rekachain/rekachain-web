@@ -17,11 +17,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportPanelCustomMaterial';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import {
+    PanelAttachmentHandlerResource,
     PanelAttachmentResource,
     RawMaterialResource,
     TrainsetResource,
@@ -37,6 +40,8 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
     const [panelAttachmentAncestor, setPanelAttachmentAncestor] =
         useState<PanelAttachmentResource>();
     const [panelAttachment, setPanelAttachment] = useState<PanelAttachmentResource>();
+    const [panelAttachmentHandlers, setPanelAttachmentHandlers] =
+        useState<PanelAttachmentHandlerResource[]>();
 
     const [selectedCarriage, setSelectedCarriage] = useState<number | null>(
         Object.values(trainset?.carriage_trainsets)[0]?.carriage.id,
@@ -105,6 +110,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             const attachment = await panelAttachmentService.get(selectedAttachment);
             setPanelAttachment(attachment);
             if (attachment) {
+                loadAttachmentHandlers(attachment);
                 panelAttachmentService
                     .get(attachment.id, {
                         intent: IntentEnum.WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS_WITH_QTY,
@@ -114,6 +120,13 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                     });
             }
         }
+    });
+
+    const loadAttachmentHandlers = withLoading(async (attachment: PanelAttachmentResource) => {
+        const handlers = (await panelAttachmentService.get(attachment.id, {
+            intent: IntentEnum.WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS,
+        })) as unknown as PanelAttachmentHandlerResource[];
+        setPanelAttachmentHandlers(handlers);
     });
 
     useEffect(() => {
@@ -128,24 +141,28 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                 )}
             </h1>
             {panelAttachmentAncestor && (
-                <div className='my-4 flex gap-4 flex-col md:flex-row'>
-                    <Link
-                        target='_blank'
-                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
-                        className={buttonVariants()}
-                    >
-                        {t(
-                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
-                        )}
-                    </Link>
-                    <ImportPanelCustomMaterial
-                        panelAttachment={
-                            panelAttachment ? panelAttachment : panelAttachmentAncestor
-                        }
-                    />
+                <div className='my-4 flex flex-col gap-4 md:flex-row'>
+                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_DOWNLOAD) && (
+                        <Link
+                            target='_blank'
+                            href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                            className={buttonVariants()}
+                        >
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
+                            )}
+                        </Link>
+                    )}
+                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_IMPORT) && (
+                        <ImportPanelCustomMaterial
+                            panelAttachment={
+                                panelAttachment ? panelAttachment : panelAttachmentAncestor
+                            }
+                        />
+                    )}
                 </div>
             )}
-            <div className='mt-4 flex gap-4 flex-col md:flex items-center md:items-start '>
+            <div className='mt-4 flex flex-col items-center gap-4 md:flex md:items-start'>
                 {trainset?.carriage_trainsets?.length > 0 && (
                     <div className='flex flex-col gap-2'>
                         <InputLabel htmlFor='selected-carriage-id'>
@@ -266,7 +283,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 </p>
                                 <p>-</p>
                             </div>
-                            <div className=''>
+                            <div className='mb-2'>
                                 <p className='font-bold'>
                                     {t(
                                         'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.serial_number',
@@ -274,6 +291,26 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                                 </p>
                                 <p>{showSerialPanels()}</p>
                             </div>
+                            {panelAttachmentHandlers && panelAttachmentHandlers.length > 0 && (
+                                <>
+                                    <p className='text-lg font-bold'>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.handlers',
+                                        )}
+                                    </p>
+                                    {panelAttachmentHandlers.map((handler) => (
+                                        <div key={handler.id} className='flex items-center gap-1'>
+                                            <span className='font-bold'>
+                                                {handler.localized_handles}
+                                            </span>
+                                            <span className=''>:</span>
+                                            <span className=''>
+                                                {handler.user?.nip} - {handler.user?.name}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                         </div>
                         <div className='mt-5 flex flex-col gap-3'>
                             <div className=''>
@@ -315,88 +352,86 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.headers.material_list',
                         )}
                     </h1>
-                    <div className="hidden md:block">
-
-                    <Table wrapperClassName='block max-h-96'>
-                        <TableCaption>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
-                            )}
-                        </TableCaption>
-                        <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
-                            <TableRow>
-                                <TableHead className=''>
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.material_code',
-                                    )}
-                                </TableHead>
-                                <TableHead>
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.description',
-                                    )}
-                                </TableHead>
-                                <TableHead>
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.specs',
-                                    )}
-                                </TableHead>
-                                <TableHead>
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.unit',
-                                    )}
-                                </TableHead>
-                                <TableHead>
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.total_qty',
-                                    )}
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {selectedPanelRawMaterials?.map((rawMaterial) => (
-                                <TableRow key={rawMaterial.id}>
-                                    <TableCell className='font-medium'>
-                                        {rawMaterial.material_code}
-                                    </TableCell>
-                                    <TableCell>{rawMaterial.description}</TableCell>
-                                    <TableCell>{rawMaterial.specs}</TableCell>
-                                    <TableCell>{rawMaterial.unit}</TableCell>
-                                    <TableCell>{rawMaterial.total_qty}</TableCell>
+                    <div className='hidden md:block'>
+                        <Table wrapperClassName='block max-h-96'>
+                            <TableCaption>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
+                                )}
+                            </TableCaption>
+                            <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
+                                <TableRow>
+                                    <TableHead className=''>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.material_code',
+                                        )}
+                                    </TableHead>
+                                    <TableHead>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.description',
+                                        )}
+                                    </TableHead>
+                                    <TableHead>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.specs',
+                                        )}
+                                    </TableHead>
+                                    <TableHead>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.unit',
+                                        )}
+                                    </TableHead>
+                                    <TableHead>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.dialogs.raw_material_table.headers.total_qty',
+                                        )}
+                                    </TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {selectedPanelRawMaterials?.map((rawMaterial) => (
+                                    <TableRow key={rawMaterial.id}>
+                                        <TableCell className='font-medium'>
+                                            {rawMaterial.material_code}
+                                        </TableCell>
+                                        <TableCell>{rawMaterial.description}</TableCell>
+                                        <TableCell>{rawMaterial.specs}</TableCell>
+                                        <TableCell>{rawMaterial.unit}</TableCell>
+                                        <TableCell>{rawMaterial.total_qty}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
                     </div>
-            <div className="grid grid-cols-1 gap-2 md:hidden">
-                    {selectedPanelRawMaterials.map((rawMaterial) => (
-                    <div
-                        // key={permission.id}
-                        className='flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'
-                    >
-                        <div className='items-scenter flex w-full justify-between'>
-                            <h4 className='text-base font-bold'>{rawMaterial.material_code}</h4>
-                            <h5 className='items-center text-base font-bold'>
-                                Unit : {rawMaterial.unit}
-                            </h5>
-                        </div>
-                        {/* <h4 className="font-bold text-xl">{permission.group}</h4> */}
-                        {/* <h4 className="font-bold text-xl">50349259</h4> */}
-                        {/* <h4 className="text-md">{permission.name}</h4> */}
-                        <h4 className='w-[80%] text-sm'>{rawMaterial.description}</h4>
-                        <div className='flex w-full items-center justify-end'>
-                            <Link
-                                href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
-                                className={buttonVariants({ variant: 'link' })}
+                    <div className='grid grid-cols-1 gap-2 md:hidden'>
+                        {selectedPanelRawMaterials.map((rawMaterial) => (
+                            <div
+                                // key={permission.id}
+                                className='flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'
                             >
-                                {t('action.edit')}
-                            </Link>
-                        </div>
+                                <div className='items-scenter flex w-full justify-between'>
+                                    <h4 className='text-base font-bold'>
+                                        {rawMaterial.material_code}
+                                    </h4>
+                                    <h5 className='items-center text-base font-bold'>
+                                        Unit : {rawMaterial.unit}
+                                    </h5>
+                                </div>
+                                {/* <h4 className="font-bold text-xl">{permission.group}</h4> */}
+                                {/* <h4 className="font-bold text-xl">50349259</h4> */}
+                                {/* <h4 className="text-md">{permission.name}</h4> */}
+                                <h4 className='w-[80%] text-sm'>{rawMaterial.description}</h4>
+                                <div className='flex w-full items-center justify-end'>
+                                    <Link
+                                        href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.edit')}
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-
-
-                    ))}
-
-            </div>
                 </>
             ) : (
                 <h1 className='mt-3 font-bold text-red-500'>

@@ -1,8 +1,10 @@
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { trainsetService } from '@/Services/trainsetService';
 import { STYLING } from '@/Support/Constants/styling';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
@@ -67,13 +69,15 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
             ) : (
                 <div className='flex items-center gap-4'>
                     <div>{trainset.name}</div>
-                    <Button
-                        variant='ghost'
-                        onClick={toggleEditMode}
-                        className='h-fit whitespace-normal rounded-full p-2'
-                    >
-                        <PencilLine size={STYLING.ICON.SIZE.SMALL} />
-                    </Button>
+                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_UPDATE) && (
+                        <Button
+                            variant='ghost'
+                            onClick={toggleEditMode}
+                            className='h-fit whitespace-normal rounded-full p-2'
+                        >
+                            <PencilLine size={STYLING.ICON.SIZE.SMALL} />
+                        </Button>
+                    )}
                 </div>
             )}
         </>

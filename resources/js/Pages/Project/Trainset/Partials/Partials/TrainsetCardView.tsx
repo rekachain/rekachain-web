@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -63,24 +65,30 @@ export default function TrainsetCardView({
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
                             <div className='flex w-full items-center justify-center'>
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleTrainsetDeletion(trainset.id)}
-                                    disabled={loading || !trainset.can_be_deleted}
-                                >
-                                    {t('action.delete')}
-                                </Button>
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
-                                        project.id,
-                                        trainset.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
-                                    )}
-                                </Link>
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_DELETE) && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleTrainsetDeletion(trainset.id)}
+                                        disabled={loading || !trainset.can_be_deleted}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`,
+                                            [project.id, trainset.id],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
+                                        )}
+                                    </Link>
+                                )}
                                 <Link
                                     href={route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [
                                         project.id,

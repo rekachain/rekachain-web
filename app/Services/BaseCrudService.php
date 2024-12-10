@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService as AdobrovolskyBaseCrudService;
-use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
@@ -18,6 +17,7 @@ use App\Support\Interfaces\Services\PanelMaterialServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\ProgressServiceInterface;
+use App\Support\Interfaces\Services\ProgressStepServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
@@ -122,13 +122,6 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
     }
 
     /**
-     * Get TrainsetAttachmentComponentGenerator service instance
-     */
-    protected function trainsetAttachmentComponentGenerator(): TrainsetAttachmentComponentGenerator {
-        return $this->getService(TrainsetAttachmentComponentGenerator::class);
-    }
-
-    /**
      * Get CarriagePanel service instance
      */
     protected function carriagePanelService(): CarriagePanelServiceInterface {
@@ -182,6 +175,10 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
      */
     protected function progressService(): ProgressServiceInterface {
         return $this->getService(ProgressServiceInterface::class);
+    }
+
+    protected function progressStepService(): ProgressStepServiceInterface {
+        return $this->getService(ProgressStepServiceInterface::class);
     }
 
     /**

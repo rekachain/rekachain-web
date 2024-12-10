@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 use App\Http\Resources\DivisionResource;
@@ -26,8 +27,7 @@ class RoleController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-
-        $request->checkPermissionEnum(PermissionEnum::ROLE_READ);
+        PermissionHelper::check(PermissionEnum::ROLE_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
@@ -43,6 +43,8 @@ class RoleController extends Controller {
      */
     public function create() {
 
+        PermissionHelper::check(PermissionEnum::ROLE_CREATE);
+
         // sementara
         $permissions = PermissionResource::collectionGrouped($this->permissionService->getAll());
 
@@ -55,6 +57,8 @@ class RoleController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreRoleRequest $request) {
+        PermissionHelper::check(PermissionEnum::ROLE_CREATE);
+
         if ($this->ajax()) {
             return $this->roleService->create($request->validated());
         }
@@ -64,6 +68,8 @@ class RoleController extends Controller {
      * Display the specified resource.
      */
     public function show(Role $role) {
+        PermissionHelper::check(PermissionEnum::ROLE_READ);
+
         if ($this->ajax()) {
             return new RoleResource($role);
         }
@@ -73,6 +79,8 @@ class RoleController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Role $role) {
+        PermissionHelper::check(PermissionEnum::ROLE_UPDATE);
+
         // sementara
         $permissions = PermissionResource::collectionGrouped($this->permissionService->getAll());
 
@@ -89,6 +97,8 @@ class RoleController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateRoleRequest $request, Role $role) {
+        PermissionHelper::check(PermissionEnum::ROLE_UPDATE);
+
         if ($this->ajax()) {
             return $this->roleService->update($role, $request->validated());
         }
@@ -98,6 +108,8 @@ class RoleController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Role $role) {
+        PermissionHelper::check(PermissionEnum::ROLE_DELETE);
+
         if ($this->ajax()) {
             return $this->roleService->delete($role);
         }

@@ -1,6 +1,8 @@
 import { Button } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import PanelMaterialQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Partials/Partials/Components/PanelMaterialQty';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelResource,
@@ -56,16 +58,19 @@ export default function PanelMaterialCardView({
                                     )}
                                 </h5>
                                 <div className='flex w-full items-center justify-end'>
-                                    {trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                        <Button
-                                            variant='link'
-                                            onClick={() =>
-                                                handlePanelMaterialDeletion(panelMaterial.id)
-                                            }
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
-                                    )}
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_DELETE,
+                                    ) &&
+                                        trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                            <Button
+                                                variant='link'
+                                                onClick={() =>
+                                                    handlePanelMaterialDeletion(panelMaterial.id)
+                                                }
+                                            >
+                                                {t('action.delete')}
+                                            </Button>
+                                        )}
                                 </div>
                             </div>
                         </AnimateIn>
