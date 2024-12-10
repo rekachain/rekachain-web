@@ -46,6 +46,7 @@ return [
             'workstations_sub' => 'Progress dari Semua Workstation',
             'find_project' => 'Cari Proyek...',
             'project_not_found' => 'Proyek Tidak Ditemukan',
+            'trainset_not_found' => 'Trainset Tidak Ditemukan',
             'find_trainset' => 'Cari Trainset...',
             'select_trainset' => 'Pilih Trainset...',
             'panel_trainset' => 'Panel Trainset',

@@ -3,6 +3,7 @@
 namespace App\Support\Enums;
 
 enum PermissionEnum: string {
+    case DASHBOARD_TRAINSET_READ = 'dashboard-trainset-read';
     case DASHBOARD_COMMISSION_READ = 'dashboard-commission-read';
 
     case DIVISION_CREATE = 'division-create';
