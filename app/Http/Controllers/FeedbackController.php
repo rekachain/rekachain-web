@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Feedback\StoreFeedbackRequest;
 use App\Http\Requests\Feedback\UpdateFeedbackRequest;
 use App\Http\Resources\FeedbackResource;
 use App\Models\Feedback;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\FeedbackServiceInterface;
 use Illuminate\Http\Request;
 
@@ -29,6 +29,7 @@ class FeedbackController extends Controller {
 
     public function create() {
         PermissionHelper::check(PermissionEnum::FEEDBACK_CREATE);
+
         return inertia('Feedback/Create');
     }
 

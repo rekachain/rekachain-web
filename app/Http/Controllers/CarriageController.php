@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Carriage\StoreCarriageRequest;
 use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
-use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -29,6 +29,7 @@ class CarriageController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE->value:
                     PermissionHelper::check(PermissionEnum::CARRIAGE_IMPORT);
+
                     return $this->carriageService->getImportDataTemplate();
             }
 
@@ -48,6 +49,7 @@ class CarriageController extends Controller {
      */
     public function create() {
         PermissionHelper::check(PermissionEnum::CARRIAGE_CREATE);
+
         return inertia('Carriage/Create');
     }
 
@@ -88,6 +90,7 @@ class CarriageController extends Controller {
      */
     public function edit(Carriage $carriage) {
         PermissionHelper::check(PermissionEnum::CARRIAGE_UPDATE);
+
         return inertia('Carriage/Edit', ['carriage' => new CarriageResource($carriage)]);
     }
 

@@ -56,22 +56,22 @@ export default function ({
                         {/* <h5 className="font-bold text-sm ">Workshop : {component.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {component.location}</h5> */}
                         <div className='flex w-full items-center justify-end'>
-                        {checkPermission(PERMISSION_ENUM.COMPONENT_UPDATE) && (
-                            <Link
-                                href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                        )}
-                        {checkPermission(PERMISSION_ENUM.COMPONENT_DELETE) && (
-                            <Button
-                                variant='link'
-                                onClick={() => handleComponentDeletion(component.id)}
-                            >
-                                {t('action.delete')}
-                            </Button>
-                        )}
+                            {checkPermission(PERMISSION_ENUM.COMPONENT_UPDATE) && (
+                                <Link
+                                    href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t('action.edit')}
+                                </Link>
+                            )}
+                            {checkPermission(PERMISSION_ENUM.COMPONENT_DELETE) && (
+                                <Button
+                                    variant='link'
+                                    onClick={() => handleComponentDeletion(component.id)}
+                                >
+                                    {t('action.delete')}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

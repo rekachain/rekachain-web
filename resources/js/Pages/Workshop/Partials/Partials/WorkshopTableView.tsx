@@ -47,21 +47,22 @@ export default function WorkshopTableView({
                                 <TableCell>{workshop.address}</TableCell>
                                 <TableCell>
                                     {checkPermission(PERMISSION_ENUM.WORKSHOP_UPDATE) && (
-                                    <Link
-                                        href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
-                                        className={buttonVariants({ variant: 'link' })}
-                                    >
-                                        {t('action.edit')}
-                                    </Link>
-                                    )}
-                                    {checkPermission(PERMISSION_ENUM.WORKSHOP_DELETE) && workshop.can_be_deleted && (
-                                        <Button
-                                            variant='link'
-                                            onClick={() => handleWorkshopDeletion(workshop.id)}
+                                        <Link
+                                            href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
+                                            className={buttonVariants({ variant: 'link' })}
                                         >
-                                            {t('action.delete')}
-                                        </Button>
+                                            {t('action.edit')}
+                                        </Link>
                                     )}
+                                    {checkPermission(PERMISSION_ENUM.WORKSHOP_DELETE) &&
+                                        workshop.can_be_deleted && (
+                                            <Button
+                                                variant='link'
+                                                onClick={() => handleWorkshopDeletion(workshop.id)}
+                                            >
+                                                {t('action.delete')}
+                                            </Button>
+                                        )}
                                 </TableCell>
                             </TableRow>
                         ))}

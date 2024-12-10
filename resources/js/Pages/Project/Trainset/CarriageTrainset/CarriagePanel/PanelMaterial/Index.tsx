@@ -145,13 +145,16 @@ export default function ({
                         />
                     </Suspense>
 
-                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_CREATE) &&
-                        trainset.status !== TrainsetStatusEnum.PROGRESS && carriagePanel && (
-                        <AddNewPanelRawMaterial
-                            handleSyncCarriagePanel={handleSyncCarriagePanel}
-                            carriagePanel={carriagePanel}
-                        />
-                    )}
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_CREATE,
+                    ) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                        carriagePanel && (
+                            <AddNewPanelRawMaterial
+                                handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                carriagePanel={carriagePanel}
+                            />
+                        )}
                 </div>
             </AuthenticatedLayout>
         </>

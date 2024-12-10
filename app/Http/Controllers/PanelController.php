@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Panel\StorePanelRequest;
 use App\Http\Requests\Panel\UpdatePanelRequest;
 use App\Http\Resources\PanelResource;
 use App\Models\Panel;
-use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -28,6 +28,7 @@ class PanelController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL->value:
                     PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
+
                     return $this->panelService->getImportDataTemplate();
             }
             try {
@@ -46,6 +47,7 @@ class PanelController extends Controller {
      */
     public function create() {
         PermissionHelper::check(PermissionEnum::PANEL_READ);
+
         return inertia('Panel/Create');
     }
 
@@ -79,6 +81,7 @@ class PanelController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE->value:
                     PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
+
                     return $this->panelService->getImportDataRawMaterialAndProgressTemplate($panel);
             }
 
@@ -91,6 +94,7 @@ class PanelController extends Controller {
      */
     public function edit(Panel $panel) {
         PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
+
         return inertia('Panel/Edit', ['panel' => new PanelResource($panel->load('progress'))]);
     }
 

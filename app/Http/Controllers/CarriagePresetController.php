@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\CarriagePreset\StoreCarriagePresetRequest;
 use App\Http\Requests\CarriagePreset\UpdateCarriagePresetRequest;
 use App\Http\Resources\CarriagePresetResource;
 use App\Models\CarriagePreset;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
 use Illuminate\Http\Request;
 

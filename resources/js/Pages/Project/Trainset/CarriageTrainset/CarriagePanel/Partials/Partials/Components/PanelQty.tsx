@@ -70,14 +70,16 @@ export default function ({
             ) : (
                 <div className='flex items-center gap-4'>
                     <div>{carriage_panel.qty}</div>
-                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_UPDATE) && (
-                    <Button
-                        variant='ghost'
-                        onClick={toggleEditMode}
-                        className='h-fit whitespace-normal rounded-full p-2'
-                    >
-                        <PencilLine size={STYLING.ICON.SIZE.SMALL} />
-                    </Button>
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_UPDATE,
+                    ) && (
+                        <Button
+                            variant='ghost'
+                            onClick={toggleEditMode}
+                            className='h-fit whitespace-normal rounded-full p-2'
+                        >
+                            <PencilLine size={STYLING.ICON.SIZE.SMALL} />
+                        </Button>
                     )}
                 </div>
             )}

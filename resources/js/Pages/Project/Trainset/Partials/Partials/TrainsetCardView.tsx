@@ -66,26 +66,28 @@ export default function TrainsetCardView({
 
                             <div className='flex w-full items-center justify-end'>
                                 {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_DELETE) && (
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleTrainsetDeletion(trainset.id)}
-                                    disabled={loading || !trainset.can_be_deleted}
-                                >
-                                    {t('action.delete')}
-                                </Button>
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleTrainsetDeletion(trainset.id)}
+                                        disabled={loading || !trainset.can_be_deleted}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ) && (
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
-                                        project.id,
-                                        trainset.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
-                                    )}
-                                </Link>
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`,
+                                            [project.id, trainset.id],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
+                                        )}
+                                    </Link>
                                 )}
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                             Delete

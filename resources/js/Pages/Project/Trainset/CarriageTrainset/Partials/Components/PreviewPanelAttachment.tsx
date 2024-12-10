@@ -143,22 +143,22 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             {panelAttachmentAncestor && (
                 <div className='my-4 flex gap-4'>
                     {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_DOWNLOAD) && (
-                    <Link
-                        target='_blank'
-                        href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
-                        className={buttonVariants()}
-                    >
-                        {t(
-                            'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
-                        )}
-                    </Link>
+                        <Link
+                            target='_blank'
+                            href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
+                            className={buttonVariants()}
+                        >
+                            {t(
+                                'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
+                            )}
+                        </Link>
                     )}
                     {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_IMPORT) && (
-                    <ImportPanelCustomMaterial
-                        panelAttachment={
-                            panelAttachment ? panelAttachment : panelAttachmentAncestor
-                        }
-                    />
+                        <ImportPanelCustomMaterial
+                            panelAttachment={
+                                panelAttachment ? panelAttachment : panelAttachmentAncestor
+                            }
+                        />
                     )}
                 </div>
             )}

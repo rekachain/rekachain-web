@@ -83,15 +83,15 @@ const PreviewTrainsetAttachment = ({
             <h1 className='text-xl font-bold'>{title}</h1>
             <div className='my-4 flex gap-4'>
                 {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_DOWNLOAD) && (
-                <Link
-                    target='_blank'
-                    href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
-                    className={buttonVariants()}
-                >
-                    {t(
-                        'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
-                    )}
-                </Link>
+                    <Link
+                        target='_blank'
+                        href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
+                        className={buttonVariants()}
+                    >
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
+                        )}
+                    </Link>
                 )}
                 {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_IMPORT) && (
                     <ImportTrainsetCustomMaterial

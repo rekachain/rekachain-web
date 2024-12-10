@@ -54,20 +54,21 @@ export default function StepTableView({
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.STEP_CREATE) && (
                                     <Link
-                                    href={route(`${ROUTES.STEPS}.edit`, step.id)}
-                                    className={buttonVariants({ variant: 'link' })}
+                                        href={route(`${ROUTES.STEPS}.edit`, step.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                    {t('action.edit')}
-                                </Link>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.STEP_DELETE) && step.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleStepDeletion(step.id)}
-                                    >
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                {checkPermission(PERMISSION_ENUM.STEP_DELETE) &&
+                                    step.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleStepDeletion(step.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

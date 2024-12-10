@@ -1,24 +1,23 @@
 <?php
 
-use Carbon\Carbon;
-use Inertia\Inertia;
+use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\CarriagePanelComponentController;
+use App\Http\Controllers\CarriagePanelController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\PanelAttachmentController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\StepController;
+use App\Http\Controllers\TrainsetAttachmentController;
+use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\WorkAspectController;
 use App\Models\CarriagePanel;
+use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
 use App\Services\ProjectService;
 use Illuminate\Support\Facades\Route;
-use App\Models\CarriagePanelComponent;
-use App\Http\Controllers\StepController;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\CarriageController;
-use App\Http\Controllers\ProgressController;
-use App\Http\Controllers\TrainsetController;
-use App\Http\Controllers\ComponentController;
-use App\Http\Controllers\WorkAspectController;
-use App\Http\Controllers\CarriagePanelController;
-use App\Http\Controllers\PanelAttachmentController;
-use App\Http\Controllers\TrainsetAttachmentController;
-use App\Http\Controllers\CarriagePanelComponentController;
+use Inertia\Inertia;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     Route::get('/', function (\App\Support\Interfaces\Services\CarriageTrainsetServiceInterface $carriageTrainsetService, \App\Support\Interfaces\Services\TrainsetServiceInterface $trainsetService) {
@@ -103,6 +102,7 @@ Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, 
 
 Route::get('/test-estimation/{project_id?}', function ($project_id = null) {
     $projectService = app()->make(ProjectService::class);
+
     return $projectService->calculateEstimatedTime($project_id);
 });
 // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('update-initial-date');

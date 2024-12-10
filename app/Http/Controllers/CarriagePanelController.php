@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\CarriagePanel\StoreCarriagePanelRequest;
 use App\Http\Requests\CarriagePanel\UpdateCarriagePanelRequest;
 use App\Http\Resources\CarriagePanelResource;
 use App\Models\CarriagePanel;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
 use Illuminate\Http\Request;
 

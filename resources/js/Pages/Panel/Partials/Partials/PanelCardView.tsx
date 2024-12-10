@@ -51,19 +51,22 @@ export default function PanelCardView({
                         <p>Jumlah Izin :{panel.permissions_count}</p> */}
                         <div className='flex w-full items-center justify-end'>
                             {checkPermission(PERMISSION_ENUM.PANEL_UPDATE) && (
-                            <Link
-                                href={route(`${ROUTES.PANELS}.edit`, panel.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                                // className={buttonVariants({ variant: 'link' })}
-                                // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
-                            >
-                                {t('action.edit')}
-                            </Link>
+                                <Link
+                                    href={route(`${ROUTES.PANELS}.edit`, panel.id)}
+                                    className={buttonVariants({ variant: 'link' })}
+                                    // className={buttonVariants({ variant: 'link' })}
+                                    // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
+                                >
+                                    {t('action.edit')}
+                                </Link>
                             )}
                             {checkPermission(PERMISSION_ENUM.PANEL_DELETE) && (
-                            <Button variant='link' onClick={() => handlePanelDeletion(panel.id)}>
-                                {t('action.delete')}
-                            </Button>
+                                <Button
+                                    variant='link'
+                                    onClick={() => handlePanelDeletion(panel.id)}
+                                >
+                                    {t('action.delete')}
+                                </Button>
                             )}
                         </div>
                     </div>

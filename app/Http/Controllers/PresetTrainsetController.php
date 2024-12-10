@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\PresetTrainset\StorePresetTrainsetRequest;
 use App\Http\Requests\PresetTrainset\UpdatePresetTrainsetRequest;
 use App\Http\Resources\PresetTrainsetResource;
 use App\Models\PresetTrainset;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use Illuminate\Http\Request;
 

@@ -41,28 +41,30 @@ export default function ({
                         </h5>
                         <div className='flex w-full items-center justify-end'>
                             {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_READ) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
-                                    project.id,
-                                    data.carriage.id,
-                                ])}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t(
-                                    'pages.project.partials.partials.project_table.actions.components',
-                                )}
-                            </Link>
+                                <Link
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
+                                        project.id,
+                                        data.carriage.id,
+                                    ])}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t(
+                                        'pages.project.partials.partials.project_table.actions.components',
+                                    )}
+                                </Link>
                             )}
                             {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_PANEL_READ) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
-                                    project.id,
-                                    data.carriage.id,
-                                ])}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('pages.project.partials.partials.project_table.actions.panels')}
-                            </Link>
+                                <Link
+                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
+                                        project.id,
+                                        data.carriage.id,
+                                    ])}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t(
+                                        'pages.project.partials.partials.project_table.actions.panels',
+                                    )}
+                                </Link>
                             )}
                         </div>
                     </div>

@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use Carbon\Carbon;
-use App\Models\Project;
+use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
+use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
+use App\Imports\Project\ProjectsImport;
 use App\Models\Carriage;
+use App\Models\Project;
 use App\Models\Trainset;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\Project\ProjectsImport;
-use Illuminate\Database\Eloquent\Model;
-use App\Support\Interfaces\Services\ProjectServiceInterface;
-use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
-use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
     private function createTrainsets(Project $project, $trainsetNeeded): void {
@@ -100,13 +100,13 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return true;
     }
 
-    public function calculateEstimatedTime($project_id = null){
+    public function calculateEstimatedTime($project_id = null) {
 
         if ($project_id) {
             $project = \App\Models\Project::with(['trainsets.carriage_trainsets' => [
                 'carriage_panels' => [
-                    'progress.steps'
-                ]
+                    'progress.steps',
+                ],
             ]])->findOrFail($project_id);
 
             // Get project start date
@@ -127,7 +127,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
                             $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
                         }
 
-                        switch($carriagePanel->progress->work_aspect_id) {
+                        switch ($carriagePanel->progress->work_aspect_id) {
                             case 1: // Mechanic
                                 $mechanicTime += $stepTime;
                                 break;
@@ -181,14 +181,13 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
 
             }
 
-
             // Save calculated estimate time and end date to the project
             $project->update([
                 'calculated_estimate_time' => $totalCalculatedEstimatedTime,
-                'estimated_end_date' => $endDate->format('Y-m-d')
+                'estimated_end_date' => $endDate->format('Y-m-d'),
             ]);
 
-            foreach($project->trainsets as $trainset) {
+            foreach ($project->trainsets as $trainset) {
                 $this->trainsetService()->calculateEstimatedTime($trainset->id);
             }
 
@@ -225,7 +224,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
 
         $project->update([
             'initial_date' => Carbon::parse($data['initial_date'])->format('Y-m-d'),
-            'estimated_end_date' => $endDate->format('Y-m-d')
+            'estimated_end_date' => $endDate->format('Y-m-d'),
         ]);
 
         $this->calculateEstimatedTime($project->id);

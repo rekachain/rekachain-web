@@ -54,20 +54,21 @@ export default function ComponentTableView({
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.COMPONENT_UPDATE) && (
                                     <Link
-                                    href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
-                                    className={buttonVariants({ variant: 'link' })}
+                                        href={route(`${ROUTES.COMPONENTS}.edit`, component.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                    {t('action.edit')}
-                                </Link>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.COMPONENT_DELETE) && component.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleComponentDeletion(component.id)}
-                                    >
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                {checkPermission(PERMISSION_ENUM.COMPONENT_DELETE) &&
+                                    component.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleComponentDeletion(component.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

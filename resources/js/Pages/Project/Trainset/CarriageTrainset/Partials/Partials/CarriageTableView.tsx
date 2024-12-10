@@ -7,14 +7,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriageQty from '../Components/CarriageQty';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function CarriageTableView({
     trainset,
@@ -80,27 +80,37 @@ export default function CarriageTableView({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE) &&
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE,
+                                ) &&
                                     trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleCarriageDeletion(carriage_trainset.id)}
+                                        <Button
+                                            variant='link'
+                                            onClick={() =>
+                                                handleCarriageDeletion(carriage_trainset.id)
+                                            }
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
+                                            [
+                                                trainset.project_id,
+                                                trainset.id,
+                                                carriage_trainset.id,
+                                            ],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ) && (
-                                <Link
-                                    href={route(
-                                        `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
-                                        [trainset.project_id, trainset.id, carriage_trainset.id],
-                                    )}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.actions.panels',
-                                    )}
-                                </Link>
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.actions.panels',
+                                        )}
+                                    </Link>
                                 )}
                             </TableCell>
                         </TableRow>

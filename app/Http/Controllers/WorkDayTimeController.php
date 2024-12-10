@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\WorkDayTime\StoreWorkDayTimeRequest;
 use App\Http\Requests\WorkDayTime\UpdateWorkDayTimeRequest;
 use App\Http\Resources\WorkDayResource;
@@ -9,7 +10,6 @@ use App\Http\Resources\WorkDayTimeResource;
 use App\Models\WorkDay;
 use App\Models\WorkDayTime;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\WorkDayTimeServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -43,6 +43,7 @@ class WorkDayTimeController extends Controller {
      */
     public function create(WorkDay $workDay) {
         PermissionHelper::check(PermissionEnum::WORK_DAY_TIME_CREATE);
+
         return inertia('WorkDay/WorkDayTime/Create', [
             'workDay' => new WorkDayResource($workDay),
         ]);
@@ -77,6 +78,7 @@ class WorkDayTimeController extends Controller {
      */
     public function edit(WorkDay $workDay, WorkDayTime $workDayTime) {
         PermissionHelper::check(PermissionEnum::WORK_DAY_TIME_UPDATE);
+
         return inertia('WorkDay/WorkDayTime/Edit', [
             'workDay' => new WorkDayResource($workDay),
             'workDayTime' => new WorkDayTimeResource($workDayTime),

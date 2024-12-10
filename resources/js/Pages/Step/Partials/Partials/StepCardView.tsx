@@ -57,16 +57,16 @@ export default function StepCardView({
                         <div className='flex w-full items-center justify-end'>
                             {checkPermission(PERMISSION_ENUM.STEP_UPDATE) && (
                                 <Link
-                                href={route(`${ROUTES.STEPS}.edit`, step.id)}
-                                className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.STEPS}.edit`, step.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                {t('action.edit')}
-                            </Link>
+                                    {t('action.edit')}
+                                </Link>
                             )}
                             {checkPermission(PERMISSION_ENUM.STEP_DELETE) && (
                                 <Button variant='link' onClick={() => handleStepDeletion(step.id)}>
-                                {t('action.delete')}
-                            </Button>
+                                    {t('action.delete')}
+                                </Button>
                             )}
                         </div>
                     </div>

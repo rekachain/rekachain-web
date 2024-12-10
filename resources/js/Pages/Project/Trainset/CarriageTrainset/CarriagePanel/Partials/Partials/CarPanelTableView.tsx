@@ -96,57 +96,66 @@ export default function CarPanelTableView({
                                     {/*    Edit*/}
                                     {/*</Link>*/}
 
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE) &&
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE,
+                                    ) &&
                                         trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                        <Button
-                                            variant='link'
-                                            onClick={() => handlePanelDeletion(carriage_panel.id)}
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
-                                    )}
-
-
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_READ) && (
-                                    <Link
-                                        href={route(
-                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,
-                                            [
-                                                trainset.project_id,
-                                                trainset.id,
-                                                carriageTrainset.id,
-                                                carriage_panel.id,
-                                            ],
+                                            <Button
+                                                variant='link'
+                                                onClick={() =>
+                                                    handlePanelDeletion(carriage_panel.id)
+                                                }
+                                            >
+                                                {t('action.delete')}
+                                            </Button>
                                         )}
-                                        className={buttonVariants({ variant: 'link' })}
-                                    >
-                                        Components
-                                    </Link>
-                                    )}
 
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_READ) && (
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_READ,
+                                    ) && (
                                         <Link
-                                        href={route(
-                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS}.index`,
-                                            [
-                                                trainset.project_id,
-                                                trainset.id,
-                                                carriageTrainset.id,
-                                                carriage_panel.id,
-                                            ],
-                                        )}
-                                        className={buttonVariants({ variant: 'link' })}
-                                    >
-                                        Materials
-                                    </Link>
+                                            href={route(
+                                                `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,
+                                                [
+                                                    trainset.project_id,
+                                                    trainset.id,
+                                                    carriageTrainset.id,
+                                                    carriage_panel.id,
+                                                ],
+                                            )}
+                                            className={buttonVariants({ variant: 'link' })}
+                                        >
+                                            Components
+                                        </Link>
                                     )}
 
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_PROGRESS_UPDATE) && (
-                                    <PanelProgress
-                                        progress={carriage_panel.progress}
-                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
-                                        carriagePanel={carriage_panel}
-                                    />
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_READ,
+                                    ) && (
+                                        <Link
+                                            href={route(
+                                                `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS}.index`,
+                                                [
+                                                    trainset.project_id,
+                                                    trainset.id,
+                                                    carriageTrainset.id,
+                                                    carriage_panel.id,
+                                                ],
+                                            )}
+                                            className={buttonVariants({ variant: 'link' })}
+                                        >
+                                            Materials
+                                        </Link>
+                                    )}
+
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_PROGRESS_UPDATE,
+                                    ) && (
+                                        <PanelProgress
+                                            progress={carriage_panel.progress}
+                                            handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                            carriagePanel={carriage_panel}
+                                        />
                                     )}
                                 </TableCell>
                             </TableRow>

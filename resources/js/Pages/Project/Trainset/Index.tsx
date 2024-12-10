@@ -82,55 +82,57 @@ export default function ({ project: initialProject }: { project: ProjectResource
                             </p>
                         </div>
                         {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CREATE) && (
-                        <div className='rounded bg-background-2 p-5'>
-                            <form
-                                onSubmit={handleAddTrainset}
-                                noValidate
-                                className='group flex flex-col gap-2'
-                            >
-                                <Label htmlFor='add-trainset'>
-                                    {t('pages.project.trainset.index.buttons.add_trainset')}
-                                </Label>
-                                <div className='flex gap-2'>
-                                    <div className=''>
-                                        <Input
-                                            value={data.trainsetNeeded}
-                                            type='number'
-                                            required
-                                            placeholder={t(
-                                                'pages.project.trainset.index.fields.trainset_needed_placeholder',
+                            <div className='rounded bg-background-2 p-5'>
+                                <form
+                                    onSubmit={handleAddTrainset}
+                                    noValidate
+                                    className='group flex flex-col gap-2'
+                                >
+                                    <Label htmlFor='add-trainset'>
+                                        {t('pages.project.trainset.index.buttons.add_trainset')}
+                                    </Label>
+                                    <div className='flex gap-2'>
+                                        <div className=''>
+                                            <Input
+                                                value={data.trainsetNeeded}
+                                                type='number'
+                                                required
+                                                placeholder={t(
+                                                    'pages.project.trainset.index.fields.trainset_needed_placeholder',
+                                                )}
+                                                onChange={(e) =>
+                                                    setData('trainsetNeeded', +e.target.value)
+                                                }
+                                                min={1}
+                                                // pattern="^[2-9]\d*$"
+                                                id='add-trainset'
+                                                className='peer w-fit invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500'
+                                            />
+                                            <span className='mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block'>
+                                                {t(
+                                                    'pages.project.trainset.index.fields.trainset_needed_error',
+                                                )}
+                                            </span>
+                                        </div>
+                                        <Button
+                                            type='submit'
+                                            disabled={loading}
+                                            className='group-invalid:pointer-events-none group-invalid:opacity-30'
+                                        >
+                                            {loading ? (
+                                                <>
+                                                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                                                    {t('action.loading')}
+                                                </>
+                                            ) : (
+                                                t(
+                                                    'pages.project.trainset.index.buttons.add_trainset',
+                                                )
                                             )}
-                                            onChange={(e) =>
-                                                setData('trainsetNeeded', +e.target.value)
-                                            }
-                                            min={1}
-                                            // pattern="^[2-9]\d*$"
-                                            id='add-trainset'
-                                            className='peer w-fit invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500'
-                                        />
-                                        <span className='mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block'>
-                                            {t(
-                                                'pages.project.trainset.index.fields.trainset_needed_error',
-                                            )}
-                                        </span>
+                                        </Button>
                                     </div>
-                                    <Button
-                                        type='submit'
-                                        disabled={loading}
-                                        className='group-invalid:pointer-events-none group-invalid:opacity-30'
-                                    >
-                                        {loading ? (
-                                            <>
-                                                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                                                {t('action.loading')}
-                                            </>
-                                        ) : (
-                                            t('pages.project.trainset.index.buttons.add_trainset')
-                                        )}
-                                    </Button>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
                         )}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

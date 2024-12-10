@@ -53,31 +53,33 @@ export default function CarriageTableView({
                             <TableCell>{data.carriage.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_READ) && (
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`, [
-                                        project.id,
-                                        data.carriage.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.partials.partials.project_table.actions.components',
-                                    )}
-                                </Link>
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_CARRIAGES_COMPONENTS}.index`,
+                                            [project.id, data.carriage.id],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.partials.partials.project_table.actions.components',
+                                        )}
+                                    </Link>
                                 )}
                                 {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_PANEL_READ) && (
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
-                                        project.id,
-                                        data.carriage.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.partials.partials.project_table.actions.panels',
-                                    )}
-                                </Link>
+                                    <Link
+                                        href={route(`${ROUTES.PROJECTS_CARRIAGES_PANELS}.index`, [
+                                            project.id,
+                                            data.carriage.id,
+                                        ])}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.partials.partials.project_table.actions.panels',
+                                        )}
+                                    </Link>
                                 )}
                             </TableCell>
                         </TableRow>

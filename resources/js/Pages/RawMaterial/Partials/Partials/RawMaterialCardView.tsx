@@ -42,20 +42,21 @@ export default function RawMaterialCardView({
                         <div className='flex w-full items-center justify-end'>
                             {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_UPDATE) && (
                                 <Link
-                                href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
-                                className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                {t('action.edit')}
-                            </Link>
+                                    {t('action.edit')}
+                                </Link>
                             )}
-                            {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_DELETE) && rawMaterial.can_be_deleted && (
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleRawMaterialDeletion(rawMaterial.id)}
-                                >
-                                    {t('action.delete')}
-                                </Button>
-                            )}
+                            {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_DELETE) &&
+                                rawMaterial.can_be_deleted && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleRawMaterialDeletion(rawMaterial.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                         </div>
                     </div>
                 </AnimateIn>

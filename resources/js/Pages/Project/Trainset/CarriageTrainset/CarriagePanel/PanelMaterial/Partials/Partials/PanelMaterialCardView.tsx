@@ -58,17 +58,19 @@ export default function PanelMaterialCardView({
                                     )}
                                 </h5>
                                 <div className='flex w-full items-center justify-end'>
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_DELETE) &&
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_DELETE,
+                                    ) &&
                                         trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                        <Button
-                                            variant='link'
-                                            onClick={() =>
-                                                handlePanelMaterialDeletion(panelMaterial.id)
-                                            }
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
-                                    )}
+                                            <Button
+                                                variant='link'
+                                                onClick={() =>
+                                                    handlePanelMaterialDeletion(panelMaterial.id)
+                                                }
+                                            >
+                                                {t('action.delete')}
+                                            </Button>
+                                        )}
                                 </div>
                             </div>
                         </AnimateIn>

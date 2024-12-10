@@ -154,15 +154,18 @@ export default function ({
                         />
                     </Suspense>
 
-                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_CREATE) &&
-                        trainset.status !== TrainsetStatusEnum.PROGRESS && componentResource && (
-                        <AddNewComponent
-                            setComponentResource={setComponentResource}
-                            handleSyncCarriagePanel={handleSyncCarriagePanel}
-                            componentResource={componentResource}
-                            carriagePanel={carriagePanel}
-                        />
-                    )}
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_CREATE,
+                    ) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                        componentResource && (
+                            <AddNewComponent
+                                setComponentResource={setComponentResource}
+                                handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                componentResource={componentResource}
+                                carriagePanel={carriagePanel}
+                            />
+                        )}
                 </div>
             </AuthenticatedLayout>
         </>

@@ -6,6 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     CarriageResource,
@@ -14,8 +16,6 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function ComponentTableView({
     project,
@@ -57,7 +57,9 @@ export default function ComponentTableView({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_IMPORT) && (
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_IMPORT,
+                                ) && (
                                     <Import
                                         project={project}
                                         hasMaterials={data.has_materials}

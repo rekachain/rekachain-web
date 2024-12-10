@@ -8,7 +8,9 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { projectService } from '@/Services/projectService';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateMeta, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     ProjectComponentResource,
@@ -19,8 +21,6 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import Import from './Import';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 // import Import from '../Import';
 
 export default function Components({
@@ -108,7 +108,9 @@ export default function Components({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT) && (
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT,
+                                ) && (
                                     <Import
                                         trainset={trainset}
                                         project={project}

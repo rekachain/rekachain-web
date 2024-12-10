@@ -68,15 +68,19 @@ export default function CarPanelCardView({
                                     ))}
                                 </div>
                                 <div className='flex w-full items-center justify-end'>
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE) &&
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE,
+                                    ) &&
                                         trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                        <Button
-                                            variant='link'
-                                            onClick={() => handlePanelDeletion(carriage_panel.id)}
-                                        >
-                                            {t('action.delete')}
-                                        </Button>
-                                    )}
+                                            <Button
+                                                variant='link'
+                                                onClick={() =>
+                                                    handlePanelDeletion(carriage_panel.id)
+                                                }
+                                            >
+                                                {t('action.delete')}
+                                            </Button>
+                                        )}
                                 </div>
                             </div>
                         </AnimateIn>
