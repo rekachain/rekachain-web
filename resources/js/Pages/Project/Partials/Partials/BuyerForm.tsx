@@ -77,7 +77,9 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
         data.user_email && formData.append('email', data.user_email);
         data.user_phone_number && formData.append('phone_number', data.user_phone_number);
         data.user_password && formData.append('password', data.user_password);
-        const res = await userService.create(formData, { intent: IntentEnum.WEB_USER_CREATE_BUYER });
+        const res = await userService.create(formData, {
+            intent: IntentEnum.WEB_USER_CREATE_BUYER,
+        });
         void refreshUser(res);
         void useSuccessToast(t('pages.project.partials.partials.buyer_form.messages.created'));
     }, true);
