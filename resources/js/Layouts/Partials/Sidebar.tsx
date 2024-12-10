@@ -182,8 +182,8 @@ export default function Sidebar() {
                             </SidebarLinkCollapsible>
                         )}
                     </SidebarMenu>
-                    <SidebarMenu 
-                        title={t('components.sidebar.menus.manufacturing')} 
+                    <SidebarMenu
+                        title={t('components.sidebar.menus.manufacturing')}
                         bordered={checkPermission([
                             PERMISSION_ENUM.DASHBOARD_READ,
                             PERMISSION_ENUM.WORK_DAY_READ,
@@ -192,7 +192,7 @@ export default function Sidebar() {
                             PERMISSION_ENUM.WORKSTATION_READ,
                             PERMISSION_ENUM.USER_READ,
                             PERMISSION_ENUM.PERMISSION_READ,
-                            PERMISSION_ENUM.ROLE_READ
+                            PERMISSION_ENUM.ROLE_READ,
                         ])}
                     >
                         {checkPermission(PERMISSION_ENUM.STEP_READ) && (
