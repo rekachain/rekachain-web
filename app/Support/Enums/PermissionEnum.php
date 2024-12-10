@@ -3,6 +3,7 @@
 namespace App\Support\Enums;
 
 enum PermissionEnum: string {
+    case DASHBOARD_READ = 'dashboard-read';
     case DASHBOARD_TRAINSET_READ = 'dashboard-trainset-read';
     case DASHBOARD_COMMISSION_READ = 'dashboard-commission-read';
 
@@ -105,6 +106,11 @@ enum PermissionEnum: string {
     case PANEL_DELETE = 'panel-delete';
     case PANEL_IMPORT = 'panel-import';
 
+    case TRAINSET_CREATE = 'trainset-create';
+    case TRAINSET_READ = 'trainset-read';
+    case TRAINSET_UPDATE = 'trainset-update';
+    case TRAINSET_DELETE = 'trainset-delete';
+
     // KPM MECHANIC / ELECTRIC RELATED
     case TRAINSET_ATTACHMENT_CREATE = 'trainset-attachment-create';
     case TRAINSET_ATTACHMENT_READ = 'trainset-attachment-read';
@@ -112,6 +118,11 @@ enum PermissionEnum: string {
     case TRAINSET_ATTACHMENT_DELETE = 'trainset-attachment-delete';
     case TRAINSET_ATTACHMENT_DOWNLOAD = 'trainset-attachment-download'; // download attachment in preview attachment
     case TRAINSET_ATTACHMENT_IMPORT = 'trainset-attachment-import'; // import material in preview attachment
+
+    case DETAIL_WORKER_TRAINSET_CREATE = 'detail-worker-trainset-create';
+    case DETAIL_WORKER_TRAINSET_READ = 'detail-worker-trainset-read';
+    case DETAIL_WORKER_TRAINSET_UPDATE = 'detail-worker-trainset-update';
+    case DETAIL_WORKER_TRAINSET_DELETE = 'detail-worker-trainset-delete';
 
     // KPM ASSEMBLY RELATED
     case PANEL_ATTACHMENT_CREATE = 'panel-attachment-create';
@@ -121,6 +132,16 @@ enum PermissionEnum: string {
     case PANEL_ATTACHMENT_DOWNLOAD = 'panel-attachment-download'; // download attachment in preview attachment
     case PANEL_ATTACHMENT_IMPORT = 'panel-attachment-import'; // import material in preview attachment
 
+    case SERIAL_PANEL_CREATE = 'serial-panel-create';
+    case SERIAL_PANEL_READ = 'serial-panel-read';
+    case SERIAL_PANEL_UPDATE = 'serial-panel-update';
+    case SERIAL_PANEL_DELETE = 'serial-panel-delete';
+
+    case DETAIL_WORKER_PANEL_CREATE = 'detail-worker-panel-create';
+    case DETAIL_WORKER_PANEL_READ = 'detail-worker-panel-read';
+    case DETAIL_WORKER_PANEL_UPDATE = 'detail-worker-panel-update';
+    case DETAIL_WORKER_PANEL_DELETE = 'detail-worker-panel-delete';
+    
     case CARRIAGE_PANEL_CREATE = 'carriage-panel-create';
     case CARRIAGE_PANEL_READ = 'carriage-panel-read';
     case CARRIAGE_PANEL_UPDATE = 'carriage-panel-update';
