@@ -41,7 +41,7 @@ export default function Components({
     const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
-        const data = await projectService.getCarriageComponents(project.id, trainset.id, filters);
+        const data = await projectService.getTrainsetComponents(project.id, trainset.id, filters);
 
         setComponentResponse(data);
 
@@ -60,18 +60,6 @@ export default function Components({
     useEffect(() => {
         void syncComponents();
     }, [filters]);
-
-    // const handleComponentDeletion = (id: number) => {
-    //     useConfirmation().then(async ({ isConfirmed }) => {
-    //         if (isConfirmed) {
-    //             setLoading(true);
-    //             await componentService.delete(id);
-    //             await syncComponents();
-    //             void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-    //             setLoading(false);
-    //         }
-    //     });
-    // };
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -124,7 +112,7 @@ export default function Components({
                 </TableBody>
             </Table>
 
-            <GenericPagination meta={componentResponse} handleChangePage={handlePageChange} />
+            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );
 }
