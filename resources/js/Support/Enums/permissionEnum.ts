@@ -1,4 +1,5 @@
 export enum PERMISSION_ENUM {
+    DASHBOARD_READ = 'dashboard-read',
     DASHBOARD_TRAINSET_READ = 'dashboard-trainset-read',
     DASHBOARD_COMMISSION_READ = 'dashboard-commission-read',
 
