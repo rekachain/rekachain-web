@@ -1,6 +1,8 @@
 import { Button } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -66,7 +68,8 @@ export default function CarPanelCardView({
                                     ))}
                                 </div>
                                 <div className='flex w-full items-center justify-end'>
-                                    {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_DELETE) &&
+                                        trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button
                                             variant='link'
                                             onClick={() => handlePanelDeletion(carriage_panel.id)}

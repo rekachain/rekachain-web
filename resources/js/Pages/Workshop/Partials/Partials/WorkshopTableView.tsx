@@ -7,7 +7,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkshopResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -44,13 +46,15 @@ export default function WorkshopTableView({
                                 <TableCell>{workshop.name}</TableCell>
                                 <TableCell>{workshop.address}</TableCell>
                                 <TableCell>
+                                    {checkPermission(PERMISSION_ENUM.WORKSHOP_UPDATE) && (
                                     <Link
                                         href={route(`${ROUTES.WORKSHOPS}.edit`, workshop.id)}
                                         className={buttonVariants({ variant: 'link' })}
                                     >
                                         {t('action.edit')}
                                     </Link>
-                                    {workshop.can_be_deleted && (
+                                    )}
+                                    {checkPermission(PERMISSION_ENUM.WORKSHOP_DELETE) && workshop.can_be_deleted && (
                                         <Button
                                             variant='link'
                                             onClick={() => handleWorkshopDeletion(workshop.id)}

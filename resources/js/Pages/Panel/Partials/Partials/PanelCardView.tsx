@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { PanelResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -48,6 +50,7 @@ export default function PanelCardView({
                         {/* <p>Jumlah User :{panel.users_count}</p>
                         <p>Jumlah Izin :{panel.permissions_count}</p> */}
                         <div className='flex w-full items-center justify-end'>
+                            {checkPermission(PERMISSION_ENUM.PANEL_UPDATE) && (
                             <Link
                                 href={route(`${ROUTES.PANELS}.edit`, panel.id)}
                                 className={buttonVariants({ variant: 'link' })}
@@ -56,9 +59,12 @@ export default function PanelCardView({
                             >
                                 {t('action.edit')}
                             </Link>
+                            )}
+                            {checkPermission(PERMISSION_ENUM.PANEL_DELETE) && (
                             <Button variant='link' onClick={() => handlePanelDeletion(panel.id)}>
                                 {t('action.delete')}
                             </Button>
+                            )}
                         </div>
                     </div>
                     {/* </div> */}

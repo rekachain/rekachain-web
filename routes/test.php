@@ -1,22 +1,24 @@
 <?php
 
-use App\Http\Controllers\CarriageController;
-use App\Http\Controllers\CarriagePanelComponentController;
-use App\Http\Controllers\CarriagePanelController;
-use App\Http\Controllers\ComponentController;
-use App\Http\Controllers\PanelAttachmentController;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\ProgressController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\StepController;
-use App\Http\Controllers\TrainsetAttachmentController;
-use App\Http\Controllers\TrainsetController;
-use App\Http\Controllers\WorkAspectController;
-use App\Models\CarriagePanel;
-use App\Models\CarriagePanelComponent;
-use App\Models\CarriageTrainset;
-use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 use Inertia\Inertia;
+use App\Models\CarriagePanel;
+use App\Models\CarriageTrainset;
+use App\Services\ProjectService;
+use Illuminate\Support\Facades\Route;
+use App\Models\CarriagePanelComponent;
+use App\Http\Controllers\StepController;
+use App\Http\Controllers\PanelController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\CarriageController;
+use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\TrainsetController;
+use App\Http\Controllers\ComponentController;
+use App\Http\Controllers\WorkAspectController;
+use App\Http\Controllers\CarriagePanelController;
+use App\Http\Controllers\PanelAttachmentController;
+use App\Http\Controllers\TrainsetAttachmentController;
+use App\Http\Controllers\CarriagePanelComponentController;
 
 Route::group(['prefix' => 'test', 'as' => 'test'], function () {
     Route::get('/', function (\App\Support\Interfaces\Services\CarriageTrainsetServiceInterface $carriageTrainsetService, \App\Support\Interfaces\Services\TrainsetServiceInterface $trainsetService) {
@@ -98,3 +100,17 @@ Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek, $detail_ts) {
 Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, $detail_ts, $detail_kereta) {
     return Inertia::render('Detail/DetailKereta', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek, 'susunanKereta' => $detail_kereta]);
 })->middleware(['auth', 'verified'])->name('detail-kereta');
+
+Route::get('/test-estimation/{project_id?}', function ($project_id = null) {
+    $projectService = app()->make(ProjectService::class);
+    return $projectService->calculateEstimatedTime($project_id);
+});
+// Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('update-initial-date');
+// Route::controller(ProjectController::class)->group(function () {
+//     // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update']);
+//     Route::put('/update-initial-date/{project}', 'project_carriage')->name('update');
+// });
+Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
+    // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update']);
+    Route::put('/update-initial-date', 'update')->name('update.initial-date');
+});

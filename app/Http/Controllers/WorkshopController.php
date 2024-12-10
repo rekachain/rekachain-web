@@ -7,6 +7,7 @@ use App\Http\Requests\Workshop\UpdateWorkshopRequest;
 use App\Http\Resources\WorkshopResource;
 use App\Models\Workshop;
 use App\Support\Enums\PermissionEnum;
+use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class WorkshopController extends Controller {
      */
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_READ);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 'All');
@@ -38,7 +39,7 @@ class WorkshopController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_CREATE);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_CREATE);
 
         return inertia('Workshop/Create');
     }
@@ -48,7 +49,7 @@ class WorkshopController extends Controller {
      */
     public function store(StoreWorkshopRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_CREATE);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_CREATE);
 
         return new WorkshopResource($this->workshopService->create($request->validated()));
     }
@@ -58,7 +59,7 @@ class WorkshopController extends Controller {
      */
     public function show(Request $request, Workshop $workshop) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_READ);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_READ);
 
         if ($this->ajax()) {
             return new WorkshopResource($workshop);
@@ -72,7 +73,7 @@ class WorkshopController extends Controller {
      */
     public function edit(Request $request, Workshop $workshop) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_UPDATE);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_UPDATE);
 
         $workshop = new WorkshopResource($workshop);
 
@@ -84,7 +85,7 @@ class WorkshopController extends Controller {
      */
     public function update(UpdateWorkshopRequest $request, Workshop $workshop) {
 
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_UPDATE);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_UPDATE);
 
         return new WorkshopResource($this->workshopService->update($workshop, $request->validated()));
     }
@@ -93,7 +94,7 @@ class WorkshopController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Workshop $workshop) {
-        $request->checkPermissionEnum(PermissionEnum::WORKSHOP_DELETE);
+        PermissionHelper::check(PermissionEnum::WORKSHOP_DELETE);
 
         $this->workshopService->delete($workshop);
 

@@ -7,6 +7,7 @@ use App\Http\Requests\Division\UpdateDivisionRequest;
 use App\Http\Resources\DivisionResource;
 use App\Models\Division;
 use App\Support\Enums\PermissionEnum;
+use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\DivisionServiceInterface;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class DivisionController extends Controller {
      */
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_READ);
+        PermissionHelper::check(PermissionEnum::DIVISION_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
@@ -38,7 +39,7 @@ class DivisionController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_CREATE);
+        PermissionHelper::check(PermissionEnum::DIVISION_CREATE);
 
         return inertia('Division/Create');
     }
@@ -48,7 +49,7 @@ class DivisionController extends Controller {
      */
     public function store(StoreDivisionRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_CREATE);
+        PermissionHelper::check(PermissionEnum::DIVISION_CREATE);
 
         return new DivisionResource($this->divisionService->create($request->validated()));
     }
@@ -58,7 +59,7 @@ class DivisionController extends Controller {
      */
     public function show(Request $request, Division $division) {
 
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_READ);
+        PermissionHelper::check(PermissionEnum::DIVISION_READ);
 
         if ($this->ajax()) {
             return new DivisionResource($division);
@@ -72,7 +73,7 @@ class DivisionController extends Controller {
      */
     public function edit(Request $request, Division $division) {
 
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_UPDATE);
+        PermissionHelper::check(PermissionEnum::DIVISION_UPDATE);
 
         return inertia('Division/Edit', compact('division'));
     }
@@ -82,7 +83,7 @@ class DivisionController extends Controller {
      */
     public function update(UpdateDivisionRequest $request, Division $division) {
 
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_UPDATE);
+        PermissionHelper::check(PermissionEnum::DIVISION_UPDATE);
 
         return new DivisionResource($this->divisionService->update($division, $request->validated()));
     }
@@ -91,7 +92,7 @@ class DivisionController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Division $division) {
-        $request->checkPermissionEnum(PermissionEnum::DIVISION_DELETE);
+        PermissionHelper::check(PermissionEnum::DIVISION_DELETE);
 
         $this->divisionService->delete($division);
 

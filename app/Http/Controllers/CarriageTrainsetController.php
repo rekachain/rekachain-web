@@ -10,6 +10,7 @@ use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use Illuminate\Http\Request;
+use App\Helpers\PermissionHelper;
 
 class CarriageTrainsetController extends Controller {
     // TODO: update trainset_preset_id to null
@@ -21,7 +22,7 @@ class CarriageTrainsetController extends Controller {
      */
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_READ);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 'All');
@@ -41,7 +42,7 @@ class CarriageTrainsetController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_CREATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_CREATE);
 
         return inertia('CarriageTrainset/Create');
     }
@@ -51,7 +52,7 @@ class CarriageTrainsetController extends Controller {
      */
     public function store(StoreCarriageTrainsetRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_CREATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_CREATE);
 
         return new CarriageTrainsetResource($this->carriageTrainsetService->create($request->validated()));
     }
@@ -61,7 +62,7 @@ class CarriageTrainsetController extends Controller {
      */
     public function show(Request $request, CarriageTrainset $carriageTrainset) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_READ);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_READ);
 
         if ($this->ajax()) {
             return new CarriageTrainsetResource($carriageTrainset);
@@ -75,7 +76,7 @@ class CarriageTrainsetController extends Controller {
      */
     public function edit(Request $request, CarriageTrainset $carriageTrainset) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_UPDATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_UPDATE);
 
         return inertia('CarriageTrainset/Edit', compact('carriageTrainset'));
     }
@@ -85,7 +86,7 @@ class CarriageTrainsetController extends Controller {
      */
     public function update(UpdateCarriageTrainsetRequest $request, CarriageTrainset $carriageTrainset) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_UPDATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_UPDATE);
 
         $intent = $request->get('intent');
 
@@ -101,7 +102,7 @@ class CarriageTrainsetController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, CarriageTrainset $carriageTrainset) {
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PRESET_DELETE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PRESET_DELETE);
 
         $this->carriageTrainsetService->delete($carriageTrainset);
 

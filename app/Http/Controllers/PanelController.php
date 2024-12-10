@@ -6,6 +6,8 @@ use App\Http\Requests\Panel\StorePanelRequest;
 use App\Http\Requests\Panel\UpdatePanelRequest;
 use App\Http\Resources\PanelResource;
 use App\Models\Panel;
+use App\Support\Enums\PermissionEnum;
+use App\Helpers\PermissionHelper;
 use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use Illuminate\Http\Request;
@@ -19,11 +21,13 @@ class PanelController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        PermissionHelper::check(PermissionEnum::PANEL_READ);
         if ($this->ajax()) {
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_PANEL_GET_TEMPLATE_IMPORT_PANEL->value:
+                    PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
                     return $this->panelService->getImportDataTemplate();
             }
             try {
@@ -41,6 +45,7 @@ class PanelController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        PermissionHelper::check(PermissionEnum::PANEL_READ);
         return inertia('Panel/Create');
     }
 
@@ -48,11 +53,13 @@ class PanelController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StorePanelRequest $request) {
+        PermissionHelper::check(PermissionEnum::PANEL_CREATE);
         if ($this->ajax()) {
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_PANEL_IMPORT_PANEL->value:
+                    PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
                     $this->panelService->importData($request->file('import_file'));
 
                     return response()->noContent();
@@ -66,10 +73,12 @@ class PanelController extends Controller {
      * Display the specified resource.
      */
     public function show(Request $request, Panel $panel) {
+        PermissionHelper::check(PermissionEnum::PANEL_READ);
         $intent = $request->get('intent');
         if ($this->ajax()) {
             switch ($intent) {
                 case IntentEnum::WEB_PANEL_GET_PANEL_MATERIAL_AND_PROGRESS_TEMPLATE->value:
+                    PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
                     return $this->panelService->getImportDataRawMaterialAndProgressTemplate($panel);
             }
 
@@ -81,6 +90,7 @@ class PanelController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Panel $panel) {
+        PermissionHelper::check(PermissionEnum::PANEL_IMPORT);
         return inertia('Panel/Edit', ['panel' => new PanelResource($panel->load('progress'))]);
     }
 
@@ -88,6 +98,7 @@ class PanelController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdatePanelRequest $request, Panel $panel) {
+        PermissionHelper::check(PermissionEnum::PANEL_DELETE);
         if ($this->ajax()) {
             return $this->panelService->update($panel, $request->validated());
         }

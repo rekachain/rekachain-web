@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
+use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\RoleServiceInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
 use Exception;
@@ -22,7 +23,7 @@ class UserController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        checkPermissions(PermissionEnum::USER_READ);
+        PermissionHelper::check(PermissionEnum::USER_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
@@ -47,7 +48,7 @@ class UserController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        checkPermissions([PermissionEnum::USER_CREATE]);
+        PermissionHelper::check([PermissionEnum::USER_CREATE]);
 
         $roles = $this->roleService->getAll();
 
@@ -58,7 +59,7 @@ class UserController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request) {
-        checkPermissions(PermissionEnum::USER_CREATE);
+        PermissionHelper::check(PermissionEnum::USER_CREATE);
 
         if ($this->ajax()) {
             return $this->userService->create($request->validated());
@@ -69,7 +70,7 @@ class UserController extends Controller {
      * Display the specified resource.
      */
     public function show(User $user) {
-        checkPermissions(PermissionEnum::USER_READ);
+        PermissionHelper::check(PermissionEnum::USER_READ);
 
         if ($this->ajax()) {
             return new UserResource($user);
@@ -82,7 +83,7 @@ class UserController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(User $user) {
-        checkPermissions(PermissionEnum::USER_UPDATE);
+        PermissionHelper::check(PermissionEnum::USER_UPDATE);
 
         $user = new UserResource($user->load('roles', 'workstation', 'step'));
         $roles = $this->roleService->getAll();
@@ -98,7 +99,7 @@ class UserController extends Controller {
             return $this->userService->update($user, $request->validated());
         }
 
-        checkPermissions(PermissionEnum::USER_UPDATE);
+        PermissionHelper::check(PermissionEnum::USER_UPDATE);
 
         if ($this->ajax()) {
             return $this->userService->update($user, $request->validated());
@@ -111,7 +112,7 @@ class UserController extends Controller {
      * @throws Exception
      */
     public function destroy(Request $request, User $user) {
-        checkPermissions(PermissionEnum::USER_DELETE);
+        PermissionHelper::check(PermissionEnum::USER_DELETE);
 
         $intent = $request->get('intent');
 

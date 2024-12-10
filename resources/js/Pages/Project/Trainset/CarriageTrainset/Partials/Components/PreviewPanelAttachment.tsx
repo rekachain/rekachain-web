@@ -17,10 +17,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import ImportPanelCustomMaterial from '@/Pages/Project/Trainset/CarriageTrainset/Partials/Components/Components/ImportPanelCustomMaterial';
 import { panelAttachmentService } from '@/Services/panelAttachmentService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import {
     PanelAttachmentHandlerResource,
     PanelAttachmentResource,
@@ -140,6 +142,7 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
             </h1>
             {panelAttachmentAncestor && (
                 <div className='my-4 flex gap-4'>
+                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_DOWNLOAD) && (
                     <Link
                         target='_blank'
                         href={`${route(`${ROUTES.PANEL_ATTACHMENTS}.show`, [panelAttachmentAncestor.id])}?intent=${IntentEnum.WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT}`}
@@ -149,11 +152,14 @@ const PreviewPanelAttachment = ({ trainset }: { trainset: TrainsetResource }) =>
                             'pages.project.trainset.carriage_trainset.partials.components.preview_panel_attachment.buttons.download',
                         )}
                     </Link>
+                    )}
+                    {checkPermission(PERMISSION_ENUM.PANEL_ATTACHMENT_IMPORT) && (
                     <ImportPanelCustomMaterial
                         panelAttachment={
                             panelAttachment ? panelAttachment : panelAttachmentAncestor
                         }
                     />
+                    )}
                 </div>
             )}
             <div className='mt-4 flex gap-4'>

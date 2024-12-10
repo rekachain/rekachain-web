@@ -20,6 +20,8 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import Import from './Import';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function Panels({
     project,
@@ -83,12 +85,14 @@ export default function Panels({
                                         <TableCell>{data.panel.description}</TableCell>
                                         <TableCell>{data.total_qty}</TableCell>
                                         <TableCell>
-                                            <Import
-                                                trainset={trainset}
-                                                project={project}
-                                                panel={data.panel}
-                                                hasMaterials={data.has_materials}
-                                            />
+                                            {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_PANEL_IMPORT) && (
+                                                <Import
+                                                    trainset={trainset}
+                                                    project={project}
+                                                    panel={data.panel}
+                                                    hasMaterials={data.has_materials}
+                                                />
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))}

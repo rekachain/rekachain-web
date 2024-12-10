@@ -22,6 +22,12 @@ class Trainset extends Model {
         'preset_trainset_id',
         'name',
         'status',
+        'mechanical_time',
+        'electrical_time',
+        'assembly_time',
+        'calculated_estimate_time',
+        'initial_date',
+        'estimated_end_date',
     ];
     protected $casts = [
         'status' => TrainsetStatusEnum::class,

@@ -10,10 +10,12 @@ import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { projectService } from '@/Services/projectService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head, Link, useForm } from '@inertiajs/react';
@@ -79,7 +81,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                 })}
                             </p>
                         </div>
-
+                        {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CREATE) && (
                         <div className='rounded bg-background-2 p-5'>
                             <form
                                 onSubmit={handleAddTrainset}
@@ -129,6 +131,7 @@ export default function ({ project: initialProject }: { project: ProjectResource
                                 </div>
                             </form>
                         </div>
+                        )}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Trainsets project={project} handleSyncProject={handleSyncProject} />

@@ -7,6 +7,8 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function ({
     project,
@@ -50,12 +52,14 @@ export default function ({
                         </h5>
                         {/* <h5 className=" text-sm ">Lokasi : {component.location}</h5> */}
                         <div className='flex w-full items-center justify-end'>
-                            <Import
-                                project={project}
-                                hasMaterials={data.has_materials}
-                                component={data.component}
-                                carriage={carriage}
-                            />
+                            {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_IMPORT) && (
+                                <Import
+                                    project={project}
+                                    hasMaterials={data.has_materials}
+                                    component={data.component}
+                                    carriage={carriage}
+                                />
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

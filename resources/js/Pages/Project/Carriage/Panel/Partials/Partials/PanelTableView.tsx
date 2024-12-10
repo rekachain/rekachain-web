@@ -14,6 +14,8 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function PanelTableView({
     project,
@@ -55,12 +57,14 @@ export default function PanelTableView({
                             <TableCell>{data.panel.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    project={project}
-                                    panel={data.panel}
-                                    hasMaterials={data.has_materials}
-                                    carriage={carriage}
-                                />
+                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_PANEL_IMPORT) && (
+                                    <Import
+                                        project={project}
+                                        panel={data.panel}
+                                        hasMaterials={data.has_materials}
+                                        carriage={carriage}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

@@ -2,17 +2,18 @@
 
 namespace App\Services;
 
-use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
-use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
-use App\Imports\Project\ProjectsImport;
-use App\Models\Carriage;
+use Carbon\Carbon;
 use App\Models\Project;
+use App\Models\Carriage;
 use App\Models\Trainset;
-use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use App\Support\Interfaces\Services\ProjectServiceInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\Project\ProjectsImport;
+use Illuminate\Database\Eloquent\Model;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
+use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
+use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 
 class ProjectService extends BaseCrudService implements ProjectServiceInterface {
     private function createTrainsets(Project $project, $trainsetNeeded): void {
@@ -95,6 +96,139 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         foreach ($trainsetPanelComponents as $trainsetPanelComponent) {
             Excel::import(new CarriagePanelComponentProgressMaterialImport($trainsetPanelComponent, $data['work_aspect_id'], $data['override'] ?? null), $file);
         }
+
+        return true;
+    }
+
+    public function calculateEstimatedTime($project_id = null){
+
+        if ($project_id) {
+            $project = \App\Models\Project::with(['trainsets.carriage_trainsets' => [
+                'carriage_panels' => [
+                    'progress.steps'
+                ]
+            ]])->findOrFail($project_id);
+
+            // Get project start date
+            $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
+            $endDate = Carbon::parse($startDate);
+            $totalCalculatedEstimatedTime = 0;
+            $lastTrainset = $project->trainsets->last();
+
+            foreach ($project->trainsets as $trainset) {
+                $mechanicTime = 0;
+                $electricalTime = 0;
+                $assemblyTime = 0;
+
+                foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+                    foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
+                        $stepTime = 0;
+                        foreach ($carriagePanel->progress->steps as $step) {
+                            $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
+                        }
+
+                        switch($carriagePanel->progress->work_aspect_id) {
+                            case 1: // Mechanic
+                                $mechanicTime += $stepTime;
+                                break;
+                            case 2: // Electric
+                                $electricalTime += $stepTime;
+                                break;
+                            case 3: // Assembly
+                                if ($trainset->id === $lastTrainset->id) {
+                                    $assemblyTime += $stepTime;
+                                }
+                                break;
+                        }
+
+                        foreach ($carriagePanel->carriage_panel_components as $component) {
+                            $componentStepTime = 0;
+                            foreach ($component->progress->steps as $step) {
+                                $componentStepTime = $step->estimated_time * $component->qty * $carriagePanel->qty * $carriageTrainset->qty;
+                            }
+
+                            switch ($component->progress->work_aspect_id) {
+                                case 1: // Mechanic
+                                    $mechanicTime += $componentStepTime;
+                                    break;
+                                case 2: // Electric
+                                    $electricalTime += $componentStepTime;
+                                    break;
+                                case 3: // Assembly
+                                    if ($trainset->id === $lastTrainset->id) {
+                                        $assemblyTime += $stepTime;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
+
+                $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+                $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
+
+                // Add working days considering only Monday-Friday
+                for ($i = 0; $i < $calculatedEstimateTime; $i++) {
+                    $endDate->addDay();
+                    // Skip weekends
+                    while ($endDate->isWeekend()) {
+                        $endDate->addDay();
+                    }
+                }
+                $totalCalculatedEstimatedTime += $calculatedEstimateTime;
+
+            }
+
+
+            // Save calculated estimate time and end date to the project
+            $project->update([
+                'calculated_estimate_time' => $totalCalculatedEstimatedTime,
+                'estimated_end_date' => $endDate->format('Y-m-d')
+            ]);
+
+            foreach($project->trainsets as $trainset) {
+                $this->trainsetService()->calculateEstimatedTime($trainset->id);
+            }
+
+            return true;
+
+            // return response()->json([
+            //     'project_id' => $project_id,
+            //     'mechanical_time' => $mechanicTime,
+            //     'electrical_time' => $electricalTime,
+            //     'assembly_time' => $assemblyTime,
+            //     'total_estimated_time' => $totalTime,
+            //     'calculated_estimate_time' => $calculatedEstimateTime,
+            //     'initial_date' => $startDate,
+            //     'estimated_end_date' => $endDate->format('Y-m-d')
+            // ]);
+        }
+
+        return response()->json(['message' => 'Please provide project_id']);
+    }
+
+    public function updateInitialDate(Project $project, array $data): bool {
+        // Get update initial date
+        $endDate = Carbon::parse($data['initial_date']);
+        // $endDate = $startDate;
+        // dd($project);
+        // Add working days considering only Monday-Friday
+        for ($i = 0; $i < $project->calculated_estimate_time; $i++) {
+            $endDate->addDay();
+            // Skip weekends
+            while ($endDate->isWeekend()) {
+                $endDate->addDay();
+            }
+        }
+
+        $project->update([
+            'initial_date' => Carbon::parse($data['initial_date'])->format('Y-m-d'),
+            'estimated_end_date' => $endDate->format('Y-m-d')
+        ]);
+
+        $this->calculateEstimatedTime($project->id);
 
         return true;
     }

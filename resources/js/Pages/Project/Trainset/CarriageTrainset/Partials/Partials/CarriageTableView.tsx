@@ -13,6 +13,8 @@ import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriageQty from '../Components/CarriageQty';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function CarriageTableView({
     trainset,
@@ -78,7 +80,8 @@ export default function CarriageTableView({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE) &&
+                                    trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                     <Button
                                         variant='link'
                                         onClick={() => handleCarriageDeletion(carriage_trainset.id)}
@@ -86,6 +89,7 @@ export default function CarriageTableView({
                                         {t('action.delete')}
                                     </Button>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ) && (
                                 <Link
                                     href={route(
                                         `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
@@ -97,6 +101,7 @@ export default function CarriageTableView({
                                         'pages.project.trainset.carriage_trainset.partials.partials.carriage_table.actions.panels',
                                     )}
                                 </Link>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

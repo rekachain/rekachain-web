@@ -14,6 +14,8 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function ComponentTableView({
     project,
@@ -55,12 +57,14 @@ export default function ComponentTableView({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    project={project}
-                                    hasMaterials={data.has_materials}
-                                    component={data.component}
-                                    carriage={carriage}
-                                />
+                                {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_IMPORT) && (
+                                    <Import
+                                        project={project}
+                                        hasMaterials={data.has_materials}
+                                        component={data.component}
+                                        carriage={carriage}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

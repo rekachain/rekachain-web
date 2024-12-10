@@ -19,6 +19,8 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import Import from './Import';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 // import Import from '../Import';
 
 export default function Components({
@@ -106,12 +108,14 @@ export default function Components({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    trainset={trainset}
-                                    project={project}
-                                    hasMaterials={data.has_materials}
-                                    component={data.component}
-                                />
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT) && (
+                                    <Import
+                                        trainset={trainset}
+                                        project={project}
+                                        hasMaterials={data.has_materials}
+                                        component={data.component}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

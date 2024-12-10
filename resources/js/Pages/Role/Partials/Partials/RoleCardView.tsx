@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RoleResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -50,15 +52,19 @@ export default function RoleCardView({
                             })}
                         </p>
                         <div className='flex w-full items-center justify-end'>
-                            <Link
+                            {checkPermission(PERMISSION_ENUM.ROLE_UPDATE) && (
+                                <Link
                                 href={route(`${ROUTES.ROLES}.edit`, role.id)}
                                 className={buttonVariants({ variant: 'link' })}
-                            >
+                                >
                                 {t('action.edit')}
                             </Link>
-                            <Button variant='link' onClick={() => handleRoleDeletion(role.id)}>
+                            )}
+                            {checkPermission(PERMISSION_ENUM.ROLE_DELETE) && (
+                                <Button variant='link' onClick={() => handleRoleDeletion(role.id)}>
                                 {t('action.delete')}
                             </Button>
+                            )}
                         </div>
                     </div>
                     {/* </div> */}

@@ -1,8 +1,10 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import CarriagePanelComponentProgress from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentProgress';
 import CarriagePanelComponentQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/Partials/Components/CarriagePanelComponentQty';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import {
     CarriagePanelResource,
@@ -62,7 +64,8 @@ export default function CarriagePanelComponentCardView({
                                     {carriagePanelComponent.component.description}
                                 </p>
                                 <div className='flex w-full items-center justify-end'>
-                                    {trainset.status !== TrainsetStatusEnum.PROGRESS && (
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_DELETE) &&
+                                        trainset.status !== TrainsetStatusEnum.PROGRESS && (
                                         <Button
                                             variant='link'
                                             onClick={() =>
@@ -75,6 +78,7 @@ export default function CarriagePanelComponentCardView({
                                         </Button>
                                     )}
 
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_READ) && (
                                     <Link
                                         href={route(
                                             `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS_COMPONENT_MATERIALS}.index`,
@@ -92,12 +96,14 @@ export default function CarriagePanelComponentCardView({
                                             'pages.project.trainset.carriage_trainset.carriage_panel.carriage_panel_component.partials.partials.carriage_panel_component_card.actions.materials',
                                         )}
                                     </Link>
-
+                                    )}
+                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_PROGRESS_UPDATE) && (
                                     <CarriagePanelComponentProgress
                                         progress={carriagePanelComponent.progress}
                                         handleSyncCarriagePanel={handleSyncCarriagePanel}
                                         carriagePanelComponent={carriagePanelComponent}
                                     />
+                                    )}
                                 </div>
                             </div>
                         </AnimateIn>
