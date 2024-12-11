@@ -50,7 +50,7 @@ export default function ({
             panel.id,
         );
         await useSuccessToast(t('pages.project.panel.partials.import.messages.imported'));
-        router.visit(route(`${ROUTES.PROJECTS_PANELS}.index`, [project.id]));
+        router.visit(route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [project.id, trainset.id]));
     });
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {

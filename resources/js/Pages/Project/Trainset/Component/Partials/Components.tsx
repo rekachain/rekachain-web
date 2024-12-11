@@ -21,7 +21,6 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import Import from './Import';
-// import Import from '../Import';
 
 export default function Components({
     project,
