@@ -76,8 +76,18 @@ export default function Components({
                             componentResponse={componentResponse}
                         ></CardView>
                     </div>
-                    {/* Check Permission */}
-                    {/* <div>
+                </>
+            )}
+            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
+        </div>
+    );
+}
+
+{
+    /* Check Permission */
+}
+{
+    /* <div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -120,49 +130,5 @@ export default function Components({
                         </TableRow>
                     ))}
                 </TableBody>
-            </Table> */}
-
-            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
-        </div>
-
-        //     <Table>
-        //         <TableHeader>
-        //             <TableRow>
-        //                 <TableHead>
-        //                     {t(
-        //                         'pages.project.component.partials.partials.component_table.headers.name',
-        //                     )}
-        //                 </TableHead>
-        //                 <TableHead>
-        //                     {t(
-        //                         'pages.project.component.partials.partials.component_table.headers.description',
-        //                     )}
-        //                 </TableHead>
-        //                 <TableHead>
-        //                     {t(
-        //                         'pages.project.component.partials.partials.component_table.headers.total_qty',
-        //                     )}
-        //                 </TableHead>
-        //                 <TableHead></TableHead>
-        //             </TableRow>
-        //         </TableHeader>
-        //         <TableBody>
-        //             {componentResponse?.data.map((data) => (
-        //                 <TableRow key={data.component.id}>
-        //                     <TableCell>{data.component.name}</TableCell>
-        //                     <TableCell>{data.component.description}</TableCell>
-        //                     <TableCell>{data.total_qty}</TableCell>
-        //                     <TableCell>
-        //                         <Import
-        //                             trainset={trainset}
-        //                             project={project}
-        //                             hasMaterials={data.has_materials}
-        //                             component={data.component}
-        //                         />
-        //                     </TableCell>
-        //                 </TableRow>
-        //             ))}
-        //         </TableBody>
-        //     </Table>
-    );
+            </Table> */
 }

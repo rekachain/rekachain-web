@@ -113,7 +113,7 @@ export default function Panels({
                         </Table>
                     </div>
                 </>
-            )}
+            )}*/}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );

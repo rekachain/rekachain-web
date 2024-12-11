@@ -91,7 +91,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     'pages.project.trainset.carriage_trainset.partials.preview_attachments.dialogs.buttons.view_detail_attachment',
                 )}
             </DialogTrigger>
-            <DialogContent className='md:w-[70%] w-[350px] flex flex-col md:flex-row'>
+            <DialogContent className='flex w-[350px] flex-col md:w-[70%] md:flex-row'>
                 <DialogHeader>
                     <DialogTitle></DialogTitle>
                     <DialogDescription className='w-full'></DialogDescription>
@@ -99,9 +99,9 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                         value={activeTab}
                         onValueChange={(value) => setActiveTab(value as GenerateAttachmentTabEnum)}
                         defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
-                        className='w-full '
+                        className='w-full'
                     >
-                        <TabsList className='flex md:flex-row flex-col h-fit w-full items-center md:items-start md:w-fit'>
+                        <TabsList className='flex h-fit w-full flex-col items-center md:w-fit md:flex-row md:items-start'>
                             <TabsTrigger
                                 value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
                             >
@@ -135,7 +135,10 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                                 ))}
                             </ScrollArea>
                         </TabsContent>
-                        <TabsContent value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}>
+                        <TabsContent
+                            value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_ELECTRIC}
+                            className='w-full'
+                        >
                             <ScrollArea className='h-[400px] border p-4'>
                                 {electricAttachment.map((attachment, index) => (
                                     <PreviewTrainsetAttachment
@@ -149,7 +152,7 @@ const PreviewAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                             </ScrollArea>
                         </TabsContent>
                         <TabsContent value={GenerateAttachmentTabEnum.PANEL_ATTACHMENT}>
-                            <ScrollArea className='h-[400px] border p-4'>
+                            <ScrollArea className='h-[400px] min-w-full border p-4'>
                                 <PreviewPanelAttachment trainset={trainset} />
                             </ScrollArea>
                         </TabsContent>
