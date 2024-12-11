@@ -42,7 +42,13 @@ const ProgressPanel = ({ trainset, title }: { trainset: TrainsetResource; title:
         <div key={trainset.id} className='text-black dark:text-white'>
             <h1 className='text-xl font-bold'>{title}</h1>
             {panelProgress == null ||
-                (panelProgress.length === 0 && <h3>Kosong🗿</h3>) ||
+                (panelProgress.length === 0 && (
+                    <h3>
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.components.progress_panel.props.none',
+                        )}
+                    </h3>
+                )) ||
                 (panelProgress &&
                     panelProgress.map((progress, index) => (
                         <div key={`${progress.panel.id} ${progress.carriage.id}`}>

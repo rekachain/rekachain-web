@@ -2,33 +2,15 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Imports\CarriagePanel\CarriagePanelProgressMaterialImport;
 use App\Models\CarriagePanel;
 use App\Support\Interfaces\Repositories\CarriagePanelRepositoryInterface;
-use App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface;
 use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
-use App\Support\Interfaces\Services\ComponentServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use App\Support\Interfaces\Services\PanelMaterialServiceInterface;
-use App\Support\Interfaces\Services\ProgressServiceInterface;
-use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CarriagePanelService extends BaseCrudService implements CarriagePanelServiceInterface {
-    public function __construct(
-        protected CarriagePanelComponentServiceInterface $carriagePanelComponentService,
-        protected PanelMaterialServiceInterface $panelMaterialService,
-        protected PanelAttachmentServiceInterface $panelAttachmentService,
-        protected ComponentServiceInterface $componentService,
-        protected RawMaterialServiceInterface $rawMaterialService,
-        protected ProgressServiceInterface $progressService,
-    ) {
-        parent::__construct();
-    }
-
     protected function getRepositoryClass(): string {
         return CarriagePanelRepositoryInterface::class;
     }
@@ -48,9 +30,9 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
             $carriagePanelQty = $data['carriage_component_qty'];
 
             if ($componentId) {
-                $component = $this->componentService->findOrFail($componentId);
+                $component = $this->componentService()->findOrFail($componentId);
             } else {
-                $component = $this->componentService->create([
+                $component = $this->componentService()->create([
                     'name' => $componentName,
                     'description' => $componentDescription,
                 ]);
@@ -81,9 +63,9 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
             $newRawMaterialQty = $data['new_raw_material_qty'];
 
             if ($rawMaterialId) {
-                $rawMaterial = $this->rawMaterialService->findOrFail($rawMaterialId);
+                $rawMaterial = $this->rawMaterialService()->findOrFail($rawMaterialId);
             } else {
-                $rawMaterial = $this->rawMaterialService->create([
+                $rawMaterial = $this->rawMaterialService()->create([
                     'material_code' => $newRawMaterialCode,
                     'description' => $newRawMaterialDescription,
                     'unit' => $newRawMaterialUnit,
@@ -118,9 +100,9 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
             $progressWorkAspectId = $data['progress_work_aspect_id'];
 
             if ($progressId) {
-                $progress = $this->progressService->findOrFail($progressId);
+                $progress = $this->progressService()->findOrFail($progressId);
             } else {
-                $progress = $this->progressService->create([
+                $progress = $this->progressService()->create([
                     'name' => $progressName,
                     'work_aspect_id' => $progressWorkAspectId,
                 ]);
@@ -141,14 +123,14 @@ class CarriagePanelService extends BaseCrudService implements CarriagePanelServi
      */
     public function delete($keyOrModel): bool {
         //        $keyOrModel->panel_attachment()->each(function ($attachment) {
-        //            $this->panelAttachmentService->delete($attachment);
+        //            $this->panelAttachmentService()->delete($attachment);
         //        });
         $keyOrModel->carriage_panel_components()->each(function ($component) {
-            $this->carriagePanelComponentService->delete($component);
+            $this->carriagePanelComponentService()->delete($component);
         });
 
         $keyOrModel->panel_materials()->each(function ($material) {
-            $this->panelMaterialService->delete($material);
+            $this->panelMaterialService()->delete($material);
         });
 
         // TODO: update trainset_preset_id to null

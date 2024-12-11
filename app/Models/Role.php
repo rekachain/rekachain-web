@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -42,13 +43,17 @@ use Spatie\Permission\Models\Role as SpatieRole;
  * )
  */
 class Role extends SpatieRole {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'name',
         'guard_name',
         'division_id',
         'level',
+    ];
+    protected $filterable = [
+        'searchs' => ['name', 'level'],
+        'columns' => ['division_id', 'level'],
     ];
 
     public function division(): BelongsTo {

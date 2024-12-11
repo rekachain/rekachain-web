@@ -92,6 +92,24 @@ export const projectService = {
         );
         return response.data;
     },
+    getTrainsetComponents: async (
+        projectId: number,
+        trainsetId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectComponentResource>> => {
+        const response = await window.axios.get(
+            route(`${ROUTES.PROJECTS_TRAINSETS}.show`, [projectId, trainsetId]),
+            {
+                params: {
+                    intent: IntentEnum.WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY,
+                    ...filters,
+                    ...config,
+                },
+            },
+        );
+        return response.data;
+    },
     getPanels: async (
         projectId: number,
         filters: ServiceFilterOptions = {},
@@ -117,6 +135,24 @@ export const projectService = {
             {
                 params: {
                     intent: IntentEnum.WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY,
+                    ...filters,
+                    ...config,
+                },
+            },
+        );
+        return response.data;
+    },
+    getTrainsetPanels: async (
+        projectId: number,
+        trainsetId: number,
+        filters: ServiceFilterOptions = {},
+        config: AxiosRequestConfig = {},
+    ): Promise<PaginateResponse<ProjectPanelResource>> => {
+        const response = await window.axios.get(
+            route(`${ROUTES.PROJECTS_TRAINSETS}.show`, [projectId, trainsetId]),
+            {
+                params: {
+                    intent: IntentEnum.WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY,
                     ...filters,
                     ...config,
                 },
@@ -156,7 +192,7 @@ export const projectService = {
         formData.append('component_id', componentId.toString());
         formData.append('work_aspect_id', workAspectId.toString());
         return await window.axios.post(
-            route(`${ROUTES.PROJECTS}.update`, [projectId, trainsetId]),
+            route(`${ROUTES.PROJECTS_TRAINSETS}.update`, [projectId, trainsetId]),
             formData,
             {
                 headers: {
@@ -194,7 +230,7 @@ export const projectService = {
         formData.append('file', file);
         formData.append('panel_id', panelId.toString());
         return await window.axios.post(
-            route(`${ROUTES.PROJECTS}.update`, [projectId, trainsetId]),
+            route(`${ROUTES.PROJECTS_TRAINSETS}.update`, [projectId, trainsetId]),
             formData,
             {
                 headers: {
@@ -202,7 +238,7 @@ export const projectService = {
                 },
                 params: {
                     _method: 'PUT',
-                    intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL,
+                    intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL,
                 },
             },
         );

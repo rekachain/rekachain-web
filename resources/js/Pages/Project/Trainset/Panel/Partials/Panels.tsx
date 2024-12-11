@@ -19,6 +19,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import Import from './Import';
 
 export default function Panels({
@@ -36,11 +38,8 @@ export default function Panels({
     });
 
     const syncPanels = withLoading(async () => {
-        // const data = await projectService.getPanels(project.id, filters);
-        const data = await projectService.getCarriagePanels(project.id, trainset.id, filters);
+        const data = await projectService.getTrainsetPanels(project.id, trainset.id, filters);
         setPanelResponse(data);
-        console.log('==========aa');
-        console.log(panelResponse);
 
         setPanelResponseMeta({
             current_page: data.current_page,
@@ -83,24 +82,22 @@ export default function Panels({
                                         <TableCell>{data.panel.description}</TableCell>
                                         <TableCell>{data.total_qty}</TableCell>
                                         <TableCell>
-                                            <Import
-                                                trainset={trainset}
-                                                project={project}
-                                                panel={data.panel}
-                                                hasMaterials={data.has_materials}
-                                            />
+                                            {checkPermission(
+                                                PERMISSION_ENUM.PROJECT_TRAINSET_PANEL_IMPORT,
+                                            ) && (
+                                                <Import
+                                                    trainset={trainset}
+                                                    project={project}
+                                                    panel={data.panel}
+                                                    hasMaterials={data.has_materials}
+                                                />
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </div>
-                    {/* <div className="hidden md:block">
-                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
-                    </div>
-                    <div className="block md:hidden">
-                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
-                    </div> */}
                 </>
             )}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\TrainsetStatusEnum;
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,13 +15,19 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Trainset extends Model {
-    use HasFactory, HasRelationships;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'project_id',
         'preset_trainset_id',
         'name',
         'status',
+        'mechanical_time',
+        'electrical_time',
+        'assembly_time',
+        'calculated_estimate_time',
+        'initial_date',
+        'estimated_end_date',
     ];
     protected $casts = [
         'status' => TrainsetStatusEnum::class,

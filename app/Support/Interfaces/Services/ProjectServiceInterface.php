@@ -30,4 +30,8 @@ interface ProjectServiceInterface extends BaseCrudServiceInterface {
     public function importProjectTrainsetPanelProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool;
 
     public function importProjectTrainsetComponentProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool;
+
+    public function calculateEstimatedTime($project_id = null);
+
+    public function updateInitialDate(Project $project, array $data): bool;
 }

@@ -2,38 +2,22 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Models\CustomAttachmentMaterial;
 use App\Models\TrainsetAttachment;
 use App\Support\Enums\RoleEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
-use App\Support\Interfaces\Repositories\ProgressStepRepositoryInterface;
-use App\Support\Interfaces\Repositories\TrainsetAttachmentComponentRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
-use App\Support\Interfaces\Repositories\UserRepositoryInterface;
-use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttachmentServiceInterface {
-    public function __construct(
-        protected ProgressStepRepositoryInterface $progressStepRepository,
-        protected TrainsetAttachmentComponentRepositoryInterface $trainsetAttachmentComponentRepository,
-        protected UserRepositoryInterface $userRepositoryInterface,
-        protected DetailWorkerTrainsetServiceInterface $detailWorkerTrainsetService,
-        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
-    ) {
-        parent::__construct();
-    }
-
     protected function getRepositoryClass(): string {
         return TrainsetAttachmentRepositoryInterface::class;
     }
 
     public function assignHandler(TrainsetAttachment $trainsetAttachment, array $data) {
-        $this->trainsetAttachmentHandlerService->updateOrCreate([
+        $this->trainsetAttachmentHandlerService()->updateOrCreate([
             'trainset_attachment_id' => $trainsetAttachment->id,
             'handles' => $data['handles'],
         ],
@@ -63,7 +47,7 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
 
     public function assignWorker(TrainsetAttachment $trainsetAttachment, array $data) {
         $userId = $data['worker_id'] ?? auth()->user()->id;
-        $user = $this->userRepositoryInterface->find($userId);
+        $user = $this->userService()->findOrFail($userId);
         $trainsetAttachmentComponent = $trainsetAttachment->trainset_attachment_components()->whereCarriagePanelComponentId($data['carriage_panel_component_id'])->firstOrFail();
         if ($trainsetAttachmentComponent) {
             $lastWorkerTrainset = $trainsetAttachmentComponent->detail_worker_trainsets->last();
@@ -82,10 +66,10 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
                 ]);
             }
 
-            $detailWorkerTrainset = $this->detailWorkerTrainsetService->create([
+            $detailWorkerTrainset = $this->detailWorkerTrainsetService()->create([
                 'trainset_attachment_component_id' => $trainsetAttachmentComponent->id,
                 'worker_id' => $user->id,
-                'progress_step_id' => $this->progressStepRepository->findFirst(['progress_id' => $trainsetAttachmentComponent->carriage_panel_component->progress_id, 'step_id' => $user->step->id])->id,
+                'progress_step_id' => $this->progressStepService()->find(['progress_id' => $trainsetAttachmentComponent->carriage_panel_component->progress_id, 'step_id' => $user->step->id])->first()->id,
                 'estimated_time' => $user->step->estimated_time,
             ]);
             // update current progress if there are no workers

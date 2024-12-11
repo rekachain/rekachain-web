@@ -7,8 +7,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import TrainsetName from '@/Pages/Project/Trainset/Partials/Partials/Components/TrainsetName';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -66,46 +68,58 @@ export default function TrainsetTableView({
                                 {/*>*/}
                                 {/*    Edit*/}
                                 {/*</Link>*/}
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleTrainsetDeletion(trainset.id)}
-                                    disabled={loading || !trainset.can_be_deleted}
-                                >
-                                    {t('action.delete')}
-                                </Button>
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`, [
-                                        project.id,
-                                        trainset.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
-                                    )}
-                                </Link>
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [
-                                        project.id,
-                                        trainset.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.partials.partials.trainset_table.actions.components',
-                                    )}
-                                </Link>
-                                <Link
-                                    href={route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [
-                                        project.id,
-                                        trainset.id,
-                                    ])}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.partials.partials.trainset_table.actions.panels',
-                                    )}
-                                </Link>
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_DELETE) && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleTrainsetDeletion(trainset.id)}
+                                        disabled={loading || !trainset.can_be_deleted}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGES}.index`,
+                                            [project.id, trainset.id],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.trainset.partials.partials.trainset_table.actions.carriages',
+                                        )}
+                                    </Link>
+                                )}
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`,
+                                            [project.id, trainset.id],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.trainset.partials.partials.trainset_table.actions.components',
+                                        )}
+                                    </Link>
+                                )}
+                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_PANEL_READ) && (
+                                    <Link
+                                        href={route(`${ROUTES.PROJECTS_TRAINSETS_PANELS}.index`, [
+                                            project.id,
+                                            trainset.id,
+                                        ])}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.trainset.partials.partials.trainset_table.actions.panels',
+                                        )}
+                                    </Link>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

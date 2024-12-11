@@ -8,7 +8,9 @@ import {
     TableRow,
 } from '@/Components/UI/table';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { projectService } from '@/Services/projectService';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateMeta, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     ProjectComponentResource,
@@ -19,7 +21,6 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import Import from './Import';
-// import Import from '../Import';
 
 export default function Components({
     project,
@@ -39,7 +40,7 @@ export default function Components({
     const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
-        const data = await projectService.getCarriageComponents(project.id, trainset.id, filters);
+        const data = await projectService.getTrainsetComponents(project.id, trainset.id, filters);
 
         setComponentResponse(data);
 
@@ -58,18 +59,6 @@ export default function Components({
     useEffect(() => {
         void syncComponents();
     }, [filters]);
-
-    // const handleComponentDeletion = (id: number) => {
-    //     useConfirmation().then(async ({ isConfirmed }) => {
-    //         if (isConfirmed) {
-    //             setLoading(true);
-    //             await componentService.delete(id);
-    //             await syncComponents();
-    //             void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-    //             setLoading(false);
-    //         }
-    //     });
-    // };
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -106,19 +95,23 @@ export default function Components({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import
-                                    trainset={trainset}
-                                    project={project}
-                                    hasMaterials={data.has_materials}
-                                    component={data.component}
-                                />
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT,
+                                ) && (
+                                    <Import
+                                        trainset={trainset}
+                                        project={project}
+                                        hasMaterials={data.has_materials}
+                                        component={data.component}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
 
-            <GenericPagination meta={componentResponse} handleChangePage={handlePageChange} />
+            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );
 }

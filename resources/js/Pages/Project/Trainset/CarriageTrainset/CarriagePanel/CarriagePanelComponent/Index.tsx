@@ -7,10 +7,12 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddNewComponent from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Partials/AddNewComponent';
 import { componentService } from '@/Services/componentService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
@@ -152,14 +154,18 @@ export default function ({
                         />
                     </Suspense>
 
-                    {trainset.status !== TrainsetStatusEnum.PROGRESS && componentResource && (
-                        <AddNewComponent
-                            setComponentResource={setComponentResource}
-                            handleSyncCarriagePanel={handleSyncCarriagePanel}
-                            componentResource={componentResource}
-                            carriagePanel={carriagePanel}
-                        />
-                    )}
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_CREATE,
+                    ) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                        componentResource && (
+                            <AddNewComponent
+                                setComponentResource={setComponentResource}
+                                handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                componentResource={componentResource}
+                                carriagePanel={carriagePanel}
+                            />
+                        )}
                 </div>
             </AuthenticatedLayout>
         </>

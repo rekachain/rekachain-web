@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Trainset\TrainsetsExport;
 use App\Exports\Trainset\TrainsetsTemplateExport;
 use App\Helpers\NumberHelper;
@@ -16,16 +15,8 @@ use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
-use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
-use App\Support\Interfaces\Services\CarriageServiceInterface;
-use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentHandlerServiceInterface;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
-use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
-use App\Support\Interfaces\Services\SerialPanelServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
-use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use Carbon\Carbon;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -42,30 +33,15 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
-    public function __construct(
-        protected PresetTrainsetServiceInterface $presetTrainsetService,
-        protected CarriageServiceInterface $carriageService,
-        protected CarriageTrainsetServiceInterface $carriageTrainsetService,
-        protected PanelAttachmentServiceInterface $panelAttachmentService,
-        protected SerialPanelServiceInterface $serialPanelService,
-        protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
-        protected TrainsetAttachmentHandlerServiceInterface $trainsetAttachmentHandlerService,
-        protected PanelAttachmentHandlerServiceInterface $panelAttachmentHandlerService,
-        protected TrainsetAttachmentComponentGenerator $trainsetAttachmentComponentGenerator,
-        protected CarriagePanelServiceInterface $carriagePanelService,
-    ) {
-        parent::__construct();
-    }
-
     public function updatePreset(Trainset $trainset, array $data): bool {
         return DB::transaction(function () use ($trainset, $data) {
             Model::withoutEvents(function () use ($trainset, $data) {
                 // Step 1: Delete nested data related to the carriages
                 $preset_trainset_id = $data['preset_trainset_id'];
-                $presetTrainset = $this->presetTrainsetService->findOrFail($preset_trainset_id);
+                $presetTrainset = $this->presetTrainsetService()->findOrFail($preset_trainset_id);
 
                 $trainset->carriage_trainsets()->each(function ($carriageTrainset) {
-                    $this->carriageTrainsetService->delete($carriageTrainset);
+                    $this->carriageTrainsetService()->delete($carriageTrainset);
                 });
 
                 // Step 2: Detach existing carriages from the trainset
@@ -103,7 +79,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $carriages = $trainset->carriages;
 
             // Step 2: Create a new preset trainset
-            $presetTrainset = $this->presetTrainsetService->create([
+            $presetTrainset = $this->presetTrainsetService()->create([
                 'name' => $presetName,
                 'project_id' => $projectId,
             ]);
@@ -159,10 +135,10 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
             if ($carriageId) {
                 // Step 1: Find the carriage by ID
-                $carriage = $this->carriageService->findOrFail($carriageId);
+                $carriage = $this->carriageService()->findOrFail($carriageId);
             } else {
                 // Step 1: Create a new carriage
-                $carriage = $this->carriageService->create([
+                $carriage = $this->carriageService()->create([
                     'type' => $carriageType,
                     'description' => $carriageDescription,
                 ]);
@@ -278,7 +254,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $destinationWorkstationId = $data["{$division}_destination_workstation_id"];
 
             // $trainset->carriage_trainsets()->each(function ($carriageTrainset) use ($sourceWorkstationId, $destinationWorkstationId) {
-            $trainsetAttachment = $this->trainsetAttachmentService->create([
+            $trainsetAttachment = $this->trainsetAttachmentService()->create([
                 'trainset_id' => $trainset->id,
                 'source_workstation_id' => $sourceWorkstationId,
                 'destination_workstation_id' => $destinationWorkstationId,
@@ -286,7 +262,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ]);
 
             // CREATE TRAINSET ATTACHMENT HANDLER
-            $this->trainsetAttachmentHandlerService->create([
+            $this->trainsetAttachmentHandlerService()->create([
                 'user_id' => auth()->user()->id,
                 'handler_name' => auth()->user()->name,
                 'trainset_attachment_id' => $trainsetAttachment->id,
@@ -294,7 +270,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             ]);
 
             $trainsetAttachment->update(['attachment_number' => $this->generateAttachmentNumber($trainsetAttachment)]);
-            $generateResult = $this->trainsetAttachmentComponentGenerator->generate($trainsetAttachment);
+            $generateResult = app(TrainsetAttachmentComponentGenerator::class)->generate($trainsetAttachment);
 
             if ($generateResult['success'] === false) {
                 logger('Failed to generate trainset attachment');
@@ -336,14 +312,14 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     $sourceWorkstationId = $data['assembly_source_workstation_id'];
                     $destinationWorkstationId = $data['assembly_destination_workstation_id'];
 
-                    $panelAttachment = $this->panelAttachmentService->create([
+                    $panelAttachment = $this->panelAttachmentService()->create([
                         'carriage_panel_id' => $carriagePanel->id,
                         'source_workstation_id' => $sourceWorkstationId,
                         'destination_workstation_id' => $destinationWorkstationId,
                     ]);
 
                     // CREATE PANEL ATTACHMENT HANDLER
-                    $this->panelAttachmentHandlerService->create([
+                    $this->panelAttachmentHandlerService()->create([
                         'user_id' => auth()->user()->id,
                         'handler_name' => auth()->user()->name,
                         'panel_attachment_id' => $panelAttachment->id,
@@ -383,7 +359,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $qty = $carriagePanel->carriage_trainset->qty * $carriagePanel->qty;
         logger('Qty: ' . $qty);
         for ($i = 0; $i < $qty; $i++) {
-            $serialPanel = $this->serialPanelService->create([
+            $serialPanel = $this->serialPanelService()->create([
                 'panel_attachment_id' => $panelAttachment->id,
                 'manufacture_status' => SerialPanelManufactureStatusEnum::IN_PROGRESS,
             ]);
@@ -394,7 +370,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $path = "serial_panels/qr_images/{$serialPanel->id}.svg";
             $this->generateQrCode($qrCode, $path);
 
-            $this->serialPanelService->update($serialPanel, [
+            $this->serialPanelService()->update($serialPanel, [
                 'product_no' => $panelAttachment->trainset->project->id .
                     $panelAttachment->trainset->id .
                     $panelAttachment->carriage_panel->carriage->id .
@@ -433,11 +409,11 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
     public function generateAttachmentNumber(Model $model) {
 
         if ($model instanceof PanelAttachment) {
-            $carriagePanelIds = $this->carriagePanelService->find([
+            $carriagePanelIds = $this->carriagePanelService()->find([
                 'carriage_trainset_id' => $model->carriage_panel->carriage_trainset_id,
             ])->pluck('id')->toArray();
 
-            $numberAttachmentOnTrainset = $this->panelAttachmentService->find([
+            $numberAttachmentOnTrainset = $this->panelAttachmentService()->find([
                 ['carriage_panel_id', 'in', $carriagePanelIds],
             ]);
 
@@ -451,7 +427,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             return $attachmentNumber;
         }
 
-        $numberAttachmentOnTrainset = $this->trainsetAttachmentService->find([
+        $numberAttachmentOnTrainset = $this->trainsetAttachmentService()->find([
             'trainset_id' => $model->trainset_id,
         ])->count();
 
@@ -468,18 +444,18 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         $totalRequiredAttachment = 2; // base total required trainset attachment in 1 trainset
         $totalGeneratedAttachment = 0;
         $carriageTrainsetsIds = $trainset->carriage_trainsets()->pluck('id')->toArray();
-        $carriagePanelsIds = $this->carriagePanelService->find([
+        $carriagePanelsIds = $this->carriagePanelService()->find([
             'carriage_trainset_id', 'in', $carriageTrainsetsIds,
         ])->pluck('id')->toArray();
 
         $totalRequiredAttachment += count($carriagePanelsIds);
 
-        $trainsetAttachments = $this->trainsetAttachmentService->find([
+        $trainsetAttachments = $this->trainsetAttachmentService()->find([
             'trainset_id' => $trainset->id,
         ]);
         $totalGeneratedAttachment = $trainsetAttachments->count(); // should be 2
 
-        $panelAttachments = $this->panelAttachmentService->find([
+        $panelAttachments = $this->panelAttachmentService()->find([
             ['carriage_panel_id', 'in', $carriagePanelsIds],
         ]);
         $totalGeneratedAttachment += $panelAttachments->count();
@@ -653,11 +629,141 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         }
 
         $keyOrModel->carriage_trainsets()->each(function ($carriageTrainset) {
-            $this->carriageTrainsetService->delete($carriageTrainset);
+            $this->carriageTrainsetService()->delete($carriageTrainset);
         });
 
         return parent::delete($keyOrModel);
     }
+
+    public function calculateEstimatedTime($trainset_id = null) {
+        $mechanicTime = 0;
+        $electricalTime = 0;
+        $assemblyTime = 0;
+
+        if ($trainset_id) {
+            $trainset = \App\Models\Trainset::with(['carriage_trainsets' => [
+                'carriage_panels' => [
+                    'progress.steps',
+                ],
+            ]])->findOrFail($trainset_id);
+
+            foreach ($trainset->carriage_trainsets as $carriageTrainset) {
+                foreach ($carriageTrainset->carriage_panels as $carriagePanel) {
+                    $stepTime = 0;
+                    foreach ($carriagePanel->progress->steps as $step) {
+                        $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
+                    }
+
+                    switch ($carriagePanel->progress->work_aspect_id) {
+                        case 1: // Mechanic
+                            $mechanicTime += $stepTime;
+                            break;
+                        case 2: // Electric
+                            $electricalTime += $stepTime;
+                            break;
+                        case 3: // Assembly
+                            $assemblyTime += $stepTime;
+                            break;
+                    }
+
+                    foreach ($carriagePanel->carriage_panel_components as $component) {
+                        $componentStepTime = 0;
+                        foreach ($component->progress->steps as $step) {
+                            $componentStepTime = $step->estimated_time * $component->qty * $carriagePanel->qty * $carriageTrainset->qty;
+                        }
+
+                        switch ($component->progress->work_aspect_id) {
+                            case 1: // Mechanic
+                                $mechanicTime += $componentStepTime;
+                                break;
+                            case 2: // Electric
+                                $electricalTime += $componentStepTime;
+                                break;
+                            case 3: // Assembly
+                                $assemblyTime += $componentStepTime;
+                                break;
+                        }
+                    }
+                }
+            }
+
+            $totalTime = max($mechanicTime, $electricalTime) + $assemblyTime;
+
+            $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+            $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
+
+            $startDate = $this->getInitialDate($trainset);
+            $endDate = Carbon::parse($startDate);
+
+            // Add working days considering only Monday-Friday
+            for ($i = 0; $i < $calculatedEstimateTime; $i++) {
+                $endDate->addDay();
+                // Skip weekends
+                while ($endDate->isWeekend()) {
+                    $endDate->addDay();
+                }
+            }
+            $trainset->update([
+                'mechanical_time' => $mechanicTime,
+                'electrical_time' => $electricalTime,
+                'assembly_time' => $assemblyTime,
+                'calculated_estimate_time' => $calculatedEstimateTime,
+                'initial_date' => $startDate,
+                'estimated_end_date' => $endDate->format('Y-m-d'),
+            ]);
+
+            $trainsets = $trainset->project->trainsets()->orderBy('id')->get();
+            $currentTrainsetIndex = $trainsets->search(fn ($t) => $t->id === $trainset->id);
+            if ($currentTrainsetIndex !== false && $currentTrainsetIndex < count($trainsets) - 1) {
+                return $this->getInitialDate($trainsets[$currentTrainsetIndex + 1]);
+            }
+
+            return $endDate->format('Y-m-d');
+            // return response()->json([
+            //     'trainset_id' => $trainset_id,
+            //     'mechanical_time' => $mechanicTime,
+            //     'electrical_time' => $electricalTime,
+            //     'assembly_time' => $assemblyTime,
+            //     'total_estimated_time' => $totalTime,
+            //     'calculated_estimate_time' => $calculatedEstimateTime,
+            //     'initial_date' => $startDate,
+            //     'estimated_end_date' => $endDate->format('Y-m-d')
+            // ]);
+        }
+    }
+
+    public function getInitialDate(Trainset $trainset) {
+        $trainsets = $trainset->project->trainsets()->orderBy('id')->get();
+        $currentTrainsetIndex = $trainsets->search(fn ($t) => $t->id === $trainset->id);
+
+        if ($currentTrainsetIndex === 0) {
+            return $trainset->project->initial_date;
+        }
+        $previousTrainset = $trainsets[$currentTrainsetIndex - 1];
+        if ($previousTrainset->mechanical_time && $previousTrainset->electrical_time && $previousTrainset->initial_date) {
+            $totalTime = max($previousTrainset->mechanical_time, $previousTrainset->electrical_time);
+            $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+            $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
+
+            $startDate = $previousTrainset->initial_date;
+            $endDate = Carbon::parse($startDate);
+
+            for ($i = 0; $i < $calculatedEstimateTime; $i++) {
+                $endDate->addDay();
+                // Skip weekends
+                while ($endDate->isWeekend()) {
+                    $endDate->addDay();
+                }
+            }
+
+            return $endDate->format('Y-m-d');
+        }
+
+        return $this->calculateEstimatedTime($previousTrainset->id);
+
+    }
+
+    public function getEndDate(Trainset $trainset) {}
 
     protected function getRepositoryClass(): string {
         return TrainsetRepositoryInterface::class;

@@ -1,6 +1,8 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { RawMaterialResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -38,20 +40,23 @@ export default function RawMaterialCardView({
                         {/* <h4 className="text-md">{permission.name}</h4> */}
                         <h4 className='w-[80%] text-sm'>{rawMaterial.description}</h4>
                         <div className='flex w-full items-center justify-end'>
-                            <Link
-                                href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                            {rawMaterial.can_be_deleted && (
-                                <Button
-                                    variant='link'
-                                    onClick={() => handleRawMaterialDeletion(rawMaterial.id)}
+                            {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_UPDATE) && (
+                                <Link
+                                    href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                    {t('action.delete')}
-                                </Button>
+                                    {t('action.edit')}
+                                </Link>
                             )}
+                            {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_DELETE) &&
+                                rawMaterial.can_be_deleted && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleRawMaterialDeletion(rawMaterial.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                         </div>
                     </div>
                 </AnimateIn>

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Exports\Progress\ProgressExport;
 use App\Exports\Progress\ProgressTemplateExport;
 use App\Imports\Progress\ProgressImport;

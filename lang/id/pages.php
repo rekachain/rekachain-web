@@ -46,6 +46,7 @@ return [
             'workstations_sub' => 'Progress dari Semua Workstation',
             'find_project' => 'Cari Proyek...',
             'project_not_found' => 'Proyek Tidak Ditemukan',
+            'trainset_not_found' => 'Trainset Tidak Ditemukan',
             'find_trainset' => 'Cari Trainset...',
             'select_trainset' => 'Pilih Trainset...',
             'panel_trainset' => 'Panel Trainset',
@@ -1469,6 +1470,7 @@ return [
                                     'no_attachments' => 'Tidak ada lampiran yang ditemukan.',
                                 ],
                                 'headers' => [
+                                    'handlers' => 'Penanggung Jawab',
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
                                     'serial_number' => 'Nomor Seri',
@@ -1508,6 +1510,7 @@ return [
                             'dialogs' => [
                                 'title' => 'Lampiran Trainset',
                                 'headers' => [
+                                    'handlers' => 'Penanggung Jawab',
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
                                     'serial_number' => 'Nomor Seri',
@@ -1595,8 +1598,11 @@ return [
                         ],
                         'progress_component' => [
                             'props' => [
+                                'none' => 'Tidak Ada Progres Ditemukan (:status)',
                                 'trainset' => 'Trainset: :trainset',
                                 'component' => 'Komponen: :component',
+                                'component_placeholder' => 'Pilih Komponen',
+                                'select_all_components' => 'Semua Komponen',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Gerbong: :carriage',
                                 'workers' => 'Pekerja:',
@@ -1604,6 +1610,7 @@ return [
                         ],
                         'progress_panel' => [
                             'props' => [
+                                'none' => 'Tidak Ada Progres Ditemukan',
                                 'trainset' => 'Trainset: :trainset',
                                 'panel' => 'Panel: :panel',
                                 'carriage' => 'Gerbong: :carriage',
@@ -2234,7 +2241,7 @@ return [
     ],
     'trainset_attachment' => [
         'document_trainset_attachment' => [
-            'title' => 'Lampiran Trainset',
+            'title' => 'Kartu Penarikan Material (KPM)',
             'headers' => [
                 'mechanic_attachment' => 'Lampiran Mekanik',
                 'electric_attachment' => 'Lampiran Elektrik',
@@ -2243,22 +2250,35 @@ return [
                 'serial_number' => 'Nomor Seri',
                 'reference_number' => 'Nomor Referensi',
                 'date' => 'Tanggal',
+                'source_workstation' => 'Workstation Asal',
+                'destination_workstation' => 'Workstation Tujuan',
                 'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Kode Material',
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Total',
+                    'total_required' => 'Jumlah Diminta',
+                    'total_received' => 'Jumlah Diserahkan',
+                    'lot' => 'Lot/TS',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Dibuat Oleh',
+                    'send' => 'Dikirim Oleh',
+                    'receive' => 'Diterima Oleh',
+                    'identifier' => 'NIP',
                 ],
             ],
         ],
     ],
     'panel_attachment' => [
         'document_panel_attachment' => [
-            'title' => 'KPM Assembly',
+            'title' => 'Kartu Penarikan Material (KPM)',
             'headers' => [
                 'kpm_assembly' => 'KPM Assembly',
                 'attachment_number' => 'Nomor Lampiran',
@@ -2266,15 +2286,29 @@ return [
                 'serial_number' => 'Nomor Seri',
                 'reference_number' => 'Nomor Referensi',
                 'date' => 'Tanggal',
+                'source_workstation' => 'Workstation Asal',
+                'destination_workstation' => 'Workstation Tujuan',
+                'description' => 'Deskripsi',
                 'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Kode Material',
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Total',
+                    'total_required' => 'Jumlah Diminta',
+                    'total_received' => 'Jumlah Diserahkan',
+                    'lot' => 'Lot/TS',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Dibuat Oleh',
+                    'send' => 'Dikirim Oleh',
+                    'receive' => 'Diterima Oleh',
+                    'identifier' => 'NIP',
                 ],
             ],
         ],

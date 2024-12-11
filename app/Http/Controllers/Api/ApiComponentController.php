@@ -19,7 +19,7 @@ class ApiComponentController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        // $request->checkPermissionEnum(PermissionEnum::COMPONENT_READ);
+        // PermissionHelper::check(PermissionEnum::COMPONENT_READ);
         $perPage = request()->get('perPage', 15);
 
         return ComponentResource::collection($this->componentService->with([])->getAllPaginated(request()->query(), $perPage));
@@ -29,7 +29,7 @@ class ApiComponentController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreComponentRequest $request) {
-        // $request->checkPermissionEnum(PermissionEnum::COMPONENT_CREATE);
+        // PermissionHelper::check(PermissionEnum::COMPONENT_CREATE);
         $component = $this->componentService->create($request->validated());
 
         return new ComponentResource($component->load('progress'));
@@ -39,7 +39,7 @@ class ApiComponentController extends Controller {
      * Display the specified resource.
      */
     public function show(Component $component) {
-        // $request->checkPermissionEnum(PermissionEnum::COMPONENT_READ);
+        // PermissionHelper::check(PermissionEnum::COMPONENT_READ);
         return new ComponentResource($component->load('progress'));
     }
 
@@ -47,7 +47,7 @@ class ApiComponentController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateComponentRequest $request, Component $component) {
-        // $request->checkPermissionEnum(PermissionEnum::COMPONENT_UPDATE);
+        // PermissionHelper::check(PermissionEnum::COMPONENT_UPDATE);
         $this->componentService->update($component, $request->validated());
 
         return new ComponentResource($component->load('progress'));

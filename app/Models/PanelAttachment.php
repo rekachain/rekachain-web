@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +16,7 @@ use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class PanelAttachment extends Model {
-    use HasFactory, HasRelationships;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'carriage_panel_id',
@@ -58,10 +59,6 @@ class PanelAttachment extends Model {
             ],
         ],
     ];
-
-    public function getFilterable(): array {
-        return $this->filterable;
-    }
 
     public function panel(): HasOneThrough {
         return $this->hasOneThrough(Panel::class, CarriagePanel::class, 'id', 'id', 'id', 'panel_id');

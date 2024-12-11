@@ -1,9 +1,11 @@
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { carriagePanelComponentService } from '@/Services/carriagePanelComponentService';
 import { STYLING } from '@/Support/Constants/styling';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { CarriagePanelComponentResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
@@ -68,13 +70,17 @@ export default function ({
             ) : (
                 <div className='flex items-center gap-4'>
                     <div>{carriagePanelComponent.qty}</div>
-                    <Button
-                        variant='ghost'
-                        onClick={toggleEditMode}
-                        className='h-fit whitespace-normal rounded-full p-2'
-                    >
-                        <PencilLine size={STYLING.ICON.SIZE.SMALL} />
-                    </Button>
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_UPDATE,
+                    ) && (
+                        <Button
+                            variant='ghost'
+                            onClick={toggleEditMode}
+                            className='h-fit whitespace-normal rounded-full p-2'
+                        >
+                            <PencilLine size={STYLING.ICON.SIZE.SMALL} />
+                        </Button>
+                    )}
                 </div>
             )}
         </>
