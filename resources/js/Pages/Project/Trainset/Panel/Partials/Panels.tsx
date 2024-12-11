@@ -11,17 +11,9 @@ import { useEffect, useState } from 'react';
 // import PanelTableView from './Partials/PanelTableView';
 // import PanelCardView from './Partials/PanelCardView';
 import GenericPagination from '@/Components/GenericPagination';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/Components/UI/table';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import Import from './Import';
+import { useLoading } from '@/Contexts/LoadingContext';
+import CardView from './Partials/CardView';
+import TableView from './Partials/TableView';
 
 export default function Panels({
     project,
@@ -61,9 +53,31 @@ export default function Panels({
         setFilters({ ...filters, page });
     };
 
+    const { loading } = useLoading();
+
     return (
         <div className='space-y-4'>
             {panelResponse && (
+                // <TableView project={project} trainset={trainset}></TableView>
+                <>
+                    <div className='hidden md:block'>
+                        <TableView
+                            project={project}
+                            trainset={trainset}
+                            panelResponse={panelResponse}
+                        ></TableView>
+                    </div>
+                    <div className='block md:hidden'>
+                        <CardView
+                            project={project}
+                            trainset={trainset}
+                            panelResponse={panelResponse}
+                        ></CardView>
+                    </div>
+                </>
+            )}
+            {/* Check Permission */}
+            {/* {panelResponse && (
                 <>
                     <div>
                         <Table>
@@ -99,7 +113,7 @@ export default function Panels({
                         </Table>
                     </div>
                 </>
-            )}
+            )}*/}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );

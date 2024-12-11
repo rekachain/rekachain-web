@@ -1,16 +1,6 @@
 import GenericPagination from '@/Components/GenericPagination';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/Components/UI/table';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { checkPermission } from '@/Helpers/permissionHelper';
 import { projectService } from '@/Services/projectService';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateMeta, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     ProjectComponentResource,
@@ -20,7 +10,9 @@ import {
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
-import Import from './Import';
+import CardView from './Partials/CardView';
+import TableView from './Partials/TableView';
+// import Import from '../Import';
 
 export default function Components({
     project,
@@ -66,7 +58,36 @@ export default function Components({
 
     const { t } = useLaravelReactI18n();
     return (
-        <div>
+        <div className='space-y-4'>
+            {componentResponse && (
+                // <TableView project={project} trainset={trainset}></TableView>
+                <>
+                    <div className='hidden md:block'>
+                        <TableView
+                            project={project}
+                            trainset={trainset}
+                            componentResponse={componentResponse}
+                        ></TableView>
+                    </div>
+                    <div className='block md:hidden'>
+                        <CardView
+                            project={project}
+                            trainset={trainset}
+                            componentResponse={componentResponse}
+                        ></CardView>
+                    </div>
+                </>
+            )}
+            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
+        </div>
+    );
+}
+
+{
+    /* Check Permission */
+}
+{
+    /* <div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -109,9 +130,5 @@ export default function Components({
                         </TableRow>
                     ))}
                 </TableBody>
-            </Table>
-
-            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
-        </div>
-    );
+            </Table> */
 }
