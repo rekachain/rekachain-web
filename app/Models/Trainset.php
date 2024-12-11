@@ -250,7 +250,7 @@ class Trainset extends Model {
     }
 
     public function canBeDeleted(): bool {
-        return !in_array($this->status, [TrainsetStatusEnum::PROGRESS, TrainsetStatusEnum::DONE]);
+        return !in_array($this->status, [TrainsetStatusEnum::PROGRESS, TrainsetStatusEnum::DONE]) && $this->carriage_trainsets()->count() === 0;
     }
 
     public function hasMechanicTrainsetAttachment(): bool {
