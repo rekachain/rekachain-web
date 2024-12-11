@@ -88,7 +88,7 @@ export default function ({
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
-                    <DialogTitle>{progress.name}</DialogTitle>
+                    <DialogTitle>{progress?.name}</DialogTitle>
                     <DialogDescription></DialogDescription>
                 </DialogHeader>
                 <Accordion type='single' collapsible>
