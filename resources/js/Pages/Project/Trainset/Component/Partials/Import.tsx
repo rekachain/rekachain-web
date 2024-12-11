@@ -63,7 +63,9 @@ export default function ({
             data.work_aspect_id as number,
         );
         await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
-        router.visit(route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [project.id, trainset.id]));
+        router.visit(
+            route(`${ROUTES.PROJECTS_TRAINSETS_COMPONENTS}.index`, [project.id, trainset.id]),
+        );
     });
     const fetchWorkAspects = useCallback(async () => {
         return await workAspectService
