@@ -192,7 +192,7 @@ export const projectService = {
         formData.append('component_id', componentId.toString());
         formData.append('work_aspect_id', workAspectId.toString());
         return await window.axios.post(
-            route(`${ROUTES.PROJECTS}.update`, [projectId, trainsetId]),
+            route(`${ROUTES.PROJECTS_TRAINSETS}.update`, [projectId, trainsetId]),
             formData,
             {
                 headers: {
@@ -230,7 +230,7 @@ export const projectService = {
         formData.append('file', file);
         formData.append('panel_id', panelId.toString());
         return await window.axios.post(
-            route(`${ROUTES.PROJECTS}.update`, [projectId, trainsetId]),
+            route(`${ROUTES.PROJECTS_TRAINSETS}.update`, [projectId, trainsetId]),
             formData,
             {
                 headers: {
