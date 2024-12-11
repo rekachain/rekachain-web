@@ -1,6 +1,3 @@
-import { PaginateResponse } from '@/Support/Interfaces/Others'
-import { ProjectComponentResource, ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources'
-import React from 'react'
 import {
     Table,
     TableBody,
@@ -9,24 +6,27 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import {
+    ProjectComponentResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
 
-export default function TableView(
-    {
-        project,
-        trainset,
-        componentResponse
-    }:{
-        project:ProjectResource,
-        trainset:TrainsetResource
-        componentResponse:PaginateResponse<ProjectComponentResource>
-    }
-) {
+export default function TableView({
+    project,
+    trainset,
+    componentResponse,
+}: {
+    project: ProjectResource;
+    trainset: TrainsetResource;
+    componentResponse: PaginateResponse<ProjectComponentResource>;
+}) {
     const { t } = useLaravelReactI18n();
-  return (
-    <div>
-
+    return (
+        <div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -66,6 +66,6 @@ export default function TableView(
                     ))}
                 </TableBody>
             </Table>
-    </div>
-  )
+        </div>
+    );
 }

@@ -1,5 +1,3 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
 import {
     ChartContainer,
     ChartLegend,
@@ -8,6 +6,8 @@ import {
     ChartTooltipContent,
     type ChartConfig,
 } from '@/Components/UI/chart';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';

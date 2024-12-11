@@ -64,15 +64,15 @@ export default function Components({
                 <>
                     <div className='hidden md:block'>
                         <TableView
-                            project={project}
                             trainset={trainset}
+                            project={project}
                             componentResponse={componentResponse}
                         ></TableView>
                     </div>
                     <div className='block md:hidden'>
                         <CardView
-                            project={project}
                             trainset={trainset}
+                            project={project}
                             componentResponse={componentResponse}
                         ></CardView>
                     </div>

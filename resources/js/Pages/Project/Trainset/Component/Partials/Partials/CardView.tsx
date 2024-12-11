@@ -1,26 +1,24 @@
-import React from 'react'
-import { ProjectComponentResource, ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources'
-import { PaginateResponse } from '@/Support/Interfaces/Others'
-import { useLaravelReactI18n } from 'laravel-react-i18n'
-import AnimateIn from '@/Lib/AnimateIn'
-import Import from '../Import'
+import AnimateIn from '@/Lib/AnimateIn';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import {
+    ProjectComponentResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import Import from '../Import';
 
-export default function CardView(
-
-    {
-        project,
-        trainset,
-        componentResponse
-    }:{
-        project:ProjectResource,
-        trainset:TrainsetResource
-        componentResponse:PaginateResponse<ProjectComponentResource>
-    }
-) {
-
+export default function CardView({
+    project,
+    trainset,
+    componentResponse,
+}: {
+    project: ProjectResource;
+    trainset: TrainsetResource;
+    componentResponse: PaginateResponse<ProjectComponentResource>;
+}) {
     const { t } = useLaravelReactI18n();
-  return (
-
+    return (
         <div>
             {componentResponse?.data.map((data) => (
                 <AnimateIn
@@ -53,14 +51,15 @@ export default function CardView(
                         {/* <h5 className=" text-sm ">Lokasi : {panel.location}</h5> */}
                         <div className='flex w-full items-center justify-end'>
                             <Import
+                                trainset={trainset}
                                 project={project}
+                                hasMaterials={data.has_materials}
                                 component={data.component}
-                                hasMaterials={data.has_materials} 
-                                trainset={trainset}                            />
+                            />
                         </div>
                     </div>
                 </AnimateIn>
             ))}
         </div>
-  )
+    );
 }

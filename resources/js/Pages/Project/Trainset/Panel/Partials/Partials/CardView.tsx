@@ -1,20 +1,20 @@
-import { PaginateMeta, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { ProjectPanelResource, ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
-import React, { useState } from 'react'
-import Import from '../Import';
 import AnimateIn from '@/Lib/AnimateIn';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import {
+    ProjectPanelResource,
+    ProjectResource,
+    TrainsetResource,
+} from '@/Support/Interfaces/Resources';
+import Import from '../Import';
 
-
-export default function CardView(
-
-{
+export default function CardView({
     project,
     trainset,
-    panelResponse
+    panelResponse,
 }: {
     project: ProjectResource;
     trainset: TrainsetResource;
-    panelResponse:PaginateResponse<ProjectPanelResource>
+    panelResponse: PaginateResponse<ProjectPanelResource>;
 }) {
     // const [panelResponse, setPanelResponse] = useState<PaginateResponse<ProjectPanelResource>>();
     // const [panelResponseMeta, setPanelResponseMeta] = useState<PaginateMeta>();
@@ -22,12 +22,11 @@ export default function CardView(
     //     page: 1,
     //     perPage: 10,
     // }
-// ) 
-  return (
-
+    // )
+    return (
         <div>
             {panelResponse?.data.map((data) => (
-                <div >
+                <div>
                     <AnimateIn
                         to='opacity-100 translate-y-0 translate-x-0'
                         key={data.panel.id}
@@ -73,12 +72,12 @@ export default function CardView(
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
                             <div className='flex w-full items-center justify-end'>
-                                            <Import
-                                                trainset={trainset}
-                                                project={project}
-                                                panel={data.panel}
-                                                hasMaterials={data.has_materials}
-                                            />
+                                <Import
+                                    trainset={trainset}
+                                    project={project}
+                                    panel={data.panel}
+                                    hasMaterials={data.has_materials}
+                                />
                                 {/* <Button variant="link" onClick={() => handleWorkshopDeletion(workshop.id)}>
                             Delete
                         </Button> */}
@@ -88,5 +87,5 @@ export default function CardView(
                 </div>
             ))}
         </div>
-  )
+    );
 }

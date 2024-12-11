@@ -62,15 +62,15 @@ export default function Panels({
                 <>
                     <div className='hidden md:block'>
                         <TableView
-                            project={project}
                             trainset={trainset}
+                            project={project}
                             panelResponse={panelResponse}
                         ></TableView>
                     </div>
                     <div className='block md:hidden'>
                         <CardView
-                            project={project}
                             trainset={trainset}
+                            project={project}
                             panelResponse={panelResponse}
                         ></CardView>
                     </div>
