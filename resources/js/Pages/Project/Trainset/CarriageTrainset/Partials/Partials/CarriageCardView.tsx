@@ -1,13 +1,13 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { TrainsetResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import CarriageQty from '../Components/CarriageQty';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function CarriageCardView({
     trainset,
@@ -96,27 +96,35 @@ export default function CarriageCardView({
                             {/* <h5 className="  text-sm ">Waktu Selesai : {trainset.end_time}</h5> */}
 
                             <div className='flex w-full items-center justify-end'>
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE) && (
-                                <Button
-                                    variant='link'
-                                    // disabled={loading || !trainset.can_be_deleted}
-                                    onClick={() => handleTrainsetDeletion(trainset.id)}
-                                >
-                                    {t('action.delete')}
-                                </Button>
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_DELETE,
+                                ) && (
+                                    <Button
+                                        variant='link'
+                                        // disabled={loading || !trainset.can_be_deleted}
+                                        onClick={() => handleTrainsetDeletion(trainset.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ) && (
-                                <Link
-                                    href={route(
-                                        `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
-                                        [trainset.project_id, trainset.id, carriage_trainset.id],
-                                    )}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t(
-                                        'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.actions.panels',
-                                    )}
-                                </Link>
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ,
+                                ) && (
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS}.index`,
+                                            [
+                                                trainset.project_id,
+                                                trainset.id,
+                                                carriage_trainset.id,
+                                            ],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t(
+                                            'pages.project.trainset.carriage_trainset.partials.partials.carriage_card.actions.panels',
+                                        )}
+                                    </Link>
                                 )}
                                 {/* <Link
                                     className={buttonVariants({ variant: 'link' })}

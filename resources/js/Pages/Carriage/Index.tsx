@@ -20,16 +20,14 @@ export default function () {
                     <div className='flex items-center gap-5'>
                         <h1 className='text-page-header my-4'>{t('pages.carriage.index.title')}</h1>
                         {checkPermission(PERMISSION_ENUM.CARRIAGE_CREATE) && (
-                        <Link
-                            href={route(`${ROUTES.CARRIAGES}.create`)}
-                            className={buttonVariants({ variant: 'default' })}
-                        >
-                            {t('pages.carriage.index.buttons.create')}
-                        </Link>
+                            <Link
+                                href={route(`${ROUTES.CARRIAGES}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
+                            >
+                                {t('pages.carriage.index.buttons.create')}
+                            </Link>
                         )}
-                        {checkPermission(PERMISSION_ENUM.CARRIAGE_IMPORT) && (
-                            <Import />
-                        )}
+                        {checkPermission(PERMISSION_ENUM.CARRIAGE_IMPORT) && <Import />}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Carriages />

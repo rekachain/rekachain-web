@@ -5,6 +5,15 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
+import { buttonVariants } from '@/Components/UI/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/Components/UI/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { ScrollArea, ScrollBar } from '@/Components/UI/scroll-area';
 import {
@@ -26,6 +35,7 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { MoveDown } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import WorkerCard from './Components/WorkerCard';
 import WorkerStepCard from './Components/WorkerStepCard';
@@ -74,8 +84,8 @@ const ProgressComponent = ({
 
     return (
         <div key={attachment.id} className='text-black dark:text-white'>
-            <div className='flex flex-row justify-between'>
-                <h1 className='my-auto flex text-xl font-bold'>{title}</h1>
+            <div className='mb-3 flex w-[90%] flex-col justify-between md:w-fit md:flex-row'>
+                <h1 className='my-auto flex text-center text-xl font-bold md:w-full'>{title}</h1>
                 <div className='flex'>
                     <InputLabel
                         id='selected-component-id-label'
@@ -126,7 +136,7 @@ const ProgressComponent = ({
                 (componentProgress &&
                     componentProgress.map((progress, index) => (
                         <div key={progress.component.id}>
-                            <h4 className='text-lg font-bold'>
+                            <h4 className='w-[80%] text-lg font-bold md:w-full'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component',
                                     { component: progress.component.name },
@@ -162,8 +172,97 @@ const ProgressComponent = ({
                                         <div className='flex'>
                                             <ScrollArea className='flex w-1 flex-1'>
                                                 <div className='mx-auto flex w-max space-x-4 p-4'>
+                                                    <Dialog>
+                                                        <div className='md:hidden'>
+                                                            <DialogTrigger
+                                                                className={buttonVariants()}
+                                                            >
+                                                                Lihat Detail Progress
+                                                            </DialogTrigger>
+                                                        </div>
+                                                        <DialogContent className='flex h-screen w-[350px] flex-col md:w-[60%] md:flex-row'>
+                                                            <DialogHeader>
+                                                                <DialogTitle></DialogTitle>
+                                                                <DialogDescription className='w-full'>
+                                                                    <ScrollArea className='flex flex-1'>
+                                                                        {componentProgress.steps.map(
+                                                                            (step, index) => (
+                                                                                <Fragment
+                                                                                    key={`${componentProgress.carriage_panel_component_id} ${(step as unknown as StepResource).id}`}
+                                                                                >
+                                                                                    <Popover modal>
+                                                                                        <PopoverTrigger className='w-full text-left'>
+                                                                                            <WorkerStepCard
+                                                                                                step={
+                                                                                                    step as StepResource & {
+                                                                                                        work_status:
+                                                                                                            | string
+                                                                                                            | null;
+                                                                                                        localized_work_status:
+                                                                                                            | string
+                                                                                                            | null;
+                                                                                                        workers: DetailWorkerTrainsetResource[];
+                                                                                                    }
+                                                                                                }
+                                                                                            />
+                                                                                        </PopoverTrigger>
+                                                                                        <PopoverContent className='flex flex-col gap-2'>
+                                                                                            <h4 className='text-lg font-bold'>
+                                                                                                {t(
+                                                                                                    'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.workers',
+                                                                                                )}
+                                                                                            </h4>
+                                                                                            <ScrollArea className='max-h-[250px] overflow-y-auto'>
+                                                                                                <div className='flex flex-col gap-2'>
+                                                                                                    {step.workers &&
+                                                                                                        step.workers.map(
+                                                                                                            (
+                                                                                                                stepWorker,
+                                                                                                            ) => (
+                                                                                                                <WorkerCard
+                                                                                                                    key={
+                                                                                                                        stepWorker.id
+                                                                                                                    }
+                                                                                                                    detailWorker={
+                                                                                                                        stepWorker
+                                                                                                                    }
+                                                                                                                />
+                                                                                                            ),
+                                                                                                        )}
+                                                                                                </div>
+                                                                                            </ScrollArea>
+                                                                                        </PopoverContent>
+                                                                                    </Popover>
+                                                                                    <div className='my-2 flex w-full justify-center'>
+                                                                                        {index <
+                                                                                            componentProgress
+                                                                                                .steps
+                                                                                                .length -
+                                                                                                1 && (
+                                                                                            <MoveDown
+                                                                                                key={
+                                                                                                    componentProgress
+                                                                                                        .panel
+                                                                                                        .name +
+                                                                                                    (
+                                                                                                        step as unknown as StepResource
+                                                                                                    )
+                                                                                                        .id +
+                                                                                                    'sep'
+                                                                                                }
+                                                                                            />
+                                                                                        )}
+                                                                                    </div>
+                                                                                </Fragment>
+                                                                            ),
+                                                                        )}
+                                                                    </ScrollArea>
+                                                                </DialogDescription>
+                                                            </DialogHeader>
+                                                        </DialogContent>
+                                                    </Dialog>
                                                     <Breadcrumb>
-                                                        <BreadcrumbList>
+                                                        <BreadcrumbList className='hidden md:flex'>
                                                             {componentProgress.steps.map(
                                                                 (step, index) => (
                                                                     <Fragment

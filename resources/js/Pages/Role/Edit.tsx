@@ -27,15 +27,17 @@ export default function (props: {
     divisions: DivisionResource[];
 }) {
     const { t } = useLaravelReactI18n();
+    const { loading } = useLoading();
+
     const { data, setData } = useForm({
         name: props.role.name,
         division_id: props.role.division_id as number | null,
         level: props.role?.level ?? '',
         permissions: props.role.permissions as unknown as number[],
     });
-    const { loading } = useLoading();
 
-    const [permissions] = useState<PermissionResourceGrouped[]>(props.permissions);
+    const [permissions, setPermissions] = useState<PermissionResourceGrouped[]>(props.permissions);
+
     const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
         await roleService.update(props.role.id, data);
@@ -51,6 +53,37 @@ export default function (props: {
                 'permissions',
                 data.permissions.filter((id) => id !== permission.id),
             );
+        }
+    };
+
+    const handlePermissionGroupChange = (
+        checked: boolean,
+        permissionGroup: PermissionResourceGrouped,
+    ) => {
+        const updatedPermissions = [...permissions];
+        const groupIndex = updatedPermissions.findIndex(
+            (group) => group.group === permissionGroup.group,
+        );
+
+        if (groupIndex > -1) {
+            updatedPermissions[groupIndex].permissions = updatedPermissions[
+                groupIndex
+            ].permissions.map((permission) => ({
+                ...permission,
+                checked: checked,
+            }));
+
+            setPermissions(updatedPermissions);
+
+            const permissionIds = updatedPermissions[groupIndex].permissions.map((p) => p.id);
+            if (checked) {
+                setData('permissions', [...new Set([...data.permissions, ...permissionIds])]);
+            } else {
+                setData(
+                    'permissions',
+                    data.permissions.filter((id) => !permissionIds.includes(id)),
+                );
+            }
         }
     };
 
@@ -126,12 +159,32 @@ export default function (props: {
                         <div className='mt-4 rounded bg-background-2 p-5'>
                             <h1>{t('pages.role.edit.fields.permissions')}</h1>
                             <div className='mt-1'>
-                                <div className='flex flex-wrap'>
-                                    {permissions.map((permission) => (
-                                        <div key={permission.group} className='mt-2 w-full'>
-                                            <h2 className='font-semibold'>{permission.group}</h2>
+                                <div className='flex flex-wrap gap-4'>
+                                    {permissions.map((permissionGroup) => (
+                                        <div key={permissionGroup.group} className='mt-2 w-full'>
+                                            <div className='flex items-center'>
+                                                <Checkbox
+                                                    onCheckedChange={(checked: boolean) =>
+                                                        handlePermissionGroupChange(
+                                                            checked,
+                                                            permissionGroup,
+                                                        )
+                                                    }
+                                                    name={permissionGroup.group}
+                                                    id={`permission-group-${permissionGroup.group}`}
+                                                    checked={permissionGroup.permissions.every(
+                                                        (p) => data.permissions.includes(p.id),
+                                                    )}
+                                                />
+                                                <label
+                                                    htmlFor={`permission-group-${permissionGroup.group}`}
+                                                    className='ml-2 font-semibold'
+                                                >
+                                                    {permissionGroup.group}
+                                                </label>
+                                            </div>
                                             <div className='mt-2 grid grid-cols-4 gap-4'>
-                                                {permission.permissions.map((p) => (
+                                                {permissionGroup.permissions.map((p) => (
                                                     <div key={p.id} className='flex items-center'>
                                                         <Checkbox
                                                             onCheckedChange={(checked) =>

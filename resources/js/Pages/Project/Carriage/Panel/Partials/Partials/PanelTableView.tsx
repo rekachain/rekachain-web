@@ -6,6 +6,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     CarriageResource,
@@ -14,8 +16,6 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function PanelTableView({
     project,

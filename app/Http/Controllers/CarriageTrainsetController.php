@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\CarriageTrainset\StoreCarriageTrainsetRequest;
 use App\Http\Requests\CarriageTrainset\UpdateCarriageTrainsetRequest;
 use App\Http\Resources\CarriageTrainsetResource;
@@ -10,7 +11,6 @@ use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriageTrainsetServiceInterface;
 use Illuminate\Http\Request;
-use App\Helpers\PermissionHelper;
 
 class CarriageTrainsetController extends Controller {
     // TODO: update trainset_preset_id to null

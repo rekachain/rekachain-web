@@ -70,13 +70,13 @@ export default function ({ trainset }: { trainset: TrainsetResource }) {
                 <div className='flex items-center gap-4'>
                     <div>{trainset.name}</div>
                     {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_UPDATE) && (
-                    <Button
-                        variant='ghost'
-                        onClick={toggleEditMode}
-                        className='h-fit whitespace-normal rounded-full p-2'
-                    >
-                        <PencilLine size={STYLING.ICON.SIZE.SMALL} />
-                    </Button>
+                        <Button
+                            variant='ghost'
+                            onClick={toggleEditMode}
+                            className='h-fit whitespace-normal rounded-full p-2'
+                        >
+                            <PencilLine size={STYLING.ICON.SIZE.SMALL} />
+                        </Button>
                     )}
                 </div>
             )}

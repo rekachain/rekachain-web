@@ -8,6 +8,7 @@ import {
 } from '@/Components/UI/breadcrumb';
 import { Button } from '@/Components/UI/button';
 import { fetchGenericData } from '@/Helpers/dataManagementHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import AddCarriage from '@/Pages/Project/Trainset/CarriageTrainset/Partials/AddCarriage';
 import AddNewTrainsetPreset from '@/Pages/Project/Trainset/CarriageTrainset/Partials/AddNewTrainsetPreset';
@@ -18,6 +19,7 @@ import CustomPresetAlert from '@/Pages/Project/Trainset/Partials/CustomPresetAle
 import { carriageService } from '@/Services/carriageService';
 import { trainsetService } from '@/Services/trainsetService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
@@ -33,8 +35,6 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, memo, Suspense, useEffect, useState } from 'react';
 import ProgressAttachments from './Partials/ProgressAttachments';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 const Carriages = memo(lazy(() => import('./Partials/Carriages')));
 
@@ -188,7 +188,9 @@ export default function ({
                                 )}
 
                                 <div className='flex flex-col gap-2 md:flex-row md:items-end'>
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CHANGE) &&
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CHANGE,
+                                    ) &&
                                         trainset.status !== TrainsetStatusEnum.PROGRESS &&
                                         !trainset.has_mechanic_trainset_attachment &&
                                         !trainset.has_electric_trainset_attachment &&
@@ -199,31 +201,39 @@ export default function ({
                                                 handleSyncTrainset={handleSyncTrainset}
                                             />
                                         )}
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_GENERATE) && (
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_GENERATE,
+                                    ) && (
                                         <GenerateAttachment
                                             trainset={trainset}
                                             handleSyncTrainset={handleSyncTrainset}
                                             handleSyncCarriages={handleSyncCarriages}
                                         />
                                     )}
-                                    {(checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_READ) &&
-                                        trainset.has_mechanic_trainset_attachment ||
+                                    {((checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_READ,
+                                    ) &&
+                                        trainset.has_mechanic_trainset_attachment) ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && (
                                         <PreviewAttachments trainset={trainset} />
                                     )}
-                                    {(checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_PROGRESS_READ) &&
-                                        trainset.has_mechanic_trainset_attachment ||
+                                    {((checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_ATTACHMENT_PROGRESS_READ,
+                                    ) &&
+                                        trainset.has_mechanic_trainset_attachment) ||
                                         trainset.has_electric_trainset_attachment ||
                                         trainset.has_panel_attachment) && (
                                         <ProgressAttachments trainset={trainset} />
                                     )}
-                                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_SERIAL_EXPORT) && (
-                                    <Button onClick={handleExportSerialNumbers}>
-                                        {t(
-                                            'pages.project.trainset.carriage_trainset.index.buttons.export_serial_numbers',
-                                        )}
-                                    </Button>
+                                    {checkPermission(
+                                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_SERIAL_EXPORT,
+                                    ) && (
+                                        <Button onClick={handleExportSerialNumbers}>
+                                            {t(
+                                                'pages.project.trainset.carriage_trainset.index.buttons.export_serial_numbers',
+                                            )}
+                                        </Button>
                                     )}
                                 </div>
                             </div>
@@ -234,29 +244,32 @@ export default function ({
                     </Suspense>
 
                     {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_CREATE) &&
-                        trainset.status !== TrainsetStatusEnum.PROGRESS && carriageResponse && (
-                        <AddCarriage
-                            trainset={trainset}
-                            handleSyncTrainset={handleSyncTrainset}
-                            handleSyncCarriages={handleSyncCarriages}
-                            debouncedCarriageFilters={debouncedCarriageFilters}
-                        />
-                    )}
+                        trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                        carriageResponse && (
+                            <AddCarriage
+                                trainset={trainset}
+                                handleSyncTrainset={handleSyncTrainset}
+                                handleSyncCarriages={handleSyncCarriages}
+                                debouncedCarriageFilters={debouncedCarriageFilters}
+                            />
+                        )}
                 </div>
 
-                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CREATE) &&
+                {checkPermission(
+                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PRESET_CREATE,
+                ) &&
                     isNewPreset() && (
-                    <CustomPresetAlert
-                        message={t(
-                            'pages.project.trainset.carriage_trainset.index.new_preset_alert',
-                        )}
-                    >
-                        <AddNewTrainsetPreset
-                            trainset={trainset}
-                            handleSyncTrainset={handleSyncTrainset}
-                        />
-                    </CustomPresetAlert>
-                )}
+                        <CustomPresetAlert
+                            message={t(
+                                'pages.project.trainset.carriage_trainset.index.new_preset_alert',
+                            )}
+                        >
+                            <AddNewTrainsetPreset
+                                trainset={trainset}
+                                handleSyncTrainset={handleSyncTrainset}
+                            />
+                        </CustomPresetAlert>
+                    )}
             </AuthenticatedLayout>
         </>
     );

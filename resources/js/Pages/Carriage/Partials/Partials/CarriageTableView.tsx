@@ -48,22 +48,23 @@ export default function CarriageTableView({
                             <TableCell>{carriage.type}</TableCell>
                             <TableCell>{carriage.description}</TableCell>
                             <TableCell>
-                            {checkPermission(PERMISSION_ENUM.CARRIAGE_UPDATE) && (
-                                <Link
-                                    href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                            )}
-                                {checkPermission(PERMISSION_ENUM.CARRIAGE_UPDATE) && carriage.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleCarriageDeletion(carriage.id)}
+                                {checkPermission(PERMISSION_ENUM.CARRIAGE_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.CARRIAGES}.edit`, carriage.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.CARRIAGE_UPDATE) &&
+                                    carriage.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleCarriageDeletion(carriage.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

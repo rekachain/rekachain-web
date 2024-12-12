@@ -22,16 +22,14 @@ export default function () {
                             {t('pages.raw_material.index.title')}
                         </h1>
                         {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_CREATE) && (
-                        <Link
-                            href={route(`${ROUTES.RAW_MATERIALS}.create`)}
-                            className={buttonVariants({ variant: 'default' })}
-                        >
-                            {t('pages.raw_material.index.buttons.create')}
-                        </Link>
+                            <Link
+                                href={route(`${ROUTES.RAW_MATERIALS}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
+                            >
+                                {t('pages.raw_material.index.buttons.create')}
+                            </Link>
                         )}
-                        {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_IMPORT) && (
-                            <Import />
-                        )}
+                        {checkPermission(PERMISSION_ENUM.RAW_MATERIAL_IMPORT) && <Import />}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <RawMaterials />

@@ -218,6 +218,7 @@ const intents = {
         'web.panel.attachment.assign.referenced.attachment.and.material.import',
     WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE:
         'web.trainset.attachment.get.component.materials.with.qty.for.template',
+    WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
 };
 
 export const IntentEnum = intents;

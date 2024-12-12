@@ -47,22 +47,23 @@ export default function PanelTableView({
                             <TableCell>{panel.description}</TableCell>
                             <TableCell>{panel.progress?.name}</TableCell>
                             <TableCell>
-                            {checkPermission(PERMISSION_ENUM.PANEL_UPDATE) && (
-                                <Link
-                                    href={route(`${ROUTES.PANELS}.edit`, panel.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                            )}
-                                {checkPermission(PERMISSION_ENUM.PANEL_DELETE) && panel.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handlePanelDeletion(panel.id)}
+                                {checkPermission(PERMISSION_ENUM.PANEL_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.PANELS}.edit`, panel.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.PANEL_DELETE) &&
+                                    panel.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handlePanelDeletion(panel.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

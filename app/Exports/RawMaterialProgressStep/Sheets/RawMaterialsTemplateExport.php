@@ -79,11 +79,13 @@ class RawMaterialsTemplateExport implements FromArray, ShouldAutoSize, WithHeadi
         }
         if ($materialsModel->isEmpty()) {
             return [
-                ['KodeMaterialABCDE',
+                [
+                    'KodeMaterialABCDE',
                     'Deskripsi Material',
                     'Spesifikasi Material',
                     'Unit Material',
-                    'Jumlah Total', ],
+                    1,
+                ],
             ];
         }
         $exportData = $materialsModel->map(fn ($material) => [

@@ -4,6 +4,7 @@
     "scripts": {
         "dev": "vite",
         "transform-intent-enum": "node experimental/watch-intent-enum.js",
+        "transform-permission-enum": "node experimental/watch-permission-enum.js",
         "build": "tsc && vite build",
         "lint": "eslint --fix",
         "prettier": "prettier --write ./resources"

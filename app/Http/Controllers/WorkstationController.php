@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Workstation\StoreWorkstationRequest;
 use App\Http\Requests\Workstation\UpdateWorkstationRequest;
 use App\Http\Resources\WorkstationResource;
 use App\Models\Workstation;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\DivisionServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use App\Support\Interfaces\Services\WorkstationServiceInterface;

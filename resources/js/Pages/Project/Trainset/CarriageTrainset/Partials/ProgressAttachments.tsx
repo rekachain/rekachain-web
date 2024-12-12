@@ -73,7 +73,7 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                     'pages.project.trainset.carriage_trainset.partials.progress_attachments.dialogs.buttons.trigger',
                 )}
             </DialogTrigger>
-            <DialogContent className='w-[70%]'>
+            <DialogContent className='w-[340px] md:w-[70%]'>
                 <DialogHeader className='overflow-auto'>
                     <DialogTitle></DialogTitle>
                     <DialogDescription className='w-full'></DialogDescription>
@@ -83,7 +83,7 @@ const ProgressAttachments = ({ trainset }: { trainset: TrainsetResource }) => {
                         defaultValue={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
                         className='w-full'
                     >
-                        <TabsList>
+                        <TabsList className='flex h-fit flex-col md:w-fit md:flex-row md:justify-start'>
                             <TabsTrigger
                                 value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
                             >

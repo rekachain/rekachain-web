@@ -21,12 +21,12 @@ export default function () {
                             {t('pages.workstation.index.title')}
                         </h1>
                         {checkPermission(PERMISSION_ENUM.WORKSTATION_CREATE) && (
-                        <Link
-                            href={route(`${ROUTES.WORKSTATIONS}.create`)}
-                            className={buttonVariants({ variant: 'default' })}
-                        >
-                            {t('pages.workstation.index.buttons.create')}
-                        </Link>
+                            <Link
+                                href={route(`${ROUTES.WORKSTATIONS}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
+                            >
+                                {t('pages.workstation.index.buttons.create')}
+                            </Link>
                         )}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

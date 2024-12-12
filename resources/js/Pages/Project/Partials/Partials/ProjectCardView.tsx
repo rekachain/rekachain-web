@@ -1,12 +1,15 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { Select, SelectContent, SelectTrigger } from '@/Components/UI/select';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
+import { STYLING } from '@/Support/Constants/styling';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Ellipsis } from 'lucide-react';
 
 export default function ProjectCardView({
     projectResponse,
@@ -45,62 +48,90 @@ export default function ProjectCardView({
                         {/* <p>Jumlah User :{project.users_count}</p>
                         <p>Jumlah Izin :{project.permissions_count}</p> */}
                         <div className='flex w-full items-center justify-end'>
-                            {checkPermission(PERMISSION_ENUM.PROJECT_UPDATE) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                                // className={buttonVariants({ variant: 'link' })}
-                                // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                            )}
-                            {checkPermission(PERMISSION_ENUM.PROJECT_DELETE) && project.can_be_deleted && (
-                            <Button
-                                variant='link'
-                                onClick={() => handleProjectDeletion(project.id)}
-                            >
-                                {t('action.delete')}
-                            </Button>
-                            )}
-                            {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_READ) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS_CARRIAGES}.index`, project.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t(
-                                    'pages.project.partials.partials.project_table.actions.carriages',
-                                )}
-                            </Link>
-                            )}
-                            {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_READ) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS_TRAINSETS}.index`, project.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t(
-                                    'pages.project.partials.partials.project_card.actions.trainsets',
-                                )}
-                            </Link>
-                            )}
-                            {checkPermission(PERMISSION_ENUM.PROJECT_COMPONENT_READ) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS_COMPONENTS}.index`, project.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t(
-                                    'pages.project.partials.partials.project_table.actions.components',
-                                )}
-                            </Link>
-                            )}
-                            {checkPermission(PERMISSION_ENUM.PROJECT_PANEL_READ) && (
-                            <Link
-                                href={route(`${ROUTES.PROJECTS_PANELS}.index`, project.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('pages.project.partials.partials.project_table.actions.panels')}
-                            </Link>
-                            )}
+                            <Select>
+                                <SelectTrigger className='w-fit border-none md:hidden'>
+                                    <Ellipsis size={STYLING.ICON.SIZE.SMALL}></Ellipsis>
+                                </SelectTrigger>
+                                <SelectContent className=' '>
+                                    <div className='flex flex-col justify-start gap-2'>
+                                        {checkPermission(PERMISSION_ENUM.PROJECT_UPDATE) && (
+                                            <Link
+                                                href={route(`${ROUTES.PROJECTS}.edit`, project.id)}
+                                                className={buttonVariants({ variant: 'link' })}
+                                                // className={buttonVariants({ variant: 'link' })}
+                                                // href={route(`${ROUTES.DIVISIONS}.edit`, division.id)}
+                                            >
+                                                {t('action.edit')}
+                                            </Link>
+                                        )}
+                                        {checkPermission(PERMISSION_ENUM.PROJECT_DELETE) &&
+                                            project.can_be_deleted && (
+                                                <Button
+                                                    variant='link'
+                                                    onClick={() =>
+                                                        handleProjectDeletion(project.id)
+                                                    }
+                                                >
+                                                    {t('action.delete')}
+                                                </Button>
+                                            )}
+                                        {checkPermission(PERMISSION_ENUM.PROJECT_CARRIAGE_READ) && (
+                                            <Link
+                                                href={route(
+                                                    `${ROUTES.PROJECTS_CARRIAGES}.index`,
+                                                    project.id,
+                                                )}
+                                                className={buttonVariants({ variant: 'link' })}
+                                            >
+                                                {t(
+                                                    'pages.project.partials.partials.project_table.actions.carriages',
+                                                )}
+                                            </Link>
+                                        )}
+                                        {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_READ) && (
+                                            <Link
+                                                href={route(
+                                                    `${ROUTES.PROJECTS_TRAINSETS}.index`,
+                                                    project.id,
+                                                )}
+                                                className={buttonVariants({ variant: 'link' })}
+                                            >
+                                                {t(
+                                                    'pages.project.partials.partials.project_card.actions.trainsets',
+                                                )}
+                                            </Link>
+                                        )}
+                                        {checkPermission(
+                                            PERMISSION_ENUM.PROJECT_COMPONENT_READ,
+                                        ) && (
+                                            <Link
+                                                href={route(
+                                                    `${ROUTES.PROJECTS_COMPONENTS}.index`,
+                                                    project.id,
+                                                )}
+                                                className={buttonVariants({ variant: 'link' })}
+                                            >
+                                                {t(
+                                                    'pages.project.partials.partials.project_table.actions.components',
+                                                )}
+                                            </Link>
+                                        )}
+                                        {checkPermission(PERMISSION_ENUM.PROJECT_PANEL_READ) && (
+                                            <Link
+                                                href={route(
+                                                    `${ROUTES.PROJECTS_PANELS}.index`,
+                                                    project.id,
+                                                )}
+                                                className={buttonVariants({ variant: 'link' })}
+                                            >
+                                                {t(
+                                                    'pages.project.partials.partials.project_table.actions.panels',
+                                                )}
+                                            </Link>
+                                        )}
+                                    </div>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                     {/* </div> */}

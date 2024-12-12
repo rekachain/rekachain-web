@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Step\StoreStepRequest;
 use App\Http\Requests\Step\UpdateStepRequest;
 use App\Http\Resources\StepResource;
 use App\Models\Step;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
+use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\StepServiceInterface;
 use Illuminate\Http\Request;
 
@@ -19,13 +20,14 @@ class StepController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        PermissionHelper::check(PermissionEnum::STEP_READ);
+        PermissionHelper::check(PermissionEnum::STEP_READ, [RoleEnum::PPC_PENGENDALIAN, RoleEnum::PPC_PERENCANAAN]);
         $intent = $request->get('intent');
         $perPage = request()->get('perPage', 5);
 
         switch ($intent) {
             case IntentEnum::WEB_STEP_GET_TEMPLATE_IMPORT_STEP->value:
                 PermissionHelper::check(PermissionEnum::STEP_IMPORT);
+
                 return $this->stepService->getImportDataTemplate();
         }
 
@@ -43,6 +45,7 @@ class StepController extends Controller {
      */
     public function create() {
         PermissionHelper::check(PermissionEnum::STEP_CREATE);
+
         return inertia('Step/Create');
     }
 

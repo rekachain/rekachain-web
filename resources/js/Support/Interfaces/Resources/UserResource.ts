@@ -9,7 +9,7 @@ import {
 export interface UserResource extends Resource, User {
     image: string;
     role_id: number;
-    role: RoleResource;
+    role?: RoleResource;
     division_id: number;
     division: RoleResource;
     workstation_id: number;

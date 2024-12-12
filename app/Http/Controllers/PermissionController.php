@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Permission\StorePermissionRequest;
 use App\Http\Requests\Permission\UpdatePermissionRequest;
 use App\Http\Resources\PermissionResource;
 use App\Models\Permission;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\PermissionServiceInterface;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller {
-
     public function __construct(protected PermissionServiceInterface $permissionService) {}
 
     /**

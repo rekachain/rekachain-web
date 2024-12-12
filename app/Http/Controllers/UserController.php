@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\RoleServiceInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
 use Exception;

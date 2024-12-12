@@ -11,17 +11,9 @@ import { useEffect, useState } from 'react';
 // import PanelTableView from './Partials/PanelTableView';
 // import PanelCardView from './Partials/PanelCardView';
 import GenericPagination from '@/Components/GenericPagination';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/Components/UI/table';
-import Import from './Import';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { useLoading } from '@/Contexts/LoadingContext';
+import CardView from './Partials/CardView';
+import TableView from './Partials/TableView';
 
 export default function Panels({
     project,
@@ -38,11 +30,8 @@ export default function Panels({
     });
 
     const syncPanels = withLoading(async () => {
-        // const data = await projectService.getPanels(project.id, filters);
-        const data = await projectService.getCarriagePanels(project.id, trainset.id, filters);
+        const data = await projectService.getTrainsetPanels(project.id, trainset.id, filters);
         setPanelResponse(data);
-        console.log('==========aa');
-        console.log(panelResponse);
 
         setPanelResponseMeta({
             current_page: data.current_page,
@@ -64,9 +53,31 @@ export default function Panels({
         setFilters({ ...filters, page });
     };
 
+    const { loading } = useLoading();
+
     return (
         <div className='space-y-4'>
             {panelResponse && (
+                // <TableView project={project} trainset={trainset}></TableView>
+                <>
+                    <div className='hidden md:block'>
+                        <TableView
+                            trainset={trainset}
+                            project={project}
+                            panelResponse={panelResponse}
+                        ></TableView>
+                    </div>
+                    <div className='block md:hidden'>
+                        <CardView
+                            trainset={trainset}
+                            project={project}
+                            panelResponse={panelResponse}
+                        ></CardView>
+                    </div>
+                </>
+            )}
+            {/* Check Permission */}
+            {/* {panelResponse && (
                 <>
                     <div>
                         <Table>
@@ -85,7 +96,9 @@ export default function Panels({
                                         <TableCell>{data.panel.description}</TableCell>
                                         <TableCell>{data.total_qty}</TableCell>
                                         <TableCell>
-                                            {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_PANEL_IMPORT) && (
+                                            {checkPermission(
+                                                PERMISSION_ENUM.PROJECT_TRAINSET_PANEL_IMPORT,
+                                            ) && (
                                                 <Import
                                                     trainset={trainset}
                                                     project={project}
@@ -99,14 +112,8 @@ export default function Panels({
                             </TableBody>
                         </Table>
                     </div>
-                    {/* <div className="hidden md:block">
-                        <PanelTableView project={project} panelResponse={panelResponse}></PanelTableView>
-                    </div>
-                    <div className="block md:hidden">
-                        <PanelCardView project={project} panelResponse={panelResponse}></PanelCardView>
-                    </div> */}
                 </>
-            )}
+            )}*/}
             <GenericPagination meta={panelResponseMeta} handleChangePage={handlePageChange} />
         </div>
     );

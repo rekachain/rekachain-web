@@ -81,17 +81,21 @@ export default function ComponentMaterialTableView({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
 
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_DELETE) &&
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_DELETE,
+                                ) &&
                                     trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() =>
-                                            handleComponentMaterialDeletion(componentMaterial.id)
-                                        }
-                                    >
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                        <Button
+                                            variant='link'
+                                            onClick={() =>
+                                                handleComponentMaterialDeletion(
+                                                    componentMaterial.id,
+                                                )
+                                            }
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

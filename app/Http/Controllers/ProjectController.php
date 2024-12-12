@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Project\Carriage\CarriageProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\Trainset\TrainsetProjectRequest;
@@ -24,7 +25,6 @@ use App\Models\Project;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
@@ -62,6 +62,7 @@ class ProjectController extends Controller {
      */
     public function create() {
         PermissionHelper::check(PermissionEnum::PROJECT_CREATE);
+
         return inertia('Project/Create');
     }
 
@@ -76,6 +77,7 @@ class ProjectController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_IMPORT);
+
                     return $this->projectService->importProject($request->file('file'), $request->validated());
             }
 
@@ -119,6 +121,7 @@ class ProjectController extends Controller {
      */
     public function edit(Project $project) {
         PermissionHelper::check(PermissionEnum::PROJECT_UPDATE);
+
         return inertia('Project/Edit', ['project' => new ProjectResource($project)]);
     }
 
@@ -133,12 +136,15 @@ class ProjectController extends Controller {
         switch ($intent) {
             case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
                 PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CREATE);
+
                 return $this->projectService->addTrainsets($project, $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL->value:
                 PermissionHelper::check(PermissionEnum::PROJECT_PANEL_IMPORT);
+
                 return $this->projectService->importProjectPanelProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL->value:
                 PermissionHelper::check(PermissionEnum::PROJECT_COMPONENT_IMPORT);
+
                 return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
                 return $this->projectService->updateInitialDate($project, $request->validated());
@@ -161,6 +167,7 @@ class ProjectController extends Controller {
 
     public function getEstimatedTime($project_id = null) {
         PermissionHelper::check(PermissionEnum::PROJECT_READ);
+
         return $this->projectService->calculateEstimatedTime($project_id);
     }
 
@@ -182,23 +189,29 @@ class ProjectController extends Controller {
                 // resources
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_READ);
+
                     return ComponentResource::collection($project->components()->whereTrainsetId($trainset->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_READ);
+
                     return ProjectResource::make($project)->projectTrainset($trainset);
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_READ);
+
                     return PanelResource::collection($project->panels()->whereTrainsetId($trainset->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_READ);
+
                     return ProjectResource::make($project)->projectTrainset($trainset);
 
                     // services
                 case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_IMPORT);
-                return $this->projectService->importProjectTrainsetPanelProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
+
+                    return $this->projectService->importProjectTrainsetPanelProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_IMPORT);
+
                     return $this->projectService->importProjectTrainsetComponentProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
             }
 
@@ -234,23 +247,29 @@ class ProjectController extends Controller {
                 // resources
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_READ);
+
                     return ComponentResource::collection($project->components()->whereCarriageId($carriage->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_READ);
+
                     return ProjectResource::make($project)->projectCarriage($carriage);
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_READ);
+
                     return PanelResource::collection($project->panels()->whereCarriageId($carriage->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_READ);
+
                     return ProjectResource::make($project)->projectCarriage($carriage);
 
                     // services
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_IMPORT);
+
                     return $this->projectService->importProjectCarriagePanelProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL->value:
                     PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_IMPORT);
+
                     return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
             }
 

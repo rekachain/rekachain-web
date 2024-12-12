@@ -20,11 +20,11 @@ export default function () {
                         <h1 className='text-page-header my-4'>{t('pages.role.index.title')}</h1>
                         {checkPermission(PERMISSION_ENUM.ROLE_CREATE) && (
                             <Link
-                            href={route(`${ROUTES.ROLES}.create`)}
-                            className={buttonVariants({ variant: 'default' })}
+                                href={route(`${ROUTES.ROLES}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
                             >
-                            {t('pages.role.index.buttons.create')}
-                        </Link>
+                                {t('pages.role.index.buttons.create')}
+                            </Link>
                         )}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

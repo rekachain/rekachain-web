@@ -70,14 +70,16 @@ export default function ({
             ) : (
                 <div className='flex items-center gap-4'>
                     <div>{panelMaterial.qty}</div>
-                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_UPDATE) && (
-                    <Button
-                        variant='ghost'
-                        onClick={toggleEditMode}
-                        className='h-fit whitespace-normal rounded-full p-2'
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_UPDATE,
+                    ) && (
+                        <Button
+                            variant='ghost'
+                            onClick={toggleEditMode}
+                            className='h-fit whitespace-normal rounded-full p-2'
                         >
-                        <PencilLine size={STYLING.ICON.SIZE.SMALL} />
-                    </Button>
+                            <PencilLine size={STYLING.ICON.SIZE.SMALL} />
+                        </Button>
                     )}
                 </div>
             )}

@@ -22,11 +22,11 @@ export default function () {
                         </h1>
                         {checkPermission(PERMISSION_ENUM.COMPONENT_CREATE) && (
                             <Link
-                            href={route(`${ROUTES.COMPONENTS}.create`)}
-                            className={buttonVariants({ variant: 'default' })}
+                                href={route(`${ROUTES.COMPONENTS}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
                             >
-                            {t('pages.component.index.buttons.create')}
-                        </Link>
+                                {t('pages.component.index.buttons.create')}
+                            </Link>
                         )}
                         {/*<Import />*/}
                     </div>

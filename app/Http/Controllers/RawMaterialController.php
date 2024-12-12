@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\RawMaterial\StoreRawMaterialRequest;
 use App\Http\Requests\RawMaterial\UpdateRawMaterialRequest;
 use App\Http\Resources\RawMaterialResource;
 use App\Models\RawMaterial;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -30,6 +30,7 @@ class RawMaterialController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_RAW_MATERIAL_GET_TEMPLATE_IMPORT_RAW_MATERIAL->value:
                     PermissionHelper::check(PermissionEnum::RAW_MATERIAL_IMPORT);
+
                     return $this->rawMaterialService->getImportDataTemplate();
             }
 

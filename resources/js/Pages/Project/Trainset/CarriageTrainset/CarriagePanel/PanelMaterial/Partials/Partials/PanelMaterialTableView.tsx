@@ -78,17 +78,19 @@ export default function PanelMaterialTableView({
                                 {/*    Edit*/}
                                 {/*</Link>*/}
 
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_DELETE) &&
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_DELETE,
+                                ) &&
                                     trainset.status !== TrainsetStatusEnum.PROGRESS && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() =>
-                                            handlePanelMaterialDeletion(panelMaterial.id)
-                                        }
-                                    >
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                        <Button
+                                            variant='link'
+                                            onClick={() =>
+                                                handlePanelMaterialDeletion(panelMaterial.id)
+                                            }
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

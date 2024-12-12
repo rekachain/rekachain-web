@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Workshop\StoreWorkshopRequest;
 use App\Http\Requests\Workshop\UpdateWorkshopRequest;
 use App\Http\Resources\WorkshopResource;
 use App\Models\Workshop;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Http\Request;
 

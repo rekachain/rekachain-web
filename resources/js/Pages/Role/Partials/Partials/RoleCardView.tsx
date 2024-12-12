@@ -54,16 +54,16 @@ export default function RoleCardView({
                         <div className='flex w-full items-center justify-end'>
                             {checkPermission(PERMISSION_ENUM.ROLE_UPDATE) && (
                                 <Link
-                                href={route(`${ROUTES.ROLES}.edit`, role.id)}
-                                className={buttonVariants({ variant: 'link' })}
+                                    href={route(`${ROUTES.ROLES}.edit`, role.id)}
+                                    className={buttonVariants({ variant: 'link' })}
                                 >
-                                {t('action.edit')}
-                            </Link>
+                                    {t('action.edit')}
+                                </Link>
                             )}
                             {checkPermission(PERMISSION_ENUM.ROLE_DELETE) && (
                                 <Button variant='link' onClick={() => handleRoleDeletion(role.id)}>
-                                {t('action.delete')}
-                            </Button>
+                                    {t('action.delete')}
+                                </Button>
                             )}
                         </div>
                     </div>

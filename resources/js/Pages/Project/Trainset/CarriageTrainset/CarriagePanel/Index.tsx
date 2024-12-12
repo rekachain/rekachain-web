@@ -139,15 +139,18 @@ export default function ({
                         />
                     </Suspense>
 
-                    {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_CREATE) &&
-                        trainset.status !== TrainsetStatusEnum.PROGRESS && panelResponse && (
-                        <AddNewPanel
-                            setPanelResponse={setPanelResponse}
-                            panelResponse={panelResponse}
-                            handleSyncCarriage={handleSyncCarriage}
-                            carriageTrainset={carriageTrainset}
-                        />
-                    )}
+                    {checkPermission(
+                        PERMISSION_ENUM.PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_CREATE,
+                    ) &&
+                        trainset.status !== TrainsetStatusEnum.PROGRESS &&
+                        panelResponse && (
+                            <AddNewPanel
+                                setPanelResponse={setPanelResponse}
+                                panelResponse={panelResponse}
+                                handleSyncCarriage={handleSyncCarriage}
+                                carriageTrainset={carriageTrainset}
+                            />
+                        )}
                 </div>
             </AuthenticatedLayout>
         </>

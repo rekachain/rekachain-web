@@ -57,20 +57,21 @@ export default function RoleTableView({
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.ROLE_UPDATE) && (
                                     <Link
-                                    href={route(`${ROUTES.ROLES}.edit`, role.id)}
-                                    className={buttonVariants({ variant: 'link' })}
+                                        href={route(`${ROUTES.ROLES}.edit`, role.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                    {t('action.edit')}
-                                </Link>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.ROLE_DELETE) && role.users_count <= 0 && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleRoleDeletion(role.id)}
-                                    >
-                                        {t('action.delete')}
-                                    </Button>
-                                )}
+                                {checkPermission(PERMISSION_ENUM.ROLE_DELETE) &&
+                                    role.users_count <= 0 && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleRoleDeletion(role.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

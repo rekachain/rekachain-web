@@ -88,11 +88,14 @@ export default function Sidebar() {
                         </Button>
                     </div>
                     <SidebarMenu title={t('components.sidebar.menus.general')}>
-                        <SidebarLink
-                            title={t('components.sidebar.links.dashboard')}
-                            routeName='dashboard'
-                            icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
-                        />
+                        {checkPermission([PERMISSION_ENUM.DASHBOARD_READ]) && (
+                            <SidebarLink
+                                title={t('components.sidebar.links.dashboard')}
+                                routeName='dashboard'
+                                icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+
                         {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (
                             <SidebarLink
                                 title={t('components.sidebar.links.work_days')}
@@ -100,73 +103,98 @@ export default function Sidebar() {
                                 icon={<RiCalendar2Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
-                        <SidebarLinkCollapsible
-                            title={t('components.sidebar.links.staff_management')}
-                            icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
-                            group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                        >
-                            {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
-                                <SidebarLinkCollapsibleItem
-                                    title={t('components.sidebar.links.divisions')}
-                                    routeName={`${ROUTES.DIVISIONS}.index`}
-                                    icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
-                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                />
-                            )}
 
-                            {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
-                                <SidebarLinkCollapsibleItem
-                                    title={t('components.sidebar.links.workshops')}
-                                    routeName={`${ROUTES.WORKSHOPS}.index`}
-                                    icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
-                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                />
-                            )}
+                        {checkPermission([
+                            PERMISSION_ENUM.DIVISION_READ,
+                            PERMISSION_ENUM.WORKSHOP_READ,
+                            PERMISSION_ENUM.WORKSTATION_READ,
+                            PERMISSION_ENUM.USER_READ,
+                        ]) && (
+                            <SidebarLinkCollapsible
+                                title={t('components.sidebar.links.staff_management')}
+                                icon={<RiUser2Line size={STYLING.ICON.SIZE.SMALL} />}
+                                group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                            >
+                                {checkPermission(PERMISSION_ENUM.DIVISION_READ) && (
+                                    <SidebarLinkCollapsibleItem
+                                        title={t('components.sidebar.links.divisions')}
+                                        routeName={`${ROUTES.DIVISIONS}.index`}
+                                        icon={<RiDivideLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    />
+                                )}
 
-                            {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
-                                <SidebarLinkCollapsibleItem
-                                    title={t('components.sidebar.links.workstations')}
-                                    routeName={`${ROUTES.WORKSTATIONS}.index`}
-                                    icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
-                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                />
-                            )}
+                                {checkPermission(PERMISSION_ENUM.WORKSHOP_READ) && (
+                                    <SidebarLinkCollapsibleItem
+                                        title={t('components.sidebar.links.workshops')}
+                                        routeName={`${ROUTES.WORKSHOPS}.index`}
+                                        icon={<RiHome2Line size={STYLING.ICON.SIZE.SMALL} />}
+                                        group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    />
+                                )}
 
-                            {checkPermission(PERMISSION_ENUM.USER_READ) && (
-                                <SidebarLinkCollapsibleItem
-                                    title={t('components.sidebar.links.staff')}
-                                    routeName={`${ROUTES.USERS}.index`}
-                                    icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
-                                    group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
-                                />
-                            )}
-                        </SidebarLinkCollapsible>
+                                {checkPermission(PERMISSION_ENUM.WORKSTATION_READ) && (
+                                    <SidebarLinkCollapsibleItem
+                                        title={t('components.sidebar.links.workstations')}
+                                        routeName={`${ROUTES.WORKSTATIONS}.index`}
+                                        icon={<RiToolsFill size={STYLING.ICON.SIZE.SMALL} />}
+                                        group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    />
+                                )}
 
-                        <SidebarLinkCollapsible
-                            title={t('components.sidebar.links.access_control')}
-                            icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
-                            group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
-                        >
-                            {checkPermission(PERMISSION_ENUM.PERMISSION_READ) && (
-                                <SidebarLinkCollapsibleItem
-                                    title={t('components.sidebar.links.permissions')}
-                                    routeName={`${ROUTES.PERMISSIONS}.index`}
-                                    icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
-                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
-                                />
-                            )}
+                                {checkPermission(PERMISSION_ENUM.USER_READ) && (
+                                    <SidebarLinkCollapsibleItem
+                                        title={t('components.sidebar.links.staff')}
+                                        routeName={`${ROUTES.USERS}.index`}
+                                        icon={<RiUserLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        group={SIDEBAR_GROUP_ENUM.STAFF_MANAGEMENT}
+                                    />
+                                )}
+                            </SidebarLinkCollapsible>
+                        )}
 
-                            {checkPermission(PERMISSION_ENUM.ROLE_READ) && (
-                                <SidebarLinkCollapsibleItem
-                                    title={t('components.sidebar.links.roles')}
-                                    routeName={`${ROUTES.ROLES}.index`}
-                                    icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
-                                    group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
-                                />
-                            )}
-                        </SidebarLinkCollapsible>
+                        {checkPermission([
+                            PERMISSION_ENUM.PERMISSION_READ,
+                            PERMISSION_ENUM.ROLE_READ,
+                        ]) && (
+                            <SidebarLinkCollapsible
+                                title={t('components.sidebar.links.access_control')}
+                                icon={<RiBox3Line size={STYLING.ICON.SIZE.SMALL} />}
+                                group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                            >
+                                {checkPermission(PERMISSION_ENUM.PERMISSION_READ) && (
+                                    <SidebarLinkCollapsibleItem
+                                        title={t('components.sidebar.links.permissions')}
+                                        routeName={`${ROUTES.PERMISSIONS}.index`}
+                                        icon={<RiLockUnlockLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    />
+                                )}
+
+                                {checkPermission(PERMISSION_ENUM.ROLE_READ) && (
+                                    <SidebarLinkCollapsibleItem
+                                        title={t('components.sidebar.links.roles')}
+                                        routeName={`${ROUTES.ROLES}.index`}
+                                        icon={<RiShieldLine size={STYLING.ICON.SIZE.SMALL} />}
+                                        group={SIDEBAR_GROUP_ENUM.ACCESS_CONTROL}
+                                    />
+                                )}
+                            </SidebarLinkCollapsible>
+                        )}
                     </SidebarMenu>
-                    <SidebarMenu title={t('components.sidebar.menus.manufacturing')} bordered>
+                    <SidebarMenu
+                        title={t('components.sidebar.menus.manufacturing')}
+                        bordered={checkPermission([
+                            PERMISSION_ENUM.DASHBOARD_READ,
+                            PERMISSION_ENUM.WORK_DAY_READ,
+                            PERMISSION_ENUM.DIVISION_READ,
+                            PERMISSION_ENUM.WORKSHOP_READ,
+                            PERMISSION_ENUM.WORKSTATION_READ,
+                            PERMISSION_ENUM.USER_READ,
+                            PERMISSION_ENUM.PERMISSION_READ,
+                            PERMISSION_ENUM.ROLE_READ,
+                        ])}
+                    >
                         {checkPermission(PERMISSION_ENUM.STEP_READ) && (
                             <SidebarLink
                                 title={t('components.sidebar.links.steps')}
@@ -261,18 +289,28 @@ export default function Sidebar() {
                         icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
                     </SidebarMenu>
-                    <SidebarMenu title={t('components.sidebar.menus.support')} bordered>
+                    <SidebarMenu
+                        title={t('components.sidebar.menus.support')}
+                        bordered={checkPermission([
+                            PERMISSION_ENUM.STEP_READ,
+                            PERMISSION_ENUM.RAW_MATERIAL_READ,
+                            PERMISSION_ENUM.COMPONENT_READ,
+                            PERMISSION_ENUM.PANEL_READ,
+                            PERMISSION_ENUM.PROJECT_READ,
+                            PERMISSION_ENUM.CARRIAGE_READ,
+                        ])}
+                    >
                         <SidebarLink
                             title={t('components.sidebar.links.settings')}
                             routeName={`${ROUTES.PROFILE}.edit`}
                             icon={<RiSettings3Line size={STYLING.ICON.SIZE.SMALL} />}
                         />
                         {checkPermission(PERMISSION_ENUM.FEEDBACK_READ) && (
-                        <SidebarLink
-                            title={t('components.sidebar.links.feedback')}
-                            routeName={`${ROUTES.FEEDBACK}.index`}
-                            icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
-                        />
+                            <SidebarLink
+                                title={t('components.sidebar.links.feedback')}
+                                routeName={`${ROUTES.FEEDBACK}.index`}
+                                icon={<RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
                         )}
 
                         <SidebarHelpdesk />

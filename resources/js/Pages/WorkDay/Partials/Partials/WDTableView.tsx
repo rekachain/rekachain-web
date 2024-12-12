@@ -7,14 +7,14 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkDayResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function WDTableView({
     workDayResponse,
@@ -64,22 +64,23 @@ export default function WDTableView({
                             </TableCell>
                             <TableCell>{workDay.end_time}</TableCell>
                             <TableCell>
-                            {checkPermission(PERMISSION_ENUM.WORK_DAY_UPDATE) && (
-                                <Link
-                                    href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
-                                    className={buttonVariants({ variant: 'link' })}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                            )}
-                                {checkPermission(PERMISSION_ENUM.WORK_DAY_DELETE) && workDay.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleWorkDayDeletion(workDay.id)}
+                                {checkPermission(PERMISSION_ENUM.WORK_DAY_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
+                                        className={buttonVariants({ variant: 'link' })}
                                     >
-                                        {t('action.delete')}
-                                    </Button>
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.WORK_DAY_DELETE) &&
+                                    workDay.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleWorkDayDeletion(workDay.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

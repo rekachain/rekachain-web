@@ -69,34 +69,34 @@ Route::middleware('auth')->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
-    Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset']);
+    Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset'])->name('dashboard.trainset');
     // Route::resource('dashboard', DashboardController::class)->name('dashboard');
-    Route::resource('divisions', DivisionController::class); #auth done
-    Route::resource('workshops', WorkshopController::class); #auth done
-    Route::resource('workstations', WorkstationController::class); #auth done
-    Route::resource('users', UserController::class); #auth done
-    Route::resource('roles', RoleController::class); #auth done
-    Route::resource('permissions', PermissionController::class); #auth done
-    Route::resource('projects', ProjectController::class); #auth
-    Route::resource('trainsets', TrainsetController::class); #auth
-    Route::resource('trainset-attachments', TrainsetAttachmentController::class); #auth
-    Route::resource('panel-attachments', PanelAttachmentController::class); #auth
-    Route::resource('raw-materials', RawMaterialController::class); #auth done
-    Route::resource('carriages', CarriageController::class); #auth done
-    Route::resource('carriage-presets', CarriagePresetController::class); #auth done
-    Route::resource('preset-trainsets', PresetTrainsetController::class); #auth done
-    Route::resource('panels', PanelController::class); #auth done
+    Route::resource('divisions', DivisionController::class); // auth done
+    Route::resource('workshops', WorkshopController::class); // auth done
+    Route::resource('workstations', WorkstationController::class); // auth done
+    Route::resource('users', UserController::class); // auth done
+    Route::resource('roles', RoleController::class); // auth done
+    Route::resource('permissions', PermissionController::class); // auth done
+    Route::resource('projects', ProjectController::class); // auth
+    Route::resource('trainsets', TrainsetController::class); // auth
+    Route::resource('trainset-attachments', TrainsetAttachmentController::class); // auth
+    Route::resource('panel-attachments', PanelAttachmentController::class); // auth
+    Route::resource('raw-materials', RawMaterialController::class); // auth done
+    Route::resource('carriages', CarriageController::class); // auth done
+    Route::resource('carriage-presets', CarriagePresetController::class); // auth done
+    Route::resource('preset-trainsets', PresetTrainsetController::class); // auth done
+    Route::resource('panels', PanelController::class); // auth done
     Route::resource('panel-materials', PanelMaterialController::class);
-    Route::resource('carriage-panels', CarriagePanelController::class); #auth
+    Route::resource('carriage-panels', CarriagePanelController::class); // auth
     Route::resource('carriage-panel-components', CarriagePanelComponentController::class);
     Route::resource('progress', ProgressController::class);
     Route::resource('carriage-trainsets', CarriageTrainsetController::class);
-    Route::resource('components', ComponentController::class); #auth done
+    Route::resource('components', ComponentController::class); // auth done
     Route::resource('component-materials', ComponentMaterialController::class);
     Route::resource('work-aspects', WorkAspectController::class);
-    Route::resource('work-days', WorkDayController::class); #auth done
-    Route::resource('work-day-times', WorkDayTimeController::class); #auth done
-    Route::resource('steps', StepController::class); #auth
+    Route::resource('work-days', WorkDayController::class); // auth done
+    Route::resource('work-day-times', WorkDayTimeController::class); // auth done
+    Route::resource('steps', StepController::class); // auth
     Route::resource('progress-steps', ProgressStepController::class);
     Route::resource('panel-attachments', PanelAttachmentController::class);
     Route::resource('detail-worker-panels', DetailWorkerPanelController::class);
@@ -132,6 +132,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'trainsets', 'as' => 'trainsets.'], function () {
             Route::get('/', 'project_trainsets')->name('index');
             Route::get('/{trainset}', 'project_trainset')->name('show');
+            Route::put('/{trainset}', 'project_trainset')->name('update');
             Route::get('/{trainset}/components', 'project_trainset_components')->name('components.index');
             Route::get('/{trainset}/panels', 'project_trainset_panels')->name('panels.index');
             Route::get('/{trainset}/carriage-trainsets', 'project_trainset_carriageTrainsets')->name('carriage-trainsets.index');

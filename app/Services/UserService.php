@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;
 use App\Traits\Services\HandlesImages;
@@ -20,6 +22,12 @@ class UserService extends BaseCrudService implements UserServiceInterface {
 
         /** @var User $user */
         $user = parent::create($data);
+
+        if (request()->input('intent') === IntentEnum::WEB_USER_CREATE_BUYER->value) {
+            $user->givePermissionTo(PermissionEnum::DASHBOARD_COMMISSION_READ->value);
+
+            return $user;
+        }
 
         if (isset($data['role_id'])) {
             $user->roles()->sync($data['role_id']);

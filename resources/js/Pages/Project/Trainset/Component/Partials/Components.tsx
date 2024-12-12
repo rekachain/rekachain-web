@@ -1,12 +1,4 @@
 import GenericPagination from '@/Components/GenericPagination';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/Components/UI/table';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { projectService } from '@/Services/projectService';
 import { PaginateMeta, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
@@ -18,9 +10,8 @@ import {
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
-import Import from './Import';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import CardView from './Partials/CardView';
+import TableView from './Partials/TableView';
 // import Import from '../Import';
 
 export default function Components({
@@ -41,7 +32,7 @@ export default function Components({
     const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
-        const data = await projectService.getCarriageComponents(project.id, trainset.id, filters);
+        const data = await projectService.getTrainsetComponents(project.id, trainset.id, filters);
 
         setComponentResponse(data);
 
@@ -61,25 +52,42 @@ export default function Components({
         void syncComponents();
     }, [filters]);
 
-    // const handleComponentDeletion = (id: number) => {
-    //     useConfirmation().then(async ({ isConfirmed }) => {
-    //         if (isConfirmed) {
-    //             setLoading(true);
-    //             await componentService.delete(id);
-    //             await syncComponents();
-    //             void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-    //             setLoading(false);
-    //         }
-    //     });
-    // };
-
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
 
     const { t } = useLaravelReactI18n();
     return (
-        <div>
+        <div className='space-y-4'>
+            {componentResponse && (
+                // <TableView project={project} trainset={trainset}></TableView>
+                <>
+                    <div className='hidden md:block'>
+                        <TableView
+                            trainset={trainset}
+                            project={project}
+                            componentResponse={componentResponse}
+                        ></TableView>
+                    </div>
+                    <div className='block md:hidden'>
+                        <CardView
+                            trainset={trainset}
+                            project={project}
+                            componentResponse={componentResponse}
+                        ></CardView>
+                    </div>
+                </>
+            )}
+            <GenericPagination meta={componentResponseMeta} handleChangePage={handlePageChange} />
+        </div>
+    );
+}
+
+{
+    /* Check Permission */
+}
+{
+    /* <div>
             <Table>
                 <TableHeader>
                     <TableRow>
@@ -108,7 +116,9 @@ export default function Components({
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                {checkPermission(PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT) && (
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_TRAINSET_COMPONENT_IMPORT,
+                                ) && (
                                     <Import
                                         trainset={trainset}
                                         project={project}
@@ -120,9 +130,5 @@ export default function Components({
                         </TableRow>
                     ))}
                 </TableBody>
-            </Table>
-
-            <GenericPagination meta={componentResponse} handleChangePage={handlePageChange} />
-        </div>
-    );
+            </Table> */
 }

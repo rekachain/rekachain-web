@@ -5,19 +5,18 @@ namespace App\Services;
 use App\Exports\Trainset\TrainsetsExport;
 use App\Exports\Trainset\TrainsetsTemplateExport;
 use App\Helpers\NumberHelper;
+use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
 use App\Models\Trainset;
 use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
-use App\Support\Interfaces\Services\CarriageServiceInterface;
-use App\Support\Interfaces\Services\TrainsetServiceInterface;
-use App\Support\Interfaces\Services\SerialPanelServiceInterface;
-use App\Support\Interfaces\Services\CarriagePanelServiceInterface;
-use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
+use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use Carbon\Carbon;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
@@ -30,11 +29,8 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Interfaces\ImageInterface;
 use Maatwebsite\Excel\Facades\Excel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use ZipArchive;
-use Carbon\Carbon;
-use App\Imports\Trainset\TrainsetsImport;
-use App\Support\Enums\TrainsetStatusEnum;
-use App\Support\Enums\SerialPanelManufactureStatusEnum;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
     public function updatePreset(Trainset $trainset, array $data): bool {
@@ -647,8 +643,8 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
         if ($trainset_id) {
             $trainset = \App\Models\Trainset::with(['carriage_trainsets' => [
                 'carriage_panels' => [
-                    'progress.steps'
-                ]
+                    'progress.steps',
+                ],
             ]])->findOrFail($trainset_id);
 
             foreach ($trainset->carriage_trainsets as $carriageTrainset) {
@@ -658,7 +654,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                         $stepTime = $step->estimated_time * $carriagePanel->qty * $carriageTrainset->qty;
                     }
 
-                    switch($carriagePanel->progress->work_aspect_id) {
+                    switch ($carriagePanel->progress->work_aspect_id) {
                         case 1: // Mechanic
                             $mechanicTime += $stepTime;
                             break;
@@ -670,13 +666,13 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                             break;
                     }
 
-                    foreach($carriagePanel->carriage_panel_components as $component) {
+                    foreach ($carriagePanel->carriage_panel_components as $component) {
                         $componentStepTime = 0;
                         foreach ($component->progress->steps as $step) {
                             $componentStepTime = $step->estimated_time * $component->qty * $carriagePanel->qty * $carriageTrainset->qty;
                         }
 
-                        switch($component->progress->work_aspect_id) {
+                        switch ($component->progress->work_aspect_id) {
                             case 1: // Mechanic
                                 $mechanicTime += $componentStepTime;
                                 break;
@@ -696,7 +692,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
             $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
 
-            $startDate = $this->getInitialDate($trainset);;
+            $startDate = $this->getInitialDate($trainset);
             $endDate = Carbon::parse($startDate);
 
             // Add working days considering only Monday-Friday
@@ -713,11 +709,11 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                 'assembly_time' => $assemblyTime,
                 'calculated_estimate_time' => $calculatedEstimateTime,
                 'initial_date' => $startDate,
-                'estimated_end_date' => $endDate->format('Y-m-d')
+                'estimated_end_date' => $endDate->format('Y-m-d'),
             ]);
 
             $trainsets = $trainset->project->trainsets()->orderBy('id')->get();
-            $currentTrainsetIndex = $trainsets->search(fn($t) => $t->id === $trainset->id);
+            $currentTrainsetIndex = $trainsets->search(fn ($t) => $t->id === $trainset->id);
             if ($currentTrainsetIndex !== false && $currentTrainsetIndex < count($trainsets) - 1) {
                 return $this->getInitialDate($trainsets[$currentTrainsetIndex + 1]);
             }
@@ -738,37 +734,36 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
     public function getInitialDate(Trainset $trainset) {
         $trainsets = $trainset->project->trainsets()->orderBy('id')->get();
-        $currentTrainsetIndex = $trainsets->search(fn($t) => $t->id === $trainset->id);
+        $currentTrainsetIndex = $trainsets->search(fn ($t) => $t->id === $trainset->id);
 
         if ($currentTrainsetIndex === 0) {
             return $trainset->project->initial_date;
-        } else {
-            $previousTrainset = $trainsets[$currentTrainsetIndex - 1];
-            if ($previousTrainset->mechanical_time && $previousTrainset->electrical_time && $previousTrainset->initial_date) {
-                $totalTime = max($previousTrainset->mechanical_time, $previousTrainset->electrical_time);
-                $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
-                $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
-
-                $startDate = $previousTrainset->initial_date;
-                $endDate = Carbon::parse($startDate);
-
-                for ($i = 0; $i < $calculatedEstimateTime; $i++) {
-                    $endDate->addDay();
-                    // Skip weekends
-                    while ($endDate->isWeekend()) {
-                        $endDate->addDay();
-                    }
-                }
-                return $endDate->format('Y-m-d');
-            } else {
-                return $this->calculateEstimatedTime($previousTrainset->id);
-            }
         }
+        $previousTrainset = $trainsets[$currentTrainsetIndex - 1];
+        if ($previousTrainset->mechanical_time && $previousTrainset->electrical_time && $previousTrainset->initial_date) {
+            $totalTime = max($previousTrainset->mechanical_time, $previousTrainset->electrical_time);
+            $minutesPerWorkingDay = 8 * 60; // 8 hours * 60 minutes
+            $calculatedEstimateTime = ceil($totalTime / $minutesPerWorkingDay);
+
+            $startDate = $previousTrainset->initial_date;
+            $endDate = Carbon::parse($startDate);
+
+            for ($i = 0; $i < $calculatedEstimateTime; $i++) {
+                $endDate->addDay();
+                // Skip weekends
+                while ($endDate->isWeekend()) {
+                    $endDate->addDay();
+                }
+            }
+
+            return $endDate->format('Y-m-d');
+        }
+
+        return $this->calculateEstimatedTime($previousTrainset->id);
+
     }
 
-    public function getEndDate(Trainset $trainset) {
-
-    }
+    public function getEndDate(Trainset $trainset) {}
 
     protected function getRepositoryClass(): string {
         return TrainsetRepositoryInterface::class;

@@ -1,10 +1,10 @@
+import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 
 export default function ({
     project,
@@ -46,13 +46,13 @@ export default function ({
                         </h5>
                         {/* <h5 className=" text-sm ">Lokasi : {component.location}</h5> */}
                         <div className='flex w-full items-center justify-end'>
-                        {checkPermission(PERMISSION_ENUM.PROJECT_COMPONENT_IMPORT) && (
-                            <Import
-                                project={project}
-                                hasMaterials={data.has_materials}
-                                component={data.component}
-                            />
-                        )}
+                            {checkPermission(PERMISSION_ENUM.PROJECT_COMPONENT_IMPORT) && (
+                                <Import
+                                    project={project}
+                                    hasMaterials={data.has_materials}
+                                    component={data.component}
+                                />
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

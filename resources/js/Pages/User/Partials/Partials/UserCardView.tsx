@@ -23,7 +23,7 @@ export default function ({
     const canEditOrDelete = (user: UserResource) => {
         return (
             user.id !== auth.user.id &&
-            (auth.user.role === 'Super Admin' || user.role.name !== 'Super Admin')
+            (auth.user.role === 'Super Admin' || user.role?.name !== 'Super Admin')
         );
     };
 
@@ -60,13 +60,15 @@ export default function ({
                                 <div className='flex flex-wrap items-center gap-4'>
                                     {checkPermission(PERMISSION_ENUM.USER_UPDATE) && (
                                         <Link
-                                        href={route(`${ROUTES.USERS}.edit`, user.id)}
-                                        className={buttonVariants({ variant: 'link' })}
+                                            href={route(`${ROUTES.USERS}.edit`, user.id)}
+                                            className={buttonVariants({ variant: 'link' })}
                                         >
-                                        {t('action.edit')}
-                                    </Link>
+                                            {t('action.edit')}
+                                        </Link>
                                     )}
-                                    {checkPermission(PERMISSION_ENUM.USER_DELETE) && user.is_trashed && user.can_be_deleted ? (
+                                    {checkPermission(PERMISSION_ENUM.USER_DELETE) &&
+                                    user.is_trashed &&
+                                    user.can_be_deleted ? (
                                         <Button
                                             variant='link'
                                             onClick={() => handleUserForceDeletion(user.id)}

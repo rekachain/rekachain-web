@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Component\StoreComponentRequest;
 use App\Http\Requests\Component\UpdateComponentRequest;
 use App\Http\Resources\ComponentResource;
 use App\Models\Component;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
-use App\Helpers\PermissionHelper;
 use App\Support\Interfaces\Services\ComponentServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -28,6 +28,7 @@ class ComponentController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_COMPONENT_GET_TEMPLATE_IMPORT_COMPONENT->value:
                     PermissionHelper::check(PermissionEnum::COMPONENT_IMPORT);
+
                     return $this->componentService->getImportDataTemplate();
             }
 
@@ -47,6 +48,7 @@ class ComponentController extends Controller {
      */
     public function create() {
         PermissionHelper::check(PermissionEnum::COMPONENT_READ);
+
         return inertia('Component/Create');
     }
 
@@ -80,6 +82,7 @@ class ComponentController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_COMPONENT_GET_COMPONENT_MATERIAL_AND_PROGRESS_TEMPLATE->value:
                     PermissionHelper::check(PermissionEnum::COMPONENT_IMPORT);
+
                     return $this->componentService->getImportDataRawMaterialAndProgressTemplate($component);
             }
 
