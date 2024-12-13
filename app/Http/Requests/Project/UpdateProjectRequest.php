@@ -47,7 +47,11 @@ class UpdateProjectRequest extends FormRequest {
 
         return [
             'name' => 'nullable',
+            'description' => 'nullable',
             'initial_date' => 'nullable|date',
+            'estimated_start_date' => 'nullable|date',
+            'estimated_end_date' => 'nullable|date',
+            'buyer_id' => 'nullable|exists:users,id',
         ];
     }
 }
