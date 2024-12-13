@@ -185,7 +185,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             // Save calculated estimate time and end date to the project
             $project->update([
                 'calculated_estimate_time' => $totalCalculatedEstimatedTime,
-                'estimated_end_date' => $endDate->format('Y-m-d'),
+                'calculated_end_date' => $endDate->format('Y-m-d'),
             ]);
 
             foreach ($project->trainsets as $trainset) {
@@ -225,7 +225,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
 
         $project->update([
             'estimated_start_date' => Carbon::parse($data['estimated_start_date'])->format('Y-m-d'),
-            'estimated_end_date' => $endDate->format('Y-m-d')
+            'calculated_end_date' => $endDate->format('Y-m-d')
         ]);
 
         $this->calculateEstimatedTime($project->id);
@@ -245,16 +245,10 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         }
     }
 
-    public function updateProjectEndTime(Trainset $trainset) {
-        $project = $trainset->project();
-        $trainsets = $project->trainsets()->orderBy('id')->get();
-
-        $currentTrainsetIndex = $trainsets->search(fn($t) => $t->id === $trainset->id);
-        if ($currentTrainsetIndex === $trainsets->count() - 1) {
-            $project->update([
-                'end_date' => now()->format('Y-m-d'),
-            ]);
-        }
+    public function updateProjectEndTime(Project $project) {
+        $project->update([
+            'end_date' => now()->format('Y-m-d'),
+        ]);
     }
 
     public function updateProjectStatus(Project $project) {
@@ -267,6 +261,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             $project->update([
                 'status' => ProjectStatusEnum::DONE->value
             ]);
+            $this->updateProjectEndTime($project);
         }
 
     }
