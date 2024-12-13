@@ -21,7 +21,7 @@ import { toast } from 'sonner';
 window.axios = axios;
 
 function formatErrorMessages(error: any) {
-    console.log(error);
+    // console.log(error);
 
     let errorHtml = '';
     if (error.response.data.errors) {
@@ -49,6 +49,8 @@ function handleAxiosError(error: any) {
 
         if (error.response.data.errors && Object.keys(error.response.data.errors).length > 0) {
             messages = formatErrorMessages(error);
+        } else {
+            messages = error.response.data.message;
         }
 
         toast.custom(
@@ -84,6 +86,8 @@ function handleAxiosError(error: any) {
             messages = formatErrorMessages(error);
         }
 
+        // console.log(messages);
+
         toast.error('Unauthorized', {
             description: <div dangerouslySetInnerHTML={{ __html: messages }}></div>,
         });
@@ -92,7 +96,11 @@ function handleAxiosError(error: any) {
 
         if (error.response.data.errors && Object.keys(error.response.data.errors).length > 0) {
             messages = formatErrorMessages(error);
+        } else {
+            messages = error.response.data.message;
         }
+
+        // console.log(error);
 
         toast.error('Error', {
             richColors: true,
