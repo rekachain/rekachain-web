@@ -1,5 +1,10 @@
 import InputLabel from '@/Components/InputLabel';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/Components/UI/accordion';
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Textarea } from '@/Components/UI/textarea';
@@ -56,12 +61,13 @@ export default function ({ project }: { project: ProjectResource }) {
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} id='form-project-edit' encType='multipart/form-data'></form>
+                    <form
+                        onSubmit={submit}
+                        id='form-project-edit'
+                        encType='multipart/form-data'
+                    ></form>
                     <div className='mt-4'>
-                        <InputLabel
-                            value={t('pages.project.edit.fields.name')}
-                            htmlFor='name'
-                        />
+                        <InputLabel value={t('pages.project.edit.fields.name')} htmlFor='name' />
                         <Input
                             value={data.name}
                             type='text'
@@ -113,9 +119,7 @@ export default function ({ project }: { project: ProjectResource }) {
                             <Input
                                 value={data.estimated_start_date || ''}
                                 type='date'
-                                onChange={(e) =>
-                                    setData('estimated_start_date', e.target.value)
-                                }
+                                onChange={(e) => setData('estimated_start_date', e.target.value)}
                                 name='estimated_start_date'
                                 id='estimated_start_date'
                                 className='mt-1'
@@ -131,9 +135,7 @@ export default function ({ project }: { project: ProjectResource }) {
                             <Input
                                 value={data.estimated_end_date || ''}
                                 type='date'
-                                onChange={(e) =>
-                                    setData('estimated_end_date', e.target.value)
-                                }
+                                onChange={(e) => setData('estimated_end_date', e.target.value)}
                                 name='estimated_end_date'
                                 id='estimated_end_date'
                                 className='mt-1'
@@ -142,7 +144,12 @@ export default function ({ project }: { project: ProjectResource }) {
                         </div>
                     </div>
 
-                    <Accordion type='single' defaultValue={data.buyer_id ? 'item-1' : ''} collapsible className='mt-4'>
+                    <Accordion
+                        type='single'
+                        defaultValue={data.buyer_id ? 'item-1' : ''}
+                        collapsible
+                        className='mt-4'
+                    >
                         <AccordionItem value='item-1'>
                             <AccordionTrigger>
                                 {t('pages.project.edit.fields.buyer_selection')}
@@ -156,7 +163,7 @@ export default function ({ project }: { project: ProjectResource }) {
                         </AccordionItem>
                     </Accordion>
 
-                    <Button disabled={loading} className='mt-4' form='form-project-edit'>
+                    <Button form='form-project-edit' disabled={loading} className='mt-4'>
                         {t('pages.project.edit.buttons.submit')}
                     </Button>
                 </div>

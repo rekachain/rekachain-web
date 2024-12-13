@@ -23,7 +23,7 @@ export default function ({
 }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
-        buyer_id: buyer?.id ?? null as number | null,
+        buyer_id: buyer?.id ?? (null as number | null),
         user_name: buyer?.name ?? '',
         user_email: buyer?.email ?? '',
         user_phone_number: buyer?.phone_number ?? '',
@@ -116,8 +116,8 @@ export default function ({
                                       )
                             }
                             onSearchChange={setSearchUser}
-                            initialSearch={buyer?.name}
                             nullable
+                            initialSearch={buyer?.name}
                             id='user'
                             fetchData={fetchUsers}
                             data={userResponse?.data}
