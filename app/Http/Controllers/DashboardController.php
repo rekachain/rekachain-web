@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\DashboardService;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,16 @@ class DashboardController extends Controller {
     ) {}
 
     public function index(Request $request) {
+        $intent = $request->get('intent');
         $data = $this->dashboardService->showGraph($request->query());
         // $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query());
         if ($this->ajax()) {
+
+            switch ($intent) {
+                case IntentEnum::DOWNLOAD_APK_FILE->value:
+                    return $this->dashboardService->downloadApkFile();
+            }
+
             $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
             $data['attachment_status_of_workstation'] = $request->get('use_raw') ? $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query()) : $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
 
@@ -124,12 +132,12 @@ class DashboardController extends Controller {
 
         // Trainset Panel
         $panel = DB::select("WITH attachment_data AS (
-        SELECT 
+        SELECT
             trainset_attachment_components.total_required,
             trainset_attachment_components.total_fulfilled,
             trainset_attachment_components.total_failed
         FROM trainset_attachment_components
-        INNER JOIN trainset_attachments 
+        INNER JOIN trainset_attachments
             ON trainset_attachment_components.trainset_attachment_id = trainset_attachments.id
         WHERE trainset_attachments.trainset_id = :trainset
     )

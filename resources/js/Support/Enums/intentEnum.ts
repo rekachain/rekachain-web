@@ -1,5 +1,6 @@
 const intents = {
     SOFT_DELETE_ENTRY: 'soft.delete.entry',
+    DOWNLOAD_APK_FILE: 'download.apk.file',
     API_USER_UPDATE_PASSWORD: 'api.user.update.password',
     API_PROJECT_IMPORT_PROJECT_TEMPLATE: 'api.project.import.project.template',
     API_PANEL_IMPORT_PANEL: 'api.panel.import.panel',
@@ -115,6 +116,7 @@ const intents = {
     WEB_PROJECT_CHANGE_TRAINSET_PRESET: 'web.project.change.trainset.preset',
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
     WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
+    WEB_PROJECT_UPDATE_INITIAL_DATE: 'web.project.update.initial.date',
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
     WEB_TRAINSET_GET_ALL_COMPONENTS: 'web.trainset.get.all.components',
