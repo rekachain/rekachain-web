@@ -49,7 +49,10 @@ class ProjectController extends Controller {
             try {
                 $perPage = request()->get('perPage', 5);
 
-                return ProjectResource::collection($this->projectService->getAllPaginated($request->query(), $perPage));
+                return ProjectResource::collection($this->projectService
+                    ->withCount(['trainsets'])
+                    ->getAllPaginated($request->query(), $perPage)
+                );
             } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
         }
