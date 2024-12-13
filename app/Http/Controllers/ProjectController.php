@@ -124,6 +124,7 @@ class ProjectController extends Controller {
      */
     public function edit(Project $project) {
         PermissionHelper::check(PermissionEnum::PROJECT_UPDATE);
+        $project = $project->load(['buyer']);
 
         return inertia('Project/Edit', ['project' => new ProjectResource($project)]);
     }

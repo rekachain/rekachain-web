@@ -14,13 +14,19 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { RefreshCcw } from 'lucide-react';
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 
-export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => void }) {
+export default function ({
+    setBuyerId,
+    buyer = null,
+}: {
+    setBuyerId: (buyer_id: number) => void;
+    buyer?: UserResource | null;
+}) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
-        buyer_id: null as number | null,
-        user_name: '',
-        user_email: '',
-        user_phone_number: '',
+        buyer_id: buyer?.id ?? null as number | null,
+        user_name: buyer?.name ?? '',
+        user_email: buyer?.email ?? '',
+        user_phone_number: buyer?.phone_number ?? '',
         user_password: '',
     });
 
@@ -69,6 +75,12 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
         });
     });
 
+    useEffect(() => {
+        if (buyer) {
+            void refreshUser(buyer);
+        }
+    }, [buyer]);
+
     const handleAddUser = withLoading(async (e: FormEvent<HTMLDivElement>) => {
         e.preventDefault();
 
@@ -102,6 +114,7 @@ export default function ({ setBuyerId }: { setBuyerId: (buyer_id: number) => voi
                                       )
                             }
                             onSearchChange={setSearchUser}
+                            initialSearch={buyer?.name}
                             nullable
                             id='user'
                             fetchData={fetchUsers}
