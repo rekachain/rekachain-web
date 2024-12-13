@@ -151,7 +151,7 @@ class ProjectController extends Controller {
 
                 return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
-                return $this->projectService->updateInitialDate($project, $request->validated());
+                return $this->projectService->updateEstimatedStartDate($project, $request->validated());
         }
 
         if ($this->ajax()) {

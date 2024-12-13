@@ -12,6 +12,7 @@ use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use Illuminate\Database\Eloquent\Model;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface {
     public function assignHandler(PanelAttachment $panelAttachment, array $data) {
@@ -143,4 +144,21 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
 
         return $panelAttachment;
     }
+
+    public function checkProgressAttachment(PanelAttachment $panelAttachment) {
+        $totalSerialPanels = $panelAttachment->serial_panels()->count();
+        $totalCompleted = $panelAttachment->serial_panels()
+            ->where('manufacture_status', SerialPanelManufactureStatusEnum::COMPLETED->value)
+            ->count();
+
+        if ($totalSerialPanels == $totalCompleted) {
+            $panelAttachment->update([
+                'status' => PanelAttachmentStatusEnum::DONE->value,
+            ]);
+        }
+
+        $trainset = $panelAttachment->trainset;
+        $this->trainsetService()->updateTrainsetStatus($trainset);
+    }
+
 }
