@@ -330,6 +330,7 @@ return [
                 'phone_number' => 'Nomor Telepon',
                 'password' => 'Kata Sandi',
                 'password_confirmation' => 'Konfirmasi Kata Sandi',
+                'password_placeholder' => 'Kosongkan jika tidak ingin mengganti kata sandi',
                 'role' => 'Peran',
                 'workstation' => 'Workstation',
                 'workstation_placeholder' => 'Pilih Workstation',
@@ -833,8 +834,12 @@ return [
             'title' => 'Edit Proyek: :name',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'trainset_needed' => 'Trainset Diperlukan',
                 'initial_date' => 'Tanggal Awal',
+                'estimated_start_date' => 'Estimasi Tanggal Mulai (OPSIONAL)',
+                'estimated_end_date' => 'Estimasi Tanggal Selesai (OPSIONAL)',
+                'buyer_selection' => 'Pembeli (OPSIONAL)',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Proyek',
@@ -1253,13 +1258,13 @@ return [
                                             'work_aspect_placeholder' => 'Pilih Aspek Pekerjaan',
                                         ],
                                         'separators' => [
-                                            'create_new_progress' => 'Buat Kemajuan Baru',
+                                            'create_new_progress' => 'Buat Progres Baru',
                                         ],
                                     ],
                                     'panel_progress_steps' => [
                                         'messages' => [
-                                            'updated' => 'Langkah kemajuan berhasil diperbarui!',
-                                            'deleted' => 'Langkah kemajuan berhasil dihapus!',
+                                            'updated' => 'Langkah progres berhasil diperbarui!',
+                                            'deleted' => 'Langkah progres berhasil dihapus!',
                                         ],
                                         'fields' => [
                                             'step' => 'Langkah',

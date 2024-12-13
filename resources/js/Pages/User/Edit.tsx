@@ -216,7 +216,7 @@ export default function EditUser(props: { user: UserResource; roles: RoleResourc
                             <Input
                                 value={data.password}
                                 type='password'
-                                placeholder='Leave empty to keep current password'
+                                placeholder={t('pages.user.edit.fields.password_placeholder')}
                                 onChange={(e) => setData('password', e.target.value)}
                                 name='password'
                                 id='password'

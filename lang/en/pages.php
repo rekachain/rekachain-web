@@ -330,6 +330,7 @@ return [
                 'phone_number' => 'Phone Number',
                 'password' => 'Password',
                 'password_confirmation' => 'Confirm Password',
+                'password_placeholder' => 'Leave blank to keep the same password',
                 'role' => 'Role',
                 'workstation' => 'Workstation',
                 'workstation_placeholder' => 'Select Workstation',
@@ -833,8 +834,12 @@ return [
             'title' => 'Edit Project: :name',
             'fields' => [
                 'name' => 'Name',
+                'description' => 'Description',
                 'trainset_needed' => 'Trainset Needed',
                 'initial_date' => 'Initial Date',
+                'estimated_start_date' => 'Estimated Start Date (OPTIONAL)',
+                'estimated_end_date' => 'Estimated End Date (OPTIONAL)',
+                'buyer_selection' => 'Customer (OPTIONAL)',
             ],
             'buttons' => [
                 'submit' => 'Update Project',

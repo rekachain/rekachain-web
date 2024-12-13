@@ -145,7 +145,7 @@ export default function ({ project }: { project: ProjectResource }) {
                     <Accordion type='single' defaultValue={data.buyer_id ? 'item-1' : ''} collapsible className='mt-4'>
                         <AccordionItem value='item-1'>
                             <AccordionTrigger>
-                                {t('pages.project.create.fields.buyer_selection')}
+                                {t('pages.project.edit.fields.buyer_selection')}
                             </AccordionTrigger>
                             <AccordionContent>
                                 <BuyerForm
