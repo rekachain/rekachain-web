@@ -6,13 +6,13 @@ use App\Models\DetailWorkerPanel;
 use App\Models\ProgressStep;
 use App\Models\SerialPanel;
 use App\Models\User;
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Traits\Services\HandlesImages;
 use Illuminate\Database\Eloquent\Model;
-use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
-use App\Support\Enums\SerialPanelManufactureStatusEnum;
 
 class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPanelServiceInterface {
     use HandlesImages;
@@ -82,26 +82,26 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
         if (is_null($detailWorkerPanel->acceptance_status)
         && array_key_exists('work_status', $data)
         && $data['work_status'] == DetailWorkerPanelWorkStatusEnum::COMPLETED->value
-    ) {
-        $data['acceptance_status'] = DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value;
-    }
+        ) {
+            $data['acceptance_status'] = DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value;
+        }
 
-    $detailWorkerPanel = parent::update($detailWorkerPanel, $data);
+        $detailWorkerPanel = parent::update($detailWorkerPanel, $data);
 
-    if (array_key_exists('failed_note', $data)) {
-        $serialPanel = $detailWorkerPanel->serial_panel;
-        $this->serialPanelService()->rejectPanel($serialPanel, (object)[
-            'notes' => $data['failed_note']
-        ]);
+        if (array_key_exists('failed_note', $data)) {
+            $serialPanel = $detailWorkerPanel->serial_panel;
+            $this->serialPanelService()->rejectPanel($serialPanel, (object) [
+                'notes' => $data['failed_note'],
+            ]);
+
+            $this->checkPanelProgressFulfillment($detailWorkerPanel->serial_panel->panel_attachment);
+
+            return $detailWorkerPanel->fresh();
+        }
 
         $this->checkPanelProgressFulfillment($detailWorkerPanel->serial_panel->panel_attachment);
 
         return $detailWorkerPanel->fresh();
-    }
-
-    $this->checkPanelProgressFulfillment($detailWorkerPanel->serial_panel->panel_attachment);
-
-    return $detailWorkerPanel->fresh();
 
     }
 
@@ -118,10 +118,10 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
             && $lastDetailWorkerPanel->work_status == DetailWorkerPanelWorkStatusEnum::COMPLETED
         ) {
             // Update serial panel status if needed
-            foreach($panelAttachment->serial_panels as $serialPanel) {
+            foreach ($panelAttachment->serial_panels as $serialPanel) {
                 if ($serialPanel->manufacture_status !== SerialPanelManufactureStatusEnum::FAILED) {
                     $serialPanel->update([
-                        'manufacture_status' => SerialPanelManufactureStatusEnum::COMPLETED->value
+                        'manufacture_status' => SerialPanelManufactureStatusEnum::COMPLETED->value,
                     ]);
                 }
             }
@@ -130,5 +130,4 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
         // Check overall panel attachment progress
         $this->panelAttachmentService()->checkProgressAttachment($panelAttachment);
     }
-
 }

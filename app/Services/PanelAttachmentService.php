@@ -8,11 +8,11 @@ use App\Models\Trainset;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\RoleEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use Illuminate\Database\Eloquent\Model;
-use App\Support\Enums\SerialPanelManufactureStatusEnum;
 
 class PanelAttachmentService extends BaseCrudService implements PanelAttachmentServiceInterface {
     public function assignHandler(PanelAttachment $panelAttachment, array $data) {
@@ -160,5 +160,4 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         $trainset = $panelAttachment->trainset;
         $this->trainsetService()->updateTrainsetStatus($trainset);
     }
-
 }
