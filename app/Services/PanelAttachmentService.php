@@ -156,6 +156,9 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
                 'status' => PanelAttachmentStatusEnum::DONE->value,
             ]);
         }
+
+        $trainset = $panelAttachment->trainset;
+        $this->trainsetService()->updateTrainsetStatus($trainset);
     }
 
 }

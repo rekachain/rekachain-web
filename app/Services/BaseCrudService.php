@@ -18,6 +18,7 @@ use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\ProgressStepServiceInterface;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
@@ -140,6 +141,13 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
      */
     protected function userService(): UserServiceInterface {
         return $this->getService(UserServiceInterface::class);
+    }
+
+    /**
+     * Get Project service instance
+     */
+    protected function projectService(): ProjectServiceInterface {
+        return $this->getService(ProjectServiceInterface::class);
     }
 
     /**

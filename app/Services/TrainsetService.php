@@ -2,35 +2,36 @@
 
 namespace App\Services;
 
-use App\Exports\Trainset\TrainsetsExport;
-use App\Exports\Trainset\TrainsetsTemplateExport;
+use File;
+use Imagick;
+use ZipArchive;
+use Carbon\Carbon;
+use ImagickException;
+use App\Models\Trainset;
 use App\Helpers\NumberHelper;
-use App\Imports\Trainset\TrainsetsImport;
 use App\Models\CarriagePanel;
 use App\Models\PanelAttachment;
-use App\Models\Trainset;
-use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
-use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
-use App\Support\Enums\SerialPanelManufactureStatusEnum;
-use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
-use App\Support\Enums\TrainsetStatusEnum;
-use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
-use App\Support\Interfaces\Services\TrainsetServiceInterface;
-use Carbon\Carbon;
-use File;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Imagick;
-use ImagickException;
-use Intervention\Image\Geometry\Factories\LineFactory;
 use Intervention\Image\ImageManager;
-use Intervention\Image\Interfaces\ImageInterface;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use App\Support\Enums\ProjectStatusEnum;
+use App\Exports\Trainset\TrainsetsExport;
+use App\Imports\Trainset\TrainsetsImport;
+use App\Support\Enums\TrainsetStatusEnum;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Exports\Trainset\TrainsetsTemplateExport;
+use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Geometry\Factories\LineFactory;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
+use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use ZipArchive;
+use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
+use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
+use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 
 class TrainsetService extends BaseCrudService implements TrainsetServiceInterface {
     public function updatePreset(Trainset $trainset, array $data): bool {
@@ -239,6 +240,10 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $this->generateTrainsetAttachment($trainset, $data);
             $this->generatePanelAttachment($trainset, $data);
 
+            if(!$trainset->project->status === ProjectStatusEnum::PROGRESS) {
+                $trainset->project->update(['status' => ProjectStatusEnum::PROGRESS->value]);
+            }
+
             // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
             $this->checkGeneratedAttachment($trainset);
             // DB::rollBack();
@@ -290,6 +295,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             // });
             $this->checkGeneratedAttachment($trainset);
             // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+            // $this->projectService()->updateProjectStartTime($trainset);
 
             return true;
         });
@@ -755,15 +761,33 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
                     $endDate->addDay();
                 }
             }
-
             return $endDate->format('Y-m-d');
+        } else {
+            return $this->calculateEstimatedTime($previousTrainset->id);
         }
-
-        return $this->calculateEstimatedTime($previousTrainset->id);
-
     }
 
-    public function getEndDate(Trainset $trainset) {}
+    public function updateTrainsetStatus(Trainset $trainset)  {
+        $trainsetAttachments = $trainset->trainset_attachments()->get();
+        $panelAttachments = $trainset->panel_attachments()->get();
+
+        $allTrainsetAttachmentsDone = $trainsetAttachments->every(function ($attachment) {
+            return $attachment->status === 'done';
+        });
+
+        $allPanelAttachmentsDone = $panelAttachments->every(function ($attachment) {
+            return $attachment->status === 'done';
+        });
+
+        if ($allTrainsetAttachmentsDone && $allPanelAttachmentsDone) {
+            $trainset->update([
+                $trainset->status = TrainsetStatusEnum::DONE->value
+            ]);
+        }
+
+        $project = $trainset->project;
+        $this->projectService()->updateProjectStatus($project);
+    }
 
     protected function getRepositoryClass(): string {
         return TrainsetRepositoryInterface::class;

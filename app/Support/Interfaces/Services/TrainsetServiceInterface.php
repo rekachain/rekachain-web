@@ -101,4 +101,6 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
     public function calculateEstimatedTime($trainset_id = null);
 
     public function getInitialDate(Trainset $trainset);
+
+    public function updateTrainsetStatus(Trainset $trainset);
 }
