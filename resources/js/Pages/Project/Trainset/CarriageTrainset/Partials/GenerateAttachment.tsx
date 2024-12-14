@@ -184,7 +184,7 @@ const GenerateAttachment = ({
                         'pages.project.trainset.carriage_trainset.partials.generate_attachment.buttons.generate_attachment',
                     )}
                 </DialogTrigger>
-                <DialogContent className='max-w-fit'>
+                <DialogContent className='flex w-[360px] flex-col justify-center md:max-w-fit'>
                     <DialogHeader>
                         <DialogTitle>
                             {t(
@@ -197,7 +197,7 @@ const GenerateAttachment = ({
                             onValueChange={(value: string) =>
                                 setActiveTab(value as GenerateAttachmentTabEnum)
                             }
-                            className='w-[400px]'
+                            className=''
                         >
                             <TabsList>
                                 <TabsTrigger
@@ -229,6 +229,7 @@ const GenerateAttachment = ({
                             </TabsList>
                             <TabsContent
                                 value={GenerateAttachmentTabEnum.TRAINSET_ATTACHMENT_MECHANIC}
+                                className='w-[300px]'
                             >
                                 <form
                                     onSubmit={(e) => {

@@ -82,17 +82,15 @@ const PreviewTrainsetAttachment = ({
         <div key={attachment.id} className='text-black dark:text-white'>
             <h1 className='text-xl font-bold'>{title}</h1>
             <div className='my-4 flex gap-4'>
-                {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_DOWNLOAD) && (
-                    <Link
-                        target='_blank'
-                        href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
-                        className={buttonVariants()}
-                    >
-                        {t(
-                            'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
-                        )}
-                    </Link>
-                )}
+                <Link
+                    target='_blank'
+                    href={`${route(`${ROUTES.TRAINSET_ATTACHMENTS}.show`, [attachment.id])}?intent=${IntentEnum.WEB_TRAINSET_ATTACHMENT_DOWNLOAD_TRAINSET_ATTACHMENT}`}
+                    className={buttonVariants()}
+                >
+                    {t(
+                        'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.buttons.download',
+                    )}
+                </Link>
                 {checkPermission(PERMISSION_ENUM.TRAINSET_ATTACHMENT_IMPORT) && (
                     <ImportTrainsetCustomMaterial
                         trainsetAttachment={trainsetAttachment}
@@ -136,7 +134,7 @@ const PreviewTrainsetAttachment = ({
                     </div>
                 )}
             </div>
-            <div className='grid grid-cols-3'>
+            <div className='grid grid-cols-1 md:grid-cols-3'>
                 <div className='mt-5 flex flex-col gap-3'>
                     <div className=''>
                         <p className='font-bold'>
@@ -214,55 +212,84 @@ const PreviewTrainsetAttachment = ({
                     'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.headers.material_list',
                 )}
             </h1>
-            <Table wrapperClassName='block max-h-96'>
-                <TableCaption>
-                    {t(
-                        'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
-                    )}
-                </TableCaption>
-                <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
-                    <TableRow>
-                        <TableHead className=''>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.description',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.specs',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.unit',
-                            )}
-                        </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
-                            )}
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {trainsetAttachment.raw_materials.map((rawMaterial) => (
-                        <TableRow key={rawMaterial.id}>
-                            <TableCell className='font-medium'>
-                                {rawMaterial.material_code}
-                            </TableCell>
-                            <TableCell>{rawMaterial.description}</TableCell>
-                            <TableCell>{rawMaterial.specs}</TableCell>
-                            <TableCell>{rawMaterial.unit}</TableCell>
-                            <TableCell>{rawMaterial.total_qty}</TableCell>
+            <div className='hidden md:block'>
+                <Table wrapperClassName='block max-h-96'>
+                    <TableCaption>
+                        {t(
+                            'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.others.captions.list_material_within_attachment',
+                        )}
+                    </TableCaption>
+                    <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
+                        <TableRow>
+                            <TableHead className=''>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.material_code',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.description',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.specs',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.unit',
+                                )}
+                            </TableHead>
+                            <TableHead>
+                                {t(
+                                    'pages.project.trainset.carriage_trainset.partials.components.preview_trainset_attachment.dialogs.raw_material_table.headers.total_qty',
+                                )}
+                            </TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {trainsetAttachment.raw_materials.map((rawMaterial) => (
+                            <TableRow key={rawMaterial.id}>
+                                <TableCell className='font-medium'>
+                                    {rawMaterial.material_code}
+                                </TableCell>
+                                <TableCell>{rawMaterial.description}</TableCell>
+                                <TableCell>{rawMaterial.specs}</TableCell>
+                                <TableCell>{rawMaterial.unit}</TableCell>
+                                <TableCell>{rawMaterial.total_qty}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+            <div className='grid grid-cols-1 gap-2 md:hidden'>
+                {trainsetAttachment.raw_materials.map((rawMaterial) => (
+                    <div
+                        // key={permission.id}
+                        className='flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'
+                    >
+                        <div className='items-scenter flex w-full justify-between'>
+                            <h4 className='text-base font-bold'>{rawMaterial.material_code}</h4>
+                            <h5 className='items-center text-base font-bold'>
+                                Unit : {rawMaterial.unit}
+                            </h5>
+                        </div>
+                        {/* <h4 className="font-bold text-xl">{permission.group}</h4> */}
+                        {/* <h4 className="font-bold text-xl">50349259</h4> */}
+                        {/* <h4 className="text-md">{permission.name}</h4> */}
+                        <h4 className='w-[80%] text-sm'>{rawMaterial.description}</h4>
+                        <div className='flex w-full items-center justify-end'>
+                            <Link
+                                href={route(`${ROUTES.RAW_MATERIALS}.edit`, rawMaterial.id)}
+                                className={buttonVariants({ variant: 'link' })}
+                            >
+                                {t('action.edit')}
+                            </Link>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

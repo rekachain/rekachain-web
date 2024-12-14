@@ -172,7 +172,7 @@ export default function ({
                             id='file'
                             accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         />
-                        {hasMaterials && (
+                        {hasMaterials ? (
                             <div className='rounded text-black'>
                                 {/* <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
                                     <OctagonAlert className="h-[30px]"></OctagonAlert>
@@ -338,15 +338,19 @@ export default function ({
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
+                        ) : (
+                            <div className='flex w-full justify-center'>
+                                <Button type='submit' disabled={loading}>
+                                    {loading
+                                        ? t('action.loading')
+                                        : t(
+                                              'pages.project.carriage.component.partials.import.dialogs.buttons.submit',
+                                          )}
+                                </Button>
+                            </div>
                         )}
                     </div>
-                    <DialogFooter>
-                        {/* <Button type="submit" disabled={loading}>
-                            {loading
-                                ? t('action.loading')
-                                : t('pages.project.carriage.component.partials.import.dialogs.buttons.submit')}
-                        </Button> */}
-                    </DialogFooter>
+                    <DialogFooter></DialogFooter>
                 </form>
             </DialogContent>
         </Dialog>

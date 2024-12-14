@@ -1,21 +1,24 @@
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import PanelQty from '@/Pages/Project/Trainset/CarriageTrainset/CarriagePanel/Partials/Partials/Components/PanelQty';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
 import { CarriageTrainsetResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import PanelProgress from './Components/PanelProgress';
 
 export default function CarPanelCardView({
     trainset,
     carriageTrainset,
-    handleSyncCarriage,
+    handleSyncCarriagePanel,
     handlePanelDeletion,
 }: {
     trainset: TrainsetResource;
     carriageTrainset: CarriageTrainsetResource;
-    handleSyncCarriage: () => Promise<void>;
+    handleSyncCarriagePanel: () => Promise<void>;
     handlePanelDeletion: (id: number) => void;
 }) {
     const { t } = useLaravelReactI18n();
@@ -46,7 +49,7 @@ export default function CarPanelCardView({
                                         <span>{carriage_panel.qty}</span>
                                     ) : (
                                         <PanelQty
-                                            handleSyncCarriagePanel={handleSyncCarriage}
+                                            handleSyncCarriagePanel={handleSyncCarriagePanel}
                                             carriage_panel={carriage_panel}
                                         />
                                     )}
@@ -81,6 +84,42 @@ export default function CarPanelCardView({
                                                 {t('action.delete')}
                                             </Button>
                                         )}
+
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_CARRIAGE_PANEL_COMPONENTS}.index`,
+                                            [
+                                                trainset.project_id,
+                                                trainset.id,
+                                                carriageTrainset.id,
+                                                carriage_panel.id,
+                                            ],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        Components
+                                    </Link>
+
+                                    <Link
+                                        href={route(
+                                            `${ROUTES.PROJECTS_TRAINSETS_CARRIAGE_TRAINSETS_CARRIAGE_PANELS_PANEL_MATERIALS}.index`,
+                                            [
+                                                trainset.project_id,
+                                                trainset.id,
+                                                carriageTrainset.id,
+                                                carriage_panel.id,
+                                            ],
+                                        )}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        Materials
+                                    </Link>
+
+                                    <PanelProgress
+                                        progress={carriage_panel.progress}
+                                        handleSyncCarriagePanel={handleSyncCarriagePanel}
+                                        carriagePanel={carriage_panel}
+                                    />
                                 </div>
                             </div>
                         </AnimateIn>

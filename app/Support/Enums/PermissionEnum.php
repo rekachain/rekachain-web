@@ -141,7 +141,7 @@ enum PermissionEnum: string {
     case DETAIL_WORKER_PANEL_READ = 'detail-worker-panel-read';
     case DETAIL_WORKER_PANEL_UPDATE = 'detail-worker-panel-update';
     case DETAIL_WORKER_PANEL_DELETE = 'detail-worker-panel-delete';
-    
+
     case CARRIAGE_PANEL_CREATE = 'carriage-panel-create';
     case CARRIAGE_PANEL_READ = 'carriage-panel-read';
     case CARRIAGE_PANEL_UPDATE = 'carriage-panel-update';

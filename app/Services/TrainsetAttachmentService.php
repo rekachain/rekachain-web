@@ -155,5 +155,8 @@ class TrainsetAttachmentService extends BaseCrudService implements TrainsetAttac
                 'status' => TrainsetAttachmentStatusEnum::DONE->value,
             ]);
         }
+
+        $trainset = $trainsetAttachment->trainset;
+        $this->trainsetService()->updateTrainsetStatus($trainset);
     }
 }

@@ -71,7 +71,7 @@ class DashboardService {
         // other programming shihst
 
         $ts = PanelAttachment::selectRaw(
-            'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done, 
+            'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done,
              SUM(CASE WHEN panel_attachments.status = "in_progress" THEN 1 ELSE 0 END) as in_progress'
         )
             ->addSelect('trainsets.name')
@@ -95,7 +95,7 @@ class DashboardService {
         // ->get();
 
         $panel = PanelAttachment::selectRaw(
-            'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done, 
+            'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done,
              SUM(CASE WHEN panel_attachments.status = "in_progress" THEN 1 ELSE 0 END) as in_progress'
         )
             ->addSelect('panels.name')
@@ -321,5 +321,11 @@ class DashboardService {
             ->values();
 
         return $progressOfWorkstation->toArray();
+    }
+
+    public function downloadApkFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
+        $apkFilePath = storage_path('app/private/rekachain-production.apk');
+
+        return response()->download($apkFilePath, 'rekachain-production.apk');
     }
 }

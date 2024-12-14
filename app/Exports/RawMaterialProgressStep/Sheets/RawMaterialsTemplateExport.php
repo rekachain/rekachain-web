@@ -84,7 +84,7 @@ class RawMaterialsTemplateExport implements FromArray, ShouldAutoSize, WithHeadi
                     'Deskripsi Material',
                     'Spesifikasi Material',
                     'Unit Material',
-                    1, 
+                    1,
                 ],
             ];
         }

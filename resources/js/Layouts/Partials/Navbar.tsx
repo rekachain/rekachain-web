@@ -32,6 +32,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/Components/UI/sheet';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { withLoading } from '@/Utils/withLoading';
 import { Link, usePage } from '@inertiajs/react';
 import {
     RiBook2Line,
@@ -262,13 +264,31 @@ export const ViewManualBook = () => {
 
 export const DownloadApp = () => {
     const { t } = useLaravelReactI18n();
+    const handleDownloadApkFile = withLoading(async () => {
+        const response = await axios.get(route(`${ROUTES.DASHBOARD}`), {
+            params: {
+                intent: IntentEnum.DOWNLOAD_APK_FILE,
+            },
+        });
+
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        const disposition = response.headers['content-disposition'];
+        const filename = disposition.split(';')[1].split('=')[1].trim().replace(/"/g, '');
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    });
     return (
-        <Link
+        <Button
+            variant='ghost'
             title={t('components.navbar.download_app.title')}
-            href='/'
-            className={buttonVariants({ size: 'icon', variant: 'ghost' })}
+            size='icon'
+            onClick={handleDownloadApkFile}
         >
             <RiDownload2Line />
-        </Link>
+        </Button>
     );
 };

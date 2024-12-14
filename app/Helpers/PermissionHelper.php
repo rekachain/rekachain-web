@@ -21,30 +21,30 @@ class PermissionHelper {
     public static function check(PermissionEnum|array $permissions = [], RoleEnum|array $roles = [], bool $returnBool = false, bool $strict = false): ?bool {
         if (empty($permissions) && empty($roles)) {
             return true;
-        } else {
-            if (!empty($permissions) && empty($roles)) {
-                return self::checkPermissions($permissions, false, $strict);
-            } elseif (empty($permissions) && !empty($roles)) {
-                return self::checkRoles($roles, false, $strict);
-            } else {
-                $check = false;
-                $permissionsCheck = self::checkPermissions($permissions, true, $strict);
-                $rolesCheck = self::checkRoles($roles, true, $strict);
-        
-                if (!$permissionsCheck && !$rolesCheck) {
-                    if ($returnBool) {
-                        $check = false;
-                    }
-                } else {
-                    $check = $strict ? ($permissionsCheck && $rolesCheck) : ($permissionsCheck || $rolesCheck);                    
-                }
-                return $check ? true : abort(403, __('exception.auth.permission_and_role.permission_and_role_exception', [
-                    'permission' => implode(', ', array_map(fn ($perm) => $perm->value, $permissions)),
-                    'conjunction' => $strict ? '&' : '/',
-                    'role' => implode(', ', array_map(fn ($role) => $role->value, $roles)),
-                ]));
-            }
         }
+        if (!empty($permissions) && empty($roles)) {
+            return self::checkPermissions($permissions, false, $strict);
+        } elseif (empty($permissions) && !empty($roles)) {
+            return self::checkRoles($roles, false, $strict);
+        }
+        $check = false;
+        $permissionsCheck = self::checkPermissions($permissions, true, $strict);
+        $rolesCheck = self::checkRoles($roles, true, $strict);
+
+        if (!$permissionsCheck && !$rolesCheck) {
+            if ($returnBool) {
+                $check = false;
+            }
+        } else {
+            $check = $strict ? ($permissionsCheck && $rolesCheck) : ($permissionsCheck || $rolesCheck);
+        }
+
+        return $check ? true : abort(403, __('exception.auth.permission_and_role.permission_and_role_exception', [
+            'permission' => implode(', ', array_map(fn ($perm) => $perm->value, $permissions)),
+            'conjunction' => $strict ? '&' : '/',
+            'role' => implode(', ', array_map(fn ($role) => $role->value, $roles)),
+        ]));
+
     }
 
     /**

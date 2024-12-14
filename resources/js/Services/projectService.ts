@@ -238,7 +238,7 @@ export const projectService = {
                 },
                 params: {
                     _method: 'PUT',
-                    intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL,
+                    intent: IntentEnum.WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL,
                 },
             },
         );

@@ -16,4 +16,6 @@ interface PanelAttachmentServiceInterface extends BaseCrudServiceInterface {
     public function assignSpvAndReceiver(PanelAttachment $panelAttachment, array $data);
 
     public function assignHandler(PanelAttachment $panelAttachment, array $data);
+
+    public function checkProgressAttachment(PanelAttachment $panelAttachment);
 }

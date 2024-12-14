@@ -69,7 +69,7 @@ export default function SidebarMobile() {
             <nav className='flex flex-col space-y-1'>
                 <div className='header flex h-16 border-b-2 px-4 py-3'>
                     <Sheet>
-                        <SheetTrigger>
+                        <SheetTrigger asChild>
                             <Button
                                 variant='default'
                                 size='icon'
@@ -86,8 +86,10 @@ export default function SidebarMobile() {
                                     <SheetTitle className='mx-auto'>
                                         <img width={50} src='/assets/images/icon.png' alt='logo' />
                                     </SheetTitle>
-                                    <SheetDescription className='flex w-full flex-col items-start gap-7 text-black dark:text-white'>
-                                        <Link href={'dashboard'} className='mt-5'>
+                                    <SheetDescription></SheetDescription>
+                                    <div className='flex w-full flex-col items-start gap-7 text-black dark:text-white'>
+                                        <hr className='mt-2 w-full border-[0.5px] border-gray-700' />
+                                        <Link href={'dashboard'} className='mt-1'>
                                             <div className='flex items-center gap-2'>
                                                 <RiHome8Line size={35} />
                                                 <p className='text-base'>
@@ -235,7 +237,7 @@ export default function SidebarMobile() {
                                             </AccordionItem>
                                         </Accordion>
 
-                                        <hr className='w-full border-2 border-gray-700' />
+                                        <hr className='w-full border-[0.5px] border-gray-700' />
 
                                         {checkPermission(PERMISSION_ENUM.STEP_READ) && (
                                             <Link
@@ -302,6 +304,7 @@ export default function SidebarMobile() {
                                                 </p>
                                             </Link>
                                         )}
+                                        <hr className='w-full border-[0.5px] border-gray-700' />
 
                                         <div className='flex h-44 flex-col justify-end gap-y-6'>
                                             <Link
@@ -324,7 +327,7 @@ export default function SidebarMobile() {
                                             </Link>
                                             <SidebarLogout />
                                         </div>
-                                    </SheetDescription>
+                                    </div>
                                 </SheetHeader>
                             </ScrollArea>
                         </SheetContent>

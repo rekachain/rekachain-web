@@ -3,7 +3,7 @@ import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterO
 import { Resource } from '@/Support/Interfaces/Resources';
 import { AxiosRequestConfig } from 'axios';
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 export function serviceFactory<T extends Resource>(baseRoute: string) {
     return {

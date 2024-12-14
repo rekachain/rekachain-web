@@ -38,7 +38,8 @@ class AuthenticatedSessionController extends Controller {
         if (!$user->hasRole(RoleEnum::SUPER_ADMIN->value) && empty($user->nip) && $user->can(PermissionEnum::DASHBOARD_COMMISSION_READ->value)) {
             $projectService = app(ProjectServiceInterface::class);
             $project = $projectService->find(['buyer_id' => $user->id])->first();
-            return redirect()->route('dashboard.trainset',['project' => $project->id,'trainset' => $project->trainsets()->first()->id]);
+
+            return redirect()->route('dashboard.trainset', ['project' => $project->id, 'trainset' => $project->trainsets()->first()->id]);
         }
         $unAllowedRole = [
             RoleEnum::WORKER_MEKANIK->value,

@@ -8,6 +8,7 @@ use App\Imports\Project\ProjectsImport;
 use App\Models\Carriage;
 use App\Models\Project;
 use App\Models\Trainset;
+use App\Support\Enums\ProjectStatusEnum;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use Carbon\Carbon;
@@ -110,7 +111,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             ]])->findOrFail($project_id);
 
             // Get project start date
-            $startDate = $project->initial_date; // Assuming you have initial_date in your Project model
+            $startDate = $project->estimated_start_date; // Assuming you have estimated_start_date in your Project model
             $endDate = Carbon::parse($startDate);
             $totalCalculatedEstimatedTime = 0;
             $lastTrainset = $project->trainsets->last();
@@ -184,7 +185,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             // Save calculated estimate time and end date to the project
             $project->update([
                 'calculated_estimate_time' => $totalCalculatedEstimatedTime,
-                'estimated_end_date' => $endDate->format('Y-m-d'),
+                'calculated_end_date' => $endDate->format('Y-m-d'),
             ]);
 
             foreach ($project->trainsets as $trainset) {
@@ -200,7 +201,7 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
             //     'assembly_time' => $assemblyTime,
             //     'total_estimated_time' => $totalTime,
             //     'calculated_estimate_time' => $calculatedEstimateTime,
-            //     'initial_date' => $startDate,
+            //     'estimated_start_date' => $startDate,
             //     'estimated_end_date' => $endDate->format('Y-m-d')
             // ]);
         }
@@ -208,9 +209,9 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         return response()->json(['message' => 'Please provide project_id']);
     }
 
-    public function updateInitialDate(Project $project, array $data): bool {
+    public function updateEstimatedStartDate(Project $project, array $data): bool {
         // Get update initial date
-        $endDate = Carbon::parse($data['initial_date']);
+        $endDate = Carbon::parse($data['estimated_start_date']);
         // $endDate = $startDate;
         // dd($project);
         // Add working days considering only Monday-Friday
@@ -223,13 +224,46 @@ class ProjectService extends BaseCrudService implements ProjectServiceInterface 
         }
 
         $project->update([
-            'initial_date' => Carbon::parse($data['initial_date'])->format('Y-m-d'),
-            'estimated_end_date' => $endDate->format('Y-m-d'),
+            'estimated_start_date' => Carbon::parse($data['estimated_start_date'])->format('Y-m-d'),
+            'calculated_end_date' => $endDate->format('Y-m-d'),
         ]);
 
         $this->calculateEstimatedTime($project->id);
 
         return true;
+    }
+
+    public function updateProjectStartTime(Trainset $trainset) {
+        $project = $trainset->project();
+        $trainsets = $project->trainsets()->orderBy('id')->get();
+
+        $currentTrainsetIndex = $trainsets->search(fn ($t) => $t->id === $trainset->id);
+        if ($currentTrainsetIndex === 0) {
+            $project->update([
+                'start_date' => now()->format('Y-m-d'),
+            ]);
+        }
+    }
+
+    public function updateProjectEndTime(Project $project) {
+        $project->update([
+            'end_date' => now()->format('Y-m-d'),
+        ]);
+    }
+
+    public function updateProjectStatus(Project $project) {
+        $trainsets = $project->trainsets()->get();
+        $allTrainsetsDone = $trainsets->every(function ($trainset) {
+            return $trainset->status === 'done';
+        });
+
+        if ($allTrainsetsDone) {
+            $project->update([
+                'status' => ProjectStatusEnum::DONE->value,
+            ]);
+            $this->updateProjectEndTime($project);
+        }
+
     }
 
     public function addTrainsets(Project $project, $data): bool {

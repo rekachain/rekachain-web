@@ -62,7 +62,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                         'step' => $user->step->name,
                     ]
                 ));
-    
+
                 return;
             } elseif ($currentWorkerIndex - $lastWorkerIndex > 1 || ($currentWorkerIndex > $lastWorkerIndex && !$lastWorkerTrainsetCompleted)) {
                 $fail(__(
@@ -71,7 +71,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                         'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
                     ]
                 ));
-    
+
                 return;
             }
         } else {
@@ -82,7 +82,7 @@ class TrainsetAttachmentAssignWorkerValidation implements ValidationRule {
                         'progress' => $trainsetAttachmentComponent->carriage_panel_component->progress->name,
                     ]
                 ));
-    
+
                 return;
             }
         }

@@ -40,7 +40,7 @@ export default function ({
             <div className='block md:hidden'>
                 <CarPanelCardView
                     trainset={trainset}
-                    handleSyncCarriage={handleSyncCarriage}
+                    handleSyncCarriagePanel={handleSyncCarriage}
                     handlePanelDeletion={handlePanelDeletion}
                     carriageTrainset={carriageTrainset}
                 ></CarPanelCardView>

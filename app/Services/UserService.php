@@ -25,6 +25,7 @@ class UserService extends BaseCrudService implements UserServiceInterface {
 
         if (request()->input('intent') === IntentEnum::WEB_USER_CREATE_BUYER->value) {
             $user->givePermissionTo(PermissionEnum::DASHBOARD_COMMISSION_READ->value);
+
             return $user;
         }
 

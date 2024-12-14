@@ -23,7 +23,7 @@ export default function ({
 }) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
-        buyer_id: buyer?.id ?? null as number | null,
+        buyer_id: buyer?.id ?? (null as number | null),
         user_name: buyer?.name ?? '',
         user_email: buyer?.email ?? '',
         user_phone_number: buyer?.phone_number ?? '',
@@ -89,7 +89,9 @@ export default function ({
         data.user_email && formData.append('email', data.user_email);
         data.user_phone_number && formData.append('phone_number', data.user_phone_number);
         data.user_password && formData.append('password', data.user_password);
-        const res = await userService.create(formData, { intent: IntentEnum.WEB_USER_CREATE_BUYER });
+        const res = await userService.create(formData, {
+            intent: IntentEnum.WEB_USER_CREATE_BUYER,
+        });
         void refreshUser(res);
         void useSuccessToast(t('pages.project.partials.partials.buyer_form.messages.created'));
     }, true);
@@ -114,8 +116,8 @@ export default function ({
                                       )
                             }
                             onSearchChange={setSearchUser}
-                            initialSearch={buyer?.name}
                             nullable
+                            initialSearch={buyer?.name}
                             id='user'
                             fetchData={fetchUsers}
                             data={userResponse?.data}
