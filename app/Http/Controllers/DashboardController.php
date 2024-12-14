@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Services\DashboardService;
 use App\Support\Enums\IntentEnum;
-use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
+use App\Support\Enums\PermissionEnum;
+use App\Support\Interfaces\Services\ProjectServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DashboardController extends Controller {
     public function __construct(
-        // protected PanelAttachmentServiceInterface $panelAttachmentService,
-        protected DashboardService $dashboardService
+        protected DashboardService $dashboardService,
+        protected ProjectServiceInterface $projectService,
     ) {}
 
     public function index(Request $request) {
+        checkPermissions(PermissionEnum::DASHBOARD_READ);
         $intent = $request->get('intent');
         $data = $this->dashboardService->showGraph($request->query());
         // $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query());
@@ -89,7 +91,8 @@ class DashboardController extends Controller {
 
         $project = DB::select('select * from projects where id = :id', ['id' => $project]);
         $trainsets = DB::select('SELECT trainsets.name as ts_name, projects.name as pj_name,projects.id as project_id ,trainsets.id as ts_id from trainsets inner join projects on projects.id = trainsets.project_id where trainsets.id = :trainset;', ['trainset' => $trainset]);
-        $projectList = DB::select('select * from projects');
+        $projectFilter = checkPermissions(PermissionEnum::DASHBOARD_TRAINSET_READ, true) ? [] : ['column_filters' => ['buyer_id' => \Auth::user()->id]];
+        $projectList = $this->projectService->getAll($projectFilter);
 
         $carriages = DB::select("SELECT qty, concat(type,' ',description) as type FROM `carriage_trainset` inner join carriages on carriage_trainset.carriage_id = carriages.id where trainset_id = :idTrainset", ['idTrainset' => $trainset]);
 
