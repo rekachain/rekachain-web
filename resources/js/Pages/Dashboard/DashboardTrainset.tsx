@@ -449,7 +449,9 @@ export default function Dashboard({ auth, data }: PageProps) {
 
                                     <div className='px-4'>
                                         <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.panel_progress_trainset')}
+                                            {t(
+                                                'pages.dashboard_trainset.index.panel_progress_trainset',
+                                            )}
                                         </h2>
                                         <h3 className='text-base'>{`${t('pages.dashboard_trainset.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                         <div className='flex h-[400px] flex-col items-center'>
@@ -472,13 +474,20 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             </ChartContainer>
                                             <h4 className='text-center font-bold'>
                                                 {data['total'][0].total == 0
-                                                    ? t('pages.dashboard_trainset.index.panel_progress_trainset_fulfilled')
-                                                    : t('pages.dashboard_trainset.index.panel_progress_trainset_not_fulfilled', {
-                                                        total: data['total'][0].total,
-                                                    })}
+                                                    ? t(
+                                                          'pages.dashboard_trainset.index.panel_progress_trainset_fulfilled',
+                                                      )
+                                                    : t(
+                                                          'pages.dashboard_trainset.index.panel_progress_trainset_not_fulfilled',
+                                                          {
+                                                              total: data['total'][0].total,
+                                                          },
+                                                      )}
                                             </h4>
                                             <p className='text-sm'>
-                                                {t('pages.dashboard_trainset.index.panel_progress_trainset_desc')}
+                                                {t(
+                                                    'pages.dashboard_trainset.index.panel_progress_trainset_desc',
+                                                )}
                                             </p>
                                         </div>
                                     </div>
@@ -507,11 +516,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 >
                                                     {valueTrainset
                                                         ? data['tsList'].find(
-                                                                // @ts-ignore
-                                                                (projectItem: any) =>
-                                                                    projectItem.name ===
-                                                                    valueTrainset,
-                                                            )?.name
+                                                              // @ts-ignore
+                                                              (projectItem: any) =>
+                                                                  projectItem.name ===
+                                                                  valueTrainset,
+                                                          )?.name
                                                         : `${t('pages.dashboard_trainset.index.select_trainset_buyer')}`}
                                                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                                 </Button>
@@ -536,9 +545,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                         href={`/dashboard/${projectItem.project_id}/${projectItem.id}`}
                                                                     >
                                                                         <CommandItem
-                                                                            value={
-                                                                                projectItem.name
-                                                                            }
+                                                                            value={projectItem.name}
                                                                             onSelect={(
                                                                                 currentValue,
                                                                             ) => {
@@ -576,99 +583,109 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     </div>
                                 </div>
                                 {trainsetComponentProgress.length > 0 ? (
-                                    console.log('progress', trainsetComponentProgress),
-                                    <div className='mt-2 flex w-full flex-col'>
-                                        <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.components_in_trainset_buyer')}
-                                        </h2>
-                                        <h3 className='text-base'>
-                                            {t(
-                                                'pages.dashboard_trainset.index.components_in_trainset_buyer_sub',
-                                                { trainset: data['trainsets'][0].ts_name },
-                                            )}
-                                        </h3>
-                                        <ChartContainer
-                                            config={trainsetProgressConfig}
-                                            className='mt-5 h-[900px] w-full'
-                                        >
-                                            <BarChart
-                                                stackOffset='expand'
-                                                layout='vertical'
-                                                data={trainsetComponentProgress}
-                                                accessibilityLayer
+                                    (console.log('progress', trainsetComponentProgress),
+                                    (
+                                        <div className='mt-2 flex w-full flex-col'>
+                                            <h2 className='my-1 text-xl font-bold'>
+                                                {t(
+                                                    'pages.dashboard_trainset.index.components_in_trainset_buyer',
+                                                )}
+                                            </h2>
+                                            <h3 className='text-base'>
+                                                {t(
+                                                    'pages.dashboard_trainset.index.components_in_trainset_buyer_sub',
+                                                    { trainset: data['trainsets'][0].ts_name },
+                                                )}
+                                            </h3>
+                                            <ChartContainer
+                                                config={trainsetProgressConfig}
+                                                className='mt-5 h-[900px] w-full'
                                             >
-                                                <CartesianGrid vertical={false} />
-                                                <XAxis
-                                                    type='number'
-                                                    tickFormatter={(value) =>
-                                                        `${(value * 100).toFixed(0)}%`
-                                                    }
-                                                />
-                                                <YAxis
-                                                    width={150}
-                                                    type='category'
-                                                    tickMargin={10}
-                                                    tickLine={false}
-                                                    dataKey='component.name'
-                                                    className=''
-                                                    axisLine={false}
-                                                    // angle={-45}
-                                                />
-                                                <ChartTooltip
-                                                    content={renderTrainsetProgressTooltipContent(
-                                                        trainsetComponentProgress,
-                                                    )}
-                                                />
-                                                <ChartLegend
-                                                    formatter={renderTrainsetProgressLegendContent}
-                                                />
-                                                <Bar
-                                                    type='monotone'
-                                                    stackId='2'
-                                                    radius={0}
-                                                    label={{
-                                                        position: 'right',
-                                                        formatter: (value: number) =>
-                                                            `${(value * 100).toFixed(0)}%`,
-                                                    }}
-                                                    fill={`var(--color-total_fulfilled_qty)`}
-                                                    dataKey={'total_fulfilled_qty'}
-                                                />
-                                                <Bar
-                                                    type='monotone'
-                                                    stackId='2'
-                                                    radius={[0, 4, 4, 0]}
-                                                    label={{
-                                                        position: 'right',
-                                                        formatter: (value: number) =>
-                                                            `${(value * 100).toFixed(0)}%`,
-                                                    }}
-                                                    fill={`var(--color-total_progress_qty)`}
-                                                    dataKey={'total_progress_qty'}
-                                                />
-                                                <Bar
-                                                    type='monotone'
-                                                    stackId='2'
-                                                    radius={4}
-                                                    legendType='none'
-                                                    fill={`var(--color-diff)`}
-                                                    dataKey={'diff'}
-                                                    className='hidden'
-                                                />
-                                            </BarChart>
-                                        </ChartContainer>
-                                    </div>
+                                                <BarChart
+                                                    stackOffset='expand'
+                                                    layout='vertical'
+                                                    data={trainsetComponentProgress}
+                                                    accessibilityLayer
+                                                >
+                                                    <CartesianGrid vertical={false} />
+                                                    <XAxis
+                                                        type='number'
+                                                        tickFormatter={(value) =>
+                                                            `${(value * 100).toFixed(0)}%`
+                                                        }
+                                                    />
+                                                    <YAxis
+                                                        width={150}
+                                                        type='category'
+                                                        tickMargin={10}
+                                                        tickLine={false}
+                                                        dataKey='component.name'
+                                                        className=''
+                                                        axisLine={false}
+                                                        // angle={-45}
+                                                    />
+                                                    <ChartTooltip
+                                                        content={renderTrainsetProgressTooltipContent(
+                                                            trainsetComponentProgress,
+                                                        )}
+                                                    />
+                                                    <ChartLegend
+                                                        formatter={
+                                                            renderTrainsetProgressLegendContent
+                                                        }
+                                                    />
+                                                    <Bar
+                                                        type='monotone'
+                                                        stackId='2'
+                                                        radius={0}
+                                                        label={{
+                                                            position: 'right',
+                                                            formatter: (value: number) =>
+                                                                `${(value * 100).toFixed(0)}%`,
+                                                        }}
+                                                        fill={`var(--color-total_fulfilled_qty)`}
+                                                        dataKey={'total_fulfilled_qty'}
+                                                    />
+                                                    <Bar
+                                                        type='monotone'
+                                                        stackId='2'
+                                                        radius={[0, 4, 4, 0]}
+                                                        label={{
+                                                            position: 'right',
+                                                            formatter: (value: number) =>
+                                                                `${(value * 100).toFixed(0)}%`,
+                                                        }}
+                                                        fill={`var(--color-total_progress_qty)`}
+                                                        dataKey={'total_progress_qty'}
+                                                    />
+                                                    <Bar
+                                                        type='monotone'
+                                                        stackId='2'
+                                                        radius={4}
+                                                        legendType='none'
+                                                        fill={`var(--color-diff)`}
+                                                        dataKey={'diff'}
+                                                        className='hidden'
+                                                    />
+                                                </BarChart>
+                                            </ChartContainer>
+                                        </div>
+                                    ))
                                 ) : (
                                     <div className='mt-2 flex w-full flex-col'>
                                         <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.trainset_buyer_not_progresses')}
+                                            {t(
+                                                'pages.dashboard_trainset.index.trainset_buyer_not_progresses',
+                                            )}
                                         </h2>
                                     </div>
                                 )}
                                 {trainsetPanelProgress.length > 1 && (
                                     <div className='mt-2 flex w-full flex-col'>
                                         <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.panels_in_trainset_buyer')}
+                                            {t(
+                                                'pages.dashboard_trainset.index.panels_in_trainset_buyer',
+                                            )}
                                         </h2>
                                         <h3 className='text-base'>
                                             {t(
