@@ -9,6 +9,9 @@ return [
         'permission' => [
             'permission_exception' => 'The user must have ":permission" permission',
         ],
+        'permission_and_role' => [
+            'permission_and_role_exception' => 'The user must have ":permission" permission :conjunction ":role" role',
+        ],
     ],
     'services' => [
         'trainset_service' => [

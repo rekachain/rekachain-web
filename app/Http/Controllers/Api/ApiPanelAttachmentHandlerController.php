@@ -11,6 +11,7 @@ class ApiPanelAttachmentHandlerController extends Controller {
     public function __construct(
         private PanelAttachmentHandlerServiceInterface $panelAttachmentHandlerService
     ) {}
+
     /**
      * Display a listing of the resource.
      */

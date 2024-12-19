@@ -15,6 +15,7 @@ use App\Http\Controllers\WorkAspectController;
 use App\Models\CarriagePanel;
 use App\Models\CarriagePanelComponent;
 use App\Models\CarriageTrainset;
+use App\Services\ProjectService;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -98,3 +99,18 @@ Route::get('/{noProyek}/detail-ts/{id}', function ($detail_proyek, $detail_ts) {
 Route::get('/{noProyek}/{kodeTS}/detail-kereta/{id}', function ($detail_proyek, $detail_ts, $detail_kereta) {
     return Inertia::render('Detail/DetailKereta', ['detailTS' => $detail_ts, 'noProyek' => $detail_proyek, 'susunanKereta' => $detail_kereta]);
 })->middleware(['auth', 'verified'])->name('detail-kereta');
+
+Route::get('/test-estimation/{project_id?}', function ($project_id = null) {
+    $projectService = app()->make(ProjectService::class);
+
+    return $projectService->calculateEstimatedTime($project_id);
+});
+// Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update'])->middleware(['auth', 'verified'])->name('update-initial-date');
+// Route::controller(ProjectController::class)->group(function () {
+//     // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update']);
+//     Route::put('/update-initial-date/{project}', 'project_carriage')->name('update');
+// });
+Route::controller(ProjectController::class)->prefix('projects/{project}')->name('projects.')->group(function () {
+    // Route::put('/update-initial-date/{project_id}', [ProjectController::class, 'update']);
+    Route::put('/update-initial-date', 'update')->name('update.initial-date');
+});

@@ -22,7 +22,7 @@ return [
     'login' => [
         'title' => 'Selamat Datang Kembali!',
         'fields' => [
-            'nip' => 'NIP',
+            'identifier' => 'NIP/Email',
             'password' => 'Kata Sandi',
             'remember' => 'Ingat Saya',
         ],
@@ -35,6 +35,61 @@ return [
         'index' => [
             'title' => 'Halaman Utama',
             'welcome' => 'Selamat datang di Halaman Utama',
+            'project' => 'Proyek',
+            'all_project' => 'Semua Proyek',
+            'all_trainset_status' => 'Status Semua Trainset',
+            'select_project' => 'Pilih Proyek',
+            'progress_workshops' => 'Progress untuk tiap Workshop',
+            'progress_panels' => 'Progress untuk tiap Panel',
+            'panels_title' => 'Progress Panel pada WS Assembly',
+            'all_workstations' => 'Progress Semua Workstation',
+            'workstations_sub' => 'Progress dari Semua Workstation',
+            'find_project' => 'Cari Proyek...',
+            'project_not_found' => 'Proyek Tidak Ditemukan',
+            'trainset_not_found' => 'Trainset Tidak Ditemukan',
+            'find_trainset' => 'Cari Trainset...',
+            'select_trainset' => 'Pilih Trainset...',
+            'panel_trainset' => 'Panel Trainset',
+            'panel_trainset_sub' => 'Semua Panel pada Trainset',
+            'panel_progress_trainset' => 'Progress Panel Trainset ',
+            'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
+        ],
+    ],
+    'dashboard_trainset' => [
+        'index' => [
+            'title' => 'Halaman Utama',
+            'welcome' => 'Selamat datang di Halaman Utama',
+            'project' => 'Proyek',
+            'project_buyer' => 'Pesanan',
+            'all_project' => 'Semua Proyek',
+            'all_trainset_status' => 'Status Semua Trainset',
+            'select_project' => 'Pilih Proyek',
+            'progress_workshops' => 'Progress untuk tiap Workshop',
+            'progress_panels' => 'Progress untuk tiap Panel',
+            'panels_title' => 'Progress Panel pada WS Assembly',
+            'all_workstations' => 'Progress Semua Workstation',
+            'workstations_sub' => 'Progress dari Semua Workstation',
+            'find_project' => 'Cari Proyek...',
+            'project_not_found' => 'Proyek Tidak Ditemukan',
+            'trainset_not_found' => 'Trainset Tidak Ditemukan',
+            'trainset_not_progressed' => 'Trainset Belum Diproses',
+            'trainset_buyer_not_found' => 'Pesanan Tidak Ditemukan',
+            'trainset_buyer_not_progressed' => 'Pesanan Belum Diproses',
+            'components_in_trainset_buyer' => 'Komponen dalam Pesanan',
+            'components_in_trainset_buyer_sub' => 'Komponen dalam Pesanan :trainset',
+            'panels_in_trainset_buyer' => 'Panel dalam Pesanan',
+            'panels_in_trainset_buyer_sub' => 'Panel dalam Pesanan :trainset',
+            'find_trainset' => 'Cari Trainset...',
+            'select_trainset' => 'Pilih Trainset...',
+            'find_trainset_buyer' => 'Cari Pesanan...',
+            'select_trainset_buyer' => 'Pilih Pesanan...',
+            'panel_trainset' => 'Panel Trainset',
+            'panel_trainset_sub' => 'Semua Panel pada Trainset',
+            'panel_progress_trainset' => 'Progress Panel Trainset ',
+            'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
+            'panel_progress_trainset_desc' => 'Menunjukkan progress dari status kebutuhan panel.',
+            'panel_progress_trainset_fulfilled' => 'Kebutuhan Panel Terpenuhi',
+            'panel_progress_trainset_not_fulfilled' => 'Kebutuhan Panel Sejumlah :total Masih Belum Terpenuhi',
         ],
     ],
     'work_day' => [
@@ -312,6 +367,7 @@ return [
                 'phone_number' => 'Nomor Telepon',
                 'password' => 'Kata Sandi',
                 'password_confirmation' => 'Konfirmasi Kata Sandi',
+                'password_placeholder' => 'Kosongkan jika tidak ingin mengganti kata sandi',
                 'role' => 'Peran',
                 'workstation' => 'Workstation',
                 'workstation_placeholder' => 'Pilih Workstation',
@@ -334,6 +390,16 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'worker_status' => [
+                        'title' => 'Status Pekerja',
+                        'fields' => [
+                            'all' => 'Semua',
+                            'active' => 'Aktif',
+                            'inactive' => 'Tidak Aktif',
+                        ],
+                    ],
+                ],
                 'user_table' => [
                     'headers' => [
                         'nip' => 'NIP',
@@ -643,6 +709,7 @@ return [
             'title' => 'Buat Komponen',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'progress' => 'Progres',
                 'progress_placeholder' => 'Pilih Progres',
             ],
@@ -657,6 +724,7 @@ return [
             'title' => 'Edit Komponen: :name',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'progress' => 'Progres',
                 'progress_placeholder' => 'Pilih Progres',
             ],
@@ -677,12 +745,14 @@ return [
                 'component_table' => [
                     'headers' => [
                         'name' => 'Nama',
+                        'description' => 'Deskripsi',
                         'progress' => 'Progres',
                     ],
                 ],
                 'component_card' => [
                     'headers' => [
                         'name' => 'Nama: :name',
+                        'description' => 'Deskripsi: :description',
                         'progress' => 'Progres: :progress',
                     ],
                 ],
@@ -701,6 +771,8 @@ return [
             'fields' => [
                 'name' => 'Nama',
                 'description' => 'Deskripsi',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Pilih Progress',
             ],
             'buttons' => [
                 'submit' => 'Buat Panel',
@@ -714,6 +786,8 @@ return [
             'fields' => [
                 'name' => 'Nama',
                 'description' => 'Deskripsi',
+                'progress' => 'Progress',
+                'progress_placeholder' => 'Pilih Progress',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Panel',
@@ -755,12 +829,14 @@ return [
                     'headers' => [
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
+                        'progress' => 'Progress',
                     ],
                 ],
                 'panel_card' => [
                     'headers' => [
                         'name' => 'Nama: :name',
                         'description' => 'Deskripsi: :description',
+                        'progress' => 'Progress: :progress',
                     ],
                 ],
             ],
@@ -777,8 +853,12 @@ return [
             'title' => 'Buat Proyek',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'trainset_needed' => 'Trainset Diperlukan',
                 'initial_date' => 'Tanggal Awal',
+                'estimated_start_date' => 'Estimasi Tanggal Mulai (OPSIONAL)',
+                'estimated_end_date' => 'Estimasi Tanggal Selesai (OPSIONAL)',
+                'buyer_selection' => 'Pembeli (OPSIONAL)',
             ],
             'buttons' => [
                 'submit' => 'Buat Proyek',
@@ -791,8 +871,12 @@ return [
             'title' => 'Edit Proyek: :name',
             'fields' => [
                 'name' => 'Nama',
+                'description' => 'Deskripsi',
                 'trainset_needed' => 'Trainset Diperlukan',
                 'initial_date' => 'Tanggal Awal',
+                'estimated_start_date' => 'Estimasi Tanggal Mulai (OPSIONAL)',
+                'estimated_end_date' => 'Estimasi Tanggal Selesai (OPSIONAL)',
+                'buyer_selection' => 'Pembeli (OPSIONAL)',
             ],
             'buttons' => [
                 'submit' => 'Perbarui Proyek',
@@ -820,7 +904,7 @@ return [
                     'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
                 ],
             ],
-            'carriage' => [
+            'carriage_trainset' => [
                 'index' => [
                     'title' => 'Trainset',
                     'initial_date' => 'Tanggal Awal :initial_date',
@@ -852,7 +936,7 @@ return [
                         'trainset_needed_error' => 'Jumlah trainset harus lebih dari 0',
                     ],
                 ],
-                'panel' => [
+                'carriage_panel' => [
                     'index' => [
                         'title' => 'Gerbong: :name',
                         'initial_date' => 'Tanggal Awal :initial_date',
@@ -862,6 +946,262 @@ return [
                             'project' => 'Proyek :project',
                             'trainset' => 'Trainset :trainset',
                             'carriage' => 'Gerbong :carriage',
+                        ],
+                    ],
+                    'panel_material' => [
+                        'index' => [
+                            'title' => 'Material Panel',
+                            'breadcrumbs' => [
+                                'home' => 'Beranda',
+                                'project' => 'Proyek :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Gerbong :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'partials' => [
+                            'panel_materials' => [
+                                'messages' => [
+                                    'deleted' => 'Material Panel berhasil dihapus!',
+                                ],
+                            ],
+                            'add_new_panel_raw_material' => [
+                                'messages' => [
+                                    'panel_material_added' => 'Material Panel berhasil ditambahkan!',
+                                ],
+                                'buttons' => [
+                                    'add_new_panel_raw_material' => 'Tambah Material Panel Baru',
+                                ],
+                                'dialogs' => [
+                                    'title' => 'Tambah Material Panel Baru',
+                                    'fields' => [
+                                        'raw_material' => 'Bahan Mentah',
+                                        'raw_material_placeholder' => 'Pilih Bahan Mentah',
+                                        'raw_material_code' => 'Kode Bahan Mentah',
+                                        'raw_material_code_placeholder' => 'Kode Bahan Mentah',
+                                        'raw_material_search' => 'Cari Bahan Mentah',
+                                        'new_raw_material_code' => 'Kode Bahan Mentah Baru',
+                                        'new_raw_material_description' => 'Deskripsi Bahan Mentah Baru',
+                                        'new_raw_material_unit' => 'Satuan Bahan Mentah Baru',
+                                        'new_raw_material_specs' => 'Spesifikasi Bahan Mentah Baru',
+                                        'new_raw_material_qty' => 'Jumlah Bahan Mentah Baru',
+                                    ],
+                                    'actions' => [
+                                        'adding_panel_material' => 'Menambahkan Material Panel...',
+                                    ],
+                                    'buttons' => [
+                                        'add_panel_material' => 'Tambah Material Panel',
+                                    ],
+                                ],
+                            ],
+                            'partials' => [
+                                'panel_material_table' => [
+                                    'headers' => [
+                                        'material_code' => 'Kode Material',
+                                        'qty' => 'Jumlah',
+                                        'description' => 'Deskripsi',
+                                    ],
+                                ],
+                                'components' => [
+                                    'panel_material_qty' => [
+                                        'title' => 'Jumlah Material Panel',
+                                        'messages' => [
+                                            'updated' => 'Jumlah Material Panel berhasil diperbarui!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Perbarui Jumlah',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'carriage_panel_component' => [
+                        'index' => [
+                            'title' => 'Komponen',
+                            'breadcrumbs' => [
+                                'home' => 'Beranda',
+                                'project' => 'Proyek :project',
+                                'trainset' => 'Trainset :trainset',
+                                'carriage' => 'Gerbong :carriage',
+                                'panel' => 'Panel :panel',
+                            ],
+                        ],
+                        'component_material' => [
+                            'index' => [
+                                'title' => 'Material Komponen',
+                                'breadcrumbs' => [
+                                    'home' => 'Beranda',
+                                    'project' => 'Proyek :project',
+                                    'trainset' => 'Trainset :trainset',
+                                    'carriage' => 'Gerbong :carriage',
+                                    'panel' => 'Panel :panel',
+                                    'component' => 'Komponen :component',
+                                ],
+                            ],
+                            'partials' => [
+                                'component_materials' => [
+                                    'messages' => [
+                                        'deleted' => 'Material Komponen berhasil dihapus!',
+                                    ],
+                                ],
+                                'add_new_component_raw_material' => [
+                                    'messages' => [
+                                        'created' => 'Material Komponen berhasil ditambahkan!',
+                                    ],
+                                    'buttons' => [
+                                        'add_new_component_raw_material' => 'Tambah Material Komponen Baru',
+                                    ],
+                                    'dialogs' => [
+                                        'title' => 'Tambah Material Komponen Baru',
+                                        'fields' => [
+                                            'raw_material' => 'Bahan Mentah',
+                                            'raw_material_placeholder' => 'Pilih Bahan Mentah',
+                                            'raw_material_code' => 'Kode Bahan Mentah',
+                                            'raw_material_code_placeholder' => 'Kode Bahan Mentah',
+                                            'raw_material_search' => 'Cari Bahan Mentah',
+                                            'new_raw_material_code' => 'Kode Bahan Mentah Baru',
+                                            'new_raw_material_description' => 'Deskripsi Bahan Mentah Baru',
+                                            'new_raw_material_unit' => 'Satuan Bahan Mentah Baru',
+                                            'new_raw_material_specs' => 'Spesifikasi Bahan Mentah Baru',
+                                            'new_raw_material_qty' => 'Jumlah Bahan Mentah Baru',
+                                        ],
+                                        'buttons' => [
+                                            'add_component_material' => 'Tambah Material Komponen',
+                                        ],
+                                    ],
+                                ],
+                                'partials' => [
+                                    'component_material_table' => [
+                                        'headers' => [
+                                            'material_code' => 'Kode Material',
+                                            'qty' => 'Jumlah',
+                                            'description' => 'Deskripsi',
+                                        ],
+                                    ],
+                                    'components' => [
+                                        'component_material_qty' => [
+                                            'title' => 'Jumlah Material Komponen',
+                                            'messages' => [
+                                                'updated' => 'Jumlah Material Komponen berhasil diperbarui!',
+                                            ],
+                                            'buttons' => [
+                                                'update_qty' => 'Perbarui Jumlah',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'partials' => [
+                            'add_new_component' => [
+                                'buttons' => [
+                                    'add_component' => 'Tambah Komponen',
+                                ],
+                                'dialogs' => [
+                                    'fields' => [
+                                        'progress' => 'Progres',
+                                        'progress_search_placeholder' => 'Cari Progres',
+                                        'progress_placeholder' => 'Pilih Progres',
+                                        'component' => 'Komponen',
+                                        'component_placeholder' => 'Pilih Komponen',
+                                        'component_name' => 'Nama Komponen',
+                                        'component_description' => 'Deskripsi Komponen',
+                                        'component_qty' => 'Jumlah Komponen',
+                                    ],
+                                ],
+                                'messages' => [
+                                    'created' => 'Komponen berhasil ditambahkan!',
+                                ],
+                            ],
+                            'carriage_panel_component_table' => [
+                                'headers' => [
+                                    'component' => 'Komponen',
+                                    'qty' => 'Jumlah',
+                                    'description' => 'Deskripsi',
+                                    'progress' => 'Progres',
+                                ],
+                                'actions' => [
+                                    'materials' => 'Material',
+                                ],
+                            ],
+                            'carriage_panel_components' => [
+                                'messages' => [
+                                    'deleted' => 'Komponen berhasil dihapus!',
+                                ],
+                            ],
+                            'partials' => [
+                                'carriage_panel_component_table' => [
+                                    'headers' => [
+                                        'component' => 'Komponen',
+                                        'qty' => 'Jumlah',
+                                        'description' => 'Deskripsi',
+                                        'progress' => 'Progres',
+                                    ],
+                                    'actions' => [
+                                        'materials' => 'Material',
+                                    ],
+                                ],
+                                'carriage_panel_component_card' => [
+                                    'actions' => [
+                                        'materials' => 'Material',
+                                    ],
+                                ],
+                                'components' => [
+                                    'carriage_panel_component_qty' => [
+                                        'messages' => [
+                                            'updated' => 'Jumlah komponen berhasil diperbarui!',
+                                        ],
+                                        'buttons' => [
+                                            'update_qty' => 'Perbarui Jumlah',
+                                        ],
+                                    ],
+                                    'carriage_panel_component_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progres',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progres',
+                                            'progress_steps' => 'Langkah Progres',
+                                        ],
+                                    ],
+                                    'partials' => [
+                                        'carriage_panel_component_progress' => [
+                                            'fields' => [
+                                                'progress' => 'Progres',
+                                                'progress_search_placeholder' => 'Cari Progres',
+                                                'progress_placeholder' => 'Pilih Progres',
+                                                'progress_name' => 'Nama Progres',
+                                                'work_aspect' => 'Aspek Pekerjaan',
+                                                'work_aspect_placeholder' => 'Pilih Aspek Pekerjaan',
+                                                'panel_component_qty' => 'Jumlah Komponen Panel',
+                                            ],
+                                            'messages' => [
+                                                'updated' => 'Progres panel berhasil diperbarui!',
+                                            ],
+                                        ],
+                                        'carriage_panel_component_progress_steps' => [
+                                            'messages' => [
+                                                'updated' => 'Langkah progres berhasil diperbarui!',
+                                                'deleted' => 'Langkah progres berhasil dihapus!',
+                                            ],
+                                            'fields' => [
+                                                'step' => 'Langkah',
+                                                'step_placeholder' => 'Pilih Langkah',
+                                                'name' => 'Nama',
+                                                'name_placeholder' => 'Masukkan Nama Langkah',
+                                                'process' => 'Proses',
+                                                'process_placeholder' => 'Masukkan Proses Langkah',
+                                                'estimated_time' => 'Waktu Perkiraan (Menit)',
+                                                'estimated_time_placeholder' => 'Masukkan Waktu Perkiraan',
+                                            ],
+                                            'buttons' => [
+                                                'add_step' => 'Tambah Langkah',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                     'partials' => [
@@ -894,17 +1234,6 @@ return [
                                 'add_new_panel' => 'Tambah Panel Baru',
                             ],
                         ],
-                        'components' => [
-                            'panel_qty' => [
-                                'title' => 'Jumlah Panel',
-                                'messages' => [
-                                    'qty_updated' => 'Jumlah panel berhasil diperbarui!',
-                                ],
-                                'buttons' => [
-                                    'update_qty' => 'Perbarui Jumlah',
-                                ],
-                            ],
-                        ],
                         'partials' => [
                             'carriage_panel_table' => [
                                 'headers' => [
@@ -922,6 +1251,72 @@ return [
                                     'description' => 'Deskripsi',
                                     'components' => 'Komponen',
                                     'progress' => 'Progres',
+                                ],
+                            ],
+                            'components' => [
+                                'panel_qty' => [
+                                    'title' => 'Jumlah Panel',
+                                    'messages' => [
+                                        'updated' => 'Jumlah panel berhasil diperbarui!',
+                                    ],
+                                    'buttons' => [
+                                        'update_qty' => 'Perbarui Jumlah',
+                                    ],
+                                ],
+                                'panel_progress' => [
+                                    'accordions' => [
+                                        'progress' => 'Progress',
+                                        'progress_steps' => 'Langkah Progress',
+                                    ],
+                                    'messages' => [
+                                        'updated' => 'Progress panel berhasil diperbarui!',
+                                    ],
+                                    'buttons' => [
+                                        'progress' => 'Progress',
+                                    ],
+                                ],
+                                'partials' => [
+                                    'panel_progress' => [
+                                        'buttons' => [
+                                            'progress' => 'Progress',
+                                        ],
+                                        'accordions' => [
+                                            'progress' => 'Progress',
+                                            'progress_steps' => 'Langkah Progress',
+                                        ],
+                                        'messages' => [
+                                            'updated' => 'Progress panel berhasil diperbarui!',
+                                        ],
+                                        'fields' => [
+                                            'progress' => 'Progress',
+                                            'progress_placeholder' => 'Pilih Progress',
+                                            'name' => 'Nama',
+                                            'work_aspect' => 'Aspek Pekerjaan',
+                                            'work_aspect_placeholder' => 'Pilih Aspek Pekerjaan',
+                                        ],
+                                        'separators' => [
+                                            'create_new_progress' => 'Buat Progres Baru',
+                                        ],
+                                    ],
+                                    'panel_progress_steps' => [
+                                        'messages' => [
+                                            'updated' => 'Langkah progres berhasil diperbarui!',
+                                            'deleted' => 'Langkah progres berhasil dihapus!',
+                                        ],
+                                        'fields' => [
+                                            'step' => 'Langkah',
+                                            'step_placeholder' => 'Pilih Langkah',
+                                            'name' => 'Nama',
+                                            'name_placeholder' => 'Masukkan Nama Langkah',
+                                            'process' => 'Proses',
+                                            'process_placeholder' => 'Masukkan Proses Langkah',
+                                            'estimated_time' => 'Waktu Perkiraan (Menit)',
+                                            'estimated_time_placeholder' => 'Masukkan Waktu Perkiraan',
+                                        ],
+                                        'buttons' => [
+                                            'add_step' => 'Tambah Langkah',
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
@@ -1050,6 +1445,31 @@ return [
                             ],
                         ],
                     ],
+                    'progress_attachments' => [
+                        'dialogs' => [
+                            'buttons' => [
+                                'trigger' => 'Progres Trainset',
+                            ],
+                            'components' => [
+                                'tabs' => [
+                                    'props' => [
+                                        'tab_list' => [
+                                            'mechanic' => 'Progres Mekanik',
+                                            'electric' => 'Progres Elektrik',
+                                            'assembly' => 'Progres Assembly',
+                                        ],
+                                        'tab_content' => [
+                                            'title' => [
+                                                'mechanic' => 'Progres Mekanik Untuk Trainset :trainset',
+                                                'electric' => 'Progres Elektrik Untuk Trainset :trainset',
+                                                'assembly' => 'Progres Assembly Untuk Trainset :trainset',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
                     'partials' => [
                         'carriage_table' => [
                             'headers' => [
@@ -1092,6 +1512,7 @@ return [
                                     'no_attachments' => 'Tidak ada lampiran yang ditemukan.',
                                 ],
                                 'headers' => [
+                                    'handlers' => 'Penanggung Jawab',
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
                                     'serial_number' => 'Nomor Seri',
@@ -1131,6 +1552,7 @@ return [
                             'dialogs' => [
                                 'title' => 'Lampiran Trainset',
                                 'headers' => [
+                                    'handlers' => 'Penanggung Jawab',
                                     'attachment_number' => 'Nomor Lampiran',
                                     'reservation_number' => 'Nomor Reservasi',
                                     'serial_number' => 'Nomor Seri',
@@ -1214,6 +1636,40 @@ return [
                                         ],
                                     ],
                                 ],
+                            ],
+                        ],
+                        'progress_component' => [
+                            'props' => [
+                                'none' => 'Tidak Ada Progres Ditemukan (:status)',
+                                'trainset' => 'Trainset: :trainset',
+                                'component' => 'Komponen: :component',
+                                'component_placeholder' => 'Pilih Komponen',
+                                'select_all_components' => 'Semua Komponen',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Gerbong: :carriage',
+                                'workers' => 'Pekerja:',
+                            ],
+                        ],
+                        'progress_panel' => [
+                            'props' => [
+                                'none' => 'Tidak Ada Progres Ditemukan',
+                                'trainset' => 'Trainset: :trainset',
+                                'panel' => 'Panel: :panel',
+                                'carriage' => 'Gerbong: :carriage',
+                                'serial_number' => 'Nomor Serial: :serial_number',
+                                'product_number' => 'Nomor Produk: :product_number',
+                                'workers' => 'Pekerja:',
+                            ],
+                        ],
+                        'components' => [
+                            'worker_card' => [
+                                'worker_identification' => 'NIP: :worker_identification',
+                                'acceptance_status' => 'Status Penerimaan',
+                                'work_status' => 'Status Kerja',
+                                'start_at' => 'Dimulai Pada',
+                            ],
+                            'worker_step_card' => [
+                                'step_status' => 'Status',
                             ],
                         ],
                     ],
@@ -1617,6 +2073,25 @@ return [
                         'panels' => 'Panel',
                     ],
                 ],
+                'buyer_form' => [
+                    'fields' => [
+                        'buyer' => 'Pembeli',
+                        'name' => 'Nama',
+                        'email' => 'Email',
+                        'phone_number' => 'Nomor Telepon',
+                        'password' => 'Kata Sandi',
+                    ],
+                    'placeholders' => [
+                        'buyer' => 'Pilih Pembeli...',
+                        'name' => 'Masukkan Nama...',
+                        'email' => 'Masukkan Email...',
+                        'phone_number' => 'Masukkan Nomor Telepon...',
+                        'password' => 'Masukkan Kata Sandi...',
+                    ],
+                    'messages' => [
+                        'created' => 'Pembeli berhasil dibuat!',
+                    ],
+                ],
             ],
         ],
     ],
@@ -1808,7 +2283,7 @@ return [
     ],
     'trainset_attachment' => [
         'document_trainset_attachment' => [
-            'title' => 'Lampiran Trainset',
+            'title' => 'Kartu Penarikan Material (KPM)',
             'headers' => [
                 'mechanic_attachment' => 'Lampiran Mekanik',
                 'electric_attachment' => 'Lampiran Elektrik',
@@ -1817,22 +2292,35 @@ return [
                 'serial_number' => 'Nomor Seri',
                 'reference_number' => 'Nomor Referensi',
                 'date' => 'Tanggal',
+                'source_workstation' => 'Workstation Asal',
+                'destination_workstation' => 'Workstation Tujuan',
                 'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Kode Material',
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Total',
+                    'total_required' => 'Jumlah Diminta',
+                    'total_received' => 'Jumlah Diserahkan',
+                    'lot' => 'Lot/TS',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Dibuat Oleh',
+                    'send' => 'Dikirim Oleh',
+                    'receive' => 'Diterima Oleh',
+                    'identifier' => 'NIP',
                 ],
             ],
         ],
     ],
     'panel_attachment' => [
         'document_panel_attachment' => [
-            'title' => 'KPM Assembly',
+            'title' => 'Kartu Penarikan Material (KPM)',
             'headers' => [
                 'kpm_assembly' => 'KPM Assembly',
                 'attachment_number' => 'Nomor Lampiran',
@@ -1840,15 +2328,29 @@ return [
                 'serial_number' => 'Nomor Seri',
                 'reference_number' => 'Nomor Referensi',
                 'date' => 'Tanggal',
+                'source_workstation' => 'Workstation Asal',
+                'destination_workstation' => 'Workstation Tujuan',
+                'description' => 'Deskripsi',
                 'material_list' => 'Daftar Material',
             ],
             'raw_material_table' => [
                 'headers' => [
+                    'number' => 'No',
                     'material_code' => 'Kode Material',
                     'description' => 'Deskripsi',
                     'specs' => 'Spesifikasi',
                     'unit' => 'Satuan',
-                    'total_qty' => 'Total',
+                    'total_required' => 'Jumlah Diminta',
+                    'total_received' => 'Jumlah Diserahkan',
+                    'lot' => 'Lot/TS',
+                ],
+            ],
+            'props' => [
+                'signatures' => [
+                    'prepare' => 'Dibuat Oleh',
+                    'send' => 'Dikirim Oleh',
+                    'receive' => 'Diterima Oleh',
+                    'identifier' => 'NIP',
                 ],
             ],
         ],

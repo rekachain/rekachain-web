@@ -23,6 +23,7 @@ class PanelMaterialResource extends JsonResource {
                     'qty' => $this->qty,
                 ];
         }
+
         return [
             'id' => $this->id,
             'carriage_panel_id' => $this->carriage_panel_id,

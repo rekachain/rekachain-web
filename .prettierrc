@@ -1,11 +1,22 @@
 {
-    "endOfLine": "lf",
-    "printWidth": 120,
+    "printWidth": 100,
     "tabWidth": 4,
     "useTabs": false,
     "semi": true,
     "singleQuote": true,
     "trailingComma": "all",
     "bracketSpacing": true,
-    "arrowParens": "avoid"
+    "arrowParens": "always",
+    "endOfLine": "lf",
+    "jsxSingleQuote": true,
+    "quoteProps": "as-needed",
+    "htmlWhitespaceSensitivity": "css",
+    "proseWrap": "preserve",
+    "embeddedLanguageFormatting": "auto",
+    "editorconfig": true,
+    "bracketSameLine": false,
+    "plugins": [
+        "prettier-plugin-organize-imports",
+        "prettier-plugin-tailwindcss"
+    ]
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Carriage\StoreCarriageRequest;
 use App\Http\Requests\Carriage\UpdateCarriageRequest;
 use App\Http\Resources\CarriageResource;
 use App\Models\Carriage;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriageServiceInterface;
 use Illuminate\Http\Request;
 use Psr\Container\ContainerExceptionInterface;
@@ -19,12 +21,15 @@ class CarriageController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_READ);
         if ($this->ajax()) {
 
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_GET_TEMPLATE_IMPORT_CARRIAGE->value:
+                    PermissionHelper::check(PermissionEnum::CARRIAGE_IMPORT);
+
                     return $this->carriageService->getImportDataTemplate();
             }
 
@@ -43,6 +48,8 @@ class CarriageController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_CREATE);
+
         return inertia('Carriage/Create');
     }
 
@@ -50,11 +57,13 @@ class CarriageController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreCarriageRequest $request) {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_CREATE);
         if ($this->ajax()) {
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_CARRIAGE_IMPORT_CARRIAGE->value:
+                    PermissionHelper::check(PermissionEnum::CARRIAGE_IMPORT);
                     $this->carriageService->importData($request->file('import_file'));
 
                     return response()->noContent();
@@ -68,6 +77,7 @@ class CarriageController extends Controller {
      * Display the specified resource.
      */
     public function show(Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_READ);
         if ($this->ajax()) {
             return new CarriageResource($carriage);
         }
@@ -79,6 +89,8 @@ class CarriageController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_UPDATE);
+
         return inertia('Carriage/Edit', ['carriage' => new CarriageResource($carriage)]);
     }
 
@@ -86,6 +98,7 @@ class CarriageController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateCarriageRequest $request, Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_UPDATE);
         if ($this->ajax()) {
 
             return $this->carriageService->update($carriage, $request->validated());
@@ -96,6 +109,7 @@ class CarriageController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::CARRIAGE_DELETE);
         if ($this->ajax()) {
             return $this->carriageService->delete($carriage);
         }

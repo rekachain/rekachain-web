@@ -1,25 +1,26 @@
-import { useEffect, useState } from 'react';
-import { FeedbackResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { feedbackService } from '@/Services/feedbackService';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
+import { feedbackService } from '@/Services/feedbackService';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { RoleEnum } from '@/Support/Enums/roleEnum';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { FeedbackResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { usePage } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import FeedbackCardView from './Partials/FeedbackCardView';
 import FeedbackTableView from './Partials/FeedbackTableView';
-import { withLoading } from '@/Utils/withLoading';
-import { checkPermission } from '@/Helpers/sidebarHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { usePage } from '@inertiajs/react';
-import { RoleEnum } from '@/Support/Enums/roleEnum';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function () {
     const { t } = useLaravelReactI18n();
     const [feedbackResponse, setFeedbackResponse] = useState<PaginateResponse<FeedbackResource>>();
     const auth = usePage().props.auth;
     const allowedToReadAll =
-        auth.user.role === RoleEnum.SUPER_ADMIN || checkPermission(PERMISSION_ENUM.FEEDBACK_READ_ALL);
+        auth.user.role === RoleEnum.SUPER_ADMIN ||
+        checkPermission([PERMISSION_ENUM.FEEDBACK_READ, PERMISSION_ENUM.FEEDBACK_READ_ALL], true);
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
@@ -55,20 +56,20 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {feedbackResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <FeedbackTableView
-                            feedbackResponse={feedbackResponse}
                             handleFeedbackDeletion={handleFeedbackDeletion}
+                            feedbackResponse={feedbackResponse}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <FeedbackCardView
-                            feedbackResponse={feedbackResponse}
                             handleFeedbackDeletion={handleFeedbackDeletion}
+                            feedbackResponse={feedbackResponse}
                         />
                     </div>
                 </>

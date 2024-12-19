@@ -1,18 +1,24 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { DivisionResource, WorkshopResource } from '@/Support/Interfaces/Resources';
-import { workshopService } from '@/Services/workshopService';
+import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { workshopService } from '@/Services/workshopService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { DivisionResource, WorkshopResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler } from 'react';
 
-export default function ({ workshops, divisions }: { workshops: WorkshopResource[]; divisions: DivisionResource[] }) {
+export default function ({
+    workshops,
+    divisions,
+}: {
+    workshops: WorkshopResource[];
+    divisions: DivisionResource[];
+}) {
     const { t } = useLaravelReactI18n();
     const { data, setData } = useForm({
         name: '',
@@ -21,7 +27,7 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await workshopService.create(data);
@@ -33,39 +39,47 @@ export default function ({ workshops, divisions }: { workshops: WorkshopResource
         <>
             <Head title={t('pages.workshop.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.workshop.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.workshop.create.title')}
+                        </h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.workshop.create.fields.name')} />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.workshop.create.fields.name')}
+                                htmlFor='name'
+                            />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="address" value={t('pages.workshop.create.fields.address')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.workshop.create.fields.address')}
+                                htmlFor='address'
+                            />
                             <Input
-                                id="address"
-                                type="text"
-                                name="address"
                                 value={data.address}
-                                className="mt-1"
-                                autoComplete="address"
-                                onChange={e => setData('address', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('address', e.target.value)}
+                                name='address'
+                                id='address'
+                                className='mt-1'
+                                autoComplete='address'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.workshop.create.buttons.submit')}
                         </Button>
                     </form>

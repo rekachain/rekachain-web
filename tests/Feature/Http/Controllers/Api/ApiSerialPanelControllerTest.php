@@ -17,7 +17,7 @@ test('show panel attachment serial number detail', function () {
             'trainset' => $serial_panel->panel_attachment?->carriage_panel->carriage_trainset->trainset->name,
             'carriage' => $serial_panel->panel_attachment?->carriage_panel->carriage_trainset->carriage->type,
             'panel' => $serial_panel->panel_attachment?->carriage_panel->panel->name,
-            'manufacture_status' => $serial_panel->manufacture_status,
+            'manufacture_status' => $serial_panel->manufacture_status->value,
             'notes' => $serial_panel->notes,
         ]);
 });

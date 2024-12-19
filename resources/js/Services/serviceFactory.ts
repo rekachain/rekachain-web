@@ -1,9 +1,9 @@
-import { Resource } from '@/Support/Interfaces/Resources';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { Resource } from '@/Support/Interfaces/Resources';
 import { AxiosRequestConfig } from 'axios';
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 export function serviceFactory<T extends Resource>(baseRoute: string) {
     return {
@@ -17,7 +17,12 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
                 const res = await window.axios.get(url, { params: filters, ...config });
 
                 if (DEBUG_MODE)
-                    console.log(`Fetched resources from ${url} with filters:`, filters, 'and got:', res.data);
+                    console.log(
+                        `Fetched resources from ${url} with filters:`,
+                        filters,
+                        'and got:',
+                        res.data,
+                    );
 
                 return res.data;
             } catch (error) {
@@ -26,7 +31,11 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        get: async (id: number, filters: ServiceFilterOptions = {}, config: AxiosRequestConfig = {}): Promise<T> => {
+        get: async (
+            id: number,
+            filters: ServiceFilterOptions = {},
+            config: AxiosRequestConfig = {},
+        ): Promise<T> => {
             const url = route(`${baseRoute}.show`, id);
 
             try {
@@ -41,13 +50,22 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
             }
         },
 
-        create: async (data: Partial<any> | FormData): Promise<T> => {
+        create: async (
+            data: Partial<any> | FormData,
+            filters: ServiceFilterOptions = {},
+        ): Promise<T> => {
             const url = route(`${baseRoute}.store`);
 
             try {
-                const res = await window.axios.post(url, data);
+                const res = await window.axios.post(url, data, { params: filters });
 
-                if (DEBUG_MODE) console.log(`Created resource at ${url} with data:`, data, 'and got:', res.data);
+                if (DEBUG_MODE)
+                    console.log(
+                        `Created resource at ${url} with data:`,
+                        data,
+                        'and got:',
+                        res.data,
+                    );
 
                 return res.data;
             } catch (error) {
@@ -65,7 +83,13 @@ export function serviceFactory<T extends Resource>(baseRoute: string) {
                     },
                 });
 
-                if (DEBUG_MODE) console.log(`Updated resource at ${url} with data:`, data, 'and got:', res.data);
+                if (DEBUG_MODE)
+                    console.log(
+                        `Updated resource at ${url} with data:`,
+                        data,
+                        'and got:',
+                        res.data,
+                    );
 
                 return res.data;
             } catch (error) {

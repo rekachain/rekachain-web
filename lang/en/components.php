@@ -2,6 +2,15 @@
 
 return [
     'navbar' => [
+        'toggle_dark_mode' => [
+            'title' => 'Toggle Dark Mode',
+        ],
+        'download_app' => [
+            'title' => 'Download App',
+        ],
+        'view_manual_book' => [
+            'title' => 'View Manual Book',
+        ],
         'search' => [
             'placeholder' => 'Search...',
         ],
@@ -56,9 +65,12 @@ return [
             'logout' => 'Logout',
         ],
     ],
-    'feedback' => [
-        'title' => 'Feedback',
+    'add_feedback' => [
+        'title' => 'Add Feedback',
         'description' => 'Your feedback is important to us. We value and consider every suggestion and feedback.',
+        'messages' => [
+            'created' => 'Feedback created successfully.',
+        ],
         'fields' => [
             'name' => 'Name',
             'name_placeholder' => 'Your name...',

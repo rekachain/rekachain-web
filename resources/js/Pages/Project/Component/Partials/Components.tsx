@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react';
-import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import GenericPagination from '@/Components/GenericPagination';
+import { projectService } from '@/Services/projectService';
 import { PaginateMeta, PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { useConfirmation } from '@/Hooks/useConfirmation';
-import { componentService } from '@/Services/componentService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
+import { ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { useEffect, useState } from 'react';
 import ComponentCardView from './Partials/ComponentCardView';
 import ComponentTableView from './Partials/ComponentTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
-import GenericPagination from '@/Components/GenericPagination';
 
 export default function ({
     project,
@@ -20,15 +15,13 @@ export default function ({
     project: ProjectResource;
     handleSyncProject: () => Promise<void>;
 }) {
-    const { t } = useLaravelReactI18n();
-    const [componentResponse, setComponentResponse] = useState<PaginateResponse<ProjectComponentResource>>();
+    const [componentResponse, setComponentResponse] =
+        useState<PaginateResponse<ProjectComponentResource>>();
     const [componentResponseMeta, setComponentResponseMeta] = useState<PaginateMeta>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
     });
-
-    const { setLoading } = useLoading();
 
     const syncComponents = withLoading(async () => {
         const data = await projectService.getComponents(project.id, filters);
@@ -51,34 +44,25 @@ export default function ({
         void syncComponents();
     }, [filters]);
 
-    const handleComponentDeletion = (id: number) => {
-        useConfirmation().then(async ({ isConfirmed }) => {
-            if (isConfirmed) {
-                setLoading(true);
-                await componentService.delete(id);
-                await syncComponents();
-                void useSuccessToast(t('pages.component.partials.components.messages.deleted'));
-                setLoading(false);
-            }
-        });
-    };
-
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {componentResponse && (
                 <>
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <ComponentTableView
                             project={project}
                             componentResponse={componentResponse}
                         ></ComponentTableView>
                     </div>
-                    <div className="block md:hidden">
-                        <ComponentCardView project={project} componentResponse={componentResponse}></ComponentCardView>
+                    <div className='block md:hidden'>
+                        <ComponentCardView
+                            project={project}
+                            componentResponse={componentResponse}
+                        ></ComponentCardView>
                     </div>
                 </>
             )}

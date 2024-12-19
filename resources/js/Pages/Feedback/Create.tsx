@@ -1,14 +1,14 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
+import { Input } from '@/Components/UI/input';
+import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { feedbackService } from '@/Services/feedbackService';
 import { ROUTES } from '@/Support/Constants/routes';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { useLoading } from '@/Contexts/LoadingContext';
 import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 
 export default function () {
     const { data, setData } = useForm({
@@ -18,7 +18,7 @@ export default function () {
 
     const { loading } = useLoading();
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         await feedbackService.create(data);
@@ -28,41 +28,41 @@ export default function () {
 
     return (
         <>
-            <Head title="Tambah Feedback" />
+            <Head title='Tambah Feedback' />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Tambah Feedback</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>Tambah Feedback</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel value='Nama' htmlFor='nama' />
                             <Input
-                                id="nama"
-                                type="text"
-                                name="nama"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="nama"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='nama'
+                                id='nama'
+                                className='mt-1'
+                                autoComplete='nama'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="deskripsi" value="Deskripsi" />
+                        <div className='mt-4'>
+                            <InputLabel value='Deskripsi' htmlFor='deskripsi' />
                             <Input
-                                id="deskripsi"
-                                type="text"
-                                name="deskripsi"
                                 value={data.description}
-                                className="mt-1"
-                                autoComplete="deskripsi"
-                                onChange={e => setData('description', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('description', e.target.value)}
+                                name='deskripsi'
+                                id='deskripsi'
+                                className='mt-1'
+                                autoComplete='deskripsi'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             Tambah Feedback
                         </Button>
                     </form>

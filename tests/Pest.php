@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\Permission;
+use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Permission;
 use App\Support\Enums\PermissionEnum;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +18,8 @@ use Tests\TestCase;
 |
 */
 
-// uses(TestCase::class, RefreshDatabase::class)->in('Feature');
-uses(TestCase::class)->in('Feature');
+uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+// uses(TestCase::class)->in('Feature');
 
 // Allow File facade to be loaded
 uses(TestCase::class)->in('Unit');

@@ -1,3 +1,5 @@
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -7,21 +9,29 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/Components/UI/dropdown-menu';
 import { Input } from '@/Components/UI/input';
-import { ROUTES } from '@/Support/Constants/routes';
-import { router, useForm } from '@inertiajs/react';
-import { useSuccessToast } from '@/Hooks/useToast';
+import { Label } from '@/Components/UI/label';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/UI/tooltip';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
-import { withLoading } from '@/Utils/withLoading';
-import { projectService } from '@/Services/projectService';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { workAspectService } from '@/Services/workAspectService';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useSuccessToast } from '@/Hooks/useToast';
 import { componentService } from '@/Services/componentService';
+import { projectService } from '@/Services/projectService';
+import { workAspectService } from '@/Services/workAspectService';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { ProjectImportProgressMaterialOverride } from '@/Support/Interfaces/Types';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { OctagonAlert } from 'lucide-react';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 
 export default function ({
     project,
@@ -37,10 +47,12 @@ export default function ({
         file: File | null;
         component_id: number;
         work_aspect_id: number | null;
+        override: ProjectImportProgressMaterialOverride;
     }>({
         file: null,
         component_id: component.id,
         work_aspect_id: null,
+        override: 'default',
     });
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -60,7 +72,7 @@ export default function ({
             data.work_aspect_id as number,
         );
         await useSuccessToast(t('pages.project.component.partials.import.messages.imported'));
-        router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
+        // router.visit(route(`${ROUTES.PROJECTS_COMPONENTS}.index`, [project.id]));
     });
     const fetchWorkAspects = useCallback(async () => {
         return await workAspectService
@@ -68,7 +80,7 @@ export default function ({
                 ...filters,
                 relations: 'division',
             })
-            .then(response => response.data);
+            .then((response) => response.data);
     }, []);
 
     const handleChangeImportFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +95,7 @@ export default function ({
                     {t('pages.project.component.partials.import.buttons.import')}
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>{t('pages.project.partials.import.dialogs.title')}</DialogTitle>
                     <DialogDescription>
@@ -93,53 +105,245 @@ export default function ({
                         })}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col space-y-4">
-                    <Label>{t('pages.project.component.partials.import.dialogs.fields.download_template')}</Label>
+                <div className='flex flex-col space-y-4'>
+                    <Label>
+                        {t(
+                            'pages.project.component.partials.import.dialogs.fields.download_template',
+                        )}
+                    </Label>
                     <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={componentService.downloadImportProgressRawMaterialTemplate.bind(null, component.id)}
+                        variant='secondary'
+                        type='button'
+                        onClick={componentService.downloadImportProgressRawMaterialTemplate.bind(
+                            null,
+                            component.id,
+                        )}
                         disabled={loading}
                     >
                         {loading
                             ? t('action.loading')
-                            : t('pages.project.component.partials.import.dialogs.buttons.download_template')}
+                            : t(
+                                  'pages.project.component.partials.import.dialogs.buttons.download_template',
+                              )}
                     </Button>
                 </div>
-                <div className="space-y-4">
-                    <Label htmlFor="work_aspect_id">
+                <div className='space-y-4'>
+                    <Label htmlFor='work_aspect_id'>
                         {t('pages.project.component.partials.import.dialogs.fields.work_aspect')}
                     </Label>
                     <GenericDataSelector
-                        id="work_aspect_id"
-                        fetchData={fetchWorkAspects}
-                        setSelectedData={id => setData('work_aspect_id', id)}
+                        setSelectedData={(id) => setData('work_aspect_id', id)}
                         selectedDataId={data.work_aspect_id ?? null}
+                        renderItem={(item) =>
+                            `${item.name}${item.division?.name ? ` - ${item.division.name}` : ''}`
+                        }
                         placeholder={'Choose'}
-                        renderItem={item => `${item.name}${item.division?.name ? ` - ${item.division.name}` : ''}`}
-                        buttonClassName="mt-1"
                         nullable
+                        id='work_aspect_id'
+                        fetchData={fetchWorkAspects}
+                        buttonClassName='mt-1'
 
                         // TODO: possible minor issue: perform pre-search on the workstation if trainset attachment created
                         // initialSearch={}
                     />
                 </div>
-                <form onSubmit={handleImportData} className="space-y-4">
-                    <div className="space-y-4">
-                        <Label htmlFor="file">{t('pages.project.component.partials.import.dialogs.fields.file')}</Label>
+                <form onSubmit={handleImportData} className='space-y-4'>
+                    <div className='space-y-4'>
+                        <Label htmlFor='file'>
+                            {t('pages.project.component.partials.import.dialogs.fields.file')}
+                        </Label>
                         <Input
-                            id="file"
-                            type="file"
-                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            type='file'
                             onChange={handleChangeImportFile}
+                            id='file'
+                            accept='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={loading}>
+                        {hasMaterials ? (
+                            <div className='rounded text-black'>
+                                {/* <div className="flex items-center px-2 py-3 gap-2 bg-warning rounded-md">
+                                    <OctagonAlert className="h-[30px]"></OctagonAlert>
+                                    <p className="">
+                                        {t(
+                                            'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
+                                        )}
+                                    </p>
+                                </div> */}
+
+                                {/* <div className="bg-white dark:bg-transparent dark:text-white text-black p-3 space-y-2 rounded-b">
+                                    <Label htmlFor="import-override">
+                                        {t('pages.project.carriage.component.partials.import.dialogs.fields.override')}
+                                    </Label>
+                                    <RadioGroup
+                                        id="import-override"
+                                        className="flex justify-between"
+                                        value={data.override}
+                                        onValueChange={value => setData('override', value as any)}
+                                    >
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="default"
+                                                id="default"
+                                                className="border-black text-black dark:border-white dark:text-white"
+                                            />
+                                            <Label htmlFor="default">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_merge',
+                                                )}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="merge"
+                                                id="merge"
+                                                color="crimson"
+                                                className="border-black text-black dark:border-white dark:text-white"
+                                            />
+                                            <Label htmlFor="merge">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_default',
+                                                )}
+                                            </Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem
+                                                value="override"
+                                                id="override"
+                                                className="border-black text-black dark:border-white dark:text-white"
+                                            />
+                                            <Label htmlFor="override">
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_override',
+                                                )}
+                                            </Label>
+                                        </div>
+                                    </RadioGroup>
+                                </div> */}
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger className='w-full'>
+                                        <div className='flex items-center gap-2 rounded-md bg-warning px-2 py-3'>
+                                            <OctagonAlert className='h-[30px]'></OctagonAlert>
+                                            <p className=''>
+                                                {t(
+                                                    'pages.project.carriage.component.partials.import.dialogs.description_already_has_material',
+                                                )}
+                                            </p>
+                                        </div>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className='w-[450px]'>
+                                        <DropdownMenuLabel>
+                                            {t(
+                                                'pages.project.carriage.component.partials.import.dialogs.fields.override',
+                                            )}
+                                        </DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <RadioGroup
+                                            value={data.override}
+                                            onValueChange={(value) =>
+                                                setData('override', value as any)
+                                            }
+                                            id='import-override'
+                                            className='mt-5 flex justify-between'
+                                        >
+                                            <div className='flex items-center space-x-2'>
+                                                <RadioGroupItem
+                                                    value='default'
+                                                    id='default'
+                                                    className='border-black text-black dark:border-white dark:text-white'
+                                                />
+                                                <TooltipProvider delayDuration={70}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger className='w-full text-left'>
+                                                            <Label htmlFor='default'>
+                                                                {t(
+                                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_merge',
+                                                                )}
+                                                            </Label>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>
+                                                                Gabungkan antara komponen sebelum
+                                                                dan sesudah
+                                                            </p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
+                                            <div className='flex items-center space-x-2'>
+                                                <RadioGroupItem
+                                                    value='merge'
+                                                    id='merge'
+                                                    color='crimson'
+                                                    className='border-black text-black dark:border-white dark:text-white'
+                                                />
+                                                <TooltipProvider delayDuration={70}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger className='w-full text-left'>
+                                                            <Label htmlFor='merge'>
+                                                                {t(
+                                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_default',
+                                                                )}
+                                                            </Label>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>Import kembali seluruh komponen</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
+                                            <div className='flex items-center space-x-2'>
+                                                <RadioGroupItem
+                                                    value='override'
+                                                    id='override'
+                                                    className='border-black text-black dark:border-white dark:text-white'
+                                                />
+                                                <TooltipProvider delayDuration={70}>
+                                                    <Tooltip>
+                                                        <TooltipTrigger className='w-full text-left'>
+                                                            <Label htmlFor='override'>
+                                                                {t(
+                                                                    'pages.project.carriage.component.partials.import.dialogs.fields.override_override',
+                                                                )}
+                                                            </Label>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>
+                                                            <p>Menimpa Import</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
+                                        </RadioGroup>
+                                        <div className='mt-5 flex w-full justify-center'>
+                                            <Button type='submit' disabled={loading}>
+                                                {loading
+                                                    ? t('action.loading')
+                                                    : t(
+                                                          'pages.project.carriage.component.partials.import.dialogs.buttons.submit',
+                                                      )}
+                                            </Button>
+                                        </div>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+                        ) : (
+                            <div className='flex w-full justify-center'>
+                                <Button type='submit' disabled={loading}>
+                                    {loading
+                                        ? t('action.loading')
+                                        : t(
+                                              'pages.project.carriage.component.partials.import.dialogs.buttons.submit',
+                                          )}
+                                </Button>
+                            </div>
+                        )}
+                        {/* <Button type='submit' disabled={loading}>
                             {loading
                                 ? t('action.loading')
-                                : t('pages.project.component.partials.import.dialogs.buttons.submit')}
-                        </Button>
+                                : t(
+                                      'pages.project.component.partials.import.dialogs.buttons.submit',
+                                  )}
+                        </Button> */}
                     </DialogFooter>
                 </form>
             </DialogContent>

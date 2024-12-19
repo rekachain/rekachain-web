@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Support\Enums\RoleEnum;
-use App\Support\Enums\IntentEnum;
 use App\Http\Controllers\Controller;
-use App\Models\DetailWorkerTrainset;
-use App\Http\Resources\DetailWorkerTrainsetResource;
-use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
-use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
 use App\Http\Requests\DetailWorkerTrainset\StoreDetailWorkerTrainsetRequest;
 use App\Http\Requests\DetailWorkerTrainset\UpdateDetailWorkerTrainsetRequest;
+use App\Http\Resources\DetailWorkerTrainsetResource;
+use App\Models\DetailWorkerTrainset;
+use App\Support\Enums\DetailWorkerTrainsetWorkStatusEnum;
+use App\Support\Enums\IntentEnum;
+use App\Support\Enums\RoleEnum;
+use App\Support\Interfaces\Services\DetailWorkerTrainsetServiceInterface;
+use Illuminate\Http\Request;
 
 class ApiDetailWorkerTrainsetController extends Controller {
     public function __construct(
@@ -36,7 +36,7 @@ class ApiDetailWorkerTrainsetController extends Controller {
                         [
                             'worker_id' => \Auth::user()->id,
                         ]
-                    )
+                    ),
                 ]);
             }
         } elseif (!\Auth::user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {// TODO: use checkPermissions
@@ -46,7 +46,7 @@ class ApiDetailWorkerTrainsetController extends Controller {
                     [
                         'worker_id' => \Auth::user()->id,
                     ]
-                )
+                ),
             ]);
         }
 
@@ -62,9 +62,10 @@ class ApiDetailWorkerTrainsetController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_TRAINSETS->value,
                     'column_filters' => [
-                        'work_status'=>$status,
+                        'work_status' => $status,
                     ],
                 ]);
+
                 return DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated($request->query(), $perPage));
             case IntentEnum::API_DETAIL_WORKER_TRAINSETS_BY_CURRENT_USER->value:
                 // if (!$request->user()->hasRole(RoleEnum::QC_ASSEMBLY)) {
@@ -74,9 +75,10 @@ class ApiDetailWorkerTrainsetController extends Controller {
                 $request->merge([
                     'intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_TRAINSETS->value,
                     'column_filters' => [
-                        'worker_id'=> $request->user()->id
-                    ]
+                        'worker_id' => $request->user()->id,
+                    ],
                 ]);
+
                 return DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated($request->query(), $perPage));
             case IntentEnum::API_DETAIL_WORKER_TRAINSETS_BY_STATUS_AND_CURRENT_USER->value:
                 $status = request()->get('work_status');
@@ -89,14 +91,14 @@ class ApiDetailWorkerTrainsetController extends Controller {
                 // if (!$request->user()->hasRole(RoleEnum::SUPERVISOR_ASSEMBLY)) {
                 //     abort(403, 'Unauthorized');
                 // }
-                
+
                 $request->merge(['intent' => IntentEnum::API_DETAIL_WORKER_TRAINSET_GET_TRAINSETS->value]);
-        
+
                 return DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated(array_merge($request->query(), [
                     'column_filters' => [
-                        'worker_id'=> $request->user()->id,
-                        'work_status' => $status
-                    ]
+                        'worker_id' => $request->user()->id,
+                        'work_status' => $status,
+                    ],
                 ]), $perPage));
             default:
                 return DetailWorkerTrainsetResource::collection($this->detailWorkerTrainsetService->getAllPaginated($request->query(), $perPage));
@@ -134,21 +136,24 @@ class ApiDetailWorkerTrainsetController extends Controller {
                 if (!$request->user()->hasRole([RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
                     abort(403, 'Unauthorized');
                 }
+
                 return $this->detailWorkerTrainsetService->requestAssign($detailWorkerTrainset, $request);
             case IntentEnum::API_DETAIL_WORKER_TRAINSET_REJECT_WORK->value:
                 if (!$request->user()->hasRole([RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK, RoleEnum::SUPERVISOR_MEKANIK, RoleEnum::SUPERVISOR_ELEKTRIK])) {
-                    abort(403, 'Unauthorized');
+                    abort(403, __('exception.auth.role.role_exception', ['role' => RoleEnum::QC_MEKANIK->value . ' / ' . RoleEnum::QC_ELEKTRIK->value . ' / ' . RoleEnum::SUPERVISOR_MEKANIK->value . ' / ' . RoleEnum::SUPERVISOR_ELEKTRIK->value]));
                 }
+
                 return DetailWorkerTrainsetResource::make($this->detailWorkerTrainsetService->rejectWork($detailWorkerTrainset, $request->validated())->load('failed_component_manufactures'));
-            case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value: 
-                if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK,RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
+            case IntentEnum::API_DETAIL_WORKER_TRAINSET_ACCEPT_WORK_WITH_IMAGE->value:
+                if (!$request->user()->hasRole([RoleEnum::WORKER_MEKANIK, RoleEnum::WORKER_ELEKTRIK, RoleEnum::QC_MEKANIK, RoleEnum::QC_ELEKTRIK])) {
                     abort(403, 'Unauthorized');
                 }
+
                 return $this->detailWorkerTrainsetService->updateAndAcceptWorkWithImage($detailWorkerTrainset, $request->validated());
             default:
                 return DetailWorkerTrainsetResource::make($this->detailWorkerTrainsetService->update($detailWorkerTrainset, $request->validated()));
-        }    
-        
+        }
+
     }
 
     /**

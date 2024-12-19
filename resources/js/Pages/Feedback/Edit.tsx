@@ -1,15 +1,15 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
-import { FeedbackResource } from '@/Support/Interfaces/Resources';
-import { feedbackService } from '@/Services/feedbackService';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
+import { Input } from '@/Components/UI/input';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { useSuccessToast } from '@/Hooks/useToast';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { feedbackService } from '@/Services/feedbackService';
+import { ROUTES } from '@/Support/Constants/routes';
+import { FeedbackResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 
 export default function ({ feedback }: { feedback: FeedbackResource }) {
     const { loading } = useLoading();
@@ -19,7 +19,7 @@ export default function ({ feedback }: { feedback: FeedbackResource }) {
         name: feedback.name,
     });
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
         await feedbackService.update(feedback.id, data);
         router.visit(route(`${ROUTES.FEEDBACK}.index`));
@@ -28,28 +28,28 @@ export default function ({ feedback }: { feedback: FeedbackResource }) {
 
     return (
         <>
-            <Head title="Ubah Feedback" />
+            <Head title='Ubah Feedback' />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">Ubah Feedback: {feedback.name}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>Ubah Feedback: {feedback.name}</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="nama" value="Nama" />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel value='Nama' htmlFor='nama' />
                             <Input
-                                id="nama"
-                                type="text"
-                                name="nama"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="nama"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='nama'
+                                id='nama'
+                                className='mt-1'
+                                autoComplete='nama'
                             />
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             Ubah Feedback
                         </Button>
                     </form>

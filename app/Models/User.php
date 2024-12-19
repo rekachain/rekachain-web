@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -46,7 +48,7 @@ use Spatie\Permission\Traits\HasRoles;
  * )
  */
 class User extends Authenticatable {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasFilterable, HasRoles, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -82,6 +84,19 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'deleted_at' => 'datetime',
+    ];
+
+    protected $filterable = [
+        'searchs' => [
+            'name', 'nip', 'email', 'phone_number',
+        ],
+        'columns' => [
+            'step_id', 'workstation_id',
+        ],
+        'relations' => [
+            'step', 'workstation',
+        ],
     ];
 
     public function workstation(): HasOne {
@@ -98,6 +113,10 @@ class User extends Authenticatable {
 
     public function panel_attachment_handlers(): HasMany {
         return $this->hasMany(PanelAttachmentHandler::class);
+    }
+
+    public function trainset_attachment_handlers(): HasMany {
+        return $this->hasMany(TrainsetAttachmentHandler::class);
     }
 
     public function detail_worker_panels(): HasMany {
@@ -123,6 +142,7 @@ class User extends Authenticatable {
     public function canBeDeleted(): bool {
         return $this->feedbacks->isEmpty() &&
             $this->panel_attachment_handlers->isEmpty() &&
+            $this->trainset_attachment_handlers->isEmpty() &&
             $this->detail_worker_panels->isEmpty() &&
             $this->detail_worker_trainsets->isEmpty() &&
             $this->panel_attachment_supervisors->isEmpty() &&

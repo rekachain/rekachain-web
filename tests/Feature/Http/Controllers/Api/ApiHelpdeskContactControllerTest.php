@@ -1,9 +1,10 @@
+<!-- API HELPDESK ROUTE NOT SET -->
 <?php
 
 use App\Models\User;
 
 test('index method returns paginated helpdeskContacts', function () {
-    createHelpdeskContact();
+    $this->dummy->createHelpdeskContact();
 
     $response = actAsSuperAdmin()->getJson('/api/helpdeskContacts?page=1&perPage=5');
 
@@ -33,7 +34,7 @@ test('store method creates new helpdeskContact', function () {
 });
 
 test('show method returns helpdeskContact details', function () {
-    $model = createHelpdeskContact();
+    $model = $this->dummy->createHelpdeskContact();
 
     $response = actAsSuperAdmin()->getJson("/api/helpdeskContacts/{$model->id}");
 
@@ -42,7 +43,7 @@ test('show method returns helpdeskContact details', function () {
 });
 
 test('edit method returns edit page', function () {
-    $model = createHelpdeskContact();
+    $model = $this->dummy->createHelpdeskContact();
 
     $response = actAsSuperAdmin()->get("/api/helpdeskContacts/{$model->id}/edit");
 
@@ -51,7 +52,7 @@ test('edit method returns edit page', function () {
 });
 
 test('update method updates helpdeskContact', function () {
-    $model = createHelpdeskContact();
+    $model = $this->dummy->createHelpdeskContact();
     $updatedData = [
         'name' => 'Updated name',
     ];
@@ -64,7 +65,7 @@ test('update method updates helpdeskContact', function () {
 });
 
 test('destroy method deletes helpdeskContact', function () {
-    $model = createHelpdeskContact();
+    $model = $this->dummy->createHelpdeskContact();
 
     $response = actAsSuperAdmin()->deleteJson("/api/helpdeskContacts/{$model->id}");
 

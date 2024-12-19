@@ -2,21 +2,29 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Project extends Model {
-    use HasFactory, HasRelationships;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'name',
+        'description',
         'initial_date',
+        'estimated_start_date',
+        'estimated_end_date',
+        'calculated_estimate_time',
+        'start_date',
+        'end_date',
+        'buyer_id',
     ];
-
     protected $filterable = [
         'searchs' => [
             'name',
@@ -25,6 +33,7 @@ class Project extends Model {
         'columns' => [
             'name',
             'initial_date',
+            'buyer_id',
         ],
         'relation_columns' => [
             // 'carriages' => [
@@ -33,12 +42,8 @@ class Project extends Model {
             // 'trainsets' => [
             //     'name',
             // ]
-        ]
+        ],
     ];
-
-    public function getFilterable(): array {
-        return $this->filterable;
-    }
 
     public function carriages(): HasManyDeep {
         return $this->hasManyDeep(
@@ -72,44 +77,44 @@ class Project extends Model {
         return $this->hasMany(PresetTrainset::class);
     }
 
-    public function carriage_trainsets() : HasManyThrough {
+    public function carriage_trainsets(): HasManyThrough {
         return $this->hasManyThrough(CarriageTrainset::class, Trainset::class);
     }
 
-    public function panels() : HasManyDeep {
+    public function panels(): HasManyDeep {
         return $this->hasManyDeep(
             Panel::class, // The final target model is Panel itself
             [
                 Trainset::class,
                 CarriageTrainset::class,
-                CarriagePanel::class
+                CarriagePanel::class,
             ],
             [
                 'project_id',          // Foreign key on the Trainset table
                 'trainset_id',         // Foreign key on the CarriageTrainset table
-                'carriage_trainset_id',// Foreign key on the CarriagePanel table
-                'id'                   // Foreign key on the Panel table in CarriagePanel
+                'carriage_trainset_id', // Foreign key on the CarriagePanel table
+                'id',                   // Foreign key on the Panel table in CarriagePanel
             ],
             [
                 'id',                  // Local key on the Panel table
                 'id',                  // Local key on the Trainset table
                 'id',                  // Local key on the CarriageTrainset table
-                'panel_id'             // Local key on the CarriagePanel table
+                'panel_id',             // Local key on the CarriagePanel table
             ]
         );
     }
 
-    public function carriage_panels() : HasManyDeep {
+    public function carriage_panels(): HasManyDeep {
         return $this->hasManyDeep(
             CarriagePanel::class, // The final target model is CarriagePanel itself
             [
                 Trainset::class,
-                CarriageTrainset::class
+                CarriageTrainset::class,
             ],
             [
                 'project_id',          // Foreign key on the Trainset table
                 'trainset_id',         // Foreign key on the CarriageTrainset table
-                'carriage_trainset_id',// Foreign key on the CarriagePanel table
+                'carriage_trainset_id', // Foreign key on the CarriagePanel table
             ],
             [
                 'id',                  // Local key on the CarriagePanel table
@@ -119,7 +124,7 @@ class Project extends Model {
         );
     }
 
-    public function panel_attachments() : HasManyDeep {
+    public function panel_attachments(): HasManyDeep {
         return $this->hasManyDeep(
             PanelAttachment::class,
             [
@@ -130,7 +135,7 @@ class Project extends Model {
             [
                 'project_id',          // Foreign key on the Trainset table
                 'trainset_id',         // Foreign key on the CarriageTrainset table
-                'carriage_trainset_id',// Foreign key on the CarriagePanel table
+                'carriage_trainset_id', // Foreign key on the CarriagePanel table
                 'carriage_panel_id',   // Foreign key on the CarriagePanelComponent table
             ],
             [
@@ -142,44 +147,44 @@ class Project extends Model {
         );
     }
 
-    public function components() : HasManyDeep {
+    public function components(): HasManyDeep {
         return $this->hasManyDeep(
             Component::class, // The final target model is Component itself
             [
                 Trainset::class,
                 CarriageTrainset::class,
                 CarriagePanel::class,
-                CarriagePanelComponent::class
+                CarriagePanelComponent::class,
             ],
             [
                 'project_id',          // Foreign key on the Trainset table
                 'trainset_id',         // Foreign key on the CarriageTrainset table
-                'carriage_trainset_id',// Foreign key on the CarriagePanel table
+                'carriage_trainset_id', // Foreign key on the CarriagePanel table
                 'carriage_panel_id',   // Foreign key on the CarriagePanelComponent table
-                'id'                   // Foreign key on the Component table in CarriagePanel
+                'id',                   // Foreign key on the Component table in CarriagePanel
             ],
             [
                 'id',                  // Local key on the Component table
                 'id',                  // Local key on the Trainset table
                 'id',                  // Local key on the CarriageTrainset table
                 'id',                  // Local key on the CarriagePanel table
-                'component_id'         // Local key on the CarriagePanel table
+                'component_id',         // Local key on the CarriagePanel table
             ]
         );
     }
 
-    public function carriage_panel_components() : HasManyDeep {
+    public function carriage_panel_components(): HasManyDeep {
         return $this->hasManyDeep(
             CarriagePanelComponent::class, // The final target model is CarriagePanelComponent itself
             [
                 Trainset::class,
                 CarriageTrainset::class,
-                CarriagePanel::class
+                CarriagePanel::class,
             ],
             [
                 'project_id',          // Foreign key on the Trainset table
                 'trainset_id',         // Foreign key on the CarriageTrainset table
-                'carriage_trainset_id',// Foreign key on the CarriagePanel table
+                'carriage_trainset_id', // Foreign key on the CarriagePanel table
             ],
             [
                 'id',                  // Local key on the CarriagePanelComponent table
@@ -199,8 +204,7 @@ class Project extends Model {
         return true;
     }
 
-    // public function projectAttachments(): HasMany
-    // {
-    //     return $this->hasMany(ProjectAttachment::class, 'id_project', 'id');
-    // }
+    public function buyer(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
 }

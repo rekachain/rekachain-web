@@ -20,7 +20,7 @@ class ApiProjectController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        // $request->checkPermissionEnum(PermissionEnum::PROJECT_READ);
+        // PermissionHelper::check(PermissionEnum::PROJECT_READ);
         $perPage = request()->get('perPage', 15);
 
         return ProjectResource::collection(
@@ -36,7 +36,8 @@ class ApiProjectController extends Controller {
 
         switch ($intent) {
             case IntentEnum::API_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
-                $this->projectService->importProject($request->file('file'));
+                $this->projectService->importProject($request->file('file'), $request->validated());
+
                 return response()->json(['message' => 'Success'], 200);
             default:
                 return $this->projectService->create($request->validated());
@@ -47,7 +48,7 @@ class ApiProjectController extends Controller {
      * Display the specified resource.
      */
     public function show(Project $project) {
-        // $request->checkPermissionEnum(PermissionEnum::PROJECT_READ);
+        // PermissionHelper::check(PermissionEnum::PROJECT_READ);
         return new ProjectResource($project);
     }
 
@@ -55,7 +56,7 @@ class ApiProjectController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateProjectRequest $request, Project $project) {
-        // $request->checkPermissionEnum(PermissionEnum::PROJECT_UPDATE);
+        // PermissionHelper::check(PermissionEnum::PROJECT_UPDATE);
         return $this->projectService->update($project, $request->validated());
     }
 

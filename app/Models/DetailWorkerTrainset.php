@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-class DetailWorkerTrainset extends Model
-{
+class DetailWorkerTrainset extends Model {
     use HasFactory;
 
     protected $fillable = [
@@ -21,31 +20,26 @@ class DetailWorkerTrainset extends Model
         'estimated_time',
         'work_status',
         'acceptance_status',
-        'image_path'
+        'image_path',
     ];
-
     protected $casts = [
         'acceptance_status' => DetailWorkerTrainsetAcceptanceStatusEnum::class,
         'work_status' => DetailWorkerTrainsetWorkStatusEnum::class,
     ];
 
-    public function trainset_attachment_component(): BelongsTo
-    {
+    public function trainset_attachment_component(): BelongsTo {
         return $this->belongsTo(TrainsetAttachmentComponent::class);
     }
 
-    public function trainset_attachment(): HasOneThrough
-    {
+    public function trainset_attachment(): HasOneThrough {
         return $this->hasOneThrough(TrainsetAttachment::class, TrainsetAttachmentComponent::class, 'id', 'id', 'trainset_attachment_component_id', 'trainset_attachment_id');
     }
 
-    public function worker(): BelongsTo
-    {
+    public function worker(): BelongsTo {
         return $this->belongsTo(User::class, 'worker_id');
     }
 
-    public function progress_step(): BelongsTo
-    {
+    public function progress_step(): BelongsTo {
         return $this->belongsTo(ProgressStep::class);
     }
 
@@ -53,8 +47,7 @@ class DetailWorkerTrainset extends Model
         return $this->image_path ? asset('storage/' . $this->image_path) : null;
     }
 
-    public function failed_component_manufactures(): HasMany
-    {
+    public function failed_component_manufactures(): HasMany {
         return $this->hasMany(FailedComponentManufacture::class);
     }
 }

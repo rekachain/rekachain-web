@@ -1,10 +1,18 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkstationResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
-import React from 'react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WorkstationTableView({
@@ -20,21 +28,31 @@ export default function WorkstationTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.workstation.partials.partials.workstation_table.headers.name')}</TableHead>
                         <TableHead>
-                            {t('pages.workstation.partials.partials.workstation_table.headers.location')}
+                            {t(
+                                'pages.workstation.partials.partials.workstation_table.headers.name',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.workstation.partials.partials.workstation_table.headers.workshop')}
+                            {t(
+                                'pages.workstation.partials.partials.workstation_table.headers.location',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.workstation.partials.partials.workstation_table.headers.division')}
+                            {t(
+                                'pages.workstation.partials.partials.workstation_table.headers.workshop',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.workstation.partials.partials.workstation_table.headers.division',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {workstationResponse?.data.map(workstation => (
+                    {workstationResponse?.data.map((workstation) => (
                         <TableRow key={workstation.id}>
                             <TableCell>{workstation.name}</TableCell>
                             <TableCell>{workstation.location}</TableCell>
@@ -42,17 +60,25 @@ export default function WorkstationTableView({
                             <TableCell>{workstation.division.name}</TableCell>
 
                             <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                                {workstation.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleWorkstationDeletion(workstation.id)}>
-                                        {t('action.delete')}
-                                    </Button>
+                                {checkPermission(PERMISSION_ENUM.WORKSTATION_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.WORKSTATIONS}.edit`, workstation.id)}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.WORKSTATION_DELETE) &&
+                                    workstation.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() =>
+                                                handleWorkstationDeletion(workstation.id)
+                                            }
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

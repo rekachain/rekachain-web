@@ -1,4 +1,4 @@
-import { FormEvent, memo } from 'react';
+import { Button } from '@/Components/UI/button';
 import {
     Dialog,
     DialogContent,
@@ -8,18 +8,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Button } from '@/Components/UI/button';
-import { Label } from '@/Components/UI/label';
 import { Input } from '@/Components/UI/input';
-import { RiFeedbackLine } from '@remixicon/react';
-import { useForm, usePage } from '@inertiajs/react';
-import { Rating } from 'react-simple-star-rating';
-import { withLoading } from '@/Utils/withLoading';
-import { feedbackService } from '@/Services/feedbackService';
+import { Label } from '@/Components/UI/label';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { FeedbackTooltipEnum } from '@/Support/Enums/feedbackTooltipEnum';
+import { feedbackService } from '@/Services/feedbackService';
 import { STYLING } from '@/Support/Constants/styling';
+import { FeedbackTooltipEnum } from '@/Support/Enums/feedbackTooltipEnum';
+import { withLoading } from '@/Utils/withLoading';
+import { useForm, usePage } from '@inertiajs/react';
+import { RiFeedbackLine } from '@remixicon/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEvent, memo } from 'react';
+import { Rating } from 'react-simple-star-rating';
 
 const AddFeedback = () => {
     const auth = usePage().props.auth;
@@ -35,71 +35,83 @@ const AddFeedback = () => {
     const handleAddFeedback = withLoading(async (e: FormEvent) => {
         e.preventDefault();
         await feedbackService.create(data);
-        void useSuccessToast('Feedback added successfully');
+        void useSuccessToast(t('components.add_feedback.messages.created'));
     });
 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" title="Add Feedback">
+                <Button variant='ghost' title={t('components.add_feedback.title')} size='icon'>
                     <RiFeedbackLine size={STYLING.ICON.SIZE.SMALL} />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
                     <DialogTitle>
-                        <RiFeedbackLine className="inline-block w-6 h-6 mr-2" aria-hidden="true" />
-                        {t('components.feedback.title')}
+                        <RiFeedbackLine className='mr-2 inline-block h-6 w-6' aria-hidden='true' />
+                        {t('components.add_feedback.title')}
                     </DialogTitle>
-                    <DialogDescription>{t('components.feedback.description')} </DialogDescription>
+                    <DialogDescription>
+                        {t('components.add_feedback.description')}{' '}
+                    </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleAddFeedback}>
-                    <div className="grid gap-4 py-4">
+                    <div className='grid gap-4 py-4'>
                         {!auth.user.id && (
                             <>
-                                <Label htmlFor="name">{t('components.feedback.fields.name')}</Label>
+                                <Label htmlFor='name'>
+                                    {t('components.add_feedback.fields.name')}
+                                </Label>
                                 <Input
-                                    id="name"
-                                    name="name"
-                                    placeholder={t('components.feedback.fields.name_placeholder')}
                                     value={data.name}
-                                    onChange={e => setData('name', e.target.value)}
+                                    placeholder={t(
+                                        'components.add_feedback.fields.name_placeholder',
+                                    )}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    name='name'
+                                    id='name'
                                 />
-                                <Label htmlFor="email">{t('components.feedback.fields.email')}</Label>
+                                <Label htmlFor='email'>
+                                    {t('components.add_feedback.fields.email')}
+                                </Label>
                                 <Input
-                                    id="email"
-                                    name="email"
-                                    placeholder={t('components.feedback.fields.email_placeholder')}
                                     value={data.email}
-                                    onChange={e => setData('email', e.target.value)}
+                                    placeholder={t(
+                                        'components.add_feedback.fields.email_placeholder',
+                                    )}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    name='email'
+                                    id='email'
                                 />
                             </>
                         )}
 
-                        <Label htmlFor="rating">{t('components.feedback.fields.rating')}</Label>
+                        <Label htmlFor='rating'>{t('components.add_feedback.fields.rating')}</Label>
                         <Rating
-                            SVGclassName={'inline-block'}
-                            onClick={(rate: number) => setData('rating', rate)}
-                            allowFraction={false}
-                            initialValue={data.rating} // Multiplying by 20 to convert 5-star scale to 100 scale
                             transition
-                            showTooltip
                             tooltipArray={Object.values(FeedbackTooltipEnum)}
-                            fillColor="gold"
-                            emptyColor="gray"
+                            SVGclassName={'inline-block'}
+                            showTooltip
+                            onClick={(rate: number) => setData('rating', rate)}
+                            initialValue={data.rating} // Multiplying by 20 to convert 5-star scale to 100 scale
+                            fillColor='gold'
+                            emptyColor='gray'
+                            allowFraction={false}
                         />
 
-                        <Label htmlFor="message">{t('components.feedback.fields.message')}</Label>
+                        <Label htmlFor='message'>
+                            {t('components.add_feedback.fields.message')}
+                        </Label>
                         <Input
-                            id="message"
-                            name="message"
-                            placeholder={t('components.feedback.fields.message_placeholder')}
                             value={data.message}
-                            onChange={e => setData('message', e.target.value)}
+                            placeholder={t('components.add_feedback.fields.message_placeholder')}
+                            onChange={(e) => setData('message', e.target.value)}
+                            name='message'
+                            id='message'
                         />
                     </div>
                     <DialogFooter>
-                        <Button type="submit">{t('action.save')}</Button>
+                        <Button type='submit'>{t('action.save')}</Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

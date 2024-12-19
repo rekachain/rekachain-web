@@ -1,21 +1,28 @@
-import { FormEventHandler, useEffect } from 'react';
+import AddFeedback from '@/Components/AddFeedback';
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import { Head, Link, useForm } from '@inertiajs/react';
-import { Input } from '@/Components/UI/input';
 import { Button } from '@/Components/UI/button';
-import { useLocalStorage } from '@uidotdev/usehooks';
-import { STYLING } from '@/Support/Constants/styling';
-import { RiMoonClearLine } from '@remixicon/react';
-import { Sun } from 'lucide-react';
-import AddFeedback from '@/Components/AddFeedback';
+import { Input } from '@/Components/UI/input';
+import useDarkMode from '@/Hooks/useDarkMode';
 import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { STYLING } from '@/Support/Constants/styling';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { RiMoonClearLine } from '@remixicon/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Sun } from 'lucide-react';
+import { FormEventHandler, useEffect } from 'react';
 
-export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
+export default function Login({
+    status,
+    canResetPassword,
+}: {
+    status?: string;
+    canResetPassword: boolean;
+}) {
+    const { darkMode, toggleDarkMode } = useDarkMode();
     const { data, setData, post, processing, errors, reset } = useForm({
-        nip: '',
+        identifier: '',
         password: '',
         remember: false,
     });
@@ -26,7 +33,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
         };
     }, []);
 
-    const submit: FormEventHandler = e => {
+    const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
         post(route('login'));
@@ -34,65 +41,45 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
     const { t } = useLaravelReactI18n();
 
-    const [darkMode, setDarkMode] = useLocalStorage('darkMode', false);
-
-    const changeHtmlClass = () => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-        } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.style.colorScheme = 'light';
-        }
-    };
-
-    useEffect(() => {
-        changeHtmlClass();
-    }, [darkMode]);
-
-    const handleDarkMode = () => {
-        setDarkMode(!darkMode);
-        changeHtmlClass();
-    };
     return (
         <>
-            <Head title="Log in" />
-            <section className="login max-h-screen flex flex-col md:flex-row">
-                <div className="hero flex-1 hidden md:flex">
+            <Head title='Log in' />
+            <section className='login flex max-h-screen flex-col md:flex-row'>
+                <div className='hero hidden flex-1 md:flex'>
                     <img
-                        className="w-full object-cover"
-                        id="login-hero"
-                        src="/assets/images/login-hero.jpeg"
-                        alt="login-hero.png"
+                        src='/assets/images/login-hero.jpeg'
+                        id='login-hero'
+                        className='w-full object-cover'
+                        alt='login-hero.png'
                     />
                 </div>
 
-                <div className="flex-1 flex flex-col z-10 p-5 md:px-16 justify-start md:gap-20 sm:gap-10  h-screen md:py-16 relative">
+                <div className='relative z-10 flex h-screen flex-1 flex-col justify-start p-5 sm:gap-10 md:gap-20 md:px-16 md:py-16'>
                     <img
-                        className="hidden h-44 md:block top-0 left-0 absolute"
-                        src="/assets/images/login-top-left.png"
-                        alt="login-top-left.png"
+                        src='/assets/images/login-top-left.png'
+                        className='absolute left-0 top-0 hidden h-44 md:block'
+                        alt='login-top-left.png'
                     />
                     <img
-                        className="hidden h-44 md:block bottom-0 left-0 absolute"
-                        src="/assets/images/login-bottom-left.png"
-                        alt="login-bottom-left.png"
+                        src='/assets/images/login-bottom-left.png'
+                        className='absolute bottom-0 left-0 hidden h-44 md:block'
+                        alt='login-bottom-left.png'
                     />
                     <img
-                        className="hidden h-44 md:block bottom-0 right-0 absolute"
-                        src="/assets/images/login-bottom-right.png"
-                        alt="login-bottom-right.png"
+                        src='/assets/images/login-bottom-right.png'
+                        className='absolute bottom-0 right-0 hidden h-44 md:block'
+                        alt='login-bottom-right.png'
                     />
 
-                    <div className="">
-                        <div className="flex flex-row justify-between">
+                    <div className=''>
+                        <div className='flex flex-row justify-between'>
                             <img
-                                src="/assets/images/Logo REKA.svg"
-                                alt="login-form-header"
-                                className="md:mb-10 h-16 object-contain align-content-lg-start"
+                                src='/assets/images/Logo REKA.svg'
+                                className='align-content-lg-start h-16 object-contain md:mb-10'
+                                alt='login-form-header'
                             />
-                            <div className="flex">
-                                <Button variant="ghost" size="icon" onClick={handleDarkMode}>
+                            <div className='flex'>
+                                <Button variant='ghost' size='icon' onClick={toggleDarkMode}>
                                     {darkMode ? (
                                         <Sun size={STYLING.ICON.SIZE.SMALL} />
                                     ) : (
@@ -104,53 +91,61 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                             </div>
                         </div>
                     </div>
-                    <div className="">
-                        <div className="text-3xl md:text-4xl mb-16 text-center mt-12 sm:mt-0">
+                    <div className=''>
+                        <div className='mb-16 mt-12 text-center text-3xl sm:mt-0 md:text-4xl'>
                             {t('pages.login.title')}
                         </div>
-                        {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+                        {status && (
+                            <div className='mb-4 text-sm font-medium text-green-600'>{status}</div>
+                        )}
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel htmlFor="nip" value={t('pages.login.fields.nip')} />
+                                <InputLabel
+                                    value={t('pages.login.fields.identifier')}
+                                    htmlFor='identifier'
+                                />
 
                                 <Input
-                                    id="nip"
-                                    type="text"
-                                    name="nip"
-                                    value={data.nip}
-                                    className="mt-1"
-                                    autoComplete="nip"
+                                    value={data.identifier}
+                                    type='text'
+                                    onChange={(e) => setData('identifier', e.target.value)}
+                                    name='identifier'
+                                    id='identifier'
+                                    className='mt-1'
                                     autoFocus
-                                    onChange={e => setData('nip', e.target.value)}
+                                    autoComplete='identifier'
                                 />
 
-                                <InputError message={errors.nip} className="mt-2" />
+                                <InputError message={errors.identifier} className='mt-2' />
                             </div>
 
-                            <div className="mt-4">
-                                <InputLabel htmlFor="password" value={t('pages.login.fields.password')} />
+                            <div className='mt-4'>
+                                <InputLabel
+                                    value={t('pages.login.fields.password')}
+                                    htmlFor='password'
+                                />
 
                                 <Input
-                                    id="password"
-                                    type="password"
-                                    name="password"
                                     value={data.password}
-                                    className="mt-1"
-                                    autoComplete="current-password"
-                                    onChange={e => setData('password', e.target.value)}
+                                    type='password'
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    name='password'
+                                    id='password'
+                                    className='mt-1'
+                                    autoComplete='current-password'
                                 />
 
-                                <InputError message={errors.password} className="mt-2" />
+                                <InputError message={errors.password} className='mt-2' />
                             </div>
 
-                            <div className="flex mt-4 justify-between flex-col md:flex-row gap-4">
-                                <label className="flex items-center">
+                            <div className='mt-4 flex flex-col justify-between gap-4 md:flex-row'>
+                                <label className='flex items-center'>
                                     <Checkbox
-                                        name="remember"
+                                        onChange={(e) => setData('remember', e.target.checked)}
+                                        name='remember'
                                         checked={data.remember}
-                                        onChange={e => setData('remember', e.target.checked)}
                                     />
-                                    <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span className='ms-2 text-sm text-gray-600 dark:text-gray-400'>
                                         {t('pages.login.fields.remember')}
                                     </span>
                                 </label>
@@ -158,15 +153,15 @@ export default function Login({ status, canResetPassword }: { status?: string; c
                                 {canResetPassword && (
                                     <Link
                                         href={route('password.request')}
-                                        className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                                        className='rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800'
                                     >
                                         {t('pages.login.buttons.forgot_password')}
                                     </Link>
                                 )}
                             </div>
 
-                            <div className="flex items-center justify-end mt-4">
-                                <Button className="w-full" disabled={processing}>
+                            <div className='mt-4 flex items-center justify-end'>
+                                <Button disabled={processing} className='w-full'>
                                     {t('pages.login.buttons.sign_in')}
                                 </Button>
                             </div>

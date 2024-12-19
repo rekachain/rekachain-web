@@ -33,6 +33,7 @@ class ApiUserController extends ApiController {
      */
     public function store(StoreUserRequest $request) {
         checkPermissions(PermissionEnum::USER_CREATE);
+
         return $this->userService->create($request->validated());
     }
 
@@ -41,6 +42,7 @@ class ApiUserController extends ApiController {
      */
     public function show(User $user) {
         checkPermissions(PermissionEnum::USER_READ);
+
         return new UserResource($user->load(['roles' => ['division', 'permissions']]));
     }
 
@@ -48,7 +50,10 @@ class ApiUserController extends ApiController {
      * Update the specified resource in storage.
      */
     public function update(UpdateUserRequest $request, User $user) {
-        checkPermissions(PermissionEnum::USER_UPDATE);
+        if ($user->id !== auth()->id()) {
+            checkPermissions(PermissionEnum::USER_UPDATE);
+        }
+
         $intent = request()->get('intent');
         if ($intent === IntentEnum::API_USER_UPDATE_PASSWORD->value) {
             return $this->userService->apiUpdatePassword($user, $request->validated());
@@ -62,6 +67,7 @@ class ApiUserController extends ApiController {
      */
     public function destroy(Request $request, User $user) {
         checkPermissions(PermissionEnum::USER_DELETE);
+
         return $this->userService->delete($user);
     }
 }

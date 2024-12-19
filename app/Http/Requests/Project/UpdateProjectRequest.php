@@ -39,11 +39,19 @@ class UpdateProjectRequest extends FormRequest {
                     'work_aspect_id' => 'required|exists:work_aspects,id',
                     'override' => 'nullable|boolean',
                 ];
+            case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
+                return [
+                    'initial_date' => 'required|date',
+                ];
         }
 
         return [
             'name' => 'nullable',
+            'description' => 'nullable',
             'initial_date' => 'nullable|date',
+            'estimated_start_date' => 'nullable|date',
+            'estimated_end_date' => 'nullable|date',
+            'buyer_id' => 'nullable|exists:users,id',
         ];
     }
 }

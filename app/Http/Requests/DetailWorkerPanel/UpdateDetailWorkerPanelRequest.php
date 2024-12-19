@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\DetailWorkerPanel;
 
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
+use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
-use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateDetailWorkerPanelRequest extends FormRequest {
@@ -22,19 +22,18 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    
     public function rules(): array {
         $intent = $this->get('intent');
-        switch ($intent){
+        switch ($intent) {
             case IntentEnum::API_DETAIL_WORKER_PANEL_ASSIGN_REQUEST_WORKER->value:
                 return [
                     'acceptance_status' => ['nullable', 'in:' . implode(',', array_column(DetailWorkerPanelAcceptanceStatusEnum::cases(), 'value'))],
                 ];
-                
+
             case IntentEnum::API_DETAIL_WORKER_PANEL_ACCEPT_WORK_WITH_IMAGE->value:
                 return [
                     'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ];    
+                ];
         }
 
         return [
@@ -54,11 +53,11 @@ class UpdateDetailWorkerPanelRequest extends FormRequest {
             function ($validator) {
                 if ($this->get('acceptance_status') && !Auth::user()->hasRole([RoleEnum::SUPERVISOR_ASSEMBLY])) {
                     $validator->errors()->add(
-                        'Detail Worker Panel Acceptance', 
+                        'Detail Worker Panel Acceptance',
                         __('validation.custom.detail_worker_trainset.update_worker.field_update_role_exception', ['role' => RoleEnum::SUPERVISOR_ASSEMBLY->value, 'field' => 'acceptance_status'])
                     );
                 }
-            }
+            },
         ];
     }
 }

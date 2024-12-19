@@ -9,12 +9,13 @@ use Tests\Feature\Http\Controllers\Helpers\Dummy;
 
 class TrainsetsTemplateExport implements FromArray, WithHeadings {
     use Exportable;
+
     private $dummy;
 
-    public function __construct()
-    {
-        $this->dummy = new Dummy();
+    public function __construct() {
+        $this->dummy = new Dummy;
     }
+
     /**
      * @return \Illuminate\Support\Collection
      */

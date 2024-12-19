@@ -97,4 +97,10 @@ interface TrainsetServiceInterface extends BaseCrudServiceInterface {
      * Export serial numbers
      */
     public function exportSerialNumbers(Trainset $trainset): BinaryFileResponse;
+
+    public function calculateEstimatedTime($trainset_id = null);
+
+    public function getInitialDate(Trainset $trainset);
+
+    public function updateTrainsetStatus(Trainset $trainset);
 }

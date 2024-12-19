@@ -13,16 +13,20 @@ use App\Models\CarriagePreset;
 use App\Models\Panel;
 use App\Models\PresetTrainset;
 use App\Models\Trainset;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ProjectsImport implements WithMultipleSheets 
-{
+class ProjectsImport implements WithMultipleSheets {
     private $project;
-    private Collection $carriages, $presets, $carriagePresets, $trainsets, $panels;
+    private Collection $carriages;
+    private Collection $presets;
+    private Collection $carriagePresets;
+    private Collection $trainsets;
+    private Collection $panels;
 
-    public function __construct(public UploadedFile $file) {
+    public function __construct(public UploadedFile $file, public ?User $buyer = null) {
         $this->carriages = collect();
         $this->presets = collect();
         $this->carriagePresets = collect();
@@ -30,8 +34,7 @@ class ProjectsImport implements WithMultipleSheets
         $this->panels = collect();
     }
 
-    public function sheets(): array 
-    {
+    public function sheets(): array {
         return [
             'Proyek' => new ProjectSheetImport($this),
             'Gerbong' => new CarriageSheetImport($this),
@@ -42,79 +45,65 @@ class ProjectsImport implements WithMultipleSheets
         ];
     }
 
-    public function setProject($project) 
-    {
+    public function setProject($project) {
         $this->project = $project;
     }
-    
-    public function getProject() 
-    {
+
+    public function getProject() {
         return $this->project;
     }
 
-    public function getFile() 
-    {
+    public function getFile() {
         return $this->file;
     }
 
-    public function addCarriage(Carriage $carriage) 
-    {
+    public function addCarriage(Carriage $carriage) {
         if (!$this->carriages->contains($carriage)) {
             $this->carriages->add($carriage);
         }
     }
 
-    public function getCarriages() 
-    {
+    public function getCarriages() {
         return $this->carriages;
     }
 
-    public function addPreset(PresetTrainset $carriage) 
-    {
+    public function addPreset(PresetTrainset $carriage) {
         if (!$this->presets->contains($carriage)) {
             $this->presets->add($carriage);
         }
     }
 
-    public function getPresets() 
-    {
+    public function getPresets() {
         return $this->presets;
     }
 
-    public function addCarriagePreset(CarriagePreset $carriagePreset) 
-    {
+    public function addCarriagePreset(CarriagePreset $carriagePreset) {
         if (!$this->carriagePresets->contains($carriagePreset)) {
             $this->carriagePresets->add($carriagePreset);
         }
     }
 
-    public function getCarriagePresets() 
-    {
+    public function getCarriagePresets() {
         return $this->carriagePresets;
     }
 
-    public function addTrainset(Trainset $trainset) 
-    {
+    public function addTrainset(Trainset $trainset) {
         if (!$this->trainsets->contains($trainset)) {
             $this->trainsets->add($trainset);
         }
     }
 
-    public function getTrainsets() 
-    {
+    public function getTrainsets() {
         return $this->trainsets;
     }
 
-    public function addPanel(Panel $panel) 
-    {
+    public function addPanel(Panel $panel) {
         if (!$this->panels->contains($panel)) {
             $this->panels->add($panel);
         }
     }
 
-    public function getPanels() 
-    {
+    public function getPanels() {
         return $this->panels;
     }
 }
-

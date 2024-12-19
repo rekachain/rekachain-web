@@ -1,10 +1,12 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { lazy, Suspense } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { buttonVariants } from '@/Components/UI/button';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import { buttonVariants } from '@/Components/UI/button';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { Head, Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, Suspense } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -13,15 +15,19 @@ export default function () {
         <>
             <Head title={t('pages.workstation.index.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.workstation.index.title')}</h1>
-                        <Link
-                            className={buttonVariants({ variant: 'default' })}
-                            href={route(`${ROUTES.WORKSTATIONS}.create`)}
-                        >
-                            {t('pages.workstation.index.buttons.create')}
-                        </Link>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>
+                            {t('pages.workstation.index.title')}
+                        </h1>
+                        {checkPermission(PERMISSION_ENUM.WORKSTATION_CREATE) && (
+                            <Link
+                                href={route(`${ROUTES.WORKSTATIONS}.create`)}
+                                className={buttonVariants({ variant: 'default' })}
+                            >
+                                {t('pages.workstation.index.buttons.create')}
+                            </Link>
+                        )}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <Workstations />

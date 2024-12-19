@@ -3,6 +3,11 @@
 namespace App\Support\Enums;
 
 enum IntentEnum: string {
+    // To determine if current delete request is soft delete or hard delete (can be used in every model)
+    case SOFT_DELETE_ENTRY = 'soft.delete.entry';
+
+    case DOWNLOAD_APK_FILE = 'download.apk.file';
+
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
 
     case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';
@@ -161,15 +166,21 @@ enum IntentEnum: string {
 
     case WEB_PROJECT_IMPORT_PROJECT_TEMPLATE = 'web.project.import.project.template';
 
+    case WEB_PROJECT_UPDATE_INITIAL_DATE = 'web.project.update.initial.date';
+
     case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';
 
     case WEB_TRAINSET_GET_ALL_COMPONENTS = 'web.trainset.get.all.components';
 
+    case WEB_TRAINSET_GET_ALL_COMPONENTS_PROGRESS = 'web.trainset.get.all.components.progress';
+
     case WEB_TRAINSET_GET_ALL_COMPONENTS_WITH_QTY = 'web.trainset.get.all.components.with.qty';
 
     case WEB_TRAINSET_GET_ALL_PANELS = 'web.trainset.get.all.panels';
+
+    case WEB_TRAINSET_GET_ALL_PANELS_PROGRESS = 'web.trainset.get.all.panels.progress';
 
     case WEB_TRAINSET_GET_ALL_PANELS_WITH_QTY = 'web.trainset.get.all.panels.with.qty';
 
@@ -177,9 +188,13 @@ enum IntentEnum: string {
 
     case WEB_CARRIAGE_TRAINSET_ADD_CARRIAGE_PANEL = 'web.carriage.trainset.add.carriage.panel';
 
+    case WEB_CARRIAGE_PANEL_GET_PANEL_PROGRESS = 'web.carriage.panel.get.panel.progress';
+
     case WEB_CARRIAGE_PANEL_ADD_COMPONENT = 'web.carriage.panel.add.component';
 
     case WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL = 'web.carriage.panel.add.raw.material';
+
+    case WEB_CARRIAGE_PANEL_CHANGE_PROGRESS = 'web.carriage.panel.change.progress';
 
     case WEB_CARRIAGE_PANEL_IMPORT_PROGRESS_AND_MATERIAL = 'web.carriage.panel.import.progress.and.material';
 
@@ -247,7 +262,17 @@ enum IntentEnum: string {
 
     case WEB_TRAINSET_GET_COMPONENTS = 'web.trainset.get.components';
 
+    case WEB_TRAINSET_GET_PANEL_PROGRESS = 'web.trainset.get.panel.progress';
+
+    case WEB_TRAINSET_GET_PANEL_PROGRESS_WITH_WORKER_STEPS = 'web.trainset.get.panel.progress.with.worker.steps';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_HANDLERS = 'web.trainset.attachment.get.attachment.handlers';
+
     case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.trainset.attachment.get.attachment.progress';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_PROGRESS_WITH_WORKER_STEPS = 'web.trainset.attachment.get.attachment.progress.with.worker.steps';
+
+    case WEB_TRAINSET_ATTACHMENT_GET_ATTACHMENT_COMPONENTS = 'web.trainset.attachment.get.attachment.components';
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS = 'web.trainset.attachment.get.component.materials';
 
@@ -264,6 +289,8 @@ enum IntentEnum: string {
     case WEB_PANEL_ATTACHMENT_GET_PANEL = 'web.panel.attachment.get.panel';
 
     case WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS = 'web.panel.attachment.get.serial.panels';
+
+    case WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS = 'web.panel.attachment.get.attachment.handlers';
 
     case WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS = 'web.panel.attachment.get.attachment.progress';
 
@@ -286,4 +313,6 @@ enum IntentEnum: string {
     case WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT = 'web.panel.attachment.assign.referenced.attachment.and.material.import';
 
     case WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE = 'web.trainset.attachment.get.component.materials.with.qty.for.template';
+
+    case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
 }

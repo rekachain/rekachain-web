@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { DivisionResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { divisionService } from '@/Services/divisionService';
 import { useSuccessToast } from '@/Hooks/useToast';
-import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
 import DivisionCardView from '@/Pages/Division/Partials/Partials/DivisionCardView';
+import DivisionTableView from '@/Pages/Division/Partials/Partials/DivisionTableView';
+import Filters from '@/Pages/Division/Partials/Partials/Filters';
+import { divisionService } from '@/Services/divisionService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { DivisionResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Division/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -39,22 +39,22 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             {divisionResponse && (
                 <>
                     <Filters setFilters={setFilters} filters={filters} />
-                    <div className="hidden md:block">
+                    <div className='hidden md:block'>
                         <DivisionTableView
-                            divisionResponse={divisionResponse}
                             handleDivisionDeletion={handleDivisionDeletion}
+                            divisionResponse={divisionResponse}
                         />
                     </div>
 
-                    <div className="block md:hidden">
+                    <div className='block md:hidden'>
                         <DivisionCardView
-                            divisionResponse={divisionResponse}
                             // handleRoleDeletion={handleRoleResourceDeletion}
                             handleDivisionDeletion={handleDivisionDeletion}
+                            divisionResponse={divisionResponse}
                             // auth={auth}
                         />
                     </div>

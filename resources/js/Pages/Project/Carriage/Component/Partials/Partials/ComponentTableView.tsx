@@ -1,6 +1,19 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
-import { CarriageResource, ProjectComponentResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
+import {
+    CarriageResource,
+    ProjectComponentResource,
+    ProjectResource,
+} from '@/Support/Interfaces/Resources';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import Import from '../Import';
 
@@ -20,7 +33,9 @@ export default function ComponentTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.project.carriage.component.partials.partials.component_table.headers.name')}
+                            {t(
+                                'pages.project.carriage.component.partials.partials.component_table.headers.name',
+                            )}
                         </TableHead>
                         <TableHead>
                             {t(
@@ -28,19 +43,30 @@ export default function ComponentTableView({
                             )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.project.carriage.component.partials.partials.component_table.headers.total_qty')}
+                            {t(
+                                'pages.project.carriage.component.partials.partials.component_table.headers.total_qty',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {componentResponse?.data.map(data => (
+                    {componentResponse?.data.map((data) => (
                         <TableRow key={data.component.id}>
                             <TableCell>{data.component.name}</TableCell>
                             <TableCell>{data.component.description}</TableCell>
                             <TableCell>{data.total_qty}</TableCell>
                             <TableCell>
-                                <Import project={project} carriage={carriage} component={data.component} hasMaterials={data.has_materials} />
+                                {checkPermission(
+                                    PERMISSION_ENUM.PROJECT_CARRIAGE_COMPONENT_IMPORT,
+                                ) && (
+                                    <Import
+                                        project={project}
+                                        hasMaterials={data.has_materials}
+                                        component={data.component}
+                                        carriage={carriage}
+                                    />
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}

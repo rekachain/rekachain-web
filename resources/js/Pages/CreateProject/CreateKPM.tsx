@@ -58,59 +58,63 @@ export default function CreateKPM() {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Buat KPM" />
-            <div className="py-12">
-                <div className="max-w-7xl h-screen sm:px-6 lg:px-8 space-y-6 ">
-                    <h1 className="text-2xl font-bold">KPM: Panel 1</h1>
+            <Head title='Buat KPM' />
+            <div className='py-12'>
+                <div className='h-screen max-w-7xl space-y-6 sm:px-6 lg:px-8'>
+                    <h1 className='text-2xl font-bold'>KPM: Panel 1</h1>
                     <AnimateIn
-                        from="opacity-0 -translate-y-4"
-                        to="opacity-100 translate-y-0 translate-x-0"
+                        to='opacity-100 translate-y-0 translate-x-0'
+                        from='opacity-0 -translate-y-4'
                         duration={300}
                     >
-                        <div className=" flex flex-col gap-5 ">
-                            <Input placeholder="Serial Number"></Input>
-                            <hr className="border-black" />
-                            <h2 className="text-md">List Material</h2>
-                            {materials?.map(material => (
-                                <div className="border-2 flex justify-between border-black rounded-md p-3">
+                        <div className='flex flex-col gap-5'>
+                            <Input placeholder='Serial Number'></Input>
+                            <hr className='border-black' />
+                            <h2 className='text-md'>List Material</h2>
+                            {materials?.map((material) => (
+                                <div className='flex justify-between rounded-md border-2 border-black p-3'>
                                     <p>
                                         {material.nama} x {material.jumlah}
                                     </p>
-                                    <div className="flex w-16 justify-between">
+                                    <div className='flex w-16 justify-between'>
                                         <Dialog>
                                             <DialogTrigger asChild>
-                                                <Pencil className="hover:cursor-pointer"></Pencil>
+                                                <Pencil className='hover:cursor-pointer'></Pencil>
                                             </DialogTrigger>
-                                            <DialogContent className="sm:max-w-[425px]">
+                                            <DialogContent className='sm:max-w-[425px]'>
                                                 <DialogHeader>
-                                                    <DialogTitle>Edit Material {material.nama}</DialogTitle>
-                                                    <DialogDescription>Ubah material .</DialogDescription>
+                                                    <DialogTitle>
+                                                        Edit Material {material.nama}
+                                                    </DialogTitle>
+                                                    <DialogDescription>
+                                                        Ubah material .
+                                                    </DialogDescription>
                                                 </DialogHeader>
-                                                <div className="grid gap-4 py-4">
-                                                    <div className="grid grid-cols-4 items-center gap-4">
-                                                        <Label htmlFor="name" className="">
+                                                <div className='grid gap-4 py-4'>
+                                                    <div className='grid grid-cols-4 items-center gap-4'>
+                                                        <Label htmlFor='name' className=''>
                                                             Nama Material
                                                         </Label>
                                                         {/* <h4 className="text-lg">ma</h4> */}
                                                         <Input
-                                                            id="name"
+                                                            id='name'
                                                             defaultValue={material.nama}
-                                                            className="col-span-3"
+                                                            className='col-span-3'
                                                         />
                                                     </div>
-                                                    <div className="grid grid-cols-4 items-center gap-4">
-                                                        <Label htmlFor="username" className="">
+                                                    <div className='grid grid-cols-4 items-center gap-4'>
+                                                        <Label htmlFor='username' className=''>
                                                             Jumlah Material
                                                         </Label>
                                                         <Input
-                                                            id="username"
+                                                            id='username'
                                                             defaultValue={material.jumlah}
-                                                            className="col-span-3"
+                                                            className='col-span-3'
                                                         />
                                                     </div>
                                                 </div>
                                                 <DialogFooter>
-                                                    <Button type="submit">Simpan Perubahan</Button>
+                                                    <Button type='submit'>Simpan Perubahan</Button>
                                                 </DialogFooter>
                                             </DialogContent>
                                         </Dialog>
@@ -121,11 +125,13 @@ export default function CreateKPM() {
                                             <AlertDialogContent>
                                                 <AlertDialogHeader>
                                                     <AlertDialogTitle>
-                                                        Apakah anda yakin akan menghapus material {material.nama}?
+                                                        Apakah anda yakin akan menghapus material{' '}
+                                                        {material.nama}?
                                                     </AlertDialogTitle>
                                                     <AlertDialogDescription>
-                                                        Material yang sudah dihapus tidak akan bisa dikembalikan
-                                                        kembali, pastikan material yang dipilih sudah benar.
+                                                        Material yang sudah dihapus tidak akan bisa
+                                                        dikembalikan kembali, pastikan material yang
+                                                        dipilih sudah benar.
                                                     </AlertDialogDescription>
                                                 </AlertDialogHeader>
                                                 <AlertDialogFooter>
@@ -137,9 +143,9 @@ export default function CreateKPM() {
                                     </div>
                                 </div>
                             ))}
-                            <div className="flex gap-3">
-                                <Input placeholder="Nama Material"></Input>
-                                <Input placeholder="Jumlah Material"></Input>
+                            <div className='flex gap-3'>
+                                <Input placeholder='Nama Material'></Input>
+                                <Input placeholder='Jumlah Material'></Input>
                                 <Button onClick={() => tambahMaterial()}>Tambah Material</Button>
                             </div>
                         </div>

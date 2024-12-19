@@ -2,6 +2,15 @@
 
 return [
     'navbar' => [
+        'toggle_dark_mode' => [
+            'title' => 'Ganti Mode Gelap',
+        ],
+        'download_app' => [
+            'title' => 'Unduh Aplikasi',
+        ],
+        'view_manual_book' => [
+            'title' => 'Lihat Buku Manual',
+        ],
         'search' => [
             'placeholder' => 'Cari...',
         ],
@@ -56,9 +65,12 @@ return [
             'logout' => 'Keluar',
         ],
     ],
-    'feedback' => [
-        'title' => 'Umpan Balik',
+    'add_feedback' => [
+        'title' => 'Tambahkan Umpan Balik',
         'description' => 'Umpan balik Anda penting bagi kami. Kami menghargai dan mempertimbangkan setiap saran dan umpan balik.',
+        'messages' => [
+            'created' => 'Umpan balik berhasil dibuat.',
+        ],
         'fields' => [
             'name' => 'Nama',
             'name_placeholder' => 'Nama Anda...',

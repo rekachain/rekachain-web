@@ -1,10 +1,15 @@
-import { Resource, RoleResource, StepResource, WorkstationResource } from '@/Support/Interfaces/Resources';
 import { User } from '@/Support/Interfaces/Models';
+import {
+    Resource,
+    RoleResource,
+    StepResource,
+    WorkstationResource,
+} from '@/Support/Interfaces/Resources';
 
 export interface UserResource extends Resource, User {
     image: string;
     role_id: number;
-    role: RoleResource;
+    role?: RoleResource;
     division_id: number;
     division: RoleResource;
     workstation_id: number;
@@ -12,4 +17,5 @@ export interface UserResource extends Resource, User {
     workstation?: WorkstationResource;
     step?: StepResource;
     can_be_deleted: boolean;
+    is_trashed: boolean;
 }

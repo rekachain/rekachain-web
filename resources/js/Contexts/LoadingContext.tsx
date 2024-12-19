@@ -1,5 +1,5 @@
 // src/contexts/LoadingContext.tsx
-import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface LoadingContextProps {
     loading: boolean;
@@ -11,7 +11,11 @@ export const LoadingContext = createContext<LoadingContextProps | undefined>(und
 export const LoadingProvider = ({ children }: { children: ReactNode }) => {
     const [loading, setLoading] = useState(false);
 
-    return <LoadingContext.Provider value={{ loading, setLoading }}>{children}</LoadingContext.Provider>;
+    return (
+        <LoadingContext.Provider value={{ loading, setLoading }}>
+            {children}
+        </LoadingContext.Provider>
+    );
 };
 
 export const useLoading = () => {

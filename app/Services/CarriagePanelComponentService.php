@@ -2,25 +2,15 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Imports\CarriagePanelComponent\CarriagePanelComponentProgressMaterialImport;
 use App\Models\CarriagePanelComponent;
 use App\Support\Interfaces\Repositories\CarriagePanelComponentRepositoryInterface;
 use App\Support\Interfaces\Services\CarriagePanelComponentServiceInterface;
-use App\Support\Interfaces\Services\ProgressServiceInterface;
-use App\Support\Interfaces\Services\RawMaterialServiceInterface;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
 class CarriagePanelComponentService extends BaseCrudService implements CarriagePanelComponentServiceInterface {
-    public function __construct(
-        protected RawMaterialServiceInterface $rawMaterialService,
-        protected ProgressServiceInterface $progressService,
-    ) {
-        parent::__construct();
-    }
-
     public function addRawMaterial(CarriagePanelComponent $carriagePanelComponent, array $data): bool {
         return DB::transaction(function () use ($carriagePanelComponent, $data) {
             $rawMaterialId = $data['raw_material_id'];
@@ -31,10 +21,10 @@ class CarriagePanelComponentService extends BaseCrudService implements CarriageP
             $newRawMaterialQty = $data['new_raw_material_qty'];
 
             if ($rawMaterialId) {
-                $rawMaterial = $this->rawMaterialService->findOrFail($rawMaterialId);
+                $rawMaterial = $this->rawMaterialService()->findOrFail($rawMaterialId);
             } else {
-                $rawMaterial = $this->rawMaterialService->create([
-                    'code' => $newRawMaterialCode,
+                $rawMaterial = $this->rawMaterialService()->create([
+                    'material_code' => $newRawMaterialCode,
                     'description' => $newRawMaterialDescription,
                     'unit' => $newRawMaterialUnit,
                     'specs' => $newRawMaterialSpecs,
@@ -68,9 +58,9 @@ class CarriagePanelComponentService extends BaseCrudService implements CarriageP
             $progressWorkAspectId = $data['progress_work_aspect_id'];
 
             if ($progressId) {
-                $progress = $this->progressService->findOrFail($progressId);
+                $progress = $this->progressService()->findOrFail($progressId);
             } else {
-                $progress = $this->progressService->create([
+                $progress = $this->progressService()->create([
                     'name' => $progressName,
                     'work_aspect_id' => $progressWorkAspectId,
                 ]);

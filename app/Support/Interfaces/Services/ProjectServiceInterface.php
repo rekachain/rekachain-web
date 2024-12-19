@@ -17,7 +17,7 @@ interface ProjectServiceInterface extends BaseCrudServiceInterface {
      */
     public function addTrainsets(Project $project, array $data): bool;
 
-    public function importProject(UploadedFile $file): bool;
+    public function importProject(UploadedFile $file, array $data): bool;
 
     public function importProjectPanelProgressMaterial(Project $project, UploadedFile $file, array $data): bool;
 
@@ -28,6 +28,14 @@ interface ProjectServiceInterface extends BaseCrudServiceInterface {
     public function importProjectCarriageComponentProgressMaterial(Project $project, Carriage $carriage, UploadedFile $file, array $data): bool;
 
     public function importProjectTrainsetPanelProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool;
-    
+
     public function importProjectTrainsetComponentProgressMaterial(Project $project, Trainset $trainset, UploadedFile $file, array $data): bool;
+
+    public function calculateEstimatedTime($project_id = null);
+
+    public function updateEstimatedStartDate(Project $project, array $data): bool;
+
+    public function updateProjectStartTime(Trainset $trainset);
+
+    public function updateProjectStatus(Project $project);
 }

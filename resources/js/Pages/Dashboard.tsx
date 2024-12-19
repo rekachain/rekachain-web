@@ -1,21 +1,30 @@
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+    type ChartConfig,
+} from '@/Components/UI/chart';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
-import { ChartContainer, type ChartConfig } from '@/Components/UI/chart';
-import { ChartLegend, ChartLegendContent } from '@/Components/UI/chart';
-import { ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { Bar, BarChart, CartesianGrid, LabelList, Line, LineChart, Pie, PieChart, XAxis, YAxis } from 'recharts';
-import { Check, ChevronsUpDown, TrendingUp } from 'lucide-react';
-// import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/Components/UI/card';
 
-// import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-import { cn } from '@/Lib/Utils';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
+import { Button } from '@/Components/UI/button';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
-// import { useState } from 'react';
+import { cn } from '@/Lib/Utils';
 
 const project = [
     {
@@ -49,16 +58,11 @@ const trainset = [
         link: '/dashboard/1/3',
     },
 ];
-// TODO : TS only available when project
-// TODO : show ts for each project
 
-import { useCallback, useEffect, useState } from 'react';
-import { ROUTES } from '@/Support/Constants/routes';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
-import GenericDataSelector from '@/Components/GenericDataSelector';
 import { trainsetService } from '@/Services/trainsetService';
-import { TrainsetStatusEnum } from '@/Support/Enums/trainsetStatusEnum';
+import { ROUTES } from '@/Support/Constants/routes';
+import { useLocalStorage } from '@uidotdev/usehooks';
+import { useCallback, useEffect, useState } from 'react';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];
@@ -77,6 +81,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [valueTrainset, setValueTrainset] = useState('');
+    const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
     console.log(data);
 
@@ -111,25 +116,38 @@ export default function Dashboard({ auth, data }: PageProps) {
             label: 'In Progress',
             color: 'hsl(var(--chart-2))',
         },
+        pending: {
+            label: 'Pending',
+            color: 'hsl(var(--chart-3))',
+        },
+        material_in_transit: {
+            label: 'Material In Transit',
+            color: 'hsl(var(--chart-4))',
+        },
+        material_accepted: {
+            label: 'Material Accepted',
+            color: 'hsl(var(--chart-5))',
+        },
     } satisfies ChartConfig;
 
     const [useMerged, setUseMerged] = useState(true);
-    const [useRaw, setUseRaw] = useState(true);
-    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] = useState<AttachmentStatusBarGraph>({
-        // data: useRaw
-        //     ? data.attachment_status_of_trainset
-        //     : data.attachment_status_of_trainset.map(
-        //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-        //             trainset_name,
-        //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-        //         }),
-        //     ),
-        config: Object.fromEntries(
-            Object.entries(attachmentStatusConfig).filter(([key]) =>
-                useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+    const [useRaw, setUseRaw] = useState(false);
+    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] =
+        useState<AttachmentStatusBarGraph>({
+            // data: useRaw
+            //     ? data.attachment_status_of_trainset
+            //     : data.attachment_status_of_trainset.map(
+            //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
+            //             trainset_name,
+            //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+            //         }),
+            //     ),
+            config: Object.fromEntries(
+                Object.entries(attachmentStatusConfig).filter(([key]) =>
+                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                ),
             ),
-        ),
-    });
+        });
     const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
         useState<AttachmentStatusBarGraph>({
             // data: data.attachment_status_of_workstation.map(
@@ -146,7 +164,9 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
-    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState({});
+    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState(
+        {},
+    );
     const [maxWorkstationStatusValue, setMaxWorkstationStatusValue] = useState(10);
 
     useEffect(() => {
@@ -156,19 +176,20 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     useEffect(() => {
         setAttachmentStatusOfTrainsetFilter({ column_filters: { id: trainsetFilters?.id } });
-        setAttachmentStatusOfWorkstationFilter({ relation_column_filters: { trainset: { id: trainsetFilters?.id } } });
+        setAttachmentStatusOfWorkstationFilter({
+            relation_column_filters: { trainset: { id: trainsetFilters?.id } },
+        });
     }, [trainsetFilters]);
     useEffect(() => {
         syncAttachmentStatusData();
     }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
     useEffect(() => {
         let max = 0;
-        attachmentStatusOfWorkstationGraph.data?.forEach(trainset => {
-            Object.values(trainset).forEach(count => {
+        attachmentStatusOfWorkstationGraph.data?.forEach((trainset) => {
+            Object.values(trainset).forEach((count) => {
                 if (count > max) max = count + 1;
             });
         });
-        console.log('max', max);
         setMaxWorkstationStatusValue(max);
     }, [attachmentStatusOfWorkstationGraph]);
 
@@ -188,7 +209,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                 : res.data.attachment_status_of_trainset.map(
                       ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
                           trainset_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                          ...progress.reduce(
+                              (acc, { status, count }) => ({ ...acc, [status]: count }),
+                              {},
+                          ),
                       }),
                   ),
             config: Object.fromEntries(
@@ -203,7 +227,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                 : res.data.attachment_status_of_workstation.map(
                       ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
                           workstation_name,
-                          ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
+                          ...progress.reduce(
+                              (acc, { status, count }) => ({ ...acc, [status]: count }),
+                              {},
+                          ),
                       }),
                   ),
             config: Object.fromEntries(
@@ -214,6 +241,44 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
     };
 
+    const toPercent = (decimal: number, fixed = 0) => {
+        return `${(decimal * 100).toFixed(fixed)}%`;
+    };
+    const getPercent = (value: number, total: number) => {
+        const ratio = total > 0 ? value / total : 0;
+        return toPercent(ratio, 2);
+    };
+
+    const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
+        const total = payload.reduce((result: number, entry: any) => result + entry.value, 0);
+        return (
+            <div className='grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl'>
+                <p className=''>{`${label} (Total: ${total})`}</p>
+                <ul className='list'>
+                    {payload.map((entry: any, index: number) => (
+                        <li
+                            key={`item-${index}`}
+                            className='flex items-center justify-between gap-1.5'
+                        >
+                            <div className='flex items-center gap-1.5'>
+                                <div
+                                    style={{
+                                        backgroundColor: entry.color,
+                                    }}
+                                    className='h-2 w-2 shrink-0 rounded-[2px]'
+                                />
+                                <span className='text-foreground'>
+                                    {attachmentStatusConfig[entry.dataKey].label}
+                                </span>
+                            </div>
+                            <span className='text-foreground'>{`${entry.value} (${getPercent(entry.value, total)})`}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
             .getAll({
@@ -221,72 +286,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                 perPage: 100,
                 column_filters: { project_id: 1 }, // TODO: use project filter
             })
-            .then(response => response.data);
+            .then((response) => response.data);
     }, []);
 
-    const chartConfig = {
-        in_progress: {
-            label: 'Progress',
-            color: '#fd2c59',
-        },
-        done: {
-            label: 'Done',
-            color: '#00C3FF',
-        },
-    } satisfies ChartConfig;
-    // from panel_attachment get status
-    // from carriage panel get carriage_trainset_id
-    // from trainset get trainset id
-    console.log(data['ts']);
-    //  TS
-    // this is correct
-    // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;
+    // alert(sidebarCollapse);
 
-    // new with project ID
-    // SELECT trainsets.name, projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id  INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name,trainsets.name;
-
-    // SELECT count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id where panel_attachments.status = "done" GROUP BY trainsets.name;
-
-    // SELECT panel_attachments.status, count(panel_attachments.status), trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id GROUP BY trainsets.name, panel_attachments.status;
-
-    const chartDataWS = [
-        { ts: 'WS Candisewu Lt1', progress: 186, done: 80 },
-        { ts: 'WS Candisewu Lt2', progress: 86, done: 80 },
-        { ts: 'WS Candisewu Lt3', progress: 20, done: 50 },
-        { ts: 'WS Sukosari', progress: 36, done: 50 },
-        { ts: 'WS Harmonika', progress: 45, done: 70 },
-    ];
-
-    // this is correct
-    // SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id where workshops.id <3 GROUP by workshops.name;
-
-    // Correct with project 612
-    //SELECT projects.name,  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id where workshops.id <3 GROUP by workshops.name, projects.name
-
-    // INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id
-
-    // panel attachment source workstation in progress and done
-    // workstation id
-    // SELECT * FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id;
-    // SELECT count(panel_attachments.status) workstations.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id where status = "done" GROUP by workstations.name;
-    // for above need change in workstation and workshop.
-
-    const chartDataPanel = [
-        { panel: 'Panel PIDS A', progress: 186, done: 80 },
-        { panel: 'Panel PIDS B', progress: 86, done: 30 },
-        { panel: 'Panel PIDS C', progress: 16, done: 80 },
-        { panel: 'Panel PIDS D', progress: 18, done: 90 },
-    ];
-
-    // Correct with project name
-    // SELECT projects.name, SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id inner join projects on trainsets.project_id = projects.id GROUP by panels.name,projects.name, panel_attachments.status ORDER BY `panels`.`name` ASC
-
-    // SELECT count(panel_attachments.status), panel_attachments.status, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status;
-
-    //     With seperated done and in progress
-    // SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, panels.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN panels on carriage_panels.panel_id = panels.id GROUP by panels.name, panel_attachments.status ORDER BY `panels`.`name` ASC
-
-    // export default function Dashboard({ auth }: PageProps) {
     const { t } = useLaravelReactI18n();
     return (
         <AuthenticatedLayout>
@@ -294,48 +298,63 @@ export default function Dashboard({ auth, data }: PageProps) {
 
             {/* <div className="py-12"> */}
             {/* <p>{value}</p> */}
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
-                <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
+            <div
+                className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5`}
+            >
+                <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                     {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                    <div className="">
-                        <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                        <div className="flex justify-between w-full items-center">
-                            <h2 className="text-xl my-2">
-                                {data['project'] == null ? 'Semua Proyek' : `Proyek ${data['project']}`}
+                    <div className=''>
+                        <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
+                        <div className='flex w-full items-center justify-between'>
+                            <h2 className='my-2 text-xl'>
+                                {data['project'] == null
+                                    ? t('pages.dashboard.index.all_project')
+                                    : `${t('pages.dashboard.index.project')} ${data['project']}`}
                             </h2>
                             <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger asChild className=" ">
+                                <PopoverTrigger className=' ' asChild>
                                     <Button
-                                        variant="outline"
-                                        role="combobox"
+                                        variant='outline'
+                                        role='combobox'
+                                        className='w-25 justify-between md:w-40'
                                         aria-expanded={open}
-                                        className="w-40 justify-between"
                                     >
                                         {value
-                                            ? project.find(projectItem => projectItem.value === value)?.label
-                                            : 'Pilih Proyek'}
-                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            ? project.find(
+                                                  (projectItem) => projectItem.value === value,
+                                              )?.label
+                                            : t('pages.dashboard.index.select_project')}
+                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-[200px] p-0">
+                                <PopoverContent className='w-[200px] p-0'>
                                     <Command>
-                                        <CommandInput placeholder="Cari Projek..." />
+                                        <CommandInput
+                                            placeholder={t('pages.dashboard.index.find_project')}
+                                        />
                                         <CommandList>
-                                            <CommandEmpty>Projek tidak ditemukan.</CommandEmpty>
+                                            <CommandEmpty>
+                                                {t('pages.dashboard.index.project_not_found')}
+                                            </CommandEmpty>
                                             <CommandGroup>
                                                 {
                                                     // @ts-ignore
-                                                    data['projectDetail'].map(projectItem => (
-                                                        <Link href={`/dashboard/${projectItem.id}`}>
+                                                    data['projectDetail'].map((projectItem) => (
+                                                        <Link
+                                                            key={projectItem.id}
+                                                            href={`/dashboard/${projectItem.id}`}
+                                                        >
                                                             <CommandItem
-                                                                key={projectItem.value}
                                                                 value={`/dashboard/${projectItem.name}`}
-                                                                onSelect={currentValue => {
+                                                                onSelect={(currentValue) => {
                                                                     setValue(
-                                                                        currentValue === value ? '' : currentValue,
+                                                                        currentValue === value
+                                                                            ? ''
+                                                                            : currentValue,
                                                                     );
                                                                     setOpen(false);
                                                                 }}
+                                                                key={projectItem.value}
                                                             >
                                                                 <Check
                                                                     className={cn(
@@ -400,51 +419,65 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                         </div> */}
                         {/* </ChartContainer> */}
-                        <div className="flex justify-between my-4 items-center">
-                            <h2 className="text-lg">Status dari Trainset</h2>
-                            <div className=" flex flex-col">
+                        <div className='my-4 flex items-center justify-between'>
+                            <h2 className='text-lg'>
+                                {t('pages.dashboard.index.all_trainset_status')}
+                            </h2>
+                            <div className='flex flex-col'>
                                 <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                                    <PopoverTrigger asChild className={`${data['project'] == null ? 'hidden' : ' '}`}>
+                                    <PopoverTrigger
+                                        className={`${data['project'] == null ? 'hidden' : ' '}`}
+                                        asChild
+                                    >
                                         <Button
-                                            variant="outline"
-                                            role="combobox"
+                                            variant='outline'
+                                            role='combobox'
+                                            className='w-25 justify-between md:w-40'
                                             aria-expanded={openTrainset}
-                                            className="w-40 justify-between"
                                         >
                                             {valueTrainset
-                                                ? project.find(projectItem => projectItem.value === valueTrainset)
-                                                      ?.label
-                                                : 'Pilih Trainset'}
-                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                ? project.find(
+                                                      (projectItem) =>
+                                                          projectItem.value === valueTrainset,
+                                                  )?.label
+                                                : `${t('pages.dashboard.index.select_trainset')}`}
+                                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-[200px] p-0">
+                                    <PopoverContent className='w-[200px] p-0'>
                                         <Command>
-                                            <CommandInput placeholder="Cari Trainset..." />
+                                            <CommandInput
+                                                placeholder={`${t('pages.dashboard.index.find_trainset')}`}
+                                            />
                                             <CommandList>
-                                                <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
+                                                <CommandEmpty>
+                                                    Trainset tidak ditemukan.
+                                                </CommandEmpty>
                                                 <CommandGroup>
                                                     {// @ts-ignore
-                                                    data['tsList']?.map(projectItem => (
+                                                    data['tsList']?.map((projectItem) => (
                                                         <Link
+                                                            key={projectItem.id}
                                                             href={`/dashboard/${data['projectId']}/${projectItem.id}`}
                                                         >
                                                             <CommandItem
-                                                                key={projectItem.id}
                                                                 value={projectItem.name}
-                                                                onSelect={currentValue => {
+                                                                onSelect={(currentValue) => {
                                                                     setValueTrainset(
-                                                                        currentValue === valueTrainset
+                                                                        currentValue ===
+                                                                            valueTrainset
                                                                             ? ''
                                                                             : currentValue,
                                                                     );
                                                                     setOpenTrainset(false);
                                                                 }}
+                                                                key={projectItem.id}
                                                             >
                                                                 <Check
                                                                     className={cn(
                                                                         'mr-2 h-4 w-4',
-                                                                        valueTrainset === projectItem.name
+                                                                        valueTrainset ===
+                                                                            projectItem.name
                                                                             ? 'opacity-100'
                                                                             : 'opacity-0',
                                                                     )}
@@ -473,19 +506,37 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
                         </div>
 
-                        <ChartContainer config={chartConfigTrainset} className="h-[300px] w-full">
-                            <BarChart accessibilityLayer data={data['ts']} className="h-1/4">
+                        <ChartContainer config={chartConfigTrainset} className='h-[300px] w-full'>
+                            <BarChart data={data['ts']} className='h-1/4' accessibilityLayer>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
-                                    dataKey="ts_name"
-                                    tickLine={false}
                                     tickMargin={10}
+                                    tickLine={false}
+                                    dataKey='ts_name'
                                     axisLine={false}
                                     // tickFormatter={value => value.slice(0, 10)}
                                 />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
-                                <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
+                                <ChartTooltip
+                                    cursor={false}
+                                    content={<ChartTooltipContent indicator='dashed' />}
+                                />
+                                <Bar radius={4} fill='var(--color-done)' dataKey='done' />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-in_progress)'
+                                    dataKey='in_progress'
+                                />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-material_in_transit)'
+                                    dataKey='material_in_transit'
+                                />
+                                <Bar radius={4} fill='var(--color-pending)' dataKey='pending' />
+                                <Bar
+                                    radius={4}
+                                    fill='var(--color-material_accepted)'
+                                    dataKey='material_accepted'
+                                />
                             </BarChart>
                         </ChartContainer>
                         {/* <ChartContainer
@@ -515,159 +566,162 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     />
                                 ))}
                             </BarChart>
-                        </ChartContainer> */}
-                    </div>
-                    <div className="flex max-w-full mt-2 ">
-                        <div className="w-1/2">
-                            <h2 className="text-xl my-1 font-bold">Progress Tiap Workshop</h2>
-                            <h3 className="text-base">Workshop Sukosari, Candisewu</h3>
-                            <ChartContainer config={chartConfig} className="h-[300px] w-full mt-5">
-                                <BarChart accessibilityLayer data={data.ws} layout="vertical">
-                                    <CartesianGrid vertical={false} />
-                                    <XAxis type="number" dataKey="in_progress"></XAxis>
-                                    <XAxis type="number" dataKey="done"></XAxis>
-                                    <YAxis
-                                        // max={10}
-                                        className=""
-                                        dataKey="name"
-                                        type="category"
-                                        tickLine={false}
-                                        // tickSize={20}
-                                        // tickCount={}
-                                        // padding={}
-                                        // minTickGap={0}
-                                        // tickMargin={1}
-                                        axisLine={false}
-                                    />
-                                    <ChartTooltip content={<ChartTooltipContent />} />
-                                    <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                </BarChart>
-                            </ChartContainer>
-                        </div>
-
-                        <div className=" ">
-                            <h2 className="text-xl my-1 font-bold">Progress Tiap Panel</h2>
-                            <h3 className="text-base">Panel panel pada WS Assembly</h3>
-                            <ChartContainer config={chartConfig} className="h-[300px] w-96 mt-5">
-                                <BarChart accessibilityLayer data={data['panel']}>
-                                    <CartesianGrid vertical={false} />
-                                    <YAxis type="number" dataKey="in_progress"></YAxis>
-                                    <XAxis
-                                        dataKey="name"
-                                        tickLine={false}
-                                        // tickMargin={10}
-                                        axisLine={false}
-                                        tickFormatter={value => value.slice(0, 6)}
-                                    />
-                                    <ChartTooltip content={<ChartTooltipContent />} />
-                                    <ChartLegend content={<ChartLegendContent />} />
-                                    <Bar dataKey="in_progress" fill="var(--color-in_progress)" radius={4} />
-                                    <Bar dataKey="done" fill="var(--color-done)" radius={4} />
-                                </BarChart>
-                            </ChartContainer>
-                        </div>
+                            
                     </div>
                     <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
                     <div className="flex max-w-full mt-2">
                         {/* <div className="w-1/2"> */}
                         {/* <h3 className="text-base">Workstation Sukosari, Candisewu</h3> */}
+                        <div className='mt-2 max-w-full md:flex'>
+                            <div className='px-5 md:w-1/2'>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.progress_workshops')}
+                                </h2>
+                                <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
+                                <ChartContainer
+                                    config={chartConfigTrainset}
+                                    className='mt-5 h-[300px] w-full'
+                                >
+                                    <BarChart layout='vertical' data={data.ws} accessibilityLayer>
+                                        <CartesianGrid vertical={false} />
+                                        <XAxis type='number' dataKey='in_progress'></XAxis>
+                                        <XAxis type='number' dataKey='done'></XAxis>
+                                        <YAxis
+                                            type='category'
+                                            tickLine={false}
+                                            dataKey='name'
+                                            // max={10}
+                                            className=''
+                                            // tickSize={20}
+                                            // tickCount={}
+                                            // padding={}
+                                            // minTickGap={0}
+                                            // tickMargin={1}
+                                            axisLine={false}
+                                        />
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-in_progress)'
+                                            dataKey='in_progress'
+                                        />
+                                        <Bar radius={4} fill='var(--color-done)' dataKey='done' />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-material_in_transit)'
+                                            dataKey='material_in_transit'
+                                        />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-material_accepted)'
+                                            dataKey='material_accepted'
+                                        />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-pending)'
+                                            dataKey='pending'
+                                        />
+                                    </BarChart>
+                                </ChartContainer>
+                            </div>
+
+                            <div className='md:px-5'>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.progress_panels')}
+                                </h2>
+                                <h3 className='text-base'>
+                                    {t('pages.dashboard.index.panels_title')}
+                                </h3>
+
+                                <ChartContainer
+                                    config={chartConfigTrainset}
+                                    className='text- mt-5 h-[400px] w-[300px] md:h-[400px] md:w-[90%]'
+                                >
+                                    <BarChart data={data['panel']} accessibilityLayer>
+                                        <CartesianGrid vertical={false} />
+                                        <YAxis type='number' dataKey='in_progress'></YAxis>
+                                        <XAxis
+                                            tickMargin={15}
+                                            tickLine={false}
+                                            tickFormatter={(value) => value.slice(0, 20)}
+                                            textAnchor='end'
+                                            height={110}
+                                            dataKey='name'
+                                            axisLine={false}
+                                            angle={-55}
+                                        />
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-in_progress)'
+                                            dataKey='in_progress'
+                                        />
+                                        <Bar radius={4} fill='var(--color-done)' dataKey='done' />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-material_in_transit)'
+                                            dataKey='material_in_transit'
+                                        />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-pending)'
+                                            dataKey='pending'
+                                        />
+                                        <Bar
+                                            radius={4}
+                                            fill='var(--color-material_accepted)'
+                                            dataKey='material_accepted'
+                                        />
+                                    </BarChart>
+                                </ChartContainer>
+                            </div>
+                        </div>
+                        <h2 className='my-1 text-xl font-bold'>
+                            {t('pages.dashboard.index.all_workstations')}
+                        </h2>
+                        <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
                         <ChartContainer
                             config={attachmentStatusOfWorkstationGraph.config}
-                            className="h-[300px] w-full mt-5"
+                            className='mt-5 h-[300px] w-full'
                         >
                             <BarChart
-                                accessibilityLayer
+                                stackOffset='expand'
+                                layout='vertical'
                                 data={attachmentStatusOfWorkstationGraph.data}
-                                layout="vertical"
-                            >
-                                <CartesianGrid vertical={false} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                    <XAxis
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        type="number"
-                                        dataKey={dataKey}
-                                        domain={[0, maxWorkstationStatusValue]}
-                                    />
-                                ))}
-                                <YAxis className="" dataKey="workstation_name" type="category" />
-                                <ChartTooltip content={<ChartTooltipContent />} />
-                                <ChartLegend content={<ChartLegendContent />} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(dataKey => (
-                                    <Bar
-                                        key={`workstationPanelStatus-${dataKey}-key`}
-                                        dataKey={dataKey}
-                                        fill={`var(--color-${dataKey})`}
-                                        radius={[0, 4, 4, 0]}
-                                    />
-                                ))}
-                            </BarChart>
-                        </ChartContainer>
-                        {/* </div> */}
-                    </div>
-                    {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
-
-                        <p>use the updated at and status</p>
-                        <p>can be differentiate between Electric and Mechanic</p>
-                        <p>X Axis use date. 30 day before </p>
-                        <ChartContainer config={chartConfig}>
-                            <LineChart
                                 accessibilityLayer
-                                data={chartDataLine}
-                                margin={{
-                                    left: 12,
-                                    right: 12,
-                                }}
                             >
                                 <CartesianGrid vertical={false} />
                                 <XAxis
-                                    dataKey="tanggal"
+                                    type='number'
+                                    tickFormatter={(value) => toPercent(value, 0)}
+                                />
+                                <YAxis
+                                    width={150}
+                                    type='category'
+                                    tickMargin={10}
                                     tickLine={false}
+                                    dataKey='workstation_name'
+                                    className=''
                                     axisLine={false}
-                                    tickMargin={8}
-                                    tickFormatter={value => value.slice(0, 3)}
+                                    // tickFormatter={value => value.slice(0, 6)}
                                 />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                <Line
-                                    dataKey="inProgress"
-                                    type="monotone"
-                                    stroke="var(--color-desktop)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                                <Line
-                                    dataKey="Done"
-                                    type="monotone"
-                                    stroke="var(--color-mobile)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                            </LineChart>
+                                <ChartTooltip content={renderWorkstationProgressTooltipContent} />
+                                <ChartLegend content={<ChartLegendContent />} />
+                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(
+                                    (dataKey) => (
+                                        <Bar
+                                            type='monotone'
+                                            stackId='1'
+                                            key={`workstationPanelStatus-${dataKey}-key`}
+                                            fill={`var(--color-${dataKey})`}
+                                            dataKey={dataKey}
+                                        />
+                                    ),
+                                )}
+                            </BarChart>
                         </ChartContainer>
-                        <ChartContainer
-                            config={chartConfigPie}
-                            className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
-                        >
-                            <PieChart>
-                                <ChartTooltip content={<ChartTooltipContent nameKey="visitors" hideLabel />} />
-                                <Pie data={chartDataPie} dataKey="visitors">
-                                    <LabelList
-                                        dataKey="browser"
-                                        className="fill-background"
-                                        stroke="none"
-                                        fontSize={12}
-                                        formatter={(value: keyof typeof chartConfigPie) => chartConfigPie[value]?.label}
-                                    />
-                                </Pie>
-                            </PieChart>
-                        </ChartContainer> */}
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div className="p-6 text-gray-900 dark:text-gray-100">
-                                {t('pages.dashboard.index.welcome')}
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

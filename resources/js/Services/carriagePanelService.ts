@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes.js';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { CarriagePanelResource } from '@/Support/Interfaces/Resources';
 
 export const carriagePanelService = {
     ...serviceFactory<CarriagePanelResource>(ROUTES.CARRIAGE_PANELS),
@@ -53,6 +53,35 @@ export const carriagePanelService = {
                 params: {
                     _method: 'PUT',
                     intent: IntentEnum.WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL,
+                },
+            },
+        );
+    },
+    changeProgress: async (
+        carriagePanelId: number,
+        progress_id: number | null,
+        progress_name: string,
+        progress_work_aspect_id: number | null,
+    ) => {
+        const formData = new FormData();
+
+        if (progress_id) {
+            formData.append('progress_id', progress_id.toString());
+            formData.append('progress_name', '');
+            formData.append('progress_work_aspect_id', '');
+        } else {
+            formData.append('progress_id', '');
+            formData.append('progress_name', progress_name);
+            formData.append('progress_work_aspect_id', progress_work_aspect_id!.toString());
+        }
+
+        await window.axios.post(
+            route(`${ROUTES.CARRIAGE_PANELS}.update`, carriagePanelId),
+            formData,
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_CARRIAGE_PANEL_CHANGE_PROGRESS,
                 },
             },
         );

@@ -16,7 +16,9 @@ class DetailWorkerPanelResource extends JsonResource {
                     'step' => $this->progress_step->step->name,
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
+                    'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                 ];
             case IntentEnum::API_DETAIL_WORKER_PANEL_GET_PANEL_DETAILS->value:
                 return [
@@ -31,7 +33,9 @@ class DetailWorkerPanelResource extends JsonResource {
                     'attachment_number' => PanelAttachmentResource::make($this->serial_panel->panel_attachment)->without('trainset')->first(),
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
+                    'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                 ];
             case IntentEnum::API_DETAIL_WORKER_PANELS_GET_ALL_WORK_DETAIL->value:
                 return [
@@ -51,7 +55,9 @@ class DetailWorkerPanelResource extends JsonResource {
                     'estimated_time' => $this->estimated_time,
                     'image_path' => $this->image_path,
                     'work_status' => $this->work_status,
+                    'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
@@ -64,12 +70,14 @@ class DetailWorkerPanelResource extends JsonResource {
                     'progress_step' => ProgressStepResource::make($this->progress_step),
                     'estimated_time' => $this->estimated_time,
                     'work_status' => $this->work_status,
+                    'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                     'image_path' => $this->image_path,
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];
-            default:    
+            default:
                 return [
                     'id' => $this->id,
                     'panel_attachment' => PanelAttachmentResource::make($this->whenLoaded('panel_attachment')),
@@ -82,7 +90,9 @@ class DetailWorkerPanelResource extends JsonResource {
                     'estimated_time' => $this->estimated_time,
                     'image_path' => $this->image_path,
                     'work_status' => $this->work_status,
+                    'localized_work_status' => $this->work_status->getLabel(),
                     'acceptance_status' => $this->acceptance_status,
+                    'localized_acceptance_status' => $this->acceptance_status?->getLabel() ?? __('enums.others.null_acceptance_status'),
                     'created_at' => $this->created_at->toDateTimeString(),
                     'updated_at' => $this->updated_at->toDateTimeString(),
                 ];

@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react';
-import { CarriageResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { carriageService } from '@/Services/carriageService';
 import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/Carriage/Partials/Partials/Filters';
+import { carriageService } from '@/Services/carriageService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { CarriageResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useEffect, useState } from 'react';
 import CarriageCardView from './Partials/CarriageCardView';
 import CarriageTableView from './Partials/CarriageTableView';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/Carriage/Partials/Partials/Filters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -39,20 +39,20 @@ export default function () {
     };
 
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             <Filters setFilters={setFilters} filters={filters} />
 
-            <div className="hidden md:block">
+            <div className='hidden md:block'>
                 <CarriageTableView
-                    carriageResponse={carriageResponse!}
                     handleCarriageDeletion={handleCarriageDeletion}
+                    carriageResponse={carriageResponse!}
                 ></CarriageTableView>
             </div>
 
-            <div className="block md:hidden">
+            <div className='block md:hidden'>
                 <CarriageCardView
-                    carriageResponse={carriageResponse!}
                     handleCarriageDeletion={handleCarriageDeletion}
+                    carriageResponse={carriageResponse!}
                 ></CarriageCardView>
             </div>
             <GenericPagination meta={carriageResponse?.meta} handleChangePage={handlePageChange} />

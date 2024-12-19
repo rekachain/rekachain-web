@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PanelAttachment\UpdatePanelAttachmentRequest;
+use App\Http\Resources\PanelAttachmentHandlerResource;
 use App\Http\Resources\PanelAttachmentResource;
 use App\Http\Resources\PanelResource;
 use App\Http\Resources\RawMaterialResource;
@@ -58,6 +59,8 @@ class PanelAttachmentController extends Controller {
                     return PanelAttachmentResource::make($panelAttachment);
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_SERIAL_PANELS->value:
                     return SerialPanelResource::collection($panelAttachment->serial_panels);
+                case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_HANDLERS->value:
+                    return PanelAttachmentHandlerResource::collection($panelAttachment->panel_attachment_handlers->load('user'));
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_ATTACHMENT_PROGRESS->value:
                     return PanelAttachmentResource::make($panelAttachment);
                 case IntentEnum::WEB_PANEL_ATTACHMENT_GET_PANEL_MATERIALS->value:
@@ -73,7 +76,15 @@ class PanelAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::WEB_PANEL_ATTACHMENT_DOWNLOAD_PANEL_ATTACHMENT->value:
-                $panelAttachment = PanelAttachmentResource::make($panelAttachment->load('raw_materials'));
+                $panelAttachment = PanelAttachmentResource::make($panelAttachment
+                    ->load([
+                        'raw_materials',
+                        'panel_attachment_handlers.user',
+                        'source_workstation.workshop',
+                        'destination_workstation.workshop',
+                        'carriage_panel.panel',
+                        'carriage_panel.carriage_trainset.carriage',
+                    ]));
 
                 return inertia('PanelAttachment/DocumentPanelAttachment', compact('panelAttachment'));
         }
@@ -98,7 +109,7 @@ class PanelAttachmentController extends Controller {
 
         switch ($intent) {
             case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT->value:
-                return $this->customAttachmentMaterialService->addNewAttachment($panelAttachment, $request->validated())->load('parent');;
+                return $this->customAttachmentMaterialService->addNewAttachment($panelAttachment, $request->validated())->load('parent');
             case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_CUSTOM_ATTACHMENT_MATERIAL->value:
                 return $this->panelAttachmentService->assignCustomAttachmentMaterial($panelAttachment, $request->validated());
             case IntentEnum::WEB_PANEL_ATTACHMENT_ASSIGN_REFERENCED_ATTACHMENT_AND_MATERIAL_IMPORT->value:

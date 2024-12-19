@@ -1,15 +1,15 @@
-import { userService } from '@/Services/userService';
-import { useEffect, useState } from 'react';
-import { UserResource } from '@/Support/Interfaces/Resources';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
 import GenericPagination from '@/Components/GenericPagination';
-import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
-import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
 import { useSuccessToast } from '@/Hooks/useToast';
+import Filters from '@/Pages/User/Partials/Partials/Filters';
+import UserCardView from '@/Pages/User/Partials/Partials/UserCardView';
+import UserTableView from '@/Pages/User/Partials/Partials/UserTableView';
+import { userService } from '@/Services/userService';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { UserResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import Filters from '@/Pages/User/Partials/Partials/Filters';
+import { useEffect, useState } from 'react';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -30,10 +30,23 @@ export default function () {
     }, [filters]);
 
     const handleUserDeletion = withLoading(async (id: number) => {
-        await userService.delete(id);
+        await userService.softDelete(id);
         await syncUsers();
         void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
     }, true);
+
+    const handleUserForceDeletion = withLoading(
+        async (id: number) => {
+            await userService.delete(id);
+            await syncUsers();
+            void useSuccessToast(t('pages.user.partials.users.messages.deleted'));
+        },
+        true,
+        {
+            title: t('pages.user.partials.users.messages.delete_permanently'),
+            text: t('pages.user.partials.users.messages.delete_permanently_description'),
+        },
+    );
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -45,16 +58,24 @@ export default function () {
     //     query: '(min-width: 900px)',
     // });
     return (
-        <div className="space-y-4">
+        <div className='space-y-4'>
             <Filters setFilters={setFilters} filters={filters} />
             {userResponse && (
                 <>
-                    <div className="hidden md:block">
-                        <UserTableView userResponse={userResponse} handleUserDeletion={handleUserDeletion} />
+                    <div className='hidden md:block'>
+                        <UserTableView
+                            userResponse={userResponse}
+                            handleUserForceDeletion={handleUserForceDeletion}
+                            handleUserDeletion={handleUserDeletion}
+                        />
                     </div>
 
-                    <div className="block md:hidden">
-                        <UserCardView userResponse={userResponse} handleUserDeletion={handleUserDeletion} />
+                    <div className='block md:hidden'>
+                        <UserCardView
+                            userResponse={userResponse}
+                            handleUserForceDeletion={handleUserForceDeletion}
+                            handleUserDeletion={handleUserDeletion}
+                        />
                     </div>
                 </>
             )}

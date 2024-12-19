@@ -13,11 +13,12 @@ class WorkstationSeeder extends Seeder {
     public function run(): void {
         $csvReader = new CsvReader('workstation');
         $csvData = $csvReader->getCsvData();
-        
+
         if ($csvData) {
             foreach ($csvData as $data) {
                 Workstation::create($data);
             }
+
             return;
         }
         $workstations = [

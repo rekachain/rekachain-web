@@ -3,22 +3,19 @@
 namespace App\Imports\CarriagePanelComponent\Sheets;
 
 use App\Models\CarriagePanelComponent;
-use App\Models\ComponentMaterial;
 use App\Models\RawMaterial;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class RawMaterialSheetImport implements ToModel, WithHeadingRow 
-{
+class RawMaterialSheetImport implements ToModel, WithHeadingRow {
     private $existedMaterialCodes = [];
-    
+
     public function __construct(
         private CarriagePanelComponent $carriagePanelComponent,
         protected ?bool $override = null
     ) {}
 
-    public function model(array $row) 
-    {
+    public function model(array $row) {
         $rawMaterial = RawMaterial::whereMaterialCode($row['kode_material'])->first();
         if (is_null($rawMaterial)) {
             $rawMaterial = RawMaterial::create([

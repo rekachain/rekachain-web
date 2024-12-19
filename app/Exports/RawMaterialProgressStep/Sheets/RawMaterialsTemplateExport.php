@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RawMaterialsTemplateExport implements FromArray, WithTitle, WithHeadings, ShouldAutoSize, WithStyles {
+class RawMaterialsTemplateExport implements FromArray, ShouldAutoSize, WithHeadings, WithStyles, WithTitle {
     use Exportable;
 
     public function __construct(protected Model $model) {}
@@ -43,18 +43,18 @@ class RawMaterialsTemplateExport implements FromArray, WithTitle, WithHeadings, 
             ],
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['rgb' => '4F81BD']
-            ]
+                'startColor' => ['rgb' => '4F81BD'],
+            ],
         ]);
         $validation = $sheet->getDataValidation('A:A');
-        $validation->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_CUSTOM );
-        $validation->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP );
+        $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_CUSTOM);
+        $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
         $validation->setShowErrorMessage(true);
         $validation->setErrorTitle('Duplicate Entry');
         $validation->setError('Data Kode Duplikat!');
         $validation->setFormula1('=COUNTIF(A:A,A1)=1');
 
-        $conditional = new \PhpOffice\PhpSpreadsheet\Style\Conditional();
+        $conditional = new \PhpOffice\PhpSpreadsheet\Style\Conditional;
         $conditional->setConditionType(\PhpOffice\PhpSpreadsheet\Style\Conditional::CONDITION_DUPLICATES);
         $conditional->getStyle()->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
         $conditional->getStyle()->getFill()->getStartColor()->setARGB('60E6B8B7');
@@ -62,7 +62,6 @@ class RawMaterialsTemplateExport implements FromArray, WithTitle, WithHeadings, 
         $conditionalStyles[] = $conditional;
         $sheet->getStyle('A:A')->setConditionalStyles($conditionalStyles);
 
-        
         $table = new Table('A1:E' . $sheet->getHighestRow(), 'Raw_Materials');
         $tableStyle = new TableStyle(TableStyle::TABLE_STYLE_LIGHT15);
         $tableStyle->setShowRowStripes(true);
@@ -80,21 +79,25 @@ class RawMaterialsTemplateExport implements FromArray, WithTitle, WithHeadings, 
         }
         if ($materialsModel->isEmpty()) {
             return [
-                ['KodeMaterialABCDE',
-                'Deskripsi Material',
-                'Spesifikasi Material',
-                'Unit Material',
-                'Jumlah Total',]
+                [
+                    'KodeMaterialABCDE',
+                    'Deskripsi Material',
+                    'Spesifikasi Material',
+                    'Unit Material',
+                    1,
+                ],
             ];
         }
         $exportData = $materialsModel->map(fn ($material) => [
             ...RawMaterialResource::make($material->raw_material)->toArray(request()),
-            'qty' => $material->qty
+            'qty' => $material->qty,
         ])->toArray();
-        $exportData = array_map(function($array) {
+        $exportData = array_map(function ($array) {
             unset($array['id'], $array['can_be_deleted']);
+
             return $array;
         }, $exportData);
+
         return $exportData;
     }
 }

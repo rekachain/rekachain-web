@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Project\Carriage\CarriageProjectRequest;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Requests\Project\Trainset\TrainsetProjectRequest;
@@ -23,6 +24,7 @@ use App\Models\Panel;
 use App\Models\Project;
 use App\Models\Trainset;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Interfaces\Services\CarriagePresetServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
@@ -42,11 +44,15 @@ class ProjectController extends Controller {
      * Display a listing of the resource.
      */
     public function index(Request $request) {
+        PermissionHelper::check(PermissionEnum::PROJECT_READ);
         if ($this->ajax()) {
             try {
                 $perPage = request()->get('perPage', 5);
 
-                return ProjectResource::collection($this->projectService->getAllPaginated($request->query(), $perPage));
+                return ProjectResource::collection($this->projectService
+                    ->withCount(['trainsets'])
+                    ->getAllPaginated($request->query(), $perPage)
+                );
             } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
         }
@@ -58,6 +64,8 @@ class ProjectController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create() {
+        PermissionHelper::check(PermissionEnum::PROJECT_CREATE);
+
         return inertia('Project/Create');
     }
 
@@ -65,12 +73,15 @@ class ProjectController extends Controller {
      * Store a newly created resource in storage.
      */
     public function store(StoreProjectRequest $request) {
+        PermissionHelper::check(PermissionEnum::PROJECT_CREATE);
         if ($this->ajax()) {
             $intent = $request->get('intent');
 
             switch ($intent) {
                 case IntentEnum::WEB_PROJECT_IMPORT_PROJECT_TEMPLATE->value:
-                    return $this->projectService->importProject($request->file('file'));
+                    PermissionHelper::check(PermissionEnum::PROJECT_IMPORT);
+
+                    return $this->projectService->importProject($request->file('file'), $request->validated());
             }
 
             return $this->projectService->create($request->validated());
@@ -81,6 +92,7 @@ class ProjectController extends Controller {
      * Display the specified resource.
      */
     public function show(Request $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_READ);
 
         $intent = $request->get('intent');
 
@@ -111,6 +123,9 @@ class ProjectController extends Controller {
      * Show the form for editing the specified resource.
      */
     public function edit(Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_UPDATE);
+        $project = $project->load(['buyer']);
+
         return inertia('Project/Edit', ['project' => new ProjectResource($project)]);
     }
 
@@ -118,16 +133,25 @@ class ProjectController extends Controller {
      * Update the specified resource in storage.
      */
     public function update(UpdateProjectRequest $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_UPDATE);
 
         $intent = $request->get('intent');
 
         switch ($intent) {
             case IntentEnum::WEB_PROJECT_ADD_TRAINSET->value:
+                PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CREATE);
+
                 return $this->projectService->addTrainsets($project, $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_PANEL_PROGRESS_AND_MATERIAL->value:
+                PermissionHelper::check(PermissionEnum::PROJECT_PANEL_IMPORT);
+
                 return $this->projectService->importProjectPanelProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_IMPORT_COMPONENT_PROGRESS_AND_MATERIAL->value:
+                PermissionHelper::check(PermissionEnum::PROJECT_COMPONENT_IMPORT);
+
                 return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->validated());
+            case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
+                return $this->projectService->updateEstimatedStartDate($project, $request->validated());
         }
 
         if ($this->ajax()) {
@@ -139,12 +163,20 @@ class ProjectController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_DELETE);
         if ($this->ajax()) {
             return $this->projectService->delete($project);
         }
     }
 
+    public function getEstimatedTime($project_id = null) {
+        PermissionHelper::check(PermissionEnum::PROJECT_READ);
+
+        return $this->projectService->calculateEstimatedTime($project_id);
+    }
+
     public function project_trainsets(Request $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_READ);
         $project = new ProjectResource($project->load(['trainsets' => ['carriages']]));
         if ($this->ajax()) {
             return $project;
@@ -154,23 +186,36 @@ class ProjectController extends Controller {
     }
 
     public function project_trainset(TrainsetProjectRequest $request, Project $project, Trainset $trainset) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_READ);
         $intent = $request->get('intent');
         if ($this->ajax()) {
             switch ($intent) {
                 // resources
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_READ);
+
                     return ComponentResource::collection($project->components()->whereTrainsetId($trainset->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_READ);
+
                     return ProjectResource::make($project)->projectTrainset($trainset);
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_READ);
+
                     return PanelResource::collection($project->panels()->whereTrainsetId($trainset->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_TRAINSET_PANELS_WITH_QTY->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_READ);
+
                     return ProjectResource::make($project)->projectTrainset($trainset);
 
                     // services
                 case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_PANEL_PROGRESS_AND_MATERIAL->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_IMPORT);
+
                     return $this->projectService->importProjectTrainsetPanelProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_TRAINSET_COMPONENT_PROGRESS_AND_MATERIAL->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_IMPORT);
+
                     return $this->projectService->importProjectTrainsetComponentProgressMaterial($project, $trainset, $request->file('file'), $request->validated());
             }
 
@@ -186,6 +231,7 @@ class ProjectController extends Controller {
     }
 
     public function project_carriages(Request $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_READ);
         $project = new ProjectResource($project);
 
         if ($this->ajax()) {
@@ -198,23 +244,36 @@ class ProjectController extends Controller {
     }
 
     public function project_carriage(CarriageProjectRequest $request, Project $project, Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_READ);
         $intent = $request->get('intent');
         if ($this->ajax()) {
             switch ($intent) {
                 // resources
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_READ);
+
                     return ComponentResource::collection($project->components()->whereCarriageId($carriage->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_COMPONENTS_WITH_QTY->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_READ);
+
                     return ProjectResource::make($project)->projectCarriage($carriage);
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_READ);
+
                     return PanelResource::collection($project->panels()->whereCarriageId($carriage->id)->distinct()->get());
                 case IntentEnum::WEB_PROJECT_GET_ALL_CARRIAGE_PANELS_WITH_QTY->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_READ);
+
                     return ProjectResource::make($project)->projectCarriage($carriage);
 
                     // services
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_PANEL_PROGRESS_AND_MATERIAL->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_IMPORT);
+
                     return $this->projectService->importProjectCarriagePanelProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
                 case IntentEnum::WEB_PROJECT_IMPORT_CARRIAGE_COMPONENT_PROGRESS_AND_MATERIAL->value:
+                    PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_IMPORT);
+
                     return $this->projectService->importProjectCarriageComponentProgressMaterial($project, $carriage, $request->file('file'), $request->validated());
             }
 
@@ -230,6 +289,7 @@ class ProjectController extends Controller {
     }
 
     public function project_carriage_components(Request $request, Project $project, Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_COMPONENT_READ);
         $project = new ProjectResource($project);
         $carriage = new CarriageResource($carriage);
         if ($this->ajax()) {
@@ -243,6 +303,7 @@ class ProjectController extends Controller {
     }
 
     public function project_carriage_panels(Request $request, Project $project, Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::PROJECT_CARRIAGE_PANEL_READ);
         $project = new ProjectResource($project);
         $carriage = new CarriageResource($carriage);
         if ($this->ajax()) {
@@ -256,6 +317,7 @@ class ProjectController extends Controller {
     }
 
     public function project_components(Request $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_COMPONENT_READ);
         $project = new ProjectResource($project);
 
         if ($this->ajax()) {
@@ -268,6 +330,7 @@ class ProjectController extends Controller {
     }
 
     public function project_panels(Request $request, Project $project) {
+        PermissionHelper::check(PermissionEnum::PROJECT_PANEL_READ);
         $project = new ProjectResource($project);
 
         if ($this->ajax()) {
@@ -280,6 +343,7 @@ class ProjectController extends Controller {
     }
 
     public function project_trainset_components(Request $request, Project $project, Trainset $trainset) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_COMPONENT_READ);
         $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset);
 
@@ -294,6 +358,7 @@ class ProjectController extends Controller {
     }
 
     public function project_trainset_panels(Request $request, Project $project, Trainset $trainset) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_PANEL_READ);
         $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset);
 
@@ -303,11 +368,13 @@ class ProjectController extends Controller {
                 'trainset' => $trainset,
             ];
         }
+        // return ;
 
         return inertia('Project/Trainset/Panel/Index', compact('project', 'trainset'));
     }
 
     public function project_trainset_carriageTrainsets(Request $request, Project $project, Trainset $trainset) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ);
         $project = new ProjectResource($project);
         $trainset = new TrainsetResource($trainset->load(['carriage_trainsets' => ['carriage_panels' => ['panel', 'panel_attachments' => ['serial_panels']], 'carriage']]));
         // sementara
@@ -325,17 +392,19 @@ class ProjectController extends Controller {
             ];
         }
 
-        return inertia('Project/Trainset/Carriage/Index', compact('project', 'trainset', 'presetTrainsets'));
+        return inertia('Project/Trainset/CarriageTrainset/Index', compact('project', 'trainset', 'presetTrainsets'));
     }
 
     public function project_trainset_carriageTrainset(Request $request, Project $project, Trainset $trainset, Carriage $carriage) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_READ);
         $carriage = new CarriageResource($carriage);
 
-        return inertia('Project/Trainset/Carriage/Show', ['carriage' => $carriage]);
+        return inertia('Project/Trainset/CarriageTrainset/Show', ['carriage' => $carriage]);
     }
 
     public function project_trainset_carriageTrainset_carriagePanels(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset) {
-        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ);
+        $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress' => ['progress_steps' => ['step']], 'carriage_panel_components' => ['component']], 'carriage']));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 
@@ -343,10 +412,11 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/Index', compact('project', 'trainset', 'carriageTrainset'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/Index', compact('project', 'trainset', 'carriageTrainset'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponents(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_READ);
         $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
         $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel', 'carriage_panel_components' => ['progress' => ['progress_steps' => ['step']], 'component', 'component_materials' => ['raw_material']]]));
         $project = ProjectResource::make($project);
@@ -356,10 +426,11 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_carriagePanelComponent_componentMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel, CarriagePanelComponent $carriagePanelComponent) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_COMPONENT_MATERIAL_READ);
         $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
         $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel', 'carriage_panel_components' => ['progress', 'component', 'component_materials' => ['raw_material']]]));
         $carriagePanelComponent = new CarriagePanelComponentResource($carriagePanelComponent->load(['component', 'component_materials' => ['raw_material']]));
@@ -370,12 +441,13 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/CarriagePanelComponent/ComponentMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel', 'carriagePanelComponent'));
     }
 
     public function project_trainset_carriageTrainset_carriagePanel_panelMaterials(Request $request, Project $project, Trainset $trainset, CarriageTrainset $carriageTrainset, CarriagePanel $carriagePanel) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_MATERIAL_READ);
         $carriageTrainset = CarriageTrainsetResource::make($carriageTrainset->load(['carriage_panels' => ['panel', 'progress', 'carriage_panel_components' => ['component']], 'carriage']));
-        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel_materials' => ['raw_material']]));
+        $carriagePanel = new CarriagePanelResource($carriagePanel->load(['panel', 'panel_materials' => ['raw_material']]));
         $project = ProjectResource::make($project);
         $trainset = TrainsetResource::make($trainset);
 
@@ -383,12 +455,13 @@ class ProjectController extends Controller {
             return compact('project', 'trainset', 'carriageTrainset', 'carriagePanel');
         }
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/PanelMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/PanelMaterial/Index', compact('project', 'trainset', 'carriageTrainset', 'carriagePanel'));
     }
 
     public function panel(Request $request, Project $project, Trainset $trainset, Carriage $carriage, Panel $panel) {
+        PermissionHelper::check(PermissionEnum::PROJECT_TRAINSET_CARRIAGE_TRAINSET_PANEL_READ);
         $panel = new PanelResource($panel);
 
-        return inertia('Project/Trainset/Carriage/CarriagePanel/Show', ['panel' => $panel]);
+        return inertia('Project/Trainset/CarriageTrainset/CarriagePanel/Show', ['panel' => $panel]);
     }
 }

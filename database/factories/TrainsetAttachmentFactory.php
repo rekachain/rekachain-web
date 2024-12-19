@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Trainset;
-use App\Models\TrainsetAttachment;
 use App\Models\User;
 use App\Models\Workstation;
 use App\Support\Enums\RoleEnum;
@@ -22,6 +21,7 @@ class TrainsetAttachmentFactory extends Factory {
      */
     public function definition(): array {
         $type = fake()->randomElement(TrainsetAttachmentTypeEnum::toArray());
+
         return [
             'trainset_id' => Trainset::inRandomOrder()->first()->id,
             'source_workstation_id' => $sourceWorkstationId = Workstation::inRandomOrder()->first()->id,

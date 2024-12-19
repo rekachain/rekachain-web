@@ -1,7 +1,7 @@
-import { ROUTES } from '@/Support/Constants/routes.js';
 import { serviceFactory } from '@/Services/serviceFactory';
-import { ProgressResource } from '@/Support/Interfaces/Resources';
+import { ROUTES } from '@/Support/Constants/routes.js';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { ProgressResource } from '@/Support/Interfaces/Resources';
 
 export const progressService = {
     ...serviceFactory<ProgressResource>(ROUTES.PROGRESS),
@@ -12,7 +12,7 @@ export const progressService = {
         step_process: string | null,
         step_estimated_time: number | null,
     ) => {
-        let formData = new FormData();
+        const formData = new FormData();
 
         if (step_id) {
             formData.append('step_id', step_id.toString());

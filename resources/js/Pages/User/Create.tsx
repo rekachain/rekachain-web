@@ -1,23 +1,23 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, useForm } from '@inertiajs/react';
-import { ROUTES } from '@/Support/Constants/routes';
-import { Input } from '@/Components/UI/input';
-import { FormEventHandler, useCallback } from 'react';
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
-import { userService } from '@/Services/userService';
 import { Button } from '@/Components/UI/button';
-import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
-import { RoleResource, WorkstationResource } from '@/Support/Interfaces/Resources';
+import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { withLoading } from '@/Utils/withLoading';
-import { workstationService } from '@/Services/workstationService';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { stepService } from '@/Services/stepService';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { FilePond } from 'react-filepond';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { userService } from '@/Services/userService';
+import { workstationService } from '@/Services/workstationService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
+import { RoleResource, WorkstationResource } from '@/Support/Interfaces/Resources';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, router, useForm } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { FormEventHandler, useCallback } from 'react';
+import { FilePond } from 'react-filepond';
 
 export default function (props: { roles: RoleResource[] }) {
     const { t } = useLaravelReactI18n();
@@ -46,11 +46,11 @@ export default function (props: { roles: RoleResource[] }) {
     const { loading } = useLoading();
 
     const fetchWorkstations = useCallback(async (filters: ServiceFilterOptions) => {
-        return await workstationService.getAll(filters).then(response => response.data);
+        return await workstationService.getAll(filters).then((response) => response.data);
     }, []);
 
     const fetchSteps = useCallback(async (filters: ServiceFilterOptions) => {
-        return await stepService.getAll(filters).then(response => response.data);
+        return await stepService.getAll(filters).then((response) => response.data);
     }, []);
 
     const handleFileChange = (fileItems: any) => {
@@ -60,13 +60,13 @@ export default function (props: { roles: RoleResource[] }) {
         }));
     };
 
-    const submit: FormEventHandler = withLoading(async e => {
+    const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('nip', data.nip);
+        if (data.nip.length > 0) formData.append('nip', data.nip);
         formData.append('name', data.name);
-        formData.append('email', data.email);
+        if (data.email.length > 0) formData.append('email', data.email);
         formData.append('phone_number', data.phone_number);
         formData.append('password', data.password);
         formData.append('role_id', data.role_id?.toString() ?? '');
@@ -82,138 +82,166 @@ export default function (props: { roles: RoleResource[] }) {
         <>
             <Head title={t('pages.user.create.title')} />
             <AuthenticatedLayout>
-                <div className="p-4">
-                    <div className="flex gap-5 items-center">
-                        <h1 className="text-page-header my-4">{t('pages.user.create.title')}</h1>
+                <div className='p-4'>
+                    <div className='flex items-center gap-5'>
+                        <h1 className='text-page-header my-4'>{t('pages.user.create.title')}</h1>
                     </div>
 
-                    <form onSubmit={submit} encType="multipart/form-data">
-                        <div className="mt-4">
-                            <InputLabel htmlFor="nip" value={t('pages.user.create.fields.nip')} />
+                    <form onSubmit={submit} encType='multipart/form-data'>
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.user.create.fields.nip')} htmlFor='nip' />
                             <Input
-                                id="nip"
-                                type="number"
-                                name="nip"
                                 value={data.nip}
-                                className="mt-1"
-                                autoComplete="nip"
+                                type='number'
+                                onChange={(e) => setData('nip', e.target.value)}
+                                name='nip'
                                 maxLength={18}
-                                onChange={e => setData('nip', e.target.value)}
-                                required
+                                id='nip'
+                                className='mt-1'
+                                autoComplete='nip'
                             />
                         </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="name" value={t('pages.user.create.fields.name')} />
+                        <div className='mt-4'>
+                            <InputLabel value={t('pages.user.create.fields.name')} htmlFor='name' />
                             <Input
-                                id="name"
-                                type="text"
-                                name="name"
                                 value={data.name}
-                                className="mt-1"
-                                autoComplete="name"
-                                onChange={e => setData('name', e.target.value)}
+                                type='text'
                                 required
+                                onChange={(e) => setData('name', e.target.value)}
+                                name='name'
+                                id='name'
+                                className='mt-1'
+                                autoComplete='name'
                             />
                         </div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="email" value={t('pages.user.create.fields.email')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.email')}
+                                htmlFor='email'
+                            />
                             <Input
-                                id="email"
-                                type="email"
-                                name="email"
                                 value={data.email}
-                                className="mt-1"
-                                autoComplete="email"
-                                onChange={e => setData('email', e.target.value)}
-                                required
+                                type='email'
+                                onChange={(e) => setData('email', e.target.value)}
+                                name='email'
+                                id='email'
+                                className='mt-1'
+                                autoComplete='email'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="phone_number" value={t('pages.user.create.fields.phone_number')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.phone_number')}
+                                htmlFor='phone_number'
+                            />
                             <Input
-                                id="phone_number"
-                                type="text"
-                                name="phone_number"
                                 value={data.phone_number}
-                                className="mt-1"
-                                autoComplete="phone_number"
-                                onChange={e => setData('phone_number', e.target.value)}
+                                type='text'
                                 required
+                                onChange={(e) => setData('phone_number', e.target.value)}
+                                name='phone_number'
+                                id='phone_number'
+                                className='mt-1'
+                                autoComplete='phone_number'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="workstation_id" value={t('pages.user.create.fields.workstation')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.workstation')}
+                                htmlFor='workstation_id'
+                            />
                             <GenericDataSelector
-                                id="workstation_id"
-                                fetchData={fetchWorkstations}
-                                setSelectedData={id => setData('workstation_id', id)}
+                                setSelectedData={(id) => setData('workstation_id', id)}
                                 selectedDataId={data.workstation_id ?? undefined}
+                                renderItem={(item: WorkstationResource) =>
+                                    `${item.name} - ${item.location}`
+                                } // Customize how to display the item
                                 placeholder={t('pages.user.create.fields.workstation_placeholder')}
-                                renderItem={(item: WorkstationResource) => `${item.name} - ${item.location}`} // Customize how to display the item
-                                buttonClassName="mt-1"
                                 nullable
+                                id='workstation_id'
+                                fetchData={fetchWorkstations}
+                                buttonClassName='mt-1'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="step_id" value={t('pages.user.create.fields.step')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.step')}
+                                htmlFor='step_id'
+                            />
                             <GenericDataSelector
-                                id="step_id"
-                                fetchData={fetchSteps}
-                                setSelectedData={id => setData('step_id', id)}
+                                setSelectedData={(id) => setData('step_id', id)}
                                 selectedDataId={data.step_id}
+                                renderItem={(item) => item.name}
                                 placeholder={t('pages.user.create.fields.step_placeholder')}
-                                renderItem={item => item.name}
-                                buttonClassName="mt-1"
+                                nullable
+                                id='step_id'
+                                fetchData={fetchSteps}
+                                buttonClassName='mt-1'
                             />
                         </div>
 
-                        <div className="mt-4">
-                            <InputLabel htmlFor="password" value={t('pages.user.create.fields.password')} />
+                        <div className='mt-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.password')}
+                                htmlFor='password'
+                            />
                             <Input
-                                id="password"
-                                type="password"
-                                name="password"
                                 value={data.password}
-                                className="mt-1"
-                                autoComplete="password"
-                                onChange={e => setData('password', e.target.value)}
+                                type='password'
                                 required
+                                onChange={(e) => setData('password', e.target.value)}
+                                name='password'
+                                id='password'
+                                className='mt-1'
+                                autoComplete='password'
                             />
                         </div>
-                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <InputLabel htmlFor="avatar" value={t('pages.user.create.fields.avatar')} />
+                        <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                            <InputLabel
+                                value={t('pages.user.create.fields.avatar')}
+                                htmlFor='avatar'
+                            />
                             <FilePond
-                                imagePreviewMaxHeight={400}
-                                filePosterMaxHeight={400}
-                                allowMultiple={false}
-                                files={data.image_path}
                                 onupdatefiles={handleFileChange}
-                                labelIdle={t('pages.user.create.fields.avatar_filepond_placeholder')}
+                                labelIdle={t(
+                                    'pages.user.create.fields.avatar_filepond_placeholder',
+                                )}
+                                imagePreviewMaxHeight={400}
+                                files={data.image_path}
+                                filePosterMaxHeight={400}
                                 allowReplace
+                                allowMultiple={false}
                             />
                             {progress && (
-                                <progress value={progress.percentage} max="100">
+                                <progress value={progress.percentage} max='100'>
                                     {progress.percentage}%
                                 </progress>
                             )}
                         </div>
 
-                        <div className="mt-4 rounded bg-background-2 p-4 space-y-2">
-                            <h2 className="text-lg font-semibold">{t('pages.user.create.fields.role')}</h2>
-                            <RadioGroup onValueChange={v => setData('role_id', +v)}>
-                                {props.roles?.map(role => (
-                                    <div key={role.id} className="flex items-center space-x-2">
-                                        <RadioGroupItem value={role.id.toString()} id={`role.${role.id.toString()}`} />
-                                        <Label htmlFor={`role.${role.id.toString()}`}>{role.name}</Label>
+                        <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                            <h2 className='text-lg font-semibold'>
+                                {t('pages.user.create.fields.role')}
+                            </h2>
+                            <RadioGroup onValueChange={(v) => setData('role_id', +v)}>
+                                {props.roles?.map((role) => (
+                                    <div key={role.id} className='flex items-center space-x-2'>
+                                        <RadioGroupItem
+                                            value={role.id.toString()}
+                                            id={`role.${role.id.toString()}`}
+                                        />
+                                        <Label htmlFor={`role.${role.id.toString()}`}>
+                                            {role.name}
+                                        </Label>
                                     </div>
                                 ))}
                             </RadioGroup>
                         </div>
 
-                        <Button className="mt-4" disabled={loading}>
+                        <Button disabled={loading} className='mt-4'>
                             {t('pages.user.create.buttons.submit')}
                         </Button>
                     </form>

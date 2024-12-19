@@ -27,11 +27,16 @@
         --input: 214.3 31.8% 91.4%;
         --ring: 222.2 84% 4.9%;
         --radius: 0.5rem;
-        --chart-1: 12 76% 61%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+        /* --chart-1: 13 76% 61%;
         --chart-2: 173 58% 39%;
         --chart-3: 197 37% 24%;
         --chart-4: 43 74% 66%;
-        --chart-5: 27 87% 67%;
+        --chart-5: 27 87% 67%; */
         --sidebar-link-active: 194, 100%, 50%;
         --sidebar-line-active-foreground: 222.2 84% 4.9%;
         --sidebar-header-foreground: 218, 11%, 65%;
@@ -120,7 +125,7 @@
     }
 
     .sidebar-collapse .sidebar-collapsible-menu {
-        @apply flex-none w-fit pl-4 mx-auto;
+        @apply mx-auto w-fit flex-none pl-4;
     }
 
     .sidebar-collapse-toggle {
@@ -128,7 +133,7 @@
     }
 
     .sidebar-collapse-toggle-mobile {
-        @apply text-zinc-400 flex mx-auto;
+        @apply mx-auto flex text-zinc-400;
     }
 
     .sidebar-collapse .sidebar-collapse-toggle {
@@ -136,7 +141,7 @@
     }
 
     .sidebar-collapse .sidebar-item {
-        @apply w-fit mx-auto;
+        @apply mx-auto w-fit;
     }
 
     .sidebar-collapse .sidebar-menu {
@@ -159,7 +164,7 @@
 
     /* Default light theme styles */
     .filepond--panel-root {
-        @apply bg-background
+        @apply bg-background;
     }
 
     /* Dark theme styles */
@@ -168,11 +173,11 @@
     }
 
     .dark .filepond--drop-label {
-       @apply text-foreground;
+        @apply text-foreground;
     }
 
     .dark .filepond--label-action {
-       @apply text-foreground;
+        @apply text-foreground;
     }
 
     .dark .filepond--item-panel {
@@ -197,23 +202,29 @@
     .dark [data-filepond-item-state='processing-complete'] .filepond--item-panel {
         @apply bg-green-500;
     }
-
 }
 
 @layer base {
-  :root {
+    /* :root {
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-  }
+  } */
+    /* .root {
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
 
-  .dark {
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
+    .dark {
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    } */
 }

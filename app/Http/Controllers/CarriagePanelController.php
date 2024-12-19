@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\CarriagePanel\StoreCarriagePanelRequest;
 use App\Http\Requests\CarriagePanel\UpdateCarriagePanelRequest;
 use App\Http\Resources\CarriagePanelResource;
@@ -21,7 +22,7 @@ class CarriagePanelController extends Controller {
      */
     public function index(Request $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_READ);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_READ);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 'All');
@@ -41,7 +42,7 @@ class CarriagePanelController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_CREATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_CREATE);
 
         return inertia('CarriagePanel/Create');
     }
@@ -51,7 +52,7 @@ class CarriagePanelController extends Controller {
      */
     public function store(StoreCarriagePanelRequest $request) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_CREATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_CREATE);
 
         return new CarriagePanelResource($this->carriagePanelService->create($request->validated()));
     }
@@ -61,7 +62,7 @@ class CarriagePanelController extends Controller {
      */
     public function show(Request $request, CarriagePanel $CarriagePanel) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_READ);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_READ);
 
         if ($this->ajax()) {
             return new CarriagePanelResource($CarriagePanel);
@@ -75,7 +76,7 @@ class CarriagePanelController extends Controller {
      */
     public function edit(Request $request, CarriagePanel $CarriagePanel) {
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_UPDATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_UPDATE);
 
         return inertia('CarriagePanel/Edit', compact('CarriagePanel'));
     }
@@ -94,12 +95,14 @@ class CarriagePanelController extends Controller {
                     return $this->carriagePanelService->addComponent($CarriagePanel, $request->validated());
                 case IntentEnum::WEB_CARRIAGE_PANEL_ADD_RAW_MATERIAL->value:
                     return $this->carriagePanelService->addRawMaterial($CarriagePanel, $request->validated());
+                case IntentEnum::WEB_CARRIAGE_PANEL_CHANGE_PROGRESS->value:
+                    return $this->carriagePanelService->changeProgress($CarriagePanel, $request->validated());
             }
 
             return new CarriagePanelResource($this->carriagePanelService->update($CarriagePanel, $request->validated()));
         }
 
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_UPDATE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_UPDATE);
 
         return new CarriagePanelResource($this->carriagePanelService->update($CarriagePanel, $request->validated()));
     }
@@ -108,7 +111,7 @@ class CarriagePanelController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, CarriagePanel $CarriagePanel) {
-        $request->checkPermissionEnum(PermissionEnum::CARRIAGE_PANEL_DELETE);
+        PermissionHelper::check(PermissionEnum::CARRIAGE_PANEL_DELETE);
 
         $this->carriagePanelService->delete($CarriagePanel);
 

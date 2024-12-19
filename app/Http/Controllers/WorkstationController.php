@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PermissionHelper;
 use App\Http\Requests\Workstation\StoreWorkstationRequest;
 use App\Http\Requests\Workstation\UpdateWorkstationRequest;
 use App\Http\Resources\WorkstationResource;
@@ -23,12 +24,14 @@ class WorkstationController extends Controller {
 
     public function index(Request $request) {
 
-        checkPermissions([PermissionEnum::WORKSTATION_READ, PermissionEnum::USER_READ]);
+        PermissionHelper::check([PermissionEnum::WORKSTATION_READ, PermissionEnum::USER_READ]);
 
         if ($this->ajax()) {
             $perPage = request()->get('perPage', 5);
 
-            return WorkstationResource::collection($this->workstationService->getAllPaginated($request->query(), $perPage));
+            return WorkstationResource::collection(
+                $this->workstationService->with(['workshop', 'division'])->getAllPaginated($request->query(), $perPage)
+            );
         }
 
         return inertia('Workstation/Index');
@@ -39,7 +42,7 @@ class WorkstationController extends Controller {
      * Show the form for creating a new resource.
      */
     public function create(Request $request) {
-        checkPermissions(PermissionEnum::WORKSTATION_CREATE);
+        PermissionHelper::check(PermissionEnum::WORKSTATION_CREATE);
 
         // sementara
         $workshops = $this->workshopService->getAll();
@@ -56,7 +59,7 @@ class WorkstationController extends Controller {
      */
     public function store(StoreWorkstationRequest $request) {
 
-        checkPermissions(PermissionEnum::WORKSTATION_CREATE);
+        PermissionHelper::check(PermissionEnum::WORKSTATION_CREATE);
 
         return new WorkstationResource($this->workstationService->create($request->validated()));
     }
@@ -66,7 +69,7 @@ class WorkstationController extends Controller {
      */
     public function show(Request $request, Workstation $workstation) {
 
-        checkPermissions(PermissionEnum::WORKSTATION_READ);
+        PermissionHelper::check(PermissionEnum::WORKSTATION_READ);
 
         if ($this->ajax()) {
             return new WorkstationResource($workstation);
@@ -80,7 +83,7 @@ class WorkstationController extends Controller {
      */
     public function edit(Request $request, Workstation $workstation) {
 
-        checkPermissions(PermissionEnum::WORKSTATION_UPDATE);
+        PermissionHelper::check(PermissionEnum::WORKSTATION_UPDATE);
 
         // sementara
         $workshops = $this->workshopService->getAll();
@@ -94,7 +97,7 @@ class WorkstationController extends Controller {
      */
     public function update(UpdateWorkstationRequest $request, Workstation $workstation) {
 
-        checkPermissions(PermissionEnum::WORKSTATION_UPDATE);
+        PermissionHelper::check(PermissionEnum::WORKSTATION_UPDATE);
 
         return new WorkstationResource($this->workstationService->update($workstation, $request->validated()));
     }
@@ -103,7 +106,7 @@ class WorkstationController extends Controller {
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, Workstation $workstation) {
-        checkPermissions(PermissionEnum::WORKSTATION_DELETE);
+        PermissionHelper::check(PermissionEnum::WORKSTATION_DELETE);
 
         $this->workstationService->delete($workstation);
 

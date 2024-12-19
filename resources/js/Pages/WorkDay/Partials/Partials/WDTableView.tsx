@@ -1,10 +1,19 @@
+import { Button, buttonVariants } from '@/Components/UI/button';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { ROUTES } from '@/Support/Constants/routes';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { WorkDayResource } from '@/Support/Interfaces/Resources';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { Link } from '@inertiajs/react';
-import { Button, buttonVariants } from '@/Components/UI/button';
-import { ROUTES } from '@/Support/Constants/routes';
-import { WorkDayTimeEnum } from '@/Support/Enums/workDayTimeEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function WDTableView({
@@ -20,22 +29,34 @@ export default function WDTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.name')}</TableHead>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.start_date')}</TableHead>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.break_time')}</TableHead>
-                        <TableHead>{t('pages.work_day.partials.partials.work_day_table.headers.end_date')}</TableHead>
+                        <TableHead>
+                            {t('pages.work_day.partials.partials.work_day_table.headers.name')}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.work_day.partials.partials.work_day_table.headers.start_date',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.work_day.partials.partials.work_day_table.headers.break_time',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t('pages.work_day.partials.partials.work_day_table.headers.end_date')}
+                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {workDayResponse?.data.map(workDay => (
+                    {workDayResponse?.data.map((workDay) => (
                         <TableRow key={workDay.id}>
                             <TableCell>{workDay.day}</TableCell>
                             <TableCell>{workDay.start_time}</TableCell>
                             <TableCell>
                                 {workDay.work_day_times
-                                    .filter(time => time.status === WorkDayTimeEnum.BREAK)
-                                    .map(time => (
+                                    .filter((time) => time.status === WorkDayTimeEnum.BREAK)
+                                    .map((time) => (
                                         <div key={time.id}>
                                             {time.start_time} - {time.end_time}
                                         </div>
@@ -43,17 +64,23 @@ export default function WDTableView({
                             </TableCell>
                             <TableCell>{workDay.end_time}</TableCell>
                             <TableCell>
-                                <Link
-                                    className={buttonVariants({ variant: 'link' })}
-                                    href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
-                                >
-                                    {t('action.edit')}
-                                </Link>
-                                {workDay.can_be_deleted && (
-                                    <Button variant="link" onClick={() => handleWorkDayDeletion(workDay.id)}>
-                                        {t('action.delete')}
-                                    </Button>
+                                {checkPermission(PERMISSION_ENUM.WORK_DAY_UPDATE) && (
+                                    <Link
+                                        href={route(`${ROUTES.WORK_DAYS}.edit`, workDay.id)}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.edit')}
+                                    </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.WORK_DAY_DELETE) &&
+                                    workDay.can_be_deleted && (
+                                        <Button
+                                            variant='link'
+                                            onClick={() => handleWorkDayDeletion(workDay.id)}
+                                        >
+                                            {t('action.delete')}
+                                        </Button>
+                                    )}
                             </TableCell>
                         </TableRow>
                     ))}

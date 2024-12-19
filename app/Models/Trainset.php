@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\Enums\TrainsetAttachmentTypeEnum;
 use App\Support\Enums\TrainsetStatusEnum;
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,18 +15,23 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Trainset extends Model {
-    use HasFactory, HasRelationships;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'project_id',
         'preset_trainset_id',
         'name',
         'status',
+        'mechanical_time',
+        'electrical_time',
+        'assembly_time',
+        'calculated_estimate_time',
+        'initial_date',
+        'estimated_end_date',
     ];
     protected $casts = [
         'status' => TrainsetStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => [
             'name',
@@ -53,7 +59,7 @@ class Trainset extends Model {
                 'type',
                 'description',
             ],
-        ]
+        ],
     ];
 
     public function getFilterable(): array {
@@ -194,6 +200,10 @@ class Trainset extends Model {
         return $this->hasMany(TrainsetAttachment::class);
     }
 
+    public function trainset_attachment_components(): HasManyThrough {
+        return $this->hasManyThrough(TrainsetAttachmentComponent::class, TrainsetAttachment::class);
+    }
+
     /**
      * panel_attachments:
      * flow : trainset -> carriage_trainsets -> carriage_panel -> panel_attachments
@@ -240,7 +250,7 @@ class Trainset extends Model {
     }
 
     public function canBeDeleted(): bool {
-        return $this->status !== TrainsetStatusEnum::PROGRESS;
+        return !in_array($this->status, [TrainsetStatusEnum::PROGRESS, TrainsetStatusEnum::DONE]) && $this->carriage_trainsets()->count() === 0;
     }
 
     public function hasMechanicTrainsetAttachment(): bool {

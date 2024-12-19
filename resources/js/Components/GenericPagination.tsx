@@ -6,8 +6,8 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/Components/UI/pagination';
-import { PaginateMeta, PaginateMetaLink } from '@/Support/Interfaces/Others';
 import { PAGINATION_NAVIGATOR } from '@/Support/Constants/paginationNavigator';
+import { PaginateMeta, PaginateMetaLink } from '@/Support/Interfaces/Others';
 
 export default function ({
     meta,
@@ -36,7 +36,12 @@ export default function ({
 
     const ParsedPagination = ({ html }: { html: string }) => {
         const obj = { __html: html };
-        return <div dangerouslySetInnerHTML={obj} onClick={() => console.log(fixPagination(html))}></div>;
+        return (
+            <div
+                onClick={() => console.log(fixPagination(html))}
+                dangerouslySetInnerHTML={obj}
+            ></div>
+        );
     };
 
     const ConditionallyRenderPagination = ({ link }: { link: PaginateMetaLink }) => {
@@ -60,9 +65,11 @@ export default function ({
         };
         const GeneratedPagination = () => {
             if (link.label === PAGINATION_NAVIGATOR.PREVIOUS) {
-                if (meta.current_page !== 1) return <PaginationPrevious onClick={navigateToPrevious} />;
+                if (meta.current_page !== 1)
+                    return <PaginationPrevious onClick={navigateToPrevious} />;
             } else if (link.label === PAGINATION_NAVIGATOR.NEXT) {
-                if (meta.current_page !== meta.last_page) return <PaginationNext onClick={navigateToNext} />;
+                if (meta.current_page !== meta.last_page)
+                    return <PaginationNext onClick={navigateToNext} />;
             } else if (link.label === PAGINATION_NAVIGATOR.ELLIPSIS) {
                 return (
                     <PaginationItem key={link.label}>
@@ -75,10 +82,12 @@ export default function ({
                 return (
                     <PaginationItem key={link.label}>
                         <PaginationLink
-                            isActive={meta.current_page === fixPagination(link.label)}
                             onClick={() =>
-                                handleChangePage(fixPagination(link.label) ?? PAGINATION_NAVIGATOR.FIRST_PAGE)
+                                handleChangePage(
+                                    fixPagination(link.label) ?? PAGINATION_NAVIGATOR.FIRST_PAGE,
+                                )
                             }
+                            isActive={meta.current_page === fixPagination(link.label)}
                         >
                             <ParsedPagination html={link.label} />
                         </PaginationLink>
@@ -88,7 +97,7 @@ export default function ({
         };
 
         return (
-            <div className="cursor-pointer">
+            <div className='cursor-pointer'>
                 <GeneratedPagination />
             </div>
         );
@@ -97,10 +106,13 @@ export default function ({
     return (
         meta && (
             <Pagination>
-                <PaginationContent className=" ">
-                    <div className="grid grid-cols-8 md:flex">
-                        {meta.links.map(link => (
-                            <ConditionallyRenderPagination key={link.label} link={link} />
+                <PaginationContent className=' '>
+                    <div className='grid grid-cols-8 md:flex'>
+                        {meta.links.map((link, index) => (
+                            <ConditionallyRenderPagination
+                                link={link}
+                                key={`${link.label}-${index}`}
+                            />
                         ))}
                     </div>
                 </PaginationContent>

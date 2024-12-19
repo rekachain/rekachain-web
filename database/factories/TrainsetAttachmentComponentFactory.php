@@ -9,15 +9,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TrainsetAttachmentComponent>
  */
-class TrainsetAttachmentComponentFactory extends Factory
-{
+class TrainsetAttachmentComponentFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             'trainset_attachment_id' => TrainsetAttachment::inRandomOrder()->first()->id,
             'carriage_panel_component_id' => CarriagePanelComponent::inRandomOrder()->first()->id,

@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PresetTrainset extends Model {
-    use HasFactory;
+    use HasFactory, HasFilterable;
 
     protected $fillable = [
         'name',
         'project_id',
+    ];
+    protected $filterable = [
+        'searchs' => ['name'],
+        'columns' => ['project_id'],
     ];
 
     public function project() {

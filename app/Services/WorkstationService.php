@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
 use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
 use App\Support\Interfaces\Services\WorkstationServiceInterface;
 

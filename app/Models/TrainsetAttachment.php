@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Enums\TrainsetAttachmentTypeEnum;
+use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +15,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class TrainsetAttachment extends Model {
-    use HasFactory, HasRelationships;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'trainset_id',
@@ -29,12 +30,10 @@ class TrainsetAttachment extends Model {
         'supervisor_id',
         'status',
     ];
-
     protected $casts = [
         'type' => TrainsetAttachmentTypeEnum::class,
         'status' => TrainsetAttachmentStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => [
             'attachment_number',
@@ -43,11 +42,11 @@ class TrainsetAttachment extends Model {
         'relation_searchs' => [],
         'columns' => [
             'id',
-            'source_workstation_id', 
-            'destination_workstation_id', 
-            'status', 
-            'panel_attachment_id', 
-            'supervisor_id', 
+            'source_workstation_id',
+            'destination_workstation_id',
+            'status',
+            'panel_attachment_id',
+            'supervisor_id',
         ],
         'relation_columns' => [
             'detail_worker_trainsets' => [
@@ -59,7 +58,7 @@ class TrainsetAttachment extends Model {
                 'status',
                 'name',
             ],
-        ]
+        ],
     ];
 
     public function getFilterable(): array {
@@ -71,6 +70,7 @@ class TrainsetAttachment extends Model {
         while ($attachment->parent) {
             $attachment = $attachment->parent;
         }
+
         return $attachment;
     }
 
@@ -93,10 +93,10 @@ class TrainsetAttachment extends Model {
     public function is_child(): bool {
         return $this->parent !== null;
     }
-    
+
     public function progresses(): HasManyDeep {
         return $this->hasManyDeep(
-            Progress::class, 
+            Progress::class,
             [
                 TrainsetAttachmentComponent::class,
                 CarriagePanelComponent::class,
@@ -179,6 +179,26 @@ class TrainsetAttachment extends Model {
 
     public function trainset_attachment_components(): HasMany {
         return $this->hasMany(TrainsetAttachmentComponent::class);
+    }
+
+    public function components(): HasManyDeep {
+        return $this->hasManyDeep(
+            Component::class,
+            [
+                TrainsetAttachmentComponent::class,
+                CarriagePanelComponent::class,
+            ],
+            [
+                'trainset_attachment_id',
+                'id',
+                'id',
+            ],
+            [
+                'id',
+                'carriage_panel_component_id',
+                'component_id',
+            ]
+        );
     }
 
     public function carriage_panel_components(): HasManyThrough {
