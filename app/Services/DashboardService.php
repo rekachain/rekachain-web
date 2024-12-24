@@ -328,4 +328,10 @@ class DashboardService {
 
         return response()->download($apkFilePath, 'rekachain-production.apk');
     }
+
+    public function downloadManualBookFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
+        $manualBookFilePath = app_path('Assets/manual-book.pdf');
+
+        return response()->download($manualBookFilePath, 'manual-book.pdf');
+    }
 }
