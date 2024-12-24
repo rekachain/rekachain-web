@@ -8,6 +8,8 @@ enum IntentEnum: string {
 
     case DOWNLOAD_APK_FILE = 'download.apk.file';
 
+    case DOWNLOAD_MANUAL_BOOK_FILE = 'download.manual.book.file';
+
     case API_USER_UPDATE_PASSWORD = 'api.user.update.password';
 
     case API_PROJECT_IMPORT_PROJECT_TEMPLATE = 'api.project.import.project.template';
