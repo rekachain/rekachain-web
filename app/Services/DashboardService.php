@@ -324,7 +324,7 @@ class DashboardService {
     }
 
     public function downloadApkFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
-        $apkFilePath = storage_path('app/private/rekachain-production.apk');
+        $apkFilePath = app_path('Assets/rekachain-production.apk');
 
         return response()->download($apkFilePath, 'rekachain-production.apk');
     }
