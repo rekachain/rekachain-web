@@ -33,5 +33,9 @@ interface ProjectServiceInterface extends BaseCrudServiceInterface {
 
     public function calculateEstimatedTime($project_id = null);
 
-    public function updateInitialDate(Project $project, array $data): bool;
+    public function updateEstimatedStartDate(Project $project, array $data): bool;
+
+    public function updateProjectStartTime(Trainset $trainset);
+
+    public function updateProjectStatus(Project $project);
 }

@@ -8,6 +8,7 @@ use App\Models\Trainset;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\RoleEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
@@ -142,5 +143,21 @@ class PanelAttachmentService extends BaseCrudService implements PanelAttachmentS
         $panelAttachment->save();
 
         return $panelAttachment;
+    }
+
+    public function checkProgressAttachment(PanelAttachment $panelAttachment) {
+        $totalSerialPanels = $panelAttachment->serial_panels()->count();
+        $totalCompleted = $panelAttachment->serial_panels()
+            ->where('manufacture_status', SerialPanelManufactureStatusEnum::COMPLETED->value)
+            ->count();
+
+        if ($totalSerialPanels == $totalCompleted) {
+            $panelAttachment->update([
+                'status' => PanelAttachmentStatusEnum::DONE->value,
+            ]);
+        }
+
+        $trainset = $panelAttachment->trainset;
+        $this->trainsetService()->updateTrainsetStatus($trainset);
     }
 }

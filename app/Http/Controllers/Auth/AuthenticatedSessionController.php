@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller {
         $request->session()->regenerate();
 
         $user = Auth::user();
-        if (empty($user->nip) && $user->can(PermissionEnum::DASHBOARD_COMMISSION_READ->value)) {
+        if (!$user->hasRole(RoleEnum::SUPER_ADMIN->value) && empty($user->nip) && $user->can(PermissionEnum::DASHBOARD_COMMISSION_READ->value)) {
             $projectService = app(ProjectServiceInterface::class);
             $project = $projectService->find(['buyer_id' => $user->id])->first();
 

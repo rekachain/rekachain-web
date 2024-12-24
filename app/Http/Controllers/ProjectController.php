@@ -49,7 +49,10 @@ class ProjectController extends Controller {
             try {
                 $perPage = request()->get('perPage', 5);
 
-                return ProjectResource::collection($this->projectService->getAllPaginated($request->query(), $perPage));
+                return ProjectResource::collection($this->projectService
+                    ->withCount(['trainsets'])
+                    ->getAllPaginated($request->query(), $perPage)
+                );
             } catch (NotFoundExceptionInterface|ContainerExceptionInterface $e) {
             }
         }
@@ -121,6 +124,7 @@ class ProjectController extends Controller {
      */
     public function edit(Project $project) {
         PermissionHelper::check(PermissionEnum::PROJECT_UPDATE);
+        $project = $project->load(['buyer']);
 
         return inertia('Project/Edit', ['project' => new ProjectResource($project)]);
     }
@@ -147,7 +151,7 @@ class ProjectController extends Controller {
 
                 return $this->projectService->importProjectComponentProgressMaterial($project, $request->file('file'), $request->validated());
             case IntentEnum::WEB_PROJECT_UPDATE_INITIAL_DATE->value:
-                return $this->projectService->updateInitialDate($project, $request->validated());
+                return $this->projectService->updateEstimatedStartDate($project, $request->validated());
         }
 
         if ($this->ajax()) {

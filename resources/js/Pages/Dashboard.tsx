@@ -1,15 +1,3 @@
-// import {
-//     ChartContainer,
-//     ChartLegend,
-//     ChartLegendContent,
-//     ChartTooltip,
-//     ChartTooltipContent,
-//     type ChartConfig,
-// } from '@/Components/UI/chart';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-// import { Check, ChevronsUpDown } from 'lucide-react';
-// import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import {
     ChartContainer,
     ChartLegend,
@@ -18,11 +6,12 @@ import {
     ChartTooltipContent,
     type ChartConfig,
 } from '@/Components/UI/chart';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, Link } from '@inertiajs/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
 
-// import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 import { Button } from '@/Components/UI/button';
@@ -36,7 +25,6 @@ import {
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { cn } from '@/Lib/Utils';
-// import { useState } from 'react';
 
 const project = [
     {
@@ -735,69 +723,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </BarChart>
                         </ChartContainer>
                     </div>
-                    {/* <h1 className="text-2xl">Trainset Attachment chart</h1>
-
-                        <p>use the updated at and status</p>
-                        <p>can be differentiate between Electric and Mechanic</p>
-                        <p>X Axis use date. 30 day before </p>
-                        <ChartContainer config={chartConfig}>
-                            <LineChart
-                                accessibilityLayer
-                                data={chartDataLine}
-                                margin={{
-                                    left: 12,
-                                    right: 12,
-                                }}
-                            >
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="tanggal"
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tickMargin={8}
-                                    tickFormatter={value => value.slice(0, 3)}
-                                />
-                                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-                                <Line
-                                    dataKey="inProgress"
-                                    type="monotone"
-                                    stroke="var(--color-desktop)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                                <Line
-                                    dataKey="Done"
-                                    type="monotone"
-                                    stroke="var(--color-mobile)"
-                                    strokeWidth={2}
-                                    dot={false}
-                                />
-                            </LineChart>
-                        </ChartContainer>
-                        <ChartContainer
-                            config={chartConfigPie}
-                            className="mx-auto aspect-square max-h-[250px] [&_.recharts-text]:fill-background"
-                        >
-                            <PieChart>
-                                <ChartTooltip content={<ChartTooltipContent nameKey="visitors" hideLabel />} />
-                                <Pie data={chartDataPie} dataKey="visitors">
-                                    <LabelList
-                                        dataKey="browser"
-                                        className="fill-background"
-                                        stroke="none"
-                                        fontSize={12}
-                                        formatter={(value: keyof typeof chartConfigPie) => chartConfigPie[value]?.label}
-                                    />
-                                </Pie>
-                            </PieChart>
-                        </ChartContainer> */}
-                    {/* <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                            <div className="p-6 text-gray-900 dark:text-gray-100">
-                                {t('pages.dashboard.index.welcome')}
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
             </div>
             {/* </div> */}

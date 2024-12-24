@@ -46,14 +46,14 @@ class RoleSeeder extends Seeder {
             ['group', 'not_in', [
                 'division', 'permission', 'role', 'work-day', 'work-day-time',
             ]],
-            ['name', 'like', '%-read'],
+            ['name', 'regexp', '(.*)-(read|download)'],
         ]);
         Role::findById(3)->givePermissionTo($permissions);
 
         // give all read work day and work day time permissions to PPC
         $permissions = $permissionService->find([
             ['group', 'in', [
-                'work-day', 'work-day-time',
+                'work-day', 'work-day-time', 'division',
             ]],
             ['name', 'like', '%-read'],
         ]);
@@ -68,21 +68,21 @@ class RoleSeeder extends Seeder {
         // give all project read permissions to Supervisor
         $permissions = $permissionService->find([
             ['name', 'like', 'project-%'],
-            ['name', 'like', '%-read'],
+            ['name', 'regexp', '(.*)-(read|download)'],
         ]);
         Role::findMany([4, 5, 6])->each(fn ($role) => $role->givePermissionTo($permissions));
 
         // give trainset attachment related read and update permissions to Supervisor Mekanik, Supervisor Elektrik, and PPC Pengendalian
         $permissions = $permissionService->find([
             ['group', 'in', ['trainset-attachment', 'detail-worker-trainset']],
-            ['name', 'regexp', '(.*)-(update|read)'],
+            ['name', 'regexp', '(.*)-(update|read|download)'],
         ]);
         Role::findMany([3, 4, 5])->each(fn ($role) => $role->givePermissionTo($permissions));
 
         // give panel attachment related read and update permissions to Supervisor Assembly and PPC Pengendalian
         $permissions = $permissionService->find([
             ['group', 'in', ['panel-attachment', 'serial-panel', 'detail-worker-panel']],
-            ['name', 'regexp', '(.*)-(update|read)'],
+            ['name', 'regexp', '(.*)-(update|read|download)'],
         ]);
         Role::findMany([3, 6])->each(fn ($role) => $role->givePermissionTo($permissions));
 

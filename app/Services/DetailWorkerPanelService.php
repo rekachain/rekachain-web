@@ -6,7 +6,9 @@ use App\Models\DetailWorkerPanel;
 use App\Models\ProgressStep;
 use App\Models\SerialPanel;
 use App\Models\User;
+use App\Support\Enums\DetailWorkerPanelAcceptanceStatusEnum;
 use App\Support\Enums\DetailWorkerPanelWorkStatusEnum;
+use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Interfaces\Repositories\DetailWorkerPanelRepositoryInterface;
 use App\Support\Interfaces\Services\DetailWorkerPanelServiceInterface;
 use App\Traits\Services\HandlesImages;
@@ -77,6 +79,55 @@ class DetailWorkerPanelService extends BaseCrudService implements DetailWorkerPa
     public function update($detailWorkerPanel, array $data): ?Model {
         $this->handleImageUpload($data, $detailWorkerPanel);
 
-        return parent::update($detailWorkerPanel, $data);
+        if (is_null($detailWorkerPanel->acceptance_status)
+        && array_key_exists('work_status', $data)
+        && $data['work_status'] == DetailWorkerPanelWorkStatusEnum::COMPLETED->value
+        ) {
+            $data['acceptance_status'] = DetailWorkerPanelAcceptanceStatusEnum::ACCEPTED->value;
+        }
+
+        $detailWorkerPanel = parent::update($detailWorkerPanel, $data);
+
+        if (array_key_exists('failed_note', $data)) {
+            $serialPanel = $detailWorkerPanel->serial_panel;
+            $this->serialPanelService()->rejectPanel($serialPanel, (object) [
+                'notes' => $data['failed_note'],
+            ]);
+
+            $this->checkPanelProgressFulfillment($detailWorkerPanel->serial_panel->panel_attachment);
+
+            return $detailWorkerPanel->fresh();
+        }
+
+        $this->checkPanelProgressFulfillment($detailWorkerPanel->serial_panel->panel_attachment);
+
+        return $detailWorkerPanel->fresh();
+
+    }
+
+    public function checkPanelProgressFulfillment($panelAttachment): void {
+        logger('Checking progress fulfillment for panel attachment ' . $panelAttachment->id);
+
+        // Get the last progress step and detail worker panel
+        $lastProgressStep = $panelAttachment->progress->progress_steps->last();
+        $lastDetailWorkerPanel = $panelAttachment->detail_worker_panels->last();
+
+        // Check if the last work is completed and matches the last progress step
+        if ($lastProgressStep && $lastDetailWorkerPanel
+            && $lastDetailWorkerPanel->progress_step_id == $lastProgressStep->id
+            && $lastDetailWorkerPanel->work_status == DetailWorkerPanelWorkStatusEnum::COMPLETED
+        ) {
+            // Update serial panel status if needed
+            foreach ($panelAttachment->serial_panels as $serialPanel) {
+                if ($serialPanel->manufacture_status !== SerialPanelManufactureStatusEnum::FAILED) {
+                    $serialPanel->update([
+                        'manufacture_status' => SerialPanelManufactureStatusEnum::COMPLETED->value,
+                    ]);
+                }
+            }
+        }
+
+        // Check overall panel attachment progress
+        $this->panelAttachmentService()->checkProgressAttachment($panelAttachment);
     }
 }

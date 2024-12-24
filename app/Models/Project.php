@@ -21,6 +21,8 @@ class Project extends Model {
         'estimated_start_date',
         'estimated_end_date',
         'calculated_estimate_time',
+        'start_date',
+        'end_date',
         'buyer_id',
     ];
     protected $filterable = [

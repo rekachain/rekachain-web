@@ -11,6 +11,7 @@ use App\Models\PanelAttachment;
 use App\Models\Trainset;
 use App\Services\TrainsetAttachmentComponent\TrainsetAttachmentComponentGenerator;
 use App\Support\Enums\PanelAttachmentHandlerHandlesEnum;
+use App\Support\Enums\ProjectStatusEnum;
 use App\Support\Enums\SerialPanelManufactureStatusEnum;
 use App\Support\Enums\TrainsetAttachmentHandlerHandlesEnum;
 use App\Support\Enums\TrainsetStatusEnum;
@@ -239,6 +240,10 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             $this->generateTrainsetAttachment($trainset, $data);
             $this->generatePanelAttachment($trainset, $data);
 
+            if (!$trainset->project->status === ProjectStatusEnum::PROGRESS) {
+                $trainset->project->update(['status' => ProjectStatusEnum::PROGRESS->value]);
+            }
+
             // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
             $this->checkGeneratedAttachment($trainset);
             // DB::rollBack();
@@ -290,6 +295,7 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
             // });
             $this->checkGeneratedAttachment($trainset);
             // $this->repository->update($trainset, ['status' => TrainsetStatusEnum::PROGRESS]);
+            // $this->projectService()->updateProjectStartTime($trainset);
 
             return true;
         });
@@ -763,7 +769,27 @@ class TrainsetService extends BaseCrudService implements TrainsetServiceInterfac
 
     }
 
-    public function getEndDate(Trainset $trainset) {}
+    public function updateTrainsetStatus(Trainset $trainset) {
+        $trainsetAttachments = $trainset->trainset_attachments()->get();
+        $panelAttachments = $trainset->panel_attachments()->get();
+
+        $allTrainsetAttachmentsDone = $trainsetAttachments->every(function ($attachment) {
+            return $attachment->status === 'done';
+        });
+
+        $allPanelAttachmentsDone = $panelAttachments->every(function ($attachment) {
+            return $attachment->status === 'done';
+        });
+
+        if ($allTrainsetAttachmentsDone && $allPanelAttachmentsDone) {
+            $trainset->update([
+                $trainset->status = TrainsetStatusEnum::DONE->value,
+            ]);
+        }
+
+        $project = $trainset->project;
+        $this->projectService()->updateProjectStatus($project);
+    }
 
     protected function getRepositoryClass(): string {
         return TrainsetRepositoryInterface::class;
