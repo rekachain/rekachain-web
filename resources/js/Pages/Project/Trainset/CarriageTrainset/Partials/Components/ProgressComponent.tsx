@@ -84,12 +84,12 @@ const ProgressComponent = ({
 
     return (
         <div key={attachment.id} className='text-black dark:text-white'>
-            <div className='mb-3 flex w-[90%] flex-col justify-between md:w-fit md:flex-row'>
-                <h1 className='my-auto flex text-center text-xl font-bold md:w-full'>{title}</h1>
-                <div className='flex'>
+            <div className='mb-3 flex flex-col justify-between w-fit md:w-full md:flex-row'>
+                <h1 className='my-auto flex text-center text-xl font-bold'>{title}</h1>
+                <div className='flex mt-2 md:mt-0'>
                     <InputLabel
                         id='selected-component-id-label'
-                        className='my-auto mr-2 text-lg font-bold'
+                        className='my-auto mr-2 text-lg font-bold hidden md:block'
                     >
                         {t(
                             'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component_placeholder',
@@ -103,7 +103,7 @@ const ProgressComponent = ({
                     >
                         <SelectTrigger
                             id='selected-component-id'
-                            className='w-max min-w-[200px] focus:ring-0'
+                            className='w-full md:w-max min-w-[200px] focus:ring-0'
                         >
                             <SelectValue
                                 placeholder={`${t('pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component_placeholder')}...`}
@@ -136,7 +136,7 @@ const ProgressComponent = ({
                 (componentProgress &&
                     componentProgress.map((progress, index) => (
                         <div key={progress.component.id}>
-                            <h4 className='w-[80%] text-lg font-bold md:w-full'>
+                            <h4 className='text-lg font-bold w-full'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component',
                                     { component: progress.component.name },
@@ -146,26 +146,17 @@ const ProgressComponent = ({
                                 {progress.carriage_panel_components.map((componentProgress) => (
                                     <div key={`${componentProgress.carriage_panel_component_id}`}>
                                         <div className='flex items-center justify-center space-x-2'>
-                                            <div className='flex-1'>
+                                            <div className='md:flex-1'>
                                                 <h3 className='text-right'>
-                                                    {t(
-                                                        'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.panel',
-                                                        { panel: componentProgress.panel.name },
-                                                    )}
+                                                    {componentProgress.panel.name}
                                                 </h3>
                                             </div>
-                                            <div className='flex-none'>
+                                            <div className='md:flex-none'>
                                                 <h3 className='text-center'>|</h3>
                                             </div>
-                                            <div className='flex-1'>
+                                            <div className='md:flex-1'>
                                                 <h3 className='text-left'>
-                                                    {t(
-                                                        'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.carriage',
-                                                        {
-                                                            carriage:
-                                                                componentProgress.carriage.type,
-                                                        },
-                                                    )}
+                                                    {componentProgress.carriage.type}
                                                 </h3>
                                             </div>
                                         </div>
