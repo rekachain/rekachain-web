@@ -410,88 +410,87 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         </BarChart>
                                     </ChartContainer>
                                 </div>
-                                <div className='mt-2 grid w-full grid-cols-1 md:grid-cols-2'>
-                                    <div className='px-4'>
-                                        <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.panel_trainset')}
-                                        </h2>
-                                        <h3 className='text-base'>{`${t('pages.dashboard_trainset.index.panel_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
-                                        <ChartContainer
-                                            config={chartConfigPanelInTrainset}
-                                            className='mt-5 h-[400px] w-full'
-                                        >
-                                            <BarChart
-                                                data={data['panel']}
-                                                className='h-[300px]'
-                                                accessibilityLayer
-                                            >
-                                                <CartesianGrid vertical={false} />
-                                                <XAxis
-                                                    width={0}
-                                                    textAnchor='end'
-                                                    height={100}
-                                                    dataKey='name'
-                                                    axisLine={false}
-                                                    // tick={<CustomizedAxisTick />}
-                                                    angle={-55}
-                                                />
-                                                <ChartTooltip content={<ChartTooltipContent />} />
-                                                <ChartLegend content={<ChartLegendContent />} />
-                                                <Bar
-                                                    radius={4}
-                                                    fill='var(--color-total)'
-                                                    dataKey='total'
-                                                    className=''
-                                                />
-                                            </BarChart>
-                                        </ChartContainer>
-                                    </div>
-
-                                    <div className='px-4'>
-                                        <h2 className='my-1 text-xl font-bold'>
-                                            {t(
-                                                'pages.dashboard_trainset.index.panel_progress_trainset',
-                                            )}
-                                        </h2>
-                                        <h3 className='text-base'>{`${t('pages.dashboard_trainset.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
-                                        <div className='flex h-[400px] flex-col items-center'>
+                                {data['total'][0].total != null ? (
+                                    <div className='mt-2 grid w-full grid-cols-1 md:grid-cols-2'>
+                                        <div className='px-4'>
+                                            <h2 className='my-1 text-xl font-bold'>
+                                                {t('pages.dashboard_trainset.index.panel_trainset')}
+                                            </h2>
+                                            <h3 className='text-base'>{`${t('pages.dashboard_trainset.index.panel_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                             <ChartContainer
-                                                config={panelChartConf}
-                                                className='min-h-[300px]'
+                                                config={chartConfigPanelInTrainset}
+                                                className='mt-5 h-[400px] w-full'
                                             >
-                                                <PieChart>
-                                                    <ChartTooltip
-                                                        cursor={false}
-                                                        content={<ChartTooltipContent hideLabel />}
+                                                <BarChart
+                                                    data={data['panel']}
+                                                    className='h-[300px]'
+                                                    accessibilityLayer
+                                                >
+                                                    <CartesianGrid vertical={false} />
+                                                    <XAxis
+                                                        width={0}
+                                                        textAnchor='end'
+                                                        height={100}
+                                                        dataKey='name'
+                                                        axisLine={false}
+                                                        // tick={<CustomizedAxisTick />}
+                                                        angle={-55}
                                                     />
-                                                    <Pie
-                                                        nameKey='status'
-                                                        innerRadius={60}
+                                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                                    <ChartLegend content={<ChartLegendContent />} />
+                                                    <Bar
+                                                        radius={4}
+                                                        fill='var(--color-total)'
                                                         dataKey='total'
-                                                        data={totalUpdated}
+                                                        className=''
                                                     />
-                                                </PieChart>
+                                                </BarChart>
                                             </ChartContainer>
-                                            <h4 className='text-center font-bold'>
-                                                {data['total'][0].total == 0
-                                                    ? t(
-                                                          'pages.dashboard_trainset.index.panel_progress_trainset_fulfilled',
-                                                      )
-                                                    : t(
-                                                          'pages.dashboard_trainset.index.panel_progress_trainset_not_fulfilled',
-                                                          {
-                                                              total: data['total'][0].total,
-                                                          },
-                                                      )}
-                                            </h4>
-                                            <p className='text-sm'>
-                                                {t(
-                                                    'pages.dashboard_trainset.index.panel_progress_trainset_desc',
-                                                )}
-                                            </p>
+                                        </div>
+
+                                        <div className='px-4'>
+                                            <h2 className='my-1 text-xl font-bold'>
+                                                {t('pages.dashboard_trainset.index.panel_progress_trainset')}
+                                            </h2>
+                                            <h3 className='text-base'>{`${t('pages.dashboard_trainset.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
+                                            <div className='flex h-[400px] flex-col items-center'>
+                                                <ChartContainer
+                                                    config={panelChartConf}
+                                                    className='min-h-[300px]'
+                                                >
+                                                    <PieChart>
+                                                        <ChartTooltip
+                                                            cursor={false}
+                                                            content={<ChartTooltipContent hideLabel />}
+                                                        />
+                                                        <Pie
+                                                            nameKey='status'
+                                                            innerRadius={60}
+                                                            dataKey='total'
+                                                            data={totalUpdated}
+                                                        />
+                                                    </PieChart>
+                                                </ChartContainer>
+                                                <h4 className='text-center font-bold'>
+                                                    {data['total'][0].total == 0
+                                                        ? t('pages.dashboard_trainset.index.panel_progress_trainset_fulfilled')
+                                                        : t('pages.dashboard_trainset.index.panel_progress_trainset_not_fulfilled', {
+                                                            total: data['total'][0].total,
+                                                        })}
+                                                </h4>
+                                                <p className='text-sm'>
+                                                    {t('pages.dashboard_trainset.index.panel_progress_trainset_desc')}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className='m-4 flex w-full flex-col text-center'>
+                                        <h2 className='my-1 text-xl font-bold'>
+                                            {t('pages.dashboard_trainset.index.trainset_buyer_not_progressed')}
+                                        </h2>
+                                    </div>
+                                )}
                             </>
                         )}
                         <Separator className='my-5 h-1' />
@@ -674,9 +673,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 ) : (
                                     <div className='mt-2 flex w-full flex-col'>
                                         <h2 className='my-1 text-xl font-bold'>
-                                            {t(
-                                                'pages.dashboard_trainset.index.trainset_buyer_not_progresses',
-                                            )}
+                                            {t('pages.dashboard_trainset.index.trainset_buyer_not_progressed')}
                                         </h2>
                                     </div>
                                 )}
