@@ -26,6 +26,8 @@ class DashboardController extends Controller {
             switch ($intent) {
                 case IntentEnum::DOWNLOAD_APK_FILE->value:
                     return $this->dashboardService->downloadApkFile();
+                case IntentEnum::DOWNLOAD_MANUAL_BOOK_FILE->value:
+                    return $this->dashboardService->downloadManualBookFile();
             }
 
             $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
