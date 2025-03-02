@@ -436,7 +436,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         // tick={<CustomizedAxisTick />}
                                                         angle={-55}
                                                     />
-                                                    <ChartTooltip content={<ChartTooltipContent />} />
+                                                    <ChartTooltip
+                                                        content={<ChartTooltipContent />}
+                                                    />
                                                     <ChartLegend content={<ChartLegendContent />} />
                                                     <Bar
                                                         radius={4}
@@ -450,7 +452,9 @@ export default function Dashboard({ auth, data }: PageProps) {
 
                                         <div className='px-4'>
                                             <h2 className='my-1 text-xl font-bold'>
-                                                {t('pages.dashboard_trainset.index.panel_progress_trainset')}
+                                                {t(
+                                                    'pages.dashboard_trainset.index.panel_progress_trainset',
+                                                )}
                                             </h2>
                                             <h3 className='text-base'>{`${t('pages.dashboard_trainset.index.panel_progress_trainset_sub')} ${data['trainsets'][0].ts_name}`}</h3>
                                             <div className='flex h-[400px] flex-col items-center'>
@@ -461,7 +465,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     <PieChart>
                                                         <ChartTooltip
                                                             cursor={false}
-                                                            content={<ChartTooltipContent hideLabel />}
+                                                            content={
+                                                                <ChartTooltipContent hideLabel />
+                                                            }
                                                         />
                                                         <Pie
                                                             nameKey='status'
@@ -473,13 +479,20 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                 </ChartContainer>
                                                 <h4 className='text-center font-bold'>
                                                     {data['total'][0].total == 0
-                                                        ? t('pages.dashboard_trainset.index.panel_progress_trainset_fulfilled')
-                                                        : t('pages.dashboard_trainset.index.panel_progress_trainset_not_fulfilled', {
-                                                            total: data['total'][0].total,
-                                                        })}
+                                                        ? t(
+                                                              'pages.dashboard_trainset.index.panel_progress_trainset_fulfilled',
+                                                          )
+                                                        : t(
+                                                              'pages.dashboard_trainset.index.panel_progress_trainset_not_fulfilled',
+                                                              {
+                                                                  total: data['total'][0].total,
+                                                              },
+                                                          )}
                                                 </h4>
                                                 <p className='text-sm'>
-                                                    {t('pages.dashboard_trainset.index.panel_progress_trainset_desc')}
+                                                    {t(
+                                                        'pages.dashboard_trainset.index.panel_progress_trainset_desc',
+                                                    )}
                                                 </p>
                                             </div>
                                         </div>
@@ -487,7 +500,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 ) : (
                                     <div className='m-4 flex w-full flex-col text-center'>
                                         <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.trainset_buyer_not_progressed')}
+                                            {t(
+                                                'pages.dashboard_trainset.index.trainset_buyer_not_progressed',
+                                            )}
                                         </h2>
                                     </div>
                                 )}
@@ -673,7 +688,9 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 ) : (
                                     <div className='mt-2 flex w-full flex-col'>
                                         <h2 className='my-1 text-xl font-bold'>
-                                            {t('pages.dashboard_trainset.index.trainset_buyer_not_progressed')}
+                                            {t(
+                                                'pages.dashboard_trainset.index.trainset_buyer_not_progressed',
+                                            )}
                                         </h2>
                                     </div>
                                 )}
