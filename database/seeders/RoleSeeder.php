@@ -27,6 +27,7 @@ class RoleSeeder extends Seeder {
             ['name' => RoleEnum::QC_MEKANIK->value, 'level' => 'QC', 'division_id' => 1],
             ['name' => RoleEnum::QC_ELEKTRIK->value, 'level' => 'QC', 'division_id' => 2],
             ['name' => RoleEnum::QC_ASSEMBLY->value, 'level' => 'QC', 'division_id' => 3],
+            ['name' => RoleEnum::AFTERSALES->value, 'level' => 'Aftersales', 'division_id' => 4],
         ];
 
         foreach ($roles as $role) {
@@ -99,5 +100,11 @@ class RoleSeeder extends Seeder {
             ['name', 'regexp', '(.*)-(create|update)'],
         ]);
         Role::findMany([6, 9, 12])->each(fn ($role) => $role->givePermissionTo($permissionsAssembly));
+
+        // give all after sales permission for Aftersales
+        $permissionsAftersales = $permissionService->find([
+            ['group', 'in', ['returned-product', 'returned-product-note', 'product-problem', 'product-problem-note', 'replacement-stock']],
+        ]);
+        Role::find(13)->givePermissionTo($permissionsAftersales);
     }
 }

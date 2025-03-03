@@ -177,5 +177,12 @@ class UserSeeder extends Seeder {
             });
         }
 
+        $aftersales = User::factory()->create([
+            'name' => 'Aftersales IV',
+            'email' => 'aftersales@example.com',
+        ]);
+
+        $aftersales->assignRole('Aftersales');
+
     }
 }

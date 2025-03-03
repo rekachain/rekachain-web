@@ -81,3 +81,11 @@ function actAsPpcPengendalian(): TestCase {
 
     return test()->actingAs($user);
 }
+
+function actAsAftersales(): TestCase {
+    $role = Role::firstOrCreate(['name' => 'Aftersales']);
+    $user = User::factory(['name' => 'Aftersales'])->create();
+    $user->assignRole($role);
+
+    return test()->actingAs($user);
+}

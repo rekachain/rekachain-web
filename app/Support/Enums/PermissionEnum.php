@@ -187,6 +187,33 @@ enum PermissionEnum: string {
     case FEEDBACK_UPDATE = 'feedback-update';
     case FEEDBACK_DELETE = 'feedback-delete';
 
+    case RETURNED_PRODUCT_CREATE = 'returned-product-create';
+    case RETURNED_PRODUCT_READ = 'returned-product-read';
+    case RETURNED_PRODUCT_UPDATE = 'returned-product-update';
+    case RETURNED_PRODUCT_DELETE = 'returned-product-delete';
+    case RETURNED_PRODUCT_IMPORT = 'returned-product-import';
+
+    case RETURNED_PRODUCT_NOTE_CREATE = 'returned-product-note-create';
+    case RETURNED_PRODUCT_NOTE_READ = 'returned-product-note-read';
+    case RETURNED_PRODUCT_NOTE_UPDATE = 'returned-product-note-update';
+    case RETURNED_PRODUCT_NOTE_DELETE = 'returned-product-note-delete';
+
+    case PRODUCT_PROBLEM_CREATE = 'product-problem-create';
+    case PRODUCT_PROBLEM_READ = 'product-problem-read';
+    case PRODUCT_PROBLEM_UPDATE = 'product-problem-update';
+    case PRODUCT_PROBLEM_DELETE = 'product-problem-delete';
+
+    case PRODUCT_PROBLEM_NOTE_CREATE = 'product-problem-note-create';
+    case PRODUCT_PROBLEM_NOTE_READ = 'product-problem-note-read';
+    case PRODUCT_PROBLEM_NOTE_UPDATE = 'product-problem-note-update';
+    case PRODUCT_PROBLEM_NOTE_DELETE = 'product-problem-note-delete';
+
+    case REPLACEMENT_STOCK_CREATE = 'replacement-stock-create';
+    case REPLACEMENT_STOCK_READ = 'replacement-stock-read';
+    case REPLACEMENT_STOCK_UPDATE = 'replacement-stock-update';
+    case REPLACEMENT_STOCK_DELETE = 'replacement-stock-delete';
+    case REPLACEMENT_STOCK_IMPORT = 'replacement-stock-import';
+
     /**
      * [Deprecated] Group permissions by first word.
      *
