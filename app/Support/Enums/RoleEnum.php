@@ -15,5 +15,7 @@ enum RoleEnum: string {
     case QC_MEKANIK = 'QC - Mekanik';
     case QC_ELEKTRIK = 'QC - Elektrik';
     case QC_ASSEMBLY = 'QC - Assembly';
-    case AFTERSALES = 'Aftersales';
+    case MANAGER_AFTERSALES = 'Manager - Aftersales';
+    case SUPERVISOR_AFTERSALES = 'Supervisor - Aftersales';
+    case WORKER_AFTERSALES = 'Worker - Aftersales';
 }

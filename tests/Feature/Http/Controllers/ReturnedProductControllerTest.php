@@ -3,7 +3,7 @@
 use Illuminate\Testing\Fluent\AssertableJson;
 
 test('user can view list of returned-products', function () {
-    $response = actAsAftersales()->getJson('/returned-products?page=1&perPage=5');
+    $response = actAsWorkerAftersales()->getJson('/returned-products?page=1&perPage=5');
 
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
@@ -18,7 +18,7 @@ test('user can view list of returned-products', function () {
 
 test('user can view a create form of returned-product', function () {
 
-    $response = actAsAftersales()->get('/returned-products/create');
+    $response = actAsWorkerAftersales()->get('/returned-products/create');
 
     $response->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert->component('ReturnedProduct/Create'));
@@ -32,7 +32,7 @@ test('system can save created returned-product to database', function () {
         'qty' => '1',
     ];
 
-    $response = actAsAftersales()->postJson('/returned-products', $data);
+    $response = actAsWorkerAftersales()->postJson('/returned-products', $data);
 
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'product_returnable_id', 'product_returnable_model', 'product_return', 'buyer_id', 'buyer', 'qty', 'serial_number']);
@@ -49,7 +49,7 @@ test('buyer can view return request of ordered product form', function () {
 test('user can view ReturnedProduct details', function () {
     $model = $this->dummy->createReturnedProduct();
 
-    $response = actAsAftersales()->getJson("/returned-products/{$model->id}");
+    $response = actAsWorkerAftersales()->getJson("/returned-products/{$model->id}");
 
     $response->assertStatus(200)
         ->assertJson([
@@ -67,7 +67,7 @@ test('user can view ReturnedProduct details', function () {
 test('user can view returned-product edit page', function () {
     $model = $this->dummy->createReturnedProduct();
 
-    $response = actAsAftersales()->get("/returned-products/{$model->id}/edit");
+    $response = actAsWorkerAftersales()->get("/returned-products/{$model->id}/edit");
 
     $response->assertStatus(200)
         ->assertInertia(fn ($assert) => $assert->component('ReturnedProduct/Edit'));
@@ -79,7 +79,7 @@ test('system can update updated ReturnedProduct in database', function () {
         'qty' => '2',
     ];
 
-    $response = actAsAftersales()->putJson("/returned-products/{$model->id}", $updatedData);
+    $response = actAsWorkerAftersales()->putJson("/returned-products/{$model->id}", $updatedData);
 
     $response->assertStatus(200)
         ->assertJson($updatedData);
