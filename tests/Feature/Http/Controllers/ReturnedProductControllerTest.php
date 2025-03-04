@@ -39,6 +39,13 @@ test('system can save created returned-product to database', function () {
     $this->assertDatabaseHas('returned-products', $data);
 });
 
+test('buyer can view return request of ordered product form', function () {
+    $response = actAsBuyer()->get('/returned-products/create');
+
+    $response->assertStatus(200)
+        ->assertInertia(fn ($assert) => $assert->component('ReturnedProduct/Create'));
+});
+
 test('user can view ReturnedProduct details', function () {
     $model = $this->dummy->createReturnedProduct();
 

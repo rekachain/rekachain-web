@@ -89,3 +89,9 @@ function actAsAftersales(): TestCase {
 
     return test()->actingAs($user);
 }
+
+function actAsBuyer(): TestCase {
+    $user = User::factory(['name' => 'Buyer I'])->create();
+
+    return test()->actingAs($user);
+}
