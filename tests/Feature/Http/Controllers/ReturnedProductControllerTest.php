@@ -27,7 +27,7 @@ test('user can view a create form of returned-product', function () {
 test('system can save created returned-product to database', function () {
     $data = [
         'product_returnable_id' => '1',
-        'product_returnable_model' => 'App\Models\Panel',
+        'product_returnable_type' => 'App\Models\Panel',
         'buyer_id' => '1',
         'qty' => '1',
     ];
@@ -35,7 +35,7 @@ test('system can save created returned-product to database', function () {
     $response = actAsWorkerAftersales()->postJson('/returned-products', $data);
 
     $response->assertStatus(201)
-        ->assertJsonStructure(['id', 'product_returnable_id', 'product_returnable_model', 'product_return', 'buyer_id', 'buyer', 'qty', 'serial_number']);
+        ->assertJsonStructure(['id', 'product_returnable_id', 'product_returnable_type', 'product_return', 'buyer_id', 'buyer', 'qty', 'serial_number']);
     $this->assertDatabaseHas('returned-products', $data);
 });
 
@@ -55,7 +55,7 @@ test('user can view ReturnedProduct details', function () {
         ->assertJson([
             'id' => $model->id, 
             'product_returnable_id' => $model->product_returnable_id, 
-            'product_returnable_model' => $model->product_returnable_model, 
+            'product_returnable_type' => $model->product_returnable_type, 
             'product_return' => $model->product_return, 
             'buyer_id' => $model->buyer_id, 
             'buyer' => $model->buyer, 
