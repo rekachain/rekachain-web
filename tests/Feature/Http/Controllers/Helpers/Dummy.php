@@ -477,4 +477,7 @@ class Dummy {
         return $helpdeskContact;
     }
 
+    public function createReturnedProduct() {
+        // TODO: Implement create Returned Product
+    }
 }
