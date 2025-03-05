@@ -14,6 +14,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                 Component::class,
             ]),
             'product_returnable_id' => 'required_with:product_returnable_type|integer|exists:' . (new $this->product_returnable_type())->getTable() . ',id',
+            'buyer_id' => 'nullable|integer|exists:users,id',
             'qty' => 'required|integer|min:1',
             'serial_number' => 'nullable|integer',
         ];
