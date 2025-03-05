@@ -13,6 +13,8 @@ class ReturnedProduct extends Model
     use HasFactory, HasFilterable;
 
     protected $fillable = [
+        'product_returnable_id',
+        'product_returnable_type',
         'buyer_id',
         'qty',
         'serial_number',

@@ -14,10 +14,9 @@ class ReturnedProductController extends Controller {
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = ReturnedProductResource::collection($this->returnedProductService->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
-            return $data;
+            return ReturnedProductResource::collection($this->returnedProductService->with(['product_returnable','buyer'])->getAllPaginated($request->query(), $perPage));
         }
 
         return inertia('ReturnedProduct/Index');
@@ -28,13 +27,14 @@ class ReturnedProductController extends Controller {
     }
 
     public function store(StoreReturnedProductRequest $request) {
+        $returnedProduct = $this->returnedProductService->create($request->validated());
         if ($this->ajax()) {
-            return $this->returnedProductService->create($request->validated());
+            return ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
         }
     }
 
     public function show(ReturnedProduct $returnedProduct) {
-        $data = ReturnedProductResource::make($returnedProduct);
+        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
 
         if ($this->ajax()) {
             return $data;
@@ -50,8 +50,9 @@ class ReturnedProductController extends Controller {
     }
 
     public function update(UpdateReturnedProductRequest $request, ReturnedProduct $returnedProduct) {
+        $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
         if ($this->ajax()) {
-            return $this->returnedProductService->update($returnedProduct, $request->validated());
+            return ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
         }
     }
 
