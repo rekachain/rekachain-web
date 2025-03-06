@@ -24,6 +24,7 @@ use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
+use App\Http\Controllers\ReturnedProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\TrainsetAttachmentController;
@@ -103,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('detail-worker-trainsets', DetailWorkerTrainsetController::class);
     Route::resource('feedback', FeedbackController::class)->except(['store']);
     Route::resource('helpdesk-contact', HelpdeskContactController::class);
+    Route::resource('returned-products', ReturnedProductController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 
