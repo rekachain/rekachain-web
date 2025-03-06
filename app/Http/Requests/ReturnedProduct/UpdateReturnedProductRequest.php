@@ -9,13 +9,17 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateReturnedProductRequest extends FormRequest {
     public function rules(): array {
         return [
-            'product_returnable_type' => 'required_with:product_returnable_id|string|in:' . implode(',', [
+            'product_returnable_type' => 'nullable|string|in:' . implode(',', [
                 Panel::class,
                 Component::class,
             ]),
-            'product_returnable_id' => 'required_with:product_returnable_type|integer|exists:' . (new $this->product_returnable_type())->getTable() . ',id',
+            'product_returnable_id' => [
+                'required_with:product_returnable_type',
+                'integer',
+                $this->product_returnable_type ? 'exists:' . (new $this->product_returnable_type())->getTable() . ',id' : '',
+            ],
             'buyer_id' => 'nullable|integer|exists:users,id',
-            'qty' => 'required|integer|min:1',
+            'qty' => 'nullable|integer|min:1',
             'serial_number' => 'nullable|integer',
         ];
     }

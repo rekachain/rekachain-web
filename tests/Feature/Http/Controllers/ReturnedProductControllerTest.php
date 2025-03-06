@@ -36,7 +36,7 @@ test('system can save created returned-product to database', function () {
 
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'product_returnable_id', 'product_returnable_type', 'product_return', 'buyer_id', 'buyer', 'qty', 'serial_number']);
-    $this->assertDatabaseHas('returned-products', $data);
+    $this->assertDatabaseHas('returned_products', $data);
 });
 
 test('buyer can view return request of ordered product form', function () {
@@ -83,5 +83,5 @@ test('system can update updated ReturnedProduct in database', function () {
 
     $response->assertStatus(200)
         ->assertJson($updatedData);
-    $this->assertDatabaseHas('returned-products', $updatedData);
+    $this->assertDatabaseHas('returned_products', $updatedData);
 });
