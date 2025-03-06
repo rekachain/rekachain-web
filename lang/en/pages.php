@@ -2355,4 +2355,96 @@ return [
             ],
         ],
     ],
+    'returned_product' => [
+        'index' => [
+            'title' => 'Return Product',
+            'buttons' => [
+                'create' => 'Create Return',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Return',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'type' => 'Type',
+            ],
+            'buttons' => [
+                'submit' => 'Create Return',
+            ],
+            'messages' => [
+                'created' => 'Return Product created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Return: :name',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'type' => 'Type',
+            ],
+            'buttons' => [
+                'submit' => 'Update Return',
+            ],
+            'messages' => [
+                'updated' => 'Return Product updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'returned_products' => [
+                'messages' => [
+                    'deleted' => 'Return Product deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Return Product imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Return',
+                    'description' => 'Import Returned Product from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Return',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Return',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Return Product imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Return',
+                ],
+            ],
+            'partials' => [
+                'returned_product_table' => [
+                    'headers' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'created_at' => 'Created At',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Component',
+                        ],
+                    ],
+                ],
+                'returned_product_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'description' => 'Description: :description',
+                        'type' => 'Type: :type',
+                        'created_at' => 'Created At: :created_at',
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

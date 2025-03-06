@@ -58,4 +58,5 @@ export const ROUTES = {
     FEEDBACK: 'feedback',
     CUSTOM_ATTACHMENT_MATERIALS: 'custom-attachment-materials',
     HELPDESK_CONTACT: 'helpdesk-contact',
+	RETURNED_PRODUCTS: 'returned-products',
 };
