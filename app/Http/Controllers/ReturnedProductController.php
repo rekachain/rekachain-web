@@ -44,9 +44,9 @@ class ReturnedProductController extends Controller {
     }
 
     public function edit(ReturnedProduct $returnedProduct) {
-        $data = ReturnedProductResource::make($returnedProduct);
+        $returnedProduct = ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
 
-        return inertia('ReturnedProduct/Edit', compact('data'));
+        return inertia('ReturnedProduct/Edit', compact('returnedProduct'));
     }
 
     public function update(UpdateReturnedProductRequest $request, ReturnedProduct $returnedProduct) {

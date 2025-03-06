@@ -11,30 +11,27 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
-import { userService } from '@/Services/userService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { ComponentResource, PanelResource } from '@/Support/Interfaces/Resources';
+import {
+    ComponentResource,
+    PanelResource,
+    ReturnedProductResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { FormEventHandler, useCallback, useEffect } from 'react';
+import { FormEventHandler, useCallback } from 'react';
 import BuyerForm from './Partials/BuyerForm';
 
-export default function () {
+export default function ({ returnedProduct }: { returnedProduct: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
-    const { data, setData } = useForm<{
-        product_returnable_id: number | null;
-        product_returnable_type: string;
-        qty: number;
-        serial_number: number | null;
-        buyer_id: number | null;
-    }>({
-        product_returnable_id: null,
-        product_returnable_type: 'component',
-        qty: 1,
-        serial_number: null,
-        buyer_id: null,
+    const { data, setData } = useForm({
+        product_returnable_id: returnedProduct.product_returnable_id as number | null,
+        product_returnable_type: returnedProduct.product_returnable_type === 'App\\Models\\Component' ? 'component' : 'panel' as string,
+        qty: returnedProduct.qty as number,
+        serial_number: returnedProduct.serial_number as number | null,
+        buyer_id: returnedProduct.buyer_id as number | null,
     });
 
     const { loading } = useLoading();
@@ -52,7 +49,7 @@ export default function () {
             product_returnable_type: productReturnableType,
         });
         router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.index`));
-        void useSuccessToast(t('pages.returned_product.create.messages.created'));
+        void useSuccessToast(t('pages.returned_product.edit.messages.updated'));
     });
 
     const fetchComponents = useCallback(async (filters: ServiceFilterOptions) => {
@@ -63,26 +60,24 @@ export default function () {
         return await panelService.getAll(filters).then((response) => response.data);
     }, []);
 
-    useEffect(() => setData('product_returnable_id', null), [data.product_returnable_type]);
-
     return (
         <>
-            <Head title={t('pages.returned_product.create.title')} />
+            <Head title={t('pages.returned_product.edit.title', { name: returnedProduct.product_return?.name || '' })} />
             <AuthenticatedLayout>
                 <div className='p-4'>
                     <div className='flex items-center gap-5'>
                         <h1 className='text-page-header my-4'>
-                            {t('pages.returned_product.create.title')}
+                            {t('pages.returned_product.edit.title', { name: returnedProduct.product_return?.name || '' })}
                         </h1>
                     </div>
 
                     <form onSubmit={submit} id='returned-product-form' encType='multipart/form-data'> </form>
                     <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
                         <h2 className='text-lg font-semibold'>
-                            {t('pages.returned_product.create.fields.type')}
+                            {t('pages.returned_product.edit.fields.type')}
                         </h2>
                         <RadioGroup
-                            defaultValue={'component'}
+                            defaultValue={data.product_returnable_type}
                             onValueChange={(v) => setData('product_returnable_type', v)}
                         >
                             <div key={'component_type'} className='flex items-center space-x-2'>
@@ -114,11 +109,12 @@ export default function () {
                                 />
                                 <GenericDataSelector
                                     setSelectedData={(id) => setData('product_returnable_id', id)}
-                                    selectedDataId={data.product_returnable_id ?? undefined}
+                                    selectedDataId={data.product_returnable_id}
                                     renderItem={(item: ComponentResource) =>
                                         `${item.name}`
                                     } // Customize how to display the item
                                     placeholder={'Pilih Komponen'}
+                                    initialSearch={returnedProduct.product_return?.name}
                                     nullable
                                     id='component_product_returnable_id'
                                     fetchData={fetchComponents}
@@ -134,11 +130,12 @@ export default function () {
                                 />
                                 <GenericDataSelector
                                     setSelectedData={(id) => setData('product_returnable_id', id)}
-                                    selectedDataId={data.product_returnable_id ?? undefined}
+                                    selectedDataId={data.product_returnable_id}
                                     renderItem={(item: PanelResource) =>
                                         `${item.name}`
                                     } // Customize how to display the item
                                     placeholder={'Pilih Panel'}
+                                    initialSearch={returnedProduct.product_return?.name}
                                     nullable
                                     id='panel_product_returnable_id'
                                     fetchData={fetchPanels}
@@ -181,7 +178,12 @@ export default function () {
                         />
                     </div>
 
-                    <Accordion type='single' collapsible className='mt-4'>
+                    <Accordion
+                        type='single'
+                        defaultValue={data.buyer_id ? 'item-1' : ''}
+                        collapsible
+                        className='mt-4'
+                    >
                         <AccordionItem value='item-1'>
                             <AccordionTrigger>
                                 {t('pages.project.create.fields.buyer_selection')}
@@ -189,13 +191,14 @@ export default function () {
                             <AccordionContent>
                                 <BuyerForm
                                     setBuyerId={(buyer_id: number) => setData('buyer_id', buyer_id)}
+                                    buyer={returnedProduct.buyer}
                                 />
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
 
                     <Button disabled={loading} form='returned-product-form' className='mt-4'>
-                        {t('pages.returned_product.create.buttons.submit')}
+                        {t('pages.returned_product.edit.buttons.submit')}
                     </Button>
                 </div>
             </AuthenticatedLayout>
