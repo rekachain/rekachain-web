@@ -625,10 +625,8 @@ class GenerateModelScaffold extends Command {
         return <<<PHP
     <?php
 
-    use App\Models\User;
-
     test('index method returns paginated {$modelRoute}', function () {
-        create{$modelName}();
+        \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->getJson('/{$modelRoute}?page=1&perPage=5');
 
@@ -658,7 +656,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('show method returns {$modelName} details', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->getJson("/{$modelRoute}/{\$model->id}");
 
@@ -667,7 +665,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('edit method returns edit page', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->get("/{$modelRoute}/{\$model->id}/edit");
 
@@ -676,7 +674,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('update method updates {$modelName}', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
         \$updatedData = [
             'name' => 'Updated name',
         ];
@@ -689,7 +687,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('destroy method deletes {$modelName}', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->deleteJson("/{$modelRoute}/{\$model->id}");
 
@@ -708,10 +706,8 @@ class GenerateModelScaffold extends Command {
         return <<<PHP
     <?php
 
-    use App\Models\User;
-
     test('index method returns paginated {$modelNamePlural}', function () {
-        create{$modelName}();
+        \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->getJson('/api/{$modelNamePlural}?page=1&perPage=5');
 
@@ -741,7 +737,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('show method returns {$modelNameCamel} details', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->getJson("/api/{$modelNamePlural}/{\$model->id}");
 
@@ -750,7 +746,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('edit method returns edit page', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->get("/api/{$modelNamePlural}/{\$model->id}/edit");
 
@@ -759,7 +755,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('update method updates {$modelNameCamel}', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
         \$updatedData = [
             'name' => 'Updated name',
         ];
@@ -772,7 +768,7 @@ class GenerateModelScaffold extends Command {
     });
 
     test('destroy method deletes {$modelNameCamel}', function () {
-        \$model = create{$modelName}();
+        \$model = \$this->dummy->create{$modelName}();
 
         \$response = actAsSuperAdmin()->deleteJson("/api/{$modelNamePlural}/{\$model->id}");
 
