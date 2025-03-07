@@ -393,33 +393,12 @@ class GenerateModelScaffold extends Command {
 
         namespace App\Repositories;
 
-        use Adobrovolsky97\LaravelRepositoryServicePattern\Repositories\BaseRepository;
         use App\Models\\{$modelName};
         use App\Support\Interfaces\Repositories\\{$modelName}RepositoryInterface;
-        use App\Traits\Repositories\HandlesFiltering;
-        use App\Traits\Repositories\HandlesRelations;
-        use App\Traits\Repositories\HandlesSorting;
-        use Illuminate\Database\Eloquent\Builder;
 
         class {$modelName}Repository extends BaseRepository implements {$modelName}RepositoryInterface {
-            use HandlesFiltering, HandlesRelations, HandlesSorting;
-
             protected function getModelClass(): string {
                 return {$modelName}::class;
-            }
-
-            protected function applyFilters(array \$searchParams = []): Builder {
-                \$query = \$this->getQuery();
-
-                \$query = \$this->applySearchFilters(\$query, \$searchParams, ['name']);
-
-                \$query = \$this->applyColumnFilters(\$query, \$searchParams, ['id']);
-
-                \$query = \$this->applyResolvedRelations(\$query, \$searchParams);
-
-                \$query = \$this->applySorting(\$query, \$searchParams);
-
-                return \$query;
             }
         }
         PHP;
@@ -433,7 +412,6 @@ class GenerateModelScaffold extends Command {
 
         namespace App\Services;
 
-        use Adobrovolsky97\LaravelRepositoryServicePattern\Services\BaseCrudService;
         use App\Support\Interfaces\Repositories\\{$modelName}RepositoryInterface;
         use App\Support\Interfaces\Services\\{$modelName}ServiceInterface;
 
@@ -642,6 +620,7 @@ class GenerateModelScaffold extends Command {
     protected function getControllerTestTemplate(): string {
         $modelName = self::$model->studly;
         $modelRoute = self::$model->kebabPlural;
+        $databaseTable = Str::plural(self::$model->snake);
 
         return <<<PHP
     <?php
@@ -675,7 +654,7 @@ class GenerateModelScaffold extends Command {
 
         \$response->assertStatus(201)
             ->assertJsonStructure(['id', 'name']);
-        \$this->assertDatabaseHas('{$modelRoute}', \$data);
+        \$this->assertDatabaseHas('{$databaseTable}', \$data);
     });
 
     test('show method returns {$modelName} details', function () {
@@ -706,7 +685,7 @@ class GenerateModelScaffold extends Command {
 
         \$response->assertStatus(200)
             ->assertJson(\$updatedData);
-        \$this->assertDatabaseHas('{$modelRoute}', \$updatedData);
+        \$this->assertDatabaseHas('{$databaseTable}', \$updatedData);
     });
 
     test('destroy method deletes {$modelName}', function () {
@@ -715,7 +694,7 @@ class GenerateModelScaffold extends Command {
         \$response = actAsSuperAdmin()->deleteJson("/{$modelRoute}/{\$model->id}");
 
         \$response->assertStatus(204);
-        \$this->assertDatabaseMissing('{$modelRoute}', ['id' => \$model->id]);
+        \$this->assertDatabaseMissing('{$databaseTable}', ['id' => \$model->id]);
     });
     PHP;
     }
@@ -724,6 +703,7 @@ class GenerateModelScaffold extends Command {
         $modelName = self::$model->studly;
         $modelNameCamel = self::$model->camel;
         $modelNamePlural = Str::plural($modelNameCamel);
+        $databaseTable = Str::plural(self::$model->snake);
 
         return <<<PHP
     <?php
@@ -757,7 +737,7 @@ class GenerateModelScaffold extends Command {
 
         \$response->assertStatus(201)
             ->assertJsonStructure(['id', 'name']);
-        \$this->assertDatabaseHas('{$modelNamePlural}', \$data);
+        \$this->assertDatabaseHas('{$databaseTable}', \$data);
     });
 
     test('show method returns {$modelNameCamel} details', function () {
@@ -788,7 +768,7 @@ class GenerateModelScaffold extends Command {
 
         \$response->assertStatus(200)
             ->assertJson(\$updatedData);
-        \$this->assertDatabaseHas('{$modelNamePlural}', \$updatedData);
+        \$this->assertDatabaseHas('{$databaseTable}', \$updatedData);
     });
 
     test('destroy method deletes {$modelNameCamel}', function () {
@@ -797,7 +777,7 @@ class GenerateModelScaffold extends Command {
         \$response = actAsSuperAdmin()->deleteJson("/api/{$modelNamePlural}/{\$model->id}");
 
         \$response->assertStatus(204);
-        \$this->assertDatabaseMissing('{$modelNamePlural}', ['id' => \$model->id]);
+        \$this->assertDatabaseMissing('{$databaseTable}', ['id' => \$model->id]);
     });
     PHP;
     }
@@ -854,9 +834,12 @@ class GenerateModelScaffold extends Command {
         $modelInterfacePath = resource_path("js/Support/Interfaces/Models/index{$scriptExtension}");
         $modelInterfaceContent = File::get($modelInterfacePath);
 
-        $modelInterfaceContent .= "\nexport * from './{$modelName}';";
-
-        File::put($modelInterfacePath, $modelInterfaceContent);
+        if (!str_contains($modelInterfaceContent, "export * from './{$modelName}';")) {
+            $modelInterfaceContent .= "\nexport * from './{$modelName}';";
+            File::put($modelInterfacePath, $modelInterfaceContent);
+        } else {
+            $this->warn("{$modelName} interface already appended");
+        }
     }
 
     /**
@@ -868,9 +851,12 @@ class GenerateModelScaffold extends Command {
         $resourceInterfacePath = resource_path("js/Support/Interfaces/Resources/index{$scriptExtension}");
         $resourceInterfaceContent = File::get($resourceInterfacePath);
 
-        $resourceInterfaceContent .= "\nexport * from './{$modelName}Resource';";
-
-        File::put($resourceInterfacePath, $resourceInterfaceContent);
+        if (!str_contains($resourceInterfaceContent, "export * from './{$modelName}Resource';")) {
+            $resourceInterfaceContent .= "\nexport * from './{$modelName}Resource';";
+            File::put($resourceInterfacePath, $resourceInterfaceContent);
+        } else {
+            $this->warn("{$modelName}Resource interface already appended");
+        }
     }
 
     /**
