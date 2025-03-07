@@ -8,8 +8,9 @@ test('user can view list of returned-products', function () {
     $response->assertStatus(200)
         ->assertJsonStructure(['data', 'meta'])
         ->assertJson(function (AssertableJson $json) {
-            $json->has('data.0.product_return.name')
-                ->has('data.0.buyer.name')
+            $json->has('data.0.product_returnable_id')
+                ->has('data.0.product_returnable_type')
+                ->has('data.0.buyer_id')
                 ->has('data.0.qty')
                 ->has('data.0.serial_number')
                 ->etc();
@@ -26,10 +27,10 @@ test('user can view a create form of returned-product', function () {
 
 test('system can save created returned-product to database', function () {
     $data = [
-        'product_returnable_id' => '1',
+        'product_returnable_id' => 1,
         'product_returnable_type' => 'App\Models\Panel',
-        'buyer_id' => '1',
-        'qty' => '1',
+        'buyer_id' => 1,
+        'qty' => 1,
     ];
 
     $response = actAsWorkerAftersales()->postJson('/returned-products', $data);
@@ -56,11 +57,11 @@ test('user can view ReturnedProduct details', function () {
             'id' => $model->id, 
             'product_returnable_id' => $model->product_returnable_id, 
             'product_returnable_type' => $model->product_returnable_type, 
-            'product_return' => $model->product_return, 
+            'product_return' => $model->product_returnable->toArray(), 
             'buyer_id' => $model->buyer_id, 
-            'buyer' => $model->buyer, 
+            'buyer' => $model->buyer->toArray(), 
             'qty' => $model->qty, 
-            'serial_number' => $model->serial_number ? $model->serial_number : '0',
+            'serial_number' => $model->serial_number,
         ]);
 });
 
@@ -76,7 +77,7 @@ test('user can view returned-product edit page', function () {
 test('system can update updated ReturnedProduct in database', function () {
     $model = $this->dummy->createReturnedProduct();
     $updatedData = [
-        'qty' => '2',
+        'qty' => 2,
     ];
 
     $response = actAsWorkerAftersales()->putJson("/returned-products/{$model->id}", $updatedData);

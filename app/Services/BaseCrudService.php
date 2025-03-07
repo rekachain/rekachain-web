@@ -20,6 +20,7 @@ use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\ProgressStepServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
+use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentHandlerServiceInterface;
@@ -201,5 +202,12 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
      */
     protected function panelMaterialService(): PanelMaterialServiceInterface {
         return $this->getService(PanelMaterialServiceInterface::class);
+    }
+
+    /**
+     * Get ReturnedProduct service instance
+     */
+    protected function returnedProductService(): ReturnedProductServiceInterface {
+        return $this->getService(ReturnedProductServiceInterface::class);
     }
 }

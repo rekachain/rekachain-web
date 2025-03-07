@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Helpers;
 
+use App\Models\ReturnedProduct;
 use App\Models\Role;
 use App\Models\Step;
 use App\Models\User;
@@ -478,6 +479,6 @@ class Dummy {
     }
 
     public function createReturnedProduct() {
-        // TODO: Implement create Returned Product
+        return ReturnedProduct::factory()->create();
     }
 }
