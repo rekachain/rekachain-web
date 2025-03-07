@@ -34,6 +34,8 @@ use App\Http\Controllers\WorkDayController;
 use App\Http\Controllers\WorkDayTimeController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\WorkstationController;
+use App\Http\Controllers\ScanFaceController;
+use App\Models\ScanFace;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +57,8 @@ require __DIR__ . '/auth.php';
 
 Route::redirect('/', 'dashboard');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::post('/scan-faces', 'ScanFaceController@store')->withoutMiddleware(['csrf']);
+Route::resource('/scan-faces', ScanFaceController::class);
 
 Route::middleware('auth')->group(function () {
     // Route::inertia('/dashboard', 'ProjectList')->middleware(['verified'])->name('dashboard');
