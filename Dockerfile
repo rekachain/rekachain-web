@@ -1,44 +1,48 @@
 FROM php:8.1-fpm
 
-COPY composer.lock composer.json /var/www/
-
-WORKDIR /var/www/
-
+# Instal dependensi PHP & Node.js
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
-    locales \
     zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
     unzip \
     git \
     curl \
     libonig-dev \
     libzip-dev \
-    libgd-dev
+    nodejs \
+    npm
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Bersihkan cache apt
+RUN rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-external-gd
-RUN docker-php-ext-install gd
+# Instal ekstensi PHP
+RUN docker-php-ext-configure gd --with-jpeg --with-freetype
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl gd
 
-RUN apt-get update; \
-    apt-get install -y libmagickwand-dev; \
-    pecl install imagick; \
-    docker-php-ext-enable imagick;
+# Instal Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Set working directory
+WORKDIR /var/www
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Copy composer files (hanya jika berubah)
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-COPY . /var/www
+# Copy package.json (untuk React/Inertia)
+COPY package.json package-lock.json vite.config.js ./
+RUN npm install
+RUN npm run build
 
-COPY --chown=www:www . /var/www
+# Copy seluruh kode aplikasi Laravel & React
+COPY . .
 
-USER www
+# Atur permission folder Laravel
+RUN chown -R www-data:www-data /var/www/storage \
+    && chown -R www-data:www-data /var/www/bootstrap/cache
 
 EXPOSE 9000
 
