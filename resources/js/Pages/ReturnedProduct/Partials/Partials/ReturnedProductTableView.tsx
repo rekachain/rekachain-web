@@ -52,7 +52,15 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.created_at}</TableCell>
 
                             <TableCell>
-                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_NOTE_UPDATE) && (
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                                    <Link
+                                        href={route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id)}
+                                        className={buttonVariants({ variant: 'link' })}
+                                    >
+                                        {t('action.show')}
+                                    </Link>
+                                )}
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                     <Link
                                         href={route(`${ROUTES.RETURNED_PRODUCTS}.edit`, returnedProduct.id)}
                                         className={buttonVariants({ variant: 'link' })}
