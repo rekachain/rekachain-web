@@ -9,9 +9,9 @@ class ProductProblemResource extends JsonResource {
         return [
             'id' => $this->id,
             'returned_product_id' => $this->returned_product_id,
-            'returned_product' => ReturnedProductResource::make($this->whenLoaded('returned_product')),
+            'returned_product' => $this->whenLoaded('returned_product'),
             'component_id' => $this->component_id,
-            'component' => ComponentResource::make($this->whenLoaded('component')),
+            'component' => $this->whenLoaded('component'),
             'status' => $this->status,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),

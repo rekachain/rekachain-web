@@ -26,11 +26,10 @@ test('user can view a create form of product-problem', function () {
 });
 
 test('system can save created product-problem to database', function () {
-    $this->dummy->createReturnedProduct();
     $data = [
         'returned_product_id' => 1,
         'component_id' => 1,
-        'status' => 'pending',
+        'status' => 'draft',
     ];
 
     $response = actAsWorkerAftersales()->postJson('/product-problems', $data);
@@ -46,7 +45,14 @@ test('user can view ProductProblem details', function () {
     $response = actAsWorkerAftersales()->getJson("/product-problems/{$model->id}");
 
     $response->assertStatus(200)
-        ->assertJson(['id' => $model->id, 'returned_product_id' => $model->returned_product_id, 'returned_product' => $model->returned_product->toArray(), 'component_id' => $model->component_id, 'component' => $model->component->toArray(), 'status' => $model->status]);
+        ->assertJson([
+            'id' => $model->id, 
+            'returned_product_id' => $model->returned_product_id, 
+            'returned_product' => $model->returned_product->toArray(), 
+            'component_id' => $model->component_id, 
+            'component' => $model->component->toArray(), 
+            'status' => $model->status->value,
+        ]);
 });
 
 test('user can view ProductProblem edit page', function () {

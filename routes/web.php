@@ -19,6 +19,7 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PanelMaterialController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
+use App\Http\Controllers\ProductProblemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
@@ -105,6 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('feedback', FeedbackController::class)->except(['store']);
     Route::resource('helpdesk-contact', HelpdeskContactController::class);
     Route::resource('returned-products', ReturnedProductController::class);
+    Route::resource('product-problems', ProductProblemController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 
