@@ -34,7 +34,7 @@ class ReturnedProductController extends Controller {
     }
 
     public function show(ReturnedProduct $returnedProduct) {
-        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
+        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer','product_problems']));
 
         if ($this->ajax()) {
             return $data;

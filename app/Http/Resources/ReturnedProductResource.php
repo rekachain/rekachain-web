@@ -16,6 +16,7 @@ class ReturnedProductResource extends JsonResource {
             'buyer' => $this->whenLoaded('buyer'),
             'qty' => $this->qty,
             'serial_number' => $this->serial_number,
+            'product_problems' => $this->whenLoaded('product_problems'),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
