@@ -6,6 +6,7 @@ use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class ReturnedProduct extends Model
@@ -40,5 +41,9 @@ class ReturnedProduct extends Model
 
     public function product_returnable(): MorphTo {
         return $this->morphTo();
+    }
+
+    public function product_problems(): HasMany {
+        return $this->hasMany(ProductProblem::class);
     }
 }
