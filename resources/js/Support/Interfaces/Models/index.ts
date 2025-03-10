@@ -39,3 +39,4 @@ export * from './TrainsetAttachmentHandler';
 export * from './WorkAspect';
 
 export * from './ReturnedProduct';
+export * from './ProductProblem';
