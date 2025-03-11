@@ -27,6 +27,8 @@ class ReturnedProduct extends Model
         'searchs' => [],
         'columns' => [
             'product_returnable_type',
+            'buyer_id',
+            'status',
         ],
         'relation_searchs' => [
             'buyer' => [
@@ -34,6 +36,7 @@ class ReturnedProduct extends Model
             ],
             'product_returnable' => [
                 'name',
+                'description',
             ],
         ],
     ];
@@ -48,6 +51,10 @@ class ReturnedProduct extends Model
 
     public function product_returnable(): MorphTo {
         return $this->morphTo();
+    }
+
+    public function serial_panel(): BelongsTo {
+        return $this->belongsTo(SerialPanel::class);
     }
 
     public function product_problems(): HasMany {

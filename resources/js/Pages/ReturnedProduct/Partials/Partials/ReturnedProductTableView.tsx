@@ -38,6 +38,9 @@ export default function ReturnedProductTableView({
                             {t('pages.returned_product.partials.partials.returned_product_table.headers.type')}
                         </TableHead>
                         <TableHead>
+                            {'Status'}
+                        </TableHead>
+                        <TableHead>
                             {t('pages.returned_product.partials.partials.returned_product_table.headers.created_at')}
                         </TableHead>
                         <TableHead></TableHead>
@@ -49,6 +52,7 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.product_return?.name}</TableCell>
                             <TableCell>{returnedProduct.product_return?.description}</TableCell>
                             <TableCell>{returnedProduct.product_returnable_type === 'App\\Models\\Panel' ? 'Panel' : 'Component'}</TableCell>
+                            <TableCell>{returnedProduct.status}</TableCell>
                             <TableCell>{returnedProduct.created_at}</TableCell>
 
                             <TableCell>
