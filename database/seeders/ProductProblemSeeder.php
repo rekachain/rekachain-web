@@ -6,6 +6,7 @@ use App\Models\CarriagePanel;
 use App\Models\Component;
 use App\Models\ProductProblem;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Database\Seeder;
 
 class ProductProblemSeeder extends Seeder
@@ -15,7 +16,7 @@ class ProductProblemSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (ReturnedProduct::all() as $product) {
+        foreach (ReturnedProduct::where('status', '<>', ReturnedProductStatusEnum::REQUESTED->value)->get() as $product) {
             $isComponent = $product->product_returnable_type == Component::class;
             $componentId = $isComponent ? $product->product_returnable_id : 
                 CarriagePanel::wherePanelId($product->product_returnable_id)->inRandomOrder()->first()

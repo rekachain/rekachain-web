@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('returned_products', function (Blueprint $table) {
             $table->id();
-            $table->morphs('product_returnable', 'product_returnable')->nullable();
+            $table->nullableMorphs('product_returnable', 'product_returnable');
             $table->foreignId('buyer_id')->nullable()->constrained('users');
-            $table->integer('qty');
+            $table->integer('qty')->nullable()->default(1);
             $table->foreignId('serial_panel_id')->nullable()->constrained();
             $table->integer('serial_number')->nullable();
             $table->enum('status', ReturnedProductStatusEnum::toArray())->default(ReturnedProductStatusEnum::DRAFT->value);
