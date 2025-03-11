@@ -4,6 +4,7 @@ namespace App\Http\Requests\ReturnedProduct;
 
 use App\Models\Component;
 use App\Models\Panel;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReturnedProductRequest extends FormRequest {
@@ -20,7 +21,9 @@ class UpdateReturnedProductRequest extends FormRequest {
             ],
             'buyer_id' => 'nullable|integer|exists:users,id',
             'qty' => 'nullable|integer|min:1',
+            'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'nullable|integer',
+            'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
         ];
     }
 }

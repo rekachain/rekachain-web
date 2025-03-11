@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,7 +19,9 @@ class ReturnedProduct extends Model
         'product_returnable_type',
         'buyer_id',
         'qty',
+        'serial_panel_id',
         'serial_number',
+        'status',
     ];
     protected $filterable = [
         'searchs' => [],
@@ -33,6 +36,10 @@ class ReturnedProduct extends Model
                 'name',
             ],
         ],
+    ];
+
+    protected $casts = [
+        'status' => ReturnedProductStatusEnum::class,
     ];
 
     public function buyer(): BelongsTo {

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Models\User;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,6 +29,7 @@ class ReturnedProductFactory extends Factory
             'buyer_id' => User::inRandomOrder()->first()->id,
             'qty' => $this->faker->numberBetween(1, 5),
             'serial_number' => $this->faker->numberBetween(1, 5),
+            'status' => $this->faker->randomElement(ReturnedProductStatusEnum::toArray()),
         ];
     }
 }

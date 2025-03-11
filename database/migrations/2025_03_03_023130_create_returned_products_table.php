@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +14,12 @@ return new class extends Migration
     {
         Schema::create('returned_products', function (Blueprint $table) {
             $table->id();
-            $table->morphs('product_returnable', 'product_returnable');
+            $table->morphs('product_returnable', 'product_returnable')->nullable();
             $table->foreignId('buyer_id')->nullable()->constrained('users');
             $table->integer('qty');
+            $table->foreignId('serial_panel_id')->nullable()->constrained();
             $table->integer('serial_number')->nullable();
+            $table->enum('status', ReturnedProductStatusEnum::toArray())->default(ReturnedProductStatusEnum::DRAFT->value);
             $table->timestamps();
         });
     }

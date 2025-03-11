@@ -4,6 +4,7 @@ namespace App\Http\Requests\ReturnedProduct;
 
 use App\Models\Component;
 use App\Models\Panel;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReturnedProductRequest extends FormRequest {
@@ -15,8 +16,10 @@ class StoreReturnedProductRequest extends FormRequest {
             ]),
             'product_returnable_id' => 'required_with:product_returnable_type|integer|exists:' . (new $this->product_returnable_type())->getTable() . ',id',
             'buyer_id' => 'nullable|integer|exists:users,id',
-            'qty' => 'required|integer|min:1',
+            'qty' => 'required|integer|min:1', // if serial panel then only one?
+            'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'nullable|integer',
+            'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
         ];
     }
 }
