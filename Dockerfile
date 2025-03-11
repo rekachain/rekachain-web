@@ -1,5 +1,8 @@
 FROM php:8.1-fpm
 
+# Copy seluruh kode aplikasi Laravel & React
+COPY . .
+
 # Instal dependensi PHP & Node.js
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -15,6 +18,10 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     npm
 
+RUN apt-get update; \
+    apt-get install -y libmagickwand-dev; \
+    pecl install imagick; \
+    docker-php-ext-enable imagick;
 # Bersihkan cache apt
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -26,10 +33,11 @@ RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl gd
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 # Copy composer files (hanya jika berubah)
 COPY composer.json composer.lock ./
+# RUN composer update
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Copy package.json (untuk React/Inertia)
@@ -37,12 +45,10 @@ COPY package.json package-lock.json vite.config.js ./
 RUN npm install
 RUN npm run build
 
-# Copy seluruh kode aplikasi Laravel & React
-COPY . .
-
 # Atur permission folder Laravel
-RUN chown -R www-data:www-data /var/www/storage \
-    && chown -R www-data:www-data /var/www/bootstrap/cache
+# RUN chown -R www-data:www-data /var/www/html/storage \
+#     && chown -R www-data:www-data /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage
 
 EXPOSE 9000
 
