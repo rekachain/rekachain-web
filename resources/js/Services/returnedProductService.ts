@@ -1,10 +1,23 @@
 import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
 import { ReturnedProductResource } from '@/Support/Interfaces/Resources';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export const returnedProductService = {
     ...serviceFactory<ReturnedProductResource>(ROUTES.RETURNED_PRODUCTS),
-    customFunctionExample: async () => {
-        console.log('custom function');
+    downloadImportReturnedProductTemplate: async () => {
+        window.location.href = '/assets/excel-templates/imports/aftersales/returned-product-import.xlsx';
+    },
+    importData: async (file: File) => {
+        const formData = new FormData();
+        formData.append('import_file', file);
+        return await window.axios.post(route(`${ROUTES.RETURNED_PRODUCTS}.store`), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            params: {
+                intent: IntentEnum.WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM,
+            },
+        });
     },
 };

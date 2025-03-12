@@ -7,7 +7,7 @@ import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { Head, Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense } from 'react';
-// import Import from './Partials/Import';
+import Import from './Partials/Import';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -29,7 +29,7 @@ export default function () {
                                 {t('pages.returned_product.index.buttons.create')}
                             </Link>
                         )}
-                        {/* {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_IMPORT) && <Import />} */}
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_IMPORT) && <Import />}
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
                         <ReturnedProducts />
