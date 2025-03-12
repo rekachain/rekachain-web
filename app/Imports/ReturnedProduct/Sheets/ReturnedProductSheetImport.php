@@ -18,7 +18,7 @@ class ReturnedProductSheetImport implements ToModel, WithHeadingRow {
             'name' => $row['product_name'],
         ]);
 
-        return ReturnedProduct::firstOrCreate([
+        return ReturnedProduct::create([
             'product_returnable_id' => $product->id,
             'product_returnable_type' => $row['product_type'] == 'Panel' ? Panel::class : Component::class,
             'qty' => $row['qty'],

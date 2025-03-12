@@ -11,13 +11,13 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class ProductProblemSheetImport implements ToModel, WithHeadingRow {
     public function model(array $row) {
         $returnedProduct = ReturnedProduct::whereSerialNumber($row['serial_number'])->first();
-        return $returnedProduct->product_problems()->firstOrCreate([
+        return $returnedProduct->product_problems()->create([
             'component_id' => Component::firstOrCreate([
                 'name' => $row['problem_component_name'],
             ])->id,
             'status' => match ($row['status']) {
-                'diganti' => ProductProblemStatusEnum::CHANGED,
-                'diperbaiki' => ProductProblemStatusEnum::FIXED,
+                'Diganti' => ProductProblemStatusEnum::CHANGED,
+                'Diperbaiki' => ProductProblemStatusEnum::FIXED,
                 default => ProductProblemStatusEnum::PROGRESS,
             },
         ]);

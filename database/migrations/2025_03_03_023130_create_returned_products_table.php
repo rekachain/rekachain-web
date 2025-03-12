@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('buyer_id')->nullable()->constrained('users');
             $table->integer('qty')->nullable()->default(1);
             $table->foreignId('serial_panel_id')->nullable()->constrained();
-            $table->bigInteger('serial_number')->nullable();
+            $table->bigInteger('serial_number')->nullable()->unique();
             $table->enum('status', ReturnedProductStatusEnum::toArray())->default(ReturnedProductStatusEnum::DRAFT->value);
             $table->timestamps();
         });
