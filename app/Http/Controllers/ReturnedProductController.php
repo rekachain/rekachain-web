@@ -6,6 +6,7 @@ use App\Http\Requests\ReturnedProduct\StoreReturnedProductRequest;
 use App\Http\Requests\ReturnedProduct\UpdateReturnedProductRequest;
 use App\Http\Resources\ReturnedProductResource;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use Illuminate\Http\Request;
 
@@ -27,8 +28,13 @@ class ReturnedProductController extends Controller {
     }
 
     public function store(StoreReturnedProductRequest $request) {
-        $returnedProduct = $this->returnedProductService->create($request->validated());
+        $intent = $request->get('intent');
         if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM->value:
+                    return $this->returnedProductService->importData($request->file('import_file'));
+            }
+            $returnedProduct = $this->returnedProductService->create($request->validated());
             return ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
         }
     }
