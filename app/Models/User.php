@@ -107,6 +107,10 @@ class User extends Authenticatable {
         return $this->hasOne(Step::class, 'id', 'step_id');
     }
 
+    public function scan_faces(): HasMany {
+        return $this->hasMany(ScanFace::class);
+    }
+
     public function feedbacks(): HasMany {
         return $this->hasMany(Feedback::class);
     }
