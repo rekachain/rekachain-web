@@ -19,6 +19,7 @@ export default function () {
         page: 1,
         perPage: 10,
         relations: 'product_returnable,buyer',
+        orderBy: 'created_at',
     });
 
     const syncReturnedProducts = withLoading(async () => {
