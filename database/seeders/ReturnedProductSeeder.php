@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\CarriagePanel;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\ReturnedProductStatusEnum;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class ReturnedProductSeeder extends Seeder
@@ -15,7 +17,15 @@ class ReturnedProductSeeder extends Seeder
      */
     public function run(): void
     {
-        ReturnedProduct::factory(3)->create([
+        ReturnedProduct::factory(3)->state(new Sequence(
+            function () {
+                $carriagePanel = CarriagePanel::inRandomOrder()->first();
+                return [
+                    'product_returnable_id' => Panel::whereId($carriagePanel->panel_id)->first()->id,
+                    'serial_panel_id' => $carriagePanel->panel_attachments()->inRandomOrder()->first()->serial_panels()->inRandomOrder()->first()->id,
+                ];
+            },
+        ))->create([
             'product_returnable_type' => Panel::class,
             'qty' => 1,
         ]);
