@@ -34,7 +34,7 @@ export default function () {
     const handleReturnedProductDeletion = withLoading(async (id: number) => {
         await returnedProductService.delete(id);
         await syncReturnedProducts();
-        void useSuccessToast('deleted🗿');
+        void useSuccessToast(t('pages.returned_product.partials.returned_product.messages.deleted'));``
     }, true);
 
     const handlePageChange = (page: number) => {

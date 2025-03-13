@@ -93,7 +93,7 @@ export default function ({
             intent: IntentEnum.WEB_USER_CREATE_BUYER,
         });
         void refreshUser(res);
-        void useSuccessToast(t('pages.project.partials.partials.buyer_form.messages.created'));
+        void useSuccessToast(t('pages.returned_product.partials.buyer_form.messages.created'));
     }, true);
 
     return (
@@ -101,7 +101,7 @@ export default function ({
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-4'>
                     <Label htmlFor='user'>
-                        {t('pages.project.partials.partials.buyer_form.fields.buyer')}:{' '}
+                        {t('pages.returned_product.partials.buyer_form.fields.buyer')}:{' '}
                     </Label>
                     <div className='flex items-center'>
                         <GenericDataSelector
@@ -112,7 +112,7 @@ export default function ({
                                 data.buyer_id !== null
                                     ? data.user_name
                                     : t(
-                                          'pages.project.partials.partials.buyer_form.placeholders.buyer',
+                                          'pages.returned_product.partials.buyer_form.placeholders.buyer',
                                       )
                             }
                             onSearchChange={setSearchUser}
@@ -131,7 +131,7 @@ export default function ({
                         </Button>
                     </div>
                     <Label htmlFor='email'>
-                        {t('pages.project.partials.partials.buyer_form.fields.email')}:{' '}
+                        {t('pages.returned_product.partials.buyer_form.fields.email')}:{' '}
                     </Label>
                     <Input
                         value={data.user_email || ''}
@@ -140,27 +140,27 @@ export default function ({
                         placeholder={
                             data.user_email !== ''
                                 ? '-'
-                                : t('pages.project.partials.partials.buyer_form.placeholders.email')
+                                : t('pages.returned_product.partials.buyer_form.placeholders.email')
                         }
                         onChange={(e) => setData('user_email', e.target.value)}
                         id='email'
                         disabled={data.buyer_id !== null}
                     />
                     <Label htmlFor='buyer_name'>
-                        {t('pages.project.partials.partials.buyer_form.fields.name')}:{' '}
+                        {t('pages.returned_product.partials.buyer_form.fields.name')}:{' '}
                     </Label>
                     <Input
                         value={data.user_name}
                         required
                         placeholder={t(
-                            'pages.project.partials.partials.buyer_form.placeholders.name',
+                            'pages.returned_product.partials.buyer_form.placeholders.name',
                         )}
                         onChange={(e) => setData('user_name', e.target.value)}
                         id='buyer_name'
                         disabled={data.buyer_id !== null}
                     />
                     <Label htmlFor='phone_number'>
-                        {t('pages.project.partials.partials.buyer_form.fields.phone_number')}:{' '}
+                        {t('pages.returned_product.partials.buyer_form.fields.phone_number')}:{' '}
                     </Label>
                     <Input
                         value={data.user_phone_number || ''}
@@ -168,7 +168,7 @@ export default function ({
                             data.user_phone_number !== ''
                                 ? '-'
                                 : t(
-                                      'pages.project.partials.partials.buyer_form.placeholders.phone_number',
+                                      'pages.returned_product.partials.buyer_form.placeholders.phone_number',
                                   )
                         }
                         onChange={(e) => setData('user_phone_number', e.target.value)}
@@ -178,14 +178,14 @@ export default function ({
                     {!data.buyer_id && (
                         <>
                             <Label htmlFor='password'>
-                                {t('pages.project.partials.partials.buyer_form.fields.password')}:{' '}
+                                {t('pages.returned_product.partials.buyer_form.fields.password')}:{' '}
                             </Label>
                             <Input
                                 value={data.user_password}
                                 type='password'
                                 required
                                 placeholder={t(
-                                    'pages.project.partials.partials.buyer_form.placeholders.password',
+                                    'pages.returned_product.partials.buyer_form.placeholders.password',
                                 )}
                                 onChange={(e) => setData('user_password', e.target.value)}
                                 id='password'

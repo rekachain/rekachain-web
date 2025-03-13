@@ -2355,4 +2355,161 @@ return [
             ],
         ],
     ],
+    'returned_product' => [
+        'index' => [
+            'title' => 'Retur Produk',
+            'buttons' => [
+                'create' => 'Buat Retur',
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Retur',
+            'fields' => [
+                'name' => 'Nama',
+                'description' => 'Deskripsi',
+                'type' => 'Tipe',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Retur',
+            ],
+            'messages' => [
+                'created' => 'Retur Produk berhasil dibuat!',
+            ],
+        ],
+        'show' => [
+            'title' => 'Retur Produk: :name',
+            'buttons' => [
+                'edit' => 'Edit Retur',
+                'delete' => 'Hapus Retur',
+                'import' => 'Import Retur',
+            ],
+            'messages' => [
+                'deleted_problem' => 'Masalah Produk berhasil dihapus!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Retur: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'description' => 'Deskripsi',
+                'type' => 'Tipe',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Retur',
+            ],
+            'messages' => [
+                'updated' => 'Retur Produk berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'returned_product' => [
+                'messages' => [
+                    'deleted' => 'Retur Produk berhasil dihapus!',
+                ],
+            ],
+            'buyer_form' => [
+                'fields' => [
+                    'buyer' => 'Pelanggan',
+                    'name' => 'Nama',
+                    'email' => 'Email',
+                    'phone_number' => 'Nomor Telepon',
+                    'password' => 'Kata Sandi',
+                ],
+                'placeholders' => [
+                    'buyer' => 'Pilih Pelanggan...',
+                    'name' => 'Masukkan Nama...',
+                    'email' => 'Masukkan Email...',
+                    'phone_number' => 'Masukkan Nomor Telepon...',
+                    'password' => 'Masukkan Kata Sandi...',
+                ],
+                'messages' => [
+                    'created' => 'Pelanggan berhasil dibuat!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Retur Produk berhasil diimport!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Retur',
+                    'description' => 'Import Retur Produk dari Excel file',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Retur',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Import Retur',
+                        'processing' => 'Sedang memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Retur Produk berhasil diimport!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Retur',
+                ],
+            ],
+            'product_problem_import' => [
+                'messages' => [
+                    'imported' => 'Masalah Produk berhasil diimport!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Problem',
+                    'description' => 'Import Masalah Produk dari Excel file',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Problem',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Import Problem',
+                        'processing' => 'Sedang memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Masalah Produk berhasil diimport!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Problem',
+                ],
+            ],
+            'partials' => [
+                'returned_product_table' => [
+                    'headers' => [
+                        'serial_number' => 'Nomor Seri',
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Komponen',
+                        ],
+                    ],
+                ],
+                'returned_product_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'description' => 'Deskripsi: :description',
+                        'type' => 'Tipe: :type',
+                        'created_at' => 'Dibuat Pada: :created_at',
+                    ],
+                ],
+            ],
+        ],
+        'requested_return' => [
+            'index' => [
+                'title' => 'Retur Produk yang Diminta',
+                'buttons' => [
+                    'create' => 'Buat Permintaan',
+                ],
+            ],
+        ],
+    ],
 ];

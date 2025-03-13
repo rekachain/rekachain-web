@@ -2376,6 +2376,17 @@ return [
                 'created' => 'Return Product created successfully!',
             ],
         ],
+        'show' => [
+            'title' => 'Return Product: :name',
+            'buttons' => [
+                'edit' => 'Edit Return',
+                'delete' => 'Delete Return',
+                'import' => 'Import Return',
+            ],
+            'messages' => [
+                'deleted_problem' => 'Product Problem deleted successfully!',
+            ],
+        ],
         'edit' => [
             'title' => 'Edit Return: :name',
             'fields' => [
@@ -2391,9 +2402,28 @@ return [
             ],
         ],
         'partials' => [
-            'returned_products' => [
+            'returned_product' => [
                 'messages' => [
                     'deleted' => 'Return Product deleted successfully!',
+                ],
+            ],
+            'buyer_form' => [
+                'fields' => [
+                    'buyer' => 'Customer',
+                    'name' => 'Name',
+                    'email' => 'Email',
+                    'phone_number' => 'Phone Number',
+                    'password' => 'Password',
+                ],
+                'placeholders' => [
+                    'buyer' => 'Select Customer...',
+                    'name' => 'Input Name...',
+                    'email' => 'Input Email...',
+                    'phone_number' => 'Input Phone Number...',
+                    'password' => 'Input Password...',
+                ],
+                'messages' => [
+                    'created' => 'Buyer created successfully!',
                 ],
             ],
             'import' => [
@@ -2421,6 +2451,31 @@ return [
                     'import' => 'Import Return',
                 ],
             ],
+            'product_problem_import' => [
+                'messages' => [
+                    'imported' => 'Product Problems imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Problems',
+                    'description' => 'Import Product Problems from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Problems',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Problems',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Product Problems imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Problems',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
@@ -2445,6 +2500,14 @@ return [
                         'type' => 'Type: :type',
                         'created_at' => 'Created At: :created_at',
                     ],
+                ],
+            ],
+        ],
+        'requested_return' => [
+            'index' => [
+                'title' => 'Requested Product Returns',
+                'buttons' => [
+                    'create' => 'Create Request',
                 ],
             ],
         ],
