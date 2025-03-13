@@ -27,7 +27,7 @@ class StoreReturnedProductRequest extends FormRequest {
             'buyer_id' => 'nullable|integer|exists:users,id',
             'qty' => 'nullable|integer|min:1', // if serial panel then only one?
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
-            'serial_number' => 'nullable|integer',
+            'serial_number' => 'required_without:product_returnable_type|integer',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
         ];
     }
