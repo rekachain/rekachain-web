@@ -1,18 +1,32 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/UI/breadcrumb";
-import { buttonVariants } from "@/Components/UI/button";
+import { Button, buttonVariants } from "@/Components/UI/button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/Components/UI/table";
 import { checkPermission } from "@/Helpers/permissionHelper";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ROUTES } from "@/Support/Constants/routes";
 import { PERMISSION_ENUM } from "@/Support/Enums/permissionEnum";
-import { ReturnedProductResource } from "@/Support/Interfaces/Resources";
+import { ProductProblemResource, ReturnedProductResource } from "@/Support/Interfaces/Resources";
 import { Head, Link } from "@inertiajs/react";
 import { Separator } from "@radix-ui/react-select";
 import ProductProblemImport from "./Partials/ProductProblemImport";
 import { useLaravelReactI18n } from "laravel-react-i18n";
+import { withLoading } from "@/Utils/withLoading";
+import { productProblemService } from "@/Services/productProblemService";
+import { useSuccessToast } from "@/Hooks/useToast";
+import { useState } from "react";
+import { returnedProductService } from "@/Services/returnedProductService";
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
+
+    const [productProblemData, setProductProblemData] = useState<ProductProblemResource[]>(data.product_problems ?? []);
+    
+    const handleProductProblemDeletion = withLoading(async (id: number) => {
+        await productProblemService.delete(id);
+        const newProductProblems = await returnedProductService.get(data.id);
+        setProductProblemData(newProductProblems.product_problems ?? []);
+        void useSuccessToast(t('pages.returned_product.show.messages.deleted_problem'));
+    });
     return (
         <>
             <Head title={'Detail Returned Product'} />
@@ -103,16 +117,43 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         <TableHead>
                                             {'Status'}
                                         </TableHead>
+                                        <TableHead></TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {data.product_problems?.map((productProblem) => (
+                                    {productProblemData.map((productProblem) => (
                                         <TableRow key={productProblem.id}>
                                             <TableCell className='font-medium'>
                                                 {productProblem.component?.name}
                                             </TableCell>
-                                            <TableCell>{productProblem.component?.name}</TableCell>
+                                            <TableCell>{productProblem.component?.description}</TableCell>
                                             <TableCell>{productProblem.status}</TableCell>
+                                            <TableCell>
+                                            {/* {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_READ) && (
+                                                <Link
+                                                    href={route(`${ROUTES.PRODUCT_PROBLEMS}.show`, productProblem.id)}
+                                                    className={buttonVariants({ variant: 'link' })}
+                                                >
+                                                    {t('action.show')}
+                                                </Link>
+                                            )}
+                                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) && (
+                                                <Link
+                                                    href={route(`${ROUTES.PRODUCT_PROBLEMS}.edit`, productProblem.id)}
+                                                    className={buttonVariants({ variant: 'link' })}
+                                                >
+                                                    {t('action.edit')}
+                                                </Link>
+                                            )} */}
+                                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_DELETE) && (
+                                                <Button
+                                                    variant='link'
+                                                    onClick={() => handleProductProblemDeletion(productProblem.id)}
+                                                >
+                                                    {t('action.delete')}
+                                                </Button>
+                                            )}
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
