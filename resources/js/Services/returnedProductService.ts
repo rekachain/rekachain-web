@@ -37,3 +37,6 @@ export const returnedProductService = {
         });
     },
 };
+export const requestReturnService = {
+    ...serviceFactory<ReturnedProductResource>(ROUTES.REQUESTED_RETURNS),
+};

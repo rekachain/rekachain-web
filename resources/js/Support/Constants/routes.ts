@@ -60,4 +60,5 @@ export const ROUTES = {
     HELPDESK_CONTACT: 'helpdesk-contact',
 	RETURNED_PRODUCTS: 'returned-products',
 	PRODUCT_PROBLEMS: 'product-problems',
+    REQUESTED_RETURNS: 'requested-returns',
 };

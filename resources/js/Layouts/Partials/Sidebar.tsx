@@ -16,6 +16,7 @@ import {
     RiDivideLine,
     RiExpandRightLine,
     RiFeedbackLine,
+    RiHandHeartLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
@@ -301,6 +302,13 @@ export default function Sidebar() {
                                 title={'Returned Product'}
                                 routeName={`${ROUTES.RETURNED_PRODUCTS}.index`}
                                 icon={<RiLoopLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                            <SidebarLink
+                                title={'Return Request'}
+                                routeName={`${ROUTES.REQUESTED_RETURNS}.index`}
+                                icon={<RiHandHeartLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                     </SidebarMenu>
