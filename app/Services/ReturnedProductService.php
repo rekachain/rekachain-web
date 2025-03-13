@@ -14,6 +14,12 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         return ReturnedProductRepositoryInterface::class;
     }
 
+    public function delete($keyOrModel): bool {
+        $keyOrModel->product_problems()->delete();
+
+        return parent::delete($keyOrModel);
+    }
+
     public function importData(UploadedFile $file): bool {
         Excel::import(new ReturnedProductImport, $file);
 

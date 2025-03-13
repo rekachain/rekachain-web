@@ -72,6 +72,14 @@ export default function ReturnedProductTableView({
                                         {t('action.edit')}
                                     </Link>
                                 )}
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
+                                    <Button
+                                        variant='link'
+                                        onClick={() => handleReturnedProductDeletion(returnedProduct.id)}
+                                    >
+                                        {t('action.delete')}
+                                    </Button>
+                                )}
                             </TableCell>
                         </TableRow>
                     ))}
