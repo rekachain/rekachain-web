@@ -7,6 +7,8 @@ use App\Http\Requests\ReturnedProduct\UpdateReturnedProductRequest;
 use App\Http\Resources\ReturnedProductResource;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use Illuminate\Http\Request;
 
@@ -15,12 +17,25 @@ class ReturnedProductController extends Controller {
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-
+        $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => ['not' => ReturnedProductStatusEnum::REQUESTED->value]])]);
         if ($this->ajax()) {
             return ReturnedProductResource::collection($this->returnedProductService->with(['product_returnable','buyer'])->getAllPaginated($request->query(), $perPage));
         }
 
         return inertia('ReturnedProduct/Index');
+    }
+
+    public function requested_returns(Request $request) {
+        $perPage = $request->get('perPage', 10);
+        if (!checkPermissions(PermissionEnum::RETURNED_PRODUCT_READ, true)) {
+            $request->query->add(['column_filters' => ['buyer_id' => auth()->id()]]);
+        }
+        $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => [ReturnedProductStatusEnum::REQUESTED->value]])]);
+        if ($this->ajax()) {
+            return ReturnedProductResource::collection($this->returnedProductService->getAllPaginated($request->query(), $perPage));
+        }
+
+        return inertia('ReturnedProduct/RequestedReturn/Index');
     }
 
     public function create() {

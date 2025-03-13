@@ -148,4 +148,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/{trainset}/carriage-trainsets/{carriage_trainset}/carriage-panels/{carriage_panel}/panel-materials', 'project_trainset_carriageTrainset_carriagePanel_panelMaterials')->name('carriage-trainsets.carriage-panels.panel-materials.index');
         });
     });
+    
+    Route::controller(ReturnedProductController::class)->prefix('requested-returns')->name('requested-returns.')->group(function () {
+        Route::get('/', 'requested_returns')->name('index');
+    });
 });
