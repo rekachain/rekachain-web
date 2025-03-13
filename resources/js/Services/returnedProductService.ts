@@ -8,6 +8,9 @@ export const returnedProductService = {
     downloadImportReturnedProductTemplate: async () => {
         window.location.href = '/assets/excel-templates/imports/aftersales/returned-product-import.xlsx';
     },
+    downloadImportReturnedProductProblemTemplate: async () => {
+        window.location.href = '/assets/excel-templates/imports/aftersales/product-problem-import.xlsx';
+    },
     importData: async (file: File) => {
         const formData = new FormData();
         formData.append('import_file', file);
@@ -17,6 +20,19 @@ export const returnedProductService = {
             },
             params: {
                 intent: IntentEnum.WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM,
+            },
+        });
+    },
+    importProductProblemData: async (returnedProductId: number, file: File) => {
+        const formData = new FormData();
+        formData.append('import_file', file);
+        return await window.axios.post(route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId), formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            params: {
+                _method: 'PUT',
+                intent: IntentEnum.WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM,
             },
         });
     },

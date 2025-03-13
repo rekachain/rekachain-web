@@ -202,6 +202,7 @@ enum PermissionEnum: string {
     case PRODUCT_PROBLEM_READ = 'product-problem-read';
     case PRODUCT_PROBLEM_UPDATE = 'product-problem-update';
     case PRODUCT_PROBLEM_DELETE = 'product-problem-delete';
+    case PRODUCT_PROBLEM_IMPORT = 'product-problem-import';
 
     case PRODUCT_PROBLEM_NOTE_CREATE = 'product-problem-note-create';
     case PRODUCT_PROBLEM_NOTE_READ = 'product-problem-note-read';

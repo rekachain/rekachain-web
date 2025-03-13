@@ -8,6 +8,7 @@ import { PERMISSION_ENUM } from "@/Support/Enums/permissionEnum";
 import { ReturnedProductResource } from "@/Support/Interfaces/Resources";
 import { Head, Link } from "@inertiajs/react";
 import { Separator } from "@radix-ui/react-select";
+import ProductProblemImport from "./Partials/ProductProblemImport";
 import { useLaravelReactI18n } from "laravel-react-i18n";
 
 export default function ({ data }: { data: ReturnedProductResource }) {
@@ -72,8 +73,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             )}
                         </div>
                         <Separator className='my-6 h-1' />
-                        <div className='mt-3 flex items-center'>
-                            <h1 className='text-xl font-bold mr-2'>
+                        <div className='mt-3 flex items-center gap-3'>
+                            <h1 className='text-xl font-bold'>
                                 {'Product Problems'}
                             </h1>
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) && (
@@ -84,7 +85,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     {'Add Problem'}
                                 </Link>
                             )}
-                            {/* {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && <ProductProblemImport />} */}
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && <ProductProblemImport returnedProductId={data.id} />}
                         </div>
                         <div className='hidden md:block'>
                             <Table wrapperClassName='block max-h-96'>

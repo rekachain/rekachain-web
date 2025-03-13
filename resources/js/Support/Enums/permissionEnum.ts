@@ -168,6 +168,7 @@ export enum PERMISSION_ENUM {
     PRODUCT_PROBLEM_READ = 'product-problem-read',
     PRODUCT_PROBLEM_UPDATE = 'product-problem-update',
     PRODUCT_PROBLEM_DELETE = 'product-problem-delete',
+    PRODUCT_PROBLEM_IMPORT = 'product-problem-import',
     PRODUCT_PROBLEM_NOTE_CREATE = 'product-problem-note-create',
     PRODUCT_PROBLEM_NOTE_READ = 'product-problem-note-read',
     PRODUCT_PROBLEM_NOTE_UPDATE = 'product-problem-note-update',
