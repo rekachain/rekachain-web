@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Imports\ReturnedProduct\ReturnedProductImport;
+use App\Models\ReturnedProduct;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use Illuminate\Http\UploadedFile;
@@ -15,6 +16,12 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
     public function importData(UploadedFile $file): bool {
         Excel::import(new ReturnedProductImport, $file);
+
+        return true;
+    }
+
+    public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool {
+        Excel::import(new ReturnedProductImport($returnedProduct), $file);
 
         return true;
     }

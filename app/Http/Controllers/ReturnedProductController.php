@@ -56,8 +56,13 @@ class ReturnedProductController extends Controller {
     }
 
     public function update(UpdateReturnedProductRequest $request, ReturnedProduct $returnedProduct) {
-        $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
+        $intent = $request->get('intent');
         if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
+                    return $this->returnedProductService->importProductProblemData($returnedProduct, $request->file('import_file'));
+            }
+            $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
             return ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
         }
     }

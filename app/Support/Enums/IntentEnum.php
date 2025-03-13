@@ -318,7 +318,7 @@ enum IntentEnum: string {
 
     case WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM = 'web.returned.product.import.returned.product.and.product.problem';
 
-    case WEB_PRODUCT_PROBLEM_IMPORT_PRODUCT_PROBLEM = 'web.product.problem.import.product.problem';
+    case WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM = 'web.returned.product.import.product.problem';
 
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
 }

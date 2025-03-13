@@ -9,8 +9,9 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ProductProblemSheetImport implements ToModel, WithHeadingRow {
+    public function __construct(private ?ReturnedProduct $returnedProduct = null) {}
     public function model(array $row) {
-        $returnedProduct = ReturnedProduct::whereSerialNumber($row['serial_number'])->first();
+        $returnedProduct = $this->returnedProduct ?? ReturnedProduct::whereSerialNumber($row['serial_number'])->first();
         return $returnedProduct->product_problems()->create([
             'component_id' => Component::firstOrCreate([
                 'name' => $row['problem_component_name'],
