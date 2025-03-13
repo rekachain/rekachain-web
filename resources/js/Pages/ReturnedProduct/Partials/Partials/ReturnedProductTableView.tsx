@@ -29,6 +29,9 @@ export default function ReturnedProductTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
+                            {t('pages.returned_product.partials.partials.returned_product_table.headers.serial_number')}
+                        </TableHead>
+                        <TableHead>
                             {t('pages.returned_product.partials.partials.returned_product_table.headers.name')}
                         </TableHead>
                         <TableHead>
@@ -38,7 +41,7 @@ export default function ReturnedProductTableView({
                             {t('pages.returned_product.partials.partials.returned_product_table.headers.type')}
                         </TableHead>
                         <TableHead>
-                            {'Status'}
+                            {t('pages.returned_product.partials.partials.returned_product_table.headers.status')}
                         </TableHead>
                         <TableHead>
                             {t('pages.returned_product.partials.partials.returned_product_table.headers.created_at')}
@@ -49,6 +52,7 @@ export default function ReturnedProductTableView({
                 <TableBody>
                     {returnedProductResponse?.data.map((returnedProduct) => (
                         <TableRow key={returnedProduct.id}>
+                            <TableCell>{returnedProduct.serial_number}</TableCell>
                             <TableCell>{returnedProduct.product_return?.name}</TableCell>
                             <TableCell>{returnedProduct.product_return?.description}</TableCell>
                             <TableCell>{returnedProduct.product_returnable_type === 'App\\Models\\Panel' ? 'Panel' : 'Component'}</TableCell>

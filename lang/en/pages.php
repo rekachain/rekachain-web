@@ -2424,9 +2424,11 @@ return [
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
+                        'serial_number' => 'Serial Number',
                         'name' => 'Name',
                         'description' => 'Description',
                         'type' => 'Type',
+                        'status' => 'Status',
                         'created_at' => 'Created At',
                     ],
                     'contents' => [
