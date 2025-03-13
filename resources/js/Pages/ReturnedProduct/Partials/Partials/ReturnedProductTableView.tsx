@@ -52,7 +52,7 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.product_return?.name}</TableCell>
                             <TableCell>{returnedProduct.product_return?.description}</TableCell>
                             <TableCell>{returnedProduct.product_returnable_type === 'App\\Models\\Panel' ? 'Panel' : 'Component'}</TableCell>
-                            <TableCell>{returnedProduct.status}</TableCell>
+                            <TableCell>{returnedProduct.localized_status}</TableCell>
                             <TableCell>{returnedProduct.created_at}</TableCell>
 
                             <TableCell>

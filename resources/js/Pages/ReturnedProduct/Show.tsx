@@ -127,7 +127,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                 {productProblem.component?.name}
                                             </TableCell>
                                             <TableCell>{productProblem.component?.description}</TableCell>
-                                            <TableCell>{productProblem.status}</TableCell>
+                                            <TableCell>{productProblem.localized_status}</TableCell>
                                             <TableCell>
                                             {/* {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_READ) && (
                                                 <Link

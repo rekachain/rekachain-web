@@ -19,7 +19,8 @@ class ReturnedProductResource extends JsonResource {
             'serial_panel' => $this->whenLoaded('serial_panel'),
             'serial_number' => $this->serial_number,
             'status' => $this->status,
-            'product_problems' => $this->whenLoaded('product_problems'),
+            'localized_status' => $this->status->getLabel(),
+            'product_problems' => ProductProblemResource::collection($this->whenLoaded('product_problems')),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

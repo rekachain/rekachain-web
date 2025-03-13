@@ -13,6 +13,7 @@ class ProductProblemResource extends JsonResource {
             'component_id' => $this->component_id,
             'component' => $this->whenLoaded('component'),
             'status' => $this->status,
+            'localized_status' => $this->status->getLabel(),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
