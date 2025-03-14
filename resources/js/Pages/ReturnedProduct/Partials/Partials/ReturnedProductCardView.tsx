@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { buttonVariants } from '@/Components/UI/button';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import AnimateIn from '@/Lib/AnimateIn';
 import { ROUTES } from '@/Support/Constants/routes';
@@ -27,13 +27,19 @@ export default function ReturnedProductCardView({
                 >
                     <div className='mt-4 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
                         <div className='items-scenter flex w-full justify-between'>
-                            <h4 className='text-xl font-bold'>{returnedProduct.product_return?.name}</h4>
+                            <h4 className='text-xl font-bold'>
+                                {returnedProduct.product_return?.name}
+                            </h4>
                             <div className='text-center'>
                                 <h5 className='text-md items-center font-bold'>
                                     {t(
                                         'pages.returned_product.partials.partials.returned_product_card.headers.type',
                                         {
-                                            type: returnedProduct.product_returnable_type === 'App\\Models\\Panel' ? 'Panel' : 'Component',
+                                            type:
+                                                returnedProduct.product_returnable_type ===
+                                                'App\\Models\\Panel'
+                                                    ? 'Panel'
+                                                    : 'Component',
                                         },
                                     )}
                                 </h5>
@@ -59,7 +65,10 @@ export default function ReturnedProductCardView({
                         <div className='flex w-full items-center justify-end'>
                             {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                 <Link
-                                    href={route(`${ROUTES.RETURNED_PRODUCTS}.edit`, returnedProduct.id)}
+                                    href={route(
+                                        `${ROUTES.RETURNED_PRODUCTS}.edit`,
+                                        returnedProduct.id,
+                                    )}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.edit')}

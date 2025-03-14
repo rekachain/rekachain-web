@@ -7,14 +7,21 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
+import { useSuccessToast } from '@/Hooks/useToast';
+import { productProblemService } from '@/Services/productProblemService';
+import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { memo, useEffect, useState } from 'react';
-import { productProblemService } from '@/Services/productProblemService';
 
 const UpdateProductProblemStatus = ({
     productProblemId,
@@ -50,7 +57,7 @@ const UpdateProductProblemStatus = ({
             });
             await handleSyncReturnedProduct();
             void useSuccessToast(
-                t('pages.returned_product.partials.update_product_problem_status.messages.updated')
+                t('pages.returned_product.partials.update_product_problem_status.messages.updated'),
             );
         } catch (error) {
             console.error('Failed to update status:', error);
@@ -59,27 +66,36 @@ const UpdateProductProblemStatus = ({
 
     return (
         <Dialog>
-            <DialogTrigger
-                className={'w-fit'}
-            >
-                {t('pages.returned_product.partials.update_product_problem_status.buttons.update_status')}
+            <DialogTrigger className={'w-fit'}>
+                {t(
+                    'pages.returned_product.partials.update_product_problem_status.buttons.update_status',
+                )}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-lg">
+            <DialogContent className='sm:max-w-lg'>
                 <DialogHeader>
-                    <DialogTitle>{t('pages.returned_product.partials.update_product_problem_status.dialog.title')}</DialogTitle>
+                    <DialogTitle>
+                        {t(
+                            'pages.returned_product.partials.update_product_problem_status.dialog.title',
+                        )}
+                    </DialogTitle>
                     <DialogDescription>
-                        {t('pages.returned_product.partials.update_product_problem_status.dialog.description')}
+                        {t(
+                            'pages.returned_product.partials.update_product_problem_status.dialog.description',
+                        )}
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2">
+                <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-2'>
                         <Select
                             value={status}
                             onValueChange={(value) => setStatus(value as ProductProblemStatusEnum)}
                         >
                             <SelectTrigger>
                                 <SelectValue>
-                                    {localizedStatuses[status] || t('pages.returned_product.partials.update_product_problem_status.dialog.select_placeholder')}
+                                    {localizedStatuses[status] ||
+                                        t(
+                                            'pages.returned_product.partials.update_product_problem_status.dialog.select_placeholder',
+                                        )}
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent>
@@ -94,9 +110,7 @@ const UpdateProductProblemStatus = ({
                         </Select>
                     </div>
                     <Button onClick={handleUpdateStatus} disabled={loading}>
-                        {loading
-                            ? t('action.loading')
-                            : t('action.update')}
+                        {loading ? t('action.loading') : t('action.update')}
                     </Button>
                 </div>
             </DialogContent>

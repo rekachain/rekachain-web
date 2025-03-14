@@ -29,22 +29,34 @@ export default function ReturnedProductTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.returned_product.partials.partials.returned_product_table.headers.serial_number')}
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.serial_number',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.returned_product.partials.partials.returned_product_table.headers.name')}
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.name',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.returned_product.partials.partials.returned_product_table.headers.description')}
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.description',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.returned_product.partials.partials.returned_product_table.headers.type')}
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.type',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.returned_product.partials.partials.returned_product_table.headers.status')}
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.status',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.returned_product.partials.partials.returned_product_table.headers.created_at')}
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.created_at',
+                            )}
                         </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
@@ -55,14 +67,21 @@ export default function ReturnedProductTableView({
                             <TableCell>{returnedProduct.serial_number}</TableCell>
                             <TableCell>{returnedProduct.product_return?.name}</TableCell>
                             <TableCell>{returnedProduct.product_return?.description}</TableCell>
-                            <TableCell>{returnedProduct.product_returnable_type === 'App\\Models\\Panel' ? 'Panel' : 'Component'}</TableCell>
+                            <TableCell>
+                                {returnedProduct.product_returnable_type === 'App\\Models\\Panel'
+                                    ? 'Panel'
+                                    : 'Component'}
+                            </TableCell>
                             <TableCell>{returnedProduct.localized_status}</TableCell>
                             <TableCell>{returnedProduct.created_at}</TableCell>
 
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                                     <Link
-                                        href={route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id)}
+                                        href={route(
+                                            `${ROUTES.RETURNED_PRODUCTS}.show`,
+                                            returnedProduct.id,
+                                        )}
                                         className={buttonVariants({ variant: 'link' })}
                                     >
                                         {t('action.show')}
@@ -70,7 +89,10 @@ export default function ReturnedProductTableView({
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                     <Link
-                                        href={route(`${ROUTES.RETURNED_PRODUCTS}.edit`, returnedProduct.id)}
+                                        href={route(
+                                            `${ROUTES.RETURNED_PRODUCTS}.edit`,
+                                            returnedProduct.id,
+                                        )}
                                         className={buttonVariants({ variant: 'link' })}
                                     >
                                         {t('action.edit')}
@@ -79,7 +101,9 @@ export default function ReturnedProductTableView({
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
                                     <Button
                                         variant='link'
-                                        onClick={() => handleReturnedProductDeletion(returnedProduct.id)}
+                                        onClick={() =>
+                                            handleReturnedProductDeletion(returnedProduct.id)
+                                        }
                                     >
                                         {t('action.delete')}
                                     </Button>

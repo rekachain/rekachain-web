@@ -50,7 +50,9 @@ export default function () {
             </DialogTrigger>
             <DialogContent className='sm:max-w-[425px]'>
                 <DialogHeader>
-                    <DialogTitle>{t('pages.returned_product.partials.import.dialogs.title')}</DialogTitle>
+                    <DialogTitle>
+                        {t('pages.returned_product.partials.import.dialogs.title')}
+                    </DialogTitle>
                     <DialogDescription>
                         {t('pages.returned_product.partials.import.dialogs.description')}
                     </DialogDescription>
@@ -58,7 +60,9 @@ export default function () {
                 {/*Download template button*/}
                 <div className='flex flex-col space-y-4'>
                     <Label>
-                        {t('pages.returned_product.partials.import.dialogs.fields.download_template')}
+                        {t(
+                            'pages.returned_product.partials.import.dialogs.fields.download_template',
+                        )}
                     </Label>
                     <Button
                         variant='secondary'
@@ -68,7 +72,9 @@ export default function () {
                     >
                         {loading
                             ? t('action.loading')
-                            : t('pages.returned_product.partials.import.dialogs.buttons.download_template')}
+                            : t(
+                                  'pages.returned_product.partials.import.dialogs.buttons.download_template',
+                              )}
                     </Button>
                 </div>
                 <form onSubmit={handleImportData} className='space-y-4'>
@@ -87,7 +93,9 @@ export default function () {
                         <Button type='submit' disabled={loading}>
                             {loading
                                 ? t('action.loading')
-                                : t('pages.returned_product.partials.import.dialogs.buttons.import')}
+                                : t(
+                                      'pages.returned_product.partials.import.dialogs.buttons.import',
+                                  )}
                         </Button>
                     </DialogFooter>
                 </form>

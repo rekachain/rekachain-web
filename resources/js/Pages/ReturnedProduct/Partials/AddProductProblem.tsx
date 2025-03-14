@@ -10,27 +10,31 @@ import {
 } from '@/Components/UI/dialog';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { returnedProductService } from '@/Services/returnedProductService';
 import { componentService } from '@/Services/componentService';
+import { returnedProductService } from '@/Services/returnedProductService';
+import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import {
-    ReturnedProductResource,
-    ComponentResource,
-} from '@/Support/Interfaces/Resources';
+import { ComponentResource, ReturnedProductResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Loader2, RefreshCcw } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
-import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 const AddProductProblem = ({
     componentResource,
@@ -66,7 +70,9 @@ const AddProductProblem = ({
     }, [debouncedSearchComponent]);
 
     useEffect(() => {
-        const selectedComponent = componentResource?.data.find((component) => component.id === data.component_id);
+        const selectedComponent = componentResource?.data.find(
+            (component) => component.id === data.component_id,
+        );
         if (selectedComponent) {
             setData((previousData) => ({
                 ...previousData,
@@ -103,7 +109,6 @@ const AddProductProblem = ({
     const handleAddProductProblem = withLoading(async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-
         await returnedProductService.addProductProblem(
             returnedProduct.id,
             data.component_id,
@@ -115,9 +120,7 @@ const AddProductProblem = ({
         await handleSyncReturnedProduct();
         reset();
         void useSuccessToast(
-            t(
-                'pages.returned_product.partials.add_product_problem.messages.created',
-            ),
+            t('pages.returned_product.partials.add_product_problem.messages.created'),
         );
     });
 
@@ -143,9 +146,7 @@ const AddProductProblem = ({
                     className: 'w-fit',
                 })}
             >
-                {t(
-                    'pages.returned_product.partials.add_product_problem.buttons.add_component',
-                )}
+                {t('pages.returned_product.partials.add_product_problem.buttons.add_component')}
             </DialogTrigger>
             <DialogContent className='sm:max-w-lg'>
                 <DialogHeader>
@@ -216,16 +217,20 @@ const AddProductProblem = ({
                                     >
                                         <SelectTrigger>
                                             <SelectValue>
-                                                {localizedStatuses[data.status || ProductProblemStatusEnum.DRAFT] || 'Pilih Status'}
+                                                {localizedStatuses[
+                                                    data.status || ProductProblemStatusEnum.DRAFT
+                                                ] || 'Pilih Status'}
                                             </SelectValue>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                {Object.entries(localizedStatuses).map(([status, label]) => (
-                                                    <SelectItem value={status} key={status}>
-                                                        {label}
-                                                    </SelectItem>
-                                                ))}
+                                                {Object.entries(localizedStatuses).map(
+                                                    ([status, label]) => (
+                                                        <SelectItem value={status} key={status}>
+                                                            {label}
+                                                        </SelectItem>
+                                                    ),
+                                                )}
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>

@@ -293,9 +293,7 @@ export default function Sidebar() {
                     </SidebarMenu>
                     <SidebarMenu
                         title={'AFTERSALES'}
-                        bordered={checkPermission([
-                            PERMISSION_ENUM.RETURNED_PRODUCT_READ,
-                        ])}
+                        bordered={checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_READ])}
                     >
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                             <SidebarLink

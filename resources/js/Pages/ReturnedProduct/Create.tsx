@@ -1,6 +1,11 @@
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/Components/UI/accordion';
 import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
@@ -11,7 +16,6 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
-import { userService } from '@/Services/userService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ComponentResource, PanelResource } from '@/Support/Interfaces/Resources';
@@ -76,7 +80,13 @@ export default function () {
                         </h1>
                     </div>
 
-                    <form onSubmit={submit} id='returned-product-form' encType='multipart/form-data'> </form>
+                    <form
+                        onSubmit={submit}
+                        id='returned-product-form'
+                        encType='multipart/form-data'
+                    >
+                        {' '}
+                    </form>
                     <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
                         <h2 className='text-lg font-semibold'>
                             {t('pages.returned_product.create.fields.type')}
@@ -86,22 +96,12 @@ export default function () {
                             defaultValue={'component'}
                         >
                             <div key={'component_type'} className='flex items-center space-x-2'>
-                                <RadioGroupItem
-                                    value={'component'}
-                                    id={`type.component`}
-                                />
-                                <Label htmlFor={`type.component`}>
-                                    {'Komponen'}
-                                </Label>
+                                <RadioGroupItem value={'component'} id={`type.component`} />
+                                <Label htmlFor={`type.component`}>{'Komponen'}</Label>
                             </div>
                             <div key={'panel_type'} className='flex items-center space-x-2'>
-                                <RadioGroupItem
-                                    value={'panel'}
-                                    id={`type.panel`}
-                                />
-                                <Label htmlFor={`type.panel`}>
-                                    {'Panel'}
-                                </Label>
+                                <RadioGroupItem value={'panel'} id={`type.panel`} />
+                                <Label htmlFor={`type.panel`}>{'Panel'}</Label>
                             </div>
                         </RadioGroup>
                     </div>
@@ -115,9 +115,7 @@ export default function () {
                                 <GenericDataSelector
                                     setSelectedData={(id) => setData('product_returnable_id', id)}
                                     selectedDataId={data.product_returnable_id ?? undefined}
-                                    renderItem={(item: ComponentResource) =>
-                                        `${item.name}`
-                                    } // Customize how to display the item
+                                    renderItem={(item: ComponentResource) => `${item.name}`} // Customize how to display the item
                                     popoverContentClassName='w-[400px] p-0'
                                     placeholder={'Pilih Komponen'}
                                     nullable
@@ -135,9 +133,7 @@ export default function () {
                                 <GenericDataSelector
                                     setSelectedData={(id) => setData('product_returnable_id', id)}
                                     selectedDataId={data.product_returnable_id ?? undefined}
-                                    renderItem={(item: PanelResource) =>
-                                        `${item.name}`
-                                    } // Customize how to display the item
+                                    renderItem={(item: PanelResource) => `${item.name}`} // Customize how to display the item
                                     popoverContentClassName='w-[400px] p-0'
                                     placeholder={'Pilih Panel'}
                                     nullable
@@ -150,10 +146,7 @@ export default function () {
                     </div>
 
                     <div className='mt-4'>
-                        <InputLabel
-                            value={'Jumlah'}
-                            htmlFor='qty'
-                        />
+                        <InputLabel value={'Jumlah'} htmlFor='qty' />
                         <Input
                             value={data.qty}
                             type='number'
@@ -166,10 +159,7 @@ export default function () {
                     </div>
 
                     <div className='mt-4'>
-                        <InputLabel
-                            value={'Nomor Seri'}
-                            htmlFor='serial_number'
-                        />
+                        <InputLabel value={'Nomor Seri'} htmlFor='serial_number' />
                         <Input
                             value={data.serial_number ?? undefined}
                             type='number'

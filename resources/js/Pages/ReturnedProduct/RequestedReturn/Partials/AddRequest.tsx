@@ -1,6 +1,5 @@
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/Components/UI/accordion';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
@@ -10,27 +9,21 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
-import { Separator } from '@/Components/UI/separator';
-import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { carriageService } from '@/Services/carriageService';
 import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
-import { trainsetService } from '@/Services/trainsetService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { CarriageResource, ComponentResource, PanelResource, TrainsetResource } from '@/Support/Interfaces/Resources';
+import { ComponentResource, PanelResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { Head, router, useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Loader2 } from 'lucide-react';
-import { FormEvent, FormEventHandler, memo, useCallback, useEffect } from 'react';
+import { FormEventHandler, memo, useCallback, useEffect } from 'react';
 
 const AddRequest = () => {
     const { t } = useLaravelReactI18n();
@@ -90,7 +83,13 @@ const AddRequest = () => {
                     <DialogHeader>
                         <DialogTitle>{t('pages.returned_product.create.title')}</DialogTitle>
                         <DialogDescription></DialogDescription>
-                        <form onSubmit={submit} id='returned-product-form' encType='multipart/form-data'> </form>
+                        <form
+                            onSubmit={submit}
+                            id='returned-product-form'
+                            encType='multipart/form-data'
+                        >
+                            {' '}
+                        </form>
                         <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
                             <h2 className='text-lg font-semibold'>
                                 {t('pages.returned_product.create.fields.type')}
@@ -100,22 +99,12 @@ const AddRequest = () => {
                                 defaultValue={'component'}
                             >
                                 <div key={'component_type'} className='flex items-center space-x-2'>
-                                    <RadioGroupItem
-                                        value={'component'}
-                                        id={`type.component`}
-                                    />
-                                    <Label htmlFor={`type.component`}>
-                                        {'Komponen'}
-                                    </Label>
+                                    <RadioGroupItem value={'component'} id={`type.component`} />
+                                    <Label htmlFor={`type.component`}>{'Komponen'}</Label>
                                 </div>
                                 <div key={'panel_type'} className='flex items-center space-x-2'>
-                                    <RadioGroupItem
-                                        value={'panel'}
-                                        id={`type.panel`}
-                                    />
-                                    <Label htmlFor={`type.panel`}>
-                                        {'Panel'}
-                                    </Label>
+                                    <RadioGroupItem value={'panel'} id={`type.panel`} />
+                                    <Label htmlFor={`type.panel`}>{'Panel'}</Label>
                                 </div>
                             </RadioGroup>
                         </div>
@@ -127,11 +116,11 @@ const AddRequest = () => {
                                         htmlFor='component_product_returnable_id'
                                     />
                                     <GenericDataSelector
-                                        setSelectedData={(id) => setData('product_returnable_id', id)}
+                                        setSelectedData={(id) =>
+                                            setData('product_returnable_id', id)
+                                        }
                                         selectedDataId={data.product_returnable_id ?? undefined}
-                                        renderItem={(item: ComponentResource) =>
-                                            `${item.name}`
-                                        } // Customize how to display the item
+                                        renderItem={(item: ComponentResource) => `${item.name}`} // Customize how to display the item
                                         popoverContentClassName='w-[400px] p-0'
                                         placeholder={'Pilih Komponen'}
                                         nullable
@@ -147,11 +136,11 @@ const AddRequest = () => {
                                         htmlFor='panel_product_returnable_id'
                                     />
                                     <GenericDataSelector
-                                        setSelectedData={(id) => setData('product_returnable_id', id)}
+                                        setSelectedData={(id) =>
+                                            setData('product_returnable_id', id)
+                                        }
                                         selectedDataId={data.product_returnable_id ?? undefined}
-                                        renderItem={(item: PanelResource) =>
-                                            `${item.name}`
-                                        } // Customize how to display the item
+                                        renderItem={(item: PanelResource) => `${item.name}`} // Customize how to display the item
                                         popoverContentClassName='w-[400px] p-0'
                                         placeholder={'Pilih Panel'}
                                         nullable
@@ -164,10 +153,7 @@ const AddRequest = () => {
                         </div>
 
                         <div className='mt-4'>
-                            <InputLabel
-                                value={'Jumlah'}
-                                htmlFor='qty'
-                            />
+                            <InputLabel value={'Jumlah'} htmlFor='qty' />
                             <Input
                                 value={data.qty}
                                 type='number'
@@ -180,10 +166,7 @@ const AddRequest = () => {
                         </div>
 
                         <div className='mt-4'>
-                            <InputLabel
-                                value={'Nomor Seri'}
-                                htmlFor='serial_number'
-                            />
+                            <InputLabel value={'Nomor Seri'} htmlFor='serial_number' />
                             <Input
                                 value={data.serial_number ?? undefined}
                                 type='number'
