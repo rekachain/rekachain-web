@@ -2476,6 +2476,23 @@ return [
                     'import' => 'Import Problem',
                 ],
             ],
+            'add_product_problem' => [
+                'buttons' => [
+                    'add_component' => 'Tambah Komponen',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'component' => 'Komponen',
+                        'component_placeholder' => 'Pilih Komponen',
+                        'component_name' => 'Nama Komponen',
+                        'component_description' => 'Deskripsi Komponen',
+                        'status' => 'Status',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Komponen berhasil ditambahkan!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [

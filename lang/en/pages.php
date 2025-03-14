@@ -2476,6 +2476,23 @@ return [
                     'import' => 'Import Problems',
                 ],
             ],
+            'add_product_problem' => [
+                'buttons' => [
+                    'add_component' => 'Add Component',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'component' => 'Component',
+                        'component_placeholder' => 'Select Component',
+                        'component_name' => 'Component Name',
+                        'component_description' => 'Component Description',
+                        'status' => 'Status',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Component added successfully!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
