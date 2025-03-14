@@ -74,6 +74,8 @@ class ReturnedProductController extends Controller {
         $intent = $request->get('intent');
         if ($this->ajax()) {
             switch ($intent) {
+                case IntentEnum::WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM->value:
+                    return $this->returnedProductService->addProductProblem($returnedProduct, $request->validated());
                 case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                     return $this->returnedProductService->importProductProblemData($returnedProduct, $request->file('import_file'));
             }

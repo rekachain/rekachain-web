@@ -7,6 +7,7 @@ use App\Models\ReturnedProduct;
 use Illuminate\Http\UploadedFile;
 
 interface ReturnedProductServiceInterface extends BaseCrudServiceInterface {
+    public function addProductProblem(ReturnedProduct $returnedProduct, array $data): bool;
     public function importData(UploadedFile $file): bool;
     public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool;
 }

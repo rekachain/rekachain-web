@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Imports\ReturnedProduct\ReturnedProductImport;
+use App\Models\Component;
 use App\Models\ReturnedProduct;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
@@ -18,6 +19,22 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $keyOrModel->product_problems()->delete();
 
         return parent::delete($keyOrModel);
+    }
+
+    public function addProductProblem(ReturnedProduct $returnedProduct, array $data): bool {
+        if ($data['component_id'] === null) {
+            $component = Component::firstOrCreate([
+                'name' => $data['new_component_name'],
+                'description' => $data['new_component_description'],
+            ]);
+        } else {
+            $component = $this->componentService()->findOrFail($data['component_id']);
+        }
+        $returnedProduct->product_problems()->create([
+            'component_id' => $component->id,
+        ]);
+
+        return true;
     }
 
     public function importData(UploadedFile $file): bool {

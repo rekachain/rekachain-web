@@ -12,6 +12,12 @@ class UpdateReturnedProductRequest extends FormRequest {
     public function rules(): array {
         $intent = $this->get('intent');
         switch ($intent) {
+            case IntentEnum::WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM->value:
+                return [
+                    'component_id' => 'nullable|integer|exists:components,id',
+                    'new_component_name' => 'required_without:component_id|string',
+                    'new_component_description' => 'required_without:component_id|string',
+                ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
