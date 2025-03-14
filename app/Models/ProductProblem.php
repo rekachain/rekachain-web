@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductProblem extends Model
-{
+class ProductProblem extends Model {
     use HasFactory, HasFilterable;
 
     protected $fillable = [
@@ -17,11 +16,9 @@ class ProductProblem extends Model
         'component_id',
         'status',
     ];
-
     protected $casts = [
         'status' => ProductProblemStatusEnum::class,
     ];
-
     protected $filterable = [
         'searchs' => [
             'status',

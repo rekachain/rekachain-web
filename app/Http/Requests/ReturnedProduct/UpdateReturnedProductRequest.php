@@ -25,6 +25,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
         }
+
         return [
             'product_returnable_type' => 'nullable|string|in:' . implode(',', [
                 Panel::class,
@@ -33,7 +34,7 @@ class UpdateReturnedProductRequest extends FormRequest {
             'product_returnable_id' => [
                 'required_with:product_returnable_type',
                 'integer',
-                $this->product_returnable_type ? 'exists:' . (new $this->product_returnable_type())->getTable() . ',id' : '',
+                $this->product_returnable_type ? 'exists:' . (new $this->product_returnable_type)->getTable() . ',id' : '',
             ],
             'buyer_id' => 'nullable|integer|exists:users,id',
             'qty' => 'nullable|integer|min:1',

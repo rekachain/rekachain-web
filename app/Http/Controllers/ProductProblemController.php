@@ -30,12 +30,12 @@ class ProductProblemController extends Controller {
     public function store(StoreProductProblemRequest $request) {
         $productProblem = $this->productProblemService->create($request->validated());
         if ($this->ajax()) {
-            return ProductProblemResource::make($productProblem->load(['component','returned_product']));
+            return ProductProblemResource::make($productProblem->load(['component', 'returned_product']));
         }
     }
 
     public function show(ProductProblem $productProblem) {
-        $data = ProductProblemResource::make($productProblem->load(['component','returned_product']));
+        $data = ProductProblemResource::make($productProblem->load(['component', 'returned_product']));
 
         if ($this->ajax()) {
             return $data;
@@ -45,7 +45,7 @@ class ProductProblemController extends Controller {
     }
 
     public function edit(ProductProblem $productProblem) {
-        $data = ProductProblemResource::make($productProblem->load(['component','returned_product']));
+        $data = ProductProblemResource::make($productProblem->load(['component', 'returned_product']));
 
         return inertia('ProductProblem/Edit', compact('data'));
     }
@@ -53,7 +53,7 @@ class ProductProblemController extends Controller {
     public function update(UpdateProductProblemRequest $request, ProductProblem $productProblem) {
         $productProblem = $this->productProblemService->update($productProblem, $request->validated());
         if ($this->ajax()) {
-            return ProductProblemResource::make($productProblem->load(['component','returned_product']));
+            return ProductProblemResource::make($productProblem->load(['component', 'returned_product']));
         }
     }
 

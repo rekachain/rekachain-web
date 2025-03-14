@@ -19,7 +19,7 @@ class ReturnedProductController extends Controller {
         $perPage = $request->get('perPage', 10);
         $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => ['not' => ReturnedProductStatusEnum::REQUESTED->value]])]);
         if ($this->ajax()) {
-            return ReturnedProductResource::collection($this->returnedProductService->with(['product_returnable','buyer'])->getAllPaginated($request->query(), $perPage));
+            return ReturnedProductResource::collection($this->returnedProductService->with(['product_returnable', 'buyer'])->getAllPaginated($request->query(), $perPage));
         }
 
         return inertia('ReturnedProduct/Index');
@@ -50,12 +50,13 @@ class ReturnedProductController extends Controller {
                     return $this->returnedProductService->importData($request->file('import_file'));
             }
             $returnedProduct = $this->returnedProductService->create($request->validated());
-            return ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
+
+            return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
         }
     }
 
     public function show(ReturnedProduct $returnedProduct) {
-        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer','product_problems','product_problems.component']));
+        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'product_problems', 'product_problems.component']));
 
         if ($this->ajax()) {
             return $data;
@@ -65,7 +66,7 @@ class ReturnedProductController extends Controller {
     }
 
     public function edit(ReturnedProduct $returnedProduct) {
-        $returnedProduct = ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
+        $returnedProduct = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
 
         return inertia('ReturnedProduct/Edit', compact('returnedProduct'));
     }
@@ -80,7 +81,8 @@ class ReturnedProductController extends Controller {
                     return $this->returnedProductService->importProductProblemData($returnedProduct, $request->file('import_file'));
             }
             $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
-            return ReturnedProductResource::make($returnedProduct->load(['product_returnable','buyer']));
+
+            return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
         }
     }
 

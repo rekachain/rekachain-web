@@ -18,12 +18,13 @@ class StoreReturnedProductRequest extends FormRequest {
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
         }
+
         return [
             'product_returnable_type' => 'required_with:product_returnable_id|string|in:' . implode(',', [
                 Panel::class,
                 Component::class,
             ]),
-            'product_returnable_id' => 'required_with:product_returnable_type|integer|exists:' . (new $this->product_returnable_type())->getTable() . ',id',
+            'product_returnable_id' => 'required_with:product_returnable_type|integer|exists:' . (new $this->product_returnable_type)->getTable() . ',id',
             'buyer_id' => 'nullable|integer|exists:users,id',
             'qty' => 'nullable|integer|min:1', // if serial panel then only one?
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',

@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class ReturnedProduct extends Model
-{
+class ReturnedProduct extends Model {
     use HasFactory, HasFilterable;
 
     protected $fillable = [
@@ -40,7 +39,6 @@ class ReturnedProduct extends Model
             ],
         ],
     ];
-
     protected $casts = [
         'status' => ReturnedProductStatusEnum::class,
     ];

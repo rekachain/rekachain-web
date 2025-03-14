@@ -9,16 +9,14 @@ use App\Models\ReturnedProduct;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Database\Seeder;
 
-class ProductProblemSeeder extends Seeder
-{
+class ProductProblemSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         foreach (ReturnedProduct::where('status', '<>', ReturnedProductStatusEnum::REQUESTED->value)->get() as $product) {
             $isComponent = $product->product_returnable_type == Component::class;
-            $componentId = $isComponent ? $product->product_returnable_id : 
+            $componentId = $isComponent ? $product->product_returnable_id :
                 CarriagePanel::wherePanelId($product->product_returnable_id)->inRandomOrder()->first()
                     ->carriage_panel_components()->inRandomOrder()->first()->component_id;
             foreach (range(1, $isComponent ? 1 : rand(1, 3)) as $i) {
