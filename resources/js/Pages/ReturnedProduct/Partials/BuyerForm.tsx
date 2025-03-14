@@ -41,7 +41,7 @@ export default function ({
     }, []);
 
     useEffect(() => {
-        void fetchUsers({ search: debouncedSearchUser });
+        void fetchUsers({ search: debouncedSearchUser, disable_relation_search: 1 });
     }, [debouncedSearchUser, fetchUsers]);
 
     useEffect(() => {
@@ -121,6 +121,7 @@ export default function ({
                             id='user'
                             fetchData={fetchUsers}
                             data={userResponse?.data}
+                            disabledSearchState={false}
                         />
                         <Button
                             variant='ghost'
