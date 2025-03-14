@@ -16,14 +16,11 @@ import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { componentService } from '@/Services/componentService';
-import { progressService } from '@/Services/progressService';
-import { STYLING } from '@/Support/Constants/styling';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import {
     ReturnedProductResource,
     ComponentResource,
-    ProgressResource,
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
@@ -33,6 +30,7 @@ import { Loader2, RefreshCcw } from 'lucide-react';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
 import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 const AddProductProblem = ({
     componentResource,
@@ -122,6 +120,21 @@ const AddProductProblem = ({
         );
     });
 
+    const [localizedStatuses, setLocalizedStatuses] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const fetchLocalizedStatuses = async () => {
+            try {
+                const labels = await fetchEnumLabels('ProductProblemStatusEnum');
+                setLocalizedStatuses(labels);
+            } catch (error) {
+                console.error('Failed to fetch localized statuses:', error);
+            }
+        };
+
+        fetchLocalizedStatuses();
+    }, [t]);
+
     return (
         <Dialog>
             <DialogTrigger
@@ -187,7 +200,7 @@ const AddProductProblem = ({
                                 disabled={data.component_id !== null}
                                 className='rounded p-2'
                             />
-                            {/* <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-2'>
                                 <Label>
                                     {t(
                                         'pages.returned_product.partials.add_product_problem.dialogs.fields.status',
@@ -205,16 +218,16 @@ const AddProductProblem = ({
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                            {Object.values(ProductProblemStatusEnum).map((status) => (
-                                                <SelectItem value={status} key={status}>
-                                                    {t(`product_problem_status.${status}`)}
-                                                </SelectItem>
-                                            ))}
+                                                {Object.entries(localizedStatuses).map(([status, label]) => (
+                                                    <SelectItem value={status} key={status}>
+                                                        {label}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
                                 </div>
-                            </div> */}
+                            </div>
                         </div>
 
                         <Button type='submit' disabled={loading}>
