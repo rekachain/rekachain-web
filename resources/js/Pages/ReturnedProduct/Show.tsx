@@ -5,7 +5,7 @@ import { checkPermission } from "@/Helpers/permissionHelper";
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ROUTES } from "@/Support/Constants/routes";
 import { PERMISSION_ENUM } from "@/Support/Enums/permissionEnum";
-import { ProductProblemResource, ReturnedProductResource } from "@/Support/Interfaces/Resources";
+import { ComponentResource, ProductProblemResource, ReturnedProductResource } from "@/Support/Interfaces/Resources";
 import { Head, Link } from "@inertiajs/react";
 import { Separator } from "@radix-ui/react-select";
 import ProductProblemImport from "./Partials/ProductProblemImport";
@@ -13,20 +13,39 @@ import { useLaravelReactI18n } from "laravel-react-i18n";
 import { withLoading } from "@/Utils/withLoading";
 import { productProblemService } from "@/Services/productProblemService";
 import { useSuccessToast } from "@/Hooks/useToast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { returnedProductService } from "@/Services/returnedProductService";
+import AddProductProblem from "./Partials/AddProductProblem";
+import { PaginateResponse } from "@/Support/Interfaces/Others";
+import { componentService } from "@/Services/componentService";
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
 
     const [productProblemData, setProductProblemData] = useState<ProductProblemResource[]>(data.product_problems ?? []);
+    const [componentResource, setComponentResource] =
+        useState<PaginateResponse<ComponentResource>>();
+
+    const fetchInitialComponentData = withLoading(async () => {
+        const res = await componentService.getAll();
+        setComponentResource(res);
+    });
+
+    useEffect(() => {
+        void fetchInitialComponentData();
+    }, []);
     
     const handleProductProblemDeletion = withLoading(async (id: number) => {
         await productProblemService.delete(id);
-        const newProductProblems = await returnedProductService.get(data.id);
-        setProductProblemData(newProductProblems.product_problems ?? []);
+        handleSyncReturnedProduct();
         void useSuccessToast(t('pages.returned_product.show.messages.deleted_problem'));
     });
+
+    const handleSyncReturnedProduct = withLoading(async () => {
+        const newProductProblems = await returnedProductService.get(data.id);
+        setProductProblemData(newProductProblems.product_problems ?? []);
+    });
+    
     return (
         <>
             <Head title={'Detail Returned Product'} />
@@ -91,13 +110,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             <h1 className='text-xl font-bold'>
                                 {'Product Problems'}
                             </h1>
-                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) && (
-                                <Link
-                                    href={route(`${ROUTES.PRODUCT_PROBLEMS}.create`)}
-                                    className={buttonVariants({ variant: 'default' })}
-                                >
-                                    {'Add Problem'}
-                                </Link>
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) && componentResource && (
+                                <AddProductProblem componentResource={componentResource} setComponentResource={setComponentResource} returnedProduct={data} handleSyncReturnedProduct={handleSyncReturnedProduct} />
                             )}
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && <ProductProblemImport returnedProductId={data.id} />}
                         </div>

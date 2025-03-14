@@ -5,6 +5,27 @@ import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export const returnedProductService = {
     ...serviceFactory<ReturnedProductResource>(ROUTES.RETURNED_PRODUCTS),
+    addProductProblem: async (
+        returnedProductId: number,
+        componentId: number | null,
+        componentName: string,
+        componentDescription: string,
+    ) => {
+        await window.axios.post(
+            route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
+            {
+                component_id: componentId,
+                new_component_name: componentName,
+                new_component_description: componentDescription,
+            },
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM,
+                },
+            },
+        );
+    },
     downloadImportReturnedProductTemplate: async () => {
         window.location.href = '/assets/excel-templates/imports/aftersales/returned-product-import.xlsx';
     },
