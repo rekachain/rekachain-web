@@ -214,7 +214,9 @@ const AddProductProblem = ({
                                         }
                                     >
                                         <SelectTrigger>
-                                            <SelectValue placeholder='Pilih Status' />
+                                            <SelectValue>
+                                                {localizedStatuses[data.status || ProductProblemStatusEnum.DRAFT] || 'Pilih Status'}
+                                            </SelectValue>
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
