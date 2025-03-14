@@ -130,6 +130,13 @@ interface GenericDataSelectorProps<T extends Resource> {
      * @param searchTerm
      */
     onSearchChange?: (searchTerm: string) => void;
+
+    /**
+     * Disable the search state
+     * If false, the search input will not be disabled
+     * Default is true
+     */
+    disabledSearchState?: boolean;
 }
 
 const GenericDataSelector = <T extends Resource>({
@@ -148,6 +155,7 @@ const GenericDataSelector = <T extends Resource>({
     customLabel,
     customSearchPlaceholder,
     onSearchChange,
+    disabledSearchState = true,
 }: GenericDataSelectorProps<T>) => {
     const { t } = useLaravelReactI18n();
     const [searchTerm, setSearchTerm] = useState(initialSearch ?? '');
@@ -223,7 +231,7 @@ const GenericDataSelector = <T extends Resource>({
                             t('components.generic_data_selector.fields.search_placeholder')
                         }
                         onInput={handleSearchChange}
-                        disabled={isFetching}
+                        disabled={disabledSearchState && isFetching}
                         className='border-none focus:ring-0'
                     />
                     <CommandList>
