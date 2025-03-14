@@ -10,6 +10,7 @@ export const returnedProductService = {
         componentId: number | null,
         componentName: string,
         componentDescription: string,
+        selectedStatus: string,
     ) => {
         await window.axios.post(
             route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
@@ -17,6 +18,7 @@ export const returnedProductService = {
                 component_id: componentId,
                 new_component_name: componentName,
                 new_component_description: componentDescription,
+                status: selectedStatus,
             },
             {
                 params: {

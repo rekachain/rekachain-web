@@ -5,6 +5,7 @@ namespace App\Http\Requests\ReturnedProduct;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\ProductProblemStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -17,6 +18,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'component_id' => 'nullable|integer|exists:components,id',
                     'new_component_name' => 'required_without:component_id|string',
                     'new_component_description' => 'required_without:component_id|string',
+                    'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [

@@ -109,6 +109,7 @@ const AddProductProblem = ({
             data.component_id,
             data.new_component_name,
             data.new_component_description,
+            data.status,
         );
         handleResetAddComponentSelection();
         await handleSyncReturnedProduct();

@@ -32,6 +32,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         }
         $returnedProduct->product_problems()->create([
             'component_id' => $component->id,
+            'status' => $data['status'],
         ]);
 
         return true;
