@@ -96,8 +96,8 @@ const AddRequest = () => {
                                 {t('pages.returned_product.create.fields.type')}
                             </h2>
                             <RadioGroup
-                                defaultValue={'component'}
                                 onValueChange={(v) => setData('product_returnable_type', v)}
+                                defaultValue={'component'}
                             >
                                 <div key={'component_type'} className='flex items-center space-x-2'>
                                     <RadioGroupItem
@@ -132,12 +132,12 @@ const AddRequest = () => {
                                         renderItem={(item: ComponentResource) =>
                                             `${item.name}`
                                         } // Customize how to display the item
+                                        popoverContentClassName='w-[400px] p-0'
                                         placeholder={'Pilih Komponen'}
                                         nullable
                                         id='component_product_returnable_id'
                                         fetchData={fetchComponents}
                                         buttonClassName='mt-1'
-                                        popoverContentClassName='w-[400px] p-0'
                                     />
                                 </>
                             ) : (
@@ -152,12 +152,12 @@ const AddRequest = () => {
                                         renderItem={(item: PanelResource) =>
                                             `${item.name}`
                                         } // Customize how to display the item
+                                        popoverContentClassName='w-[400px] p-0'
                                         placeholder={'Pilih Panel'}
                                         nullable
                                         id='panel_product_returnable_id'
                                         fetchData={fetchPanels}
                                         buttonClassName='mt-1'
-                                        popoverContentClassName='w-[400px] p-0'
                                     />
                                 </>
                             )}
@@ -195,7 +195,7 @@ const AddRequest = () => {
                             />
                         </div>
 
-                        <Button disabled={loading} form='returned-product-form' className='mt-4'>
+                        <Button form='returned-product-form' disabled={loading} className='mt-4'>
                             {t('pages.returned_product.create.buttons.submit')}
                         </Button>
                     </DialogHeader>

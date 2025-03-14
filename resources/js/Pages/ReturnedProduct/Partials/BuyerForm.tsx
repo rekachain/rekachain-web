@@ -120,8 +120,8 @@ export default function ({
                             initialSearch={buyer?.name}
                             id='user'
                             fetchData={fetchUsers}
-                            data={userResponse?.data}
                             disabledSearchState={false}
+                            data={userResponse?.data}
                         />
                         <Button
                             variant='ghost'

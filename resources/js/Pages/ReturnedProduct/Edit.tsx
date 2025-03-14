@@ -77,8 +77,8 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                             {t('pages.returned_product.edit.fields.type')}
                         </h2>
                         <RadioGroup
-                            defaultValue={data.product_returnable_type}
                             onValueChange={(v) => setData('product_returnable_type', v)}
+                            defaultValue={data.product_returnable_type}
                         >
                             <div key={'component_type'} className='flex items-center space-x-2'>
                                 <RadioGroupItem
@@ -113,13 +113,13 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                                     renderItem={(item: ComponentResource) =>
                                         `${item.name}`
                                     } // Customize how to display the item
+                                    popoverContentClassName='w-[400px] p-0'
                                     placeholder={'Pilih Komponen'}
-                                    initialSearch={returnedProduct.product_return?.name}
                                     nullable
+                                    initialSearch={returnedProduct.product_return?.name}
                                     id='component_product_returnable_id'
                                     fetchData={fetchComponents}
                                     buttonClassName='mt-1'
-                                    popoverContentClassName='w-[400px] p-0'
                                 />
                             </>
                         ) : (
@@ -134,13 +134,13 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                                     renderItem={(item: PanelResource) =>
                                         `${item.name}`
                                     } // Customize how to display the item
+                                    popoverContentClassName='w-[400px] p-0'
                                     placeholder={'Pilih Panel'}
-                                    initialSearch={returnedProduct.product_return?.name}
                                     nullable
+                                    initialSearch={returnedProduct.product_return?.name}
                                     id='panel_product_returnable_id'
                                     fetchData={fetchPanels}
                                     buttonClassName='mt-1'
-                                    popoverContentClassName='w-[400px] p-0'
                                 />
                             </>
                         )}
@@ -197,7 +197,7 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                         </AccordionItem>
                     </Accordion>
 
-                    <Button disabled={loading} form='returned-product-form' className='mt-4'>
+                    <Button form='returned-product-form' disabled={loading} className='mt-4'>
                         {t('pages.returned_product.edit.buttons.submit')}
                     </Button>
                 </div>

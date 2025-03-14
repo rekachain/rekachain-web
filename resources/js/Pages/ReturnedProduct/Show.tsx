@@ -98,7 +98,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     <p>{data.updated_at}</p>
                                 </div>
                             </div>
-                            {false && (
+                            {false && ( //TODO: Implement evidence for mobile feature
                                 <div className='mt-5 flex flex-col items-center gap-3 text-white'>
                                     <div className='bg-white p-3'>
                                         <img width={200} src={'http://127.0.0.1:8000/storage/trainset_attachments/qr_images/1.svg'} alt='QR Code' />
@@ -112,7 +112,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                 {'Product Problems'}
                             </h1>
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) && componentResource && (
-                                <AddProductProblem componentResource={componentResource} setComponentResource={setComponentResource} returnedProduct={data} handleSyncReturnedProduct={handleSyncReturnedProduct} />
+                                <AddProductProblem setComponentResource={setComponentResource} returnedProduct={data} handleSyncReturnedProduct={handleSyncReturnedProduct} componentResource={componentResource} />
                             )}
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && <ProductProblemImport returnedProductId={data.id} />}
                         </div>
@@ -155,8 +155,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) && (
                                                 <UpdateProductProblemStatus
                                                     productProblemId={productProblem.id}
-                                                    currentStatus={productProblem.status}
-                                                    handleSyncReturnedProduct={handleSyncReturnedProduct}>
+                                                    handleSyncReturnedProduct={handleSyncReturnedProduct}
+                                                    currentStatus={productProblem.status}>
                                                 </UpdateProductProblemStatus>
                                             )}
                                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_DELETE) && (
