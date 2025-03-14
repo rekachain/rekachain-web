@@ -14,6 +14,7 @@ class DivisionSeeder extends Seeder {
             'Mekanik',
             'Elektrik',
             'Assembly',
+            'Aftersales',
         ];
 
         foreach ($divisions as $division) {

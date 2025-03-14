@@ -2355,4 +2355,207 @@ return [
             ],
         ],
     ],
+    'returned_product' => [
+        'index' => [
+            'title' => 'Return Product',
+            'buttons' => [
+                'create' => 'Create Return',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Return',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'type' => 'Type',
+            ],
+            'buttons' => [
+                'submit' => 'Create Return',
+            ],
+            'messages' => [
+                'created' => 'Return Product created successfully!',
+            ],
+        ],
+        'show' => [
+            'title' => 'Return Product: :name',
+            'breadcrumbs' => [
+                'home' => 'Home',
+                'return' => 'Returned Products',
+                'show' => 'Return Product: :name',
+            ],
+            'buttons' => [
+                'edit' => 'Edit Return',
+                'delete' => 'Delete Return',
+                'import' => 'Import Return',
+            ],
+            'messages' => [
+                'deleted_problem' => 'Product Problem deleted successfully!',
+            ],
+            'labels' => [
+                'serial_number' => 'Serial Number',
+                'return_quantity' => 'Return Quantity',
+                'return_date' => 'Return Date',
+                'update_date' => 'Updated Date',
+            ],
+            'table_headers' => [
+                'component_name' => 'Component Name',
+                'description' => 'Description',
+                'status' => 'Status',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Return: :name',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'type' => 'Type',
+            ],
+            'buttons' => [
+                'submit' => 'Update Return',
+            ],
+            'messages' => [
+                'updated' => 'Return Product updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'returned_product' => [
+                'messages' => [
+                    'deleted' => 'Return Product deleted successfully!',
+                ],
+            ],
+            'buyer_form' => [
+                'fields' => [
+                    'buyer' => 'Customer',
+                    'name' => 'Name',
+                    'email' => 'Email',
+                    'phone_number' => 'Phone Number',
+                    'password' => 'Password',
+                ],
+                'placeholders' => [
+                    'buyer' => 'Select Customer...',
+                    'name' => 'Input Name...',
+                    'email' => 'Input Email...',
+                    'phone_number' => 'Input Phone Number...',
+                    'password' => 'Input Password...',
+                ],
+                'messages' => [
+                    'created' => 'Buyer created successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Return Product imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Return',
+                    'description' => 'Import Returned Product from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Return',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Return',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Return Product imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Return',
+                ],
+            ],
+            'product_problem_import' => [
+                'messages' => [
+                    'imported' => 'Product Problems imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Problems',
+                    'description' => 'Import Product Problems from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Problems',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Problems',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Product Problems imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Problems',
+                ],
+            ],
+            'add_product_problem' => [
+                'buttons' => [
+                    'add_component' => 'Add Component',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'component' => 'Component',
+                        'component_placeholder' => 'Select Component',
+                        'component_name' => 'Component Name',
+                        'component_description' => 'Component Description',
+                        'status' => 'Status',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Component added successfully!',
+                ],
+            ],
+            'update_product_problem_status' => [
+                'buttons' => [
+                    'update_status' => 'Update Status',
+                ],
+                'dialog' => [
+                    'title' => 'Update Status',
+                    'description' => 'Update the status of the selected Product Progress.',
+                    'select_placeholder' => 'Select Status',
+                ],
+                'messages' => [
+                    'updated' => 'Product status updated successfully!',
+                ],
+            ],
+            'partials' => [
+                'returned_product_table' => [
+                    'headers' => [
+                        'serial_number' => 'Serial Number',
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Component',
+                        ],
+                    ],
+                ],
+                'returned_product_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'description' => 'Description: :description',
+                        'type' => 'Type: :type',
+                        'created_at' => 'Created At: :created_at',
+                    ],
+                ],
+            ],
+        ],
+        'requested_return' => [
+            'index' => [
+                'title' => 'Requested Product Returns',
+                'buttons' => [
+                    'create' => 'Create Request',
+                ],
+            ],
+        ],
+    ],
 ];

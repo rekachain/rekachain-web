@@ -16,10 +16,12 @@ import {
     RiDivideLine,
     RiExpandRightLine,
     RiFeedbackLine,
+    RiHandHeartLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
     RiLockUnlockLine,
+    RiLoopLeftLine,
     RiSettings3Line,
     RiShieldLine,
     RiStackLine,
@@ -288,6 +290,25 @@ export default function Sidebar() {
                         children="Input Dokumen Pendukung"
                         icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
+                    </SidebarMenu>
+                    <SidebarMenu
+                        title={'AFTERSALES'}
+                        bordered={checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_READ])}
+                    >
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                            <SidebarLink
+                                title={'Returned Product'}
+                                routeName={`${ROUTES.RETURNED_PRODUCTS}.index`}
+                                icon={<RiLoopLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                            <SidebarLink
+                                title={'Return Request'}
+                                routeName={`${ROUTES.REQUESTED_RETURNS}.index`}
+                                icon={<RiHandHeartLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                     </SidebarMenu>
                     <SidebarMenu
                         title={t('components.sidebar.menus.support')}

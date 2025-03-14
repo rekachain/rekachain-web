@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Enums\RoleEnum;
 use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
@@ -78,6 +79,20 @@ function actAsPpcPengendalian(): TestCase {
     $role = Role::firstOrCreate(['name' => 'PPC Pengendalian']);
     $user = User::factory(['name' => 'PPC Pengendalian'])->create();
     $user->assignRole($role);
+
+    return test()->actingAs($user);
+}
+
+function actAsWorkerAftersales(): TestCase {
+    $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_AFTERSALES->value]);
+    $user = User::factory(['name' => 'Aftersales'])->create();
+    $user->assignRole($role);
+
+    return test()->actingAs($user);
+}
+
+function actAsBuyer(): TestCase {
+    $user = User::factory(['name' => 'Buyer I'])->create();
 
     return test()->actingAs($user);
 }
