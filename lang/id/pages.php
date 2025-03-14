@@ -2378,13 +2378,29 @@ return [
         ],
         'show' => [
             'title' => 'Retur Produk: :name',
+            'breadcrumbs' => [
+                'home' => 'Beranda',
+                'return' => 'Retur Produk',
+                'show' => 'Retur Produk: :name',
+            ],
             'buttons' => [
                 'edit' => 'Edit Retur',
                 'delete' => 'Hapus Retur',
-                'import' => 'Import Retur',
+                'import' => 'Impor Retur',
             ],
             'messages' => [
                 'deleted_problem' => 'Masalah Produk berhasil dihapus!',
+            ],
+            'labels' => [
+                'serial_number' => 'Nomor Seri',
+                'return_quantity' => 'Jumlah Retur',
+                'return_date' => 'Tanggal Retur',
+                'update_date' => 'Tanggal Diperbarui',
+            ],
+            'table_headers' => [
+                'component_name' => 'Nama Komponen',
+                'description' => 'Deskripsi',
+                'status' => 'Status',
             ],
         ],
         'edit' => [
@@ -2428,11 +2444,11 @@ return [
             ],
             'import' => [
                 'messages' => [
-                    'imported' => 'Retur Produk berhasil diimport!',
+                    'imported' => 'Retur Produk berhasil diimpor!',
                 ],
                 'dialogs' => [
-                    'title' => 'Import Retur',
-                    'description' => 'Import Retur Produk dari Excel file',
+                    'title' => 'Impor Retur',
+                    'description' => 'Impor Retur Produk dari file Excel',
                     'fields' => [
                         'download_template' => 'Unduh Template',
                         'file' => 'File',
@@ -2444,19 +2460,19 @@ return [
                         'processing' => 'Sedang memproses...',
                     ],
                     'messages' => [
-                        'imported' => 'Retur Produk berhasil diimport!',
+                        'imported' => 'Retur Produk berhasil diimpor!',
                     ],
                 ],
                 'buttons' => [
-                    'import' => 'Import Retur',
+                    'import' => 'Impor Retur',
                 ],
             ],
             'product_problem_import' => [
                 'messages' => [
-                    'imported' => 'Masalah Produk berhasil diimport!',
+                    'imported' => 'Masalah Produk berhasil diimpor!',
                 ],
                 'dialogs' => [
-                    'title' => 'Import Problem',
+                    'title' => 'Impor Problem',
                     'description' => 'Import Masalah Produk dari Excel file',
                     'fields' => [
                         'download_template' => 'Unduh Template',
@@ -2469,11 +2485,11 @@ return [
                         'processing' => 'Sedang memproses...',
                     ],
                     'messages' => [
-                        'imported' => 'Masalah Produk berhasil diimport!',
+                        'imported' => 'Masalah Produk berhasil diimpor!',
                     ],
                 ],
                 'buttons' => [
-                    'import' => 'Import Problem',
+                    'import' => 'Impor Masalah',
                 ],
             ],
             'add_product_problem' => [
@@ -2522,7 +2538,7 @@ return [
         ],
         'requested_return' => [
             'index' => [
-                'title' => 'Retur Produk yang Diminta',
+                'title' => 'Permintaan Retur Produk',
                 'buttons' => [
                     'create' => 'Buat Permintaan',
                 ],

@@ -48,7 +48,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
     
     return (
         <>
-            <Head title={'Detail Returned Product'} />
+            <Head title={t('pages.returned_product.show.title')} />
             <AuthenticatedLayout>
                 <div key={data.id} className='text-black dark:text-white m-5'>
                     <div>
@@ -56,7 +56,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             <BreadcrumbList>
                                 <BreadcrumbItem>
                                     <Link href={route(`${ROUTES.RETURNED_PRODUCTS}.index`)}>
-                                        {'Returned Products'}
+                                        {t('pages.returned_product.show.breadcrumbs.return')}
                                     </Link>
                                 </BreadcrumbItem>
                                 <BreadcrumbSeparator />
@@ -67,18 +67,18 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
-                        <h1 className='text-page-header my-4'>{'Detail Returned Product'}</h1>
+                        <h1 className='text-page-header my-4'>{t('pages.returned_product.show.title',{ name: data.product_return?.name || ''})}</h1>
                         <div className='grid grid-cols-1 md:grid-cols-3'>
                             <div className='mt-5 flex flex-col gap-3'>
                                 <div className='mb-2'>
                                     <p className='font-bold'>
-                                        {'Nomor Serial'}
+                                        {t('pages.returned_product.show.labels.serial_number')}
                                     </p>
                                     <p>{data.serial_number || '-'}</p>
                                 </div>
                                 <div className=''>
                                     <p className='font-bold'>
-                                        {'Jumlah Pengembalian'}
+                                        {t('pages.returned_product.show.labels.return_quantity')}
                                     </p>
                                     <p>{data.qty}</p>
                                 </div>
@@ -86,13 +86,13 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             <div className='mt-5 flex flex-col gap-3'>
                                 <div className=''>
                                     <p className='font-bold'>
-                                        {'Tanggal Pengembalian'}
+                                        {t('pages.returned_product.show.labels.return_date')}
                                     </p>
                                     <p>{data.created_at}</p>
                                 </div>
                                 <div className=''>
                                     <p className='font-bold'>
-                                        {'Tanggal Pembaruan'}
+                                        {t('pages.returned_product.show.labels.update_date')}
                                     </p>
                                     <p>{data.updated_at}</p>
                                 </div>
@@ -123,13 +123,13 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                 <TableHeader className='dark:bg-background-dark sticky top-0 bg-background'>
                                     <TableRow>
                                         <TableHead className=''>
-                                            {'Nama Komponen'}
+                                            {t('pages.returned_product.show.table_headers.component_name')}
                                         </TableHead>
                                         <TableHead>
-                                            {'Deskripsi'}
+                                            {t('pages.returned_product.show.table_headers.description')}
                                         </TableHead>
                                         <TableHead>
-                                            {'Status'}
+                                            {t('pages.returned_product.show.table_headers.status')}
                                         </TableHead>
                                         <TableHead></TableHead>
                                     </TableRow>

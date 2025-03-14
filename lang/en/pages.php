@@ -2378,6 +2378,11 @@ return [
         ],
         'show' => [
             'title' => 'Return Product: :name',
+            'breadcrumbs' => [
+                'home' => 'Home',
+                'return' => 'Returned Products',
+                'show' => 'Return Product: :name',
+            ],
             'buttons' => [
                 'edit' => 'Edit Return',
                 'delete' => 'Delete Return',
@@ -2385,6 +2390,17 @@ return [
             ],
             'messages' => [
                 'deleted_problem' => 'Product Problem deleted successfully!',
+            ],
+            'labels' => [
+                'serial_number' => 'Serial Number',
+                'return_quantity' => 'Return Quantity',
+                'return_date' => 'Return Date',
+                'update_date' => 'Updated Date',
+            ],
+            'table_headers' => [
+                'component_name' => 'Component Name',
+                'description' => 'Description',
+                'status' => 'Status',
             ],
         ],
         'edit' => [
