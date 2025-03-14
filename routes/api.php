@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ApiTrainsetController;
 use App\Http\Controllers\Api\ApiUserController;
 use App\Http\Controllers\Api\ApiWorkDayController;
 use App\Http\Controllers\Api\ApiWorkDayTimeController;
+use App\Http\Controllers\Api\EnumController;
 use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['as' => 'api.'], function () {
     Route::post('login', [ApiAuthController::class, 'login'])->name('login');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+    Route::get('/enums/{enumName}', [EnumController::class, 'getEnumLabels']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);

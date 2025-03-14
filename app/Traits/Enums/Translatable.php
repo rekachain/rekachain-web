@@ -8,4 +8,8 @@ trait Translatable {
 
         return __('enums.' . $key);
     }
+
+    public static function getLocalizedLabels(): array {
+        return array_map(fn($case) => $case->getLabel(), self::cases());
+    }
 }
