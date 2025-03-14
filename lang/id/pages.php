@@ -2509,6 +2509,19 @@ return [
                     'created' => 'Komponen berhasil ditambahkan!',
                 ],
             ],
+            'update_product_problem_status' => [
+                'buttons' => [
+                    'update_status' => 'Perbarui Status',
+                ],
+                'dialog' => [
+                    'title' => 'Perbarui Status',
+                    'description' => 'Perbarui status dari Progress Produk yang dipilih.',
+                    'select_placeholder' => 'Pilih Status',
+                ],
+                'messages' => [
+                    'updated' => 'Status Produk berhasil diperbarui!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [

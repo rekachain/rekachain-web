@@ -18,6 +18,7 @@ import { returnedProductService } from "@/Services/returnedProductService";
 import AddProductProblem from "./Partials/AddProductProblem";
 import { PaginateResponse } from "@/Support/Interfaces/Others";
 import { componentService } from "@/Services/componentService";
+import UpdateProductProblemStatus from "./Partials/UpdateProductProblemStatus";
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
@@ -150,15 +151,14 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                 >
                                                     {t('action.show')}
                                                 </Link>
-                                            )}
-                                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) && (
-                                                <Link
-                                                    href={route(`${ROUTES.PRODUCT_PROBLEMS}.edit`, productProblem.id)}
-                                                    className={buttonVariants({ variant: 'link' })}
-                                                >
-                                                    {t('action.edit')}
-                                                </Link>
                                             )} */}
+                                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) && (
+                                                <UpdateProductProblemStatus
+                                                    productProblemId={productProblem.id}
+                                                    currentStatus={productProblem.status}
+                                                    handleSyncReturnedProduct={handleSyncReturnedProduct}>
+                                                </UpdateProductProblemStatus>
+                                            )}
                                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_DELETE) && (
                                                 <Button
                                                     variant='link'

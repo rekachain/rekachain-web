@@ -2509,6 +2509,19 @@ return [
                     'created' => 'Component added successfully!',
                 ],
             ],
+            'update_product_problem_status' => [
+                'buttons' => [
+                    'update_status' => 'Update Status',
+                ],
+                'dialog' => [
+                    'title' => 'Update Status',
+                    'description' => 'Update the status of the selected Product Progress.',
+                    'select_placeholder' => 'Select Status',
+                ],
+                'messages' => [
+                    'updated' => 'Product status updated successfully!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
