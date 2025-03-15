@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('image_path')->nullable();
             $table->string('status')->nullable();
+            $table->string('kpm')->nullable();
+            $table->string('panel')->nullable();
             $table->timestamps();
         });
     }

@@ -32,7 +32,9 @@ class ScanFaceController extends Controller
         $data = ScanFace::create([
            'user_id' => $request->user_id,
            'image_path' => $request->image_path,
-           'status' => $request->status  
+           'kpm' => $request->kpm,
+           'panel' => $request->panel,
+           'status' => $request->status
         ]);
 
         return $data;

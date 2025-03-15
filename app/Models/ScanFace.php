@@ -12,6 +12,8 @@ class ScanFace extends Model
         'user_id',
         'image_path',
         'status',
+        'kpm',
+        'panel',
     ];
 
     use HasFactory;
