@@ -16,6 +16,8 @@ class ScanFaceResource extends JsonResource {
             'id' => $this->id,
             'user' => new UserResource($this->user),
             'step' => new StepResource($this->user->step),
+            'kpm' => $this->kpm,
+            'panel' => $this->panel,
             'image_path' => $this->image_path,
             'status' => $this->status,
         ];

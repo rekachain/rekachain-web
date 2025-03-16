@@ -58,6 +58,7 @@ require __DIR__ . '/auth.php';
 Route::redirect('/', 'dashboard');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/scan-faces', 'ScanFaceController@store')->withoutMiddleware(['csrf']);
+Route::get('/scan-faces', [ScanFaceController::class, 'index'])->name('scanFace.index');
 Route::resource('/scan-faces', ScanFaceController::class);
 
 Route::middleware('auth')->group(function () {

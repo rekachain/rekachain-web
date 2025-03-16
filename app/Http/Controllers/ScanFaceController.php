@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ScanFaceResource;
+use Inertia\Inertia;
 use App\Models\ScanFace;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ScanFaceController extends Controller
@@ -12,8 +15,11 @@ class ScanFaceController extends Controller
      */
     public function index()
     {
-        $data =  ScanFace::all();
-        return view('vendor.l5-swagger.scanFace', compact('data'));
+        $data = ScanFaceResource::collection(ScanFace::get());
+
+        return Inertia::render('ScanFace/Index', [
+            'data' => $data
+        ]);
     }
 
     /**

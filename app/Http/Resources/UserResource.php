@@ -39,6 +39,8 @@ class UserResource extends JsonResource {
             // only return the first, and only role
             'role' => $role,
             'role_id' => $this->roles()->first()?->id,
+            'role_name' => $this->roles()->first()?->name,
+            // dd($this->roles),
             'workstation_id' => $this->workstation_id,
             'step_id' => $this->step_id,
             'workstation' => WorkstationResource::make($this->whenLoaded('workstation')),
