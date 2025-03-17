@@ -6,6 +6,7 @@ import {
     BreadcrumbSeparator,
 } from '@/Components/UI/breadcrumb';
 import { Button } from '@/Components/UI/button';
+import { Dialog, DialogContent, DialogTrigger } from '@/Components/UI/dialog';
 import {
     Table,
     TableBody,
@@ -120,19 +121,26 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     <p>{data.updated_at}</p>
                                 </div>
                             </div>
-                            {false && ( //TODO: Implement evidence for mobile feature
-                                <div className='mt-5 flex flex-col items-center gap-3 text-white'>
-                                    <div className='bg-white p-3'>
+                            <div className='mt-5 flex flex-col items-center gap-3 text-white'>
+                                <Dialog>
+                                    <DialogTrigger className='max-h-fit max-w-fit' asChild>
+                                        <div className='cursor-pointer bg-white p-3'>
+                                            <img
+                                                src={data.image}
+                                                className='max-h-[200px] max-w-[200px]'
+                                                alt='Evidence'
+                                            />
+                                        </div>
+                                    </DialogTrigger>
+                                    <DialogContent className='max-h-screen max-w-fit'>
                                         <img
-                                            width={200}
-                                            src={
-                                                'http://127.0.0.1:8000/storage/trainset_attachments/qr_images/1.svg'
-                                            }
-                                            alt='QR Code'
+                                            src={data.image}
+                                            className='max-h-screen max-w-full'
+                                            alt='Evidence Full'
                                         />
-                                    </div>
-                                </div>
-                            )}
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
                         </div>
                         <Separator className='my-6 h-1' />
                         <div className='mt-3 flex items-center gap-3'>

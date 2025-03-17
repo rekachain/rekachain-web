@@ -5,6 +5,7 @@ export interface ProductProblem {
     returned_product_id: number;
     component_id: number;
     status: ProductProblemStatusEnum;
+    image_path: string;
     created_at: string;
     updated_at: string;
 }

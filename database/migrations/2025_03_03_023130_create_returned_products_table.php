@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->foreignId('serial_panel_id')->nullable()->constrained();
             $table->bigInteger('serial_number')->nullable()->unique();
             $table->enum('status', ReturnedProductStatusEnum::toArray())->default(ReturnedProductStatusEnum::DRAFT->value);
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

@@ -15,6 +15,7 @@ class ProductProblem extends Model {
         'returned_product_id',
         'component_id',
         'status',
+        'image_path',
     ];
     protected $casts = [
         'status' => ProductProblemStatusEnum::class,
@@ -41,5 +42,9 @@ class ProductProblem extends Model {
 
     public function component(): BelongsTo {
         return $this->belongsTo(Component::class);
+    }
+
+    public function getImageAttribute() {
+        return $this->image_path ? asset('storage/' . $this->image_path) : asset('assets/images/no-image.png');
     }
 }

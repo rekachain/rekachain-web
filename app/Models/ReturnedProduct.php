@@ -21,6 +21,7 @@ class ReturnedProduct extends Model {
         'serial_panel_id',
         'serial_number',
         'status',
+        'image_path',
     ];
     protected $filterable = [
         'searchs' => [],
@@ -57,5 +58,9 @@ class ReturnedProduct extends Model {
 
     public function product_problems(): HasMany {
         return $this->hasMany(ProductProblem::class);
+    }
+
+    public function getImageAttribute() {
+        return $this->image_path ? asset('storage/' . $this->image_path) : asset('assets/images/no-image.png');
     }
 }
