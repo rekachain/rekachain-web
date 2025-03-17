@@ -9,6 +9,7 @@ export interface ReturnedProduct {
     serial_panel_id: number | null;
     serial_number: number | null;
     status: ReturnedProductStatusEnum;
+    image_path: string;
     created_at: string;
     updated_at: string;
 }

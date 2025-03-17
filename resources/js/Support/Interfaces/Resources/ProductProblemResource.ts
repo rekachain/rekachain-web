@@ -9,4 +9,5 @@ export interface ProductProblemResource extends Resource, ProductProblem {
     returned_product?: ReturnedProductResource;
     component?: ComponentResource;
     localized_status: string;
+    image: string;
 }

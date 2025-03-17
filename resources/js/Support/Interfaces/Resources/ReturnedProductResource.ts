@@ -14,4 +14,5 @@ export interface ReturnedProductResource extends Resource, ReturnedProduct {
     serial_panel?: SerialPanelResource;
     product_problems?: ProductProblemResource[];
     localized_status: string;
+    image: string;
 }
