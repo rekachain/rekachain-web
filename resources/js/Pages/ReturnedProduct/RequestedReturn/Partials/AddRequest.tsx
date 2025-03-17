@@ -18,27 +18,31 @@ import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { ComponentResource, PanelResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { router, useForm } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, memo, useCallback, useEffect } from 'react';
 
 const AddRequest = () => {
     const { t } = useLaravelReactI18n();
+    const auth = usePage().props.auth;
     const { data, setData } = useForm<{
         product_returnable_id: number | null;
         product_returnable_type: string;
         qty: number;
         serial_number: number | null;
         buyer_id: number | null;
+        status: ReturnedProductStatusEnum;
     }>({
         product_returnable_id: null,
         product_returnable_type: 'component',
         qty: 1,
         serial_number: null,
-        buyer_id: null,
+        buyer_id: auth?.user?.id,
+        status: ReturnedProductStatusEnum.REQUESTED,
     });
 
     const { loading } = useLoading();
@@ -56,7 +60,9 @@ const AddRequest = () => {
             product_returnable_type: productReturnableType,
         });
         router.visit(route(`${ROUTES.REQUESTED_RETURNS}.index`));
-        void useSuccessToast(t('pages.returned_product.create.messages.created'));
+        void useSuccessToast(
+            t('pages.returned_product.requested_return.partials.add_request.messages.created'),
+        );
     });
 
     const fetchComponents = useCallback(async (filters: ServiceFilterOptions) => {
@@ -77,11 +83,15 @@ const AddRequest = () => {
                         className: '',
                     })}
                 >
-                    {'Make Reuqest'}
+                    {t('pages.returned_product.requested_return.partials.add_request.title')}
                 </DialogTrigger>
                 <DialogContent className='sm:max-w-[425px]'>
                     <DialogHeader>
-                        <DialogTitle>{t('pages.returned_product.create.title')}</DialogTitle>
+                        <DialogTitle>
+                            {t(
+                                'pages.returned_product.requested_return.partials.add_request.title',
+                            )}
+                        </DialogTitle>
                         <DialogDescription></DialogDescription>
                         <form
                             onSubmit={submit}
@@ -92,7 +102,9 @@ const AddRequest = () => {
                         </form>
                         <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
                             <h2 className='text-lg font-semibold'>
-                                {t('pages.returned_product.create.fields.type')}
+                                {t(
+                                    'pages.returned_product.requested_return.partials.add_request.fields.type',
+                                )}
                             </h2>
                             <RadioGroup
                                 onValueChange={(v) => setData('product_returnable_type', v)}
@@ -100,11 +112,19 @@ const AddRequest = () => {
                             >
                                 <div key={'component_type'} className='flex items-center space-x-2'>
                                     <RadioGroupItem value={'component'} id={`type.component`} />
-                                    <Label htmlFor={`type.component`}>{'Komponen'}</Label>
+                                    <Label htmlFor={`type.component`}>
+                                        {t(
+                                            'pages.returned_product.requested_return.partials.add_request.fields.component',
+                                        )}
+                                    </Label>
                                 </div>
                                 <div key={'panel_type'} className='flex items-center space-x-2'>
                                     <RadioGroupItem value={'panel'} id={`type.panel`} />
-                                    <Label htmlFor={`type.panel`}>{'Panel'}</Label>
+                                    <Label htmlFor={`type.panel`}>
+                                        {t(
+                                            'pages.returned_product.requested_return.partials.add_request.fields.panel',
+                                        )}
+                                    </Label>
                                 </div>
                             </RadioGroup>
                         </div>
@@ -112,7 +132,9 @@ const AddRequest = () => {
                             {data.product_returnable_type === 'component' ? (
                                 <>
                                     <InputLabel
-                                        value={'Pilih Komponen'}
+                                        value={t(
+                                            'pages.returned_product.requested_return.partials.add_request.fields.component_placeholder',
+                                        )}
                                         htmlFor='component_product_returnable_id'
                                     />
                                     <GenericDataSelector
@@ -122,7 +144,9 @@ const AddRequest = () => {
                                         selectedDataId={data.product_returnable_id ?? undefined}
                                         renderItem={(item: ComponentResource) => `${item.name}`} // Customize how to display the item
                                         popoverContentClassName='w-[400px] p-0'
-                                        placeholder={'Pilih Komponen'}
+                                        placeholder={t(
+                                            'pages.returned_product.requested_return.partials.add_request.fields.component_placeholder',
+                                        )}
                                         nullable
                                         id='component_product_returnable_id'
                                         fetchData={fetchComponents}
@@ -132,7 +156,9 @@ const AddRequest = () => {
                             ) : (
                                 <>
                                     <InputLabel
-                                        value={'Pilih Panel'}
+                                        value={t(
+                                            'pages.returned_product.requested_return.partials.add_request.fields.panel_placeholder',
+                                        )}
                                         htmlFor='panel_product_returnable_id'
                                     />
                                     <GenericDataSelector
@@ -142,7 +168,9 @@ const AddRequest = () => {
                                         selectedDataId={data.product_returnable_id ?? undefined}
                                         renderItem={(item: PanelResource) => `${item.name}`} // Customize how to display the item
                                         popoverContentClassName='w-[400px] p-0'
-                                        placeholder={'Pilih Panel'}
+                                        placeholder={t(
+                                            'pages.returned_product.requested_return.partials.add_request.fields.panel_placeholder',
+                                        )}
                                         nullable
                                         id='panel_product_returnable_id'
                                         fetchData={fetchPanels}
@@ -153,7 +181,12 @@ const AddRequest = () => {
                         </div>
 
                         <div className='mt-4'>
-                            <InputLabel value={'Jumlah'} htmlFor='qty' />
+                            <InputLabel
+                                value={t(
+                                    'pages.returned_product.requested_return.partials.add_request.fields.qty',
+                                )}
+                                htmlFor='qty'
+                            />
                             <Input
                                 value={data.qty}
                                 type='number'
@@ -166,7 +199,12 @@ const AddRequest = () => {
                         </div>
 
                         <div className='mt-4'>
-                            <InputLabel value={'Nomor Seri'} htmlFor='serial_number' />
+                            <InputLabel
+                                value={t(
+                                    'pages.returned_product.requested_return.partials.add_request.fields.serial_number',
+                                )}
+                                htmlFor='serial_number'
+                            />
                             <Input
                                 value={data.serial_number ?? undefined}
                                 type='number'
@@ -179,7 +217,9 @@ const AddRequest = () => {
                         </div>
 
                         <Button form='returned-product-form' disabled={loading} className='mt-4'>
-                            {t('pages.returned_product.create.buttons.submit')}
+                            {t(
+                                'pages.returned_product.requested_return.partials.add_request.buttons.submit',
+                            )}
                         </Button>
                     </DialogHeader>
                 </DialogContent>

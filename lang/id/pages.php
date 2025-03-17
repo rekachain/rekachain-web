@@ -2556,6 +2556,28 @@ return [
                     'create' => 'Buat Permintaan',
                 ],
             ],
+            'partials' => [
+                'add_request' => [
+                    'title' => 'Buat Permintaan',
+                    'fields' => [
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'component' => 'Komponen',
+                        'component_placeholder' => 'Pilih Komponen',
+                        'panel' => 'Panel',
+                        'panel_placeholder' => 'Pilih Panel',
+                        'qty' => 'Jumlah',
+                        'serial_number' => 'Nomor Seri',
+                    ],
+                    'buttons' => [
+                        'submit' => 'Kirim Permintaan',
+                    ],
+                    'messages' => [
+                        'created' => 'Permintaan berhasil dibuat!',
+                    ],
+                ],
+            ],
         ],
     ],
 ];
