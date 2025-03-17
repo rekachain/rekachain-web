@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('returned_product_id')->constrained();
             $table->foreignId('component_id')->constrained();
             $table->enum('status', ProductProblemStatusEnum::toArray())->default(ProductProblemStatusEnum::DRAFT);
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }
