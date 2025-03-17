@@ -60,6 +60,10 @@ class ReturnedProduct extends Model {
         return $this->hasMany(ProductProblem::class);
     }
 
+    public function returned_product_notes(): HasMany {
+        return $this->hasMany(ReturnedProductNote::class);
+    }
+
     public function getImageAttribute() {
         return $this->image_path ? asset('storage/' . $this->image_path) : asset('assets/images/no-image.png');
     }
