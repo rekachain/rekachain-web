@@ -2556,6 +2556,28 @@ return [
                     'create' => 'Create Request',
                 ],
             ],
+            'partials' => [
+                'add_request' => [
+                    'title' => 'Make Request',
+                    'fields' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'component' => 'Component',
+                        'component_placeholder' => 'Select Component',
+                        'panel' => 'Panel',
+                        'panel_placeholder' => 'Select Panel',
+                        'qty' => 'Quantity',
+                        'serial_number' => 'Serial Number',
+                    ],
+                    'buttons' => [
+                        'submit' => 'Send Request',
+                    ],
+                    'messages' => [
+                        'created' => 'Request created successfully!',
+                    ],
+                ],
+            ],
         ],
     ],
 ];
