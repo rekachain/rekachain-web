@@ -16,6 +16,7 @@ class ProductProblemResource extends JsonResource {
             'localized_status' => $this->status->getLabel(),
             'image_path' => $this->image_path,
             'image' => $this->image,
+            'product_problem_notes' => ProductProblemNoteResource::collection($this->whenLoaded('product_problem_notes')),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
