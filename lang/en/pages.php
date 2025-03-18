@@ -2529,6 +2529,7 @@ return [
                         'name' => 'Name',
                         'description' => 'Description',
                         'type' => 'Type',
+                        'note' => 'Note',
                         'status' => 'Status',
                         'created_at' => 'Created At',
                     ],
@@ -2542,9 +2543,12 @@ return [
                 'returned_product_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
-                        'description' => 'Description: :description',
+                        'serial_number' => 'Serial Number',
+                        'description' => 'Description',
                         'type' => 'Type: :type',
-                        'created_at' => 'Created At: :created_at',
+                        'note' => 'Note',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
                     ],
                 ],
             ],

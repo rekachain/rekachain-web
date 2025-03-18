@@ -50,6 +50,11 @@ export default function ReturnedProductTableView({
                         </TableHead>
                         <TableHead>
                             {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.note',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
                                 'pages.returned_product.partials.partials.returned_product_table.headers.status',
                             )}
                         </TableHead>
@@ -71,6 +76,9 @@ export default function ReturnedProductTableView({
                                 {returnedProduct.product_returnable_type === 'App\\Models\\Panel'
                                     ? 'Panel'
                                     : 'Component'}
+                            </TableCell>
+                            <TableCell>
+                                {returnedProduct.latest_returned_product_note?.note ?? '-'}
                             </TableCell>
                             <TableCell>{returnedProduct.localized_status}</TableCell>
                             <TableCell>{returnedProduct.created_at}</TableCell>

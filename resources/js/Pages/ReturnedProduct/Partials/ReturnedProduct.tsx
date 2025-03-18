@@ -37,7 +37,6 @@ export default function () {
         void useSuccessToast(
             t('pages.returned_product.partials.returned_product.messages.deleted'),
         );
-        ``;
     }, true);
 
     const handlePageChange = (page: number) => {

@@ -2529,6 +2529,7 @@ return [
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
                         'type' => 'Tipe',
+                        'note' => 'Catatan',
                         'status' => 'Status',
                         'created_at' => 'Dibuat Pada',
                     ],
@@ -2542,9 +2543,12 @@ return [
                 'returned_product_card' => [
                     'headers' => [
                         'name' => 'Nama: :name',
-                        'description' => 'Deskripsi: :description',
+                        'serial_number' => 'Nomor Seri',
+                        'description' => 'Deskripsi',
                         'type' => 'Tipe: :type',
-                        'created_at' => 'Dibuat Pada: :created_at',
+                        'note' => 'Catatan',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
                     ],
                 ],
             ],
