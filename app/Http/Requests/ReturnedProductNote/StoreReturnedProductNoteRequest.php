@@ -9,7 +9,7 @@ class StoreReturnedProductNoteRequest extends FormRequest {
         return [
             'returned_product_id' => ['required', 'exists:returned_products,id'],
             'note' => ['required', 'string'],
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }

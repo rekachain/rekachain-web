@@ -9,7 +9,7 @@ class StoreProductProblemNoteRequest extends FormRequest {
         return [
             'product_problem_id' => ['required', 'exists:product_problems,id'],
             'note' => ['required', 'string'],
-            'user_id' => ['required', 'exists:users,id'],
+            'user_id' => ['nullable', 'exists:users,id'],
         ];
     }
 }
