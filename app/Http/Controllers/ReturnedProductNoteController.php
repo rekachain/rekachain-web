@@ -14,7 +14,7 @@ class ReturnedProductNoteController extends Controller {
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = ReturnedProductNoteResource::collection($this->returnedProductNoteService->getAllPaginated($request->query(), $perPage));
+        $data = ReturnedProductNoteResource::collection($this->returnedProductNoteService->with(['user'])->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
             return $data;
@@ -29,12 +29,12 @@ class ReturnedProductNoteController extends Controller {
 
     public function store(StoreReturnedProductNoteRequest $request) {
         if ($this->ajax()) {
-            return $this->returnedProductNoteService->create($request->validated());
+            return $this->returnedProductNoteService->create($request->validated())->load('user');
         }
     }
 
     public function show(ReturnedProductNote $returnedProductNote) {
-        $data = ReturnedProductNoteResource::make($returnedProductNote);
+        $data = ReturnedProductNoteResource::make($returnedProductNote->load('user'));
 
         if ($this->ajax()) {
             return $data;
@@ -51,13 +51,15 @@ class ReturnedProductNoteController extends Controller {
 
     public function update(UpdateReturnedProductNoteRequest $request, ReturnedProductNote $returnedProductNote) {
         if ($this->ajax()) {
-            return $this->returnedProductNoteService->update($returnedProductNote, $request->validated());
+            return $this->returnedProductNoteService->update($returnedProductNote, $request->validated())->load('user');
         }
     }
 
     public function destroy(ReturnedProductNote $returnedProductNote) {
+        $this->returnedProductNoteService->delete($returnedProductNote);
+
         if ($this->ajax()) {
-            return $this->returnedProductNoteService->delete($returnedProductNote);
+            return response()->noContent();
         }
     }
 }

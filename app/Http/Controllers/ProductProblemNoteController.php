@@ -14,7 +14,7 @@ class ProductProblemNoteController extends Controller {
 
     public function index(Request $request) {
         $perPage = $request->get('perPage', 10);
-        $data = ProductProblemNoteResource::collection($this->productProblemNoteService->getAllPaginated($request->query(), $perPage));
+        $data = ProductProblemNoteResource::collection($this->productProblemNoteService->with(['user'])->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
             return $data;
@@ -29,12 +29,12 @@ class ProductProblemNoteController extends Controller {
 
     public function store(StoreProductProblemNoteRequest $request) {
         if ($this->ajax()) {
-            return $this->productProblemNoteService->create($request->validated());
+            return $this->productProblemNoteService->create($request->validated())->load('user');
         }
     }
 
     public function show(ProductProblemNote $productProblemNote) {
-        $data = ProductProblemNoteResource::make($productProblemNote);
+        $data = ProductProblemNoteResource::make($productProblemNote->load('user'));
 
         if ($this->ajax()) {
             return $data;
@@ -51,13 +51,14 @@ class ProductProblemNoteController extends Controller {
 
     public function update(UpdateProductProblemNoteRequest $request, ProductProblemNote $productProblemNote) {
         if ($this->ajax()) {
-            return $this->productProblemNoteService->update($productProblemNote, $request->validated());
+            return $this->productProblemNoteService->update($productProblemNote, $request->validated())->load('user');
         }
     }
 
     public function destroy(ProductProblemNote $productProblemNote) {
+        $this->productProblemNoteService->delete($productProblemNote);
         if ($this->ajax()) {
-            return $this->productProblemNoteService->delete($productProblemNote);
+            return response()->noContent();
         }
     }
 }
