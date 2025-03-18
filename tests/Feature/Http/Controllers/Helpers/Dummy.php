@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Helpers;
 
 use App\Models\ProductProblem;
+use App\Models\ProductProblemNote;
 use App\Models\ReturnedProduct;
 use App\Models\ReturnedProductNote;
 use App\Models\Role;
@@ -489,8 +490,14 @@ class Dummy {
             'returned_product_id' => $returnedProduct->id
         ]);
     }
-
+    
     public function createProductProblem() {
         return ProductProblem::factory()->create();
+    }
+    public function createProductProblemNote() {
+        $returnedProduct = $this->createProductProblem();
+        return ProductProblemNote::factory()->create([
+            'product_problem_id' => $returnedProduct->id
+        ]);
     }
 }

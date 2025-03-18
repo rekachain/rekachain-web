@@ -27,7 +27,9 @@ test('user can view a create form of returned-product-note', function () {
 });
 
 test('system can save created returned-product-note to database', function () {
+    $model = $this->dummy->createReturnedProduct();
     $data = [
+        'returned_product_id' => $model->id,
         'note' => 'Test note',
     ];
 
