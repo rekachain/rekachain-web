@@ -1,5 +1,5 @@
-import { ROUTES } from '@/Support/Constants/routes';
 import { serviceFactory } from '@/Services/serviceFactory';
+import { ROUTES } from '@/Support/Constants/routes';
 import { ReturnedProductNoteResource } from '@/Support/Interfaces/Resources';
 
 export const returnedProductNoteService = {
