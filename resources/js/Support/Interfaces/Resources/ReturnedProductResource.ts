@@ -17,4 +17,5 @@ export interface ReturnedProductResource extends Resource, ReturnedProduct {
     localized_status: string;
     image: string;
     returned_product_notes?: ReturnedProductNoteResource[];
+    latest_returned_product_note?: ReturnedProductNoteResource;
 }

@@ -24,6 +24,7 @@ class ReturnedProductResource extends JsonResource {
             'image' => $this->image,
             'product_problems' => ProductProblemResource::collection($this->whenLoaded('product_problems')),
             'returned_product_notes' => ReturnedProductNoteResource::collection($this->whenLoaded('returned_product_notes')),
+            'latest_returned_product_note' => ReturnedProductNoteResource::make($this->returned_product_notes->last()),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
