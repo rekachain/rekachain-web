@@ -62,4 +62,5 @@ export const ROUTES = {
     PRODUCT_PROBLEMS: 'product-problems',
     REQUESTED_RETURNS: 'requested-returns',
     RETURNED_PRODUCT_NOTES: 'returned-product-notes',
+	PRODUCT_PROBLEM_NOTES: 'product-problem-notes',
 };
