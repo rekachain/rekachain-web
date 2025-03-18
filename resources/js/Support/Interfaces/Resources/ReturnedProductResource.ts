@@ -4,6 +4,7 @@ import {
     PanelResource,
     ProductProblemResource,
     Resource,
+    ReturnedProductNoteResource,
     SerialPanelResource,
     UserResource,
 } from '@/Support/Interfaces/Resources';
@@ -15,4 +16,5 @@ export interface ReturnedProductResource extends Resource, ReturnedProduct {
     product_problems?: ProductProblemResource[];
     localized_status: string;
     image: string;
+    returned_product_notes?: ReturnedProductNoteResource[];
 }

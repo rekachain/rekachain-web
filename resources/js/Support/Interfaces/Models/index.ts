@@ -40,3 +40,5 @@ export * from './WorkAspect';
 
 export * from './ProductProblem';
 export * from './ReturnedProduct';
+
+export * from './ReturnedProductNote';
