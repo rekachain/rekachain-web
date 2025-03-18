@@ -15,7 +15,7 @@ class ReturnedProductNoteService extends BaseCrudService implements ReturnedProd
         if (!isset($data['user_id'])) {
             $data['user_id'] = auth()->id();
         }
-        $model = $this->repository->create($data);
+        $model = parent::create($data);
         return $model;
     }
 }
