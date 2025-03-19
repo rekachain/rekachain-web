@@ -17,6 +17,7 @@ class ProductProblemResource extends JsonResource {
             'image_path' => $this->image_path,
             'image' => $this->image,
             'product_problem_notes' => ProductProblemNoteResource::collection($this->whenLoaded('product_problem_notes')),
+            'latest_product_problem_note' => ProductProblemNoteResource::make($this->product_problem_notes->last()),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

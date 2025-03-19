@@ -178,6 +178,11 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             )}
                                         </TableHead>
                                         <TableHead>
+                                            {t(
+                                                'pages.returned_product.show.table_headers.note',
+                                            )}
+                                        </TableHead>
+                                        <TableHead>
                                             {t('pages.returned_product.show.table_headers.status')}
                                         </TableHead>
                                         <TableHead></TableHead>
@@ -191,6 +196,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             </TableCell>
                                             <TableCell>
                                                 {productProblem.component?.description}
+                                            </TableCell>
+                                            <TableCell>
+                                                {productProblem.latest_product_problem_note?.note ?? '-'}
                                             </TableCell>
                                             <TableCell>{productProblem.localized_status}</TableCell>
                                             <TableCell>

@@ -2400,6 +2400,7 @@ return [
             'table_headers' => [
                 'component_name' => 'Component Name',
                 'description' => 'Description',
+                'note' => 'Note',
                 'status' => 'Status',
             ],
         ],
