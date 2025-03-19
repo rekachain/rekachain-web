@@ -13,7 +13,12 @@ class ReturnedProductResource extends JsonResource {
             'product_returnable_type' => $this->product_returnable_type,
             'product_return' => $this->whenLoaded('product_returnable'),
             'buyer_id' => $this->buyer_id,
-            'buyer' => $this->whenLoaded('buyer'),
+            'buyer' => $this->whenLoaded('buyer', function () {
+                return [
+                    'name' => $this->buyer->name,
+                    'phone_number' => $this->buyer->phone_number,
+                ];
+            }),
             'qty' => $this->qty,
             'serial_panel_id' => $this->serial_panel_id,
             'serial_panel' => $this->whenLoaded('serial_panel'),

@@ -30,6 +30,11 @@ export default function ReturnedProductTableView({
                     <TableRow>
                         <TableHead>
                             {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.buyer',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
                                 'pages.returned_product.partials.partials.returned_product_table.headers.serial_number',
                             )}
                         </TableHead>
@@ -58,17 +63,13 @@ export default function ReturnedProductTableView({
                                 'pages.returned_product.partials.partials.returned_product_table.headers.status',
                             )}
                         </TableHead>
-                        <TableHead>
-                            {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.created_at',
-                            )}
-                        </TableHead>
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {returnedProductResponse?.data.map((returnedProduct) => (
                         <TableRow key={returnedProduct.id}>
+                            <TableCell>{returnedProduct.buyer?.name ?? '-'}</TableCell>
                             <TableCell>{returnedProduct.serial_number}</TableCell>
                             <TableCell>{returnedProduct.product_return?.name}</TableCell>
                             <TableCell>{returnedProduct.product_return?.description}</TableCell>
@@ -81,7 +82,6 @@ export default function ReturnedProductTableView({
                                 {returnedProduct.latest_returned_product_note?.note ?? '-'}
                             </TableCell>
                             <TableCell>{returnedProduct.localized_status}</TableCell>
-                            <TableCell>{returnedProduct.created_at}</TableCell>
 
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (

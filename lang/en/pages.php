@@ -2392,6 +2392,7 @@ return [
                 'deleted_problem' => 'Product Problem deleted successfully!',
             ],
             'labels' => [
+                'buyer' => 'Customer',
                 'serial_number' => 'Serial Number',
                 'return_quantity' => 'Return Quantity',
                 'return_date' => 'Return Date',
@@ -2527,6 +2528,7 @@ return [
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
+                        'buyer' => 'Customer',
                         'serial_number' => 'Serial Number',
                         'name' => 'Name',
                         'description' => 'Description',

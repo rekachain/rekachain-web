@@ -92,8 +92,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                 name: data.product_return?.name || '',
                             })}
                         </h1>
-                        <div className='grid grid-cols-1 md:grid-cols-3'>
-                            <div className='flex flex-col col-span-2 gap-3'>
+                        <div className='grid grid-cols-1 md:grid-cols-4'>
+                            <div className='flex flex-col col-span-3 gap-3'>
                                 <div className="grid grid-cols-2">
                                     <div className='mt-5 flex flex-col gap-3'>
                                         <div className='mb-2'>
@@ -104,9 +104,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         </div>
                                         <div className=''>
                                             <p className='font-bold'>
-                                                {t('pages.returned_product.show.labels.return_quantity')}
+                                                {t('pages.returned_product.show.labels.buyer')}
                                             </p>
-                                            <p>{data.qty}</p>
+                                            <p>{data.buyer ? `${data.buyer.name} ${data.buyer.phone_number ? `- (${data.buyer.phone_number})` : ''}` : '-'}</p>
                                         </div>
                                     </div>
                                     <div className='mt-5 flex flex-col gap-3'>
@@ -150,7 +150,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         <div className='cursor-pointer bg-white p-3'>
                                             <img
                                                 src={data.image}
-                                                className='max-h-[200px] max-w-[200px]'
+                                                className='max-h-52 max-w-52'
                                                 alt='Evidence'
                                             />
                                         </div>
@@ -166,7 +166,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             </div>
                         </div>
                         <Separator className='my-6 h-1' />
-                        <div className='mt-3 flex items-center gap-3'>
+                        <div className='mt-3 items-center gap-3 md:flex hidden'>
                             <h1 className='text-xl font-bold'>{'Product Problems'}</h1>
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) &&
                                 componentResource && (

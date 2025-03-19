@@ -2392,6 +2392,7 @@ return [
                 'deleted_problem' => 'Masalah Produk berhasil dihapus!',
             ],
             'labels' => [
+                'buyer' => 'Pelanggan',
                 'serial_number' => 'Nomor Seri',
                 'return_quantity' => 'Jumlah Retur',
                 'return_date' => 'Tanggal Retur',
@@ -2527,6 +2528,7 @@ return [
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
+                        'buyer' => 'Pelanggan',
                         'serial_number' => 'Nomor Seri',
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
