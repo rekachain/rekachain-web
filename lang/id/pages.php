@@ -2396,6 +2396,7 @@ return [
                 'return_quantity' => 'Jumlah Retur',
                 'return_date' => 'Tanggal Retur',
                 'update_date' => 'Tanggal Diperbarui',
+                'notes' => 'Catatan',
             ],
             'table_headers' => [
                 'component_name' => 'Nama Komponen',

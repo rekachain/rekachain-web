@@ -2396,6 +2396,7 @@ return [
                 'return_quantity' => 'Return Quantity',
                 'return_date' => 'Return Date',
                 'update_date' => 'Updated Date',
+                'notes' => 'Notes',
             ],
             'table_headers' => [
                 'component_name' => 'Component Name',

@@ -93,32 +93,55 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             })}
                         </h1>
                         <div className='grid grid-cols-1 md:grid-cols-3'>
-                            <div className='mt-5 flex flex-col gap-3'>
-                                <div className='mb-2'>
-                                    <p className='font-bold'>
-                                        {t('pages.returned_product.show.labels.serial_number')}
-                                    </p>
-                                    <p>{data.serial_number || '-'}</p>
+                            <div className='flex flex-col col-span-2 gap-3'>
+                                <div className="grid grid-cols-2">
+                                    <div className='mt-5 flex flex-col gap-3'>
+                                        <div className='mb-2'>
+                                            <p className='font-bold'>
+                                                {t('pages.returned_product.show.labels.serial_number')}
+                                            </p>
+                                            <p>{data.serial_number || '-'}</p>
+                                        </div>
+                                        <div className=''>
+                                            <p className='font-bold'>
+                                                {t('pages.returned_product.show.labels.return_quantity')}
+                                            </p>
+                                            <p>{data.qty}</p>
+                                        </div>
+                                    </div>
+                                    <div className='mt-5 flex flex-col gap-3'>
+                                        <div className=''>
+                                            <p className='font-bold'>
+                                                {t('pages.returned_product.show.labels.return_date')}
+                                            </p>
+                                            <p>{data.created_at}</p>
+                                        </div>
+                                        <div className=''>
+                                            <p className='font-bold'>
+                                                {t('pages.returned_product.show.labels.update_date')}
+                                            </p>
+                                            <p>{data.updated_at}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className=''>
+                                <div className='mt-2'>
                                     <p className='font-bold'>
-                                        {t('pages.returned_product.show.labels.return_quantity')}
+                                        {t('pages.returned_product.show.labels.notes')}
                                     </p>
-                                    <p>{data.qty}</p>
-                                </div>
-                            </div>
-                            <div className='mt-5 flex flex-col gap-3'>
-                                <div className=''>
-                                    <p className='font-bold'>
-                                        {t('pages.returned_product.show.labels.return_date')}
-                                    </p>
-                                    <p>{data.created_at}</p>
-                                </div>
-                                <div className=''>
-                                    <p className='font-bold'>
-                                        {t('pages.returned_product.show.labels.update_date')}
-                                    </p>
-                                    <p>{data.updated_at}</p>
+                                    <div className='mt-3 grid grid-cols-1 gap-3 max-h-40 overflow-auto'>
+                                        {data.returned_product_notes?.map((note) => (
+                                            <div
+                                                key={note.id}
+                                                className='flex items-center justify-between rounded bg-background-2 p-3 mr-1'
+                                            >
+                                                <div className=''>
+                                                    <p className='font-bold'>{note.user?.name || ''}</p>
+                                                    <p>{note.note}</p>
+                                                </div>
+                                                <p className='text-sm'>{note.created_at}</p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <div className='mt-5 flex flex-col items-center gap-3 text-white'>
