@@ -144,7 +144,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className='mt-5 flex flex-col items-center gap-3 text-white'>
+                            <div className='mt-5 flex flex-col items-center gap-3 justify-center'>
                                 <Dialog>
                                     <DialogTrigger className='max-h-fit max-w-fit' asChild>
                                         <div className='cursor-pointer bg-white p-3'>
