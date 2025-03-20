@@ -36,6 +36,7 @@ import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Loader2 } from 'lucide-react';
 import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import { FilePond } from 'react-filepond';
 
 const AddProductProblem = ({
     componentResource,
@@ -51,12 +52,13 @@ const AddProductProblem = ({
     const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
-    const { data, setData, reset } = useForm({
+    const { data, setData, reset, progress } = useForm({
         search_component: '',
         component_id: null as number | null,
         new_component_name: '',
         new_component_description: '',
         status: ProductProblemStatusEnum.DRAFT,
+        image_path: [],
         note: '',
     });
     const debouncedSearchComponent = useDebounce(data.search_component, 300);
@@ -117,6 +119,7 @@ const AddProductProblem = ({
             data.new_component_name,
             data.new_component_description,
             data.status,
+            data.image_path,
             data.note,
         );
         handleResetAddComponentSelection();
@@ -126,6 +129,13 @@ const AddProductProblem = ({
             t('pages.returned_product.partials.add_product_problem.messages.created'),
         );
     });
+    
+    const handleFileChange = (fileItems: any) => {
+        setData((prevData: any) => ({
+            ...prevData,
+            image_path: fileItems.map((fileItem: any) => fileItem.file),
+        }));
+    };
 
     const [localizedStatuses, setLocalizedStatuses] = useState<Record<string, string>>({});
 
@@ -238,6 +248,29 @@ const AddProductProblem = ({
                                 </Select>
                                 {data.status !== ProductProblemStatusEnum.DRAFT && (
                                     <>
+                                    <div className='mt-4 space-y-2 rounded bg-background-2'>
+                                        <InputLabel
+                                            value={t('pages.returned_product.create.fields.evidence')}
+                                            htmlFor='evidence'
+                                        />
+                                        <FilePond
+                                            onupdatefiles={handleFileChange}
+                                            labelIdle={t(
+                                                'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                                            )}
+                                            imagePreviewMaxHeight={200}
+                                            files={data.image_path}
+                                            filePosterMaxHeight={200}
+                                            allowReplace
+                                            allowMultiple={false}
+                                            required
+                                        />
+                                        {progress && (
+                                            <progress value={progress.percentage} max='100'>
+                                                {progress.percentage}%
+                                            </progress>
+                                        )}
+                                    </div>
                                     <div className='mt-4'>
                                         <InputLabel value={'Catatan'} htmlFor='note' />
                                         <Textarea

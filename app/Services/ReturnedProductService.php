@@ -54,9 +54,11 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         } else {
             $component = $this->componentService()->findOrFail($data['component_id']);
         }
+        $data = $this->handleImageUpload(data: $data, customPath: 'product_problems/images');
         $productProblem = $returnedProduct->product_problems()->create([
             'component_id' => $component->id,
             'status' => $data['status'],
+            'image_path' => $data['image_path'],
         ]);
         $productProblem->product_problem_notes()->create([
             'user_id' => auth()->id(),

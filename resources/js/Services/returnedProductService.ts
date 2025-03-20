@@ -11,8 +11,26 @@ export const returnedProductService = {
         componentName: string,
         componentDescription: string,
         selectedStatus: string,
+        image_path: any[],
         note: string | null,
     ) => {
+        const formData = new FormData();
+        formData.append('component_id', componentId?.toString() ?? '');
+        formData.append('new_component_name', componentName);
+        formData.append('new_component_description', componentDescription);
+        formData.append('status', selectedStatus);
+        image_path.length > 0 && formData.append('image_path', image_path[0]);
+        note && formData.append('note', note ?? '');
+        return await window.axios.post(
+            route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
+            formData,
+            {
+                params: {
+                    _method: 'PUT',
+                    intent: IntentEnum.WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM,
+                },
+            },
+        );
         await window.axios.post(
             route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
             {
