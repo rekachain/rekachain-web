@@ -19,6 +19,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'new_component_name' => 'required_without:component_id|string',
                     'new_component_description' => 'required_without:component_id|string',
                     'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
+                    'note' => 'required|string',
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [
