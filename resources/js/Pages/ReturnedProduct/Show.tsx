@@ -68,7 +68,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
         await productProblemService.delete(id);
         handleSyncReturnedProduct();
         void useSuccessToast(t('pages.returned_product.show.messages.deleted_problem'));
-    });
+    } , true, {title: t('pages.returned_product.show.dialogs.confirm_delete_problem.title'), text: t('pages.returned_product.show.dialogs.confirm_delete_problem.description')});
 
     const handleSyncReturnedProduct = withLoading(async () => {
         const newProductProblems = await returnedProductService.get(data.id);
@@ -215,7 +215,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                         </div>
                         <Separator className='my-6 h-1' />
                         <div className='mt-3 items-center gap-3 md:flex hidden'>
-                            <h1 className='text-xl font-bold'>{'Product Problems'}</h1>
+                            <h1 className='text-xl font-bold'>{t('pages.returned_product.show.product_problems.title')}</h1>
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) &&
                                 componentResource && (
                                     <AddProductProblem

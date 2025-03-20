@@ -9,4 +9,9 @@ class ProductProblemService extends BaseCrudService implements ProductProblemSer
     protected function getRepositoryClass(): string {
         return ProductProblemRepositoryInterface::class;
     }
+
+    public function delete($keyOrModel): bool {
+        $keyOrModel->product_problem_notes()->delete();
+        return parent::delete($keyOrModel);
+    }
 }

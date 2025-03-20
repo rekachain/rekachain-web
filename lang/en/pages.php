@@ -2395,6 +2395,10 @@ return [
                     'title' => 'Delete Note',
                     'description' => 'Are you sure you want to delete this note?',
                 ],
+                'confirm_delete_problem' => [
+                    'title' => 'Delete Problem',
+                    'description' => 'Are you sure you want to delete this problem?',
+                ],
             ],
             'messages' => [
                 'deleted_problem' => 'Product Problem deleted successfully!',
@@ -2413,6 +2417,9 @@ return [
                 'description' => 'Description',
                 'note' => 'Note',
                 'status' => 'Status',
+            ],
+            'product_problems' => [
+                'title' => 'Product Problems',
             ],
         ],
         'edit' => [

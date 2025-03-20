@@ -2395,6 +2395,10 @@ return [
                     'title' => 'Hapus Catatan',
                     'description' => 'Apakah Anda yakin ingin menghapus catatan?',
                 ],
+                'confirm_delete_problem' => [
+                    'title' => 'Hapus Permasalahan',
+                    'description' => 'Apakah Anda yakin ingin menghapus permasalahan ini?',
+                ],
             ],
             'messages' => [
                 'deleted_problem' => 'Masalah Produk berhasil dihapus!',
@@ -2413,6 +2417,9 @@ return [
                 'description' => 'Deskripsi',
                 'note' => 'Note',
                 'status' => 'Status',
+            ],
+            'product_problems' => [
+                'title' => 'Permasalahan Produk',
             ],
         ],
         'edit' => [
