@@ -24,24 +24,34 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
 import BuyerForm from './Partials/BuyerForm';
+import { FilePond } from 'react-filepond';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const { data, setData } = useForm<{
+    const { data, setData, progress } = useForm<{
         product_returnable_id: number | null;
         product_returnable_type: string;
         qty: number;
         serial_number: number | null;
         buyer_id: number | null;
+        image_path: any[];
     }>({
         product_returnable_id: null,
         product_returnable_type: 'component',
         qty: 1,
         serial_number: null,
         buyer_id: null,
+        image_path: [],
     });
 
     const { loading } = useLoading();
+    
+    const handleFileChange = (fileItems: any) => {
+        setData((prevData: any) => ({
+            ...prevData,
+            image_path: fileItems.map((fileItem: any) => fileItem.file),
+        }));
+    };
 
     const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
@@ -51,10 +61,15 @@ export default function () {
                 ? 'App\\Models\\Component'
                 : 'App\\Models\\Panel';
 
-        await returnedProductService.create({
-            ...data,
-            product_returnable_type: productReturnableType,
-        });
+        const formData = new FormData();
+        formData.append('product_returnable_id', data.product_returnable_id?.toString() ?? '');
+        formData.append('product_returnable_type', productReturnableType);
+        formData.append('qty', data.qty?.toString() ?? '');
+        formData.append('serial_number', data.serial_number?.toString() ?? '');
+        formData.append('buyer_id', data.buyer_id?.toString() ?? '');
+        formData.append('image_path', data.image_path[0]);
+
+        await returnedProductService.create(formData);
         router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.index`));
         void useSuccessToast(t('pages.returned_product.create.messages.created'));
     });
@@ -169,6 +184,29 @@ export default function () {
                             className='mt-1'
                             autoComplete='serial_number'
                         />
+                    </div>
+                    <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                        <InputLabel
+                            value={t('pages.returned_product.create.fields.evidence')}
+                            htmlFor='evidence'
+                        />
+                        <FilePond
+                            onupdatefiles={handleFileChange}
+                            labelIdle={t(
+                                'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                            )}
+                            imagePreviewMaxHeight={400}
+                            files={data.image_path}
+                            filePosterMaxHeight={400}
+                            allowReplace
+                            allowMultiple={false}
+                            required
+                        />
+                        {progress && (
+                            <progress value={progress.percentage} max='100'>
+                                {progress.percentage}%
+                            </progress>
+                        )}
                     </div>
 
                     <Accordion type='single' collapsible className='mt-4'>

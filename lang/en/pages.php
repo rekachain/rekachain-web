@@ -2368,6 +2368,8 @@ return [
                 'name' => 'Name',
                 'description' => 'Description',
                 'type' => 'Type',
+                'evidence' => 'Evidence',
+                'evidence_filepond_placeholder' => 'Drop files here or click to upload evidence',
             ],
             'buttons' => [
                 'submit' => 'Create Return',

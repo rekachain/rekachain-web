@@ -2368,6 +2368,8 @@ return [
                 'name' => 'Nama',
                 'description' => 'Deskripsi',
                 'type' => 'Tipe',
+                'evidence' => 'Foto ',
+                'evidence_filepond_placeholder' => 'Letakkan file di sini atau klik untuk mengunggah foto',
             ],
             'buttons' => [
                 'submit' => 'Buat Retur',
