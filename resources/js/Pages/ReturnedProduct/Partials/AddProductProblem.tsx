@@ -1,4 +1,5 @@
 import GenericDataSelector from '@/Components/GenericDataSelector';
+import InputLabel from '@/Components/InputLabel';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
@@ -56,6 +57,7 @@ const AddProductProblem = ({
         new_component_name: '',
         new_component_description: '',
         status: ProductProblemStatusEnum.DRAFT,
+        note: '',
     });
     const debouncedSearchComponent = useDebounce(data.search_component, 300);
 
@@ -115,6 +117,7 @@ const AddProductProblem = ({
             data.new_component_name,
             data.new_component_description,
             data.status,
+            data.note,
         );
         handleResetAddComponentSelection();
         await handleSyncReturnedProduct();
@@ -208,33 +211,46 @@ const AddProductProblem = ({
                                         'pages.returned_product.partials.add_product_problem.dialogs.fields.status',
                                     )}
                                 </Label>
-                                <div className='rounded p-2'>
-                                    <Select
-                                        value={data.status}
-                                        onValueChange={(value) =>
-                                            setData('status', value as ProductProblemStatusEnum)
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue>
-                                                {localizedStatuses[
-                                                    data.status || ProductProblemStatusEnum.DRAFT
-                                                ] || 'Pilih Status'}
-                                            </SelectValue>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                {Object.entries(localizedStatuses).map(
-                                                    ([status, label]) => (
-                                                        <SelectItem value={status} key={status}>
-                                                            {label}
-                                                        </SelectItem>
-                                                    ),
-                                                )}
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                <Select
+                                    value={data.status}
+                                    onValueChange={(value) =>
+                                        setData('status', value as ProductProblemStatusEnum)
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue>
+                                            {localizedStatuses[
+                                                data.status || ProductProblemStatusEnum.DRAFT
+                                            ] || 'Pilih Status'}
+                                        </SelectValue>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {Object.entries(localizedStatuses).map(
+                                                ([status, label]) => (
+                                                    <SelectItem value={status} key={status}>
+                                                        {label}
+                                                    </SelectItem>
+                                                ),
+                                            )}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                                {data.status !== ProductProblemStatusEnum.DRAFT && (
+                                    <>
+                                    <div className='mt-4'>
+                                        <InputLabel value={'Catatan'} htmlFor='note' />
+                                        <Textarea
+                                            value={data.note ?? undefined}
+                                            onChange={(e) => setData('note', e.target.value)}
+                                            name='note'
+                                            id='note'
+                                            className='mt-1'
+                                            autoComplete='note'
+                                        />
+                                    </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 
