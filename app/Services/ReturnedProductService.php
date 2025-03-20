@@ -58,12 +58,14 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $productProblem = $returnedProduct->product_problems()->create([
             'component_id' => $component->id,
             'status' => $data['status'],
-            'image_path' => $data['image_path'],
+            'image_path' => $data['image_path'] ?? null,
         ]);
-        $productProblem->product_problem_notes()->create([
-            'user_id' => auth()->id(),
-            'note' => $data['note'],
-        ]);
+        if (isset($data['note'])) {
+            $productProblem->product_problem_notes()->create([
+                'user_id' => auth()->id(),
+                'note' => $data['note'],
+            ]);
+        }
 
         return true;
     }
