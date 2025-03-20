@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
+        if (app()->isLocal()) {
+            Artisan::call('db:seed', ['--class' => 'ProductProblemNoteSeeder']);
+        }
     }
 
     /**

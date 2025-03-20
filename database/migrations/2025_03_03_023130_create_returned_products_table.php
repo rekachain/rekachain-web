@@ -16,11 +16,14 @@ return new class extends Migration {
             $table->foreignId('buyer_id')->nullable()->constrained('users');
             $table->integer('qty')->nullable()->default(1);
             $table->foreignId('serial_panel_id')->nullable()->constrained();
-            $table->bigInteger('serial_number')->nullable()->unique();
+            $table->bigInteger('serial_number')->nullable();
             $table->enum('status', ReturnedProductStatusEnum::toArray())->default(ReturnedProductStatusEnum::DRAFT->value);
             $table->string('image_path')->nullable();
             $table->timestamps();
         });
+        if (app()->isLocal()) {
+            Artisan::call('db:seed', ['--class' => 'ReturnedProductSeeder']);
+        }
     }
 
     /**
