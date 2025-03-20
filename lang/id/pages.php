@@ -2527,6 +2527,21 @@ return [
                     'updated' => 'Status Produk berhasil diperbarui!',
                 ],
             ],
+            'add_returned_product_note' => [
+                'buttons' => [
+                    'add_note' => 'Tambah Catatan',
+                ],
+                'dialog' => [
+                    'title' => 'Tambah Catatan',
+                    'description' => 'Tambahkan catatan pada Progress Produk yang dipilih.',
+                    'fields' => [
+                        'note' => 'Catatan',
+                    ],
+                ],
+                'messages' => [
+                    'updated' => 'Catatan berhasil ditambahkan!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [

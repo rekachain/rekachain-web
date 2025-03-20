@@ -2527,6 +2527,21 @@ return [
                     'updated' => 'Product status updated successfully!',
                 ],
             ],
+            'add_returned_product_note' => [
+                'buttons' => [
+                    'add_note' => 'Add Note',
+                ],
+                'dialog' => [
+                    'title' => 'Add Note',
+                    'description' => 'Add a note to the selected Product Progress.',
+                    'fields' => [
+                        'note' => 'Note',
+                    ],
+                ],
+                'messages' => [
+                    'updated' => 'Note added successfully!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [

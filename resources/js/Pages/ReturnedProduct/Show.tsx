@@ -39,6 +39,7 @@ import AddProductProblem from './Partials/AddProductProblem';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
 import { RiEdit2Line } from '@remixicon/react';
+import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
@@ -136,9 +137,15 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     </div>
                                 </div>
                                 <div className='mt-2'>
-                                    <p className='font-bold'>
-                                        {t('pages.returned_product.show.labels.notes')}
-                                    </p>
+                                    <div className='flex items-center gap-3'>
+                                        <p className='font-bold'>
+                                            {t('pages.returned_product.show.labels.notes')}
+                                        </p>
+                                        <AddReturnedProductNote
+                                            returnedProductId={data.id}
+                                            handleSyncReturnedProduct={handleSyncReturnedProduct} 
+                                        ></AddReturnedProductNote>
+                                    </div>
                                     <div className='mt-3 grid grid-cols-1 gap-3 max-h-40 overflow-auto'>
                                         {data.returned_product_notes?.map((note) => (
                                             <div
