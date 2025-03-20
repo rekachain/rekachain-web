@@ -18,14 +18,20 @@ class ReturnedProductSheetImport implements ToModel, WithHeadingRow {
             'name' => $row['product_name'],
         ]);
 
-        return ReturnedProduct::create([
+        $returnedProduct = ReturnedProduct::create([
             'product_returnable_id' => $product->id,
             'product_returnable_type' => $row['product_type'] == 'Panel' ? Panel::class : Component::class,
-            'qty' => $row['qty'],
             'buyer_id' => User::firstOrCreate([
                 'name' => $row['customer_optional'],
             ], ['password' => Hash::make('password')])->id,
             'serial_number' => $row['serial_number'],
         ]);
+
+        $returnedProduct->returned_product_notes()->create([
+            'user_id' => auth()->id(),
+            'note' => $row['note'],
+        ]);
+
+        return $returnedProduct;
     }
 }
