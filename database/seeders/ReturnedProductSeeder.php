@@ -17,7 +17,7 @@ class ReturnedProductSeeder extends Seeder {
     public function run(): void {
         ReturnedProduct::factory(3)->state(new Sequence(
             function () {
-                $carriagePanel = CarriagePanel::inRandomOrder()->first();
+                $carriagePanel = CarriagePanel::whereHas('panel_attachments')->inRandomOrder()->first();
 
                 return [
                     'product_returnable_id' => Panel::whereId($carriagePanel->panel_id)->first()->id,
