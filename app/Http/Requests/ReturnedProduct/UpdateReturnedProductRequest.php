@@ -41,6 +41,7 @@ class UpdateReturnedProductRequest extends FormRequest {
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'nullable|integer',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
     }
 }

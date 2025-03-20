@@ -29,6 +29,12 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         return $returnedProduct;
     }
 
+    public function update($keyOrModel, array $data): ?Model {
+        $data = $this->handleImageUpload($data);
+
+        return parent::update($keyOrModel, $data);
+    }
+
     public function delete($keyOrModel): bool {
         $keyOrModel->product_problems()->each(function ($productProblem) { 
             $productProblem->product_problem_notes()->delete();
