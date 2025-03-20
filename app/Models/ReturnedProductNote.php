@@ -40,4 +40,8 @@ class ReturnedProductNote extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function canBeUpdated(): bool {
+        return $this->created_at->diffInHours(now()) < 1;
+    }
 }

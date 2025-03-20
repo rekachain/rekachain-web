@@ -4,4 +4,5 @@ import { Resource, ReturnedProductResource, UserResource } from '@/Support/Inter
 export interface ReturnedProductNoteResource extends Resource, ReturnedProductNote {
     returned_product?: ReturnedProductResource;
     user?: UserResource;
+    can_be_updated: boolean;
 }

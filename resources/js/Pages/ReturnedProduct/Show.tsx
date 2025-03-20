@@ -75,14 +75,6 @@ export default function ({ data }: { data: ReturnedProductResource }) {
         setReturnedProductNotesData(newProductProblems.returned_product_notes ?? []);
         setProductProblemData(newProductProblems.product_problems ?? []);
     });
-
-    const handleEditReturnedProductNote = (id: number) => {
-        router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show.returned_product_note`, {
-            returnedProduct: data.id,
-            returnedProductNote: id,
-        }));
-        
-    };
     
     const handleDeleteReturnedProductNote = withLoading(async (id: number) => {
         await returnedProductNoteService.delete(id); 
@@ -174,16 +166,18 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                 className='flex items-center justify-between rounded bg-background-2 p-3'
                                             >
                                                 <div>
-                                                    <p className='font-bold text-sm'>{note.created_at} - {note.user?.name || ''}</p>
+                                                    <p className='font-bold text-sm'>{note.updated_at} - {note.user?.name || ''}</p>
                                                     <p>{note.note}</p>
                                                 </div>
                                                 <div className='flex items-center gap-2'>
                                                     {/* Edit Button */}
-                                                    <AddReturnedProductNote
-                                                        returnedProductId={data.id}
-                                                        returnedProductNote={note}
-                                                        handleSyncReturnedProduct={handleSyncReturnedProduct} 
-                                                    ></AddReturnedProductNote>
+                                                    {note.can_be_updated && (
+                                                        <AddReturnedProductNote
+                                                            returnedProductId={data.id}
+                                                            returnedProductNote={note}
+                                                            handleSyncReturnedProduct={handleSyncReturnedProduct} 
+                                                        ></AddReturnedProductNote>
+                                                    )}
                                                     {/* Delete Button */}
                                                     <Button
                                                         variant='ghost'
