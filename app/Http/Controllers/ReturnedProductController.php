@@ -48,6 +48,8 @@ class ReturnedProductController extends Controller {
             switch ($intent) {
                 case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM->value:
                     return $this->returnedProductService->importData($request->file('import_file'));
+                case IntentEnum::WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE->value:
+                    return $this->returnedProductService->createWithReturnedProductNote($request->validated());
             }
             $returnedProduct = $this->returnedProductService->create($request->validated());
 

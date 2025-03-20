@@ -67,4 +67,14 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
         return true;
     }
+
+    public function createWithReturnedProductNote(array $data): ?Model {
+        $returnedProduct = $this->create($data);
+        $returnedProduct->returned_product_notes()->create([
+            'user_id' => auth()->id(),
+            'note' => $data['note'],
+        ]);
+
+        return $returnedProduct;
+    }
 }
