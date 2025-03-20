@@ -31,13 +31,14 @@ import {
     ReturnedProductResource,
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { Separator } from '@radix-ui/react-select';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import AddProductProblem from './Partials/AddProductProblem';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
+import { RiEdit2Line } from '@remixicon/react';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
@@ -87,11 +88,21 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                 </BreadcrumbItem>
                             </BreadcrumbList>
                         </Breadcrumb>
-                        <h1 className='text-page-header my-4'>
-                            {t('pages.returned_product.show.title', {
-                                name: data.product_return?.name || '',
-                            })}
-                        </h1>
+                        <div className='flex items-center'>
+                            <h1 className='text-page-header'>
+                                {t('pages.returned_product.show.title', {
+                                    name: data.product_return?.name || '',
+                                })}
+                            </h1>
+                            <Button
+                                onClick={() => router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id))}
+                                variant='warning'
+                                className='mx-4'
+                                size={'sm'}
+                            >
+                                <RiEdit2Line />
+                            </Button>
+                        </div>
                         <div className='grid grid-cols-1 md:grid-cols-4'>
                             <div className='flex flex-col col-span-3 gap-3'>
                                 <div className="grid grid-cols-2">
