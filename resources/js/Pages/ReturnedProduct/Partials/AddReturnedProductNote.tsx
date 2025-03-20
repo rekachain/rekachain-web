@@ -12,24 +12,28 @@ import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { returnedProductNoteService } from '@/Services/returnedProductNoteService';
+import { ReturnedProductNoteResource } from '@/Support/Interfaces/Resources';
 import { useForm, usePage } from '@inertiajs/react';
+import { RiEdit2Line } from '@remixicon/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { memo } from 'react';
 
 const AddReturnedProductNote = ({
     returnedProductId,
+    returnedProductNote,
     handleSyncReturnedProduct,
 }: {
     returnedProductId: number;
+    returnedProductNote?: ReturnedProductNoteResource;
     handleSyncReturnedProduct: () => Promise<void>;
 }) => {
-    const { t } = useLaravelReactI18n();
+    const { t, tChoice } = useLaravelReactI18n();
     const { loading } = useLoading();
     const auth = usePage().props.auth;
 
     const { data, setData } = useForm({
         returned_product_id: returnedProductId,
-        note: '',
+        note: returnedProductNote?.note ?? '',
         user_id: auth?.user?.id,
     });
 
@@ -38,37 +42,54 @@ const AddReturnedProductNote = ({
             await returnedProductNoteService.create(data);
             await handleSyncReturnedProduct();
             void useSuccessToast(
-                t('pages.returned_product.partials.add_returned_product_note.messages.updated'),
+                t('pages.returned_product.partials.add_returned_product_note.messages.created'),
             );
         } catch (error) {
             console.error('Failed to add note:', error);
         }
     };
+    const handleUpdateNote = async () => {
+        try {
+            await returnedProductNoteService.update(returnedProductNote?.id!, data);
+            await handleSyncReturnedProduct();
+            void useSuccessToast(
+                t('pages.returned_product.partials.add_returned_product_note.messages.updated'),
+            );
+        } catch (error) {
+            console.error('Failed to update note:', error);
+        }
+    };
 
     return (
         <Dialog>
-            <DialogTrigger className={buttonVariants({
-                    className: 'w-fit',
-                })}>
-                {t(
-                    'pages.returned_product.partials.add_returned_product_note.buttons.add_note',
-                )}
-            </DialogTrigger>
+            {returnedProductNote ? (
+                <DialogTrigger>
+                    <RiEdit2Line size={15} />
+                </DialogTrigger>
+            ): (
+                <DialogTrigger className={buttonVariants({
+                        className: 'w-fit',
+                    })}>
+                    {t(
+                        'pages.returned_product.partials.add_returned_product_note.buttons.add_note',
+                    )}
+                </DialogTrigger>
+            )}
             <DialogContent className='sm:max-w-lg'>
                 <DialogHeader>
                     <DialogTitle>
-                        {t(
+                        {tChoice(
                             'pages.returned_product.partials.add_returned_product_note.dialog.title',
-                        )}
+                        returnedProductNote ? 1 : 0)}
                     </DialogTitle>
                     <DialogDescription>
-                        {t(
+                        {tChoice(
                             'pages.returned_product.partials.add_returned_product_note.dialog.description',
-                        )}
+                        returnedProductNote ? 1 : 0)}
                     </DialogDescription>
                 </DialogHeader>
                 
-                <form onSubmit={handleAddNote} className='flex flex-col gap-4' id='add-note-form'></form>
+                <form onSubmit={returnedProductNote ? handleUpdateNote : handleAddNote} className='flex flex-col gap-4' id='add-note-form'></form>
                 <div className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='note'>
@@ -84,7 +105,7 @@ const AddReturnedProductNote = ({
                         />
                     </div>
                     <Button type='submit' disabled={loading} form='add-note-form'>
-                        {loading ? t('action.loading') : t('action.add')}
+                        {loading ? t('action.loading') : returnedProductNote ? t('action.update') : t('action.add')}
                     </Button>
                 </div>
             </DialogContent>

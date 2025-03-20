@@ -2390,8 +2390,15 @@ return [
                 'delete' => 'Delete Return',
                 'import' => 'Import Return',
             ],
+            'dialogs' => [
+                'confirm_delete_note' => [
+                    'title' => 'Delete Note',
+                    'description' => 'Are you sure you want to delete this note?',
+                ],
+            ],
             'messages' => [
                 'deleted_problem' => 'Product Problem deleted successfully!',
+                'deleted_note' => 'Note deleted successfully!',
             ],
             'labels' => [
                 'buyer' => 'Customer',
@@ -2532,14 +2539,15 @@ return [
                     'add_note' => 'Add Note',
                 ],
                 'dialog' => [
-                    'title' => 'Add Note',
-                    'description' => 'Add a note to the selected Product Progress.',
+                    'title' => '{0} Add Note|{1} Update Note',
+                    'description' => '{0} Add a note to this Returned Product.|{1} Update the note of the selected note.',
                     'fields' => [
                         'note' => 'Note',
                     ],
                 ],
                 'messages' => [
-                    'updated' => 'Note added successfully!',
+                    'created' => 'Note added successfully!',
+                    'updated' => 'Note updated successfully!',
                 ],
             ],
             'partials' => [

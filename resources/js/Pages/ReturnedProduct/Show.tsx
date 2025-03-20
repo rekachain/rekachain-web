@@ -28,22 +28,27 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
     ProductProblemResource,
+    ReturnedProductNoteResource,
     ReturnedProductResource,
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head, Link, router } from '@inertiajs/react';
-import { Separator } from '@radix-ui/react-select';
+import { Separator } from '@/Components/UI/separator';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import AddProductProblem from './Partials/AddProductProblem';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
-import { RiEdit2Line } from '@remixicon/react';
+import { RiEdit2Line, RiDeleteBin6Line } from '@remixicon/react';
 import AddReturnedProductNote from './Partials/AddReturnedProductNote';
+import { returnedProductNoteService } from '@/Services/returnedProductNoteService';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
 
+    const [returnedProductNotesData, setReturnedProductNotesData] = useState<ReturnedProductNoteResource[]>(
+        data.returned_product_notes ?? []
+    );
     const [productProblemData, setProductProblemData] = useState<ProductProblemResource[]>(
         data.product_problems ?? [],
     );
@@ -67,8 +72,23 @@ export default function ({ data }: { data: ReturnedProductResource }) {
 
     const handleSyncReturnedProduct = withLoading(async () => {
         const newProductProblems = await returnedProductService.get(data.id);
+        setReturnedProductNotesData(newProductProblems.returned_product_notes ?? []);
         setProductProblemData(newProductProblems.product_problems ?? []);
     });
+
+    const handleEditReturnedProductNote = (id: number) => {
+        router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show.returned_product_note`, {
+            returnedProduct: data.id,
+            returnedProductNote: id,
+        }));
+        
+    };
+    
+    const handleDeleteReturnedProductNote = withLoading(async (id: number) => {
+        await returnedProductNoteService.delete(id); 
+        handleSyncReturnedProduct(); 
+        void useSuccessToast(t('pages.returned_product.show.messages.deleted_note'));
+    }, true, {title: t('pages.returned_product.show.dialogs.confirm_delete_note.title'), text: t('pages.returned_product.show.dialogs.confirm_delete_note.description')});
 
     return (
         <>
@@ -136,6 +156,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         </div>
                                     </div>
                                 </div>
+                                <Separator />
                                 <div className='mt-2'>
                                     <div className='flex items-center gap-3'>
                                         <p className='font-bold'>
@@ -147,16 +168,31 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         ></AddReturnedProductNote>
                                     </div>
                                     <div className='mt-3 grid grid-cols-1 gap-3 max-h-40 overflow-auto'>
-                                        {data.returned_product_notes?.map((note) => (
+                                        {returnedProductNotesData?.map((note) => (
                                             <div
                                                 key={note.id}
-                                                className='flex items-center justify-between rounded bg-background-2 p-3 mr-1'
+                                                className='flex items-center justify-between rounded bg-background-2 p-3'
                                             >
-                                                <div className=''>
-                                                    <p className='font-bold'>{note.user?.name || ''}</p>
+                                                <div>
+                                                    <p className='font-bold text-sm'>{note.created_at} - {note.user?.name || ''}</p>
                                                     <p>{note.note}</p>
                                                 </div>
-                                                <p className='text-sm'>{note.created_at}</p>
+                                                <div className='flex items-center gap-2'>
+                                                    {/* Edit Button */}
+                                                    <AddReturnedProductNote
+                                                        returnedProductId={data.id}
+                                                        returnedProductNote={note}
+                                                        handleSyncReturnedProduct={handleSyncReturnedProduct} 
+                                                    ></AddReturnedProductNote>
+                                                    {/* Delete Button */}
+                                                    <Button
+                                                        variant='ghost'
+                                                        size='sm'
+                                                        onClick={() => handleDeleteReturnedProductNote(note.id)}
+                                                    >
+                                                        <RiDeleteBin6Line size={15} />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

@@ -2390,8 +2390,15 @@ return [
                 'delete' => 'Hapus Retur',
                 'import' => 'Impor Retur',
             ],
+            'dialogs' => [
+                'confirm_delete_note' => [
+                    'title' => 'Hapus Catatan',
+                    'description' => 'Apakah Anda yakin ingin menghapus catatan?',
+                ],
+            ],
             'messages' => [
                 'deleted_problem' => 'Masalah Produk berhasil dihapus!',
+                'deleted_note' => 'Catatan berhasil dihapus!',
             ],
             'labels' => [
                 'buyer' => 'Pelanggan',
@@ -2532,14 +2539,15 @@ return [
                     'add_note' => 'Tambah Catatan',
                 ],
                 'dialog' => [
-                    'title' => 'Tambah Catatan',
-                    'description' => 'Tambahkan catatan pada Progress Produk yang dipilih.',
+                    'title' => '{0} Tambah Catatan|{1} Perbarui Catatan',
+                    'description' => '{0} Tambahkan catatan pada Produk Retur.|{1} Perbarui catatan yang dipilih.',
                     'fields' => [
                         'note' => 'Catatan',
                     ],
                 ],
                 'messages' => [
-                    'updated' => 'Catatan berhasil ditambahkan!',
+                    'created' => 'Catatan berhasil ditambahkan!',
+                    'updated' => 'Catatan berhasil diperbarui!',
                 ],
             ],
             'partials' => [
