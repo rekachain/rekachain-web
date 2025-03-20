@@ -7,12 +7,26 @@ use App\Models\Component;
 use App\Models\ReturnedProduct;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
+use App\Traits\Services\HandlesImages;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
+    use HandlesImages;
+
+    protected string $imagePath = 'returned_products/images';
+
     protected function getRepositoryClass(): string {
         return ReturnedProductRepositoryInterface::class;
+    }
+
+    public function create(array $data): ?Model {
+        $data = $this->handleImageUpload($data);
+
+        $returnedProduct = parent::create($data);
+
+        return $returnedProduct;
     }
 
     public function delete($keyOrModel): bool {

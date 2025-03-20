@@ -30,6 +30,7 @@ class StoreReturnedProductRequest extends FormRequest {
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'required_without:product_returnable_type|integer',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
+            'image_path' => 'required|image|mimes:jpeg,png,jpg',
         ];
     }
 }
