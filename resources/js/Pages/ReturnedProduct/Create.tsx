@@ -25,6 +25,8 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
 import BuyerForm from './Partials/BuyerForm';
 import { FilePond } from 'react-filepond';
+import { Textarea } from '@/Components/UI/textarea';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -35,6 +37,7 @@ export default function () {
         serial_number: number | null;
         buyer_id: number | null;
         image_path: any[];
+        note: string;
     }>({
         product_returnable_id: null,
         product_returnable_type: 'component',
@@ -42,6 +45,7 @@ export default function () {
         serial_number: null,
         buyer_id: null,
         image_path: [],
+        note: '',
     });
 
     const { loading } = useLoading();
@@ -62,12 +66,14 @@ export default function () {
                 : 'App\\Models\\Panel';
 
         const formData = new FormData();
+        formData.append('intent', IntentEnum.WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE);
         formData.append('product_returnable_id', data.product_returnable_id?.toString() ?? '');
         formData.append('product_returnable_type', productReturnableType);
         formData.append('qty', data.qty?.toString() ?? '');
         formData.append('serial_number', data.serial_number?.toString() ?? '');
         formData.append('buyer_id', data.buyer_id?.toString() ?? '');
         formData.append('image_path', data.image_path[0]);
+        formData.append('note', data.note);
 
         await returnedProductService.create(formData);
         router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.index`));
@@ -207,6 +213,17 @@ export default function () {
                                 {progress.percentage}%
                             </progress>
                         )}
+                    </div>
+                    <div className='mt-4'>
+                        <InputLabel value={'Catatan'} htmlFor='note' />
+                        <Textarea
+                            value={data.note ?? undefined}
+                            onChange={(e) => setData('note', e.target.value)}
+                            name='note'
+                            id='note'
+                            className='mt-1'
+                            autoComplete='note'
+                        />
                     </div>
 
                     <Accordion type='single' collapsible className='mt-4'>
