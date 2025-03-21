@@ -22,11 +22,13 @@ class ProductProblemService extends BaseCrudService implements ProductProblemSer
         $this->productProblemNoteService()->update($productProblem->product_problem_notes()->first(), [
             'note' => $data['note'],
         ]);
+
         return $productProblem;
     }
 
     public function delete($keyOrModel): bool {
         $keyOrModel->product_problem_notes()->delete();
+
         return parent::delete($keyOrModel);
     }
 }

@@ -24,7 +24,7 @@ import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEn
 import { ProductProblemResource } from '@/Support/Interfaces/Resources';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilePond } from 'react-filepond';
 
 export default function ({
@@ -118,7 +118,9 @@ export default function ({
                     <div className='flex flex-col gap-2'>
                         <Select
                             value={data.status}
-                            onValueChange={(value) => setData('status', value as ProductProblemStatusEnum)}
+                            onValueChange={(value) =>
+                                setData('status', value as ProductProblemStatusEnum)
+                            }
                         >
                             <SelectTrigger>
                                 <SelectValue>
@@ -144,6 +146,7 @@ export default function ({
                                 htmlFor='evidence'
                             />
                             <FilePond
+                                required
                                 onupdatefiles={handleFileChange}
                                 labelIdle={t(
                                     'pages.returned_product.create.fields.evidence_filepond_placeholder',
@@ -153,7 +156,6 @@ export default function ({
                                 filePosterMaxHeight={200}
                                 allowReplace
                                 allowMultiple={false}
-                                required
                             />
                             {progress && (
                                 <progress value={progress.percentage} max='100'>
@@ -161,19 +163,20 @@ export default function ({
                                 </progress>
                             )}
                         </div>
-                        {data.status !== ProductProblemStatusEnum.DRAFT && data.status !== productProblem.status && (
-                            <>
-                                <InputLabel value={'Catatan'} htmlFor='note' />
-                                <Textarea
-                                    value={data.note ?? undefined}
-                                    onChange={(e) => setData('note', e.target.value)}
-                                    name='note'
-                                    id='note'
-                                    className='mt-1'
-                                    autoComplete='note'
-                                />
-                            </>
-                        )}
+                        {data.status !== ProductProblemStatusEnum.DRAFT &&
+                            data.status !== productProblem.status && (
+                                <>
+                                    <InputLabel value={'Catatan'} htmlFor='note' />
+                                    <Textarea
+                                        value={data.note ?? undefined}
+                                        onChange={(e) => setData('note', e.target.value)}
+                                        name='note'
+                                        id='note'
+                                        className='mt-1'
+                                        autoComplete='note'
+                                    />
+                                </>
+                            )}
                     </div>
                     <Button onClick={handleUpdateStatus} disabled={loading}>
                         {loading ? t('action.loading') : t('action.update')}
@@ -182,4 +185,4 @@ export default function ({
             </DialogContent>
         </Dialog>
     );
-};
+}

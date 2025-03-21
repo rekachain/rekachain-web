@@ -9,15 +9,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductProblemNote>
  */
-class ProductProblemNoteFactory extends Factory
-{
+class ProductProblemNoteFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             'product_problem_id' => ProductProblem::inRandomOrder()->first()->id,
             'note' => $this->faker->sentence(),

@@ -36,7 +36,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
     }
 
     public function delete($keyOrModel): bool {
-        $keyOrModel->product_problems()->each(function ($productProblem) { 
+        $keyOrModel->product_problems()->each(function ($productProblem) {
             $productProblem->product_problem_notes()->delete();
         });
         $keyOrModel->product_problems()->delete();

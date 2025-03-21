@@ -59,6 +59,7 @@ class ProductProblemController extends Controller {
                     return $this->productProblemService->updateWithNote($productProblem, $request->validated());
             }
             $productProblem = $this->productProblemService->update($productProblem, $request->validated());
+
             return ProductProblemResource::make($productProblem->load(['component', 'returned_product']));
         }
     }

@@ -10,6 +10,7 @@ import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -17,16 +18,15 @@ import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ComponentResource, PanelResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
-import BuyerForm from './Partials/BuyerForm';
 import { FilePond } from 'react-filepond';
-import { Textarea } from '@/Components/UI/textarea';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
+import BuyerForm from './Partials/BuyerForm';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -49,7 +49,7 @@ export default function () {
     });
 
     const { loading } = useLoading();
-    
+
     const handleFileChange = (fileItems: any) => {
         setData((prevData: any) => ({
             ...prevData,
@@ -197,6 +197,7 @@ export default function () {
                             htmlFor='evidence'
                         />
                         <FilePond
+                            required
                             onupdatefiles={handleFileChange}
                             labelIdle={t(
                                 'pages.returned_product.create.fields.evidence_filepond_placeholder',
@@ -206,7 +207,6 @@ export default function () {
                             filePosterMaxHeight={400}
                             allowReplace
                             allowMultiple={false}
-                            required
                         />
                         {progress && (
                             <progress value={progress.percentage} max='100'>

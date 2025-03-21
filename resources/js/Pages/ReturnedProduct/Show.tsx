@@ -7,6 +7,7 @@ import {
 } from '@/Components/UI/breadcrumb';
 import { Button } from '@/Components/UI/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/Components/UI/dialog';
+import { Separator } from '@/Components/UI/separator';
 import {
     Table,
     TableBody,
@@ -16,11 +17,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/Components/UI/table';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { componentService } from '@/Services/componentService';
 import { productProblemService } from '@/Services/productProblemService';
+import { returnedProductNoteService } from '@/Services/returnedProductNoteService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
@@ -33,23 +36,20 @@ import {
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head, Link, router } from '@inertiajs/react';
-import { Separator } from '@/Components/UI/separator';
+import { RiDeleteBin6Line, RiEdit2Line } from '@remixicon/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import AddProductProblem from './Partials/AddProductProblem';
+import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
-import { RiEdit2Line, RiDeleteBin6Line } from '@remixicon/react';
-import AddReturnedProductNote from './Partials/AddReturnedProductNote';
-import { returnedProductNoteService } from '@/Services/returnedProductNoteService';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t, setLocale } = useLaravelReactI18n();
 
-    const [returnedProductNotesData, setReturnedProductNotesData] = useState<ReturnedProductNoteResource[]>(
-        data.returned_product_notes ?? []
-    );
+    const [returnedProductNotesData, setReturnedProductNotesData] = useState<
+        ReturnedProductNoteResource[]
+    >(data.returned_product_notes ?? []);
     const [productProblemData, setProductProblemData] = useState<ProductProblemResource[]>(
         data.product_problems ?? [],
     );
@@ -61,7 +61,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
         setComponentResource(res);
     });
 
-    const [localizedProductProblemStatuses, setProductProblemLocalizedStatuses] = useState<Record<string, string>>({});
+    const [localizedProductProblemStatuses, setProductProblemLocalizedStatuses] = useState<
+        Record<string, string>
+    >({});
 
     useEffect(() => {
         const fetchProductProblemLocalizedStatuses = async () => {
@@ -80,23 +82,37 @@ export default function ({ data }: { data: ReturnedProductResource }) {
         void fetchInitialComponentData();
     }, []);
 
-    const handleProductProblemDeletion = withLoading(async (id: number) => {
-        await productProblemService.delete(id);
-        handleSyncReturnedProduct();
-        void useSuccessToast(t('pages.returned_product.show.messages.deleted_problem'));
-    } , true, {title: t('pages.returned_product.show.dialogs.confirm_delete_problem.title'), text: t('pages.returned_product.show.dialogs.confirm_delete_problem.description')});
+    const handleProductProblemDeletion = withLoading(
+        async (id: number) => {
+            await productProblemService.delete(id);
+            handleSyncReturnedProduct();
+            void useSuccessToast(t('pages.returned_product.show.messages.deleted_problem'));
+        },
+        true,
+        {
+            title: t('pages.returned_product.show.dialogs.confirm_delete_problem.title'),
+            text: t('pages.returned_product.show.dialogs.confirm_delete_problem.description'),
+        },
+    );
 
     const handleSyncReturnedProduct = withLoading(async () => {
         const newProductProblems = await returnedProductService.get(data.id);
         setReturnedProductNotesData(newProductProblems.returned_product_notes ?? []);
         setProductProblemData(newProductProblems.product_problems ?? []);
     });
-    
-    const handleDeleteReturnedProductNote = withLoading(async (id: number) => {
-        await returnedProductNoteService.delete(id); 
-        handleSyncReturnedProduct(); 
-        void useSuccessToast(t('pages.returned_product.show.messages.deleted_note'));
-    }, true, {title: t('pages.returned_product.show.dialogs.confirm_delete_note.title'), text: t('pages.returned_product.show.dialogs.confirm_delete_note.description')});
+
+    const handleDeleteReturnedProductNote = withLoading(
+        async (id: number) => {
+            await returnedProductNoteService.delete(id);
+            handleSyncReturnedProduct();
+            void useSuccessToast(t('pages.returned_product.show.messages.deleted_note'));
+        },
+        true,
+        {
+            title: t('pages.returned_product.show.dialogs.confirm_delete_note.title'),
+            text: t('pages.returned_product.show.dialogs.confirm_delete_note.description'),
+        },
+    );
 
     return (
         <>
@@ -124,21 +140,25 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                 })}
                             </h1>
                             <Button
-                                onClick={() => router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id))}
                                 variant='warning'
-                                className='mx-4'
                                 size={'sm'}
+                                onClick={() =>
+                                    router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.edit`, data.id))
+                                }
+                                className='mx-4'
                             >
                                 <RiEdit2Line />
                             </Button>
                         </div>
                         <div className='grid grid-cols-1 md:grid-cols-4'>
-                            <div className='flex flex-col col-span-3 gap-3'>
-                                <div className="grid grid-cols-2">
+                            <div className='col-span-3 flex flex-col gap-3'>
+                                <div className='grid grid-cols-2'>
                                     <div className='mt-5 flex flex-col gap-3'>
                                         <div className='mb-2'>
                                             <p className='font-bold'>
-                                                {t('pages.returned_product.show.labels.serial_number')}
+                                                {t(
+                                                    'pages.returned_product.show.labels.serial_number',
+                                                )}
                                             </p>
                                             <p>{data.serial_number || '-'}</p>
                                         </div>
@@ -146,19 +166,27 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             <p className='font-bold'>
                                                 {t('pages.returned_product.show.labels.buyer')}
                                             </p>
-                                            <p>{data.buyer ? `${data.buyer.name} ${data.buyer.phone_number ? `- (${data.buyer.phone_number})` : ''}` : '-'}</p>
+                                            <p>
+                                                {data.buyer
+                                                    ? `${data.buyer.name} ${data.buyer.phone_number ? `- (${data.buyer.phone_number})` : ''}`
+                                                    : '-'}
+                                            </p>
                                         </div>
                                     </div>
                                     <div className='mt-5 flex flex-col gap-3'>
                                         <div className=''>
                                             <p className='font-bold'>
-                                                {t('pages.returned_product.show.labels.return_date')}
+                                                {t(
+                                                    'pages.returned_product.show.labels.return_date',
+                                                )}
                                             </p>
                                             <p>{data.created_at}</p>
                                         </div>
                                         <div className=''>
                                             <p className='font-bold'>
-                                                {t('pages.returned_product.show.labels.update_date')}
+                                                {t(
+                                                    'pages.returned_product.show.labels.update_date',
+                                                )}
                                             </p>
                                             <p>{data.updated_at}</p>
                                         </div>
@@ -172,33 +200,39 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         </p>
                                         <AddReturnedProductNote
                                             returnedProductId={data.id}
-                                            handleSyncReturnedProduct={handleSyncReturnedProduct} 
+                                            handleSyncReturnedProduct={handleSyncReturnedProduct}
                                         ></AddReturnedProductNote>
                                     </div>
-                                    <div className='mt-3 grid grid-cols-1 gap-3 max-h-40 overflow-auto'>
+                                    <div className='mt-3 grid max-h-40 grid-cols-1 gap-3 overflow-auto'>
                                         {returnedProductNotesData?.map((note) => (
                                             <div
                                                 key={note.id}
                                                 className='flex items-center justify-between rounded bg-background-2 p-3'
                                             >
                                                 <div>
-                                                    <p className='font-bold text-sm'>{note.updated_at} - {note.user?.name || ''}</p>
+                                                    <p className='text-sm font-bold'>
+                                                        {note.updated_at} - {note.user?.name || ''}
+                                                    </p>
                                                     <p>{note.note}</p>
                                                 </div>
                                                 <div className='flex items-center gap-2'>
                                                     {/* Edit Button */}
                                                     {note.can_be_updated && (
                                                         <AddReturnedProductNote
-                                                            returnedProductId={data.id}
                                                             returnedProductNote={note}
-                                                            handleSyncReturnedProduct={handleSyncReturnedProduct} 
+                                                            returnedProductId={data.id}
+                                                            handleSyncReturnedProduct={
+                                                                handleSyncReturnedProduct
+                                                            }
                                                         ></AddReturnedProductNote>
                                                     )}
                                                     {/* Delete Button */}
                                                     <Button
                                                         variant='ghost'
                                                         size='sm'
-                                                        onClick={() => handleDeleteReturnedProductNote(note.id)}
+                                                        onClick={() =>
+                                                            handleDeleteReturnedProductNote(note.id)
+                                                        }
                                                     >
                                                         <RiDeleteBin6Line size={15} />
                                                     </Button>
@@ -208,7 +242,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className='mt-5 flex flex-col items-center gap-3 justify-center'>
+                            <div className='mt-5 flex flex-col items-center justify-center gap-3'>
                                 <Dialog>
                                     <DialogTrigger className='max-h-fit max-w-fit' asChild>
                                         <div className='cursor-pointer bg-white p-3'>
@@ -230,14 +264,16 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             </div>
                         </div>
                         <Separator className='my-6 h-1' />
-                        <div className='mt-3 items-center gap-3 md:flex hidden'>
-                            <h1 className='text-xl font-bold'>{t('pages.returned_product.show.product_problems.title')}</h1>
+                        <div className='mt-3 hidden items-center gap-3 md:flex'>
+                            <h1 className='text-xl font-bold'>
+                                {t('pages.returned_product.show.product_problems.title')}
+                            </h1>
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) &&
                                 componentResource && (
                                     <AddProductProblem
-                                        localizedStatuses={localizedProductProblemStatuses}
                                         setComponentResource={setComponentResource}
                                         returnedProduct={data}
+                                        localizedStatuses={localizedProductProblemStatuses}
                                         handleSyncReturnedProduct={handleSyncReturnedProduct}
                                         componentResource={componentResource}
                                     />
@@ -266,9 +302,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             )}
                                         </TableHead>
                                         <TableHead>
-                                            {t(
-                                                'pages.returned_product.show.table_headers.note',
-                                            )}
+                                            {t('pages.returned_product.show.table_headers.note')}
                                         </TableHead>
                                         <TableHead>
                                             {t('pages.returned_product.show.table_headers.status')}
@@ -286,7 +320,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                 {productProblem.component?.description}
                                             </TableCell>
                                             <TableCell>
-                                                {productProblem.latest_product_problem_note?.note ?? '-'}
+                                                {productProblem.latest_product_problem_note?.note ??
+                                                    '-'}
                                             </TableCell>
                                             <TableCell>{productProblem.localized_status}</TableCell>
                                             <TableCell>
@@ -302,8 +337,10 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE,
                                                 ) && (
                                                     <UpdateProductProblemStatus
-                                                        localizedStatuses={localizedProductProblemStatuses}
                                                         productProblem={productProblem}
+                                                        localizedStatuses={
+                                                            localizedProductProblemStatuses
+                                                        }
                                                         handleSyncReturnedProduct={
                                                             handleSyncReturnedProduct
                                                         }

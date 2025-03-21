@@ -112,7 +112,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('product-problems', ProductProblemController::class);
     Route::resource('product-problem-notes', ProductProblemNoteController::class);
 
-
     Route::get('/search', [ApiSearchController::class, 'search']);
 
     // Route::controller(WorkDayController::class)->prefix('work-days/{work_day}')->name('work-days.')->group(function () {

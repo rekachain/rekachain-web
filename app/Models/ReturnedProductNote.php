@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ReturnedProductNote extends Model
-{
+class ReturnedProductNote extends Model {
     use HasFactory, HasFilterable;
 
     protected $fillable = [
@@ -31,13 +30,11 @@ class ReturnedProductNote extends Model
         ],
     ];
 
-    public function returned_product(): BelongsTo
-    {
+    public function returned_product(): BelongsTo {
         return $this->belongsTo(ReturnedProduct::class);
     }
 
-    public function user(): BelongsTo
-    {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
 

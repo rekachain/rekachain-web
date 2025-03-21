@@ -20,6 +20,7 @@ class UpdateProductProblemRequest extends FormRequest {
                     'note' => 'nullable|string',
                 ];
         }
+
         return [
             'returned_product_id' => 'nullable|exists:returned_products,id',
             'component_id' => 'nullable|exists:components,id',

@@ -22,7 +22,6 @@ import {
 import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { componentService } from '@/Services/componentService';
 import { returnedProductService } from '@/Services/returnedProductService';
@@ -35,7 +34,7 @@ import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Loader2 } from 'lucide-react';
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect } from 'react';
 import { FilePond } from 'react-filepond';
 
 const AddProductProblem = ({
@@ -131,7 +130,7 @@ const AddProductProblem = ({
             t('pages.returned_product.partials.add_product_problem.messages.created'),
         );
     });
-    
+
     const handleFileChange = (fileItems: any) => {
         setData((prevData: any) => ({
             ...prevData,
@@ -235,40 +234,42 @@ const AddProductProblem = ({
                                 </Select>
                                 {data.status !== ProductProblemStatusEnum.DRAFT && (
                                     <>
-                                    <div className='mt-4 space-y-2 rounded bg-background-2'>
-                                        <InputLabel
-                                            value={t('pages.returned_product.create.fields.evidence')}
-                                            htmlFor='evidence'
-                                        />
-                                        <FilePond
-                                            onupdatefiles={handleFileChange}
-                                            labelIdle={t(
-                                                'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                                        <div className='mt-4 space-y-2 rounded bg-background-2'>
+                                            <InputLabel
+                                                value={t(
+                                                    'pages.returned_product.create.fields.evidence',
+                                                )}
+                                                htmlFor='evidence'
+                                            />
+                                            <FilePond
+                                                required
+                                                onupdatefiles={handleFileChange}
+                                                labelIdle={t(
+                                                    'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                                                )}
+                                                imagePreviewMaxHeight={200}
+                                                files={data.image_path}
+                                                filePosterMaxHeight={200}
+                                                allowReplace
+                                                allowMultiple={false}
+                                            />
+                                            {progress && (
+                                                <progress value={progress.percentage} max='100'>
+                                                    {progress.percentage}%
+                                                </progress>
                                             )}
-                                            imagePreviewMaxHeight={200}
-                                            files={data.image_path}
-                                            filePosterMaxHeight={200}
-                                            allowReplace
-                                            allowMultiple={false}
-                                            required
-                                        />
-                                        {progress && (
-                                            <progress value={progress.percentage} max='100'>
-                                                {progress.percentage}%
-                                            </progress>
-                                        )}
-                                    </div>
-                                    <div className='mt-4'>
-                                        <InputLabel value={'Catatan'} htmlFor='note' />
-                                        <Textarea
-                                            value={data.note ?? undefined}
-                                            onChange={(e) => setData('note', e.target.value)}
-                                            name='note'
-                                            id='note'
-                                            className='mt-1'
-                                            autoComplete='note'
-                                        />
-                                    </div>
+                                        </div>
+                                        <div className='mt-4'>
+                                            <InputLabel value={'Catatan'} htmlFor='note' />
+                                            <Textarea
+                                                value={data.note ?? undefined}
+                                                onChange={(e) => setData('note', e.target.value)}
+                                                name='note'
+                                                id='note'
+                                                className='mt-1'
+                                                autoComplete='note'
+                                            />
+                                        </div>
                                     </>
                                 )}
                             </div>

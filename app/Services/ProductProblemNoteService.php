@@ -16,6 +16,7 @@ class ProductProblemNoteService extends BaseCrudService implements ProductProble
             $data['user_id'] = auth()->id();
         }
         $model = parent::create($data);
+
         return $model;
     }
 }

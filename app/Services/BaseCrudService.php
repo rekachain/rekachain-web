@@ -213,7 +213,7 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
     protected function returnedProductService(): ReturnedProductServiceInterface {
         return $this->getService(ReturnedProductServiceInterface::class);
     }
-    
+
     /**
      * Get ReturnedProductNote service instance
      */

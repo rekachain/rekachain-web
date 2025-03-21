@@ -20,6 +20,7 @@ class StoreProductProblemRequest extends FormRequest {
                     'note' => 'required|string',
                 ];
         }
+
         return [
             'returned_product_id' => 'required|exists:returned_products,id',
             'component_id' => 'required|exists:components,id',

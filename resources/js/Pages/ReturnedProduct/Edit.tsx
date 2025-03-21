@@ -27,8 +27,8 @@ import { withLoading } from '@/Utils/withLoading';
 import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
-import BuyerForm from './Partials/BuyerForm';
 import { FilePond } from 'react-filepond';
+import BuyerForm from './Partials/BuyerForm';
 
 export default function ({ returnedProduct }: { returnedProduct: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
@@ -43,7 +43,7 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
         buyer_id: returnedProduct.buyer_id as number | null,
         image_path: [] as any[],
     });
-    
+
     useEffect(() => {
         if (returnedProduct.image_path)
             setData('image_path', [
@@ -89,7 +89,8 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
         formData.append('product_returnable_id', data.product_returnable_id?.toString() || '');
         formData.append('product_returnable_type', productReturnableType);
         data.qty && formData.append('qty', data.qty.toString());
-        data.serial_number && formData.append('serial_number', data.serial_number?.toString() || '');
+        data.serial_number &&
+            formData.append('serial_number', data.serial_number?.toString() || '');
         formData.append('buyer_id', data.buyer_id?.toString() || '');
         validImages.length > 0 && formData.append('image_path', validImages[0]);
 
@@ -222,7 +223,9 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                         />
                         <FilePond
                             onupdatefiles={handleFileChange}
-                            labelIdle={t('pages.returned_product.create.fields.evidence_filepond_placeholder')}
+                            labelIdle={t(
+                                'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                            )}
                             imagePreviewMaxHeight={400}
                             files={data.image_path}
                             filePosterMaxHeight={400}

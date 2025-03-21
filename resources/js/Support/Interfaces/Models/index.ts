@@ -38,7 +38,7 @@ export * from './TrainsetAttachmentComponent';
 export * from './TrainsetAttachmentHandler';
 export * from './WorkAspect';
 
+export * from './ProductProblem';
+export * from './ProductProblemNote';
 export * from './ReturnedProduct';
 export * from './ReturnedProductNote';
-export * from './ProductProblemNote';
-export * from './ProductProblem';

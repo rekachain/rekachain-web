@@ -50,11 +50,13 @@ const AddReturnedProductNote = ({
     };
     const handleUpdateNote = async () => {
         try {
-            await returnedProductNoteService.update(returnedProductNote?.id!, data);
-            await handleSyncReturnedProduct();
-            void useSuccessToast(
-                t('pages.returned_product.partials.add_returned_product_note.messages.updated'),
-            );
+            if (returnedProductNote?.id) {
+                await returnedProductNoteService.update(returnedProductNote.id, data);
+                await handleSyncReturnedProduct();
+                void useSuccessToast(
+                    t('pages.returned_product.partials.add_returned_product_note.messages.updated'),
+                );
+            }
         } catch (error) {
             console.error('Failed to update note:', error);
         }
@@ -66,10 +68,12 @@ const AddReturnedProductNote = ({
                 <DialogTrigger>
                     <RiEdit2Line size={15} />
                 </DialogTrigger>
-            ): (
-                <DialogTrigger className={buttonVariants({
+            ) : (
+                <DialogTrigger
+                    className={buttonVariants({
                         className: 'w-fit',
-                    })}>
+                    })}
+                >
                     {t(
                         'pages.returned_product.partials.add_returned_product_note.buttons.add_note',
                     )}
@@ -80,16 +84,22 @@ const AddReturnedProductNote = ({
                     <DialogTitle>
                         {tChoice(
                             'pages.returned_product.partials.add_returned_product_note.dialog.title',
-                        returnedProductNote ? 1 : 0)}
+                            returnedProductNote ? 1 : 0,
+                        )}
                     </DialogTitle>
                     <DialogDescription>
                         {tChoice(
                             'pages.returned_product.partials.add_returned_product_note.dialog.description',
-                        returnedProductNote ? 1 : 0)}
+                            returnedProductNote ? 1 : 0,
+                        )}
                     </DialogDescription>
                 </DialogHeader>
-                
-                <form onSubmit={returnedProductNote ? handleUpdateNote : handleAddNote} className='flex flex-col gap-4' id='add-note-form'></form>
+
+                <form
+                    onSubmit={returnedProductNote ? handleUpdateNote : handleAddNote}
+                    id='add-note-form'
+                    className='flex flex-col gap-4'
+                ></form>
                 <div className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor='note'>
@@ -104,8 +114,12 @@ const AddReturnedProductNote = ({
                             className='rounded p-2'
                         />
                     </div>
-                    <Button type='submit' disabled={loading} form='add-note-form'>
-                        {loading ? t('action.loading') : returnedProductNote ? t('action.update') : t('action.add')}
+                    <Button type='submit' form='add-note-form' disabled={loading}>
+                        {loading
+                            ? t('action.loading')
+                            : returnedProductNote
+                              ? t('action.update')
+                              : t('action.add')}
                     </Button>
                 </div>
             </DialogContent>
