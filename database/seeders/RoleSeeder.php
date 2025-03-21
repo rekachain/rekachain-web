@@ -33,7 +33,7 @@ class RoleSeeder extends Seeder {
         ];
 
         foreach ($roles as $role) {
-            Role::create($role);
+            Role::firstOrCreate($role);
         }
 
         // give all permissions to PPC Perencanaan
@@ -107,6 +107,6 @@ class RoleSeeder extends Seeder {
         $permissionsAftersales = $permissionService->find([
             ['group', 'in', ['returned-product', 'returned-product-note', 'product-problem', 'product-problem-note', 'replacement-stock']],
         ]);
-        Role::findMany([13, 14, 15])->givePermissionTo($permissionsAftersales);
+        Role::findMany([13, 14, 15])->each(fn ($role) => $role->givePermissionTo($permissionsAftersales));
     }
 }
