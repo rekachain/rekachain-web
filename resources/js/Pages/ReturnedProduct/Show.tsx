@@ -42,9 +42,10 @@ import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
 import { RiEdit2Line, RiDeleteBin6Line } from '@remixicon/react';
 import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import { returnedProductNoteService } from '@/Services/returnedProductNoteService';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
-    const { t } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
 
     const [returnedProductNotesData, setReturnedProductNotesData] = useState<ReturnedProductNoteResource[]>(
         data.returned_product_notes ?? []
@@ -59,6 +60,21 @@ export default function ({ data }: { data: ReturnedProductResource }) {
         const res = await componentService.getAll();
         setComponentResource(res);
     });
+
+    const [localizedProductProblemStatuses, setProductProblemLocalizedStatuses] = useState<Record<string, string>>({});
+
+    useEffect(() => {
+        const fetchProductProblemLocalizedStatuses = async () => {
+            try {
+                const labels = await fetchEnumLabels('ProductProblemStatusEnum');
+                setProductProblemLocalizedStatuses(labels);
+            } catch (error) {
+                console.error('Failed to fetch localized statuses:', error);
+            }
+        };
+
+        fetchProductProblemLocalizedStatuses();
+    }, [setLocale]);
 
     useEffect(() => {
         void fetchInitialComponentData();
@@ -219,6 +235,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_CREATE) &&
                                 componentResource && (
                                     <AddProductProblem
+                                        localizedStatuses={localizedProductProblemStatuses}
                                         setComponentResource={setComponentResource}
                                         returnedProduct={data}
                                         handleSyncReturnedProduct={handleSyncReturnedProduct}

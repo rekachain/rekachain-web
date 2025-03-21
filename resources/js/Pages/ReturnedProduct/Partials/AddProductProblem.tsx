@@ -39,11 +39,13 @@ import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from '
 import { FilePond } from 'react-filepond';
 
 const AddProductProblem = ({
+    localizedStatuses,
     componentResource,
     setComponentResource,
     returnedProduct,
     handleSyncReturnedProduct,
 }: {
+    localizedStatuses: Record<string, string>;
     componentResource: PaginateResponse<ComponentResource>;
     setComponentResource: (componentResponse: PaginateResponse<ComponentResource>) => void;
     returnedProduct: ReturnedProductResource;
@@ -136,21 +138,6 @@ const AddProductProblem = ({
             image_path: fileItems.map((fileItem: any) => fileItem.file),
         }));
     };
-
-    const [localizedStatuses, setLocalizedStatuses] = useState<Record<string, string>>({});
-
-    useEffect(() => {
-        const fetchLocalizedStatuses = async () => {
-            try {
-                const labels = await fetchEnumLabels('ProductProblemStatusEnum');
-                setLocalizedStatuses(labels);
-            } catch (error) {
-                console.error('Failed to fetch localized statuses:', error);
-            }
-        };
-
-        fetchLocalizedStatuses();
-    }, [t]);
 
     return (
         <Dialog>
