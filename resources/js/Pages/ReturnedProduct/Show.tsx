@@ -302,12 +302,12 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE,
                                                 ) && (
                                                     <UpdateProductProblemStatus
-                                                        productProblemId={productProblem.id}
+                                                        localizedStatuses={localizedProductProblemStatuses}
+                                                        productProblem={productProblem}
                                                         handleSyncReturnedProduct={
                                                             handleSyncReturnedProduct
                                                         }
-                                                        currentStatus={productProblem.status}
-                                                    ></UpdateProductProblemStatus>
+                                                    />
                                                 )}
                                                 {checkPermission(
                                                     PERMISSION_ENUM.PRODUCT_PROBLEM_DELETE,
