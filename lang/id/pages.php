@@ -2568,6 +2568,7 @@ return [
                         'note' => 'Catatan',
                         'status' => 'Status',
                         'created_at' => 'Dibuat Pada',
+                        'updated_at' => 'Diperbarui Pada',
                     ],
                     'contents' => [
                         'type' => [

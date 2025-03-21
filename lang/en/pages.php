@@ -2567,7 +2567,8 @@ return [
                         'type' => 'Type',
                         'note' => 'Note',
                         'status' => 'Status',
-                        'created_at' => 'Created At',
+                        'created_at' => 'Requested At',
+                        'updated_at' => 'Updated At',
                     ],
                     'contents' => [
                         'type' => [
