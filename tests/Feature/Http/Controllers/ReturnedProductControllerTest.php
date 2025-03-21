@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Resources\UserResource;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 test('user can view list of returned-products', function () {
@@ -31,13 +33,14 @@ test('system can save created returned-product to database', function () {
         'product_returnable_type' => 'App\Models\Panel',
         'buyer_id' => 1,
         'qty' => 1,
+        'image_path' => UploadedFile::fake()->image('image.jpg'),
     ];
 
     $response = actAsWorkerAftersales()->postJson('/returned-products', $data);
 
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'product_returnable_id', 'product_returnable_type', 'product_return', 'buyer_id', 'buyer', 'qty', 'serial_number']);
-    $this->assertDatabaseHas('returned_products', $data);
+    $this->assertDatabaseHas('returned_products', Arr::except($data, ['image_path']));
 });
 
 test('buyer can view return request of ordered product form', function () {
@@ -53,13 +56,13 @@ test('user can view ReturnedProduct details', function () {
     $response = actAsWorkerAftersales()->getJson("/returned-products/{$model->id}");
 
     $response->assertStatus(200)
-        ->assertJson([
+        ->assertJsonFragment([
             'id' => $model->id, 
             'product_returnable_id' => $model->product_returnable_id, 
             'product_returnable_type' => $model->product_returnable_type, 
             'product_return' => $model->product_returnable->toArray(), 
             'buyer_id' => $model->buyer_id, 
-            'buyer' => $model->buyer->toArray(), 
+            'buyer' => UserResource::make($model->buyer)->resolve(),
             'qty' => $model->qty, 
             'serial_number' => $model->serial_number,
         ]);

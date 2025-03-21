@@ -26,12 +26,12 @@ export default function ReturnedProductCardView({
                     duration={300}
                 >
                     <div className='mt-4 flex flex-col gap-2 rounded-md border-2 border-black p-2 dark:border-white'>
-                        <div className='items-scenter flex w-full justify-between'>
+                        <div className='flex w-full justify-between'>
                             <h4 className='text-xl font-bold'>
                                 {returnedProduct.product_return?.name}
                             </h4>
                             <div className='text-center'>
-                                <h5 className='text-md items-center font-bold'>
+                                <h5 className='text-md font-bold'>
                                     {t(
                                         'pages.returned_product.partials.partials.returned_product_card.headers.type',
                                         {
@@ -46,23 +46,68 @@ export default function ReturnedProductCardView({
                             </div>
                         </div>
 
-                        <h5 className='text-sm font-bold'>
-                            {t(
-                                'pages.returned_product.partials.partials.returned_product_card.headers.description',
-                                {
-                                    description: returnedProduct.product_return?.description || '',
-                                },
-                            )}
-                        </h5>
                         <h5 className='text-sm'>
-                            {t(
-                                'pages.returned_product.partials.partials.returned_product_card.headers.created_at',
-                                {
-                                    date: returnedProduct.created_at,
-                                },
-                            )}
+                            <strong>
+                                {t(
+                                    'pages.returned_product.partials.partials.returned_product_card.headers.serial_number',
+                                )}
+                                :
+                            </strong>{' '}
+                            {returnedProduct.serial_number}
                         </h5>
-                        <div className='flex w-full items-center justify-end'>
+
+                        <h5 className='text-sm'>
+                            <strong>
+                                {t(
+                                    'pages.returned_product.partials.partials.returned_product_card.headers.description',
+                                )}
+                                :
+                            </strong>{' '}
+                            {returnedProduct.product_return?.description || '-'}
+                        </h5>
+
+                        <h5 className='text-sm'>
+                            <strong>
+                                {t(
+                                    'pages.returned_product.partials.partials.returned_product_card.headers.note',
+                                )}
+                                :
+                            </strong>{' '}
+                            {returnedProduct.latest_returned_product_note?.note ?? '-'}
+                        </h5>
+
+                        <h5 className='text-sm'>
+                            <strong>
+                                {t(
+                                    'pages.returned_product.partials.partials.returned_product_card.headers.status',
+                                )}
+                                :
+                            </strong>{' '}
+                            {returnedProduct.localized_status}
+                        </h5>
+
+                        <h5 className='text-sm'>
+                            <strong>
+                                {t(
+                                    'pages.returned_product.partials.partials.returned_product_card.headers.created_at',
+                                )}
+                                :
+                            </strong>{' '}
+                            {returnedProduct.created_at}
+                        </h5>
+
+                        <div className='flex w-full items-center justify-end gap-2'>
+                            {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                                <Link
+                                    href={route(
+                                        `${ROUTES.RETURNED_PRODUCTS}.show`,
+                                        returnedProduct.id,
+                                    )}
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t('action.show')}
+                                </Link>
+                            )}
                             {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                 <Link
                                     href={route(
@@ -74,15 +119,16 @@ export default function ReturnedProductCardView({
                                     {t('action.edit')}
                                 </Link>
                             )}
-                            {/* {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) &&
-                                returnedProduct.can_be_deleted && (
-                                    <Button
-                                        variant='link'
-                                        onClick={() => handleReturnedProductDeletion(returnedProduct.id)}
-                                    >
-                                        {t('action.delete')}
-                                    </Button>
-                                )} */}
+                            {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
+                                <button
+                                    onClick={() =>
+                                        handleReturnedProductDeletion(returnedProduct.id)
+                                    }
+                                    className={buttonVariants({ variant: 'link' })}
+                                >
+                                    {t('action.delete')}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </AnimateIn>

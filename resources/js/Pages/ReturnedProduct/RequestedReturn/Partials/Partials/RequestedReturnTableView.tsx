@@ -33,8 +33,16 @@ export default function ReturnedProductTableView({
                                 'pages.returned_product.partials.partials.returned_product_table.headers.status',
                             )}
                         </TableHead>
-                        <TableHead>{'requested at'}</TableHead>
-                        <TableHead>{'updated at'}</TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.created_at',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.updated_at',
+                            )}
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

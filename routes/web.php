@@ -20,12 +20,14 @@ use App\Http\Controllers\PanelMaterialController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProductProblemController;
+use App\Http\Controllers\ProductProblemNoteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
 use App\Http\Controllers\ReturnedProductController;
+use App\Http\Controllers\ReturnedProductNoteController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\TrainsetAttachmentController;
@@ -106,7 +108,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('feedback', FeedbackController::class)->except(['store']);
     Route::resource('helpdesk-contact', HelpdeskContactController::class);
     Route::resource('returned-products', ReturnedProductController::class);
+    Route::resource('returned-product-notes', ReturnedProductNoteController::class);
     Route::resource('product-problems', ProductProblemController::class);
+    Route::resource('product-problem-notes', ProductProblemNoteController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 

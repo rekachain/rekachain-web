@@ -7,6 +7,7 @@ use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductProblem extends Model {
     use HasFactory, HasFilterable;
@@ -42,6 +43,10 @@ class ProductProblem extends Model {
 
     public function component(): BelongsTo {
         return $this->belongsTo(Component::class);
+    }
+
+    public function product_problem_notes(): HasMany {
+        return $this->hasMany(ProductProblemNote::class);
     }
 
     public function getImageAttribute() {

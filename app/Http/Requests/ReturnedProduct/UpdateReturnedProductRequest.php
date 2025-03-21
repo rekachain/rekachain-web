@@ -19,6 +19,8 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'new_component_name' => 'required_without:component_id|string',
                     'new_component_description' => 'required_without:component_id|string',
                     'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
+                    'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
+                    'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [
@@ -41,6 +43,7 @@ class UpdateReturnedProductRequest extends FormRequest {
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'nullable|integer',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
     }
 }

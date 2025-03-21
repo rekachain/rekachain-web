@@ -17,6 +17,21 @@ class StoreReturnedProductRequest extends FormRequest {
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
+            case IntentEnum::WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE->value:
+                return [
+                    'product_returnable_type' => 'required_with:product_returnable_id|string|in:' . implode(',', [
+                        Panel::class,
+                        Component::class,
+                    ]),
+                    'product_returnable_id' => 'required_with:product_returnable_type|integer|exists:' . (new $this->product_returnable_type)->getTable() . ',id',
+                    'buyer_id' => 'nullable|integer|exists:users,id',
+                    'qty' => 'nullable|integer|min:1', // if serial panel then only one?
+                    'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
+                    'serial_number' => 'required_without:product_returnable_type|integer',
+                    'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
+                    'image_path' => 'required|image|mimes:jpeg,png,jpg',
+                    'note' => 'required|string',
+                ];
         }
 
         return [
@@ -30,6 +45,7 @@ class StoreReturnedProductRequest extends FormRequest {
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'required_without:product_returnable_type|integer',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
+            'image_path' => 'required|image|mimes:jpeg,png,jpg',
         ];
     }
 }

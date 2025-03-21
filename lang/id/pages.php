@@ -2368,6 +2368,8 @@ return [
                 'name' => 'Nama',
                 'description' => 'Deskripsi',
                 'type' => 'Tipe',
+                'evidence' => 'Foto ',
+                'evidence_filepond_placeholder' => 'Letakkan file di sini atau klik untuk mengunggah foto',
             ],
             'buttons' => [
                 'submit' => 'Buat Retur',
@@ -2388,19 +2390,36 @@ return [
                 'delete' => 'Hapus Retur',
                 'import' => 'Impor Retur',
             ],
+            'dialogs' => [
+                'confirm_delete_note' => [
+                    'title' => 'Hapus Catatan',
+                    'description' => 'Apakah Anda yakin ingin menghapus catatan?',
+                ],
+                'confirm_delete_problem' => [
+                    'title' => 'Hapus Permasalahan',
+                    'description' => 'Apakah Anda yakin ingin menghapus permasalahan ini?',
+                ],
+            ],
             'messages' => [
                 'deleted_problem' => 'Masalah Produk berhasil dihapus!',
+                'deleted_note' => 'Catatan berhasil dihapus!',
             ],
             'labels' => [
+                'buyer' => 'Pelanggan',
                 'serial_number' => 'Nomor Seri',
                 'return_quantity' => 'Jumlah Retur',
                 'return_date' => 'Tanggal Retur',
                 'update_date' => 'Tanggal Diperbarui',
+                'notes' => 'Catatan',
             ],
             'table_headers' => [
                 'component_name' => 'Nama Komponen',
                 'description' => 'Deskripsi',
+                'note' => 'Note',
                 'status' => 'Status',
+            ],
+            'product_problems' => [
+                'title' => 'Permasalahan Produk',
             ],
         ],
         'edit' => [
@@ -2522,15 +2541,34 @@ return [
                     'updated' => 'Status Produk berhasil diperbarui!',
                 ],
             ],
+            'add_returned_product_note' => [
+                'buttons' => [
+                    'add_note' => 'Tambah Catatan',
+                ],
+                'dialog' => [
+                    'title' => '{0} Tambah Catatan|{1} Perbarui Catatan',
+                    'description' => '{0} Tambahkan catatan pada Produk Retur.|{1} Perbarui catatan yang dipilih.',
+                    'fields' => [
+                        'note' => 'Catatan',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Catatan berhasil ditambahkan!',
+                    'updated' => 'Catatan berhasil diperbarui!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
+                        'buyer' => 'Pelanggan',
                         'serial_number' => 'Nomor Seri',
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
                         'type' => 'Tipe',
+                        'note' => 'Catatan',
                         'status' => 'Status',
                         'created_at' => 'Dibuat Pada',
+                        'updated_at' => 'Diperbarui Pada',
                     ],
                     'contents' => [
                         'type' => [
@@ -2542,9 +2580,12 @@ return [
                 'returned_product_card' => [
                     'headers' => [
                         'name' => 'Nama: :name',
-                        'description' => 'Deskripsi: :description',
+                        'serial_number' => 'Nomor Seri',
+                        'description' => 'Deskripsi',
                         'type' => 'Tipe: :type',
-                        'created_at' => 'Dibuat Pada: :created_at',
+                        'note' => 'Catatan',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
                     ],
                 ],
             ],

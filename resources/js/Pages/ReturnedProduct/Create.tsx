@@ -10,6 +10,7 @@ import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -17,31 +18,44 @@ import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ComponentResource, PanelResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
+import { FilePond } from 'react-filepond';
 import BuyerForm from './Partials/BuyerForm';
 
 export default function () {
     const { t } = useLaravelReactI18n();
-    const { data, setData } = useForm<{
+    const { data, setData, progress } = useForm<{
         product_returnable_id: number | null;
         product_returnable_type: string;
         qty: number;
         serial_number: number | null;
         buyer_id: number | null;
+        image_path: any[];
+        note: string;
     }>({
         product_returnable_id: null,
         product_returnable_type: 'component',
         qty: 1,
         serial_number: null,
         buyer_id: null,
+        image_path: [],
+        note: '',
     });
 
     const { loading } = useLoading();
+
+    const handleFileChange = (fileItems: any) => {
+        setData((prevData: any) => ({
+            ...prevData,
+            image_path: fileItems.map((fileItem: any) => fileItem.file),
+        }));
+    };
 
     const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
@@ -51,10 +65,17 @@ export default function () {
                 ? 'App\\Models\\Component'
                 : 'App\\Models\\Panel';
 
-        await returnedProductService.create({
-            ...data,
-            product_returnable_type: productReturnableType,
-        });
+        const formData = new FormData();
+        formData.append('intent', IntentEnum.WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE);
+        formData.append('product_returnable_id', data.product_returnable_id?.toString() ?? '');
+        formData.append('product_returnable_type', productReturnableType);
+        formData.append('qty', data.qty?.toString() ?? '');
+        formData.append('serial_number', data.serial_number?.toString() ?? '');
+        formData.append('buyer_id', data.buyer_id?.toString() ?? '');
+        formData.append('image_path', data.image_path[0]);
+        formData.append('note', data.note);
+
+        await returnedProductService.create(formData);
         router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.index`));
         void useSuccessToast(t('pages.returned_product.create.messages.created'));
     });
@@ -168,6 +189,40 @@ export default function () {
                             id='serial_number'
                             className='mt-1'
                             autoComplete='serial_number'
+                        />
+                    </div>
+                    <div className='mt-4 space-y-2 rounded bg-background-2 p-4'>
+                        <InputLabel
+                            value={t('pages.returned_product.create.fields.evidence')}
+                            htmlFor='evidence'
+                        />
+                        <FilePond
+                            required
+                            onupdatefiles={handleFileChange}
+                            labelIdle={t(
+                                'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                            )}
+                            imagePreviewMaxHeight={400}
+                            files={data.image_path}
+                            filePosterMaxHeight={400}
+                            allowReplace
+                            allowMultiple={false}
+                        />
+                        {progress && (
+                            <progress value={progress.percentage} max='100'>
+                                {progress.percentage}%
+                            </progress>
+                        )}
+                    </div>
+                    <div className='mt-4'>
+                        <InputLabel value={'Catatan'} htmlFor='note' />
+                        <Textarea
+                            value={data.note ?? undefined}
+                            onChange={(e) => setData('note', e.target.value)}
+                            name='note'
+                            id='note'
+                            className='mt-1'
+                            autoComplete='note'
                         />
                     </div>
 

@@ -1,4 +1,5 @@
 import GenericDataSelector from '@/Components/GenericDataSelector';
+import InputLabel from '@/Components/InputLabel';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
@@ -21,7 +22,6 @@ import {
 import { Separator } from '@/Components/UI/separator';
 import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { componentService } from '@/Services/componentService';
 import { returnedProductService } from '@/Services/returnedProductService';
@@ -34,14 +34,17 @@ import { useForm } from '@inertiajs/react';
 import { useDebounce } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Loader2 } from 'lucide-react';
-import { ChangeEvent, FormEvent, memo, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, memo, useCallback, useEffect } from 'react';
+import { FilePond } from 'react-filepond';
 
 const AddProductProblem = ({
+    localizedStatuses,
     componentResource,
     setComponentResource,
     returnedProduct,
     handleSyncReturnedProduct,
 }: {
+    localizedStatuses: Record<string, string>;
     componentResource: PaginateResponse<ComponentResource>;
     setComponentResource: (componentResponse: PaginateResponse<ComponentResource>) => void;
     returnedProduct: ReturnedProductResource;
@@ -50,12 +53,14 @@ const AddProductProblem = ({
     const { t } = useLaravelReactI18n();
     const { loading } = useLoading();
 
-    const { data, setData, reset } = useForm({
+    const { data, setData, reset, progress } = useForm({
         search_component: '',
         component_id: null as number | null,
         new_component_name: '',
         new_component_description: '',
         status: ProductProblemStatusEnum.DRAFT,
+        image_path: [],
+        note: '',
     });
     const debouncedSearchComponent = useDebounce(data.search_component, 300);
 
@@ -115,6 +120,8 @@ const AddProductProblem = ({
             data.new_component_name,
             data.new_component_description,
             data.status,
+            data.image_path,
+            data.note,
         );
         handleResetAddComponentSelection();
         await handleSyncReturnedProduct();
@@ -124,20 +131,12 @@ const AddProductProblem = ({
         );
     });
 
-    const [localizedStatuses, setLocalizedStatuses] = useState<Record<string, string>>({});
-
-    useEffect(() => {
-        const fetchLocalizedStatuses = async () => {
-            try {
-                const labels = await fetchEnumLabels('ProductProblemStatusEnum');
-                setLocalizedStatuses(labels);
-            } catch (error) {
-                console.error('Failed to fetch localized statuses:', error);
-            }
-        };
-
-        fetchLocalizedStatuses();
-    }, [t]);
+    const handleFileChange = (fileItems: any) => {
+        setData((prevData: any) => ({
+            ...prevData,
+            image_path: fileItems.map((fileItem: any) => fileItem.file),
+        }));
+    };
 
     return (
         <Dialog>
@@ -208,33 +207,71 @@ const AddProductProblem = ({
                                         'pages.returned_product.partials.add_product_problem.dialogs.fields.status',
                                     )}
                                 </Label>
-                                <div className='rounded p-2'>
-                                    <Select
-                                        value={data.status}
-                                        onValueChange={(value) =>
-                                            setData('status', value as ProductProblemStatusEnum)
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue>
-                                                {localizedStatuses[
-                                                    data.status || ProductProblemStatusEnum.DRAFT
-                                                ] || 'Pilih Status'}
-                                            </SelectValue>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                {Object.entries(localizedStatuses).map(
-                                                    ([status, label]) => (
-                                                        <SelectItem value={status} key={status}>
-                                                            {label}
-                                                        </SelectItem>
-                                                    ),
+                                <Select
+                                    value={data.status}
+                                    onValueChange={(value) =>
+                                        setData('status', value as ProductProblemStatusEnum)
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue>
+                                            {localizedStatuses[
+                                                data.status || ProductProblemStatusEnum.DRAFT
+                                            ] || 'Pilih Status'}
+                                        </SelectValue>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {Object.entries(localizedStatuses).map(
+                                                ([status, label]) => (
+                                                    <SelectItem value={status} key={status}>
+                                                        {label}
+                                                    </SelectItem>
+                                                ),
+                                            )}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                                {data.status !== ProductProblemStatusEnum.DRAFT && (
+                                    <>
+                                        <div className='mt-4 space-y-2 rounded bg-background-2'>
+                                            <InputLabel
+                                                value={t(
+                                                    'pages.returned_product.create.fields.evidence',
                                                 )}
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
+                                                htmlFor='evidence'
+                                            />
+                                            <FilePond
+                                                required
+                                                onupdatefiles={handleFileChange}
+                                                labelIdle={t(
+                                                    'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                                                )}
+                                                imagePreviewMaxHeight={200}
+                                                files={data.image_path}
+                                                filePosterMaxHeight={200}
+                                                allowReplace
+                                                allowMultiple={false}
+                                            />
+                                            {progress && (
+                                                <progress value={progress.percentage} max='100'>
+                                                    {progress.percentage}%
+                                                </progress>
+                                            )}
+                                        </div>
+                                        <div className='mt-4'>
+                                            <InputLabel value={'Catatan'} htmlFor='note' />
+                                            <Textarea
+                                                value={data.note ?? undefined}
+                                                onChange={(e) => setData('note', e.target.value)}
+                                                name='note'
+                                                id='note'
+                                                className='mt-1'
+                                                autoComplete='note'
+                                            />
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 

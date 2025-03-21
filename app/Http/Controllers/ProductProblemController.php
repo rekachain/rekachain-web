@@ -6,6 +6,7 @@ use App\Http\Requests\ProductProblem\StoreProductProblemRequest;
 use App\Http\Requests\ProductProblem\UpdateProductProblemRequest;
 use App\Http\Resources\ProductProblemResource;
 use App\Models\ProductProblem;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\ProductProblemServiceInterface;
 use Illuminate\Http\Request;
 
@@ -51,8 +52,14 @@ class ProductProblemController extends Controller {
     }
 
     public function update(UpdateProductProblemRequest $request, ProductProblem $productProblem) {
-        $productProblem = $this->productProblemService->update($productProblem, $request->validated());
+        $intent = $request->get('intent');
         if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE->value:
+                    return $this->productProblemService->updateWithNote($productProblem, $request->validated());
+            }
+            $productProblem = $this->productProblemService->update($productProblem, $request->validated());
+
             return ProductProblemResource::make($productProblem->load(['component', 'returned_product']));
         }
     }
