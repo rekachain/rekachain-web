@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Helpers;
 
 use App\Models\ProductProblem;
+use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
 use App\Models\Role;
 use App\Models\Step;
@@ -485,5 +486,8 @@ class Dummy {
 
     public function createProductProblem() {
         return ProductProblem::factory()->create();
+    }
+    public function createReplacementStock() {
+        return ReplacementStock::factory()->create();
     }
 }

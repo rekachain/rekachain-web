@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Resources\ComponentResource;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 test('user can view list of replacement-stocks', function () {
@@ -44,7 +45,12 @@ test('user can view ReplacementStock details', function () {
     $response = actAsWorkerAftersales()->getJson("/replacement-stocks/{$model->id}");
 
     $response->assertStatus(200)
-        ->assertJson(['id' => $model->id, 'component_id' => $model->component_id, 'qty' => $model->qty]);
+        ->assertJson([
+            'id' => $model->id, 
+            'component_id' => $model->component_id, 
+            'component' => ComponentResource::make($model->component)->resolve(), 
+            'qty' => $model->qty
+        ]);
 });
 
 test('user can view edit form of ReplacementStock', function () {
