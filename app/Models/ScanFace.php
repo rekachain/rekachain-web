@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ScanFace extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'image_path',
-        'status',
-        'kpm',
-        'panel',
-    ];
+
+    protected $guarded = ['id'];
+    // protected $fillable = [
+    //     'user_id',
+    //     'image_path',
+    //     'status',
+    //     'kpm',
+    //     'panel',
+    // ];
 
     use HasFactory;
 

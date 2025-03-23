@@ -19,6 +19,7 @@ class ScanFaceResource extends JsonResource {
             'kpm' => $this->kpm,
             'panel' => $this->panel,
             'image_path' => $this->image_path,
+            'url_path' => url("/storage/result_scan_faces/" . $this->image_path),
             'status' => $this->status,
         ];
     }
