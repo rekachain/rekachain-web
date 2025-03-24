@@ -21,6 +21,10 @@ return new class extends Migration {
             $table->string('image_path')->nullable();
             $table->timestamps();
         });
+        // reseed aftersales division, permission and role
+        Artisan::call('db:seed', ['--class' => 'DivisionSeeder']);
+        Artisan::call('db:seed', ['--class' => 'PermissionSeeder']);
+        Artisan::call('db:seed', ['--class' => 'RoleSeeder']);
         if (app()->isLocal()) {
             Artisan::call('db:seed', ['--class' => 'ReturnedProductSeeder']);
         }
