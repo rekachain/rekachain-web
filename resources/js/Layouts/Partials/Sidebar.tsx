@@ -14,6 +14,7 @@ import {
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
+    RiExchange2Line,
     RiExpandRightLine,
     RiFeedbackLine,
     RiHandHeartLine,
@@ -297,16 +298,23 @@ export default function Sidebar() {
                     >
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                             <SidebarLink
-                                title={'Returned Product'}
+                                title={t('components.sidebar.links.returned_products')}
                                 routeName={`${ROUTES.RETURNED_PRODUCTS}.index`}
                                 icon={<RiLoopLeftLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                             <SidebarLink
-                                title={'Return Request'}
+                                title={t('components.sidebar.links.requested_returns')}
                                 routeName={`${ROUTES.REQUESTED_RETURNS}.index`}
                                 icon={<RiHandHeartLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_READ) && (
+                            <SidebarLink
+                                title={t('components.sidebar.links.replacement_stocks')}
+                                routeName={`${ROUTES.REPLACEMENT_STOCKS}.index`}
+                                icon={<RiExchange2Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                     </SidebarMenu>
