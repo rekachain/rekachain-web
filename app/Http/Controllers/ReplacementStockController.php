@@ -6,6 +6,7 @@ use App\Http\Requests\ReplacementStock\StoreReplacementStockRequest;
 use App\Http\Requests\ReplacementStock\UpdateReplacementStockRequest;
 use App\Http\Resources\ReplacementStockResource;
 use App\Models\ReplacementStock;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\ReplacementStockServiceInterface;
 use Illuminate\Http\Request;
 
@@ -13,10 +14,18 @@ class ReplacementStockController extends Controller {
     public function __construct(protected ReplacementStockServiceInterface $replacementStockService) {}
 
     public function index(Request $request) {
-        $perPage = $request->get('perPage', 10);
-        $data = ReplacementStockResource::collection($this->replacementStockService->getAllPaginated($request->query(), $perPage));
 
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_REPLACEMENT_STOCK_GET_TEMPLATE_IMPORT_REPLACEMENT_STOCK->value:
+                    return $this->replacementStockService->getImportDataTemplate();
+            }
+
+            $perPage = $request->get('perPage', 10);
+            $data = ReplacementStockResource::collection($this->replacementStockService->getAllPaginated($request->query(), $perPage));
+
             return $data;
         }
 
