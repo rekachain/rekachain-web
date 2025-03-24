@@ -12,7 +12,9 @@ class ReplacementStocksImport implements ToModel, WithHeadingRow {
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row) {
-        $component = Component::firstOrCreate($row['nama_komponen']);
+        $component = Component::firstOrCreate([
+            'name' => $row['nama_komponen'],
+        ]);
         return ReplacementStock::updateOrCreate([
             'component_id' => $component->id
         ], [
