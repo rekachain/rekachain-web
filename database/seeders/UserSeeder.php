@@ -177,12 +177,19 @@ class UserSeeder extends Seeder {
             });
         }
 
+        $supervisorAftersales = User::factory()->create([
+            'name' => 'Supervisor Aftersales',
+            'email' => 'supervisor.aftersales@example.com',
+        ]);
+
+        $supervisorAftersales->assignRole('Supervisor - Aftersales');
+
         $aftersales = User::factory()->create([
             'name' => 'Aftersales IV',
             'email' => 'aftersales@example.com',
         ]);
 
-        $aftersales->assignRole('Aftersales');
+        $aftersales->assignRole('Worker - Aftersales');
 
     }
 }
