@@ -38,6 +38,14 @@ class ReplacementStockController extends Controller {
 
     public function store(StoreReplacementStockRequest $request) {
         if ($this->ajax()) {
+            $intent = $request->get('intent');
+
+            switch ($intent) {
+                case IntentEnum::WEB_REPLACEMENT_STOCK_IMPORT_REPLACEMENT_STOCK->value:
+                    $this->replacementStockService->importData($request->file('import_file'));
+
+                    return response()->noContent();
+            }
             return $this->replacementStockService->create($request->validated());
         }
     }

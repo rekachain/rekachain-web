@@ -322,6 +322,8 @@ enum IntentEnum: string {
 
     case WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM = 'web.returned.product.import.product.problem';
 
+    case WEB_REPLACEMENT_STOCK_IMPORT_REPLACEMENT_STOCK = 'web.replacement.stock.import.replacement.stock';
+
     case WEB_REPLACEMENT_STOCK_GET_TEMPLATE_IMPORT_REPLACEMENT_STOCK = 'web.replacement.stock.get.template.import.replacement.stock';
 
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
