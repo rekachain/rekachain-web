@@ -34,7 +34,7 @@ const AddReturnedProductNote = ({
     const { data, setData } = useForm({
         returned_product_id: returnedProductId,
         note: returnedProductNote?.note ?? '',
-        user_id: auth?.user?.id,
+        user_id: auth.user.id,
     });
 
     const handleAddNote = async () => {

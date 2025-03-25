@@ -38,7 +38,7 @@ class UserResource extends JsonResource {
             'updated_at' => $this->updated_at,
             // only return the first, and only role
             'role' => $role,
-            'role_id' => $this->roles()->first()?->id,
+            'role_id' => $this->roles()?->first()?->id,
             'workstation_id' => $this->workstation_id,
             'step_id' => $this->step_id,
             'workstation' => WorkstationResource::make($this->whenLoaded('workstation')),
