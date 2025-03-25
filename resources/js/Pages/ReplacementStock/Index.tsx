@@ -14,7 +14,7 @@ export default function () {
     const ReplacementStocks = lazy(() => import('./Partials/ReplacementStocks'));
     return (
         <>
-            <Head title='Replacement Stock' />
+            <Head title={t('pages.replacement_stock.index.title')} />
             <AuthenticatedLayout>
                 <div className='p-4'>
                     <div className='flex items-center gap-5'>

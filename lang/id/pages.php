@@ -2580,4 +2580,91 @@ return [
             ],
         ],
     ],
+    'replacement_stock' => [
+        'index' => [
+            'title' => 'Stok Suku Cadang',
+            'buttons' => [
+                'create' => 'Buat Stok',
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Stok',
+            'fields' => [
+                'component_name' => 'Nama Komponen',
+                'threshold' => 'Batas Restok',
+                'qty' => 'Jumlah',
+                'type' => 'Tipe',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Stok',
+            ],
+            'messages' => [
+                'created' => 'Stok berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Stok: :name',
+            'fields' => [
+                'type' => 'Tipe',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Stok',
+            ],
+            'messages' => [
+                'updated' => 'Stok berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'replacement_stocks' => [
+                'messages' => [
+                    'deleted' => 'Stok berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Stok berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Stok',
+                    'description' => 'Impor Stok dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Stok',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Stok',
+                        'processing' => 'Sedang memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Stok berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Stok',
+                ],
+            ],
+            'partials' => [
+                'replacement_stock_table' => [
+                    'headers' => [
+                        'component_name' => 'Nama Komponen',
+                        'component_description' => 'Deskripsi',
+                        'threshold' => 'Batas Restok',
+                        'qty' => 'Jumlah',
+                    ],
+                ],
+                'replacement_stock_card' => [
+                    'headers' => [
+                        'component_name' => 'Komponen: :component_name',
+                        'component_description' => 'Deskripsi: :component_description',
+                        'threshold' => 'Batas Restok: :threshold',
+                        'qty' => 'Jumlah: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];
