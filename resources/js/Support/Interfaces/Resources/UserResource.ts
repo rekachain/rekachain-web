@@ -1,5 +1,6 @@
 import { User } from '@/Support/Interfaces/Models';
 import {
+    ProjectResource,
     Resource,
     RoleResource,
     StepResource,
@@ -18,4 +19,6 @@ export interface UserResource extends Resource, User {
     step?: StepResource;
     can_be_deleted: boolean;
     is_trashed: boolean;
+    projects?: ProjectResource[];
+    has_project: boolean;
 }

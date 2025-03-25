@@ -45,6 +45,8 @@ class UserResource extends JsonResource {
             'step' => StepResource::make($this->whenLoaded('step')),
             'can_be_deleted' => $this->canBeDeleted(),
             'is_trashed' => $this->trashed(), // determine if the user is trashed (i.e. soft deleted)
+            'projects' => ProjectResource::collection($this->whenLoaded('projects')),
+            'has_project' => $this->hasProject(),
         ];
     }
 }
