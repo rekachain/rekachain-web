@@ -225,6 +225,10 @@ const intents = {
     WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM:
         'web.returned.product.import.returned.product.and.product.problem',
     WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM: 'web.returned.product.import.product.problem',
+    WEB_REPLACEMENT_STOCK_IMPORT_REPLACEMENT_STOCK:
+        'web.replacement.stock.import.replacement.stock',
+    WEB_REPLACEMENT_STOCK_GET_TEMPLATE_IMPORT_REPLACEMENT_STOCK:
+        'web.replacement.stock.get.template.import.replacement.stock',
     WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
 };
 
