@@ -15,8 +15,9 @@ class ReplacementStocksImport implements ToModel, WithHeadingRow {
         $component = Component::firstOrCreate([
             'name' => $row['nama_komponen'],
         ]);
+
         return ReplacementStock::updateOrCreate([
-            'component_id' => $component->id
+            'component_id' => $component->id,
         ], [
             'threshold' => $row['threshold'],
             'qty' => $row['jumlah'],

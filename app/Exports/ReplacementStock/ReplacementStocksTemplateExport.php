@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Table;
 use PhpOffice\PhpSpreadsheet\Worksheet\Table\TableStyle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ReplacementStocksTemplateExport implements FromArray, ShouldAutoSize, WithHeadings, WithEvents, WithStyles {
+class ReplacementStocksTemplateExport implements FromArray, ShouldAutoSize, WithEvents, WithHeadings, WithStyles {
     use Exportable;
 
     public function headings(): array {

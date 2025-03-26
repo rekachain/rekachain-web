@@ -40,26 +40,38 @@ export default function ReplacementStockCardView({
                         {/* </div> */}
                     </div>
                     <p className='text-sm'>
-                        {t('pages.replacement_stock.partials.partials.replacement_stock_card.headers.component_description', {
-                            component_description: stock.component?.description ?? '-',
-                        })}
+                        {t(
+                            'pages.replacement_stock.partials.partials.replacement_stock_card.headers.component_description',
+                            {
+                                component_description: stock.component?.description ?? '-',
+                            },
+                        )}
                     </p>
                     <p className='text-sm'>
-                        {t('pages.replacement_stock.partials.partials.replacement_stock_card.headers.qty', {
-                            qty: stock.qty,
-                        })}
+                        {t(
+                            'pages.replacement_stock.partials.partials.replacement_stock_card.headers.qty',
+                            {
+                                qty: stock.qty,
+                            },
+                        )}
                     </p>
                     <p className='text-sm'>
-                        {t('pages.replacement_stock.partials.partials.replacement_stock_card.headers.threshold', {
-                            threshold: stock.threshold,
-                        })}
+                        {t(
+                            'pages.replacement_stock.partials.partials.replacement_stock_card.headers.threshold',
+                            {
+                                threshold: stock.threshold,
+                            },
+                        )}
                     </p>
 
                     {/* <h5 className="font-bold text-sm ">Workshop : {stock.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {stock.location}</h5> */}
                     <div className='flex w-full items-center justify-end'>
                         {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_UPDATE) && (
-                            <AddStock replacementStock={stock} handleSyncReplacementStocks={handleSyncReplacementStocks}/>
+                            <AddStock
+                                replacementStock={stock}
+                                handleSyncReplacementStocks={handleSyncReplacementStocks}
+                            />
                         )}
                         {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_DELETE) && (
                             <Button

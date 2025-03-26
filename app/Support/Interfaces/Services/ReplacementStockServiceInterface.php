@@ -8,5 +8,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 interface ReplacementStockServiceInterface extends BaseCrudServiceInterface {
     public function importData(UploadedFile $file): bool;
+
     public function getImportDataTemplate(): BinaryFileResponse;
 }

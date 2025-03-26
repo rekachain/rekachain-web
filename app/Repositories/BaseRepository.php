@@ -35,6 +35,8 @@ abstract class BaseRepository extends AdobrovolskyBaseRepository implements Base
 
         $query = $this->applySorting($query, $searchParams);
 
+        logger($query->toRawSql());
+
         return $query;
     }
 

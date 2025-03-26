@@ -46,6 +46,7 @@ class ReplacementStockController extends Controller {
 
                     return response()->noContent();
             }
+
             return $this->replacementStockService->create($request->validated());
         }
     }

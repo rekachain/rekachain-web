@@ -30,10 +30,14 @@ export default function ReplacementStockTableView({
                 <TableHeader>
                     <TableRow>
                         <TableHead>
-                            {t('pages.replacement_stock.partials.partials.replacement_stock_table.headers.component_name')}
+                            {t(
+                                'pages.replacement_stock.partials.partials.replacement_stock_table.headers.component_name',
+                            )}
                         </TableHead>
                         <TableHead>
-                            {t('pages.replacement_stock.partials.partials.replacement_stock_table.headers.component_description')}
+                            {t(
+                                'pages.replacement_stock.partials.partials.replacement_stock_table.headers.component_description',
+                            )}
                         </TableHead>
                         <TableHead>
                             {t(
@@ -57,7 +61,10 @@ export default function ReplacementStockTableView({
                             <TableCell>{stock.threshold}</TableCell>
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_UPDATE) && (
-                                    <AddStock replacementStock={stock} handleSyncReplacementStocks={handleSyncReplacementStocks}/>
+                                    <AddStock
+                                        replacementStock={stock}
+                                        handleSyncReplacementStocks={handleSyncReplacementStocks}
+                                    />
                                 )}
                                 {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_DELETE) && (
                                     <Button

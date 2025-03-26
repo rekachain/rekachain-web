@@ -15,6 +15,7 @@ class StoreReplacementStockRequest extends FormRequest {
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
         }
+
         return [
             'component_id' => 'required|exists:components,id|unique:replacement_stocks',
             'threshold' => 'nullable|integer|min:0',

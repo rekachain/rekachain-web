@@ -18,7 +18,7 @@ import { ComponentResource, ReplacementStockResource } from '@/Support/Interface
 import { withLoading } from '@/Utils/withLoading';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { FormEventHandler, memo, useCallback, } from 'react';
+import { FormEventHandler, memo, useCallback } from 'react';
 
 const AddStock = ({
     replacementStock,
@@ -33,14 +33,16 @@ const AddStock = ({
         qty: replacementStock?.qty ?? 0,
         threshold: replacementStock?.threshold ?? 0,
     });
-    
+
     const fetchComponents = useCallback(async (filters: ServiceFilterOptions) => {
         return await componentService.getAll(filters).then((response) => response.data);
     }, []);
 
     const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
-        replacementStock ? await replacementStockService.update(replacementStock.id, data) : await replacementStockService.create(data);
+        replacementStock
+            ? await replacementStockService.update(replacementStock.id, data)
+            : await replacementStockService.create(data);
         handleSyncReplacementStocks();
         void useSuccessToast(t('pages.replacement_stock.partials.add_stock.messages.created'));
     });
@@ -53,19 +55,30 @@ const AddStock = ({
                     variant: replacementStock ? 'link' : 'default',
                 })}
             >
-                {tChoice('pages.replacement_stock.partials.add_stock.title', replacementStock ? 1 : 0)}
+                {tChoice(
+                    'pages.replacement_stock.partials.add_stock.title',
+                    replacementStock ? 1 : 0,
+                )}
             </DialogTrigger>
             <DialogContent className='sm:max-w-lg'>
                 <DialogHeader>
-                    <DialogTitle>{tChoice('pages.replacement_stock.partials.add_stock.title', replacementStock ? 1 : 0)}</DialogTitle>
+                    <DialogTitle>
+                        {tChoice(
+                            'pages.replacement_stock.partials.add_stock.title',
+                            replacementStock ? 1 : 0,
+                        )}
+                    </DialogTitle>
                     <DialogDescription></DialogDescription>
-                    <form onSubmit={submit} encType='multipart/form-data' id='replacement-stock-form' className='hidden'></form>
-                        {!replacementStock && (<>
-                            <div className="mt-4">
-                                <InputLabel
-                                    value={'Pilih Komponen'}
-                                    htmlFor='component_id'
-                                />
+                    <form
+                        onSubmit={submit}
+                        id='replacement-stock-form'
+                        encType='multipart/form-data'
+                        className='hidden'
+                    ></form>
+                    {!replacementStock && (
+                        <>
+                            <div className='mt-4'>
+                                <InputLabel value={'Pilih Komponen'} htmlFor='component_id' />
                                 <GenericDataSelector
                                     setSelectedData={(id) => setData('component_id', id ?? 0)}
                                     selectedDataId={data.component_id ?? undefined}
@@ -78,42 +91,46 @@ const AddStock = ({
                                     buttonClassName='mt-1'
                                 />
                             </div>
-                        </>)}
-                        <div className='mt-4'>
-                            <InputLabel
-                                value={t('pages.replacement_stock.partials.add_stock.fields.qty')}
-                                htmlFor='qty'
-                            />
-                            <Input
-                                value={data.qty}
-                                type='number'
-                                onChange={(e) => setData('qty', +e.target.value)}
-                                name='qty'
-                                id='qty'
-                                className='mt-1'
-                                autoComplete='1'
-                            />
-                        </div>
+                        </>
+                    )}
+                    <div className='mt-4'>
+                        <InputLabel
+                            value={t('pages.replacement_stock.partials.add_stock.fields.qty')}
+                            htmlFor='qty'
+                        />
+                        <Input
+                            value={data.qty}
+                            type='number'
+                            onChange={(e) => setData('qty', +e.target.value)}
+                            name='qty'
+                            id='qty'
+                            className='mt-1'
+                            autoComplete='1'
+                        />
+                    </div>
 
-                        <div className='mt-4'>
-                            <InputLabel
-                                value={t('pages.replacement_stock.partials.add_stock.fields.threshold')}
-                                htmlFor='threshold'
-                            />
-                            <Input
-                                value={data.threshold}
-                                type='number'
-                                onChange={(e) => setData('threshold', +e.target.value)}
-                                name='threshold'
-                                id='threshold'
-                                className='mt-1'
-                                autoComplete='threshold'
-                            />
-                        </div>
+                    <div className='mt-4'>
+                        <InputLabel
+                            value={t('pages.replacement_stock.partials.add_stock.fields.threshold')}
+                            htmlFor='threshold'
+                        />
+                        <Input
+                            value={data.threshold}
+                            type='number'
+                            onChange={(e) => setData('threshold', +e.target.value)}
+                            name='threshold'
+                            id='threshold'
+                            className='mt-1'
+                            autoComplete='threshold'
+                        />
+                    </div>
 
-                        <Button disabled={processing} className='mt-4' form='replacement-stock-form'>
-                            {tChoice('pages.replacement_stock.partials.add_stock.buttons.submit', replacementStock ? 1 : 0)}
-                        </Button>
+                    <Button form='replacement-stock-form' disabled={processing} className='mt-4'>
+                        {tChoice(
+                            'pages.replacement_stock.partials.add_stock.buttons.submit',
+                            replacementStock ? 1 : 0,
+                        )}
+                    </Button>
                 </DialogHeader>
             </DialogContent>
         </Dialog>

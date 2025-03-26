@@ -39,5 +39,5 @@ export * from './TrainsetAttachmentHandler';
 export * from './WorkAspect';
 
 export * from './ProductProblem';
-export * from './ReturnedProduct';
 export * from './ReplacementStock';
+export * from './ReturnedProduct';

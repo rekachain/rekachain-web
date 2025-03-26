@@ -17,6 +17,7 @@ class ReplacementStockService extends BaseCrudService implements ReplacementStoc
 
     public function importData(UploadedFile $file): bool {
         Excel::import(new ReplacementStocksImport, $file);
+
         return true;
     }
 

@@ -11,14 +11,18 @@ import { useEffect, useState } from 'react';
 import ReplacementStockCardView from './Partials/ReplacementStockCardView';
 import ReplacementStockTableView from './Partials/ReplacementStockTableView';
 
-export default function ({ baseReplacementStockResponse }: { baseReplacementStockResponse: PaginateResponse<ReplacementStockResource> | undefined}) {
+export default function ({
+    baseReplacementStockResponse,
+}: {
+    baseReplacementStockResponse: PaginateResponse<ReplacementStockResource> | undefined;
+}) {
     const { t } = useLaravelReactI18n();
-    const [replacementStockResponse, setReplacementStockResponse] = useState<PaginateResponse<ReplacementStockResource>>();
+    const [replacementStockResponse, setReplacementStockResponse] =
+        useState<PaginateResponse<ReplacementStockResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
         relations: 'component',
-        orderBy: 'component.name',
     });
 
     const syncReplacementStocks = withLoading(async () => {
@@ -37,7 +41,9 @@ export default function ({ baseReplacementStockResponse }: { baseReplacementStoc
     const handleReplacementStockDeletion = withLoading(async (id: number) => {
         await replacementStockService.delete(id);
         await syncReplacementStocks();
-        void useSuccessToast(t('pages.replacement_stock.partials.replacement_stocks.messages.deleted'));
+        void useSuccessToast(
+            t('pages.replacement_stock.partials.replacement_stocks.messages.deleted'),
+        );
     }, true);
 
     const handlePageChange = (page: number) => {
@@ -46,26 +52,31 @@ export default function ({ baseReplacementStockResponse }: { baseReplacementStoc
 
     return (
         <div className='space-y-4'>
-            {replacementStockResponse && <>
-                <Filters setFilters={setFilters} filters={filters} />
+            {replacementStockResponse && (
+                <>
+                    <Filters setFilters={setFilters} filters={filters} />
 
-                <div className='hidden md:block'>
-                    <ReplacementStockTableView
-                        handleSyncReplacementStocks={syncReplacementStocks}
-                        handleReplacementStockDeletion={handleReplacementStockDeletion}
-                        replacementStockResponse={replacementStockResponse}
-                    ></ReplacementStockTableView>
-                </div>
+                    <div className='hidden md:block'>
+                        <ReplacementStockTableView
+                            replacementStockResponse={replacementStockResponse}
+                            handleSyncReplacementStocks={syncReplacementStocks}
+                            handleReplacementStockDeletion={handleReplacementStockDeletion}
+                        ></ReplacementStockTableView>
+                    </div>
 
-                <div className='block md:hidden'>
-                    <ReplacementStockCardView
-                        handleSyncReplacementStocks={syncReplacementStocks}
-                        handleReplacementStockDeletion={handleReplacementStockDeletion}
-                        replacementStockResponse={replacementStockResponse}
-                    ></ReplacementStockCardView>
-                </div>
-                <GenericPagination meta={replacementStockResponse?.meta} handleChangePage={handlePageChange} />
-            </>}
+                    <div className='block md:hidden'>
+                        <ReplacementStockCardView
+                            replacementStockResponse={replacementStockResponse}
+                            handleSyncReplacementStocks={syncReplacementStocks}
+                            handleReplacementStockDeletion={handleReplacementStockDeletion}
+                        ></ReplacementStockCardView>
+                    </div>
+                    <GenericPagination
+                        meta={replacementStockResponse?.meta}
+                        handleChangePage={handlePageChange}
+                    />
+                </>
+            )}
         </div>
     );
 }
