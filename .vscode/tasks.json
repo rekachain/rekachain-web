@@ -17,10 +17,7 @@
             "label": "App:Install",
             "problemMatcher": [],
             "type": "shell",
-            "dependsOn": [
-                "Composer:Install",
-                "NPM:Install"
-            ]
+            "dependsOn": ["Composer:Install", "NPM:Install"]
         },
         {
             "label": "Laravel Optimize",
@@ -33,6 +30,12 @@
             "problemMatcher": [],
             "type": "shell",
             "command": "php artisan optimize:clear"
+        },
+        {
+            "label": "Laravel Migrate",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan migrate"
         },
         {
             "label": "Laravel Migrate - Fresh then Seed",
@@ -69,11 +72,7 @@
             "presentation": {
                 "group": "RUNAPPSHARED"
             },
-            "args": [
-                "artisan",
-                "serve",
-                "--host=0.0.0.0"
-            ]
+            "args": ["artisan", "serve", "--host=0.0.0.0"]
         },
         {
             "label": "Laravel NPM Run Dev",
@@ -92,12 +91,7 @@
             "presentation": {
                 "group": "RUNAPPSHARED"
             },
-            "args": [
-                "run",
-                "dev",
-                "--",
-                "--host=0.0.0.0"
-            ]
+            "args": ["run", "dev", "--", "--host=0.0.0.0"]
         },
         {
             "label": "Laravel Websocket",
@@ -137,10 +131,7 @@
             "label": "App-Shared",
             "problemMatcher": [],
             "type": "shell",
-            "dependsOn": [
-                "Laravel Serve - Shared",
-                "Laravel NPM Run Dev - Shared"
-            ]
+            "dependsOn": ["Laravel Serve - Shared", "Laravel NPM Run Dev - Shared"]
         },
         {
             "label": "NPM Run Build",
@@ -168,24 +159,30 @@
             "type": "shell",
             "command": "npm run lint"
         },
+        {
+            "label": "Run All Fix Commands",
+            "type": "shell",
+            "problemMatcher": [],
+            "dependsOn": [
+                "Pint: Fix",
+                "Lint: Fix",
+                "Prettier: Fix",
+            ]
+        },
 
         {
             "label": "Run Pest",
             "type": "shell",
             "problemMatcher": [],
             "command": ".\\vendor\\bin\\pest",
-            "args": [
-                "${input:pestFile}"
-            ],
+            "args": ["${input:pestFile}"]
         },
         {
             "label": "Run Verify Structure Test",
             "type": "shell",
             "problemMatcher": [],
             "command": ".\\vendor\\bin\\pest",
-            "args": [
-                "${input:verifyFile}"
-            ]
+            "args": ["${input:verifyFile}"]
         }
 
         // ----------------------------------------------------------------
