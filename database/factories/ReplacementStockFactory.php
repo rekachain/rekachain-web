@@ -18,7 +18,9 @@ class ReplacementStockFactory extends Factory
     public function definition(): array
     {
         return [
-            'component_id' => Component::inRandomOrder()->first()->id,
+            'component_id' => $this->faker->unique()->randomElement(
+                Component::pluck('id')->toArray()
+            ),
             'threshold' => 0,
             'qty' => $this->faker->numberBetween(5, 20),
         ];

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('replacement_stocks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('component_id')->constrained();
+            $table->foreignId('component_id')->unique()->constrained();
             $table->integer('threshold')->default(0);
             $table->integer('qty');
             $table->timestamps();

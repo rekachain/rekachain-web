@@ -16,7 +16,7 @@ class StoreReplacementStockRequest extends FormRequest {
                 ];
         }
         return [
-            'component_id' => 'required|exists:components,id',
+            'component_id' => 'required|exists:components,id|unique:replacement_stocks',
             'threshold' => 'nullable|integer|min:0',
             'qty' => 'required|integer|min:1',
         ];
