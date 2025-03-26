@@ -11,13 +11,14 @@ import { useEffect, useState } from 'react';
 import ReplacementStockCardView from './Partials/ReplacementStockCardView';
 import ReplacementStockTableView from './Partials/ReplacementStockTableView';
 
-export default function () {
+export default function ({ baseReplacementStockResponse }: { baseReplacementStockResponse: PaginateResponse<ReplacementStockResource> | undefined}) {
     const { t } = useLaravelReactI18n();
     const [replacementStockResponse, setReplacementStockResponse] = useState<PaginateResponse<ReplacementStockResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
         relations: 'component',
+        orderBy: 'component.name',
     });
 
     const syncReplacementStocks = withLoading(async () => {
@@ -28,6 +29,10 @@ export default function () {
     useEffect(() => {
         void syncReplacementStocks();
     }, [filters]);
+
+    useEffect(() => {
+        setReplacementStockResponse(baseReplacementStockResponse);
+    }, [baseReplacementStockResponse]);
 
     const handleReplacementStockDeletion = withLoading(async (id: number) => {
         await replacementStockService.delete(id);
@@ -46,6 +51,7 @@ export default function () {
 
                 <div className='hidden md:block'>
                     <ReplacementStockTableView
+                        handleSyncReplacementStocks={syncReplacementStocks}
                         handleReplacementStockDeletion={handleReplacementStockDeletion}
                         replacementStockResponse={replacementStockResponse}
                     ></ReplacementStockTableView>
@@ -53,6 +59,7 @@ export default function () {
 
                 <div className='block md:hidden'>
                     <ReplacementStockCardView
+                        handleSyncReplacementStocks={syncReplacementStocks}
                         handleReplacementStockDeletion={handleReplacementStockDeletion}
                         replacementStockResponse={replacementStockResponse}
                     ></ReplacementStockCardView>

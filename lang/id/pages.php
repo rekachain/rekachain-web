@@ -2647,6 +2647,22 @@ return [
                     'import' => 'Impor Stok',
                 ],
             ],
+            'add_stock' => [
+                'title' => '{0}Buat Stok|{1}Ubah Stok',
+                'fields' => [
+                    'component_name' => 'Nama Komponen',
+                    'threshold' => 'Batas Restok',
+                    'qty' => 'Jumlah',
+                    'type' => 'Tipe',
+                    'description' => 'Deskripsi',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Buat Stok|{1}Ubah Stok',
+                ],
+                'messages' => [
+                    'created' => 'Stok berhasil dibuat!',
+                ],
+            ],
             'partials' => [
                 'replacement_stock_table' => [
                     'headers' => [

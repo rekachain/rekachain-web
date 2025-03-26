@@ -2647,6 +2647,22 @@ return [
                     'import' => 'Import Stock',
                 ],
             ],
+            'add_stock' => [
+                'title' => '{0}Create Stock|{1}Edit Stock',
+                'fields' => [
+                    'component_name' => 'Component Name',
+                    'threshold' => 'Threshold',
+                    'qty' => 'Quantity',
+                    'type' => 'Type',
+                    'description' => 'Description',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Create Stock|{1}Edit Stock',
+                ],
+                'messages' => [
+                    'created' => 'Stock created successfully!',
+                ],
+            ],
             'partials' => [
                 'replacement_stock_table' => [
                     'headers' => [

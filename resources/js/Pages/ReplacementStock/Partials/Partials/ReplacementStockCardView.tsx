@@ -1,19 +1,19 @@
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { Button } from '@/Components/UI/button';
 import { checkPermission } from '@/Helpers/permissionHelper';
-import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ReplacementStockResource } from '@/Support/Interfaces/Resources';
-import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import AddStock from '../AddStock';
 
 export default function ReplacementStockCardView({
     replacementStockResponse,
     handleReplacementStockDeletion,
+    handleSyncReplacementStocks,
 }: {
     replacementStockResponse: PaginateResponse<ReplacementStockResource>;
-
     handleReplacementStockDeletion: (id: number) => void;
+    handleSyncReplacementStocks: () => Promise<void>;
 }) {
     const { t } = useLaravelReactI18n();
     return (
@@ -58,14 +58,9 @@ export default function ReplacementStockCardView({
                     {/* <h5 className="font-bold text-sm ">Workshop : {stock.workshop.name}</h5>
                         <h5 className=" text-sm ">Lokasi : {stock.location}</h5> */}
                     <div className='flex w-full items-center justify-end'>
-                        {/* {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_UPDATE) && (
-                            <Link
-                                href={route(`${ROUTES.CARRIAGES}.edit`, stock.id)}
-                                className={buttonVariants({ variant: 'link' })}
-                            >
-                                {t('action.edit')}
-                            </Link>
-                        )} */}
+                        {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_UPDATE) && (
+                            <AddStock replacementStock={stock} handleSyncReplacementStocks={handleSyncReplacementStocks}/>
+                        )}
                         {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_DELETE) && (
                             <Button
                                 variant='link'
