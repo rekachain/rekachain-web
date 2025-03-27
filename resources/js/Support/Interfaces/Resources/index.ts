@@ -42,6 +42,8 @@ export * from './TrainsetAttachmentHandlerResource';
 export * from './TrainsetAttachmentResource';
 export * from './WorkAspectResource';
 
+export * from './ProductProblemNoteResource';
 export * from './ProductProblemResource';
 export * from './ReplacementStockResource';
+export * from './ReturnedProductNoteResource';
 export * from './ReturnedProductResource';

@@ -16,11 +16,13 @@ use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelMaterialServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
+use App\Support\Interfaces\Services\ProductProblemNoteServiceInterface;
 use App\Support\Interfaces\Services\ProductProblemServiceInterface;
 use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\ProgressStepServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
+use App\Support\Interfaces\Services\ReturnedProductNoteServiceInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentComponentServiceInterface;
@@ -213,9 +215,23 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
     }
 
     /**
+     * Get ReturnedProductNote service instance
+     */
+    protected function returnedProductNoteService(): ReturnedProductNoteServiceInterface {
+        return $this->getService(ReturnedProductNoteServiceInterface::class);
+    }
+
+    /**
      * Get ProductProblem service instance
      */
     protected function productProblemService(): ProductProblemServiceInterface {
         return $this->getService(ProductProblemServiceInterface::class);
+    }
+
+    /**
+     * Get ProductProblemNote service instance
+     */
+    protected function productProblemNoteService(): ProductProblemNoteServiceInterface {
+        return $this->getService(ProductProblemNoteServiceInterface::class);
     }
 }

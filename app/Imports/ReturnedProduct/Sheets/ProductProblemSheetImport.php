@@ -12,9 +12,9 @@ class ProductProblemSheetImport implements ToModel, WithHeadingRow {
     public function __construct(private ?ReturnedProduct $returnedProduct = null) {}
 
     public function model(array $row) {
-        $returnedProduct = $this->returnedProduct ?? ReturnedProduct::whereSerialNumber($row['serial_number'])->first();
+        $returnedProduct = $this->returnedProduct ?? ReturnedProduct::whereSerialNumber($row['serial_number'])->get()->last();
 
-        return $returnedProduct->product_problems()->create([
+        $productProblem = $returnedProduct->product_problems()->create([
             'component_id' => Component::firstOrCreate([
                 'name' => $row['problem_component_name'],
             ])->id,
@@ -24,5 +24,12 @@ class ProductProblemSheetImport implements ToModel, WithHeadingRow {
                 default => ProductProblemStatusEnum::PROGRESS,
             },
         ]);
+
+        $productProblem->product_problem_notes()->create([
+            'user_id' => auth()->id(),
+            'note' => $row['note'],
+        ]);
+
+        return $returnedProduct;
     }
 }

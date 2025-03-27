@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -13,7 +15,13 @@ class ReturnedProductResource extends JsonResource {
             'product_returnable_type' => $this->product_returnable_type,
             'product_return' => $this->whenLoaded('product_returnable'),
             'buyer_id' => $this->buyer_id,
-            'buyer' => $this->whenLoaded('buyer'),
+            'buyer' => $this->whenLoaded('buyer', function () {
+                return checkPermissionsAndRoles(PermissionEnum::RETURNED_PRODUCT_READ, [RoleEnum::WORKER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true) ?
+                    UserResource::make($this->buyer) : [
+                        'name' => $this->buyer->name,
+                        'phone_number' => $this->buyer->phone_number,
+                    ];
+            }),
             'qty' => $this->qty,
             'serial_panel_id' => $this->serial_panel_id,
             'serial_panel' => $this->whenLoaded('serial_panel'),
@@ -23,6 +31,12 @@ class ReturnedProductResource extends JsonResource {
             'image_path' => $this->image_path,
             'image' => $this->image,
             'product_problems' => ProductProblemResource::collection($this->whenLoaded('product_problems')),
+            'returned_product_notes' => ReturnedProductNoteResource::collection(
+                $this->whenLoaded('returned_product_notes', function () {
+                    return $this->returned_product_notes->sortByDesc('updated_at');
+                })
+            ),
+            'latest_returned_product_note' => ReturnedProductNoteResource::make($this->returned_product_notes->last()),
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];

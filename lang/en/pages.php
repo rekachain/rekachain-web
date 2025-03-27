@@ -2368,6 +2368,8 @@ return [
                 'name' => 'Name',
                 'description' => 'Description',
                 'type' => 'Type',
+                'evidence' => 'Evidence',
+                'evidence_filepond_placeholder' => 'Drop files here or click to upload evidence',
             ],
             'buttons' => [
                 'submit' => 'Create Return',
@@ -2388,19 +2390,36 @@ return [
                 'delete' => 'Delete Return',
                 'import' => 'Import Return',
             ],
+            'dialogs' => [
+                'confirm_delete_note' => [
+                    'title' => 'Delete Note',
+                    'description' => 'Are you sure you want to delete this note?',
+                ],
+                'confirm_delete_problem' => [
+                    'title' => 'Delete Problem',
+                    'description' => 'Are you sure you want to delete this problem?',
+                ],
+            ],
             'messages' => [
                 'deleted_problem' => 'Product Problem deleted successfully!',
+                'deleted_note' => 'Note deleted successfully!',
             ],
             'labels' => [
+                'buyer' => 'Customer',
                 'serial_number' => 'Serial Number',
                 'return_quantity' => 'Return Quantity',
                 'return_date' => 'Return Date',
                 'update_date' => 'Updated Date',
+                'notes' => 'Notes',
             ],
             'table_headers' => [
                 'component_name' => 'Component Name',
                 'description' => 'Description',
+                'note' => 'Note',
                 'status' => 'Status',
+            ],
+            'product_problems' => [
+                'title' => 'Product Problems',
             ],
         ],
         'edit' => [
@@ -2522,15 +2541,34 @@ return [
                     'updated' => 'Product status updated successfully!',
                 ],
             ],
+            'add_returned_product_note' => [
+                'buttons' => [
+                    'add_note' => 'Add Note',
+                ],
+                'dialog' => [
+                    'title' => '{0} Add Note|{1} Update Note',
+                    'description' => '{0} Add a note to this Returned Product.|{1} Update the note of the selected note.',
+                    'fields' => [
+                        'note' => 'Note',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Note added successfully!',
+                    'updated' => 'Note updated successfully!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
+                        'buyer' => 'Customer',
                         'serial_number' => 'Serial Number',
                         'name' => 'Name',
                         'description' => 'Description',
                         'type' => 'Type',
+                        'note' => 'Note',
                         'status' => 'Status',
-                        'created_at' => 'Created At',
+                        'created_at' => 'Requested At',
+                        'updated_at' => 'Updated At',
                     ],
                     'contents' => [
                         'type' => [
@@ -2542,9 +2580,12 @@ return [
                 'returned_product_card' => [
                     'headers' => [
                         'name' => 'Name: :name',
-                        'description' => 'Description: :description',
+                        'serial_number' => 'Serial Number',
+                        'description' => 'Description',
                         'type' => 'Type: :type',
-                        'created_at' => 'Created At: :created_at',
+                        'note' => 'Note',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
                     ],
                 ],
             ],

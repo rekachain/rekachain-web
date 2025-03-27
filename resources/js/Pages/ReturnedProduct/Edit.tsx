@@ -26,7 +26,8 @@ import {
 import { withLoading } from '@/Utils/withLoading';
 import { Head, router, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { FormEventHandler, useCallback } from 'react';
+import { FormEventHandler, useCallback, useEffect } from 'react';
+import { FilePond } from 'react-filepond';
 import BuyerForm from './Partials/BuyerForm';
 
 export default function ({ returnedProduct }: { returnedProduct: ReturnedProductResource }) {
@@ -40,23 +41,61 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
         qty: returnedProduct.qty as number,
         serial_number: returnedProduct.serial_number as number | null,
         buyer_id: returnedProduct.buyer_id as number | null,
+        image_path: [] as any[],
     });
+
+    useEffect(() => {
+        if (returnedProduct.image_path)
+            setData('image_path', [
+                {
+                    source: returnedProduct.image,
+                    options: {
+                        type: 'local',
+                        file: {
+                            name: 'Returned Product Evidence',
+                            size: null,
+                            type: 'image/jpeg',
+                        },
+                        metadata: {
+                            poster: returnedProduct.image,
+                        },
+                    },
+                },
+            ]);
+    }, [returnedProduct.image]);
 
     const { loading } = useLoading();
 
+    const handleFileChange = (fileItems: any) => {
+        setData((prevData: any) => ({
+            ...prevData,
+            image_path: fileItems.map((fileItem: any) => fileItem.file),
+        }));
+    };
+
     const submit: FormEventHandler = withLoading(async (e) => {
         e.preventDefault();
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const validImages = data.image_path.filter(
+            (file) => file.size !== null && validImageTypes.includes(file.type),
+        );
 
         const productReturnableType =
             data.product_returnable_type === 'component'
                 ? 'App\\Models\\Component'
                 : 'App\\Models\\Panel';
 
-        await returnedProductService.create({
-            ...data,
-            product_returnable_type: productReturnableType,
-        });
-        router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.index`));
+        const formData = new FormData();
+        formData.append('product_returnable_id', data.product_returnable_id?.toString() || '');
+        formData.append('product_returnable_type', productReturnableType);
+        data.qty && formData.append('qty', data.qty.toString());
+        data.serial_number &&
+            formData.append('serial_number', data.serial_number?.toString() || '');
+        formData.append('buyer_id', data.buyer_id?.toString() || '');
+        validImages.length > 0 && formData.append('image_path', validImages[0]);
+
+        await returnedProductService.update(returnedProduct.id, formData);
+        router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id));
         void useSuccessToast(t('pages.returned_product.edit.messages.updated'));
     });
 
@@ -175,6 +214,21 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                             id='serial_number'
                             className='mt-1'
                             autoComplete='serial_number'
+                        />
+                    </div>
+                    <div className='mt-4'>
+                        <InputLabel
+                            value={t('pages.returned_product.create.fields.evidence')}
+                            htmlFor='evidence'
+                        />
+                        <FilePond
+                            onupdatefiles={handleFileChange}
+                            labelIdle={t(
+                                'pages.returned_product.create.fields.evidence_filepond_placeholder',
+                            )}
+                            imagePreviewMaxHeight={400}
+                            files={data.image_path}
+                            filePosterMaxHeight={400}
                         />
                     </div>
 

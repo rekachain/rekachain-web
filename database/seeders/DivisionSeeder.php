@@ -18,7 +18,7 @@ class DivisionSeeder extends Seeder {
         ];
 
         foreach ($divisions as $division) {
-            Division::create(['name' => $division]);
+            Division::firstOrCreate(['name' => $division]);
         }
     }
 }

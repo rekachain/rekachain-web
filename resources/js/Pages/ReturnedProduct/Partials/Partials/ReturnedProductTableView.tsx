@@ -30,6 +30,11 @@ export default function ReturnedProductTableView({
                     <TableRow>
                         <TableHead>
                             {t(
+                                'pages.returned_product.partials.partials.returned_product_table.headers.buyer',
+                            )}
+                        </TableHead>
+                        <TableHead>
+                            {t(
                                 'pages.returned_product.partials.partials.returned_product_table.headers.serial_number',
                             )}
                         </TableHead>
@@ -50,12 +55,12 @@ export default function ReturnedProductTableView({
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.status',
+                                'pages.returned_product.partials.partials.returned_product_table.headers.note',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.created_at',
+                                'pages.returned_product.partials.partials.returned_product_table.headers.status',
                             )}
                         </TableHead>
                         <TableHead></TableHead>
@@ -64,6 +69,7 @@ export default function ReturnedProductTableView({
                 <TableBody>
                     {returnedProductResponse?.data.map((returnedProduct) => (
                         <TableRow key={returnedProduct.id}>
+                            <TableCell>{returnedProduct.buyer?.name ?? '-'}</TableCell>
                             <TableCell>{returnedProduct.serial_number}</TableCell>
                             <TableCell>{returnedProduct.product_return?.name}</TableCell>
                             <TableCell>{returnedProduct.product_return?.description}</TableCell>
@@ -72,8 +78,10 @@ export default function ReturnedProductTableView({
                                     ? 'Panel'
                                     : 'Component'}
                             </TableCell>
+                            <TableCell>
+                                {returnedProduct.latest_returned_product_note?.note ?? '-'}
+                            </TableCell>
                             <TableCell>{returnedProduct.localized_status}</TableCell>
-                            <TableCell>{returnedProduct.created_at}</TableCell>
 
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
