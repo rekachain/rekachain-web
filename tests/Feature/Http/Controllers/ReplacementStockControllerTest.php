@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Resources\ComponentResource;
+use App\Models\ReplacementStock;
+use App\Models\ReturnedProduct;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 test('user can view list of replacement-stocks', function () {
@@ -86,3 +88,72 @@ test('system can delete deleted ReplacementStock from database', function () {
     $response->assertStatus(204);
     $this->assertDatabaseMissing('replacement_stocks', ['id' => $model->id]);
 });
+
+test('user can get ReplacementStock for problems on selected ReturnedProduct', function () {
+    $product_problems = ReturnedProduct::whereId(1)->first()->product_problems()->get();
+    $componentIds = $product_problems->pluck('component_id')->toArray();
+    $reqData = [
+        'intent' => 'web.replacement_stock.post.replacement-stocks',
+        'component_ids' => $componentIds,
+    ];
+    
+    
+    $response = actAsWorkerAftersales()->postJson('/replacement-stocks', $reqData);
+    
+    $response->assertStatus(200);
+});
+
+test('system can update ReplacementStock qty on selected ReturnedProduct Fix', function () {
+    $product_problems = ReturnedProduct::whereId(1)->first()->product_problems()->get();
+    $componentIds = $product_problems->pluck('component_id')->toArray();
+    $qtyBefore = ReplacementStock::whereIn('component_id', $componentIds)->pluck('qty')->toArray();
+    $reqData = [
+        'intent' => 'web.replacement_stock.post.replacement-stocks',
+        'component_ids' => $componentIds,
+    ];
+    
+    actAsWorkerAftersales()->postJson('/replacement-stocks', $reqData);
+    
+    $qtyAfter = ReplacementStock::whereIn('component_id', $componentIds)->pluck('qty')->toArray();
+
+    foreach ($product_problems as $index => $problem) {
+        $this->assertEquals($qtyBefore[$index] - 1, $qtyAfter[$index]);
+    }
+});
+
+test('user can add ReplacementStock with remaining component on ReturnedProduct', function () {
+    $components = ReturnedProduct::whereId(1)->first()->panel()->carriage_panel_components()->get();
+    $componentIds = $components->pluck('component_id')->toArray();
+    $product_problems = ReturnedProduct::whereId(1)->first()->product_problems()->get();
+    $componentIds = $components->pluck('component_id')->diff($product_problems->pluck('component_id'))->toArray();
+    $reqData = [
+        'intent' => 'web.replacement_stock.post.returned_product_change',
+        'component_ids' => $componentIds,
+    ];
+    
+    
+    $response = actAsWorkerAftersales()->postJson('/replacement-stocks', $reqData);
+    
+    $response->assertStatus(200);
+});
+
+test('system can update ReplacementStock qty on selected ReturnedProduct Change', function () {
+    $components = ReturnedProduct::whereId(1)->first()->panel()->carriage_panel_components()->get();
+    $componentIds = $components->pluck('component_id')->toArray();
+    $product_problems = ReturnedProduct::whereId(1)->first()->product_problems()->get();
+    $qtyBefore = ReplacementStock::whereIn('component_id', $componentIds)->pluck('qty')->toArray();
+    $componentIds = $components->pluck('component_id')->diff($product_problems->pluck('component_id'))->toArray();
+    $reqData = [
+        'intent' => 'web.replacement_stock.post.returned_product_change',
+        'component_ids' => $componentIds,
+    ];
+    
+    actAsWorkerAftersales()->postJson('/replacement-stocks', $reqData);
+    
+    $qtyAfter = ReplacementStock::whereIn('component_id', $componentIds)->pluck('qty')->toArray();
+
+    foreach ($product_problems as $index => $problem) {
+        $this->assertEquals($qtyBefore[$index] + 1, $qtyAfter[$index]);
+    }
+});
+
