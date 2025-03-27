@@ -10,4 +10,6 @@ interface ReplacementStockServiceInterface extends BaseCrudServiceInterface {
     public function importData(UploadedFile $file): bool;
 
     public function getImportDataTemplate(): BinaryFileResponse;
+
+    public function updateStocks(array $data, bool $isIncrement = false): bool;
 }
