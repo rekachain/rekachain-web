@@ -45,6 +45,16 @@ class ReplacementStockController extends Controller {
                     $this->replacementStockService->importData($request->file('import_file'));
 
                     return response()->noContent();
+                case IntentEnum::WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FOR_RETURNED_PRODUCT->value:
+                    $this->replacementStockService->updateStocks($request->validated());
+                    $queryParams = array_merge($request->query(), ['column_filters' => ['component_id' => $request->get('component_ids')]]);
+
+                    return ReplacementStockResource::collection($this->replacementStockService->getAllPaginated($queryParams));
+                case IntentEnum::WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FROM_RETURNED_PRODUCT->value:
+                    $this->replacementStockService->updateStocks($request->validated(), true);
+                    $queryParams = array_merge($request->query(), ['column_filters' => ['component_id' => $request->get('component_ids')]]);
+                    
+                    return ReplacementStockResource::collection($this->replacementStockService->getAllPaginated($queryParams));
             }
 
             $replacementStock = $this->replacementStockService->create($request->validated());

@@ -14,6 +14,14 @@ class StoreReplacementStockRequest extends FormRequest {
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
+            case IntentEnum::WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FOR_RETURNED_PRODUCT->value:
+                return [
+                    'component_ids' => 'required|array|exists:replacement_stocks,component_id',
+                ];
+            case IntentEnum::WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FROM_RETURNED_PRODUCT->value:
+                return [
+                    'component_ids' => 'required|array|exists:replacement_stocks,component_id',
+                ];
         }
 
         return [
