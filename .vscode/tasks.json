@@ -44,6 +44,12 @@
             "command": "php artisan migrate:fresh --seed"
         },
         {
+            "label": "Laravel Migrate - Rollback",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan migrate:rollback"
+        },
+        {
             "label": "Ide Helper - Generate",
             "problemMatcher": [],
             "type": "shell",
