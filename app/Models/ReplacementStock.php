@@ -19,7 +19,9 @@ class ReplacementStock extends Model {
         'searchs' => [
             'qty',
         ],
-        'columns' => [],
+        'columns' => [
+            'component_id',
+        ],
         'relation_searchs' => [
             'component' => [
                 'name',
