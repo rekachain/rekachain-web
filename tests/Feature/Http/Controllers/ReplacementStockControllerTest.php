@@ -32,7 +32,10 @@ test('system can save created replacement-stock to database as ReplacementStock'
         'qty' => 1,
     ];
 
-    $response = actAsWorkerAftersales()->postJson('/replacement-stocks', $data);
+    $response = actAsWorkerAftersales()->postJson('/replacement-stocks', [
+        ...$data,
+        'relations' => 'component'
+    ]);
 
     $response->assertStatus(201)
         ->assertJsonStructure(['id', 'component_id', 'component', 'qty']);
@@ -42,10 +45,10 @@ test('system can save created replacement-stock to database as ReplacementStock'
 test('user can view ReplacementStock details', function () {
     $model = $this->dummy->createReplacementStock();
 
-    $response = actAsWorkerAftersales()->getJson("/replacement-stocks/{$model->id}");
+    $response = actAsWorkerAftersales()->getJson("/replacement-stocks/{$model->id}?relations=component");
 
     $response->assertStatus(200)
-        ->assertJson([
+        ->assertJsonFragment([
             'id' => $model->id, 
             'component_id' => $model->component_id, 
             'component' => ComponentResource::make($model->component)->resolve(), 

@@ -47,12 +47,14 @@ class ReplacementStockController extends Controller {
                     return response()->noContent();
             }
 
-            return $this->replacementStockService->create($request->validated());
+            $replacementStock = $this->replacementStockService->create($request->validated());
+
+            return ReplacementStockResource::make($replacementStock->load(request('relations', [])));
         }
     }
 
     public function show(ReplacementStock $replacementStock) {
-        $data = ReplacementStockResource::make($replacementStock);
+        $data = ReplacementStockResource::make($replacementStock->load(request('relations', [])));
 
         if ($this->ajax()) {
             return $data;
@@ -75,7 +77,9 @@ class ReplacementStockController extends Controller {
 
     public function destroy(ReplacementStock $replacementStock) {
         if ($this->ajax()) {
-            return $this->replacementStockService->delete($replacementStock);
+            $this->replacementStockService->delete($replacementStock);
+
+            return response()->noContent();
         }
     }
 }
