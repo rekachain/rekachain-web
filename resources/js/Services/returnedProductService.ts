@@ -1,7 +1,8 @@
 import { serviceFactory } from '@/Services/serviceFactory';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { ReturnedProductResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ComponentResource, ReturnedProductResource } from '@/Support/Interfaces/Resources';
 
 export const returnedProductService = {
     ...serviceFactory<ReturnedProductResource>(ROUTES.RETURNED_PRODUCTS),
@@ -68,6 +69,18 @@ export const returnedProductService = {
                 },
             },
         );
+    },
+    getComponents: async (
+        returnedProductId: number,
+        isScrapping: boolean,
+    ): Promise<PaginateResponse<ComponentResource>> => {
+        return await window.axios.get(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProductId), {
+            params: {
+                intent: isScrapping
+                    ? IntentEnum.WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS
+                    : IntentEnum.WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS,
+            },
+        });
     },
 };
 export const requestReturnService = {

@@ -221,6 +221,10 @@ const intents = {
         'web.panel.attachment.assign.referenced.attachment.and.material.import',
     WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE:
         'web.trainset.attachment.get.component.materials.with.qty.for.template',
+    WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS:
+        'web.returned.product.get.product.problem.components',
+    WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS:
+        'web.returned.product.get.returned.product.components',
     WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM: 'web.returned.product.add.product.problem',
     WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE:
         'web.returned.product.add.returned.product.with.note',
