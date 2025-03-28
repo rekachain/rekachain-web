@@ -35,7 +35,7 @@ export const replacementStockService = {
             },
         });
     },
-    addStocks: async (data: any) => {
+    scrapStocks: async (data: any) => {
         return await window.axios.post(route(`${ROUTES.REPLACEMENT_STOCKS}.store`), data, {
             params: {
                 intent: IntentEnum.WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FROM_RETURNED_PRODUCT,

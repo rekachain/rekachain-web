@@ -2557,6 +2557,18 @@ return [
                     'updated' => 'Catatan berhasil diperbarui!',
                 ],
             ],
+            'resolve_product_problem' => [
+                'buttons' => [
+                    'resolve' => '{0} Ambil Stok|{1} Scrap Stok',
+                ],
+                'dialog' => [
+                    'title' => '{0} Ambil Stok|{1} Scrap ke Stok',
+                    'description' => '{0} Perbaiki dengan mengubah komponen terpilih dari Stok Aftersale.|{1} Scrap semua komponen yang dapat digunakan kembali ke Stok Aftersale.',
+                ],
+                'messages' => [
+                    'resolved' => 'Permasalahan produk berhasil diselesaikan dengan sukses!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [

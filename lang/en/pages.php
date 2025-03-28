@@ -2557,6 +2557,18 @@ return [
                     'updated' => 'Note updated successfully!',
                 ],
             ],
+            'resolve_product_problem' => [
+                'buttons' => [
+                    'resolve' => '{0} Change from Stock|{1} Scrap into Stock',
+                ],
+                'dialog' => [
+                    'title' => '{0} Change from Stock|{1} Scrap into Stock',
+                    'description' => '{0} Fix by changing the selected component from Aftersale Stock.|{1} Scrap all reusable components into Aftersale Stock.',
+                ],
+                'messages' => [
+                    'resolved' => 'Problem resolved successfully!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [

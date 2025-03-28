@@ -43,6 +43,7 @@ import AddProductProblem from './Partials/AddProductProblem';
 import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import ProductProblemImport from './Partials/ProductProblemImport';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
+import ResolveProductProblem from './Partials/ResolveProductProblem';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t, setLocale } = useLaravelReactI18n();
@@ -281,6 +282,10 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && (
                                 <ProductProblemImport returnedProductId={data.id} />
                             )}
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) && (<>
+                                <ResolveProductProblem returnedProduct={data} isScrapping={true} handleSyncReturnedProduct={handleSyncReturnedProduct} />
+                                <ResolveProductProblem returnedProduct={data} isScrapping={false} handleSyncReturnedProduct={handleSyncReturnedProduct} />
+                            </>)}
                         </div>
                         <div className='hidden md:block'>
                             <Table wrapperClassName='block max-h-96'>
