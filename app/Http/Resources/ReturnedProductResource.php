@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Component;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
 use Illuminate\Http\Request;
@@ -9,6 +11,28 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReturnedProductResource extends JsonResource {
     public function toArray(Request $request): array {
+        $intent = $request->get('intent');
+
+        switch ($intent) {
+            case IntentEnum::WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS->value:
+                return $this->product_problems->map(fn ($productProblem) => [
+                    ...ComponentResource::make($productProblem->component)->toArray($request),
+                ])->toArray();
+            case IntentEnum::WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS->value:
+                if ($this->product_returnable_type === Component::class) {
+                    return ComponentResource::make($this->product_returnable)->toArray($request);
+                }
+                $serialPanel = $this->serial_panel;
+                if ($serialPanel) {
+                    $carrPanelComponents = $serialPanel->panel_attachment->carriage_panel->carriage_panel_components;
+                } else {
+                    $carriagePanelComponents = $this->product_returnable->carriage_panel_components()->distinct()->get()->groupBy('component_id')->map(fn($group) => $group->first());
+                    $carrPanelComponents = $carriagePanelComponents ? $carriagePanelComponents : [];
+                }
+                return $carrPanelComponents->map(fn ($carPanelComponent) => [
+                    ...ComponentResource::make($carPanelComponent->component)->toArray($request),
+                ])->toArray();
+        }
         return [
             'id' => $this->id,
             'product_returnable_id' => $this->product_returnable_id,
