@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ScanFaceResource;
-use App\Http\Resources\UserResource;
 use App\Models\ScanFace;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\ScanFaceResource;
 
 class ApiScanFaceController extends Controller
 {
@@ -45,6 +46,25 @@ class ApiScanFaceController extends Controller
 
             return ScanFaceResource::collection($users);
 
+        }
+    }
+
+    public function checkDataset(Request $request)
+    {
+        $userNip = $request->nip;
+
+        $path = 'dataset_faces/' . $userNip;
+
+        if (Storage::disk('public')->exists($path)) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'Dataset ditemukan untuk pengguna ' . $userNip
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Dataset tidak ditemukan untuk pengguna ' . $userNip
+            ], 400);
         }
     }
 

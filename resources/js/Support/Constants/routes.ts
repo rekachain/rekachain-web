@@ -58,4 +58,5 @@ export const ROUTES = {
     FEEDBACK: 'feedback',
     CUSTOM_ATTACHMENT_MATERIALS: 'custom-attachment-materials',
     HELPDESK_CONTACT: 'helpdesk-contact',
+    SCAN_FACE: 'scan-face',
 };

@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['as' => 'api.'], function () {
     Route::post('login', [ApiAuthController::class, 'login'])->name('login');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+    Route::post('check-dataset', [ApiScanFaceController::class, 'checkDataset'])->name('check-dataset');
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);

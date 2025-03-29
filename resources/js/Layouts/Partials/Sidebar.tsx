@@ -26,6 +26,7 @@ import {
     RiToolsFill,
     RiUser2Line,
     RiUserLine,
+    RiHistoryLine,
 } from '@remixicon/react';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -95,7 +96,6 @@ export default function Sidebar() {
                                 icon={<RiHome8Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
-
                         {checkPermission(PERMISSION_ENUM.WORK_DAY_READ) && (
                             <SidebarLink
                                 title={t('components.sidebar.links.work_days')}
@@ -103,7 +103,6 @@ export default function Sidebar() {
                                 icon={<RiCalendar2Line size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
-
                         {checkPermission([
                             PERMISSION_ENUM.DIVISION_READ,
                             PERMISSION_ENUM.WORKSHOP_READ,
@@ -180,6 +179,13 @@ export default function Sidebar() {
                                     />
                                 )}
                             </SidebarLinkCollapsible>
+                        )}
+                        {checkPermission(PERMISSION_ENUM.DIVISION_CREATE) && (
+                            <SidebarLink
+                                title="History Recognition"
+                                routeName={`${ROUTES.SCAN_FACE}.index`}
+                                icon={<RiHistoryLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
                         )}
                     </SidebarMenu>
                     <SidebarMenu

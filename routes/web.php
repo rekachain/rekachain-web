@@ -58,7 +58,6 @@ require __DIR__ . '/auth.php';
 Route::redirect('/', 'dashboard');
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::post('/scan-faces', 'ScanFaceController@store')->withoutMiddleware(['csrf']);
-Route::get('/scan-faces', [ScanFaceController::class, 'index'])->name('scanFace.index');
 Route::resource('/scan-faces', ScanFaceController::class);
 
 Route::middleware('auth')->group(function () {
@@ -66,7 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
+    Route::get('/scan-faces', [ScanFaceController::class, 'index'])->name('scanFace.index');
+    Route::resource('/scan-face', ScanFaceController::class);
     // Route::get('/test', function(){
     //     return inertia('Division/Create');
     // } );
