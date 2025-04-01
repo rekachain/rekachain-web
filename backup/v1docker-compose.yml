@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  laravel-react-app:
+    build:
+      context: ./rekachain-web
+      dockerfile: Dockerfile
+    container_name: rekachain-web
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/html
+    volumes:
+      - ./rekachain-web:/var/www/html
+    networks:
+      - app-network
+    depends_on:
+      - db
+    ports:
+      - 9000:9000
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    build:
+      context: ./phpmyadmin
+    ports:
+      - 8080:80
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+      PMA_PASSWORD: ""
+    volumes:
+      - .docker/phpmyadmin/sessions:/sessions
+
+  db:
+    build:
+      context: ./mariadb
+    image: mariadb:11.6.2-ubi9
+    ports:
+      - 3306:3306
+    volumes:
+      - .docker/db/data:/var/lib/mysql
+      - .docker/logs:/var/log/mysql
+      - .docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - .docker/db/sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: rekachain_web
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+    networks:
+      - app-network
+
+  backend-simple-frs:
+    build:
+      context: ./backend-simple-FRS
+      dockerfile: Dockerfile
+    container_name: backend-simple-frs
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend-simple-FRS:/app
+    networks:
+      - app-network
+    working_dir: /app
+
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,5 +1,8 @@
 FROM php:8.1-fpm
 
+# Copy seluruh kode aplikasi Laravel & React
+COPY . .
+
 # Instal dependensi PHP & Node.js
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -13,44 +16,46 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev \
     nodejs \
-    npm \
-    mariadb-client
+    npm
 
 RUN apt-get update; \
     apt-get install -y libmagickwand-dev; \
     pecl install imagick; \
     docker-php-ext-enable imagick;
-
+# Bersihkan cache apt
 RUN rm -rf /var/lib/apt/lists/*
 
-
+# Instal ekstensi PHP
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl gd
 
+# Instal Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN mkdir -p /app/rekachain-web
+# Set working directory
+WORKDIR /var/www/html
 
-WORKDIR /app/rekachain-web
-
-COPY . .
-
+# Copy composer files (hanya jika berubah)
+COPY composer.json composer.lock ./
+# RUN composer update
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN apt-get update && apt-get install -y nano
-RUN php artisan config:clear
-RUN php artisan cache:clear
+    # php artisan migrate:fresh --seed
 
+# Copy package.json (untuk React/Inertia)
+COPY package.json package-lock.json vite.config.js ./
+RUN npm install
+RUN npm run build
 
-COPY package.json ./
-COPY package-lock.json ./
-COPY vite.config.js ./
+# RUN php artisan serve
 
-RUN chmod -R 775 storage bootstrap/cache
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Atur permission folder Laravel
+# RUN chown -R www-data:www-data /var/www/html/storage \
+#     && chown -R www-data:www-data /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage
 
+EXPOSE 9000
 
-RUN chown -R www-data:www-data ./storage
-
-EXPOSE 8000
+CMD ["php-fpm"]
