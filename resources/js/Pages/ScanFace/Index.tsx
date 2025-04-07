@@ -24,6 +24,7 @@ interface ScanFace {
     panel: string;
     status: string;
     user: User;
+    created_at: string;
 }
 
 interface Props {
@@ -48,6 +49,7 @@ const Index: React.FC<Props> = ({ data }) => {
                         <th className='px-4 py-2'>Panel</th>
                         <th className='px-4 py-2'>Step</th>
                         <th className='px-4 py-2'>Status Terdeteksi</th>
+                        <th className='px-4 py-2'>Waktu Terdeteksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,8 +60,8 @@ const Index: React.FC<Props> = ({ data }) => {
                             <td className='px-4 py-2'>{scan.user.role_name}</td>
                             <td className='px-4 py-2'>
                                 <img
-                                    src={`/storage/result_scan_faces/${scan.image_path}`}
-                                    alt={`Image of user ${scan.user_id}`}
+                                    src={`/result-scan-faces/${scan.image_path}`}
+                                    // alt={`Image of user ${scan.user_id}`}
                                     width='100'
                                     className='object-cover'
                                 />
@@ -68,6 +70,7 @@ const Index: React.FC<Props> = ({ data }) => {
                             <td className='px-4 py-2'>{scan.panel}</td>
                             <td className='px-4 py-2'>{scan.user.step.name}</td>
                             <td className='px-4 py-2'>{scan.status}</td>
+                            <td className='px-4 py-2'>{scan.created_at}</td>
                         </tr>
                     ))}
                 </tbody>
