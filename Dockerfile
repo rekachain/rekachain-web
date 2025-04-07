@@ -53,4 +53,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 RUN chown -R www-data:www-data ./storage
 
-EXPOSE 8000
+EXPOSE 8000 5173

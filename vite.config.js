@@ -12,7 +12,7 @@ const ip = Object.values(os.networkInterfaces())
 export default defineConfig(({ command }) => {
     console.log(`Running vite with command: ${command}`);
     try {
-         
+
         if (existsSync('public/hot')) {
             unlinkSync('public/hot');
         }
@@ -29,7 +29,8 @@ export default defineConfig(({ command }) => {
                       host: '0.0.0.0',
                       port: 5173,
                       hmr: {
-                          host: ip,
+                          protocol: 'ws',
+                          host: '192.168.1.7',
                           port: 5173,
                       },
                   },
@@ -42,7 +43,7 @@ export default defineConfig(({ command }) => {
             laravel({
                 input: 'resources/js/app.tsx',
                 refresh: true,
-            }),
+	        }),
             react(),
             i18n(),
         ],

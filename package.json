@@ -2,7 +2,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host=0.0.0.0",
         "transform-intent-enum": "node experimental/watch-intent-enum.js",
         "transform-permission-enum": "node experimental/watch-permission-enum.js",
         "build": "tsc && vite build",
