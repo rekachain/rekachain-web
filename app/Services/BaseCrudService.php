@@ -22,6 +22,7 @@ use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\ProgressStepServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\RawMaterialServiceInterface;
+use App\Support\Interfaces\Services\ReplacementStockServiceInterface;
 use App\Support\Interfaces\Services\ReturnedProductNoteServiceInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\SerialPanelServiceInterface;
@@ -233,5 +234,12 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
      */
     protected function productProblemNoteService(): ProductProblemNoteServiceInterface {
         return $this->getService(ProductProblemNoteServiceInterface::class);
+    }
+
+    /**
+     * Get ReplacementStock service instance
+     */
+    protected function replacementStockService(): ReplacementStockServiceInterface {
+        return $this->getService(ReplacementStockServiceInterface::class);
     }
 }

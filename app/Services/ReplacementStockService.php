@@ -27,9 +27,11 @@ class ReplacementStockService extends BaseCrudService implements ReplacementStoc
     }
 
     public function updateStocks(array $data, bool $isIncrement = false): bool {
-        $replacementStocks = ReplacementStock::whereIn('component_id', $data['component_ids'])->get();
+        $replacementStocks = $this->replacementStockService()->find([
+            'component_id', 'in', $data['component_ids'],
+        ]);
         $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($replacementStocks, $isIncrement) {
-            $stock->update([
+            $this->replacementStockService()->update($stock, [
                 'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
             ]);
         });
