@@ -27,6 +27,7 @@ import { returnedProductNoteService } from '@/Services/returnedProductNoteServic
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
@@ -284,7 +285,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                     <ProductProblemImport returnedProductId={data.id} />
                                 )}
                             {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) &&
-                                componentResource && (
+                                componentResource &&
+                                (data.status === ReturnedProductStatusEnum.PROGRESS ||
+                                    data.status === ReturnedProductStatusEnum.DRAFT) && (
                                     <>
                                         {data.product_returnable_type === 'App\\Models\\Panel' && (
                                             <ResolveProductProblem
