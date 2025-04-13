@@ -38,6 +38,7 @@ return [
         'draft' => 'Draf',
         'progress' => 'Dalam Proses',
         'done' => 'Selesai',
+        'scrapped' => 'Scrap',
     ],
     'App\Support\Enums\ProductProblemStatusEnum' => [
         'fixed' => 'Diperbaiki',
