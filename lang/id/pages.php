@@ -2567,6 +2567,7 @@ return [
                 ],
                 'messages' => [
                     'resolved' => 'Permasalahan produk berhasil diselesaikan dengan sukses!',
+                    'scrapped' => 'Komponen berhasil ditambahkan kedalam stok!',
                 ],
             ],
             'partials' => [

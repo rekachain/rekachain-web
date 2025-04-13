@@ -81,7 +81,9 @@ const ResolveProductProblem = ({
                 : replacementStockService.retrieveStocks(data);
             await handleSyncReturnedProduct();
             void useSuccessToast(
-                t('pages.returned_product.partials.resolve_product_problem.messages.resolved'),
+                isScrapping
+                    ? t('pages.returned_product.partials.resolve_product_problem.messages.scrapped')
+                    : t('pages.returned_product.partials.resolve_product_problem.messages.resolved'),
             );
         } catch (error) {
             console.error('Failed:', error);

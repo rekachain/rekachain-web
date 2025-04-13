@@ -2567,6 +2567,7 @@ return [
                 ],
                 'messages' => [
                     'resolved' => 'Problem resolved successfully!',
+                    'scrapped' => 'Component scraped successfully!',
                 ],
             ],
             'partials' => [
