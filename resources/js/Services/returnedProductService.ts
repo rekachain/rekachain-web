@@ -85,6 +85,28 @@ export const returnedProductService = {
             },
         );
     },
+    scrapStocks: async (returnedProductId: number, data: any) => {
+        return await window.axios.put(
+            route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
+            data,
+            {
+                params: {
+                    intent: IntentEnum.WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP,
+                },
+            },
+        );
+    },
+    retrieveStocks: async (returnedProductId: number, data: any) => {
+        return await window.axios.put(
+            route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
+            data,
+            {
+                params: {
+                    intent: IntentEnum.WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK,
+                },
+            },
+        );
+    },
 };
 export const requestReturnService = {
     ...serviceFactory<ReturnedProductResource>(ROUTES.REQUESTED_RETURNS),

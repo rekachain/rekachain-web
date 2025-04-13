@@ -10,7 +10,6 @@ import {
 } from '@/Components/UI/dialog';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
-import { replacementStockService } from '@/Services/replacementStockService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
@@ -75,15 +74,16 @@ const ResolveProductProblem = ({
     const submit = async (e: FormEvent) => {
         try {
             e.preventDefault();
-            console.log(data);
             isScrapping
-                ? await replacementStockService.scrapStocks(data)
-                : replacementStockService.retrieveStocks(data);
+                ? await returnedProductService.scrapStocks(returnedProduct.id, data)
+                : returnedProductService.retrieveStocks(returnedProduct.id, data);
             await handleSyncReturnedProduct();
             void useSuccessToast(
                 isScrapping
                     ? t('pages.returned_product.partials.resolve_product_problem.messages.scrapped')
-                    : t('pages.returned_product.partials.resolve_product_problem.messages.resolved'),
+                    : t(
+                          'pages.returned_product.partials.resolve_product_problem.messages.resolved',
+                      ),
             );
         } catch (error) {
             console.error('Failed:', error);
