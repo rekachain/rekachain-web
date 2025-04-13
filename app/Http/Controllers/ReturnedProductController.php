@@ -67,6 +67,7 @@ class ReturnedProductController extends Controller {
                 case IntentEnum::WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS->value:
                     return ReturnedProductResource::make($returnedProduct);
             }
+
             return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'product_problems.component', 'returned_product_notes.user']));
         }
         $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'product_problems.component', 'returned_product_notes.user']));

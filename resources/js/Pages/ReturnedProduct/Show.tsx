@@ -42,8 +42,8 @@ import { useEffect, useState } from 'react';
 import AddProductProblem from './Partials/AddProductProblem';
 import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import ProductProblemImport from './Partials/ProductProblemImport';
-import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
 import ResolveProductProblem from './Partials/ResolveProductProblem';
+import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
     const { t, setLocale } = useLaravelReactI18n();
@@ -279,13 +279,29 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         componentResource={componentResource}
                                     />
                                 )}
-                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && (
-                                <ProductProblemImport returnedProductId={data.id} />
-                            )}
-                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) && (<>
-                                <ResolveProductProblem returnedProduct={data} isScrapping={true} handleSyncReturnedProduct={handleSyncReturnedProduct} />
-                                <ResolveProductProblem returnedProduct={data} isScrapping={false} handleSyncReturnedProduct={handleSyncReturnedProduct} />
-                            </>)}
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) &&
+                                componentResource && (
+                                    <ProductProblemImport returnedProductId={data.id} />
+                                )}
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) &&
+                                componentResource && (
+                                    <>
+                                        {data.product_returnable_type === 'App\\Models\\Panel' && (
+                                            <ResolveProductProblem
+                                                returnedProduct={data}
+                                                isScrapping={true}
+                                                handleSyncReturnedProduct={
+                                                    handleSyncReturnedProduct
+                                                }
+                                            />
+                                        )}
+                                        <ResolveProductProblem
+                                            returnedProduct={data}
+                                            isScrapping={false}
+                                            handleSyncReturnedProduct={handleSyncReturnedProduct}
+                                        />
+                                    </>
+                                )}
                         </div>
                         <div className='hidden md:block'>
                             <Table wrapperClassName='block max-h-96'>

@@ -53,7 +53,7 @@ class ReplacementStockController extends Controller {
                 case IntentEnum::WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FROM_RETURNED_PRODUCT->value:
                     $this->replacementStockService->updateStocks($request->validated(), true);
                     $queryParams = array_merge($request->query(), ['column_filters' => ['component_id' => $request->get('component_ids')]]);
-                    
+
                     return ReplacementStockResource::collection($this->replacementStockService->getAllPaginated($queryParams));
             }
 

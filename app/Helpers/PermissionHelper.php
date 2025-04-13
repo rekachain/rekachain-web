@@ -114,7 +114,7 @@ class PermissionHelper {
 
         return $returnBool ? false : abort(403, __('exception.auth.role.role_exception', ['role' => implode(', ', array_map(fn ($role) => $role->value, $roles))]));
     }
-    
+
     private static function isTestRoute(): bool {
         return str_starts_with(\Route::currentRouteName(), 'test');
     }

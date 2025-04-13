@@ -26,13 +26,15 @@ class ReturnedProductResource extends JsonResource {
                 if ($serialPanel) {
                     $carrPanelComponents = $serialPanel->panel_attachment->carriage_panel->carriage_panel_components;
                 } else {
-                    $carriagePanelComponents = $this->product_returnable->carriage_panel_components()->distinct()->get()->groupBy('component_id')->map(fn($group) => $group->first());
+                    $carriagePanelComponents = $this->product_returnable->carriage_panel_components()->distinct()->get()->groupBy('component_id')->map(fn ($group) => $group->first());
                     $carrPanelComponents = $carriagePanelComponents ? $carriagePanelComponents : [];
                 }
+
                 return $carrPanelComponents->map(fn ($carPanelComponent) => [
                     ...ComponentResource::make($carPanelComponent->component)->toArray($request),
                 ])->toArray();
         }
+
         return [
             'id' => $this->id,
             'product_returnable_id' => $this->product_returnable_id,

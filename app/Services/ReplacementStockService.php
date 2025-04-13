@@ -26,13 +26,14 @@ class ReplacementStockService extends BaseCrudService implements ReplacementStoc
         return (new ReplacementStocksTemplateExport)->download('replacement_stocks_template.xlsx');
     }
 
-    public function updateStocks(array $data, bool $isIncrement = false): bool{
+    public function updateStocks(array $data, bool $isIncrement = false): bool {
         $replacementStocks = ReplacementStock::whereIn('component_id', $data['component_ids'])->get();
         $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($replacementStocks, $isIncrement) {
             $stock->update([
                 'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
             ]);
         });
+
         return true;
     }
 }

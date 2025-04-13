@@ -13,7 +13,11 @@ import { useSuccessToast } from '@/Hooks/useToast';
 import { replacementStockService } from '@/Services/replacementStockService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { ComponentResource, ProductProblemResource, ReturnedProductResource } from '@/Support/Interfaces/Resources';
+import {
+    ComponentResource,
+    ProductProblemResource,
+    ReturnedProductResource,
+} from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -32,8 +36,11 @@ const ResolveProductProblem = ({
     const { loading } = useLoading();
     const auth = usePage().props.auth;
 
-    const [componentResources, setComponentResources] = useState<PaginateResponse<ComponentResource>>();
-    const [productProblemsResources, setProductProblemsResources] = useState<ProductProblemResource[]>(returnedProduct.product_problems || []);
+    const [componentResources, setComponentResources] =
+        useState<PaginateResponse<ComponentResource>>();
+    const [productProblemsResources, setProductProblemsResources] = useState<
+        ProductProblemResource[]
+    >(returnedProduct.product_problems || []);
 
     const { data, setData } = useForm({
         component_ids: [] as number[], // Explicitly define the type as number[]
@@ -51,7 +58,10 @@ const ResolveProductProblem = ({
     const fetchComponentResources = withLoading(async () => {
         try {
             console.log(productProblemsResources);
-            const resources = await returnedProductService.getComponents(returnedProduct.id, isScrapping);
+            const resources = await returnedProductService.getComponents(
+                returnedProduct.id,
+                isScrapping,
+            );
             setComponentResources(resources);
         } catch (error) {
             console.error('Failed to fetch component resources:', error);
@@ -66,7 +76,9 @@ const ResolveProductProblem = ({
         try {
             e.preventDefault();
             console.log(data);
-            isScrapping ? await replacementStockService.scrapStocks(data) : replacementStockService.retrieveStocks(data);
+            isScrapping
+                ? await replacementStockService.scrapStocks(data)
+                : replacementStockService.retrieveStocks(data);
             await handleSyncReturnedProduct();
             void useSuccessToast(
                 t('pages.returned_product.partials.resolve_product_problem.messages.resolved'),
@@ -79,7 +91,7 @@ const ResolveProductProblem = ({
     const isComponentDisabled = (componentResource: ComponentResource) => {
         if (isScrapping) {
             return productProblemsResources.some(
-                (problem) => problem.component_id === componentResource.id
+                (problem) => problem.component_id === componentResource.id,
             );
         }
         return false;
@@ -113,38 +125,41 @@ const ResolveProductProblem = ({
                     </DialogDescription>
                 </DialogHeader>
 
-                <form
-                    onSubmit={submit}
-                    id='add-note-form'
-                    className='hidden'
-                ></form>
+                <form onSubmit={submit} id='add-note-form' className='hidden'></form>
                 <div className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
-                        {productProblemsResources && componentResources?.data?.map((component) => (
-                            <div key={component.id} className='w-full'>
-                                <div className='flex items-center'>
-                                    <Checkbox
-                                        id={`component-${component.id}`}
-                                        name={`components[${component.id}]`}
-                                        value={component.id}
-                                        onCheckedChange={(checked: boolean) =>{
-                                            handleComponentsCheckedChange(component.id, checked);
-                                        }}
-                                        disabled={isComponentDisabled(component)}
-                                        // checked={isScrapping && !isComponentDisabled(component)}
-                                    />
-                                    <label htmlFor={`component-${component.id}`} className='ml-2'>
-                                        {isComponentDisabled(component) ? (
-                                            <span className='text-muted-foreground line-through'>
-                                                {component.name}
-                                            </span>
-                                        ) : (
-                                            component.name
-                                        )}
-                                    </label>
+                        {productProblemsResources &&
+                            componentResources?.data?.map((component) => (
+                                <div key={component.id} className='w-full'>
+                                    <div className='flex items-center'>
+                                        <Checkbox
+                                            value={component.id}
+                                            onCheckedChange={(checked: boolean) => {
+                                                handleComponentsCheckedChange(
+                                                    component.id,
+                                                    checked,
+                                                );
+                                            }}
+                                            name={`components[${component.id}]`}
+                                            id={`component-${component.id}`}
+                                            disabled={isComponentDisabled(component)}
+                                            // checked={isScrapping && !isComponentDisabled(component)}
+                                        />
+                                        <label
+                                            htmlFor={`component-${component.id}`}
+                                            className='ml-2'
+                                        >
+                                            {isComponentDisabled(component) ? (
+                                                <span className='text-muted-foreground line-through'>
+                                                    {component.name}
+                                                </span>
+                                            ) : (
+                                                component.name
+                                            )}
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                     <Button type='submit' form='add-note-form' disabled={loading}>
                         {loading
