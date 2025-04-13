@@ -89,6 +89,10 @@ class ReturnedProductController extends Controller {
                     return $this->returnedProductService->addProductProblem($returnedProduct, $request->validated());
                 case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                     return $this->returnedProductService->importProductProblemData($returnedProduct, $request->file('import_file'));
+                case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK->value:
+                    return $this->returnedProductService->updateReplacementStocks($returnedProduct, $request->validated());
+                case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP->value:
+                    return $this->returnedProductService->updateReplacementStocks($returnedProduct, $request->validated(), true);
             }
             $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
 

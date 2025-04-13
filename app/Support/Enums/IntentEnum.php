@@ -328,6 +328,10 @@ enum IntentEnum: string {
 
     case WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM = 'web.returned.product.import.product.problem';
 
+    case WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK = 'web.returned.product.update.replacement.stock';
+
+    case WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP = 'web.returned.product.update.replacement.stock.for.scrap';
+
     case WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FOR_RETURNED_PRODUCT = 'web.replacement.stock.update.replacement.stock.for.returned.product';
 
     case WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FROM_RETURNED_PRODUCT = 'web.replacement.stock.update.replacement.stock.from.returned.product';
