@@ -34,6 +34,15 @@ export default function ReturnedProductTableView({
                                 'pages.returned_product.partials.partials.returned_product_table.headers.serial_number',
                             )}
                         </TableHead>
+                        {checkPermission(
+                            [PERMISSION_ENUM.RETURNED_PRODUCT_READ, PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE], true
+                        ) && (
+                            <TableHead>
+                                {t(
+                                    'pages.returned_product.partials.partials.returned_product_table.headers.buyer',
+                                )}
+                            </TableHead>
+                        )}
                         <TableHead>
                             {t(
                                 'pages.returned_product.partials.partials.returned_product_table.headers.status',
@@ -56,6 +65,13 @@ export default function ReturnedProductTableView({
                     {requestedReturnResponse?.data.map((returnedProduct) => (
                         <TableRow key={returnedProduct.id}>
                             <TableCell>{returnedProduct.serial_number}</TableCell>
+                            {checkPermission(
+                                [PERMISSION_ENUM.RETURNED_PRODUCT_READ, PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE], true
+                            ) && (
+                                <TableCell>
+                                    {returnedProduct.buyer?.name}
+                                </TableCell>
+                            )}
                             <TableCell>{returnedProduct.localized_status}</TableCell>
                             <TableCell>{returnedProduct.created_at}</TableCell>
                             <TableCell>{returnedProduct.updated_at}</TableCell>
