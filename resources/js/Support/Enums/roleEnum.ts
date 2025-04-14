@@ -11,4 +11,8 @@ export enum RoleEnum {
     QC_MEKANIK = 'QC - Mekanik',
     QC_ELEKTRIK = 'QC - Elektrik',
     QC_ASSEMBLY = 'QC - Assembly',
+    MANAGER_AFTERSALES = 'Manager - Aftersales',
+    SUPERVISOR_AFTERSALES = 'Supervisor - Aftersales',
+    WORKER_AFTERSALES = 'Worker - Aftersales',
+    CUSTOMER = 'Customer',
 }
