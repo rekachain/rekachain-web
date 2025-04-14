@@ -46,6 +46,13 @@ return [
         'changed' => 'Changed',
         'draft' => 'Draft',
     ],
+    'App\Support\Enums\ProductRestockStatusEnum' => [
+        'requested' => 'Requested',
+        'draft' => 'Draft',
+        'progress' => 'In Progress',
+        'done' => 'Done',
+        'aborted' => 'Aborted',
+    ],
     'others' => [
         'null_work_status' => 'Not Processed',
         'null_acceptance_status' => 'Not Processed',
