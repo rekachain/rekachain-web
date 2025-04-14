@@ -2355,4 +2355,386 @@ return [
             ],
         ],
     ],
+    'returned_product' => [
+        'index' => [
+            'title' => 'Return Product',
+            'buttons' => [
+                'create' => 'Create Return',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Return',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'type' => 'Type',
+                'evidence' => 'Evidence',
+                'evidence_filepond_placeholder' => 'Drop files here or click to upload evidence',
+            ],
+            'buttons' => [
+                'submit' => 'Create Return',
+            ],
+            'messages' => [
+                'created' => 'Return Product created successfully!',
+            ],
+        ],
+        'show' => [
+            'title' => 'Return Product: :name',
+            'breadcrumbs' => [
+                'home' => 'Home',
+                'return' => 'Returned Products',
+                'show' => 'Return Product: :name',
+            ],
+            'buttons' => [
+                'edit' => 'Edit Return',
+                'delete' => 'Delete Return',
+                'import' => 'Import Return',
+            ],
+            'dialogs' => [
+                'confirm_delete_note' => [
+                    'title' => 'Delete Note',
+                    'description' => 'Are you sure you want to delete this note?',
+                ],
+                'confirm_delete_problem' => [
+                    'title' => 'Delete Problem',
+                    'description' => 'Are you sure you want to delete this problem?',
+                ],
+            ],
+            'messages' => [
+                'deleted_problem' => 'Product Problem deleted successfully!',
+                'deleted_note' => 'Note deleted successfully!',
+            ],
+            'labels' => [
+                'buyer' => 'Customer',
+                'serial_number' => 'Serial Number',
+                'return_quantity' => 'Return Quantity',
+                'return_date' => 'Return Date',
+                'update_date' => 'Updated Date',
+                'notes' => 'Notes',
+            ],
+            'table_headers' => [
+                'component_name' => 'Component Name',
+                'description' => 'Description',
+                'note' => 'Note',
+                'status' => 'Status',
+            ],
+            'product_problems' => [
+                'title' => 'Product Problems',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Return: :name',
+            'fields' => [
+                'name' => 'Name',
+                'description' => 'Description',
+                'type' => 'Type',
+            ],
+            'buttons' => [
+                'submit' => 'Update Return',
+            ],
+            'messages' => [
+                'updated' => 'Return Product updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'returned_product' => [
+                'messages' => [
+                    'deleted' => 'Return Product deleted successfully!',
+                ],
+            ],
+            'buyer_form' => [
+                'fields' => [
+                    'buyer' => 'Customer',
+                    'name' => 'Name',
+                    'email' => 'Email',
+                    'phone_number' => 'Phone Number',
+                    'password' => 'Password',
+                ],
+                'placeholders' => [
+                    'buyer' => 'Select Customer...',
+                    'name' => 'Input Name...',
+                    'email' => 'Input Email...',
+                    'phone_number' => 'Input Phone Number...',
+                    'password' => 'Input Password...',
+                ],
+                'messages' => [
+                    'created' => 'Buyer created successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Return Product imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Return',
+                    'description' => 'Import Returned Product from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Return',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Return',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Return Product imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Return',
+                ],
+            ],
+            'product_problem_import' => [
+                'messages' => [
+                    'imported' => 'Product Problems imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Problems',
+                    'description' => 'Import Product Problems from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Problems',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Problems',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Product Problems imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Problems',
+                ],
+            ],
+            'add_product_problem' => [
+                'buttons' => [
+                    'add_component' => 'Add Component',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'component' => 'Component',
+                        'component_placeholder' => 'Select Component',
+                        'component_name' => 'Component Name',
+                        'component_description' => 'Component Description',
+                        'status' => 'Status',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Component added successfully!',
+                ],
+            ],
+            'update_product_problem_status' => [
+                'buttons' => [
+                    'update_status' => 'Update Status',
+                ],
+                'dialog' => [
+                    'title' => 'Update Status',
+                    'description' => 'Update the status of the selected Product Progress.',
+                    'select_placeholder' => 'Select Status',
+                ],
+                'messages' => [
+                    'updated' => 'Product status updated successfully!',
+                ],
+            ],
+            'add_returned_product_note' => [
+                'buttons' => [
+                    'add_note' => 'Add Note',
+                ],
+                'dialog' => [
+                    'title' => '{0} Add Note|{1} Update Note',
+                    'description' => '{0} Add a note to this Returned Product.|{1} Update the note of the selected note.',
+                    'fields' => [
+                        'note' => 'Note',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Note added successfully!',
+                    'updated' => 'Note updated successfully!',
+                ],
+            ],
+            'resolve_product_problem' => [
+                'buttons' => [
+                    'resolve' => '{0} Change from Stock|{1} Scrap into Stock',
+                ],
+                'dialog' => [
+                    'title' => '{0} Change from Stock|{1} Scrap into Stock',
+                    'description' => '{0} Fix by changing the selected component from Aftersale Stock.|{1} Scrap all reusable components into Aftersale Stock.',
+                ],
+                'messages' => [
+                    'resolved' => 'Problem resolved successfully!',
+                    'scrapped' => 'Component scraped successfully!',
+                ],
+            ],
+            'partials' => [
+                'returned_product_table' => [
+                    'headers' => [
+                        'buyer' => 'Customer',
+                        'serial_number' => 'Serial Number',
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'note' => 'Note',
+                        'status' => 'Status',
+                        'created_at' => 'Requested At',
+                        'updated_at' => 'Updated At',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Component',
+                        ],
+                    ],
+                ],
+                'returned_product_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'serial_number' => 'Serial Number',
+                        'description' => 'Description',
+                        'type' => 'Type: :type',
+                        'note' => 'Note',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
+                    ],
+                ],
+            ],
+        ],
+        'requested_return' => [
+            'index' => [
+                'title' => 'Requested Product Returns',
+                'buttons' => [
+                    'create' => 'Create Request',
+                ],
+            ],
+            'partials' => [
+                'add_request' => [
+                    'title' => 'Make Request',
+                    'fields' => [
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'component' => 'Component',
+                        'component_placeholder' => 'Select Component',
+                        'panel' => 'Panel',
+                        'panel_placeholder' => 'Select Panel',
+                        'qty' => 'Quantity',
+                        'serial_number' => 'Serial Number',
+                    ],
+                    'buttons' => [
+                        'submit' => 'Send Request',
+                    ],
+                    'messages' => [
+                        'created' => 'Request created successfully!',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'replacement_stock' => [
+        'index' => [
+            'title' => 'Spare Part Stocks',
+            'buttons' => [
+                'create' => 'Create Stock',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Stock',
+            'fields' => [
+                'component_name' => 'Component Name',
+                'threshold' => 'Threshold',
+                'qty' => 'Quantity',
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Create Stock',
+            ],
+            'messages' => [
+                'created' => 'Stock created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Stock: :name',
+            'fields' => [
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Update Stock',
+            ],
+            'messages' => [
+                'updated' => 'Stock updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'replacement_stocks' => [
+                'messages' => [
+                    'deleted' => 'Stock deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Stock imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Stock',
+                    'description' => 'Import Stock from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Stock',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Stock',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Stock imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Stock',
+                ],
+            ],
+            'add_stock' => [
+                'title' => '{0}Create Stock|{1}Edit Stock',
+                'fields' => [
+                    'component_name' => 'Component Name',
+                    'threshold' => 'Threshold',
+                    'qty' => 'Quantity',
+                    'type' => 'Type',
+                    'description' => 'Description',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Create Stock|{1}Edit Stock',
+                ],
+                'messages' => [
+                    'created' => 'Stock created successfully!',
+                ],
+            ],
+            'partials' => [
+                'replacement_stock_table' => [
+                    'headers' => [
+                        'component_name' => 'Component Name',
+                        'component_description' => 'Description',
+                        'threshold' => 'Threshold',
+                        'qty' => 'Quantity',
+                    ],
+                ],
+                'replacement_stock_card' => [
+                    'headers' => [
+                        'component_name' => 'Component: :component_name',
+                        'component_description' => 'Description: :component_description',
+                        'threshold' => 'Threshold: :threshold',
+                        'qty' => 'Quantity: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

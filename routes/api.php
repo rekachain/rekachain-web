@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiCarriageController;
 use App\Http\Controllers\Api\ApiComponentController;
 use App\Http\Controllers\Api\ApiDetailWorkerPanelController;
 use App\Http\Controllers\Api\ApiDetailWorkerTrainsetController;
+use App\Http\Controllers\Api\ApiEnumController;
 use App\Http\Controllers\Api\ApiPanelAttachmentController;
 use App\Http\Controllers\Api\ApiPanelAttachmentHandlerController;
 use App\Http\Controllers\Api\ApiPanelController;
@@ -34,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['as' => 'api.'], function () {
     Route::post('login', [ApiAuthController::class, 'login'])->name('login');
     Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+    Route::get('/enums/{enumName}', [ApiEnumController::class, 'getEnumLabels']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::apiResource('detail-worker-panels', ApiDetailWorkerPanelController::class);

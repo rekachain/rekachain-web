@@ -2355,4 +2355,386 @@ return [
             ],
         ],
     ],
+    'returned_product' => [
+        'index' => [
+            'title' => 'Retur Produk',
+            'buttons' => [
+                'create' => 'Buat Retur',
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Retur',
+            'fields' => [
+                'name' => 'Nama',
+                'description' => 'Deskripsi',
+                'type' => 'Tipe',
+                'evidence' => 'Foto ',
+                'evidence_filepond_placeholder' => 'Letakkan file di sini atau klik untuk mengunggah foto',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Retur',
+            ],
+            'messages' => [
+                'created' => 'Retur Produk berhasil dibuat!',
+            ],
+        ],
+        'show' => [
+            'title' => 'Retur Produk: :name',
+            'breadcrumbs' => [
+                'home' => 'Beranda',
+                'return' => 'Retur Produk',
+                'show' => 'Retur Produk: :name',
+            ],
+            'buttons' => [
+                'edit' => 'Edit Retur',
+                'delete' => 'Hapus Retur',
+                'import' => 'Impor Retur',
+            ],
+            'dialogs' => [
+                'confirm_delete_note' => [
+                    'title' => 'Hapus Catatan',
+                    'description' => 'Apakah Anda yakin ingin menghapus catatan?',
+                ],
+                'confirm_delete_problem' => [
+                    'title' => 'Hapus Permasalahan',
+                    'description' => 'Apakah Anda yakin ingin menghapus permasalahan ini?',
+                ],
+            ],
+            'messages' => [
+                'deleted_problem' => 'Masalah Produk berhasil dihapus!',
+                'deleted_note' => 'Catatan berhasil dihapus!',
+            ],
+            'labels' => [
+                'buyer' => 'Pelanggan',
+                'serial_number' => 'Nomor Seri',
+                'return_quantity' => 'Jumlah Retur',
+                'return_date' => 'Tanggal Retur',
+                'update_date' => 'Tanggal Diperbarui',
+                'notes' => 'Catatan',
+            ],
+            'table_headers' => [
+                'component_name' => 'Nama Komponen',
+                'description' => 'Deskripsi',
+                'note' => 'Note',
+                'status' => 'Status',
+            ],
+            'product_problems' => [
+                'title' => 'Permasalahan Produk',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Retur: :name',
+            'fields' => [
+                'name' => 'Nama',
+                'description' => 'Deskripsi',
+                'type' => 'Tipe',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Retur',
+            ],
+            'messages' => [
+                'updated' => 'Retur Produk berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'returned_product' => [
+                'messages' => [
+                    'deleted' => 'Retur Produk berhasil dihapus!',
+                ],
+            ],
+            'buyer_form' => [
+                'fields' => [
+                    'buyer' => 'Pelanggan',
+                    'name' => 'Nama',
+                    'email' => 'Email',
+                    'phone_number' => 'Nomor Telepon',
+                    'password' => 'Kata Sandi',
+                ],
+                'placeholders' => [
+                    'buyer' => 'Pilih Pelanggan...',
+                    'name' => 'Masukkan Nama...',
+                    'email' => 'Masukkan Email...',
+                    'phone_number' => 'Masukkan Nomor Telepon...',
+                    'password' => 'Masukkan Kata Sandi...',
+                ],
+                'messages' => [
+                    'created' => 'Pelanggan berhasil dibuat!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Retur Produk berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Retur',
+                    'description' => 'Impor Retur Produk dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Retur',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Import Retur',
+                        'processing' => 'Sedang memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Retur Produk berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Retur',
+                ],
+            ],
+            'product_problem_import' => [
+                'messages' => [
+                    'imported' => 'Masalah Produk berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Problem',
+                    'description' => 'Import Masalah Produk dari Excel file',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Problem',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Import Problem',
+                        'processing' => 'Sedang memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Masalah Produk berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Masalah',
+                ],
+            ],
+            'add_product_problem' => [
+                'buttons' => [
+                    'add_component' => 'Tambah Komponen',
+                ],
+                'dialogs' => [
+                    'fields' => [
+                        'component' => 'Komponen',
+                        'component_placeholder' => 'Pilih Komponen',
+                        'component_name' => 'Nama Komponen',
+                        'component_description' => 'Deskripsi Komponen',
+                        'status' => 'Status',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Komponen berhasil ditambahkan!',
+                ],
+            ],
+            'update_product_problem_status' => [
+                'buttons' => [
+                    'update_status' => 'Perbarui Status',
+                ],
+                'dialog' => [
+                    'title' => 'Perbarui Status',
+                    'description' => 'Perbarui status dari Progress Produk yang dipilih.',
+                    'select_placeholder' => 'Pilih Status',
+                ],
+                'messages' => [
+                    'updated' => 'Status Produk berhasil diperbarui!',
+                ],
+            ],
+            'add_returned_product_note' => [
+                'buttons' => [
+                    'add_note' => 'Tambah Catatan',
+                ],
+                'dialog' => [
+                    'title' => '{0} Tambah Catatan|{1} Perbarui Catatan',
+                    'description' => '{0} Tambahkan catatan pada Produk Retur.|{1} Perbarui catatan yang dipilih.',
+                    'fields' => [
+                        'note' => 'Catatan',
+                    ],
+                ],
+                'messages' => [
+                    'created' => 'Catatan berhasil ditambahkan!',
+                    'updated' => 'Catatan berhasil diperbarui!',
+                ],
+            ],
+            'resolve_product_problem' => [
+                'buttons' => [
+                    'resolve' => '{0} Ambil Stok|{1} Scrap Stok',
+                ],
+                'dialog' => [
+                    'title' => '{0} Ambil Stok|{1} Scrap ke Stok',
+                    'description' => '{0} Perbaiki dengan mengubah komponen terpilih dari Stok Aftersale.|{1} Scrap semua komponen yang dapat digunakan kembali ke Stok Aftersale.',
+                ],
+                'messages' => [
+                    'resolved' => 'Permasalahan produk berhasil diselesaikan dengan sukses!',
+                    'scrapped' => 'Komponen berhasil ditambahkan kedalam stok!',
+                ],
+            ],
+            'partials' => [
+                'returned_product_table' => [
+                    'headers' => [
+                        'buyer' => 'Pelanggan',
+                        'serial_number' => 'Nomor Seri',
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'note' => 'Catatan',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                        'updated_at' => 'Diperbarui Pada',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Komponen',
+                        ],
+                    ],
+                ],
+                'returned_product_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'serial_number' => 'Nomor Seri',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe: :type',
+                        'note' => 'Catatan',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                    ],
+                ],
+            ],
+        ],
+        'requested_return' => [
+            'index' => [
+                'title' => 'Permintaan Retur Produk',
+                'buttons' => [
+                    'create' => 'Buat Permintaan',
+                ],
+            ],
+            'partials' => [
+                'add_request' => [
+                    'title' => 'Buat Permintaan',
+                    'fields' => [
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'component' => 'Komponen',
+                        'component_placeholder' => 'Pilih Komponen',
+                        'panel' => 'Panel',
+                        'panel_placeholder' => 'Pilih Panel',
+                        'qty' => 'Jumlah',
+                        'serial_number' => 'Nomor Seri',
+                    ],
+                    'buttons' => [
+                        'submit' => 'Kirim Permintaan',
+                    ],
+                    'messages' => [
+                        'created' => 'Permintaan berhasil dibuat!',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'replacement_stock' => [
+        'index' => [
+            'title' => 'Stok Suku Cadang',
+            'buttons' => [
+                'create' => 'Buat Stok',
+            ],
+        ],
+        'create' => [
+            'title' => 'Buat Stok',
+            'fields' => [
+                'component_name' => 'Nama Komponen',
+                'threshold' => 'Batas Restok',
+                'qty' => 'Jumlah',
+                'type' => 'Tipe',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Buat Stok',
+            ],
+            'messages' => [
+                'created' => 'Stok berhasil dibuat!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Stok: :name',
+            'fields' => [
+                'type' => 'Tipe',
+                'description' => 'Deskripsi',
+            ],
+            'buttons' => [
+                'submit' => 'Perbarui Stok',
+            ],
+            'messages' => [
+                'updated' => 'Stok berhasil diperbarui!',
+            ],
+        ],
+        'partials' => [
+            'replacement_stocks' => [
+                'messages' => [
+                    'deleted' => 'Stok berhasil dihapus!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Stok berhasil diimpor!',
+                ],
+                'dialogs' => [
+                    'title' => 'Impor Stok',
+                    'description' => 'Impor Stok dari file Excel',
+                    'fields' => [
+                        'download_template' => 'Unduh Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Impor Stok',
+                        'download_template' => 'Unduh',
+                        'submit' => 'Impor Stok',
+                        'processing' => 'Sedang memproses...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Stok berhasil diimpor!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Impor Stok',
+                ],
+            ],
+            'add_stock' => [
+                'title' => '{0}Buat Stok|{1}Ubah Stok',
+                'fields' => [
+                    'component_name' => 'Nama Komponen',
+                    'threshold' => 'Batas Restok',
+                    'qty' => 'Jumlah',
+                    'type' => 'Tipe',
+                    'description' => 'Deskripsi',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Buat Stok|{1}Ubah Stok',
+                ],
+                'messages' => [
+                    'created' => 'Stok berhasil dibuat!',
+                ],
+            ],
+            'partials' => [
+                'replacement_stock_table' => [
+                    'headers' => [
+                        'component_name' => 'Nama Komponen',
+                        'component_description' => 'Deskripsi',
+                        'threshold' => 'Batas Restok',
+                        'qty' => 'Jumlah',
+                    ],
+                ],
+                'replacement_stock_card' => [
+                    'headers' => [
+                        'component_name' => 'Komponen: :component_name',
+                        'component_description' => 'Deskripsi: :component_description',
+                        'threshold' => 'Batas Restok: :threshold',
+                        'qty' => 'Jumlah: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

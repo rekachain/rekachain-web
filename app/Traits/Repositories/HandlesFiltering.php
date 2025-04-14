@@ -34,7 +34,20 @@ trait HandlesFiltering {
                     } elseif (array_key_exists('to', $value)) {
                         $query->where($key, '<=', $value['to']);
                     } elseif (is_numeric(key($value))) {
-                        $query->whereIn($key, $value);
+                        if (array_key_exists('not', $value)) {
+                            if (is_array($value['not'])) {
+                                $query->whereNotIn($key, $value['not']);
+                            } else {
+                                $query->whereNot($key, $value['not']);
+                            }
+                        }
+                        $query->whereIn($key, array_diff($value, array_column($value, 'not')));
+                    } elseif (array_key_exists('not', $value)) {
+                        if (is_array($value['not'])) {
+                            $query->whereNotIn($key, $value['not']);
+                        } else {
+                            $query->whereNot($key, $value['not']);
+                        }
                     }
                 } else {
                     $query->where($key, $value);
@@ -83,7 +96,20 @@ trait HandlesFiltering {
                             } elseif (array_key_exists('to', $val)) {
                                 $query->where($query->from . '.' . $key, '<=', $val['to']);
                             } elseif (is_numeric(key($val))) {
-                                $query->whereIn($query->from . '.' . $key, $val);
+                                if (array_key_exists('not', $val)) {
+                                    if (is_array($val['not'])) {
+                                        $query->whereNotIn($query->from . '.' . $key, $val['not']);
+                                    } else {
+                                        $query->whereNot($query->from . '.' . $key, $val['not']);
+                                    }
+                                }
+                                $query->whereIn($query->from . '.' . $key, array_diff($val, array_column($val, 'not')));
+                            } elseif (array_key_exists('not', $val)) {
+                                if (is_array($val['not'])) {
+                                    $query->whereNotIn($query->from . '.' . $key, $val['not']);
+                                } else {
+                                    $query->whereNot($query->from . '.' . $key, '!=', $val['not']);
+                                }
                             }
                         } else {
                             $query->where($query->from . '.' . $key, $val);

@@ -21,8 +21,10 @@ abstract class BaseRepository extends AdobrovolskyBaseRepository implements Base
 
         $query->where(function ($query) use ($searchParams, $filterable) {
             $query = $this->applySearchFilters($query, $searchParams, $filterable['searchs'] ?? []);
-
-            $query = $this->applyRelationSearchFilters($query, $searchParams, $filterable['relation_searchs'] ?? []);
+            // Applies relation search filters to the query if the 'disable_relation_search' parameter is not set to true in the search parameters.
+            if (!($searchParams['disable_relation_search'] ?? false)) {
+                $query = $this->applyRelationSearchFilters($query, $searchParams, $filterable['relation_searchs'] ?? []);
+            }
         });
 
         $query = $this->applyColumnFilters($query, $searchParams, $filterable['columns'] ?? []);
@@ -32,6 +34,8 @@ abstract class BaseRepository extends AdobrovolskyBaseRepository implements Base
         $query = $this->applyResolvedRelations($query, $searchParams);
 
         $query = $this->applySorting($query, $searchParams);
+
+        logger($query->toRawSql());
 
         return $query;
     }

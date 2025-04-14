@@ -2,6 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers\Helpers;
 
+use App\Models\ProductProblem;
+use App\Models\ProductProblemNote;
+use App\Models\ReplacementStock;
+use App\Models\ReturnedProduct;
+use App\Models\ReturnedProductNote;
 use App\Models\Role;
 use App\Models\Step;
 use App\Models\User;
@@ -477,4 +482,26 @@ class Dummy {
         return $helpdeskContact;
     }
 
+    public function createReturnedProduct() {
+        return ReturnedProduct::factory()->create();
+    }
+    public function createReturnedProductNote() {
+        $returnedProduct = $this->createReturnedProduct();
+        return ReturnedProductNote::factory()->create([
+            'returned_product_id' => $returnedProduct->id
+        ]);
+    }
+    
+    public function createProductProblem() {
+        return ProductProblem::factory()->create();
+    }
+    public function createProductProblemNote() {
+        $returnedProduct = $this->createProductProblem();
+        return ProductProblemNote::factory()->create([
+            'product_problem_id' => $returnedProduct->id
+        ]);
+    }
+    public function createReplacementStock() {
+        return ReplacementStock::factory()->create();
+    }
 }

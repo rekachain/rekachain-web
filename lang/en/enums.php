@@ -33,6 +33,19 @@ return [
         'send' => 'Sender',
         'receive' => 'Receiver',
     ],
+    'App\Support\Enums\ReturnedProductStatusEnum' => [
+        'requested' => 'Requested',
+        'draft' => 'Draft',
+        'progress' => 'In Progress',
+        'done' => 'Done',
+        'scrapped' => 'Scrapped',
+    ],
+    'App\Support\Enums\ProductProblemStatusEnum' => [
+        'fixed' => 'Fixed',
+        'progress' => 'In Progress',
+        'changed' => 'Changed',
+        'draft' => 'Draft',
+    ],
     'others' => [
         'null_work_status' => 'Not Processed',
         'null_acceptance_status' => 'Not Processed',

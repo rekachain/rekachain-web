@@ -146,6 +146,15 @@ class User extends Authenticatable {
             $this->detail_worker_panels->isEmpty() &&
             $this->detail_worker_trainsets->isEmpty() &&
             $this->panel_attachment_supervisors->isEmpty() &&
-            $this->trainset_attachment_supervisors->isEmpty();
+            $this->trainset_attachment_supervisors->isEmpty() &&
+            $this->projects->isEmpty();
+    }
+
+    public function projects(): HasMany {
+        return $this->hasMany(Project::class, 'buyer_id');
+    }
+
+    public function hasProject(): bool {
+        return $this->projects()->exists();
     }
 }

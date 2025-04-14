@@ -1,10 +1,9 @@
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { User } from '@/Support/Interfaces/Models';
+import { UserResource } from '@/Support/Interfaces/Resources';
 
-interface AuthenticatedUser extends User {
+interface AuthenticatedUser extends Omit<UserResource, 'role'> {
     role: string;
     initials: string;
-    image: string;
     permissions: PERMISSION_ENUM[];
 }
 

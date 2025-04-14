@@ -1,6 +1,7 @@
 const intents = {
     SOFT_DELETE_ENTRY: 'soft.delete.entry',
     DOWNLOAD_APK_FILE: 'download.apk.file',
+    DOWNLOAD_MANUAL_BOOK_FILE: 'download.manual.book.file',
     API_USER_UPDATE_PASSWORD: 'api.user.update.password',
     API_PROJECT_IMPORT_PROJECT_TEMPLATE: 'api.project.import.project.template',
     API_PANEL_IMPORT_PANEL: 'api.panel.import.panel',
@@ -220,6 +221,31 @@ const intents = {
         'web.panel.attachment.assign.referenced.attachment.and.material.import',
     WEB_TRAINSET_ATTACHMENT_GET_COMPONENT_MATERIALS_WITH_QTY_FOR_TEMPLATE:
         'web.trainset.attachment.get.component.materials.with.qty.for.template',
+    WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS:
+        'web.returned.product.get.product.problem.components',
+    WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS:
+        'web.returned.product.get.returned.product.components',
+    WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM: 'web.returned.product.add.product.problem',
+    WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE:
+        'web.returned.product.add.returned.product.with.note',
+    WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM:
+        'web.returned.product.import.returned.product.and.product.problem',
+    WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM: 'web.returned.product.import.product.problem',
+    WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK: 'web.returned.product.update.replacement.stock',
+    WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP:
+        'web.returned.product.update.replacement.stock.for.scrap',
+    WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FOR_RETURNED_PRODUCT:
+        'web.replacement.stock.update.replacement.stock.for.returned.product',
+    WEB_REPLACEMENT_STOCK_UPDATE_REPLACEMENT_STOCK_FROM_RETURNED_PRODUCT:
+        'web.replacement.stock.update.replacement.stock.from.returned.product',
+    WEB_REPLACEMENT_STOCK_IMPORT_REPLACEMENT_STOCK:
+        'web.replacement.stock.import.replacement.stock',
+    WEB_REPLACEMENT_STOCK_GET_TEMPLATE_IMPORT_REPLACEMENT_STOCK:
+        'web.replacement.stock.get.template.import.replacement.stock',
+    WEB_PRODUCT_PROBLEM_ADD_PRODUCT_PROBLEM_WITH_NOTE:
+        'web.product.problem.add.product.problem.with.note',
+    WEB_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE:
+        'web.product.problem.update.product.problem.with.note',
     WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
 };
 

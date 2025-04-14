@@ -14,12 +14,15 @@ import {
     RiContractLeftLine,
     RiContractRightLine,
     RiDivideLine,
+    RiExchange2Line,
     RiExpandRightLine,
     RiFeedbackLine,
+    RiHandHeartLine,
     RiHome2Line,
     RiHome8Line,
     RiInstanceLine,
     RiLockUnlockLine,
+    RiLoopLeftLine,
     RiSettings3Line,
     RiShieldLine,
     RiStackLine,
@@ -288,6 +291,35 @@ export default function Sidebar() {
                         children="Input Dokumen Pendukung"
                         icon={<RiUserLine  size={STYLING.ICON.SIZE.SMALL} />}
                     /> */}
+                    </SidebarMenu>
+                    <SidebarMenu
+                        title={'AFTERSALES'}
+                        bordered={checkPermission([
+                            PERMISSION_ENUM.RETURNED_PRODUCT_READ,
+                            PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ,
+                        ])}
+                    >
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                            <SidebarLink
+                                title={t('components.sidebar.links.returned_products')}
+                                routeName={`${ROUTES.RETURNED_PRODUCTS}.index`}
+                                icon={<RiLoopLeftLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ) && (
+                            <SidebarLink
+                                title={t('components.sidebar.links.requested_returns')}
+                                routeName={`${ROUTES.REQUESTED_RETURNS}.index`}
+                                icon={<RiHandHeartLine size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.REPLACEMENT_STOCK_READ) && (
+                            <SidebarLink
+                                title={t('components.sidebar.links.replacement_stocks')}
+                                routeName={`${ROUTES.REPLACEMENT_STOCKS}.index`}
+                                icon={<RiExchange2Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
                     </SidebarMenu>
                     <SidebarMenu
                         title={t('components.sidebar.menus.support')}
