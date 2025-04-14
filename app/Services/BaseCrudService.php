@@ -18,6 +18,7 @@ use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\PresetTrainsetServiceInterface;
 use App\Support\Interfaces\Services\ProductProblemNoteServiceInterface;
 use App\Support\Interfaces\Services\ProductProblemServiceInterface;
+use App\Support\Interfaces\Services\ProductRestockServiceInterface;
 use App\Support\Interfaces\Services\ProgressServiceInterface;
 use App\Support\Interfaces\Services\ProgressStepServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
@@ -241,5 +242,12 @@ abstract class BaseCrudService extends AdobrovolskyBaseCrudService {
      */
     protected function replacementStockService(): ReplacementStockServiceInterface {
         return $this->getService(ReplacementStockServiceInterface::class);
+    }
+
+    /**
+     * Get ProductRestock service instance
+     */
+    protected function productRestockService(): ProductRestockServiceInterface {
+        return $this->getService(ProductRestockServiceInterface::class);
     }
 }
