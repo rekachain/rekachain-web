@@ -3,4 +3,5 @@ export enum ReturnedProductStatusEnum {
     PROGRESS = 'progress',
     REQUESTED = 'requested',
     DONE = 'done',
+    SCRAPPED = 'scrapped',
 }
