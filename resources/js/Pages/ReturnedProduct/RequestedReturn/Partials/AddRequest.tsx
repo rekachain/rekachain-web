@@ -41,7 +41,7 @@ const AddRequest = () => {
         product_returnable_type: 'component',
         qty: 1,
         serial_number: null,
-        buyer_id: auth?.user?.id,
+        buyer_id: auth.user.id,
         status: ReturnedProductStatusEnum.REQUESTED,
     });
 

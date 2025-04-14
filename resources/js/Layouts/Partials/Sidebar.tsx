@@ -294,7 +294,10 @@ export default function Sidebar() {
                     </SidebarMenu>
                     <SidebarMenu
                         title={'AFTERSALES'}
-                        bordered={checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_READ])}
+                        bordered={checkPermission([
+                            PERMISSION_ENUM.RETURNED_PRODUCT_READ,
+                            PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ,
+                        ])}
                     >
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
                             <SidebarLink
@@ -303,7 +306,7 @@ export default function Sidebar() {
                                 icon={<RiLoopLeftLine size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
-                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ) && (
                             <SidebarLink
                                 title={t('components.sidebar.links.requested_returns')}
                                 routeName={`${ROUTES.REQUESTED_RETURNS}.index`}

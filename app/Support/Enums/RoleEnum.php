@@ -18,4 +18,5 @@ enum RoleEnum: string {
     case MANAGER_AFTERSALES = 'Manager - Aftersales';
     case SUPERVISOR_AFTERSALES = 'Supervisor - Aftersales';
     case WORKER_AFTERSALES = 'Worker - Aftersales';
+    case CUSTOMER = 'Customer';
 }

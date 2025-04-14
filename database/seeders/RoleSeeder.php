@@ -30,6 +30,7 @@ class RoleSeeder extends Seeder {
             ['name' => RoleEnum::SUPERVISOR_AFTERSALES->value, 'level' => 'Supervisor', 'division_id' => 4],
             ['name' => RoleEnum::MANAGER_AFTERSALES->value, 'level' => 'Manager', 'division_id' => 4],
             ['name' => RoleEnum::WORKER_AFTERSALES->value, 'level' => 'Worker', 'division_id' => 4],
+            ['name' => RoleEnum::CUSTOMER->value, 'level' => 'Customer'],
         ];
 
         foreach ($roles as $role) {
@@ -97,16 +98,22 @@ class RoleSeeder extends Seeder {
         Role::findMany([4, 5, 7, 8, 10, 11])->each(fn ($role) => $role->givePermissionTo($permissions));
 
         // give create and update detail-worker permissions to Supervisor Assembly, Worker Assembly, and QC Assembly
-        $permissionsAssembly = $permissionService->find([
+        $assemblyPermissions = $permissionService->find([
             ['group', 'in', ['detail-worker-panel']],
             ['name', 'regexp', '(.*)-(create|update)'],
         ]);
-        Role::findMany([6, 9, 12])->each(fn ($role) => $role->givePermissionTo($permissionsAssembly));
+        Role::findMany([6, 9, 12])->each(fn ($role) => $role->givePermissionTo($assemblyPermissions));
 
         // give all after sales permission for Aftersales
-        $permissionsAftersales = $permissionService->find([
-            ['group', 'in', ['returned-product', 'returned-product-note', 'product-problem', 'product-problem-note', 'replacement-stock']],
+        $aftersalesPermissions = $permissionService->find([
+            ['group', 'in', ['returned-product', 'returned-product-note', 'returned-product-request', 'product-problem', 'product-problem-note', 'replacement-stock']],
         ]);
-        Role::findMany([13, 14, 15])->each(fn ($role) => $role->givePermissionTo($permissionsAftersales));
+        Role::findMany([13, 14, 15])->each(fn ($role) => $role->givePermissionTo($aftersalesPermissions));
+
+        // give permissions to customer
+        $customerPermissions = $permissionService->find([
+            ['group', 'returned-product-request'],
+        ]);
+        Role::findById(16)->givePermissionTo($customerPermissions);
     }
 }

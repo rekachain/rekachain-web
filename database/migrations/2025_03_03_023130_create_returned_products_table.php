@@ -23,9 +23,7 @@ return new class extends Migration {
         });
         // reseed aftersales division, permission and role
         try {
-            Artisan::call('db:seed', ['--class' => 'DivisionSeeder', '--force' => true]);
-            Artisan::call('db:seed', ['--class' => 'PermissionSeeder', '--force' => true]);
-            Artisan::call('db:seed', ['--class' => 'RoleSeeder', '--force' => true]);
+            Artisan::call('db:seed', ['--class' => 'AftersalesSeeder', '--force' => true]);
 
             if (app()->isLocal()) {
                 Artisan::call('db:seed', ['--class' => 'ReturnedProductSeeder']);
