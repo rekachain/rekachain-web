@@ -15,4 +15,6 @@ interface ReturnedProductServiceInterface extends BaseCrudServiceInterface {
     public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool;
 
     public function createWithReturnedProductNote(array $data): ?Model;
+
+    public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool;
 }

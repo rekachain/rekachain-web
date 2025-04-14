@@ -2557,6 +2557,19 @@ return [
                     'updated' => 'Note updated successfully!',
                 ],
             ],
+            'resolve_product_problem' => [
+                'buttons' => [
+                    'resolve' => '{0} Change from Stock|{1} Scrap into Stock',
+                ],
+                'dialog' => [
+                    'title' => '{0} Change from Stock|{1} Scrap into Stock',
+                    'description' => '{0} Fix by changing the selected component from Aftersale Stock.|{1} Scrap all reusable components into Aftersale Stock.',
+                ],
+                'messages' => [
+                    'resolved' => 'Problem resolved successfully!',
+                    'scrapped' => 'Component scraped successfully!',
+                ],
+            ],
             'partials' => [
                 'returned_product_table' => [
                     'headers' => [
@@ -2616,6 +2629,109 @@ return [
                     ],
                     'messages' => [
                         'created' => 'Request created successfully!',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'replacement_stock' => [
+        'index' => [
+            'title' => 'Spare Part Stocks',
+            'buttons' => [
+                'create' => 'Create Stock',
+            ],
+        ],
+        'create' => [
+            'title' => 'Create Stock',
+            'fields' => [
+                'component_name' => 'Component Name',
+                'threshold' => 'Threshold',
+                'qty' => 'Quantity',
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Create Stock',
+            ],
+            'messages' => [
+                'created' => 'Stock created successfully!',
+            ],
+        ],
+        'edit' => [
+            'title' => 'Edit Stock: :name',
+            'fields' => [
+                'type' => 'Type',
+                'description' => 'Description',
+            ],
+            'buttons' => [
+                'submit' => 'Update Stock',
+            ],
+            'messages' => [
+                'updated' => 'Stock updated successfully!',
+            ],
+        ],
+        'partials' => [
+            'replacement_stocks' => [
+                'messages' => [
+                    'deleted' => 'Stock deleted successfully!',
+                ],
+            ],
+            'import' => [
+                'messages' => [
+                    'imported' => 'Stock imported successfully!',
+                ],
+                'dialogs' => [
+                    'title' => 'Import Stock',
+                    'description' => 'Import Stock from Excel file',
+                    'fields' => [
+                        'download_template' => 'Download Template',
+                        'file' => 'File',
+                    ],
+                    'buttons' => [
+                        'import' => 'Import Stock',
+                        'download_template' => 'Download',
+                        'submit' => 'Import Stock',
+                        'processing' => 'Processing...',
+                    ],
+                    'messages' => [
+                        'imported' => 'Stock imported successfully!',
+                    ],
+                ],
+                'buttons' => [
+                    'import' => 'Import Stock',
+                ],
+            ],
+            'add_stock' => [
+                'title' => '{0}Create Stock|{1}Edit Stock',
+                'fields' => [
+                    'component_name' => 'Component Name',
+                    'threshold' => 'Threshold',
+                    'qty' => 'Quantity',
+                    'type' => 'Type',
+                    'description' => 'Description',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Create Stock|{1}Edit Stock',
+                ],
+                'messages' => [
+                    'created' => 'Stock created successfully!',
+                ],
+            ],
+            'partials' => [
+                'replacement_stock_table' => [
+                    'headers' => [
+                        'component_name' => 'Component Name',
+                        'component_description' => 'Description',
+                        'threshold' => 'Threshold',
+                        'qty' => 'Quantity',
+                    ],
+                ],
+                'replacement_stock_card' => [
+                    'headers' => [
+                        'component_name' => 'Component: :component_name',
+                        'component_description' => 'Description: :component_description',
+                        'threshold' => 'Threshold: :threshold',
+                        'qty' => 'Quantity: :qty',
                     ],
                 ],
             ],

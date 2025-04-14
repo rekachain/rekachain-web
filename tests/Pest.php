@@ -1,12 +1,13 @@
 <?php
 
 use App\Support\Enums\RoleEnum;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Pest\PendingCalls\TestCall;
 use Tests\TestCase;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Permission;
 use App\Support\Enums\PermissionEnum;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 |
 */
 
-uses(TestCase::class, RefreshDatabase::class)->in('Feature');
+uses(TestCase::class, DatabaseTransactions::class)->in('Feature');
 // uses(TestCase::class)->in('Feature');
 
 // Allow File facade to be loaded
@@ -51,7 +52,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function actAsSuperAdmin(): TestCase {
+function actAsSuperAdmin(): TestCall|TestCase {
     $role = Role::firstOrCreate(['name' => 'Super Admin']);
     $user = User::factory(['name' => 'Super Admin'])->create();
     $user->assignRole($role);
@@ -59,7 +60,7 @@ function actAsSuperAdmin(): TestCase {
     return test()->actingAs($user);
 }
 
-function actAsPpcPerencanaan(): TestCase {
+function actAsPpcPerencanaan(): TestCall|TestCase {
     $permissions = [
         PermissionEnum::USER_CREATE->value,
         PermissionEnum::USER_READ->value,
@@ -75,7 +76,7 @@ function actAsPpcPerencanaan(): TestCase {
     return test()->actingAs($user);
 }
 
-function actAsPpcPengendalian(): TestCase {
+function actAsPpcPengendalian(): TestCall|TestCase {
     $role = Role::firstOrCreate(['name' => 'PPC Pengendalian']);
     $user = User::factory(['name' => 'PPC Pengendalian'])->create();
     $user->assignRole($role);
@@ -83,7 +84,7 @@ function actAsPpcPengendalian(): TestCase {
     return test()->actingAs($user);
 }
 
-function actAsWorkerAftersales(): TestCase {
+function actAsWorkerAftersales(): TestCall|TestCase {
     $role = Role::firstOrCreate(['name' => RoleEnum::WORKER_AFTERSALES->value]);
     $user = User::factory(['name' => 'Aftersales'])->create();
     $user->assignRole($role);
@@ -91,7 +92,7 @@ function actAsWorkerAftersales(): TestCase {
     return test()->actingAs($user);
 }
 
-function actAsBuyer(): TestCase {
+function actAsBuyer(): TestCall|TestCase {
     $user = User::factory(['name' => 'Buyer I'])->create();
 
     return test()->actingAs($user);

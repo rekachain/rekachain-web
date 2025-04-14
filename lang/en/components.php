@@ -55,6 +55,9 @@ return [
             'settings' => 'Settings',
             'feedback' => 'Feedback',
             'helpdesk' => 'Helpdesk',
+            'returned_products' => 'Returned Products',
+            'requested_returns' => 'Requested Returns',
+            'replacement_stocks' => 'Spare Part Stocks',
         ],
     ],
     'sidebar_logout' => [

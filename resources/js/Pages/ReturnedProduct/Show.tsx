@@ -27,6 +27,7 @@ import { returnedProductNoteService } from '@/Services/returnedProductNoteServic
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
@@ -42,6 +43,7 @@ import { useEffect, useState } from 'react';
 import AddProductProblem from './Partials/AddProductProblem';
 import AddReturnedProductNote from './Partials/AddReturnedProductNote';
 import ProductProblemImport from './Partials/ProductProblemImport';
+import ResolveProductProblem from './Partials/ResolveProductProblem';
 import UpdateProductProblemStatus from './Partials/UpdateProductProblemStatus';
 
 export default function ({ data }: { data: ReturnedProductResource }) {
@@ -278,9 +280,31 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         componentResource={componentResource}
                                     />
                                 )}
-                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) && (
-                                <ProductProblemImport returnedProductId={data.id} />
-                            )}
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_IMPORT) &&
+                                componentResource && (
+                                    <ProductProblemImport returnedProductId={data.id} />
+                                )}
+                            {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_UPDATE) &&
+                                componentResource &&
+                                (data.status === ReturnedProductStatusEnum.PROGRESS ||
+                                    data.status === ReturnedProductStatusEnum.DRAFT) && (
+                                    <>
+                                        {data.product_returnable_type === 'App\\Models\\Panel' && (
+                                            <ResolveProductProblem
+                                                returnedProduct={data}
+                                                isScrapping={true}
+                                                handleSyncReturnedProduct={
+                                                    handleSyncReturnedProduct
+                                                }
+                                            />
+                                        )}
+                                        <ResolveProductProblem
+                                            returnedProduct={data}
+                                            isScrapping={false}
+                                            handleSyncReturnedProduct={handleSyncReturnedProduct}
+                                        />
+                                    </>
+                                )}
                         </div>
                         <div className='hidden md:block'>
                             <Table wrapperClassName='block max-h-96'>

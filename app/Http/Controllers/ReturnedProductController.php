@@ -58,11 +58,19 @@ class ReturnedProductController extends Controller {
     }
 
     public function show(ReturnedProduct $returnedProduct) {
-        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'product_problems.component', 'returned_product_notes.user']));
+        $intent = request()->get('intent');
 
         if ($this->ajax()) {
-            return $data;
+            switch ($intent) {
+                case IntentEnum::WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS->value:
+                    return ReturnedProductResource::make($returnedProduct);
+                case IntentEnum::WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS->value:
+                    return ReturnedProductResource::make($returnedProduct);
+            }
+
+            return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'product_problems.component', 'returned_product_notes.user']));
         }
+        $data = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'product_problems.component', 'returned_product_notes.user']));
 
         return inertia('ReturnedProduct/Show', compact('data'));
     }
@@ -81,6 +89,10 @@ class ReturnedProductController extends Controller {
                     return $this->returnedProductService->addProductProblem($returnedProduct, $request->validated());
                 case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                     return $this->returnedProductService->importProductProblemData($returnedProduct, $request->file('import_file'));
+                case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK->value:
+                    return $this->returnedProductService->updateReplacementStocks($returnedProduct, $request->validated());
+                case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP->value:
+                    return $this->returnedProductService->updateReplacementStocks($returnedProduct, $request->validated(), true);
             }
             $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
 

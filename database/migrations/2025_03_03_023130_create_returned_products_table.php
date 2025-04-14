@@ -22,11 +22,18 @@ return new class extends Migration {
             $table->timestamps();
         });
         // reseed aftersales division, permission and role
-        Artisan::call('db:seed', ['--class' => 'DivisionSeeder']);
-        Artisan::call('db:seed', ['--class' => 'PermissionSeeder']);
-        Artisan::call('db:seed', ['--class' => 'RoleSeeder']);
-        if (app()->isLocal()) {
-            Artisan::call('db:seed', ['--class' => 'ReturnedProductSeeder']);
+        try {
+            Artisan::call('db:seed', ['--class' => 'DivisionSeeder', '--force' => true]);
+            Artisan::call('db:seed', ['--class' => 'PermissionSeeder', '--force' => true]);
+            Artisan::call('db:seed', ['--class' => 'RoleSeeder', '--force' => true]);
+
+            if (app()->isLocal()) {
+                Artisan::call('db:seed', ['--class' => 'ReturnedProductSeeder']);
+                Log::info('ReturnedProductSeeder executed successfully.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Error while running seeders: ' . $e->getMessage());
+            throw $e;
         }
     }
 
