@@ -192,7 +192,8 @@ enum PermissionEnum: string {
     case RETURNED_PRODUCT_UPDATE = 'returned-product-update';
     case RETURNED_PRODUCT_DELETE = 'returned-product-delete';
     case RETURNED_PRODUCT_IMPORT = 'returned-product-import';
-
+    case RETURNED_PRODUCT_REQUEST_READ = 'returned-product-request-read';
+    
     case RETURNED_PRODUCT_NOTE_CREATE = 'returned-product-note-create';
     case RETURNED_PRODUCT_NOTE_READ = 'returned-product-note-read';
     case RETURNED_PRODUCT_NOTE_UPDATE = 'returned-product-note-update';
