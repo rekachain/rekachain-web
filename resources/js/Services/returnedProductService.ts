@@ -1,7 +1,8 @@
 import { serviceFactory } from '@/Services/serviceFactory';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { ReturnedProductResource } from '@/Support/Interfaces/Resources';
+import { PaginateResponse } from '@/Support/Interfaces/Others';
+import { ComponentResource, ReturnedProductResource } from '@/Support/Interfaces/Resources';
 
 export const returnedProductService = {
     ...serviceFactory<ReturnedProductResource>(ROUTES.RETURNED_PRODUCTS),
@@ -65,6 +66,43 @@ export const returnedProductService = {
                 params: {
                     _method: 'PUT',
                     intent: IntentEnum.WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM,
+                },
+            },
+        );
+    },
+    getComponents: async (
+        returnedProductId: number,
+        isScrapping: boolean,
+    ): Promise<PaginateResponse<ComponentResource>> => {
+        return await window.axios.get(
+            route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProductId),
+            {
+                params: {
+                    intent: isScrapping
+                        ? IntentEnum.WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS
+                        : IntentEnum.WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS,
+                },
+            },
+        );
+    },
+    scrapStocks: async (returnedProductId: number, data: any) => {
+        return await window.axios.put(
+            route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
+            data,
+            {
+                params: {
+                    intent: IntentEnum.WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP,
+                },
+            },
+        );
+    },
+    retrieveStocks: async (returnedProductId: number, data: any) => {
+        return await window.axios.put(
+            route(`${ROUTES.RETURNED_PRODUCTS}.update`, returnedProductId),
+            data,
+            {
+                params: {
+                    intent: IntentEnum.WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK,
                 },
             },
         );

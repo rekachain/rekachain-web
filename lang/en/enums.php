@@ -38,6 +38,7 @@ return [
         'draft' => 'Draft',
         'progress' => 'In Progress',
         'done' => 'Done',
+        'scrapped' => 'Scrapped',
     ],
     'App\Support\Enums\ProductProblemStatusEnum' => [
         'fixed' => 'Fixed',

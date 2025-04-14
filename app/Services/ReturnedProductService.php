@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Imports\ReturnedProduct\ReturnedProductImport;
 use App\Models\Component;
+use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Traits\Services\HandlesImages;
@@ -90,5 +92,22 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         ]);
 
         return $returnedProduct;
+    }
+
+    public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool {
+        $replacementStocks = $this->replacementStockService()->find([
+            'component_id', 'in', $data['component_ids'],
+        ]);
+        $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($replacementStocks, $isIncrement) {
+            $this->replacementStockService()->update($stock, [
+                'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
+            ]);
+        });
+        if ($isIncrement) {
+            $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
+            $returnedProduct->save();
+        }
+
+        return true;
     }
 }

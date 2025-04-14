@@ -54,7 +54,10 @@ return [
             'carriages' => 'Daftar Gerbong',
             'settings' => 'Pengaturan',
             'feedback' => 'Umpan Balik',
-            'helpdesk' => 'Helpdesk',
+            'helpdesk' => 'Pusat Bantuan',
+            'returned_products' => 'Produk Retur',
+            'requested_returns' => 'Komplain Retur',
+            'replacement_stocks' => 'Stok Suku Cadang',
         ],
     ],
     'sidebar_logout' => [

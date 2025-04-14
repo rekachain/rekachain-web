@@ -26,6 +26,14 @@ class UpdateReturnedProductRequest extends FormRequest {
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
+            case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK->value:
+                return [
+                    'component_ids' => 'required|array|exists:replacement_stocks,component_id',
+                ];
+            case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP->value:
+                return [
+                    'component_ids' => 'required|array|exists:replacement_stocks,component_id',
+                ];
         }
 
         return [

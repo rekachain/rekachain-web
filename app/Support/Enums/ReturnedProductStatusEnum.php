@@ -12,4 +12,5 @@ enum ReturnedProductStatusEnum: string {
     case DRAFT = 'draft';
     case PROGRESS = 'progress';
     case DONE = 'done';
+    case SCRAPPED = 'scrapped';
 }

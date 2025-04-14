@@ -26,6 +26,7 @@ use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RawMaterialController;
+use App\Http\Controllers\ReplacementStockController;
 use App\Http\Controllers\ReturnedProductController;
 use App\Http\Controllers\ReturnedProductNoteController;
 use App\Http\Controllers\RoleController;
@@ -111,6 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('returned-product-notes', ReturnedProductNoteController::class);
     Route::resource('product-problems', ProductProblemController::class);
     Route::resource('product-problem-notes', ProductProblemNoteController::class);
+    Route::resource('replacement-stocks', ReplacementStockController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 
