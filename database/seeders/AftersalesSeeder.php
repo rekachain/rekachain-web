@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Division;
 use App\Models\Role;
-use App\Models\User;
 use App\Support\Enums\RoleEnum;
-use Illuminate\Database\Seeder;
 use App\Support\Interfaces\Services\PermissionServiceInterface;
+use Illuminate\Database\Seeder;
 
 class AftersalesSeeder extends Seeder {
     /**

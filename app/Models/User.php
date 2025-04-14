@@ -153,7 +153,7 @@ class User extends Authenticatable {
     public function projects(): HasMany {
         return $this->hasMany(Project::class, 'buyer_id');
     }
-    
+
     public function hasProject(): bool {
         return $this->projects()->exists();
     }
