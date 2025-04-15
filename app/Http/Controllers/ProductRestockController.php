@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRestock\StoreProductRestockRequest;
 use App\Http\Requests\ProductRestock\UpdateProductRestockRequest;
 use App\Http\Resources\ProductRestockResource;
 use App\Models\ProductRestock;
+use App\Support\Enums\IntentEnum;
 use App\Support\Interfaces\Services\ProductRestockServiceInterface;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,12 @@ class ProductRestockController extends Controller {
     }
 
     public function store(StoreProductRestockRequest $request) {
+        $intent = $request->get('intent');
         if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::WEB_PRODUCT_RESTOCK_INITIATE_PROJECT->value:
+                    return $this->productRestockService->initiateRestockProject($request->validated());
+            }
             $productRestock = $this->productRestockService->create($request->validated());
             return ProductRestockResource::make($productRestock->load(['product_restockable', 'returned_product.buyer', 'project']));
         }

@@ -344,5 +344,7 @@ enum IntentEnum: string {
 
     case WEB_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE = 'web.product.problem.update.product.problem.with.note';
 
+    case WEB_PRODUCT_RESTOCK_INITIATE_PROJECT = 'web.product.restock.initiate.project';
+
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
 }
