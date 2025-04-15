@@ -6,6 +6,7 @@ use App\Imports\ReturnedProduct\ReturnedProductImport;
 use App\Models\Component;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\ProductRestockStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
@@ -104,6 +105,14 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
             ]);
         });
         if ($isIncrement) {
+            if (isset($data['req_production']) && $data['req_production']) {
+                $this->productRestockService()->create([
+                    'returned_product_id' => $returnedProduct->id,
+                    'product_restockable_id' => $returnedProduct->product_returnable_id,
+                    'product_restockable_type' => $returnedProduct->product_returnable_type,
+                    'status' => ProductRestockStatusEnum::REQUESTED->value,
+                ]);
+            } 
             $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
             $returnedProduct->save();
         }
