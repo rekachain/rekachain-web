@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm 
 
 # Instal dependensi PHP & Node.js
 RUN apt-get update && apt-get install -y \
@@ -54,3 +54,5 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chown -R www-data:www-data ./storage
 
 EXPOSE 8000 5173
+
+CMD ["php-fpm"]
