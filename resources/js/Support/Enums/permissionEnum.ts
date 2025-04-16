@@ -179,4 +179,9 @@ export enum PERMISSION_ENUM {
     REPLACEMENT_STOCK_UPDATE = 'replacement-stock-update',
     REPLACEMENT_STOCK_DELETE = 'replacement-stock-delete',
     REPLACEMENT_STOCK_IMPORT = 'replacement-stock-import',
+    PRODUCT_RESTOCK_CREATE = 'product-restock-create',
+    PRODUCT_RESTOCK_READ = 'product-restock-read',
+    PRODUCT_RESTOCK_UPDATE = 'product-restock-update',
+    PRODUCT_RESTOCK_DELETE = 'product-restock-delete',
+    PRODUCT_RESTOCK_IMPORT = 'product-restock-import',
 }

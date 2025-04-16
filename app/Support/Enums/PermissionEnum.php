@@ -204,7 +204,7 @@ enum PermissionEnum: string {
     case PRODUCT_PROBLEM_UPDATE = 'product-problem-update';
     case PRODUCT_PROBLEM_DELETE = 'product-problem-delete';
     case PRODUCT_PROBLEM_IMPORT = 'product-problem-import';
-
+    
     case PRODUCT_PROBLEM_NOTE_CREATE = 'product-problem-note-create';
     case PRODUCT_PROBLEM_NOTE_READ = 'product-problem-note-read';
     case PRODUCT_PROBLEM_NOTE_UPDATE = 'product-problem-note-update';
@@ -215,6 +215,12 @@ enum PermissionEnum: string {
     case REPLACEMENT_STOCK_UPDATE = 'replacement-stock-update';
     case REPLACEMENT_STOCK_DELETE = 'replacement-stock-delete';
     case REPLACEMENT_STOCK_IMPORT = 'replacement-stock-import';
+
+    case PRODUCT_RESTOCK_CREATE = 'product-restock-create';
+    case PRODUCT_RESTOCK_READ = 'product-restock-read';
+    case PRODUCT_RESTOCK_UPDATE = 'product-restock-update';
+    case PRODUCT_RESTOCK_DELETE = 'product-restock-delete';
+    case PRODUCT_RESTOCK_IMPORT = 'product-restock-import';
 
     /**
      * [Deprecated] Group permissions by first word.
