@@ -17,10 +17,10 @@ class ProductRestockController extends Controller {
         $perPage = $request->get('perPage', 10);
 
         if ($this->ajax()) {
-            return ProductRestockResource::collection($this->productRestockService->with(['product_restockable'])->getAllPaginated($request->query(), $perPage));
+            return ProductRestockResource::collection($this->productRestockService->with(['product_restockable', 'returned_product.buyer'])->getAllPaginated($request->query(), $perPage));
         }
 
-        return inertia('ReturnedProduct/Index');
+        return inertia('ProductRestock/Index');
     }
 
     public function create() {

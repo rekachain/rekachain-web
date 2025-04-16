@@ -12,7 +12,7 @@ class ProductRestockResource extends JsonResource {
             'returned_product' => ReturnedProductResource::make($this->whenLoaded('returned_product')),
             'product_restockable_id' => $this->product_restockable_id,
             'product_restockable_type' => $this->product_restockable_type,
-            'product_restock' => $this->whenLoaded('product_restockable'),
+            'product_restockable' => $this->whenLoaded('product_restockable'),
             'project_id' => $this->project_id,
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'status' => $this->status,
