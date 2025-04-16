@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Panel;
 use App\Support\Interfaces\Repositories\ProductRestockRepositoryInterface;
 use App\Support\Interfaces\Services\ProductRestockServiceInterface;
 
@@ -18,7 +19,9 @@ class ProductRestockService extends BaseCrudService implements ProductRestockSer
      *     'project_description' => string,
      *     'project_initial_date' => string,
      *     'panel_ids' => array,
-     *     'panel_qtys' => array
+     *     'panel_qtys' => array,
+     *     'component_ids' => array,
+     *     'component_qtys' => array
      * ]
      * @return bool
      */
@@ -58,6 +61,25 @@ class ProductRestockService extends BaseCrudService implements ProductRestockSer
                 }
             }
 
+        }
+        $carriagePanel = $carriageTrainset->carriage_panels()->create([
+            'panel_id' => Panel::firstOrCreate([
+                'name' => 'Custom',
+            ], [
+                'description' => 'Untuk panel tanpa awakan atau untuk identitas kumpulan komponen selain rakitan.',
+            ])->id,
+            'qty' => 1,
+        ]);
+        
+        foreach ($data['component_ids'] as $key => $componentId) {
+            $component = $this->componentService()->findOrFail($componentId);
+            $componentQty = $data['component_qtys'][$key];
+
+            $carriagePanel->carriage_panel_components()->create([
+                'component_id' => $component->id,
+                'progress_id' => $component->progress_id,
+                'qty' => $componentQty,
+            ]);
         }
 
         return true;
