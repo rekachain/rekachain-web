@@ -99,10 +99,18 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $replacementStocks = $this->replacementStockService()->find([
             'component_id', 'in', $data['component_ids'],
         ]);
-        $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($replacementStocks, $isIncrement) {
+        $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($returnedProduct, $replacementStocks, $isIncrement) {
             $this->replacementStockService()->update($stock, [
                 'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
             ]);
+            if ($stock->qty <= $stock->threshold) {
+                $this->productRestockService()->create([
+                    'returned_product_id' => $returnedProduct->id,
+                    'product_restockable_id' => $returnedProduct->product_returnable_id,
+                    'product_restockable_type' => $returnedProduct->product_returnable_type,
+                    'status' => ProductRestockStatusEnum::REQUESTED->value,
+                ]);
+            }
         });
         if ($isIncrement) {
             if (isset($data['req_production']) && $data['req_production']) {
@@ -112,7 +120,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
                     'product_restockable_type' => $returnedProduct->product_returnable_type,
                     'status' => ProductRestockStatusEnum::REQUESTED->value,
                 ]);
-            } 
+            }
             $returnedProduct->status = ReturnedProductStatusEnum::SCRAPPED;
             $returnedProduct->save();
         }
