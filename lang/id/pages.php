@@ -2744,6 +2744,8 @@ return [
             'title' => 'Permintaan Restok Produk',
             'buttons' => [
                 'create' => 'Buat Permintaan',
+                'initiate_selection' => 'Buat Proyek',
+                'cancel_initiation' => 'Batalkan Pemilihan',
             ],
         ],
         'partials' => [

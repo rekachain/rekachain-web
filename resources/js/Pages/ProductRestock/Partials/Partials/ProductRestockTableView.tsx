@@ -1,4 +1,5 @@
 import { Button, buttonVariants } from '@/Components/UI/button';
+import { Checkbox } from '@/Components/UI/checkbox';
 import {
     Table,
     TableBody,
@@ -18,9 +19,15 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 export default function ProductRestockTableView({
     productRestockResponse,
     handleProductRestockDeletion,
+    isSelecting,
+    selectedIds,
+    handleSelectionChange,
 }: {
     productRestockResponse: PaginateResponse<ProductRestockResource>;
     handleProductRestockDeletion: (id: number) => void;
+    isSelecting: boolean;
+    selectedIds: number[];
+    handleSelectionChange: (selectedId: number) => void;
 }) {
     const { t } = useLaravelReactI18n();
     return (
@@ -28,6 +35,7 @@ export default function ProductRestockTableView({
             <Table>
                 <TableHeader>
                     <TableRow>
+                        {isSelecting && <TableHead></TableHead>}
                         <TableHead>
                             {t(
                                 'pages.product_restock.partials.partials.product_restock_table.headers.buyer',
@@ -64,6 +72,11 @@ export default function ProductRestockTableView({
                 <TableBody>
                     {productRestockResponse?.data.map((productRestock) => (
                         <TableRow key={productRestock.id}>
+                            {isSelecting && (
+                                <TableCell>
+                                    <Checkbox onCheckedChange={() => handleSelectionChange(productRestock.id)} checked={selectedIds.includes(productRestock.id)}></Checkbox>
+                                </TableCell>
+                            )}
                             <TableCell>{productRestock.returned_product?.buyer?.name ?? '-'}</TableCell>
                             <TableCell>{productRestock.returned_product?.serial_number}</TableCell>
                             <TableCell>{productRestock.product_restockable?.name}</TableCell>

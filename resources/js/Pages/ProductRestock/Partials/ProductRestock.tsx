@@ -11,7 +11,15 @@ import ProductRestockCardView from './Partials/ProductRestockCardView';
 import ProductRestockTableView from './Partials/ProductRestockTableView';
 import { productRestockService } from '@/Services/productRestockService';
 
-export default function () {
+export default function ({
+    isSelecting,
+    selectedIds,
+    handleSelectionChange,
+} : {
+    isSelecting: boolean;
+    selectedIds: number[];
+    handleSelectionChange: (selectedId: number) => void;
+}) {
     const { t } = useLaravelReactI18n();
     const [productRestockResponse, setProductRestockResponse] =
         useState<PaginateResponse<ProductRestockResource>>();
@@ -52,6 +60,9 @@ export default function () {
                         <ProductRestockTableView
                             productRestockResponse={productRestockResponse}
                             handleProductRestockDeletion={handleProductRestockDeletion}
+                            isSelecting={isSelecting}
+                            selectedIds={selectedIds}
+                            handleSelectionChange={handleSelectionChange}
                         />
                     </div>
 

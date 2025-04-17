@@ -2744,6 +2744,8 @@ return [
             'title' => 'Product Re-Stocks Requests',
             'buttons' => [
                 'create' => 'Create Request',
+                'initiate_selection' => 'Make Project',
+                'cancel_initiation' => 'Cancel Selection',
             ],
         ],
         'partials' => [
