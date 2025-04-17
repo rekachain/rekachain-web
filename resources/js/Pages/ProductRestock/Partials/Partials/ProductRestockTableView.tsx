@@ -30,32 +30,32 @@ export default function ProductRestockTableView({
                     <TableRow>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.buyer',
+                                'pages.product_restock.partials.partials.product_restock_table.headers.buyer',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.serial_number',
+                                'pages.product_restock.partials.partials.product_restock_table.headers.serial_number',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.name',
+                                'pages.product_restock.partials.partials.product_restock_table.headers.name',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.description',
+                                'pages.product_restock.partials.partials.product_restock_table.headers.description',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.type',
+                                'pages.product_restock.partials.partials.product_restock_table.headers.type',
                             )}
                         </TableHead>
                         <TableHead>
                             {t(
-                                'pages.returned_product.partials.partials.returned_product_table.headers.status',
+                                'pages.product_restock.partials.partials.product_restock_table.headers.status',
                             )}
                         </TableHead>
                         <TableHead></TableHead>

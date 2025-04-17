@@ -2737,4 +2737,65 @@ return [
             ],
         ],
     ],
+    'product_restock' => [
+        'index' => [
+            'title' => 'Permintaan Restok Produk',
+            'buttons' => [
+                'create' => 'Buat Permintaan',
+            ],
+        ],
+        'partials' => [
+            'product_restocks' => [
+                'messages' => [
+                    'deleted' => 'Permintaan berhasil dihapus!',
+                ],
+            ],
+            'add_stock' => [
+                'title' => '{0}Buat Stok|{1}Ubah Stok',
+                'fields' => [
+                    'component_name' => 'Nama Komponen',
+                    'threshold' => 'Batas Restok',
+                    'qty' => 'Jumlah',
+                    'type' => 'Tipe',
+                    'description' => 'Deskripsi',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Buat Stok|{1}Ubah Stok',
+                ],
+                'messages' => [
+                    'created' => 'Stok berhasil dibuat!',
+                ],
+            ],
+            'partials' => [
+                'product_restock_table' => [
+                    'headers' => [
+                        'buyer' => 'Pelanggan',
+                        'serial_number' => 'Nomor Seri',
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                        'updated_at' => 'Diperbarui Pada',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Komponen',
+                        ],
+                    ],
+                ],
+                'product_restock_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'serial_number' => 'Nomor Seri',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe: :type',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

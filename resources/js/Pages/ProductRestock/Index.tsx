@@ -13,19 +13,19 @@ export default function () {
     const ProductRestocks = lazy(() => import('./Partials/ProductRestock'));
     return (
         <>
-            <Head title={t('pages.returned_product.index.title')} />
+            <Head title={t('pages.product_restock.index.title')} />
             <AuthenticatedLayout>
                 <div className='p-4'>
                     <div className='flex items-center gap-5'>
                         <h1 className='text-page-header my-4'>
-                            {t('pages.returned_product.index.title')}
+                            {t('pages.product_restock.index.title')}
                         </h1>
-                        {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_CREATE) && (
+                        {checkPermission(PERMISSION_ENUM.PRODUCT_RESTOCK_CREATE) && (
                             <Link
-                                href={route(`${ROUTES.RETURNED_PRODUCTS}.create`)}
+                                href={route(`${ROUTES.PRODUCT_RESTOCKS}.create`)}
                                 className={buttonVariants({ variant: 'default' })}
                             >
-                                {t('pages.returned_product.index.buttons.create')}
+                                {t('pages.product_restock.index.buttons.create')}
                             </Link>
                         )}
                     </div>

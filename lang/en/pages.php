@@ -2737,4 +2737,65 @@ return [
             ],
         ],
     ],
+    'product_restock' => [
+        'index' => [
+            'title' => 'Product Re-Stocks Requests',
+            'buttons' => [
+                'create' => 'Create Request',
+            ],
+        ],
+        'partials' => [
+            'product_restocks' => [
+                'messages' => [
+                    'deleted' => 'Request deleted successfully!',
+                ],
+            ],
+            'add_stock' => [
+                'title' => '{0}Create Stock|{1}Edit Stock',
+                'fields' => [
+                    'component_name' => 'Component Name',
+                    'threshold' => 'Threshold',
+                    'qty' => 'Quantity',
+                    'type' => 'Type',
+                    'description' => 'Description',
+                ],
+                'buttons' => [
+                    'submit' => '{0}Create Stock|{1}Edit Stock',
+                ],
+                'messages' => [
+                    'created' => 'Stock created successfully!',
+                ],
+            ],
+            'partials' => [
+                'product_restock_table' => [
+                    'headers' => [
+                        'buyer' => 'Customer',
+                        'serial_number' => 'Serial Number',
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'status' => 'Status',
+                        'created_at' => 'Requested At',
+                        'updated_at' => 'Updated At',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Component',
+                        ],
+                    ],
+                ],
+                'product_restock_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'serial_number' => 'Serial Number',
+                        'description' => 'Description',
+                        'type' => 'Type: :type',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];
