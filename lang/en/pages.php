@@ -2564,6 +2564,8 @@ return [
                 'dialog' => [
                     'title' => '{0} Change from Stock|{1} Scrap into Stock',
                     'description' => '{0} Fix by changing the selected component from Aftersale Stock.|{1} Scrap all reusable components into Aftersale Stock.',
+                    'req_production' => 'Need Re-Production',
+                    'req_production_description' => 'Check this if the component needs re-production.',
                 ],
                 'messages' => [
                     'resolved' => 'Problem resolved successfully!',
