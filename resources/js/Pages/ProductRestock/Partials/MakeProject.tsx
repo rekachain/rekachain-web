@@ -27,22 +27,21 @@ export default function ({
     const { t } = useLaravelReactI18n();
 
     const { data, setData } = useForm<{
-        name: string;
-        description: string | null;
-        initial_date: string;
+        project_name: string;
+        project_description: string | null;
+        project_initial_date: string;
     }>({
-        name: '',
-        description: '',
-        initial_date: '',
+        project_name: '',
+        project_description: '',
+        project_initial_date: '',
     });
 
     const { loading } = useLoading();
 
     const handleSendData = withLoading(async (event: FormEvent<HTMLFormElement>) => {
+        console.log('data', data);
         event.preventDefault();
-        handleInitiateProject(data);
-        router.visit(route(`${ROUTES.PRODUCT_RESTOCKS}.index`));
-        void useSuccessToast(t('pages.product_restock.partials.make_project.messages.initiated'));
+        await handleInitiateProject(data);
     });
 
     return (
@@ -63,51 +62,51 @@ export default function ({
                 </DialogHeader>
                 <form onSubmit={handleSendData} id='project-restock-form' encType='multipart/form-data' className='hidden'></form>
                 <div>
-                    <InputLabel value={t('pages.product_restock.partials.make_project.dialogs.fields.project_name')} htmlFor='name' />
+                    <InputLabel value={t('pages.product_restock.partials.make_project.dialogs.fields.project_name')} htmlFor='project_name' />
                     <Input
-                        value={data.name}
+                        value={data.project_name}
                         type='text'
                         required
-                        onChange={(e) => setData('name', e.target.value)}
-                        name='name'
-                        id='name'
+                        onChange={(e) => setData('project_name', e.target.value)}
+                        name='project_name'
+                        id='project_name'
                         className='mt-1'
-                        autoComplete='name'
+                        autoComplete='project_name'
                     />
                 </div>
 
                 <div>
                     <InputLabel
                         value={t('pages.product_restock.partials.make_project.dialogs.fields.project_description')}
-                        htmlFor='description'
+                        htmlFor='project_description'
                     />
                     <Textarea
-                        value={data.description || ''}
-                        onChange={(e) => setData('description', e.target.value)}
-                        name='description'
-                        id='description'
+                        value={data.project_description || ''}
+                        onChange={(e) => setData('project_description', e.target.value)}
+                        name='project_description'
+                        id='project_description'
                         className='mt-1'
-                        autoComplete='description'
+                        autoComplete='project_description'
                     />
                 </div>
                 <div>
                     <InputLabel
                         value={t('pages.product_restock.partials.make_project.dialogs.fields.project_initial_date')}
-                        htmlFor='initial_date'
+                        htmlFor='project_initial_date'
                     />
                     <Input
-                        value={data.initial_date}
+                        value={data.project_initial_date}
                         type='date'
                         required
-                        onChange={(e) => setData('initial_date', e.target.value)}
-                        name='initial_date'
-                        id='initial_date'
+                        onChange={(e) => setData('project_initial_date', e.target.value)}
+                        name='project_initial_date'
+                        id='project_initial_date'
                         className='mt-1'
-                        autoComplete='initial_date'
+                        autoComplete='project_initial_date'
                     />
                 </div>
                 <DialogFooter>
-                    <Button type='submit' disabled={loading}>
+                    <Button type='submit' disabled={loading} form='project-restock-form'>
                         {loading
                             ? t('action.loading')
                             : t(
