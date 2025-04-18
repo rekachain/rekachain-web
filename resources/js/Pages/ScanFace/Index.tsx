@@ -10,7 +10,7 @@ interface Step {
 
 interface User {
     id: number;
-    nip : string;
+    nip: string;
     name: string;
     email: string;
     step: Step;
@@ -60,8 +60,8 @@ const Index: React.FC<Props> = ({ data }) => {
                             <td className='px-4 py-2'>{scan.user.role_name}</td>
                             <td className='px-4 py-2'>
                                 <img
-                                    src={`/result-scan-faces/${scan.image_path}`}
-                                    // alt={`Image of user ${scan.user_id}`}
+                                    src={`/result_scan_faces/${scan.image_path}`}
+                                    alt={`Image of user ${scan.user_id}`}
                                     width='100'
                                     className='object-cover'
                                 />
