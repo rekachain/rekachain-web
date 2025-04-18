@@ -15,7 +15,7 @@ class StoreProductRestockRequest extends FormRequest {
             case IntentEnum::WEB_PRODUCT_RESTOCK_INITIATE_PROJECT->value:
                 return [
                     'project_name' => 'required|string|max:255',
-                    'project_description' => 'required|string|max:255',
+                    'project_description' => 'nullable|string|max:255',
                     'project_initial_date' => 'required|date',
                     'product_restock_ids' => 'required|array|exists:product_restocks,id',
                 ];
