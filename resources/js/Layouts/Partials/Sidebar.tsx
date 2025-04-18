@@ -8,9 +8,9 @@ import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { SIDEBAR_GROUP_ENUM } from '@/Support/Enums/sidebarGroupEnum';
 import {
     RiArtboard2Fill,
-    RiBillLine,
     RiBox3Line,
     RiCalendar2Line,
+    RiCalendarTodoFill,
     RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
@@ -325,9 +325,9 @@ export default function Sidebar() {
                         )}
                         {checkPermission(PERMISSION_ENUM.PRODUCT_RESTOCK_READ) && (
                             <SidebarLink
-                                title={t('components.sidebar.links.replacement_stocks')}
+                                title={t('components.sidebar.links.product_restocks')}
                                 routeName={`${ROUTES.PRODUCT_RESTOCKS}.index`}
-                                icon={<RiBillLine size={STYLING.ICON.SIZE.SMALL} />}
+                                icon={<RiCalendarTodoFill size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                     </SidebarMenu>

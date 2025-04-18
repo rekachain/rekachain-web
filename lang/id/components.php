@@ -58,6 +58,7 @@ return [
             'returned_products' => 'Produk Retur',
             'requested_returns' => 'Komplain Retur',
             'replacement_stocks' => 'Stok Suku Cadang',
+            'product_restocks' => 'Restok Produk',
         ],
     ],
     'sidebar_logout' => [
