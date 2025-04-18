@@ -17,10 +17,7 @@ class StoreProductRestockRequest extends FormRequest {
                     'project_name' => 'required|string|max:255',
                     'project_description' => 'required|string|max:255',
                     'project_initial_date' => 'required|date',
-                    'panel_ids' => 'required|array|exists:panels,id',
-                    'panel_qtys' => 'required|array|integer|count:' . count($this->get('panel_ids')),
-                    'component_ids' => 'required|array|exists:components,id',
-                    'component_qtys' => 'required|array|integer|count:' . count($this->get('component_ids')),
+                    'product_restock_ids' => 'required|array|exists:product_restocks,id',
                 ];
         }
 
