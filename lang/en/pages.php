@@ -2754,20 +2754,22 @@ return [
                     'deleted' => 'Request deleted successfully!',
                 ],
             ],
-            'add_stock' => [
-                'title' => '{0}Create Stock|{1}Edit Stock',
-                'fields' => [
-                    'component_name' => 'Component Name',
-                    'threshold' => 'Threshold',
-                    'qty' => 'Quantity',
-                    'type' => 'Type',
-                    'description' => 'Description',
-                ],
-                'buttons' => [
-                    'submit' => '{0}Create Stock|{1}Edit Stock',
+            'make_project' => [
+                'dialogs' => [
+                    'title' => 'Initiate Project',
+                    'description' => 'Initiate a new restock project for the selected product restocks.',
+                    'buttons' => [
+                        'trigger' => 'Make Project',
+                        'submit' => 'Initiate Project',
+                    ],
+                    'fields' => [
+                        'project_name' => 'Project Name',
+                        'project_description' => 'Project Description',
+                        'project_initial_date' => 'Project Initial Date',
+                    ],
                 ],
                 'messages' => [
-                    'created' => 'Stock created successfully!',
+                    'initiated' => 'Project initiated successfully!',
                 ],
             ],
             'partials' => [

@@ -2754,20 +2754,22 @@ return [
                     'deleted' => 'Permintaan berhasil dihapus!',
                 ],
             ],
-            'add_stock' => [
-                'title' => '{0}Buat Stok|{1}Ubah Stok',
-                'fields' => [
-                    'component_name' => 'Nama Komponen',
-                    'threshold' => 'Batas Restok',
-                    'qty' => 'Jumlah',
-                    'type' => 'Tipe',
-                    'description' => 'Deskripsi',
-                ],
-                'buttons' => [
-                    'submit' => '{0}Buat Stok|{1}Ubah Stok',
+            'make_project' => [
+                'dialogs' => [
+                    'title' => 'Buat Proyek',
+                    'description' => 'Buat proyek restok baru untuk permintaan restok produk yang dipilih.',
+                    'buttons' => [
+                        'trigger' => 'Buat Proyek',
+                        'submit' => 'Inisiasi Proyek',
+                    ],
+                    'fields' => [
+                        'project_name' => 'Nama Proyek',
+                        'project_description' => 'Deskripsi Proyek',
+                        'project_initial_date' => 'Tanggal Awal Proyek',
+                    ],
                 ],
                 'messages' => [
-                    'created' => 'Stok berhasil dibuat!',
+                    'initiated' => 'Proyek berhasil diinisiasi!',
                 ],
             ],
             'partials' => [
