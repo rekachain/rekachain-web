@@ -13,7 +13,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProductRestockResource } from '@/Support/Interfaces/Resources';
-import { Link } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function ProductRestockTableView({
@@ -71,7 +71,11 @@ export default function ProductRestockTableView({
                 </TableHeader>
                 <TableBody>
                     {productRestockResponse?.data.map((productRestock) => (
-                        <TableRow key={productRestock.id}>
+                        <TableRow key={productRestock.id} onClick={() => {
+                            if (isSelecting) {
+                                handleSelectionChange(productRestock.id);
+                            }
+                        }}>
                             {isSelecting && (
                                 <TableCell>
                                     <Checkbox onCheckedChange={() => handleSelectionChange(productRestock.id)} checked={selectedIds.includes(productRestock.id)}></Checkbox>
@@ -90,26 +94,36 @@ export default function ProductRestockTableView({
 
                             <TableCell>
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
-                                    <Link
-                                        href={route(
-                                            `${ROUTES.PRODUCT_RESTOCKS}.show`,
-                                            productRestock.id,
-                                        )}
-                                        className={buttonVariants({ variant: 'link' })}
+                                    <Button
+                                        variant={'link'}
+                                        onClick={() =>
+                                            router.visit(
+                                                route(
+                                                    `${ROUTES.PRODUCT_RESTOCKS}.show`,
+                                                    productRestock.id,
+                                                ),
+                                            )
+                                        }
+                                        disabled={isSelecting}
                                     >
                                         {t('action.show')}
-                                    </Link>
+                                    </Button>
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
-                                    <Link
-                                        href={route(
-                                            `${ROUTES.PRODUCT_RESTOCKS}.edit`,
-                                            productRestock.id,
-                                        )}
-                                        className={buttonVariants({ variant: 'link' })}
+                                    <Button
+                                        variant={'link'}
+                                        onClick={() =>
+                                            router.visit(
+                                                route(
+                                                    `${ROUTES.PRODUCT_RESTOCKS}.edit`,
+                                                    productRestock.id,
+                                                ),
+                                            )
+                                        }
+                                        disabled={isSelecting}
                                     >
                                         {t('action.edit')}
-                                    </Link>
+                                    </Button>
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
                                     <Button
@@ -117,6 +131,7 @@ export default function ProductRestockTableView({
                                         onClick={() =>
                                             handleProductRestockDeletion(productRestock.id)
                                         }
+                                        disabled={isSelecting}
                                     >
                                         {t('action.delete')}
                                     </Button>
