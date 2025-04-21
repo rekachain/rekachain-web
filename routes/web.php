@@ -21,6 +21,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProductProblemController;
 use App\Http\Controllers\ProductProblemNoteController;
+use App\Http\Controllers\ProductRestockController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
@@ -113,6 +114,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('product-problems', ProductProblemController::class);
     Route::resource('product-problem-notes', ProductProblemNoteController::class);
     Route::resource('replacement-stocks', ReplacementStockController::class);
+    Route::resource('product-restocks', ProductRestockController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 

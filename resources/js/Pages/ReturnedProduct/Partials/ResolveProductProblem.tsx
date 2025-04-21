@@ -8,9 +8,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/Components/UI/dialog';
+import { Separator } from '@/Components/UI/separator';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { returnedProductService } from '@/Services/returnedProductService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
@@ -18,7 +20,7 @@ import {
     ReturnedProductResource,
 } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
-import { useForm, usePage } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEvent, memo, useEffect, useState } from 'react';
 
@@ -43,6 +45,7 @@ const ResolveProductProblem = ({
 
     const { data, setData } = useForm({
         component_ids: [] as number[], // Explicitly define the type as number[]
+        req_production: false,
     });
 
     const handleComponentsCheckedChange = (componentId: number, isChecked: boolean) => {
@@ -77,7 +80,9 @@ const ResolveProductProblem = ({
             isScrapping
                 ? await returnedProductService.scrapStocks(returnedProduct.id, data)
                 : returnedProductService.retrieveStocks(returnedProduct.id, data);
-            await handleSyncReturnedProduct();
+            data.req_production
+                ? router.visit(route(`${ROUTES.PRODUCT_RESTOCKS}.index`))
+                : router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id));
             void useSuccessToast(
                 isScrapping
                     ? t('pages.returned_product.partials.resolve_product_problem.messages.scrapped')
@@ -162,6 +167,31 @@ const ResolveProductProblem = ({
                                     </div>
                                 </div>
                             ))}
+                    </div>
+                    <Separator></Separator>
+                    <div className='flex flex-col gap-1'>
+                        <div className='flex items-center'>
+                            <label htmlFor='req_production' className='mr-2'>
+                                {t(
+                                    'pages.returned_product.partials.resolve_product_problem.dialog.req_production',
+                                )}
+                            </label>
+                            <Checkbox
+                                value={data.req_production.toString()}
+                                onCheckedChange={(checked: boolean) =>
+                                    setData('req_production', checked)
+                                }
+                                name='req_production'
+                                id='req_production'
+                            />
+                        </div>
+                        <span className='ml-1 text-sm text-muted-foreground'>
+                            (
+                            {t(
+                                'pages.returned_product.partials.resolve_product_problem.dialog.req_production_description',
+                            )}
+                            )
+                        </span>
                     </div>
                     <Button type='submit' form='add-note-form' disabled={loading}>
                         {loading

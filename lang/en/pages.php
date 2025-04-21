@@ -2564,6 +2564,8 @@ return [
                 'dialog' => [
                     'title' => '{0} Change from Stock|{1} Scrap into Stock',
                     'description' => '{0} Fix by changing the selected component from Aftersale Stock.|{1} Scrap all reusable components into Aftersale Stock.',
+                    'req_production' => 'Need Re-Production',
+                    'req_production_description' => 'Check this if the component needs re-production.',
                 ],
                 'messages' => [
                     'resolved' => 'Problem resolved successfully!',
@@ -2732,6 +2734,77 @@ return [
                         'component_description' => 'Description: :component_description',
                         'threshold' => 'Threshold: :threshold',
                         'qty' => 'Quantity: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'product_restock' => [
+        'index' => [
+            'title' => 'Product Re-Stocks Requests',
+            'buttons' => [
+                'create' => 'Create Request',
+                'initiate_selection' => 'Make Project',
+                'cancel_initiation' => 'Cancel Selection',
+            ],
+        ],
+        'partials' => [
+            'product_restocks' => [
+                'messages' => [
+                    'deleted' => 'Request deleted successfully!',
+                ],
+            ],
+            'make_project' => [
+                'dialogs' => [
+                    'title' => 'Initiate Project',
+                    'description' => 'Initiate a new restock project for the selected product restocks.',
+                    'buttons' => [
+                        'trigger' => 'Make Project',
+                        'submit' => 'Initiate Project',
+                    ],
+                    'fields' => [
+                        'project_name' => 'Project Name',
+                        'project_description' => 'Project Description',
+                        'project_initial_date' => 'Project Initial Date',
+                    ],
+                ],
+                'messages' => [
+                    'initiated' => 'Project initiated successfully!',
+                ],
+            ],
+            'partials' => [
+                'filters' => [
+                    'status' => [
+                        'title' => 'Status',
+                        'all' => 'All',
+                    ],
+                ],
+                'product_restock_table' => [
+                    'headers' => [
+                        'buyer' => 'Customer',
+                        'serial_number' => 'Serial Number',
+                        'name' => 'Name',
+                        'description' => 'Description',
+                        'type' => 'Type',
+                        'status' => 'Status',
+                        'created_at' => 'Requested At',
+                        'updated_at' => 'Updated At',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Component',
+                        ],
+                    ],
+                ],
+                'product_restock_card' => [
+                    'headers' => [
+                        'name' => 'Name: :name',
+                        'serial_number' => 'Serial Number',
+                        'description' => 'Description',
+                        'type' => 'Type: :type',
+                        'status' => 'Status',
+                        'created_at' => 'Created At',
                     ],
                 ],
             ],

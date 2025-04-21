@@ -10,6 +10,7 @@ import {
     RiArtboard2Fill,
     RiBox3Line,
     RiCalendar2Line,
+    RiCalendarTodoFill,
     RiCaravanLine,
     RiContractLeftLine,
     RiContractRightLine,
@@ -297,6 +298,8 @@ export default function Sidebar() {
                         bordered={checkPermission([
                             PERMISSION_ENUM.RETURNED_PRODUCT_READ,
                             PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ,
+                            PERMISSION_ENUM.REPLACEMENT_STOCK_READ,
+                            PERMISSION_ENUM.PRODUCT_RESTOCK_READ,
                         ])}
                     >
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
@@ -318,6 +321,13 @@ export default function Sidebar() {
                                 title={t('components.sidebar.links.replacement_stocks')}
                                 routeName={`${ROUTES.REPLACEMENT_STOCKS}.index`}
                                 icon={<RiExchange2Line size={STYLING.ICON.SIZE.SMALL} />}
+                            />
+                        )}
+                        {checkPermission(PERMISSION_ENUM.PRODUCT_RESTOCK_READ) && (
+                            <SidebarLink
+                                title={t('components.sidebar.links.product_restocks')}
+                                routeName={`${ROUTES.PRODUCT_RESTOCKS}.index`}
+                                icon={<RiCalendarTodoFill size={STYLING.ICON.SIZE.SMALL} />}
                             />
                         )}
                     </SidebarMenu>

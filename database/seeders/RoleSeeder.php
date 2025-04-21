@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\PermissionServiceInterface;
 use Illuminate\Database\Seeder;
@@ -115,5 +116,6 @@ class RoleSeeder extends Seeder {
             ['group', 'returned-product-request'],
         ]);
         Role::findById(16)->givePermissionTo($customerPermissions);
+        Role::findById(16)->givePermissionTo(PermissionEnum::DASHBOARD_COMMISSION_READ->value);
     }
 }
