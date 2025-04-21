@@ -1,5 +1,8 @@
 import GenericFilters from '@/Components/GenericFilters';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { ProductRestockStatusEnum } from '@/Support/Enums/productRestockStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { memo } from 'react';
 
 const Filters = ({
@@ -9,7 +12,50 @@ const Filters = ({
     filters: ServiceFilterOptions;
     setFilters: (filters: ServiceFilterOptions) => void;
 }) => {
-    return <GenericFilters setFilters={setFilters} filters={filters}></GenericFilters>;
+    const { t } = useLaravelReactI18n();
+    return (
+        <GenericFilters setFilters={setFilters} filters={filters}>
+            <Select
+                onValueChange={(value) =>
+                    setFilters((prevValue: ServiceFilterOptions) => {
+                        const newFilters = { ...prevValue };
+                        if (value === 'all') {
+                            delete newFilters.column_filters?.status;
+                        } else {
+                            if (!newFilters.column_filters) {
+                                newFilters.column_filters = {};
+                            }
+                            newFilters.column_filters.status = value as ProductRestockStatusEnum;
+                        }
+                        return newFilters;
+                    })
+                }
+            >
+                <SelectTrigger className='w-[180px]'>
+                    <SelectValue
+                        placeholder={t('pages.product_restock.partials.partials.filters.status.title')}
+                    />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectLabel>
+                            {t('pages.product_restock.partials.partials.filters.status.title')}
+                        </SelectLabel>
+                        <SelectItem value='all'>
+                            {t('pages.product_restock.partials.partials.filters.status.all')}
+                        </SelectItem>
+                        {Object.values(ProductRestockStatusEnum).map((status) => (
+                            <SelectItem key={status} value={status}>
+                                {t(
+                                    `enums.App\\Support\\Enums\\ProductRestockStatusEnum.${status}`,
+                                )}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        </GenericFilters>
+    );
 };
 
 export default memo(Filters);

@@ -11,6 +11,7 @@ import {
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ProductRestockStatusEnum } from '@/Support/Enums/productRestockStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProductRestockResource } from '@/Support/Interfaces/Resources';
 import { router } from '@inertiajs/react';
@@ -72,13 +73,17 @@ export default function ProductRestockTableView({
                 <TableBody>
                     {productRestockResponse?.data.map((productRestock) => (
                         <TableRow key={productRestock.id} onClick={() => {
-                            if (isSelecting) {
+                            if (isSelecting && productRestock.status === ProductRestockStatusEnum.REQUESTED) {
                                 handleSelectionChange(productRestock.id);
                             }
                         }}>
                             {isSelecting && (
                                 <TableCell>
-                                    <Checkbox onCheckedChange={() => handleSelectionChange(productRestock.id)} checked={selectedIds.includes(productRestock.id)}></Checkbox>
+                                    <Checkbox
+                                        onCheckedChange={() => handleSelectionChange(productRestock.id)}
+                                        checked={selectedIds.includes(productRestock.id)}
+                                        disabled={productRestock.status !== ProductRestockStatusEnum.REQUESTED}
+                                    />
                                 </TableCell>
                             )}
                             <TableCell>{productRestock.returned_product?.buyer?.name ?? '-'}</TableCell>

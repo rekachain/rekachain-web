@@ -1,6 +1,6 @@
 import GenericPagination from '@/Components/GenericPagination';
 import { useSuccessToast } from '@/Hooks/useToast';
-import Filters from '@/Pages/Workstation/Partials/Partials/Filters';
+import Filters from '@/Pages/ProductRestock/Partials/Partials/Filters';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { ProductRestockResource } from '@/Support/Interfaces/Resources';
