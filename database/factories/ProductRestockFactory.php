@@ -13,15 +13,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductRestock>
  */
-class ProductRestockFactory extends Factory
-{
+class ProductRestockFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         $product_returnable_type = $this->faker->randomElement([Panel::class, Component::class]);
         $returnedProduct = $product_returnable_type == Panel::class ? Panel::whereId(CarriagePanel::inRandomOrder()->first()->panel_id)->first() : $product_returnable_type::inRandomOrder()->first();
 

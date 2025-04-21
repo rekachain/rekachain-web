@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class ProductRestock extends Model
-{
+class ProductRestock extends Model {
     use HasFactory, HasFilterable;
 
     protected $fillable = [

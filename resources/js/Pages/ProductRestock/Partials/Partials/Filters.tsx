@@ -1,5 +1,13 @@
 import GenericFilters from '@/Components/GenericFilters';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { ProductRestockStatusEnum } from '@/Support/Enums/productRestockStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -33,7 +41,9 @@ const Filters = ({
             >
                 <SelectTrigger className='w-[180px]'>
                     <SelectValue
-                        placeholder={t('pages.product_restock.partials.partials.filters.status.title')}
+                        placeholder={t(
+                            'pages.product_restock.partials.partials.filters.status.title',
+                        )}
                     />
                 </SelectTrigger>
                 <SelectContent>
@@ -45,10 +55,8 @@ const Filters = ({
                             {t('pages.product_restock.partials.partials.filters.status.all')}
                         </SelectItem>
                         {Object.values(ProductRestockStatusEnum).map((status) => (
-                            <SelectItem key={status} value={status}>
-                                {t(
-                                    `enums.App\\Support\\Enums\\ProductRestockStatusEnum.${status}`,
-                                )}
+                            <SelectItem value={status} key={status}>
+                                {t(`enums.App\\Support\\Enums\\ProductRestockStatusEnum.${status}`)}
                             </SelectItem>
                         ))}
                     </SelectGroup>

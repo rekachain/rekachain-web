@@ -1,4 +1,4 @@
-import { ProductRestockStatusEnum } from "@/Support/Enums/productRestockStatusEnum";
+import { ProductRestockStatusEnum } from '@/Support/Enums/productRestockStatusEnum';
 
 export interface ProductRestock {
     id: number;

@@ -35,18 +35,21 @@ class ProductRestockController extends Controller {
                     return $this->productRestockService->initiateRestockProject($request->validated());
             }
             $productRestock = $this->productRestockService->create($request->validated());
+
             return ProductRestockResource::make($productRestock->load(['product_restockable', 'returned_product.buyer', 'project']));
         }
     }
 
     public function show(ProductRestock $productRestock) {
-        
+
         if ($this->ajax()) {
             $data = ProductRestockResource::make($productRestock->load(['product_restockable', 'returned_product.buyer', 'project']));
+
             return $data;
         }
-        
+
         $data = ProductRestockResource::make($productRestock->load(['product_restockable', 'returned_product.buyer', 'project']));
+
         return inertia('ProductRestock/Show', compact('data'));
     }
 
@@ -59,6 +62,7 @@ class ProductRestockController extends Controller {
     public function update(UpdateProductRestockRequest $request, ProductRestock $productRestock) {
         if ($this->ajax()) {
             $productRestock = $this->productRestockService->update($productRestock, $request->validated());
+
             return ProductRestockResource::make($productRestock->load(['product_restockable', 'returned_product.buyer', 'project']));
         }
     }

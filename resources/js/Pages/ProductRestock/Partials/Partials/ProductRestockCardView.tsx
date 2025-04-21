@@ -111,9 +111,7 @@ export default function ProductRestockCardView({
                             )}
                             {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
                                 <button
-                                    onClick={() =>
-                                        handleProductRestockDeletion(productRestock.id)
-                                    }
+                                    onClick={() => handleProductRestockDeletion(productRestock.id)}
                                     className={buttonVariants({ variant: 'link' })}
                                 >
                                     {t('action.delete')}

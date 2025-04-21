@@ -12,16 +12,14 @@ import {
 import { Input } from '@/Components/UI/input';
 import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
-import { useSuccessToast } from '@/Hooks/useToast';
-import { ROUTES } from '@/Support/Constants/routes';
 import { withLoading } from '@/Utils/withLoading';
-import { router, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEvent } from 'react';
 
 export default function ({
     handleInitiateProject,
-} : {
+}: {
     handleInitiateProject: (data: any) => void;
 }) {
     const { t } = useLaravelReactI18n();
@@ -60,9 +58,19 @@ export default function ({
                         {t('pages.product_restock.partials.make_project.dialogs.description')}
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSendData} id='project-restock-form' encType='multipart/form-data' className='hidden'></form>
+                <form
+                    onSubmit={handleSendData}
+                    id='project-restock-form'
+                    encType='multipart/form-data'
+                    className='hidden'
+                ></form>
                 <div>
-                    <InputLabel value={t('pages.product_restock.partials.make_project.dialogs.fields.project_name')} htmlFor='project_name' />
+                    <InputLabel
+                        value={t(
+                            'pages.product_restock.partials.make_project.dialogs.fields.project_name',
+                        )}
+                        htmlFor='project_name'
+                    />
                     <Input
                         value={data.project_name}
                         type='text'
@@ -77,7 +85,9 @@ export default function ({
 
                 <div>
                     <InputLabel
-                        value={t('pages.product_restock.partials.make_project.dialogs.fields.project_description')}
+                        value={t(
+                            'pages.product_restock.partials.make_project.dialogs.fields.project_description',
+                        )}
                         htmlFor='project_description'
                     />
                     <Textarea
@@ -91,7 +101,9 @@ export default function ({
                 </div>
                 <div>
                     <InputLabel
-                        value={t('pages.product_restock.partials.make_project.dialogs.fields.project_initial_date')}
+                        value={t(
+                            'pages.product_restock.partials.make_project.dialogs.fields.project_initial_date',
+                        )}
                         htmlFor='project_initial_date'
                     />
                     <Input
@@ -106,12 +118,12 @@ export default function ({
                     />
                 </div>
                 <DialogFooter>
-                    <Button type='submit' disabled={loading} form='project-restock-form'>
+                    <Button type='submit' form='project-restock-form' disabled={loading}>
                         {loading
                             ? t('action.loading')
                             : t(
-                                    'pages.product_restock.partials.make_project.dialogs.buttons.submit',
-                                )}
+                                  'pages.product_restock.partials.make_project.dialogs.buttons.submit',
+                              )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

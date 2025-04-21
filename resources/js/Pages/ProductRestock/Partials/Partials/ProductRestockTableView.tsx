@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { Button } from '@/Components/UI/button';
 import { Checkbox } from '@/Components/UI/checkbox';
 import {
     Table,
@@ -72,21 +72,34 @@ export default function ProductRestockTableView({
                 </TableHeader>
                 <TableBody>
                     {productRestockResponse?.data.map((productRestock) => (
-                        <TableRow key={productRestock.id} onClick={() => {
-                            if (isSelecting && productRestock.status === ProductRestockStatusEnum.REQUESTED) {
-                                handleSelectionChange(productRestock.id);
-                            }
-                        }}>
+                        <TableRow
+                            onClick={() => {
+                                if (
+                                    isSelecting &&
+                                    productRestock.status === ProductRestockStatusEnum.REQUESTED
+                                ) {
+                                    handleSelectionChange(productRestock.id);
+                                }
+                            }}
+                            key={productRestock.id}
+                        >
                             {isSelecting && (
                                 <TableCell>
                                     <Checkbox
-                                        onCheckedChange={() => handleSelectionChange(productRestock.id)}
+                                        onCheckedChange={() =>
+                                            handleSelectionChange(productRestock.id)
+                                        }
+                                        disabled={
+                                            productRestock.status !==
+                                            ProductRestockStatusEnum.REQUESTED
+                                        }
                                         checked={selectedIds.includes(productRestock.id)}
-                                        disabled={productRestock.status !== ProductRestockStatusEnum.REQUESTED}
                                     />
                                 </TableCell>
                             )}
-                            <TableCell>{productRestock.returned_product?.buyer?.name ?? '-'}</TableCell>
+                            <TableCell>
+                                {productRestock.returned_product?.buyer?.name ?? '-'}
+                            </TableCell>
                             <TableCell>{productRestock.returned_product?.serial_number}</TableCell>
                             <TableCell>{productRestock.product_restockable?.name}</TableCell>
                             <TableCell>{productRestock.product_restockable?.description}</TableCell>

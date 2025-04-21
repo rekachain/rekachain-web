@@ -1,6 +1,7 @@
 import GenericPagination from '@/Components/GenericPagination';
 import { useSuccessToast } from '@/Hooks/useToast';
 import Filters from '@/Pages/ProductRestock/Partials/Partials/Filters';
+import { productRestockService } from '@/Services/productRestockService';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
 import { ProductRestockResource } from '@/Support/Interfaces/Resources';
@@ -9,13 +10,12 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ProductRestockCardView from './Partials/ProductRestockCardView';
 import ProductRestockTableView from './Partials/ProductRestockTableView';
-import { productRestockService } from '@/Services/productRestockService';
 
 export default function ({
     isSelecting,
     selectedIds,
     handleSelectionChange,
-} : {
+}: {
     isSelecting: boolean;
     selectedIds: number[];
     handleSelectionChange: (selectedId: number) => void;
@@ -58,11 +58,11 @@ export default function ({
                     <Filters setFilters={setFilters} filters={filters} />
                     <div className='hidden md:block'>
                         <ProductRestockTableView
-                            productRestockResponse={productRestockResponse}
-                            handleProductRestockDeletion={handleProductRestockDeletion}
-                            isSelecting={isSelecting}
                             selectedIds={selectedIds}
+                            productRestockResponse={productRestockResponse}
+                            isSelecting={isSelecting}
                             handleSelectionChange={handleSelectionChange}
+                            handleProductRestockDeletion={handleProductRestockDeletion}
                         />
                     </div>
 

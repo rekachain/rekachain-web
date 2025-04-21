@@ -299,7 +299,7 @@ export default function Sidebar() {
                             PERMISSION_ENUM.RETURNED_PRODUCT_READ,
                             PERMISSION_ENUM.RETURNED_PRODUCT_REQUEST_READ,
                             PERMISSION_ENUM.REPLACEMENT_STOCK_READ,
-                            PERMISSION_ENUM.PRODUCT_RESTOCK_READ
+                            PERMISSION_ENUM.PRODUCT_RESTOCK_READ,
                         ])}
                     >
                         {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Support\Enums\IntentEnum;
-use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Repositories\UserRepositoryInterface;
 use App\Support\Interfaces\Services\UserServiceInterface;

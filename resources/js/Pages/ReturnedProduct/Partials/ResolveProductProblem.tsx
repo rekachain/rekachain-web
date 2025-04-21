@@ -80,7 +80,9 @@ const ResolveProductProblem = ({
             isScrapping
                 ? await returnedProductService.scrapStocks(returnedProduct.id, data)
                 : returnedProductService.retrieveStocks(returnedProduct.id, data);
-            data.req_production ? router.visit(route(`${ROUTES.PRODUCT_RESTOCKS}.index`)) : router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id));
+            data.req_production
+                ? router.visit(route(`${ROUTES.PRODUCT_RESTOCKS}.index`))
+                : router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id));
             void useSuccessToast(
                 isScrapping
                     ? t('pages.returned_product.partials.resolve_product_problem.messages.scrapped')
@@ -168,18 +170,22 @@ const ResolveProductProblem = ({
                     </div>
                     <Separator></Separator>
                     <div className='flex flex-col gap-1'>
-                        <div className="flex items-center">
+                        <div className='flex items-center'>
                             <label htmlFor='req_production' className='mr-2'>
-                                {t('pages.returned_product.partials.resolve_product_problem.dialog.req_production')}
+                                {t(
+                                    'pages.returned_product.partials.resolve_product_problem.dialog.req_production',
+                                )}
                             </label>
                             <Checkbox
+                                value={data.req_production.toString()}
+                                onCheckedChange={(checked: boolean) =>
+                                    setData('req_production', checked)
+                                }
                                 name='req_production'
                                 id='req_production'
-                                value={data.req_production.toString()}
-                                onCheckedChange={(checked: boolean) => setData('req_production', checked)}
                             />
                         </div>
-                        <span className='text-sm text-muted-foreground ml-1'>
+                        <span className='ml-1 text-sm text-muted-foreground'>
                             (
                             {t(
                                 'pages.returned_product.partials.resolve_product_problem.dialog.req_production_description',
