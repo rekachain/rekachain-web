@@ -22,6 +22,13 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
                     'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',
                 ];
+            case IntentEnum::API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM->value:
+                return [
+                    'component_id' => 'required|integer|exists:components,id',
+                    'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
+                    'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
+                    'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',
+                ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
