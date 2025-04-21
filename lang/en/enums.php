@@ -49,6 +49,7 @@ return [
     'App\Support\Enums\ProductRestockStatusEnum' => [
         'requested' => 'Requested',
         'draft' => 'Draft',
+        'initiated' => 'Initiated',
         'progress' => 'In Progress',
         'done' => 'Done',
         'aborted' => 'Aborted',

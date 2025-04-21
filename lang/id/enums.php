@@ -49,6 +49,7 @@ return [
     'App\Support\Enums\ProductRestockStatusEnum' => [
         'requested' => 'Diminta',
         'draft' => 'Draf',
+        'initiated' => 'Di-inisiasi',
         'progress' => 'Dalam Proses',
         'done' => 'Selesai',
         'aborted' => 'Dibatalkan',

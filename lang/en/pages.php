@@ -2773,6 +2773,12 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'status' => [
+                        'title' => 'Status',
+                        'all' => 'All',
+                    ],
+                ],
                 'product_restock_table' => [
                     'headers' => [
                         'buyer' => 'Customer',

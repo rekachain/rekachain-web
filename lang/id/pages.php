@@ -2773,6 +2773,12 @@ return [
                 ],
             ],
             'partials' => [
+                'filters' => [
+                    'status' => [
+                        'title' => 'Status',
+                        'all' => 'Semua',
+                    ],
+                ],
                 'product_restock_table' => [
                     'headers' => [
                         'buyer' => 'Pelanggan',

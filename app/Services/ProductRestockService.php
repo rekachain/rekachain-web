@@ -117,7 +117,7 @@ class ProductRestockService extends BaseCrudService implements ProductRestockSer
             $productRestocks->each(function ($product) use ($project) {
                 $product->update([
                     'project_id' => $project->id,
-                    'status' => ProductRestockStatusEnum::DRAFT->value,
+                    'status' => ProductRestockStatusEnum::INITIATED->value,
                 ]);
             });
     
