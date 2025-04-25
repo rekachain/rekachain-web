@@ -136,6 +136,8 @@ enum IntentEnum: string {
 
     case API_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_DETAILS = 'api.returned.product.get.returned.product.details';
 
+    case API_RETURNED_PRODUCT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.returned.product.get.attachment.serial.number.details.with.qr';
+
     case API_RETURNED_PRODUCT_GET_PRODUCT_PROBLEMS = 'api.returned.product.get.product.problems';
 
     case API_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE = 'api.returned.product.add.returned.product.with.note';
