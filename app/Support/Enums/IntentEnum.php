@@ -138,6 +138,8 @@ enum IntentEnum: string {
 
     case API_RETURNED_PRODUCT_GET_PRODUCT_PROBLEMS = 'api.returned.product.get.product.problems';
 
+    case API_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE = 'api.returned.product.add.returned.product.with.note';
+
     case API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM = 'api.returned.product.create.product.problem';
 
     case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS = 'web.project.get.all.trainset.components';

@@ -36,8 +36,18 @@ class ApiReturnedProductController extends Controller
      */
     public function store(StoreReturnedProductRequest $request)
     {
-        $returnedProduct = $this->returnedProductService->create($request->validated());
-        return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
+        $intent = $request->get('intent');
+        if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::API_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE->value:
+                    $returnedProduct = $this->returnedProductService->createWithReturnedProductNote($request->validated());
+                    return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
+                default:
+                    $returnedProduct = $this->returnedProductService->create($request->validated());
+                    return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
+            }
+
+        }
     }
 
     /**
