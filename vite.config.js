@@ -30,7 +30,7 @@ export default defineConfig(({ command }) => {
                       port: 5173,
                       hmr: {
                           protocol: 'ws',
-                          host: '192.168.1.7',
+                          host: ip || 'localhost',
                           port: 5173,
                       },
                   },
