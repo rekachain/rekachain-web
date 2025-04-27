@@ -324,14 +324,22 @@ class DashboardService {
     }
 
     public function downloadApkFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
-        $apkFilePath = app_path('Assets/rekachain-production.apk');
+        $apkFilePath = app_path('Assets/rekachain-mobile.apk');
+        if (!file_exists($apkFilePath)) {
+            $apkFilePath = app_path('Assets/rekachain-mobile_v1.apk');
+            if (!file_exists($apkFilePath)) abort(404, 'APK File not found');
+        };
 
-        return response()->download($apkFilePath, 'rekachain-production.apk');
+        return response()->download($apkFilePath, 'rekachain-mobile.apk');
     }
 
     public function downloadManualBookFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
         $manualBookFilePath = app_path('Assets/manual-book.pdf');
+        if (!file_exists($manualBookFilePath)) {
+            $manualBookFilePath = app_path('Assets/manual-book_v1.pdf');
+            if (!file_exists($manualBookFilePath)) abort(404, 'Manual Book File not found');
+        };
 
-        return response()->download($manualBookFilePath, 'manual-book.pdf');
+        return response()->download($manualBookFilePath, 'manual-book-rekachain.pdf');
     }
 }
