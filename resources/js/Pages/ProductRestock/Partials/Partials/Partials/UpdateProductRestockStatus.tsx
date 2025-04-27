@@ -42,13 +42,12 @@ export default function ({
 
     const handleUpdateStatus = async () => {
         try {
-            await productRestockService.update(
-                productRestock.id,
-                data
-            );
+            await productRestockService.update(productRestock.id, data);
             await handleSyncProductRestock();
             void useSuccessToast(
-                t('pages.product_restock.partials.partials.partials.update_product_restock_status.messages.updated'),
+                t(
+                    'pages.product_restock.partials.partials.partials.update_product_restock_status.messages.updated',
+                ),
             );
             setIsDialogOpen(false); // Close the dialog after successful update
         } catch (error) {

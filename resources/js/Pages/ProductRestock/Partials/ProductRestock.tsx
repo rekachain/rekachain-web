@@ -1,4 +1,5 @@
 import GenericPagination from '@/Components/GenericPagination';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import Filters from '@/Pages/ProductRestock/Partials/Partials/Filters';
 import { productRestockService } from '@/Services/productRestockService';
@@ -10,7 +11,6 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ProductRestockCardView from './Partials/ProductRestockCardView';
 import ProductRestockTableView from './Partials/ProductRestockTableView';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 export default function ({
     isSelecting,
@@ -30,7 +30,7 @@ export default function ({
         // relations: 'product_restockable',
         orderBy: 'created_at',
     });
-            
+
     const [localizedProductRestockStatuses, setProductRestockLocalizedStatuses] = useState<
         Record<string, string>
     >({});
@@ -67,16 +67,20 @@ export default function ({
         <div className='space-y-4'>
             {productRestockResponse && (
                 <>
-                    <Filters setFilters={setFilters} filters={filters} localizedProductRestockStatuses={localizedProductRestockStatuses} />
+                    <Filters
+                        setFilters={setFilters}
+                        localizedProductRestockStatuses={localizedProductRestockStatuses}
+                        filters={filters}
+                    />
                     <div className='hidden md:block'>
                         <ProductRestockTableView
                             selectedIds={selectedIds}
                             productRestockResponse={productRestockResponse}
+                            localizedStatuses={localizedProductRestockStatuses}
                             isSelecting={isSelecting}
+                            handleSyncProductRestock={syncProductRestocks}
                             handleSelectionChange={handleSelectionChange}
                             handleProductRestockDeletion={handleProductRestockDeletion}
-                            handleSyncProductRestock={syncProductRestocks}
-                            localizedStatuses={localizedProductRestockStatuses}
                         />
                     </div>
 

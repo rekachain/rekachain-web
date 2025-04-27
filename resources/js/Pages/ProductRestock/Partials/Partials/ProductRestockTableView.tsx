@@ -136,7 +136,8 @@ export default function ProductRestockTableView({
                                     <UpdateProductRestockStatus
                                         productRestock={productRestock}
                                         localizedStatuses={localizedStatuses}
-                                        handleSyncProductRestock={handleSyncProductRestock}/>
+                                        handleSyncProductRestock={handleSyncProductRestock}
+                                    />
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
                                     <Button
