@@ -2279,6 +2279,23 @@ return [
                     'verification_email_sent' => 'A new verification email has been sent to the address you provided during registration.',
                 ],
             ],
+            'update_asset_form' => [
+                'title' => 'Update Assets',
+                'description' => 'Update the mobile application and manual book.',
+                'fields' => [
+                    'apk' => 'Application',
+                    'apk_filepond_placeholder' => 'Drop APK here or click to upload',
+                    'book' => 'Manual Book',
+                    'book_filepond_placeholder' => 'Drop PDF here or click to upload',
+                ],
+                'messages' => [
+                    'updated_apk' => 'Application updated successfully!',
+                    'updated_book' => 'Manual book updated successfully!',
+                ],
+                'buttons' => [
+                    'submit' => 'Update Assets',
+                ],
+            ],
         ],
     ],
     'trainset_attachment' => [
