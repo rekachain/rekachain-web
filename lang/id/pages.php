@@ -2279,6 +2279,23 @@ return [
                     'verification_email_sent' => 'Email verifikasi baru telah dikirim ke alamat yang Anda berikan saat pendaftaran.',
                 ],
             ],
+            'update_asset_form' => [
+                'title' => 'Perbarui Aset',
+                'description' => 'Perbarui aplikasi mobile dan buku panduan.',
+                'fields' => [
+                    'apk' => 'Aplikasi',
+                    'apk_filepond_placeholder' => 'Letakkan .APK di sini atau klik untuk mengunggah',
+                    'book' => 'Buku Panduan',
+                    'book_filepond_placeholder' => 'Letakkan .PDF di sini atau klik untuk mengunggah',
+                ],
+                'messages' => [
+                    'updated_apk' => 'Aplikasi berhasil diperbarui!',
+                    'updated_book' => 'Buku panduan berhasil diperbarui!',
+                ],
+                'buttons' => [
+                    'submit' => 'Perbarui Aset',
+                ],
+            ],
         ],
     ],
     'trainset_attachment' => [

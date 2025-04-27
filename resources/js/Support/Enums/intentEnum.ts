@@ -1,5 +1,7 @@
 const intents = {
     SOFT_DELETE_ENTRY: 'soft.delete.entry',
+    STORE_APK_FILE: 'store.apk.file',
+    STORE_MANUAL_BOOK_FILE: 'store.manual.book.file',
     DOWNLOAD_APK_FILE: 'download.apk.file',
     DOWNLOAD_MANUAL_BOOK_FILE: 'download.manual.book.file',
     API_USER_UPDATE_PASSWORD: 'api.user.update.password',
