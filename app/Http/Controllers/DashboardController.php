@@ -187,7 +187,7 @@ class DashboardController extends Controller {
             switch ($intent) {
                 case IntentEnum::STORE_APK_FILE->value:
                     $request->validate([
-                        'file_path' => 'required|file|mimes:apk',
+                        'file_path' => 'required|file|mimes:application/vnd.android.package-archive,zip,jar', // https://stackoverflow.com/a/47909356
                     ]);
                     return $this->dashboardService->storeApkFile();
                 case IntentEnum::STORE_MANUAL_BOOK_FILE->value:

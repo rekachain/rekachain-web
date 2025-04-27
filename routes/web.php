@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
     Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset'])->name('dashboard.trainset');
+    Route::post('dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
     // Route::resource('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('divisions', DivisionController::class); // auth done
     Route::resource('workshops', WorkshopController::class); // auth done

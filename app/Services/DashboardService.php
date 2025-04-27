@@ -325,13 +325,13 @@ class DashboardService {
 
     public function storeApkFile(): bool {
         $filePath = app_path('Assets/rekachain-mobile.apk');
-        $backupDir = app_path('Assets/Backups');
+        $backupDir = app_path('Assets/Backups/rekachain-mobile');
         if (request()->hasFile('file_path')) {
             if (file_exists($filePath)) {
                 if (!is_dir($backupDir)) {
                     mkdir($backupDir, 0755, true);
                 }
-                $backupFilePath = $backupDir . '/rekachain-mobile-' . now()->format('Y-m-d_H-i-s') . '.apk';
+                $backupFilePath = $backupDir . '/' . now()->format('Y-m-d_H-i-s') . '.apk';
                 rename($filePath, $backupFilePath);
             }
             request()->file('file_path')->move(dirname($filePath), basename($filePath));
@@ -342,13 +342,13 @@ class DashboardService {
 
     public function storeManualBookFile(): bool {
         $filePath = app_path('Assets/manual-book.pdf');
-        $backupDir = app_path('Assets/Backups');
+        $backupDir = app_path('Assets/Backups/manual-book');
         if (request()->hasFile('file_path')) {
             if (file_exists($filePath)) {
                 if (!is_dir($backupDir)) {
                     mkdir($backupDir, 0755, true);
                 }
-                $backupFilePath = $backupDir . '/manual-book-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+                $backupFilePath = $backupDir . '/' . now()->format('Y-m-d_H-i-s') . '.pdf';
                 rename($filePath, $backupFilePath);
             }
             request()->file('file_path')->move(dirname($filePath), basename($filePath));
