@@ -8,10 +8,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/Components/UI/select';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { ProductRestockStatusEnum } from '@/Support/Enums/productRestockStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 const Filters = ({
     setFilters,
@@ -20,9 +21,21 @@ const Filters = ({
     filters: ServiceFilterOptions;
     setFilters: (filters: ServiceFilterOptions) => void;
 }) => {
-    const { t } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
+    
+    const [localizedProductRestockStatuses, setProductRestockLocalizedStatuses] = useState<
+        Record<string, string>
+    >({});
+
+    useEffect(() => {
+        fetchEnumLabels('ProductRestockStatusEnum')
+            .then(setProductRestockLocalizedStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    }, [setLocale]);
+
     return (
         <GenericFilters setFilters={setFilters} filters={filters}>
+            {localizedProductRestockStatuses && (
             <Select
                 onValueChange={(value) =>
                     setFilters((prevValue: ServiceFilterOptions) => {
@@ -54,14 +67,15 @@ const Filters = ({
                         <SelectItem value='all'>
                             {t('pages.product_restock.partials.partials.filters.status.all')}
                         </SelectItem>
-                        {Object.values(ProductRestockStatusEnum).map((status) => (
-                            <SelectItem value={status} key={status}>
-                                {t(`enums.App\\Support\\Enums\\ProductRestockStatusEnum.${status}`)}
+                        {Object.entries(localizedProductRestockStatuses).map(([key, status]) => (
+                            <SelectItem value={key} key={key}>
+                                {status}
                             </SelectItem>
                         ))}
                     </SelectGroup>
                 </SelectContent>
             </Select>
+            )}
         </GenericFilters>
     );
 };
