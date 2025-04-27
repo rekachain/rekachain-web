@@ -2773,6 +2773,21 @@ return [
                 ],
             ],
             'partials' => [
+                'partials' => [
+                    'update_product_restock_status' => [
+                        'buttons' => [
+                            'update_status' => 'Update Status',
+                        ],
+                        'dialog' => [
+                            'title' => 'Update Status',
+                            'description' => 'Update the status of the selected Restock Progress.',
+                            'select_placeholder' => 'Select Status',
+                        ],
+                        'messages' => [
+                            'updated' => 'Product status updated successfully!',
+                        ],
+                    ],
+                ],
                 'filters' => [
                     'status' => [
                         'title' => 'Status',

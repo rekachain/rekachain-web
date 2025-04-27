@@ -2773,6 +2773,21 @@ return [
                 ],
             ],
             'partials' => [
+                'partials' => [
+                    'update_product_restock_status' => [
+                        'buttons' => [
+                            'update_status' => 'Perbarui Status',
+                        ],
+                        'dialog' => [
+                            'title' => 'Perbarui Status',
+                            'description' => 'Perbarui status dari Progress Restok yang dipilih.',
+                            'select_placeholder' => 'Pilih Status',
+                        ],
+                        'messages' => [
+                            'updated' => 'Status Produk berhasil diperbarui!',
+                        ],
+                    ],
+                ],
                 'filters' => [
                     'status' => [
                         'title' => 'Status',

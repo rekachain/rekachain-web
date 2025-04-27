@@ -1,4 +1,5 @@
 import GenericPagination from '@/Components/GenericPagination';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import Filters from '@/Pages/ProductRestock/Partials/Partials/Filters';
 import { productRestockService } from '@/Services/productRestockService';
@@ -20,7 +21,7 @@ export default function ({
     selectedIds: number[];
     handleSelectionChange: (selectedId: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
     const [productRestockResponse, setProductRestockResponse] =
         useState<PaginateResponse<ProductRestockResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -29,6 +30,17 @@ export default function ({
         // relations: 'product_restockable',
         orderBy: 'created_at',
     });
+
+    const [localizedProductRestockStatuses, setProductRestockLocalizedStatuses] = useState<
+        Record<string, string>
+    >({});
+
+    useEffect(() => {
+        fetchEnumLabels('ProductRestockStatusEnum')
+            .then(setProductRestockLocalizedStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+        syncProductRestocks();
+    }, [setLocale]);
 
     const syncProductRestocks = withLoading(async () => {
         const res = await productRestockService.getAll(filters);
@@ -55,12 +67,18 @@ export default function ({
         <div className='space-y-4'>
             {productRestockResponse && (
                 <>
-                    <Filters setFilters={setFilters} filters={filters} />
+                    <Filters
+                        setFilters={setFilters}
+                        localizedProductRestockStatuses={localizedProductRestockStatuses}
+                        filters={filters}
+                    />
                     <div className='hidden md:block'>
                         <ProductRestockTableView
                             selectedIds={selectedIds}
                             productRestockResponse={productRestockResponse}
+                            localizedStatuses={localizedProductRestockStatuses}
                             isSelecting={isSelecting}
+                            handleSyncProductRestock={syncProductRestocks}
                             handleSelectionChange={handleSelectionChange}
                             handleProductRestockDeletion={handleProductRestockDeletion}
                         />

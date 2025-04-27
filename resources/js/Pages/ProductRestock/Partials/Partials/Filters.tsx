@@ -16,52 +16,60 @@ import { memo } from 'react';
 const Filters = ({
     setFilters,
     filters,
+    localizedProductRestockStatuses,
 }: {
     filters: ServiceFilterOptions;
     setFilters: (filters: ServiceFilterOptions) => void;
+    localizedProductRestockStatuses: Record<string, string>;
 }) => {
     const { t } = useLaravelReactI18n();
+
     return (
         <GenericFilters setFilters={setFilters} filters={filters}>
-            <Select
-                onValueChange={(value) =>
-                    setFilters((prevValue: ServiceFilterOptions) => {
-                        const newFilters = { ...prevValue };
-                        if (value === 'all') {
-                            delete newFilters.column_filters?.status;
-                        } else {
-                            if (!newFilters.column_filters) {
-                                newFilters.column_filters = {};
+            {localizedProductRestockStatuses && (
+                <Select
+                    onValueChange={(value) =>
+                        setFilters((prevValue: ServiceFilterOptions) => {
+                            const newFilters = { ...prevValue };
+                            if (value === 'all') {
+                                delete newFilters.column_filters?.status;
+                            } else {
+                                if (!newFilters.column_filters) {
+                                    newFilters.column_filters = {};
+                                }
+                                newFilters.column_filters.status =
+                                    value as ProductRestockStatusEnum;
                             }
-                            newFilters.column_filters.status = value as ProductRestockStatusEnum;
-                        }
-                        return newFilters;
-                    })
-                }
-            >
-                <SelectTrigger className='w-[180px]'>
-                    <SelectValue
-                        placeholder={t(
-                            'pages.product_restock.partials.partials.filters.status.title',
-                        )}
-                    />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>
-                            {t('pages.product_restock.partials.partials.filters.status.title')}
-                        </SelectLabel>
-                        <SelectItem value='all'>
-                            {t('pages.product_restock.partials.partials.filters.status.all')}
-                        </SelectItem>
-                        {Object.values(ProductRestockStatusEnum).map((status) => (
-                            <SelectItem value={status} key={status}>
-                                {t(`enums.App\\Support\\Enums\\ProductRestockStatusEnum.${status}`)}
+                            return newFilters;
+                        })
+                    }
+                >
+                    <SelectTrigger className='w-[180px]'>
+                        <SelectValue
+                            placeholder={t(
+                                'pages.product_restock.partials.partials.filters.status.title',
+                            )}
+                        />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>
+                                {t('pages.product_restock.partials.partials.filters.status.title')}
+                            </SelectLabel>
+                            <SelectItem value='all'>
+                                {t('pages.product_restock.partials.partials.filters.status.all')}
                             </SelectItem>
-                        ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
+                            {Object.entries(localizedProductRestockStatuses).map(
+                                ([key, status]) => (
+                                    <SelectItem value={key} key={key}>
+                                        {status}
+                                    </SelectItem>
+                                ),
+                            )}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            )}
         </GenericFilters>
     );
 };

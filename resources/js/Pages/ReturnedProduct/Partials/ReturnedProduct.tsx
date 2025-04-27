@@ -12,7 +12,7 @@ import ReturnedProductCardView from './Partials/ReturnedProductCardView';
 import ReturnedProductTableView from './Partials/ReturnedProductTableView';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
     const [returnedProductResponse, setReturnedProductResponse] =
         useState<PaginateResponse<ReturnedProductResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -29,7 +29,7 @@ export default function () {
 
     useEffect(() => {
         void syncReturnedProducts();
-    }, [filters]);
+    }, [filters, setLocale]);
 
     const handleReturnedProductDeletion = withLoading(async (id: number) => {
         await returnedProductService.delete(id);
