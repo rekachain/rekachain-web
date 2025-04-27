@@ -1,11 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { RoleEnum } from '@/Support/Enums/roleEnum';
 import { PageProps } from '@/Types';
 import { Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import UpdateAssetForm from './Partials/UpdateAssetForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
-import UpdateAssetForm from './Partials/UpdateAssetForm';
-import { RoleEnum } from '@/Support/Enums/roleEnum';
 
 export default function Edit({
     auth,
@@ -23,7 +23,7 @@ export default function Edit({
             <div className='space-y-6 p-5'>
                 {auth.user.role === RoleEnum.SUPER_ADMIN && (
                     <div className='bg-background-2 p-4 shadow sm:rounded-lg sm:p-8'>
-                        <UpdateAssetForm/>
+                        <UpdateAssetForm />
                     </div>
                 )}
                 <div className='bg-background-2 p-4 shadow sm:rounded-lg sm:p-8'>

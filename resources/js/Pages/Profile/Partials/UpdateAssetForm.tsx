@@ -8,17 +8,13 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useState } from 'react';
 import { FilePond } from 'react-filepond';
 
-export default function ({
-    className,
-}: {
-    className?: string,
-}) {
+export default function ({ className }: { className?: string }) {
     const { t } = useLaravelReactI18n();
 
     const [isUploading, setIsUploading] = useState(false);
     const [apkFile, setApkFile] = useState<File[] | null>(null);
     const [bookFile, setBookFile] = useState<File[] | null>(null);
-    
+
     const handleApkFileUpload = withLoading(async () => {
         if (!apkFile || !apkFile[0]) {
             return;
@@ -27,60 +23,59 @@ export default function ({
 
         const formData = new FormData();
         formData.append('file_path', apkFile[0]);
-        await window.axios.post(route(`${ROUTES.DASHBOARD}.store`), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            params: {
-                intent: IntentEnum.STORE_APK_FILE,
-            },
-        }).then((response) => {
-            if (response.status === 200) {
-                void useSuccessToast(
-                    t('pages.profile.partials.update_asset_form.messages.updated_apk'),
-                );
-                setIsUploading(false);
-                return;
-            }
-        });
+        await window.axios
+            .post(route(`${ROUTES.DASHBOARD}.store`), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    intent: IntentEnum.STORE_APK_FILE,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    void useSuccessToast(
+                        t('pages.profile.partials.update_asset_form.messages.updated_apk'),
+                    );
+                    setIsUploading(false);
+                    return;
+                }
+            });
     });
 
-    const handleBookFileUpload = withLoading( async () => {
+    const handleBookFileUpload = withLoading(async () => {
         if (!bookFile || !bookFile[0]) {
             return;
         }
         setIsUploading(true);
         const formData = new FormData();
         formData.append('file_path', bookFile[0]);
-        await window.axios.post(route(`${ROUTES.DASHBOARD}.store`), formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            params: {
-                intent: IntentEnum.STORE_MANUAL_BOOK_FILE,
-            },
-        }).then((response) => {
-            if (response.status === 200) {
-                void useSuccessToast(
-                    t('pages.profile.partials.update_asset_form.messages.updated_book'),
-                );
-                setIsUploading(false);
-                return;
-            }
-        });
-
+        await window.axios
+            .post(route(`${ROUTES.DASHBOARD}.store`), formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                params: {
+                    intent: IntentEnum.STORE_MANUAL_BOOK_FILE,
+                },
+            })
+            .then((response) => {
+                if (response.status === 200) {
+                    void useSuccessToast(
+                        t('pages.profile.partials.update_asset_form.messages.updated_book'),
+                    );
+                    setIsUploading(false);
+                    return;
+                }
+            });
     });
 
     const handleApkFileChange = (fileItems: any) => {
-        setApkFile(
-            fileItems.map((fileItem: any) => fileItem.file),
-        );
+        setApkFile(fileItems.map((fileItem: any) => fileItem.file));
     };
 
     const handleBookFileChange = (fileItems: any) => {
-        setBookFile(
-            fileItems.map((fileItem: any) => fileItem.file),
-        );
+        setBookFile(fileItems.map((fileItem: any) => fileItem.file));
     };
 
     const handleAssetUpload = withLoading(async () => {
@@ -112,9 +107,9 @@ export default function ({
                     labelIdle={t(
                         'pages.profile.partials.update_asset_form.fields.apk_filepond_placeholder',
                     )}
-                    acceptedFileTypes={['application/vnd.android.package-archive']}
                     filePosterMaxHeight={400}
                     allowMultiple={false}
+                    acceptedFileTypes={['application/vnd.android.package-archive']}
                 />
             </div>
             <div>
@@ -126,12 +121,12 @@ export default function ({
                     labelIdle={t(
                         'pages.profile.partials.update_asset_form.fields.book_filepond_placeholder',
                     )}
-                    acceptedFileTypes={["application/pdf"]}
                     filePosterMaxHeight={400}
                     allowMultiple={false}
+                    acceptedFileTypes={['application/pdf']}
                 />
             </div>
-            <Button disabled={isUploading} onClick={handleAssetUpload}>
+            <Button onClick={handleAssetUpload} disabled={isUploading}>
                 {t('pages.profile.partials.update_asset_form.buttons.submit')}
             </Button>
         </section>

@@ -84,12 +84,12 @@ const ProgressComponent = ({
 
     return (
         <div key={attachment.id} className='text-black dark:text-white'>
-            <div className='mb-3 flex flex-col justify-between w-fit md:w-full md:flex-row'>
+            <div className='mb-3 flex w-fit flex-col justify-between md:w-full md:flex-row'>
                 <h1 className='my-auto flex text-center text-xl font-bold'>{title}</h1>
-                <div className='flex mt-2 md:mt-0'>
+                <div className='mt-2 flex md:mt-0'>
                     <InputLabel
                         id='selected-component-id-label'
-                        className='my-auto mr-2 text-lg font-bold hidden md:block'
+                        className='my-auto mr-2 hidden text-lg font-bold md:block'
                     >
                         {t(
                             'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component_placeholder',
@@ -103,7 +103,7 @@ const ProgressComponent = ({
                     >
                         <SelectTrigger
                             id='selected-component-id'
-                            className='w-full md:w-max min-w-[200px] focus:ring-0'
+                            className='w-full min-w-[200px] focus:ring-0 md:w-max'
                         >
                             <SelectValue
                                 placeholder={`${t('pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component_placeholder')}...`}
@@ -136,7 +136,7 @@ const ProgressComponent = ({
                 (componentProgress &&
                     componentProgress.map((progress, index) => (
                         <div key={progress.component.id}>
-                            <h4 className='text-lg font-bold w-full'>
+                            <h4 className='w-full text-lg font-bold'>
                                 {t(
                                     'pages.project.trainset.carriage_trainset.partials.components.progress_component.props.component',
                                     { component: progress.component.name },
