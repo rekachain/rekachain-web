@@ -68,16 +68,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
     >({});
 
     useEffect(() => {
-        const fetchProductProblemLocalizedStatuses = async () => {
-            try {
-                const labels = await fetchEnumLabels('ProductProblemStatusEnum');
-                setProductProblemLocalizedStatuses(labels);
-            } catch (error) {
-                console.error('Failed to fetch localized statuses:', error);
-            }
-        };
-
-        fetchProductProblemLocalizedStatuses();
+        fetchEnumLabels('ProductProblemStatusEnum')
+            .then(setProductProblemLocalizedStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
     }, [setLocale]);
 
     useEffect(() => {
