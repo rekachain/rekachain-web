@@ -62,6 +62,8 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "cmdk": "^1.0.3",
+        "date-fns": "^4.1.0",
+        "dayjs": "^1.11.13",
         "filepond": "^4.31.3",
         "filepond-plugin-file-poster": "^2.5.1",
         "filepond-plugin-image-exif-orientation": "^1.0.11",

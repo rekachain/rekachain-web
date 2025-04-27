@@ -10,17 +10,15 @@ class ScanFace extends Model
 {
 
     protected $guarded = ['id'];
-    // protected $fillable = [
-    //     'user_id',
-    //     'image_path',
-    //     'status',
-    //     'kpm',
-    //     'panel',
-    // ];
 
     use HasFactory;
 
     public function user(): BelongsTo{
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    protected $casts = [
+        'created_at' => 'datetime:d/m/Y H:i:s',
+        'updated_at' => 'datetime:d/m/Y H:i:s',
+    ];
 }
