@@ -10,6 +10,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ProductRestockCardView from './Partials/ProductRestockCardView';
 import ProductRestockTableView from './Partials/ProductRestockTableView';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 export default function ({
     isSelecting,
@@ -20,7 +21,7 @@ export default function ({
     selectedIds: number[];
     handleSelectionChange: (selectedId: number) => void;
 }) {
-    const { t } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
     const [productRestockResponse, setProductRestockResponse] =
         useState<PaginateResponse<ProductRestockResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -29,6 +30,17 @@ export default function ({
         // relations: 'product_restockable',
         orderBy: 'created_at',
     });
+            
+    const [localizedProductRestockStatuses, setProductRestockLocalizedStatuses] = useState<
+        Record<string, string>
+    >({});
+
+    useEffect(() => {
+        fetchEnumLabels('ProductRestockStatusEnum')
+            .then(setProductRestockLocalizedStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+        syncProductRestocks();
+    }, [setLocale]);
 
     const syncProductRestocks = withLoading(async () => {
         const res = await productRestockService.getAll(filters);
@@ -55,7 +67,7 @@ export default function ({
         <div className='space-y-4'>
             {productRestockResponse && (
                 <>
-                    <Filters setFilters={setFilters} filters={filters} />
+                    <Filters setFilters={setFilters} filters={filters} localizedProductRestockStatuses={localizedProductRestockStatuses} />
                     <div className='hidden md:block'>
                         <ProductRestockTableView
                             selectedIds={selectedIds}

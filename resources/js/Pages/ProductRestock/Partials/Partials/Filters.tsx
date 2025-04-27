@@ -17,21 +17,13 @@ import { memo, useEffect, useState } from 'react';
 const Filters = ({
     setFilters,
     filters,
+    localizedProductRestockStatuses,
 }: {
     filters: ServiceFilterOptions;
     setFilters: (filters: ServiceFilterOptions) => void;
+    localizedProductRestockStatuses: Record<string, string>;
 }) => {
-    const { t, setLocale } = useLaravelReactI18n();
-    
-    const [localizedProductRestockStatuses, setProductRestockLocalizedStatuses] = useState<
-        Record<string, string>
-    >({});
-
-    useEffect(() => {
-        fetchEnumLabels('ProductRestockStatusEnum')
-            .then(setProductRestockLocalizedStatuses)
-            .catch((error) => console.error('Failed to fetch localized statuses:', error));
-    }, [setLocale]);
+    const { t } = useLaravelReactI18n();
 
     return (
         <GenericFilters setFilters={setFilters} filters={filters}>
