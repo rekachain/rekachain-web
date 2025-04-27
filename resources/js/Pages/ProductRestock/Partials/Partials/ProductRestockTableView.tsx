@@ -16,6 +16,7 @@ import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ProductRestockResource } from '@/Support/Interfaces/Resources';
 import { router } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import UpdateProductRestockStatus from './Partials/UpdateProductRestockStatus';
 
 export default function ProductRestockTableView({
     productRestockResponse,
@@ -23,12 +24,16 @@ export default function ProductRestockTableView({
     isSelecting,
     selectedIds,
     handleSelectionChange,
+    handleSyncProductRestock,
+    localizedStatuses,
 }: {
     productRestockResponse: PaginateResponse<ProductRestockResource>;
     handleProductRestockDeletion: (id: number) => void;
     isSelecting: boolean;
     selectedIds: number[];
     handleSelectionChange: (selectedId: number) => void;
+    handleSyncProductRestock: () => Promise<void>;
+    localizedStatuses: Record<string, string>;
 }) {
     const { t } = useLaravelReactI18n();
     return (
@@ -128,20 +133,10 @@ export default function ProductRestockTableView({
                                     </Button>
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
-                                    <Button
-                                        variant={'link'}
-                                        onClick={() =>
-                                            router.visit(
-                                                route(
-                                                    `${ROUTES.PRODUCT_RESTOCKS}.edit`,
-                                                    productRestock.id,
-                                                ),
-                                            )
-                                        }
-                                        disabled={isSelecting}
-                                    >
-                                        {t('action.edit')}
-                                    </Button>
+                                    <UpdateProductRestockStatus
+                                        productRestock={productRestock}
+                                        localizedStatuses={localizedStatuses}
+                                        handleSyncProductRestock={handleSyncProductRestock}/>
                                 )}
                                 {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
                                     <Button

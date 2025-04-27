@@ -75,6 +75,8 @@ export default function ({
                             isSelecting={isSelecting}
                             handleSelectionChange={handleSelectionChange}
                             handleProductRestockDeletion={handleProductRestockDeletion}
+                            handleSyncProductRestock={syncProductRestocks}
+                            localizedStatuses={localizedProductRestockStatuses}
                         />
                     </div>
 
