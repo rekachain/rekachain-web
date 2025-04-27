@@ -180,4 +180,22 @@ class DashboardController extends Controller {
 
         return Inertia::render('Dashboard/DashboardTrainset', ['data' => $data]);
     }
+
+    public function store(Request $request) {
+        $intent = $request->get('intent');
+        if ($this->ajax()) {
+            switch ($intent) {
+                case IntentEnum::STORE_APK_FILE->value:
+                    $request->validate([
+                        'file_path' => 'required|file|mimes:apk',
+                    ]);
+                    return $this->dashboardService->storeApkFile();
+                case IntentEnum::STORE_MANUAL_BOOK_FILE->value:
+                    $request->validate([
+                        'file_path' => 'required|file|mimes:pdf',
+                    ]);
+                    return $this->dashboardService->storeManualBookFile();
+            }
+        }
+    }
 }

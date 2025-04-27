@@ -6,6 +6,10 @@ enum IntentEnum: string {
     // To determine if current delete request is soft delete or hard delete (can be used in every model)
     case SOFT_DELETE_ENTRY = 'soft.delete.entry';
 
+    case STORE_APK_FILE = 'store.apk.file';
+
+    case STORE_MANUAL_BOOK_FILE = 'store.manual.book.file';
+
     case DOWNLOAD_APK_FILE = 'download.apk.file';
 
     case DOWNLOAD_MANUAL_BOOK_FILE = 'download.manual.book.file';

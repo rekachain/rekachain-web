@@ -323,6 +323,40 @@ class DashboardService {
         return $progressOfWorkstation->toArray();
     }
 
+    public function storeApkFile(): bool {
+        $filePath = app_path('Assets/rekachain-mobile.apk');
+        $backupDir = app_path('Assets/Backups');
+        if (request()->hasFile('file_path')) {
+            if (file_exists($filePath)) {
+                if (!is_dir($backupDir)) {
+                    mkdir($backupDir, 0755, true);
+                }
+                $backupFilePath = $backupDir . '/rekachain-mobile-' . now()->format('Y-m-d_H-i-s') . '.apk';
+                rename($filePath, $backupFilePath);
+            }
+            request()->file('file_path')->move(dirname($filePath), basename($filePath));
+            return true;
+        }
+        return false;
+    }
+
+    public function storeManualBookFile(): bool {
+        $filePath = app_path('Assets/manual-book.pdf');
+        $backupDir = app_path('Assets/Backups');
+        if (request()->hasFile('file_path')) {
+            if (file_exists($filePath)) {
+                if (!is_dir($backupDir)) {
+                    mkdir($backupDir, 0755, true);
+                }
+                $backupFilePath = $backupDir . '/manual-book-' . now()->format('Y-m-d_H-i-s') . '.pdf';
+                rename($filePath, $backupFilePath);
+            }
+            request()->file('file_path')->move(dirname($filePath), basename($filePath));
+            return true;
+        }
+        return false;
+    }
+
     public function downloadApkFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
         $apkFilePath = app_path('Assets/rekachain-mobile.apk');
         if (!file_exists($apkFilePath)) {
