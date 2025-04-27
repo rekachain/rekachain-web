@@ -7,9 +7,11 @@ return [
         ],
         'download_app' => [
             'title' => 'Download App',
+            'error' => 'Failed to download app',
         ],
         'view_manual_book' => [
             'title' => 'View Manual Book',
+            'error' => 'Failed to download manual book',
         ],
         'search' => [
             'placeholder' => 'Search...',
