@@ -42,7 +42,7 @@ class ReturnedProductResource extends JsonResource {
             'product_return' => $this->whenLoaded('product_returnable'),
             'buyer_id' => $this->buyer_id,
             'buyer' => $this->whenLoaded('buyer', function () {
-                return checkPermissionsAndRoles(PermissionEnum::RETURNED_PRODUCT_READ, [RoleEnum::WORKER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true) ?
+                return checkPermissionsAndRoles([PermissionEnum::RETURNED_PRODUCT_READ], [RoleEnum::WORKER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true) ?
                     UserResource::make($this->buyer) : [
                         'name' => $this->buyer->name,
                         'phone_number' => $this->buyer->phone_number,

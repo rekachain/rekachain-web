@@ -39,6 +39,11 @@ class ReturnedProduct extends Model {
                 'description',
             ],
         ],
+        'relation_columns' => [
+            'returned_product_notes' => [
+                'user_id',
+            ],
+        ]
     ];
     protected $casts = [
         'status' => ReturnedProductStatusEnum::class,

@@ -10,6 +10,7 @@ use App\Http\Resources\ReturnedProductResource;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
+use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\ProductProblemServiceInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use Illuminate\Http\Request;
@@ -27,6 +28,9 @@ class ApiReturnedProductController extends Controller
     {
         $perPage = request()->get('perPage', 5);
         $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['status' => ['not' => ReturnedProductStatusEnum::REQUESTED->value]])]);
+        if (!checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+            $request->query->add(['relation_column_filters' => array_merge_recursive($request->query('relation_column_filters', []), ['returned_product_notes' => ['user_id' => auth()->user()->id]])]);
+        }
 
         return ReturnedProductResource::collection($this->returnedProductService->with(['product_returnable', 'buyer'])->getAllPaginated(request()->query(), $perPage));
     }
