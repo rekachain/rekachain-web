@@ -66,7 +66,7 @@ class ApiReturnedProductController extends Controller
                 $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['returned_product_id' => $returnedProduct->id])]);
                 return ProductProblemResource::collection($this->productProblemService->with(['component'])->getAllPaginated($request->query(), 5));
             default:
-                return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
+                return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'returned_product_notes']));
         }
     }
 
