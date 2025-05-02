@@ -51,6 +51,9 @@ class ReturnedProductResource extends JsonResource {
             'qty' => $this->qty,
             'serial_panel_id' => $this->serial_panel_id,
             'serial_panel' => $this->whenLoaded('serial_panel'),
+            'project_sub' => $this->whenLoaded('serial_panel', function () {
+                return $this->serial_panel->project->name . ' - ' . $this->serial_panel->trainset->name . ' - ' . $this->serial_panel->carriage->type;
+            }),
             'serial_number' => $this->serial_number,
             'status' => $this->status,
             'localized_status' => $this->status->getLabel(),

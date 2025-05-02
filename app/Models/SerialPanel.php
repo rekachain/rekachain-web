@@ -63,4 +63,50 @@ class SerialPanel extends Model {
             ]
         );
     }
+
+    public function trainset() : HasOneDeep {
+        return $this->hasOneDeep(
+            Trainset::class,
+            [
+                PanelAttachment::class,
+                CarriagePanel::class,
+                CarriageTrainset::class,
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+            ],
+            [
+                'panel_attachment_id',
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'trainset_id',
+            ]
+        );
+    }
+
+    public function carriage() : HasOneDeep {
+        return $this->hasOneDeep(
+            Carriage::class,
+            [
+                PanelAttachment::class,
+                CarriagePanel::class,
+                CarriageTrainset::class,
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+            ],
+            [
+                'panel_attachment_id',
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'carriage_id',
+            ]
+        );
+    }
 }
