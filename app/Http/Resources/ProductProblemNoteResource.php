@@ -14,6 +14,8 @@ class ProductProblemNoteResource extends JsonResource {
             'note' => $this->note,
             'user_id' => $this->user_id,
             'user' => $this->whenLoaded('user'),
+            'user_name' => $this->user->name,
+            'level' => $this->user->roles()->first()->level,
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->updated_at->toDateTimeString(),
         ];
