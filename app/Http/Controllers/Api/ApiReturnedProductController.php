@@ -83,6 +83,9 @@ class ApiReturnedProductController extends Controller
                 $this->returnedProductService->addProductProblem($returnedProduct, $request->validated());
                 $request->query->add(['column_filters' => array_merge_recursive($request->query('column_filters', []), ['returned_product_id' => $returnedProduct->id])]);
                 return ProductProblemResource::collection($this->productProblemService->with(['component'])->getAllPaginated($request->query(), 5));
+            case IntentEnum::API_RETURNED_PRODUCT_UPDATE_RETURNED_PRODUCT_WITH_NOTE->value:
+                $returnedProduct = $this->returnedProductService->updateWithNote($returnedProduct, $request->validated());
+                return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer', 'returned_product_notes']));
             default:
                 $returnedProduct = $this->returnedProductService->update($returnedProduct, $request->validated());
                 return ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));

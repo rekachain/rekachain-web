@@ -16,5 +16,7 @@ interface ReturnedProductServiceInterface extends BaseCrudServiceInterface {
 
     public function createWithReturnedProductNote(array $data): ?Model;
 
+    public function updateWithNote(ReturnedProduct $returnedProduct, array $data): ?Model;
+
     public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool;
 }

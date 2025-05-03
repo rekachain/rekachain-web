@@ -101,6 +101,16 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         return $returnedProduct;
     }
 
+    public function updateWithNote(ReturnedProduct $returnedProduct, array $data): ?Model {
+        $returnedProduct = $this->update($returnedProduct, $data);
+        $returnedProduct->returned_product_notes()->create([
+            'user_id' => auth()->id(),
+            'note' => $data['note'],
+        ]);
+
+        return $returnedProduct;
+    }
+
     public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool {
         $replacementStocks = $this->replacementStockService()->find([
             'component_id', 'in', $data['component_ids'],
