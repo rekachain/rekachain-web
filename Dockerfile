@@ -41,8 +41,7 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 RUN cp .env.example .env
 RUN php artisan key:generate
 RUN apt-get update && apt-get install -y nano
-RUN php artisan config:clear
-RUN php artisan cache:clear
+RUN php artisan optimize:clear
 
 RUN ln -s /usr/bin/node /usr/local/bin/node
 
@@ -51,10 +50,12 @@ COPY package-lock.json ./
 COPY vite.config.js ./
 
 RUN chmod -R 775 storage bootstrap/cache \
- && chown -R www-data:www-data storage bootstrap/cache
+ && chown -R www-data:www-data storage bootstrap/cache \
 
+RUN chown -R www-data:www-data ./storage \
+    && chmod -R 777 /app/rekachain-web/storage \ 
+    && chmod -R 777 /app/rekachain-web/bootstrap/cache \
 
-RUN chown -R www-data:www-data ./storage
 
 EXPOSE 8000 5173
 
