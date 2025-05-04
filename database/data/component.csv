@@ -1,0 +1,41 @@
+component,panel_name,work_aspect
+Baseplate Panel AC,Panel AC,Fabrikasi
+Baseplate Panel Distribusi,Panel Distribusi,Fabrikasi
+Baseplate Panel Distribusi & AC,Panel Distribusi & AC,Fabrikasi
+Baseplate Genset,Genset,Fabrikasi
+Baseplate Panel PIDS A,Panel PIDS A,Fabrikasi
+Baseplate Panel PIDS B,Panel PIDS B,Fabrikasi
+Baseplate Panel PIDS M,Panel PIDS M,Fabrikasi
+Baseplate Panel Toilet,Panel Toilet,Fabrikasi
+Baseplate Panel Underframe B,Panel Underframe B,Fabrikasi
+Baseplate Main Panel,Main Panel,Fabrikasi
+Baseplate Main Panel & H-Line Panel,Main Panel & H-Line Panel,Fabrikasi
+Baseplate Main Panel & PIDS,Main Panel & PIDS,Fabrikasi
+Baseplate Electric Coupling,Electric Coupling,Fabrikasi
+Baseplate Panel Coupler,Panel Coupler,Fabrikasi
+Baseplate GPS Module,GPS Module,Fabrikasi
+Baseplate Panic Button,Panic Button,Fabrikasi
+Baseplate Side Lamp,Side Lamp,Fabrikasi
+Baseplate Tail Lamp,Tail Lamp,Fabrikasi
+Kabel Panel AC,Panel AC,Cutting Harness
+Kabel Panel Distribusi,Panel Distribusi,Cutting Harness
+Kabel Panel Distribusi & AC,Panel Distribusi & AC,Cutting Harness
+Kabel Genset,Genset,Cutting Harness
+Kabel Panel PIDS A,Panel PIDS A,Cutting Harness
+Kabel Panel PIDS B,Panel PIDS B,Cutting Harness
+Kabel Panel PIDS M,Panel PIDS M,Cutting Harness
+Kabel Panel Toilet,Panel Toilet,Cutting Harness
+Kabel Panel Underframe B,Panel Underframe B,Cutting Harness
+Kabel Main Panel,Main Panel,Cutting Harness
+Kabel Main Panel & H-Line Panel,Main Panel & H-Line Panel,Cutting Harness
+Kabel Main Panel & PIDS,Main Panel & PIDS,Cutting Harness
+Kabel Electric Coupling,Electric Coupling,Cutting Harness
+Kabel Panel Coupler,Panel Coupler,Cutting Harness
+Kabel GPS Module,GPS Module,Cutting Harness
+Kabel Panic Button,Panic Button,Cutting Harness
+Kabel Side Lamp,Side Lamp,Cutting Harness
+Kabel Tail Lamp,Tail Lamp,Cutting Harness
+Apron,Main Panel,Cutting Harness
+Exhaust Fan Panel,Main Panel,Cutting Harness
+Panel H-Line,Main Panel,Cutting Harness
+Panic Button,Main Panel,Cutting Harness

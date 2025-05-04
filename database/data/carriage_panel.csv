@@ -1,0 +1,306 @@
+trainset,progress_id,car_type,panel_name
+TS11,6,M,Main Panel & H-Line Panel
+TS11,9,M,Main Panel & PIDS
+TS11,9,P,Main Panel & PIDS
+TS11,12,M,Panel AC
+TS11,15,P,Panel Distribusi & AC
+TS11,24,M,Panel Distribusi
+TS11,39,M,Panel Underframe B
+TS11,39,P,Panel Underframe B
+TS11,42,M,PIDS
+TS11,3,K1,Panel AC
+TS11,3,K1,Main Panel
+TS11,9,K1,Main Panel & PIDS
+TS11,18,K1,Panel Distribusi
+TS11,27,K1,Panel PIDS A
+TS11,33,K1,Panel Toilet
+TS11,39,K1,Panel Underframe B
+TS12,3,K1,Panel AC
+TS12,3,K3,Panel AC
+TS12,3,K1,Main Panel
+TS12,3,K3,Main Panel
+TS12,6,M,Main Panel & H-Line Panel
+TS12,9,K1,Main Panel & PIDS
+TS12,9,K3,Main Panel & PIDS
+TS12,9,M,Main Panel & PIDS
+TS12,9,P,Main Panel & PIDS
+TS12,12,M,Panel AC
+TS12,15,P,Panel Distribusi & AC
+TS12,18,K1,Panel Distribusi
+TS12,21,K3,Panel Distribusi
+TS12,24,M,Panel Distribusi
+TS12,27,K1,Panel PIDS A
+TS12,30,K3,Panel PIDS B
+TS12,33,K1,Panel Toilet
+TS12,36,K3,Panel Toilet
+TS12,39,K1,Panel Underframe B
+TS12,39,K3,Panel Underframe B
+TS12,39,M,Panel Underframe B
+TS12,39,P,Panel Underframe B
+TS12,42,M,PIDS
+TS13,3,K3,Panel AC
+TS13,3,K3,Main Panel
+TS13,6,M,Main Panel & H-Line Panel
+TS13,9,K3,Main Panel & PIDS
+TS13,9,M,Main Panel & PIDS
+TS13,9,P,Main Panel & PIDS
+TS13,12,M,Panel AC
+TS13,15,P,Panel Distribusi & AC
+TS13,21,K3,Panel Distribusi
+TS13,24,M,Panel Distribusi
+TS13,30,K3,Panel PIDS B
+TS13,36,K3,Panel Toilet
+TS13,39,K3,Panel Underframe B
+TS13,39,M,Panel Underframe B
+TS13,39,P,Panel Underframe B
+TS13,42,M,PIDS
+TS14,3,K3,Panel AC
+TS14,3,K3,Main Panel
+TS14,6,M,Main Panel & H-Line Panel
+TS14,9,K3,Main Panel & PIDS
+TS14,9,M,Main Panel & PIDS
+TS14,9,P,Main Panel & PIDS
+TS14,12,M,Panel AC
+TS14,15,P,Panel Distribusi & AC
+TS14,21,K3,Panel Distribusi
+TS14,24,M,Panel Distribusi
+TS14,30,K3,Panel PIDS B
+TS14,36,K3,Panel Toilet
+TS14,39,K3,Panel Underframe B
+TS14,39,M,Panel Underframe B
+TS14,39,P,Panel Underframe B
+TS14,42,M,PIDS
+TS15,3,K1,Panel AC
+TS15,3,K3,Panel AC
+TS15,3,K1,Main Panel
+TS15,3,K3,Main Panel
+TS15,6,M,Main Panel & H-Line Panel
+TS15,9,K1,Main Panel & PIDS
+TS15,9,K3,Main Panel & PIDS
+TS15,9,M,Main Panel & PIDS
+TS15,9,P,Main Panel & PIDS
+TS15,12,M,Panel AC
+TS15,15,P,Panel Distribusi & AC
+TS15,18,K1,Panel Distribusi
+TS15,21,K3,Panel Distribusi
+TS15,24,M,Panel Distribusi
+TS15,27,K1,Panel PIDS A
+TS15,30,K3,Panel PIDS B
+TS15,33,K1,Panel Toilet
+TS15,36,K3,Panel Toilet
+TS15,39,K1,Panel Underframe B
+TS15,39,K3,Panel Underframe B
+TS15,39,M,Panel Underframe B
+TS15,39,P,Panel Underframe B
+TS15,42,M,PIDS
+TS16,3,K1,Panel AC
+TS16,3,K3,Panel AC
+TS16,3,K1,Main Panel
+TS16,3,K3,Main Panel
+TS16,6,M,Main Panel & H-Line Panel
+TS16,9,K1,Main Panel & PIDS
+TS16,9,K3,Main Panel & PIDS
+TS16,9,M,Main Panel & PIDS
+TS16,9,P,Main Panel & PIDS
+TS16,12,M,Panel AC
+TS16,15,P,Panel Distribusi & AC
+TS16,18,K1,Panel Distribusi
+TS16,21,K3,Panel Distribusi
+TS16,24,M,Panel Distribusi
+TS16,27,K1,Panel PIDS A
+TS16,30,K3,Panel PIDS B
+TS16,33,K1,Panel Toilet
+TS16,36,K3,Panel Toilet
+TS16,39,K1,Panel Underframe B
+TS16,39,K3,Panel Underframe B
+TS16,39,M,Panel Underframe B
+TS16,39,P,Panel Underframe B
+TS16,42,M,PIDS
+TS17,3,K3,Panel AC
+TS17,3,K3,Main Panel
+TS17,6,M,Main Panel & H-Line Panel
+TS17,9,K3,Main Panel & PIDS
+TS17,9,M,Main Panel & PIDS
+TS17,9,P,Main Panel & PIDS
+TS17,12,M,Panel AC
+TS17,15,P,Panel Distribusi & AC
+TS17,21,K3,Panel Distribusi
+TS17,24,M,Panel Distribusi
+TS17,30,K3,Panel PIDS B
+TS17,36,K3,Panel Toilet
+TS17,39,K3,Panel Underframe B
+TS17,39,M,Panel Underframe B
+TS17,39,P,Panel Underframe B
+TS17,42,M,PIDS
+TS18,6,M,Main Panel & H-Line Panel
+TS18,9,M,Main Panel & PIDS
+TS18,9,P,Main Panel & PIDS
+TS18,12,M,Panel AC
+TS18,15,P,Panel Distribusi & AC
+TS18,24,M,Panel Distribusi
+TS18,39,M,Panel Underframe B
+TS18,39,P,Panel Underframe B
+TS18,42,M,PIDS
+TS18,3,K1,Panel AC
+TS18,3,K1,Main Panel
+TS18,9,K1,Main Panel & PIDS
+TS18,18,K1,Panel Distribusi
+TS18,27,K1,Panel PIDS A
+TS18,33,K1,Panel Toilet
+TS18,39,K1,Panel Underframe B
+TS19,3,K1,Panel AC
+TS19,3,K3,Panel AC
+TS19,3,K1,Main Panel
+TS19,3,K3,Main Panel
+TS19,6,M,Main Panel & H-Line Panel
+TS19,9,K1,Main Panel & PIDS
+TS19,9,K3,Main Panel & PIDS
+TS19,9,M,Main Panel & PIDS
+TS19,9,P,Main Panel & PIDS
+TS19,12,M,Panel AC
+TS19,15,P,Panel Distribusi & AC
+TS19,18,K1,Panel Distribusi
+TS19,21,K3,Panel Distribusi
+TS19,24,M,Panel Distribusi
+TS19,27,K1,Panel PIDS A
+TS19,30,K3,Panel PIDS B
+TS19,33,K1,Panel Toilet
+TS19,36,K3,Panel Toilet
+TS19,39,K1,Panel Underframe B
+TS19,39,K3,Panel Underframe B
+TS19,39,M,Panel Underframe B
+TS19,39,P,Panel Underframe B
+TS19,42,M,PIDS
+TS20,3,K3,Panel AC
+TS20,3,K3,Main Panel
+TS20,6,M,Main Panel & H-Line Panel
+TS20,9,K3,Main Panel & PIDS
+TS20,9,M,Main Panel & PIDS
+TS20,9,P,Main Panel & PIDS
+TS20,12,M,Panel AC
+TS20,15,P,Panel Distribusi & AC
+TS20,21,K3,Panel Distribusi
+TS20,24,M,Panel Distribusi
+TS20,30,K3,Panel PIDS B
+TS20,36,K3,Panel Toilet
+TS20,39,K3,Panel Underframe B
+TS20,39,M,Panel Underframe B
+TS20,39,P,Panel Underframe B
+TS20,42,M,PIDS
+TS21,3,K3,Panel AC
+TS21,3,K3,Main Panel
+TS21,6,M,Main Panel & H-Line Panel
+TS21,9,K3,Main Panel & PIDS
+TS21,9,M,Main Panel & PIDS
+TS21,9,P,Main Panel & PIDS
+TS21,12,M,Panel AC
+TS21,15,P,Panel Distribusi & AC
+TS21,21,K3,Panel Distribusi
+TS21,24,M,Panel Distribusi
+TS21,30,K3,Panel PIDS B
+TS21,36,K3,Panel Toilet
+TS21,39,K3,Panel Underframe B
+TS21,39,M,Panel Underframe B
+TS21,39,P,Panel Underframe B
+TS21,42,M,PIDS
+TS22,3,K1,Panel AC
+TS22,3,K3,Panel AC
+TS22,3,K1,Main Panel
+TS22,3,K3,Main Panel
+TS22,6,M,Main Panel & H-Line Panel
+TS22,9,K1,Main Panel & PIDS
+TS22,9,K3,Main Panel & PIDS
+TS22,9,M,Main Panel & PIDS
+TS22,9,P,Main Panel & PIDS
+TS22,12,M,Panel AC
+TS22,15,P,Panel Distribusi & AC
+TS22,18,K1,Panel Distribusi
+TS22,21,K3,Panel Distribusi
+TS22,24,M,Panel Distribusi
+TS22,27,K1,Panel PIDS A
+TS22,30,K3,Panel PIDS B
+TS22,33,K1,Panel Toilet
+TS22,36,K3,Panel Toilet
+TS22,39,K1,Panel Underframe B
+TS22,39,K3,Panel Underframe B
+TS22,39,M,Panel Underframe B
+TS22,39,P,Panel Underframe B
+TS22,42,M,PIDS
+TS23,3,K1,Panel AC
+TS23,3,K3,Panel AC
+TS23,3,K1,Main Panel
+TS23,3,K3,Main Panel
+TS23,6,M,Main Panel & H-Line Panel
+TS23,9,K1,Main Panel & PIDS
+TS23,9,K3,Main Panel & PIDS
+TS23,9,M,Main Panel & PIDS
+TS23,9,P,Main Panel & PIDS
+TS23,12,M,Panel AC
+TS23,15,P,Panel Distribusi & AC
+TS23,18,K1,Panel Distribusi
+TS23,21,K3,Panel Distribusi
+TS23,24,M,Panel Distribusi
+TS23,27,K1,Panel PIDS A
+TS23,30,K3,Panel PIDS B
+TS23,33,K1,Panel Toilet
+TS23,36,K3,Panel Toilet
+TS23,39,K1,Panel Underframe B
+TS23,39,K3,Panel Underframe B
+TS23,39,M,Panel Underframe B
+TS23,39,P,Panel Underframe B
+TS23,42,M,PIDS
+TS24,3,K1,Panel AC
+TS24,3,K3,Panel AC
+TS24,3,K1,Main Panel
+TS24,3,K3,Main Panel
+TS24,6,M,Main Panel & H-Line Panel
+TS24,9,K1,Main Panel & PIDS
+TS24,9,K3,Main Panel & PIDS
+TS24,9,M,Main Panel & PIDS
+TS24,9,P,Main Panel & PIDS
+TS24,12,M,Panel AC
+TS24,15,P,Panel Distribusi & AC
+TS24,18,K1,Panel Distribusi
+TS24,21,K3,Panel Distribusi
+TS24,24,M,Panel Distribusi
+TS24,27,K1,Panel PIDS A
+TS24,30,K3,Panel PIDS B
+TS24,33,K1,Panel Toilet
+TS24,36,K3,Panel Toilet
+TS24,39,K1,Panel Underframe B
+TS24,39,K3,Panel Underframe B
+TS24,39,M,Panel Underframe B
+TS24,39,P,Panel Underframe B
+TS24,42,M,PIDS
+TS25,3,K3,Panel AC
+TS25,3,K3,Main Panel
+TS25,6,M,Main Panel & H-Line Panel
+TS25,9,K3,Main Panel & PIDS
+TS25,9,M,Main Panel & PIDS
+TS25,9,P,Main Panel & PIDS
+TS25,12,M,Panel AC
+TS25,15,P,Panel Distribusi & AC
+TS25,21,K3,Panel Distribusi
+TS25,24,M,Panel Distribusi
+TS25,30,K3,Panel PIDS B
+TS25,36,K3,Panel Toilet
+TS25,39,K3,Panel Underframe B
+TS25,39,M,Panel Underframe B
+TS25,39,P,Panel Underframe B
+TS25,42,M,PIDS
+TS26,6,M,Main Panel & H-Line Panel
+TS26,9,M,Main Panel & PIDS
+TS26,9,P,Main Panel & PIDS
+TS26,12,M,Panel AC
+TS26,15,P,Panel Distribusi & AC
+TS26,24,M,Panel Distribusi
+TS26,39,M,Panel Underframe B
+TS26,39,P,Panel Underframe B
+TS26,42,M,PIDS
+TS26,3,K1,Panel AC
+TS26,3,K1,Main Panel
+TS26,9,K1,Main Panel & PIDS
+TS26,18,K1,Panel Distribusi
+TS26,27,K1,Panel PIDS A
+TS26,33,K1,Panel Toilet
+TS26,39,K1,Panel Underframe B

@@ -1,0 +1,92 @@
+component,panel_name,car_type,work_aspect
+Baseplate Panel AC,Panel AC,K1,Fabrikasi
+Baseplate Panel AC,Panel AC,K3,Fabrikasi
+Baseplate Panel AC,Panel AC,M,Fabrikasi
+Baseplate Panel Distribusi,Panel Distribusi,K1,Fabrikasi
+Baseplate Panel Distribusi,Panel Distribusi,K3,Fabrikasi
+Baseplate Panel Distribusi,Panel Distribusi,M,Fabrikasi
+Baseplate Panel Distribusi & AC,Panel Distribusi & AC,P,Fabrikasi
+Baseplate Genset,Genset,P,Fabrikasi
+Baseplate Panel PIDS A,Panel PIDS A,K3,Fabrikasi
+Baseplate Panel PIDS B,Panel PIDS B,K3,Fabrikasi
+Baseplate Panel PIDS M,Panel PIDS M,M,Fabrikasi
+Baseplate Panel Toilet,Panel Toilet,K1,Fabrikasi
+Baseplate Panel Toilet,Panel Toilet,K3,Fabrikasi
+Baseplate Panel Underframe B,Panel Underframe B,K3,Fabrikasi
+Baseplate Panel Underframe B,Panel Underframe B,M,Fabrikasi
+Baseplate Main Panel,Main Panel,K1,Fabrikasi
+Baseplate Main Panel,Main Panel,K3,Fabrikasi
+Baseplate Main Panel & H-Line Panel,Main Panel & H-Line Panel,M,Fabrikasi
+Baseplate Main Panel & PIDS,Main Panel & PIDS,P,Fabrikasi
+Baseplate Electric Coupling,Electric Coupling,K1,Fabrikasi
+Baseplate Electric Coupling,Electric Coupling,K3,Fabrikasi
+Baseplate Electric Coupling,Electric Coupling,M,Fabrikasi
+Baseplate Electric Coupling,Electric Coupling,P,Fabrikasi
+Baseplate Panel Coupler,Panel Coupler,K1,Fabrikasi
+Baseplate Panel Coupler,Panel Coupler,K3,Fabrikasi
+Baseplate Panel Coupler,Panel Coupler,M,Fabrikasi
+Baseplate Panel Coupler,Panel Coupler,P,Fabrikasi
+Baseplate GPS Module,GPS Module,K1,Fabrikasi
+Baseplate GPS Module,GPS Module,K3,Fabrikasi
+Baseplate Panic Button,Panic Button,K1,Fabrikasi
+Baseplate Panic Button,Panic Button,K3,Fabrikasi
+Baseplate Side Lamp,Side Lamp,K1,Fabrikasi
+Baseplate Side Lamp,Side Lamp,K3,Fabrikasi
+Baseplate Side Lamp,Side Lamp,M,Fabrikasi
+Baseplate Side Lamp,Side Lamp,P,Fabrikasi
+Baseplate Tail Lamp,Tail Lamp,K1,Fabrikasi
+Baseplate Tail Lamp,Tail Lamp,K3,Fabrikasi
+Baseplate Tail Lamp,Tail Lamp,M,Fabrikasi
+Baseplate Tail Lamp,Tail Lamp,P,Fabrikasi
+Kabel Panel AC,Panel AC,K1,Cutting Harness
+Kabel Panel AC,Panel AC,K3,Cutting Harness
+Kabel Panel AC,Panel AC,M,Cutting Harness
+Kabel Panel Distribusi,Panel Distribusi,K1,Cutting Harness
+Kabel Panel Distribusi,Panel Distribusi,K3,Cutting Harness
+Kabel Panel Distribusi,Panel Distribusi,M,Cutting Harness
+Kabel Panel Distribusi & AC,Panel Distribusi & AC,P,Cutting Harness
+Kabel Genset,Genset,P,Cutting Harness
+Kabel Panel PIDS A,Panel PIDS A,K3,Cutting Harness
+Kabel Panel PIDS B,Panel PIDS B,K3,Cutting Harness
+Kabel Panel PIDS M,Panel PIDS M,M,Cutting Harness
+Kabel Panel Toilet,Panel Toilet,K1,Cutting Harness
+Kabel Panel Toilet,Panel Toilet,K3,Cutting Harness
+Kabel Panel Underframe B,Panel Underframe B,K1,Cutting Harness
+Kabel Panel Underframe B,Panel Underframe B,K3,Cutting Harness
+Kabel Panel Underframe B,Panel Underframe B,M,Cutting Harness
+Kabel Main Panel,Main Panel,K1,Cutting Harness
+Kabel Main Panel,Main Panel,K3,Cutting Harness
+Kabel Main Panel & H-Line Panel,Main Panel & H-Line Panel,M,Cutting Harness
+Kabel Main Panel & PIDS,Main Panel & PIDS,P,Cutting Harness
+Kabel Electric Coupling,Electric Coupling,K1,Cutting Harness
+Kabel Electric Coupling,Electric Coupling,K3,Cutting Harness
+Kabel Electric Coupling,Electric Coupling,M,Cutting Harness
+Kabel Electric Coupling,Electric Coupling,P,Cutting Harness
+Kabel Panel Coupler,Panel Coupler,K1,Cutting Harness
+Kabel Panel Coupler,Panel Coupler,K3,Cutting Harness
+Kabel Panel Coupler,Panel Coupler,M,Cutting Harness
+Kabel Panel Coupler,Panel Coupler,P,Cutting Harness
+Kabel GPS Module,GPS Module,K1,Cutting Harness
+Kabel GPS Module,GPS Module,K3,Cutting Harness
+Kabel Panic Button,Panic Button,K1,Cutting Harness
+Kabel Panic Button,Panic Button,K3,Cutting Harness
+Kabel Side Lamp,Side Lamp,K1,Cutting Harness
+Kabel Side Lamp,Side Lamp,K3,Cutting Harness
+Kabel Side Lamp,Side Lamp,M,Cutting Harness
+Kabel Side Lamp,Side Lamp,P,Cutting Harness
+Kabel Tail Lamp,Tail Lamp,K1,Cutting Harness
+Kabel Tail Lamp,Tail Lamp,K3,Cutting Harness
+Kabel Tail Lamp,Tail Lamp,M,Cutting Harness
+Kabel Tail Lamp,Tail Lamp,P,Cutting Harness
+Apron,Main Panel,K1,Cutting Harness
+Apron,Main Panel,K3,Cutting Harness
+Apron,Main Panel,M,Cutting Harness
+Apron,Main Panel,P,Cutting Harness
+Exhaust Fan Panel,Main Panel,K1,Cutting Harness
+Exhaust Fan Panel,Main Panel,K3,Cutting Harness
+Exhaust Fan Panel,Main Panel,M,Cutting Harness
+Exhaust Fan Panel,Main Panel,P,Cutting Harness
+Panel H-Line,Main Panel,K1,Cutting Harness
+Panel H-Line,Main Panel,K3,Cutting Harness
+Panic Button,Main Panel,K1,Cutting Harness
+Panic Button,Main Panel,K3,Cutting Harness

@@ -1,0 +1,181 @@
+material_code,description,specs,unit
+22B58OH00000XXG01,"LdK1Lp, LdK2Lp (Power Ready)","Indicator Lamp, Green 220VAC",PCS
+22B58OH00000XXW01,"LdK1Lp, LdK2Lp","Indicator Lamp, White 220VAC",PCS
+22B58OH00000AAC04,"Operation Lamp for Manual Mode, Power On","Indicator Lamp, ABB CL2-502C 24VCD/AC",PCS
+22B58OH00000AAG04,AC OP (AC ON),"Indicator Lamp, ABB CL2-502G 24VDC/AC",PCS
+22B58OH00000AAR04,AC FAULT,"Indicator Lamp, ABB CL2-502R 24VDC/AC",PCS
+22B58WS00220CDK00,Blank Hole Plug,"Blanking Plug, Schnelder ZB5SZ3 O22 Black",PCS
+22B58RM00063AAA32,CAN,"NFB, ABB S203-C63 3P 63A",PCS
+22B58RM00016AAA22,"HMIN, VCUN","NFB, ABB S202-C16 2P 16A",PCS
+22B58RM00002AAA11,"CN1, SDN (Smoke Detec), CN2",ABB S201-C2 1P 2A,PCS
+22B58RM0001OAAA11,"LStN1, LStN2, LStN3","NFB, ABB S201-C10 1P 10A",PCS
+22B58RM00006AAA11,"BLpN, FtLpN, LCDN, RTN, STLpN, SNLpN, PdrLpN, RLpN1, RLpN2, RLpN3, AMPN, Spare, Spare","NFB, ABB S201-C6 1P 6A",PCS
+22B58RM00006AAA11,"BatECN, 24RN","DC NFB, ABB S201-C6 1P 6A",PCS
+22B58RX00010AAA21,"RCBO for PwScN1, PwScN2, PwScN3",ABB DSN201 C10 AC30,PCS
+22B58RM00006AAA22,"ACCN, PLCN","ABB, S202-C6, 2P 6A",PCS
+22B58RS10009AAC34,"RLpK, PdrLpK, FtLpK, BLpK, SNLpK, RvK, FwK",AF09Z-30-10-21 24vdc 4kw,PCS
+22B58RQ00006AAA44,"MMSR1, MMSR2, MMSR3, HSVR1, HSVR2, HSVR3, HSVR4","Relay, ABB CR-M024DC4L 4CO 24VDC",PCS
+22B58RR00000AAA40,"MMSR1, MMSR2, MMSR3, HSVR1, HSVR2, HSVR3, HSVR4","Socket Relay, ABB CR-M4SS",PCS
+22B58SE00001AAA00,"MMSR1, MMSR2, MMSR3, HSVR1, HSVR2, HSVR3, HSVR4","Locking Relay, ABB CR-MH",PCS
+22B58OH00000XXG08,Emergency Stop Button,"Push Button, Red, 24VDC",PCS
+22B58OH00000XXW08,Control Switch,"Rotary Switch, 3 Positions, 220VAC",PCS
+22B58OH00000AAC11,Power Supply,"Switching Power Supply, 24VDC, 5A",PCS
+22B58OH00000AAG11,Signal Converter,"Analog to Digital Converter, 4-20mA to 0-10V",PCS
+22B58OH00000AAR11,Temperature Sensor,"Thermocouple, Type K, 0-400°C",PCS
+22B58WS00220CDK07,Cable Gland,"Metal Cable Gland, M20",PCS
+22B58RM00063AAA39,Circuit Breaker,"MCB, 1P, 10A, 230VAC",PCS
+22B58RM00016AAA29,Relay Module,"Solid State Relay, 24VDC, 10A",PCS
+22B58RM00002AAA18,Fuse Holder,"DIN Rail Mount, 5x20mm",PCS
+22B58RM0001OAAA18,Contactor,"3P, 24VDC Coil, 9A",PCS
+22B58RM00006AAA18,Terminal Block,"Screw Type, 2.5mm²",PCS
+22B58RM00006AAA18,Proximity Sensor,"Inductive, NPN, 12-24VDC",PCS
+22B58RX00010AAA28,Power Connector,"3-Pin, Male, Panel Mount",PCS
+22B58RM00006AAA29,Limit Switch,"Roller Lever, SPDT, 250VAC",PCS
+22B58RS10009AAC41,Solenoid Valve,"2/2 Way, NC, 24VDC",PCS
+22B58RQ00006AAA49,Pressure Gauge,"Analog, 0-10 Bar, G1/4",PCS
+22B58RR00000AAA45,Flow Meter,"Digital, 0-100 L/min, 24VDC",PCS
+22B58SE00001AAA05,Heat Sink,"Aluminum, 100x50x20mm",PCS
+22B58OH00000XXG09,LED Display,"7-Segment, 4-Digit, Red, 12VDC",PCS
+22B58OH00000XXW09,Buzzer,"Piezoelectric, 85dB, 24VDC",PCS
+22B58OH00000AAC12,Encoder,"Rotary, Incremental, 1024 PPR",PCS
+22B58OH00000AAG12,Stepper Motor,"NEMA 17, 1.8°, 2A",PCS
+22B58OH00000AAR12,Servo Motor,"AC Servo, 400W, 220VAC",PCS
+22B58WS00220CDK08,Battery,"Lithium-Ion, 18650, 3.7V, 2600mAh",PCS
+22B58RM00063AAA40,Resistor,"Wirewound, 10Ω, 50W",PCS
+22B58RM00016AAA30,Capacitor,"Electrolytic, 1000µF, 25V",PCS
+22B58RM00002AAA19,Inductor,"Ferrite Core, 10mH, 1A",PCS
+22B58RM0001OAAA19,Diode,"Schottky, 1A, 40V",PCS
+22B58RM00006AAA19,Transistor,"NPN, 2N2222, 40V, 800mA",PCS
+22B58RM00006AAA19,IC,"555 Timer, DIP-8",PCS
+22B58RX00010AAA29,Microcontroller,"ATmega328P, 8-bit, 16MHz",PCS
+22B58RM00006AAA30,Optocoupler,"4N35, DIP-6",PCS
+22B58RS10009AAC42,Crystal Oscillator,"16MHz, HC-49S",PCS
+22B58RQ00006AAA50,Voltage Regulator,"LM7805, 5V, 1.5A",PCS
+22B58RR00000AAA46,Potentiometer,"10kΩ, Linear, 1/4W",PCS
+22B58SE00001AAA06,Thermistor,"NTC, 10kΩ, 3950K",PCS
+22B58OH00000XXG10,Phototransistor,"NPN, 5mm, 940nm",PCS
+22B58OH00000XXW10,Laser Diode,"5mW, 650nm, Red",PCS
+22B58OH00000AAC13,Speaker,"8Ω, 0.5W, 40mm",PCS
+22B58OH00000AAG13,Microphone,"Electret, 2.2kΩ, 10mm",PCS
+22B58OH00000AAR13,Accelerometer,"3-Axis, ±2g, I2C",PCS
+22B58WS00220CDK09,Gyroscope,"3-Axis, ±2000°/s, SPI",PCS
+22B58RM00063AAA41,Magnetometer,"3-Axis, ±8 Gauss, I2C",PCS
+22B58RM00016AAA31,Barometer,"Digital, 300-1100hPa, I2C",PCS
+22B58RM00002AAA20,Humidity Sensor,"Capacitive, 0-100% RH, I2C",PCS
+22B58RM0001OAAA20,Gas Sensor,"MQ-2, LPG, CO, Smoke",PCS
+22B58RM00006AAA20,UV Sensor,"Analog, 280-400nm",PCS
+22B58RM00006AAA20,IR Sensor,"Digital, 38kHz",PCS
+22B58RX00010AAA30,RF Module,"433MHz, Transceiver",PCS
+22B58RM00006AAA31,Bluetooth Module,"HC-05, 3.3V",PCS
+22B58RS10009AAC43,WiFi Module,"ESP8266, 2.4GHz",PCS
+22B58RQ00006AAA51,GPS Module,"NEO-6M, UART",PCS
+22B58RR00000AAA47,GSM Module,"SIM800L, Quad-Band",PCS
+22B58SE00001AAA07,LoRa Module,"SX1278, 433MHz",PCS
+22B58OH00000XXG11,Zigbee Module,"XBee, 2.4GHz",PCS
+22B58OH00000XXW11,Ethernet Module,"ENC28J60, SPI",PCS
+22B58OH00000AAC14,SD Card Module,"MicroSD, SPI",PCS
+22B58OH00000AAG14,RTC Module,"DS3231, I2C",PCS
+22B58OH00000AAR14,EEPROM Module,"AT24C256, I2C",PCS
+22B58WS00220CDK10,Flash Memory,"W25Q64, SPI",PCS
+22B58RM00063AAA42,LCD Display,"16x2, HD44780, I2C",PCS
+22B58RM00016AAA32,OLED Display,"128x64, SSD1306, I2C",PCS
+22B58RM00002AAA21,TFT Display,"2.4 inch, ILI9341, SPI",PCS
+22B58RM0001OAAA21,E-Paper Display,"2.9 inch, 296x128, SPI",PCS
+22B58RM00006AAA21,Touch Screen,"Resistive, 4-Wire, 3.5 inch",PCS
+22B58RM00006AAA21,Camera Module,"OV7670, VGA, I2C",PCS
+22B58RX00010AAA31,Thermal Camera,"MLX90640, 32x24, I2C",PCS
+22B58RM00006AAA32,Fingerprint Sensor,"Optical, UART",PCS
+22B58RS10009AAC44,Heart Rate Sensor,"Pulse Sensor, Analog",PCS
+22B58RQ00006AAA52,ECG Sensor,"AD8232, Analog",PCS
+22B58RR00000AAA48,EMG Sensor,"MyoWare, Analog",PCS
+22B58SE00001AAA08,EEG Sensor,"OpenBCI, Analog",PCS
+22B58OH00000XXG12,Muscle Sensor,"Grove, Analog",PCS
+22B58OH00000XXW12,Flex Sensor,"2.2 inch, Analog",PCS
+22B58OH00000AAC15,Force Sensor,"FSR, 0-10kg, Analog",PCS
+22B58OH00000AAG15,Load Cell,"5kg, Half-Bridge",PCS
+22B58OH00000AAR15,Strain Gauge,"350Ω, Wheatstone Bridge",PCS
+22B58WS00220CDK11,Piezo Sensor,"Piezoelectric, Analog",PCS
+22B58RM00063AAA43,Tilt Sensor,"Mercury, Digital",PCS
+22B58SC00001AAA01,Hex Bolt,"M6 x 20mm, Stainless Steel",PCS
+22B58SC00001AAA02,Hex Bolt,"M8 x 30mm, Stainless Steel",PCS
+22B58SC00001AAA03,Hex Bolt,"M10 x 40mm, Stainless Steel",PCS
+22B58SC00001AAA04,Hex Bolt,"M12 x 50mm, Stainless Steel",PCS
+22B58SC00001AAA05,Hex Bolt,"M16 x 60mm, Stainless Steel",PCS
+22B58SC00002AAA01,Hex Nut,"M6, Stainless Steel",PCS
+22B58SC00002AAA02,Hex Nut,"M8, Stainless Steel",PCS
+22B58SC00002AAA03,Hex Nut,"M10, Stainless Steel",PCS
+22B58SC00002AAA04,Hex Nut,"M12, Stainless Steel",PCS
+22B58SC00002AAA05,Hex Nut,"M16, Stainless Steel",PCS
+22B58SC00003AAA01,Flat Washer,"M6, Stainless Steel",PCS
+22B58SC00003AAA02,Flat Washer,"M8, Stainless Steel",PCS
+22B58SC00003AAA03,Flat Washer,"M10, Stainless Steel",PCS
+22B58SC00003AAA04,Flat Washer,"M12, Stainless Steel",PCS
+22B58SC00003AAA05,Flat Washer,"M16, Stainless Steel",PCS
+22B58SC00004AAA01,Spring Washer,"M6, Stainless Steel",PCS
+22B58SC00004AAA02,Spring Washer,"M8, Stainless Steel",PCS
+22B58SC00004AAA03,Spring Washer,"M10, Stainless Steel",PCS
+22B58SC00004AAA04,Spring Washer,"M12, Stainless Steel",PCS
+22B58SC00004AAA05,Spring Washer,"M16, Stainless Steel",PCS
+22B58SC00005AAA01,Socket Head Cap Screw,"M6 x 20mm, Alloy Steel",PCS
+22B58SC00005AAA02,Socket Head Cap Screw,"M8 x 30mm, Alloy Steel",PCS
+22B58SC00005AAA03,Socket Head Cap Screw,"M10 x 40mm, Alloy Steel",PCS
+22B58SC00005AAA04,Socket Head Cap Screw,"M12 x 50mm, Alloy Steel",PCS
+22B58SC00005AAA05,Socket Head Cap Screw,"M16 x 60mm, Alloy Steel",PCS
+22B58SC00006AAA01,Machine Screw,"M3 x 10mm, Brass",PCS
+22B58SC00006AAA02,Machine Screw,"M4 x 12mm, Brass",PCS
+22B58SC00006AAA03,Machine Screw,"M5 x 16mm, Brass",PCS
+22B58SC00006AAA04,Machine Screw,"M6 x 20mm, Brass",PCS
+22B58SC00006AAA05,Machine Screw,"M8 x 25mm, Brass",PCS
+22B58SC00007AAA01,Wood Screw,"#6 x 1 inch, Zinc Plated",PCS
+22B58SC00007AAA02,Wood Screw,"#8 x 1.5 inch, Zinc Plated",PCS
+22B58SC00007AAA03,Wood Screw,"#10 x 2 inch, Zinc Plated",PCS
+22B58SC00007AAA04,Wood Screw,"#12 x 2.5 inch, Zinc Plated",PCS
+22B58SC00007AAA05,Wood Screw,"#14 x 3 inch, Zinc Plated",PCS
+22B58SC00008AAA01,Sheet Metal Screw,"#6 x 1 inch, Stainless Steel",PCS
+22B58SC00008AAA02,Sheet Metal Screw,"#8 x 1.5 inch, Stainless Steel",PCS
+22B58SC00008AAA03,Sheet Metal Screw,"#10 x 2 inch, Stainless Steel",PCS
+22B58SC00008AAA04,Sheet Metal Screw,"#12 x 2.5 inch, Stainless Steel",PCS
+22B58SC00008AAA05,Sheet Metal Screw,"#14 x 3 inch, Stainless Steel",PCS
+22B58SC00009AAA01,Self-Tapping Screw,"#6 x 1 inch, Black Oxide",PCS
+22B58SC00009AAA02,Self-Tapping Screw,"#8 x 1.5 inch, Black Oxide",PCS
+22B58SC00009AAA03,Self-Tapping Screw,"#10 x 2 inch, Black Oxide",PCS
+22B58SC00009AAA04,Self-Tapping Screw,"#12 x 2.5 inch, Black Oxide",PCS
+22B58SC00009AAA05,Self-Tapping Screw,"#14 x 3 inch, Black Oxide",PCS
+22B58SC00010AAA01,Lag Bolt,"3/8 x 2 inch, Hot Dipped Galvanized",PCS
+22B58SC00010AAA02,Lag Bolt,"3/8 x 3 inch, Hot Dipped Galvanized",PCS
+22B58SC00010AAA03,Lag Bolt,"3/8 x 4 inch, Hot Dipped Galvanized",PCS
+22B58SC00010AAA04,Lag Bolt,"1/2 x 5 inch, Hot Dipped Galvanized",PCS
+22B58SC00010AAA05,Lag Bolt,"1/2 x 6 inch, Hot Dipped Galvanized",PCS
+22B58SC00011AAA01,Carriage Bolt,"1/4 x 2 inch, Stainless Steel",PCS
+22B58SC00011AAA02,Carriage Bolt,"1/4 x 3 inch, Stainless Steel",PCS
+22B58SC00011AAA03,Carriage Bolt,"5/16 x 4 inch, Stainless Steel",PCS
+22B58SC00011AAA04,Carriage Bolt,"3/8 x 5 inch, Stainless Steel",PCS
+22B58SC00011AAA05,Carriage Bolt,"1/2 x 6 inch, Stainless Steel",PCS
+22B58SC00012AAA01,Eye Bolt,"M6 x 40mm, Stainless Steel",PCS
+22B58SC00012AAA02,Eye Bolt,"M8 x 50mm, Stainless Steel",PCS
+22B58SC00012AAA03,Eye Bolt,"M10 x 60mm, Stainless Steel",PCS
+22B58SC00012AAA04,Eye Bolt,"M12 x 70mm, Stainless Steel",PCS
+22B58SC00012AAA05,Eye Bolt,"M16 x 80mm, Stainless Steel",PCS
+22B58SC00013AAA01,U-Bolt,"M6 x 50mm, Stainless Steel",PCS
+22B58SC00013AAA02,U-Bolt,"M8 x 60mm, Stainless Steel",PCS
+22B58SC00013AAA03,U-Bolt,"M10 x 70mm, Stainless Steel",PCS
+22B58SC00013AAA04,U-Bolt,"M12 x 80mm, Stainless Steel",PCS
+22B58SC00013AAA05,U-Bolt,"M16 x 90mm, Stainless Steel",PCS
+22B58SC00014AAA01,Anchor Bolt,"M6 x 100mm, Stainless Steel",PCS
+22B58SC00014AAA02,Anchor Bolt,"M8 x 120mm, Stainless Steel",PCS
+22B58SC00014AAA03,Anchor Bolt,"M10 x 150mm, Stainless Steel",PCS
+22B58SC00014AAA04,Anchor Bolt,"M12 x 180mm, Stainless Steel",PCS
+22B58SC00014AAA05,Anchor Bolt,"M16 x 200mm, Stainless Steel",PCS
+22B58SC00015AAA01,Copper Rod,"10mm x 1m, Pure Copper",PCS
+22B58SC00015AAA02,Copper Rod,"12mm x 1m, Pure Copper",PCS
+22B58SC00015AAA03,Copper Rod,"15mm x 1m, Pure Copper",PCS
+22B58SC00015AAA04,Copper Rod,"20mm x 1m, Pure Copper",PCS
+22B58SC00015AAA05,Copper Rod,"25mm x 1m, Pure Copper",PCS
+22B58SC00016AAA01,Brass Rod,"10mm x 1m, Brass",PCS
+22B58SC00016AAA02,Brass Rod,"12mm x 1m, Brass",PCS
+22B58SC00016AAA03,Brass Rod,"15mm x 1m, Brass",PCS
+22B58SC00016AAA04,Brass Rod,"20mm x 1m, Brass",PCS
+22B58SC00016AAA05,Brass Rod,"25mm x 1m, Brass",PCS
+22B58SC00017AAA01,Aluminum Rod,"10mm x 1m, Aluminum",PCS
+22B58SC00017AAA02,Aluminum Rod,"12mm x 1m, Aluminum",PCS
+22B58SC00017AAA03,Aluminum Rod,"15mm x 1m, Aluminum",PCS

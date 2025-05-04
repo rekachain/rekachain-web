@@ -50,12 +50,11 @@ COPY package-lock.json ./
 COPY vite.config.js ./
 
 RUN chmod -R 775 storage bootstrap/cache \
- && chown -R www-data:www-data storage bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache
 
 RUN chown -R www-data:www-data ./storage \
-    && chmod -R 777 /app/rekachain-web/storage \ 
-    && chmod -R 777 /app/rekachain-web/bootstrap/cache \
-
+    && chmod -R 777 /app/rekachain-web/storage \
+    && chmod -R 777 /app/rekachain-web/bootstrap/cache
 
 EXPOSE 8000 5173
 

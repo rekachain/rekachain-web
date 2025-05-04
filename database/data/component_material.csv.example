@@ -1,7 +1,0 @@
-carriage_type, component_name,panel_name,raw_material_name,qty
-K1, Baseplate Panel, Panel AC, "LdK1Lp, LdK2Lp (Power Ready)",10
-K1, Baseplate Panel, Panel AC,"LdK1Lp, LdK2Lp",10
-K1, Baseplate Panel Distribusi, Panel Distribusi,"LdK1Lp, LdK2Lp (Power Ready)",15
-K3, Baseplate Panel Distribusi, Panel Distribusi,"Operation Lamp for Manual Mode, Power On",5
-Baseplate Panel PIDS
-M, Baseplate Panel PIDS M, Panel PIDS M, "Operation Lamp for Manual Mode, Power On",10
