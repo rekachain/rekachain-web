@@ -16,10 +16,16 @@ class ProductProblemService extends BaseCrudService implements ProductProblemSer
         return ProductProblemRepositoryInterface::class;
     }
 
+    public function update($keyOrModel, array $data): ?Model {
+        $data = $this->handleImageUpload($data);
+
+        return parent::update($keyOrModel, $data);
+    }
+
     public function updateWithNote($keyOrModel, array $data): ?Model {
-        $data = $this->handleImageUpload($data, $keyOrModel);
         $productProblem = $this->update($keyOrModel, $data);
-        $this->productProblemNoteService()->update($productProblem->product_problem_notes()->first(), [
+        $productProblem->product_problem_notes()->create([
+            'user_id' => auth()->id(),
             'note' => $data['note'],
         ]);
 

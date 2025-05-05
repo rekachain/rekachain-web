@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Imports\ReturnedProduct\ReturnedProductImport;
 use App\Models\Component;
+use App\Models\Panel;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\ProductRestockStatusEnum;
@@ -26,6 +27,11 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
     public function create(array $data): ?Model {
         $data = $this->handleImageUpload($data);
+
+        if (!isset($data['product_returnable_id']) && isset($data['serial_panel_id']) && $data['serial_panel_id'] !== null) {
+            $data['product_returnable_id'] = $this->serialPanelService()->findOrFail($data['serial_panel_id'])->panel_attachment->carriage_panel->panel_id;
+            $data['product_returnable_type'] = Panel::class;
+        }
 
         $returnedProduct = parent::create($data);
 
@@ -87,6 +93,16 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
     public function createWithReturnedProductNote(array $data): ?Model {
         $returnedProduct = $this->create($data);
+        $returnedProduct->returned_product_notes()->create([
+            'user_id' => auth()->id(),
+            'note' => $data['note'],
+        ]);
+
+        return $returnedProduct;
+    }
+
+    public function updateWithNote(ReturnedProduct $returnedProduct, array $data): ?Model {
+        $returnedProduct = $this->update($returnedProduct, $data);
         $returnedProduct->returned_product_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],

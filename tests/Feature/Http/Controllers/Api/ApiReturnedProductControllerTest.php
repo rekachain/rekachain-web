@@ -4,6 +4,7 @@ use App\Support\Enums\IntentEnum;
 use App\Support\Enums\ProductProblemStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 test('scanned ReturnedProduct show Product details', function () {
     $model = $this->dummy->createSerialPanel();
@@ -22,6 +23,43 @@ test('scanned ReturnedProduct show Product details', function () {
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at,
         ]);
+});
+
+test('user can view ReturnedProduct list', function () {
+    $model = $this->dummy->createReturnedProduct();
+
+    $response = actAsWorkerAftersales()->getJson("/api/returned-products");
+
+    $response->assertStatus(200)
+        ->assertJsonStructure(['data', 'meta'])
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data.0.product_returnable_id')
+                ->has('data.0.product_returnable_type')
+                ->has('data.0.buyer_id')
+                ->has('data.0.qty')
+                ->has('data.0.serial_number')
+                ->etc();
+        });
+});
+
+test('user can view ReturnedProduct Product Problem list', function () {
+    $model = $this->dummy->createProductProblem();
+    $params = [
+        'intent' => 'api.returned-product.get.product-problem',
+    ];
+
+    $response = actAsWorkerAftersales()->getJson("/api/returned-products/{$model->returned_product_id}?" . http_build_query($params));
+
+    $response->assertStatus(200)
+        ->assertJsonStructure(['data', 'meta'])
+        ->assertJson(function (AssertableJson $json) {
+            $json->has('data.0.returned_product_id')
+                ->has('data.0.product_restockable_id')
+                ->has('data.0.product_restockable_type')
+                ->has('data.0.project_id')
+                ->has('data.0.status')
+                ->etc();
+        });
 });
 
 test('system can save created returned-product to database', function () {

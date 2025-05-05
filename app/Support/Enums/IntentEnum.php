@@ -136,6 +136,22 @@ enum IntentEnum: string {
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
 
+    case API_RETURNED_PRODUCT_GET_ALL_RETURNED_PRODUCTS = 'api.returned.product.get.all.returned.products';
+
+    case API_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_DETAILS = 'api.returned.product.get.returned.product.details';
+
+    case API_RETURNED_PRODUCT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.returned.product.get.attachment.serial.number.details.with.qr';
+
+    case API_RETURNED_PRODUCT_GET_PRODUCT_PROBLEMS = 'api.returned.product.get.product.problems';
+
+    case API_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE = 'api.returned.product.add.returned.product.with.note';
+
+    case API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM = 'api.returned.product.create.product.problem';
+
+    case API_RETURNED_PRODUCT_UPDATE_RETURNED_PRODUCT_WITH_NOTE = 'api.returned.product.update.returned.product.with.note';
+
+    case API_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE = 'api.product.problem.update.product.problem.with.note';
+
     case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS = 'web.project.get.all.trainset.components';
 
     case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY = 'web.project.get.all.trainset.components.with.qty';

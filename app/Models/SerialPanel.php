@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class SerialPanel extends Model {
-    use HasFactory, HasFilterable;
+    use HasFactory, HasFilterable, HasRelationships;
 
     protected $fillable = [
         'product_no',
@@ -34,5 +36,77 @@ class SerialPanel extends Model {
 
     public function detail_worker_panels(): HasMany {
         return $this->hasMany(DetailWorkerPanel::class);
+    }
+
+    public function project(): HasOneDeep {
+        return $this->hasOneDeep(
+            Project::class,
+            [
+                PanelAttachment::class,
+                CarriagePanel::class,
+                CarriageTrainset::class,
+                Trainset::class,
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+                'id',
+            ],
+            [
+                'panel_attachment_id',
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'trainset_id',
+                'project_id',
+            ]
+        );
+    }
+
+    public function trainset() : HasOneDeep {
+        return $this->hasOneDeep(
+            Trainset::class,
+            [
+                PanelAttachment::class,
+                CarriagePanel::class,
+                CarriageTrainset::class,
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+            ],
+            [
+                'panel_attachment_id',
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'trainset_id',
+            ]
+        );
+    }
+
+    public function carriage() : HasOneDeep {
+        return $this->hasOneDeep(
+            Carriage::class,
+            [
+                PanelAttachment::class,
+                CarriagePanel::class,
+                CarriageTrainset::class,
+            ],
+            [
+                'id',
+                'id',
+                'id',
+                'id',
+            ],
+            [
+                'panel_attachment_id',
+                'carriage_panel_id',
+                'carriage_trainset_id',
+                'carriage_id',
+            ]
+        );
     }
 }
