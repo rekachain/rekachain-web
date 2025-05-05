@@ -64,7 +64,7 @@ class SerialPanel extends Model {
         );
     }
 
-    public function trainset() : HasOneDeep {
+    public function trainset(): HasOneDeep {
         return $this->hasOneDeep(
             Trainset::class,
             [
@@ -87,7 +87,7 @@ class SerialPanel extends Model {
         );
     }
 
-    public function carriage() : HasOneDeep {
+    public function carriage(): HasOneDeep {
         return $this->hasOneDeep(
             Carriage::class,
             [
