@@ -9,7 +9,7 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
 
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -63,6 +63,12 @@ import { trainsetService } from '@/Services/trainsetService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useLocalStorage } from '@uidotdev/usehooks';
 import { useCallback, useEffect, useState } from 'react';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
+import GenericDataSelector from '@/Components/GenericDataSelector';
+import { withLoading } from '@/Utils/withLoading';
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
     progress: { status: string; count: number }[];
@@ -75,15 +81,24 @@ interface AttachmentStatusBarGraph {
     data?: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
 }
+interface ReturnedProductStatusDonutChart {
+    data: { name: string; value: number }[];
+    config: ChartConfig;
+}
 export default function Dashboard({ auth, data }: PageProps) {
     const [open, setOpen] = useState(false);
+    const [yearFilterOpen, setYearFilterOpen] = useState(false);
+    const [monthFilterOpen, setMonthFilterOpen] = useState(false);
+    const years = [2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
     const [openTrainset, setOpenTrainset] = useState(false);
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
+    const [yearFilterValue, setYearFilterValue] = useState('');
+    const [monthFilterValue, setMonthFilterValue] = useState('');
     const [valueTrainset, setValueTrainset] = useState('');
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
-    console.log(data);
+    // console.log(data);
 
     const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({
         done: {
@@ -162,6 +177,44 @@ export default function Dashboard({ auth, data }: PageProps) {
                 ),
             ),
         });
+
+    const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
+        Record<string, string>
+    >({});
+    
+    useEffect(() => {
+        fetchEnumLabels('ReturnedProductStatusEnum')
+            .then((statuses) => {
+                setLocalizedReturnedProductStatuses(statuses);
+            })
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    }, []);
+    const [returnedProductStatusDonutChart, setReturnedProductStatusDonutChart] =
+        useState<ReturnedProductStatusDonutChart>({
+            data: data.returned_product_status || [],
+            config: {
+                requested: {
+                    label: localizedReturnedProductStatuses.requested || 'Diminta',
+                    color: 'hsl(var(--chart-1))',
+                },
+                draft: {
+                    label: localizedReturnedProductStatuses.draft || 'Draf',
+                    color: 'hsl(var(--chart-2))',
+                },
+                progress: {
+                    label: localizedReturnedProductStatuses.progress || 'Progres',
+                    color: 'hsl(var(--chart-3))',
+                },
+                done: {
+                    label: localizedReturnedProductStatuses.done || 'Selesai',
+                    color: 'hsl(var(--chart-4))',
+                },
+                scrapped: {
+                    label: localizedReturnedProductStatuses.scrapped || 'Discrap',
+                    color: 'hsl(var(--chart-5))',
+                },
+            }
+    })
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
     const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState(
@@ -192,6 +245,11 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
         setMaxWorkstationStatusValue(max);
     }, [attachmentStatusOfWorkstationGraph]);
+
+    useEffect(() => {
+        syncAttachmentStatusData();
+        syncReturnedProductStatusChart();
+    }, [localizedReturnedProductStatuses]);
 
     const syncAttachmentStatusData = async () => {
         const res = await window.axios.get(
@@ -241,6 +299,52 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
     };
 
+    const [returnedProductStatusConfig, setReturnedProductStatusConfig] = useState<ChartConfig>({
+        requested: {
+            label: localizedReturnedProductStatuses.requested || 'Diminta',
+            color: 'hsl(var(--chart-1))',
+        },
+        draft: {
+            label: localizedReturnedProductStatuses.draft || 'Draf',
+            color: 'hsl(var(--chart-2))',
+        },
+        progress: {
+            label: localizedReturnedProductStatuses.progress || 'Dalam Proses',
+            color: 'hsl(var(--chart-3))',
+        },
+        done: {
+            label: localizedReturnedProductStatuses.done || 'Selesai',
+            color: 'hsl(var(--chart-4))',
+        },
+        scrapped: {
+            label: localizedReturnedProductStatuses.scrapped || 'Discrap',
+            color: 'hsl(var(--chart-5))',
+        },
+    });
+
+    const syncReturnedProductStatusChart = () => {
+        setReturnedProductStatusDonutChart({
+            data: data.returned_product_status || [],
+            config: returnedProductStatusConfig,
+        });
+    }
+
+    const syncReturnedProductStatusData =  withLoading( async() => {
+        const res = await window.axios.get(
+            route(`${ROUTES.DASHBOARD}`, {
+                year: yearFilterValue,
+            })
+        )
+        setReturnedProductStatusDonutChart({
+            data: res.data.returned_product_status,
+            config: returnedProductStatusConfig,
+        });
+    })
+
+    useEffect(() => {
+        syncReturnedProductStatusData();
+    }, [yearFilterValue]);
+
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
     };
@@ -289,9 +393,14 @@ export default function Dashboard({ auth, data }: PageProps) {
             .then((response) => response.data);
     }, []);
 
-    // alert(sidebarCollapse);
+    const { t, setLocale } = useLaravelReactI18n();
 
-    const { t } = useLaravelReactI18n();
+    useEffect(() => {
+        fetchEnumLabels('ReturnedProductStatusEnum')
+            .then(setLocalizedReturnedProductStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    }, [setLocale]);
+
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
@@ -306,74 +415,210 @@ export default function Dashboard({ auth, data }: PageProps) {
                     <div className=''>
                         <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
                         <div className='flex w-full items-center justify-between'>
-                            <h2 className='my-2 text-xl'>
-                                {data['project'] == null
-                                    ? t('pages.dashboard.index.all_project')
-                                    : `${t('pages.dashboard.index.project')} ${data['project']}`}
-                            </h2>
-                            <Popover open={open} onOpenChange={setOpen}>
-                                <PopoverTrigger className=' ' asChild>
-                                    <Button
-                                        variant='outline'
-                                        role='combobox'
-                                        className='w-25 justify-between md:w-40'
-                                        aria-expanded={open}
-                                    >
-                                        {value
-                                            ? project.find(
-                                                  (projectItem) => projectItem.value === value,
-                                              )?.label
-                                            : t('pages.dashboard.index.select_project')}
-                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className='w-[200px] p-0'>
-                                    <Command>
-                                        <CommandInput
-                                            placeholder={t('pages.dashboard.index.find_project')}
-                                        />
-                                        <CommandList>
-                                            <CommandEmpty>
-                                                {t('pages.dashboard.index.project_not_found')}
-                                            </CommandEmpty>
-                                            <CommandGroup>
-                                                {
-                                                    // @ts-ignore
-                                                    data['projectDetail'].map((projectItem) => (
-                                                        <Link
-                                                            key={projectItem.id}
-                                                            href={`/dashboard/${projectItem.id}`}
-                                                        >
-                                                            <CommandItem
-                                                                value={`/dashboard/${projectItem.name}`}
-                                                                onSelect={(currentValue) => {
-                                                                    setValue(
-                                                                        currentValue === value
-                                                                            ? ''
-                                                                            : currentValue,
-                                                                    );
-                                                                    setOpen(false);
-                                                                }}
-                                                                key={projectItem.value}
+                            <div className="">
+                                <h2 className='my-2 text-xl'>
+                                    {data['project'] == null
+                                        ? t('pages.dashboard.index.all_project')
+                                        : `${t('pages.dashboard.index.project')} ${data['project']}`}
+                                </h2>
+                            </div>
+                            <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                                <Popover open={open} onOpenChange={setOpen}>
+                                    <PopoverTrigger className=' ' asChild>
+                                        <Button
+                                            variant='outline'
+                                            role='combobox'
+                                            className='w-25 justify-between md:w-40'
+                                            aria-expanded={open}
+                                        >
+                                            {value
+                                                ? project.find(
+                                                    (projectItem) => projectItem.value === value,
+                                                )?.label
+                                                : t('pages.dashboard.index.select_project')}
+                                            <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className='w-[200px] p-0'>
+                                        <Command>
+                                            <CommandInput
+                                                placeholder={t('pages.dashboard.index.find_project')}
+                                            />
+                                            <CommandList>
+                                                <CommandEmpty>
+                                                    {t('pages.dashboard.index.project_not_found')}
+                                                </CommandEmpty>
+                                                <CommandGroup>
+                                                    {
+                                                        // @ts-ignore
+                                                        data['projectDetail'].map((projectItem) => (
+                                                            <Link
+                                                                key={projectItem.id}
+                                                                href={`/dashboard/${projectItem.id}`}
                                                             >
-                                                                <Check
-                                                                    className={cn(
-                                                                        'mr-2 h-4 w-4',
-                                                                        value === projectItem.name
-                                                                            ? 'opacity-100'
-                                                                            : 'opacity-0',
-                                                                    )}
-                                                                />
-                                                                {projectItem.name}
-                                                            </CommandItem>
-                                                        </Link>
-                                                    ))
-                                                }
-                                            </CommandGroup>
-                                        </CommandList>
-                                    </Command>
-                                </PopoverContent>
-                            </Popover>
+                                                                <CommandItem
+                                                                    value={`/dashboard/${projectItem.name}`}
+                                                                    onSelect={(currentValue) => {
+                                                                        setValue(
+                                                                            currentValue === value
+                                                                                ? ''
+                                                                                : currentValue,
+                                                                        );
+                                                                        setOpen(false);
+                                                                    }}
+                                                                    key={projectItem.value}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            value === projectItem.name
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0',
+                                                                        )}
+                                                                    />
+                                                                    {projectItem.name}
+                                                                </CommandItem>
+                                                            </Link>
+                                                        ))
+                                                    }
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
+                                    </PopoverContent>
+                                </Popover>
+                                {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && (
+                                    <>
+                                        <Popover open={yearFilterOpen} onOpenChange={setYearFilterOpen}>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant='outline'
+                                                    role='combobox'
+                                                    className='w-25 justify-between md:w-40'
+                                                    aria-expanded={yearFilterOpen}
+                                                >
+                                                    {yearFilterValue
+                                                        ? yearFilterValue
+                                                        : "Filter Tahun"}
+                                                    <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className='w-[200px] p-0'>
+                                                <Command>
+                                                    <CommandList>
+                                                        <CommandEmpty>
+                                                            {"Year Not Found"}
+                                                        </CommandEmpty>
+                                                        <CommandGroup>
+                                                            {yearFilterValue && (
+                                                                <CommandItem onSelect={() => setYearFilterValue('')}>
+                                                                    {t('components.generic_data_selector.actions.clear_selection')}
+                                                                </CommandItem>
+                                                            )}
+                                                            {years.map((yearItem) => (
+                                                                <CommandItem
+                                                                    value={yearItem.toString()}
+                                                                    onSelect={(currentValue) => {
+                                                                        setYearFilterValue(
+                                                                            currentValue === yearFilterValue
+                                                                                ? ''
+                                                                                : currentValue.toString(),
+                                                                        );
+                                                                        setYearFilterOpen(false);
+                                                                    }}
+                                                                    key={yearItem}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            'mr-2 h-4 w-4',
+                                                                            yearFilterValue === yearItem.toString()
+                                                                                ? 'opacity-100'
+                                                                                : 'opacity-0',
+                                                                        )}
+                                                                    />
+                                                                    {yearItem}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        
+                                        {/* <GenericDataSelector
+                                            // TODO: redesain dis shts🗿
+                                            id="year-filter"
+                                            data={years.map((year, index) => ({id: index, value: year}))}
+                                            setSelectedData={id => {
+                                                setYearFilterValue(id ? years[id].toString() : '');
+                                            }}
+                                            selectedDataId={yearFilterValue ? years.indexOf(parseInt(yearFilterValue)) : null}
+                                            placeholder={'Choose'}
+                                            renderItem={item =>
+                                                `${item.value}`
+                                            }
+                                            nullable
+                                        /> */}
+                                        {yearFilterValue && (
+                                            <Popover open={monthFilterOpen} onOpenChange={setMonthFilterOpen}>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        variant='outline'
+                                                        role='combobox'
+                                                        className='w-25 justify-between md:w-40'
+                                                        aria-expanded={yearFilterOpen}
+                                                    >
+                                                        {yearFilterValue
+                                                            ? yearFilterValue
+                                                            : "Filter Tahun"}
+                                                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className='w-[200px] p-0'>
+                                                    <Command>
+                                                        <CommandList>
+                                                            <CommandEmpty>
+                                                                {"Year Not Found"}
+                                                            </CommandEmpty>
+                                                            <CommandGroup>
+                                                                {yearFilterValue && (
+                                                                    <CommandItem onSelect={() => setYearFilterValue('')}>
+                                                                        {t('components.generic_data_selector.actions.clear_selection')}
+                                                                    </CommandItem>
+                                                                )}
+                                                                {['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'].map((yearItem) => (
+                                                                    <CommandItem
+                                                                        value={yearItem}
+                                                                        onSelect={(currentValue) => {
+                                                                            setYearFilterValue(
+                                                                                currentValue === yearFilterValue
+                                                                                    ? ''
+                                                                                    : currentValue,
+                                                                            );
+                                                                            setYearFilterOpen(false);
+                                                                        }}
+                                                                        key={yearItem}
+                                                                    >
+                                                                        <Check
+                                                                            className={cn(
+                                                                                'mr-2 h-4 w-4',
+                                                                                yearFilterValue === yearItem
+                                                                                    ? 'opacity-100'
+                                                                                    : 'opacity-0',
+                                                                            )}
+                                                                        />
+                                                                        {yearItem}
+                                                                    </CommandItem>
+                                                                ))}
+                                                            </CommandGroup>
+                                                        </CommandList>
+                                                    </Command>
+                                                </PopoverContent>
+                                            </Popover>
+                                        )}
+                                    </>
+                                    
+                                )}
+                            </div>
                         </div>
 
                         {/* <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
@@ -419,6 +664,32 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                         </div> */}
                         {/* </ChartContainer> */}
+                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && (
+                            <>
+                                <h2 className='my-1 text-xl font-bold'>
+                                    Returned Product
+                                </h2>
+                                <ChartContainer
+                                    config={returnedProductStatusDonutChart.config}
+                                    className='mt-5 h-[300px] w-full'
+                                >
+                                    <PieChart >
+                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                        <ChartLegend content={<ChartLegendContent />} />
+                                        <Pie data={returnedProductStatusDonutChart.data} dataKey='value'>
+                                        {Object.keys(returnedProductStatusDonutChart.config).map(
+                                            (dataKey, index) => (
+                                                <Cell
+                                                    key={`returnedProductStatus-${index}-key`}
+                                                    fill={`var(--color-${dataKey})`}
+                                                />
+                                            ),
+                                        )}
+                                        </Pie>
+                                    </PieChart>
+                                </ChartContainer>
+                            </>
+                        )}
                         <div className='my-4 flex items-center justify-between'>
                             <h2 className='text-lg'>
                                 {t('pages.dashboard.index.all_trainset_status')}

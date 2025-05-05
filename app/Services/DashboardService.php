@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\PanelAttachment;
+use App\Models\ReturnedProduct;
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
@@ -383,5 +385,27 @@ class DashboardService {
         }
 
         return response()->download($manualBookFilePath, 'manual-book-rekachain.pdf');
+    }
+
+    public function showReturnedProductStatusSum(array $request = []): array {
+        $query = ReturnedProduct::groupBy('status')->select('status', DB::raw('sum(qty) as qty'));
+        
+        if (isset($request['year'])) {
+            $query->whereYear('created_at', $request['year']);
+            if (isset($request['month'])) {
+                $query->whereMonth('created_at', $request['month']);
+            }
+        }
+        $returnedProducts = $query->get();
+
+        $returnedProductsSummary = [];
+        foreach (ReturnedProductStatusEnum::cases() as $status) {
+            $returnedProductsSummary[] = [
+                'name' => $status->value,
+                'value' => (int) ($returnedProducts->where('status', $status)->first()?->qty ?? 0),
+            ];
+        }
+
+        return $returnedProductsSummary;
     }
 }

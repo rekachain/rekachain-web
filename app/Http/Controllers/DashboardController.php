@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\DashboardService;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,9 @@ class DashboardController extends Controller {
         checkPermissions(PermissionEnum::DASHBOARD_READ);
         $intent = $request->get('intent');
         $data = $this->dashboardService->showGraph($request->query());
+        if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+            $data['returned_product_status'] = $this->dashboardService->showReturnedProductStatusSum($request->query());
+        }
         // $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query());
         if ($this->ajax()) {
 
@@ -29,7 +33,6 @@ class DashboardController extends Controller {
                 case IntentEnum::DOWNLOAD_MANUAL_BOOK_FILE->value:
                     return $this->dashboardService->downloadManualBookFile();
             }
-
             $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
             $data['attachment_status_of_workstation'] = $request->get('use_raw') ? $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query()) : $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
 
@@ -42,7 +45,6 @@ class DashboardController extends Controller {
         // array_push($data, $project);
         $data['projectDetail'] = $project;
         $data['ts'] = $ts;
-
         // dump($data);
         return Inertia::render('Dashboard', ['data' => $data]);
     }
@@ -77,6 +79,9 @@ class DashboardController extends Controller {
         $project = DB::select('SELECT * FROM `projects` ');
         // array_push($data, $project);
         $data['projectDetail'] = $project;
+        if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+            $data['returned_product_status'] = $this->dashboardService->showReturnedProductStatusSum($request->query());
+        }
         $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
         $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
         if ($this->ajax()) {
