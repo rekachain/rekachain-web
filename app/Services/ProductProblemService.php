@@ -25,6 +25,7 @@ class ProductProblemService extends BaseCrudService implements ProductProblemSer
     public function updateWithNote($keyOrModel, array $data): ?Model {
         $productProblem = $this->update($keyOrModel, $data);
         $productProblem->product_problem_notes()->create([
+            'user_id' => auth()->id(),
             'note' => $data['note'],
         ]);
 
