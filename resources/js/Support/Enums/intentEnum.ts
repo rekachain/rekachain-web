@@ -1,5 +1,7 @@
 const intents = {
     SOFT_DELETE_ENTRY: 'soft.delete.entry',
+    STORE_APK_FILE: 'store.apk.file',
+    STORE_MANUAL_BOOK_FILE: 'store.manual.book.file',
     DOWNLOAD_APK_FILE: 'download.apk.file',
     DOWNLOAD_MANUAL_BOOK_FILE: 'download.manual.book.file',
     API_USER_UPDATE_PASSWORD: 'api.user.update.password',
@@ -246,6 +248,7 @@ const intents = {
         'web.product.problem.add.product.problem.with.note',
     WEB_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE:
         'web.product.problem.update.product.problem.with.note',
+    WEB_PRODUCT_RESTOCK_INITIATE_PROJECT: 'web.product.restock.initiate.project',
     WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
 };
 

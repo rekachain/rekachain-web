@@ -46,6 +46,14 @@ return [
         'changed' => 'Diganti',
         'draft' => 'Draf',
     ],
+    'App\Support\Enums\ProductRestockStatusEnum' => [
+        'requested' => 'Diminta',
+        'draft' => 'Draf',
+        'initiated' => 'Di-inisiasi',
+        'progress' => 'Dalam Proses',
+        'done' => 'Selesai',
+        'aborted' => 'Dibatalkan',
+    ],
     'others' => [
         'null_work_status' => 'Belum Diproses',
         'null_acceptance_status' => 'Belum Diproses',

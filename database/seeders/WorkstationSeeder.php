@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Division;
 use App\Models\Workstation;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
@@ -24,25 +25,25 @@ class WorkstationSeeder extends Seeder {
         $workstations = [
             [
                 'workshop_id' => 1,
-                'division_id' => 1,
+                'division_id' => Division::whereName('Mekanik')->first()->id,
                 'name' => 'Workstation 1',
                 'location' => 'Location 1',
             ],
             [
                 'workshop_id' => 1,
-                'division_id' => 2,
+                'division_id' => Division::whereName('Elektrik')->first()->id,
                 'name' => 'Workstation 2',
                 'location' => 'Location 2',
             ],
             [
                 'workshop_id' => 2,
-                'division_id' => 1,
+                'division_id' => Division::whereName('Mekanik')->first()->id,
                 'name' => 'Workstation 3',
                 'location' => 'Location 3',
             ],
             [
                 'workshop_id' => 2,
-                'division_id' => 2,
+                'division_id' => Division::whereName('Elektrik')->first()->id,
                 'name' => 'Workstation 4',
                 'location' => 'Location 4',
             ],

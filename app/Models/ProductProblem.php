@@ -26,6 +26,7 @@ class ProductProblem extends Model {
             'status',
         ],
         'columns' => [
+            'returned_product_id',
             'component_id',
             'status',
         ],

@@ -10,8 +10,10 @@ use App\Http\Controllers\Api\ApiPanelAttachmentController;
 use App\Http\Controllers\Api\ApiPanelAttachmentHandlerController;
 use App\Http\Controllers\Api\ApiPanelController;
 use App\Http\Controllers\Api\ApiPanelMaterialController;
+use App\Http\Controllers\Api\ApiProductProblemController;
 use App\Http\Controllers\Api\ApiProgressController;
 use App\Http\Controllers\Api\ApiProjectController;
+use App\Http\Controllers\Api\ApiReturnedProductController;
 use App\Http\Controllers\Api\ApiSerialPanelController;
 use App\Http\Controllers\Api\ApiTrainsetAttachmentController;
 use App\Http\Controllers\Api\ApiTrainsetAttachmentHandlerController;
@@ -59,6 +61,8 @@ Route::group(['as' => 'api.'], function () {
         Route::apiResource('work-days', ApiWorkDayController::class);
         Route::apiResource('work-day-times', ApiWorkDayTimeController::class);
         Route::apiResource('feedback', FeedbackController::class)->except(['store']);
+        Route::apiResource('returned-products', ApiReturnedProductController::class);
+        Route::apiResource('product-problems', ApiProductProblemController::class);
         Route::get('logout', [ApiAuthController::class, 'logout'])->name('logout');
     });
 

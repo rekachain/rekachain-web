@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Division;
 use App\Models\Role;
+use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\PermissionServiceInterface;
 use Illuminate\Database\Seeder;
@@ -18,18 +20,18 @@ class RoleSeeder extends Seeder {
             ['name' => RoleEnum::SUPER_ADMIN->value],
             ['name' => RoleEnum::PPC_PERENCANAAN->value, 'level' => 'PPC'],
             ['name' => RoleEnum::PPC_PENGENDALIAN->value, 'level' => 'PPC'],
-            ['name' => RoleEnum::SUPERVISOR_MEKANIK->value, 'level' => 'Supervisor', 'division_id' => 1],
-            ['name' => RoleEnum::SUPERVISOR_ELEKTRIK->value, 'level' => 'Supervisor', 'division_id' => 2],
-            ['name' => RoleEnum::SUPERVISOR_ASSEMBLY->value, 'level' => 'Supervisor', 'division_id' => 3],
-            ['name' => RoleEnum::WORKER_MEKANIK->value, 'level' => 'Worker', 'division_id' => 1],
-            ['name' => RoleEnum::WORKER_ELEKTRIK->value, 'level' => 'Worker', 'division_id' => 2],
-            ['name' => RoleEnum::WORKER_ASSEMBLY->value, 'level' => 'Worker', 'division_id' => 3],
-            ['name' => RoleEnum::QC_MEKANIK->value, 'level' => 'QC', 'division_id' => 1],
-            ['name' => RoleEnum::QC_ELEKTRIK->value, 'level' => 'QC', 'division_id' => 2],
-            ['name' => RoleEnum::QC_ASSEMBLY->value, 'level' => 'QC', 'division_id' => 3],
-            ['name' => RoleEnum::SUPERVISOR_AFTERSALES->value, 'level' => 'Supervisor', 'division_id' => 4],
-            ['name' => RoleEnum::MANAGER_AFTERSALES->value, 'level' => 'Manager', 'division_id' => 4],
-            ['name' => RoleEnum::WORKER_AFTERSALES->value, 'level' => 'Worker', 'division_id' => 4],
+            ['name' => RoleEnum::SUPERVISOR_MEKANIK->value, 'level' => 'Supervisor', 'division_id' => Division::whereName('Mekanik')->first()->id],
+            ['name' => RoleEnum::SUPERVISOR_ELEKTRIK->value, 'level' => 'Supervisor', 'division_id' => Division::whereName('Elektrik')->first()->id],
+            ['name' => RoleEnum::SUPERVISOR_ASSEMBLY->value, 'level' => 'Supervisor', 'division_id' => Division::whereName('Assembly')->first()->id],
+            ['name' => RoleEnum::WORKER_MEKANIK->value, 'level' => 'Worker', 'division_id' => Division::whereName('Mekanik')->first()->id],
+            ['name' => RoleEnum::WORKER_ELEKTRIK->value, 'level' => 'Worker', 'division_id' => Division::whereName('Elektrik')->first()->id],
+            ['name' => RoleEnum::WORKER_ASSEMBLY->value, 'level' => 'Worker', 'division_id' => Division::whereName('Assembly')->first()->id],
+            ['name' => RoleEnum::QC_MEKANIK->value, 'level' => 'QC', 'division_id' => Division::whereName('Mekanik')->first()->id],
+            ['name' => RoleEnum::QC_ELEKTRIK->value, 'level' => 'QC', 'division_id' => Division::whereName('Elektrik')->first()->id],
+            ['name' => RoleEnum::QC_ASSEMBLY->value, 'level' => 'QC', 'division_id' => Division::whereName('Assembly')->first()->id],
+            ['name' => RoleEnum::SUPERVISOR_AFTERSALES->value, 'level' => 'Supervisor', 'division_id' => Division::whereName('Aftersales')->first()->id],
+            ['name' => RoleEnum::MANAGER_AFTERSALES->value, 'level' => 'Manager', 'division_id' => Division::whereName('Aftersales')->first()->id],
+            ['name' => RoleEnum::WORKER_AFTERSALES->value, 'level' => 'Worker', 'division_id' => Division::whereName('Aftersales')->first()->id],
             ['name' => RoleEnum::CUSTOMER->value, 'level' => 'Customer'],
         ];
 
@@ -115,5 +117,6 @@ class RoleSeeder extends Seeder {
             ['group', 'returned-product-request'],
         ]);
         Role::findById(16)->givePermissionTo($customerPermissions);
+        Role::findById(16)->givePermissionTo(PermissionEnum::DASHBOARD_COMMISSION_READ->value);
     }
 }

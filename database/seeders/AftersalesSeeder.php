@@ -29,9 +29,9 @@ class AftersalesSeeder extends Seeder {
         $permissionService = app(PermissionServiceInterface::class);
 
         $roles = [
-            ['name' => RoleEnum::SUPERVISOR_AFTERSALES->value, 'level' => 'Supervisor', 'division_id' => 4],
-            ['name' => RoleEnum::MANAGER_AFTERSALES->value, 'level' => 'Manager', 'division_id' => 4],
-            ['name' => RoleEnum::WORKER_AFTERSALES->value, 'level' => 'Worker', 'division_id' => 4],
+            ['name' => RoleEnum::SUPERVISOR_AFTERSALES->value, 'level' => 'Supervisor', 'division_id' => Division::whereName('Aftersales')->first()->id],
+            ['name' => RoleEnum::MANAGER_AFTERSALES->value, 'level' => 'Manager', 'division_id' => Division::whereName('Aftersales')->first()->id],
+            ['name' => RoleEnum::WORKER_AFTERSALES->value, 'level' => 'Worker', 'division_id' => Division::whereName('Aftersales')->first()->id],
             ['name' => RoleEnum::CUSTOMER->value, 'level' => 'Customer'],
         ];
 

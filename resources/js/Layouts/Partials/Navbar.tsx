@@ -14,14 +14,6 @@ import { Menu, Sun } from 'lucide-react';
 
 import AddFeedback from '@/Components/AddFeedback';
 import { SearchResults } from '@/Components/SearchResult';
-import useDarkMode from '@/Hooks/useDarkMode';
-import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
-import { ROUTES } from '@/Support/Constants/routes';
-import { STYLING } from '@/Support/Constants/styling';
-import axios from 'axios';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { useMediaQuery } from 'react-responsive';
-// import { useLocalStorage } from '@uidotdev/usehooks';
 import { Input } from '@/Components/UI/input';
 import { Separator } from '@/Components/UI/separator';
 import {
@@ -32,6 +24,10 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/Components/UI/sheet';
+import useDarkMode from '@/Hooks/useDarkMode';
+import { SetLocalization } from '@/Layouts/Partials/Partials/SetLocalization';
+import { ROUTES } from '@/Support/Constants/routes';
+import { STYLING } from '@/Support/Constants/styling';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { withLoading } from '@/Utils/withLoading';
 import { Link, usePage } from '@inertiajs/react';
@@ -42,7 +38,11 @@ import {
     RiNotification4Line,
     RiSearchLine,
 } from '@remixicon/react';
+import axios from 'axios';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
+import { toast } from 'sonner';
 
 export default function Navbar() {
     const { t } = useLaravelReactI18n();
@@ -252,22 +252,27 @@ export const ToggleDarkMode = () => {
 export const ViewManualBook = () => {
     const { t } = useLaravelReactI18n();
     const handleDownloadManualBookFile = withLoading(async () => {
-        const response = await axios.get(route(`${ROUTES.DASHBOARD}`), {
-            params: {
-                intent: IntentEnum.DOWNLOAD_MANUAL_BOOK_FILE,
-            },
-            responseType: 'blob',
-        });
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        const disposition = response.headers['content-disposition'];
-        const filename = disposition.split(';')[1].split('=')[1].trim().replace(/"/g, '');
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        await axios
+            .get(route(`${ROUTES.DASHBOARD}`), {
+                params: {
+                    intent: IntentEnum.DOWNLOAD_MANUAL_BOOK_FILE,
+                },
+                responseType: 'blob',
+            })
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                const disposition = response.headers['content-disposition'];
+                const filename = disposition.split(';')[1].split('=')[1].trim().replace(/"/g, '');
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            })
+            .catch((error) => {
+                toast.error(t('components.navbar.view_manual_book.error'));
+            });
     });
     return (
         <Button
@@ -284,22 +289,27 @@ export const ViewManualBook = () => {
 export const DownloadApp = () => {
     const { t } = useLaravelReactI18n();
     const handleDownloadApkFile = withLoading(async () => {
-        const response = await axios.get(route(`${ROUTES.DASHBOARD}`), {
-            params: {
-                intent: IntentEnum.DOWNLOAD_APK_FILE,
-            },
-            responseType: 'blob',
-        });
-
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        const disposition = response.headers['content-disposition'];
-        const filename = disposition.split(';')[1].split('=')[1].trim().replace(/"/g, '');
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        await axios
+            .get(route(`${ROUTES.DASHBOARD}`), {
+                params: {
+                    intent: IntentEnum.DOWNLOAD_APK_FILE,
+                },
+                responseType: 'blob',
+            })
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                const disposition = response.headers['content-disposition'];
+                const filename = disposition.split(';')[1].split('=')[1].trim().replace(/"/g, '');
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            })
+            .catch((error) => {
+                toast.error(t('components.navbar.download_app.error'));
+            });
     });
     return (
         <Button

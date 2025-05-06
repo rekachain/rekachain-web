@@ -64,6 +64,7 @@
         "cmdk": "^1.0.3",
         "filepond": "^4.31.3",
         "filepond-plugin-file-poster": "^2.5.1",
+        "filepond-plugin-file-validate-type": "^1.2.9",
         "filepond-plugin-image-exif-orientation": "^1.0.11",
         "filepond-plugin-image-preview": "^4.6.12",
         "laravel-react-i18n": "^2.0.5",

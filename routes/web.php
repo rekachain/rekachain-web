@@ -21,6 +21,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
 use App\Http\Controllers\ProductProblemController;
 use App\Http\Controllers\ProductProblemNoteController;
+use App\Http\Controllers\ProductRestockController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressStepController;
@@ -75,6 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
     Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset'])->name('dashboard.trainset');
+    Route::post('dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
     // Route::resource('dashboard', DashboardController::class)->name('dashboard');
     Route::resource('divisions', DivisionController::class); // auth done
     Route::resource('workshops', WorkshopController::class); // auth done
@@ -113,6 +115,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('product-problems', ProductProblemController::class);
     Route::resource('product-problem-notes', ProductProblemNoteController::class);
     Route::resource('replacement-stocks', ReplacementStockController::class);
+    Route::resource('product-restocks', ProductRestockController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 

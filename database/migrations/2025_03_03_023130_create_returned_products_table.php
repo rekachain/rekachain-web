@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Division;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -23,7 +24,9 @@ return new class extends Migration {
         });
         // reseed aftersales division, permission and role
         try {
-            Artisan::call('db:seed', ['--class' => 'AftersalesSeeder', '--force' => true]);
+            if (!Division::whereName('Aftersales')->exists()) {
+                Artisan::call('db:seed', ['--class' => 'AftersalesSeeder', '--force' => true]);
+            }
 
             if (app()->isLocal()) {
                 Artisan::call('db:seed', ['--class' => 'ReturnedProductSeeder']);

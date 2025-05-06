@@ -7,9 +7,11 @@ return [
         ],
         'download_app' => [
             'title' => 'Download App',
+            'error' => 'Failed to download app',
         ],
         'view_manual_book' => [
             'title' => 'View Manual Book',
+            'error' => 'Failed to download manual book',
         ],
         'search' => [
             'placeholder' => 'Search...',
@@ -58,6 +60,7 @@ return [
             'returned_products' => 'Returned Products',
             'requested_returns' => 'Requested Returns',
             'replacement_stocks' => 'Spare Part Stocks',
+            'product_restocks' => 'Product Restock',
         ],
     ],
     'sidebar_logout' => [

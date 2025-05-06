@@ -2279,6 +2279,23 @@ return [
                     'verification_email_sent' => 'Email verifikasi baru telah dikirim ke alamat yang Anda berikan saat pendaftaran.',
                 ],
             ],
+            'update_asset_form' => [
+                'title' => 'Perbarui Aset',
+                'description' => 'Perbarui aplikasi mobile dan buku panduan.',
+                'fields' => [
+                    'apk' => 'Aplikasi',
+                    'apk_filepond_placeholder' => 'Letakkan .APK di sini atau klik untuk mengunggah',
+                    'book' => 'Buku Panduan',
+                    'book_filepond_placeholder' => 'Letakkan .PDF di sini atau klik untuk mengunggah',
+                ],
+                'messages' => [
+                    'updated_apk' => 'Aplikasi berhasil diperbarui!',
+                    'updated_book' => 'Buku panduan berhasil diperbarui!',
+                ],
+                'buttons' => [
+                    'submit' => 'Perbarui Aset',
+                ],
+            ],
         ],
     ],
     'trainset_attachment' => [
@@ -2564,6 +2581,8 @@ return [
                 'dialog' => [
                     'title' => '{0} Ambil Stok|{1} Scrap ke Stok',
                     'description' => '{0} Perbaiki dengan mengubah komponen terpilih dari Stok Aftersale.|{1} Scrap semua komponen yang dapat digunakan kembali ke Stok Aftersale.',
+                    'req_production' => 'Butuh Produksi Ulang',
+                    'req_production_description' => 'Centang jika produk ini membutuhkan produksi ulang.',
                 ],
                 'messages' => [
                     'resolved' => 'Permasalahan produk berhasil diselesaikan dengan sukses!',
@@ -2732,6 +2751,92 @@ return [
                         'component_description' => 'Deskripsi: :component_description',
                         'threshold' => 'Batas Restok: :threshold',
                         'qty' => 'Jumlah: :qty',
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'product_restock' => [
+        'index' => [
+            'title' => 'Permintaan Restok Produk',
+            'buttons' => [
+                'create' => 'Buat Permintaan',
+                'initiate_selection' => 'Buat Proyek',
+                'cancel_initiation' => 'Batalkan Pemilihan',
+            ],
+        ],
+        'partials' => [
+            'product_restocks' => [
+                'messages' => [
+                    'deleted' => 'Permintaan berhasil dihapus!',
+                ],
+            ],
+            'make_project' => [
+                'dialogs' => [
+                    'title' => 'Buat Proyek',
+                    'description' => 'Buat proyek restok baru untuk permintaan restok produk yang dipilih.',
+                    'buttons' => [
+                        'trigger' => 'Buat Proyek',
+                        'submit' => 'Inisiasi Proyek',
+                    ],
+                    'fields' => [
+                        'project_name' => 'Nama Proyek',
+                        'project_description' => 'Deskripsi Proyek',
+                        'project_initial_date' => 'Tanggal Awal Proyek',
+                    ],
+                ],
+                'messages' => [
+                    'initiated' => 'Proyek berhasil diinisiasi!',
+                ],
+            ],
+            'partials' => [
+                'partials' => [
+                    'update_product_restock_status' => [
+                        'buttons' => [
+                            'update_status' => 'Perbarui Status',
+                        ],
+                        'dialog' => [
+                            'title' => 'Perbarui Status',
+                            'description' => 'Perbarui status dari Progress Restok yang dipilih.',
+                            'select_placeholder' => 'Pilih Status',
+                        ],
+                        'messages' => [
+                            'updated' => 'Status Produk berhasil diperbarui!',
+                        ],
+                    ],
+                ],
+                'filters' => [
+                    'status' => [
+                        'title' => 'Status',
+                        'all' => 'Semua',
+                    ],
+                ],
+                'product_restock_table' => [
+                    'headers' => [
+                        'buyer' => 'Pelanggan',
+                        'serial_number' => 'Nomor Seri',
+                        'name' => 'Nama',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
+                        'updated_at' => 'Diperbarui Pada',
+                    ],
+                    'contents' => [
+                        'type' => [
+                            'panel' => 'Panel',
+                            'component' => 'Komponen',
+                        ],
+                    ],
+                ],
+                'product_restock_card' => [
+                    'headers' => [
+                        'name' => 'Nama: :name',
+                        'serial_number' => 'Nomor Seri',
+                        'description' => 'Deskripsi',
+                        'type' => 'Tipe: :type',
+                        'status' => 'Status',
+                        'created_at' => 'Dibuat Pada',
                     ],
                 ],
             ],

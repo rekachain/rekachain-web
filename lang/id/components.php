@@ -7,9 +7,11 @@ return [
         ],
         'download_app' => [
             'title' => 'Unduh Aplikasi',
+            'error' => 'Gagal mengunduh aplikasi mobile',
         ],
         'view_manual_book' => [
-            'title' => 'Lihat Buku Manual',
+            'title' => 'Lihat Buku Panduan',
+            'error' => 'Gagal mengunduh buku panduan',
         ],
         'search' => [
             'placeholder' => 'Cari...',
@@ -58,6 +60,7 @@ return [
             'returned_products' => 'Produk Retur',
             'requested_returns' => 'Komplain Retur',
             'replacement_stocks' => 'Stok Suku Cadang',
+            'product_restocks' => 'Restok Produk',
         ],
     ],
     'sidebar_logout' => [

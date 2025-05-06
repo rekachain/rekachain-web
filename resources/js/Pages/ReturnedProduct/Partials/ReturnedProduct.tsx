@@ -1,6 +1,6 @@
 import GenericPagination from '@/Components/GenericPagination';
 import { useSuccessToast } from '@/Hooks/useToast';
-import Filters from '@/Pages/Workstation/Partials/Partials/Filters';
+import Filters from '@/Pages/ReturnedProduct/Partials/Partials/Filters';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
@@ -12,7 +12,7 @@ import ReturnedProductCardView from './Partials/ReturnedProductCardView';
 import ReturnedProductTableView from './Partials/ReturnedProductTableView';
 
 export default function () {
-    const { t } = useLaravelReactI18n();
+    const { t, setLocale } = useLaravelReactI18n();
     const [returnedProductResponse, setReturnedProductResponse] =
         useState<PaginateResponse<ReturnedProductResource>>();
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -29,7 +29,7 @@ export default function () {
 
     useEffect(() => {
         void syncReturnedProducts();
-    }, [filters]);
+    }, [filters, setLocale]);
 
     const handleReturnedProductDeletion = withLoading(async (id: number) => {
         await returnedProductService.delete(id);

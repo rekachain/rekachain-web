@@ -6,6 +6,10 @@ enum IntentEnum: string {
     // To determine if current delete request is soft delete or hard delete (can be used in every model)
     case SOFT_DELETE_ENTRY = 'soft.delete.entry';
 
+    case STORE_APK_FILE = 'store.apk.file';
+
+    case STORE_MANUAL_BOOK_FILE = 'store.manual.book.file';
+
     case DOWNLOAD_APK_FILE = 'download.apk.file';
 
     case DOWNLOAD_MANUAL_BOOK_FILE = 'download.manual.book.file';
@@ -131,6 +135,22 @@ enum IntentEnum: string {
     case API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL = 'api.serial.panel.update.assign.worker.panel';
 
     case API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS = 'api.serial.panel.update.panel.manufacture.status';
+
+    case API_RETURNED_PRODUCT_GET_ALL_RETURNED_PRODUCTS = 'api.returned.product.get.all.returned.products';
+
+    case API_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_DETAILS = 'api.returned.product.get.returned.product.details';
+
+    case API_RETURNED_PRODUCT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR = 'api.returned.product.get.attachment.serial.number.details.with.qr';
+
+    case API_RETURNED_PRODUCT_GET_PRODUCT_PROBLEMS = 'api.returned.product.get.product.problems';
+
+    case API_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE = 'api.returned.product.add.returned.product.with.note';
+
+    case API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM = 'api.returned.product.create.product.problem';
+
+    case API_RETURNED_PRODUCT_UPDATE_RETURNED_PRODUCT_WITH_NOTE = 'api.returned.product.update.returned.product.with.note';
+
+    case API_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE = 'api.product.problem.update.product.problem.with.note';
 
     case WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS = 'web.project.get.all.trainset.components';
 
@@ -343,6 +363,8 @@ enum IntentEnum: string {
     case WEB_PRODUCT_PROBLEM_ADD_PRODUCT_PROBLEM_WITH_NOTE = 'web.product.problem.add.product.problem.with.note';
 
     case WEB_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE = 'web.product.problem.update.product.problem.with.note';
+
+    case WEB_PRODUCT_RESTOCK_INITIATE_PROJECT = 'web.product.restock.initiate.project';
 
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
 }
