@@ -392,7 +392,7 @@ class DashboardService {
         
         if (isset($request['year'])) {
             $query->whereYear('created_at', $request['year']);
-            if (isset($request['month'])) {
+            if (isset($request['month']) && ($request['month'] !== '0')) {
                 $query->whereMonth('created_at', $request['month']);
             }
         }

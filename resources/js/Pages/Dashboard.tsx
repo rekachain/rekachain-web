@@ -81,7 +81,7 @@ interface AttachmentStatusBarGraph {
     data?: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
 }
-interface ReturnedProductStatusDonutChart {
+interface ReturnedProductStatusPieChart {
     data: { name: string; value: number }[];
     config: ChartConfig;
 }
@@ -90,11 +90,25 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [yearFilterOpen, setYearFilterOpen] = useState(false);
     const [monthFilterOpen, setMonthFilterOpen] = useState(false);
     const years = [2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
+    const months = [
+        { value: 1, label: 'Januari' },
+        { value: 2, label: 'Februari' },
+        { value: 3, label: 'Maret' },
+        { value: 4, label: 'April' },
+        { value: 5, label: 'Mei' },
+        { value: 6, label: 'Juni' },
+        { value: 7, label: 'Juli' },
+        { value: 8, label: 'Agustus' },
+        { value: 9, label: 'September' },
+        { value: 10, label: 'Oktober' },
+        { value: 11, label: 'November' },
+        { value: 12, label: 'Desember' },
+    ];
     const [openTrainset, setOpenTrainset] = useState(false);
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [yearFilterValue, setYearFilterValue] = useState('');
-    const [monthFilterValue, setMonthFilterValue] = useState('');
+    const [monthFilterValue, setMonthFilterValue] = useState(0);
     const [valueTrainset, setValueTrainset] = useState('');
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
@@ -189,8 +203,8 @@ export default function Dashboard({ auth, data }: PageProps) {
             })
             .catch((error) => console.error('Failed to fetch localized statuses:', error));
     }, []);
-    const [returnedProductStatusDonutChart, setReturnedProductStatusDonutChart] =
-        useState<ReturnedProductStatusDonutChart>({
+    const [returnedProductStatusPieChart, setReturnedProductStatusPieChart] =
+        useState<ReturnedProductStatusPieChart>({
             data: data.returned_product_status || [],
             config: {
                 requested: {
@@ -323,7 +337,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     });
 
     const syncReturnedProductStatusChart = () => {
-        setReturnedProductStatusDonutChart({
+        setReturnedProductStatusPieChart({
             data: data.returned_product_status || [],
             config: returnedProductStatusConfig,
         });
@@ -333,9 +347,10 @@ export default function Dashboard({ auth, data }: PageProps) {
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
                 year: yearFilterValue,
+                month: monthFilterValue,
             })
         )
-        setReturnedProductStatusDonutChart({
+        setReturnedProductStatusPieChart({
             data: res.data.returned_product_status,
             config: returnedProductStatusConfig,
         });
@@ -343,7 +358,7 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     useEffect(() => {
         syncReturnedProductStatusData();
-    }, [yearFilterValue]);
+    }, [yearFilterValue, monthFilterValue]);
 
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
@@ -510,7 +525,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         </CommandEmpty>
                                                         <CommandGroup>
                                                             {yearFilterValue && (
-                                                                <CommandItem onSelect={() => setYearFilterValue('')}>
+                                                                <CommandItem onSelect={() => {
+                                                                    setYearFilterValue('');
+                                                                    setYearFilterOpen(false);
+                                                                    setMonthFilterValue(0);
+                                                                }}>
                                                                     {t('components.generic_data_selector.actions.clear_selection')}
                                                                 </CommandItem>
                                                             )}
@@ -565,11 +584,11 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         variant='outline'
                                                         role='combobox'
                                                         className='w-25 justify-between md:w-40'
-                                                        aria-expanded={yearFilterOpen}
+                                                        aria-expanded={monthFilterOpen}
                                                     >
-                                                        {yearFilterValue
-                                                            ? yearFilterValue
-                                                            : "Filter Tahun"}
+                                                        {monthFilterValue
+                                                            ? months.find(month => month.value === monthFilterValue)?.label
+                                                            : "Filter Bulan"}
                                                         <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                                     </Button>
                                                 </PopoverTrigger>
@@ -577,36 +596,35 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     <Command>
                                                         <CommandList>
                                                             <CommandEmpty>
-                                                                {"Year Not Found"}
+                                                                {"Month Not Found"}
                                                             </CommandEmpty>
                                                             <CommandGroup>
-                                                                {yearFilterValue && (
-                                                                    <CommandItem onSelect={() => setYearFilterValue('')}>
+                                                                {monthFilterValue !== 0 && (
+                                                                    <CommandItem onSelect={() => {
+                                                                        setMonthFilterValue(0)
+                                                                        setMonthFilterOpen(false)
+                                                                    }}>
                                                                         {t('components.generic_data_selector.actions.clear_selection')}
                                                                     </CommandItem>
                                                                 )}
-                                                                {['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'].map((yearItem) => (
+                                                                {months.map((monthItem) => (
                                                                     <CommandItem
-                                                                        value={yearItem}
-                                                                        onSelect={(currentValue) => {
-                                                                            setYearFilterValue(
-                                                                                currentValue === yearFilterValue
-                                                                                    ? ''
-                                                                                    : currentValue,
-                                                                            );
-                                                                            setYearFilterOpen(false);
+                                                                        value={monthItem.label}
+                                                                        onSelect={() => {
+                                                                            setMonthFilterValue(monthItem.value);
+                                                                            setMonthFilterOpen(false);
                                                                         }}
-                                                                        key={yearItem}
+                                                                        key={monthItem.label}
                                                                     >
                                                                         <Check
                                                                             className={cn(
                                                                                 'mr-2 h-4 w-4',
-                                                                                yearFilterValue === yearItem
+                                                                                monthFilterValue === monthItem.value
                                                                                     ? 'opacity-100'
                                                                                     : 'opacity-0',
                                                                             )}
                                                                         />
-                                                                        {yearItem}
+                                                                        {monthItem.label}
                                                                     </CommandItem>
                                                                 ))}
                                                             </CommandGroup>
@@ -670,21 +688,45 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     Returned Product
                                 </h2>
                                 <ChartContainer
-                                    config={returnedProductStatusDonutChart.config}
+                                    config={returnedProductStatusPieChart.config}
                                     className='mt-5 h-[300px] w-full'
                                 >
-                                    <PieChart >
-                                        <ChartTooltip content={<ChartTooltipContent />} />
+                                    <PieChart>
+                                        <ChartTooltip
+                                            content={
+                                                <ChartTooltipContent
+                                                    // hideIndicator={true}
+                                                    formatter={(value, name) => {
+                                                        const total = returnedProductStatusPieChart.data.reduce((result, entry) => result + entry.value, 0);
+                                                        const percent = ((Number(value) / total) * 100).toFixed(2);
+                                                            return (
+                                                                <>
+                                                                    <div 
+                                                                        className="shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg] h-2.5 w-2.5" 
+                                                                        style={
+                                                                            { 
+                                                                                '--color-bg': returnedProductStatusConfig[name].color, 
+                                                                                '--color-border': returnedProductStatusConfig[name].color 
+                                                                            } as React.CSSProperties}>
+                                                                        
+                                                                    </div>
+                                                                    <span className="">
+                                                                        {`${returnedProductStatusConfig[name].label}: ${value} (${percent}%)`}
+                                                                    </span>
+                                                                </>
+                                                            );
+                                                    }}
+                                                />
+                                            }
+                                        />
                                         <ChartLegend content={<ChartLegendContent />} />
-                                        <Pie data={returnedProductStatusDonutChart.data} dataKey='value'>
-                                        {Object.keys(returnedProductStatusDonutChart.config).map(
-                                            (dataKey, index) => (
+                                        <Pie data={returnedProductStatusPieChart.data} dataKey="value">
+                                            {Object.keys(returnedProductStatusPieChart.config).map((dataKey, index) => (
                                                 <Cell
                                                     key={`returnedProductStatus-${index}-key`}
                                                     fill={`var(--color-${dataKey})`}
                                                 />
-                                            ),
-                                        )}
+                                            ))}
                                         </Pie>
                                     </PieChart>
                                 </ChartContainer>
