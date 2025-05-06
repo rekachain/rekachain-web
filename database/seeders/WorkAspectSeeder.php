@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Division;
 use App\Models\WorkAspect;
 use Database\Seeders\Helpers\CsvReader;
 use Illuminate\Database\Seeder;
@@ -16,15 +17,15 @@ class WorkAspectSeeder extends Seeder {
 
         WorkAspect::factory()->create([
             'name' => 'Fabrikasi',
-            'division_id' => 1,
+            'division_id' => Division::whereName('Mekanik')->first()->id,
         ]);
         WorkAspect::factory()->create([
             'name' => 'Cutting Harness',
-            'division_id' => 2,
+            'division_id' => Division::whereName('Elektrik')->first()->id,
         ]);
         WorkAspect::factory()->create([
             'name' => 'Fitting & Koneksi',
-            'division_id' => 3,
+            'division_id' => Division::whereName('Assembly')->first()->id,
         ]);
         WorkAspect::factory()->create([
             'name' => 'Harmonika',
