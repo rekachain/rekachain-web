@@ -47,6 +47,7 @@ jobs:
         uses: deployphp/action@v1
         with:
           dep: deploy
+          php-binary: 'php8.1' # not released yet
           private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to Production
         env:

@@ -7,6 +7,9 @@ require 'contrib/npm.php';
 require 'contrib/rsync.php';
 
 // Config
+set('bin/php', function () {
+    return 'php8.1';
+});
 
 set('repository', 'git@github.com:rekachain/rekachain-web.git');
 set('keep_releases', 3);
