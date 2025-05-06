@@ -20,11 +20,19 @@ class ReturnedProduct extends Model {
         'qty',
         'serial_panel_id',
         'serial_number',
+        'project_name',
+        'trainset_name',
+        'carriage_type',
         'status',
         'image_path',
     ];
     protected $filterable = [
-        'searchs' => [],
+        'searchs' => [
+            'serial_number',
+            'project_name',
+            'trainset_name',
+            'carriage_type',
+        ],
         'columns' => [
             'product_returnable_type',
             'buyer_id',

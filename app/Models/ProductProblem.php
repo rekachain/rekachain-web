@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\Enums\ProductProblemCauseEnum;
 use App\Support\Enums\ProductProblemStatusEnum;
 use App\Traits\Models\HasFilterable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,20 +16,21 @@ class ProductProblem extends Model {
     protected $fillable = [
         'returned_product_id',
         'component_id',
+        'cause',
         'status',
         'image_path',
     ];
     protected $casts = [
         'status' => ProductProblemStatusEnum::class,
+        'cause' => ProductProblemCauseEnum::class,
     ];
     protected $filterable = [
-        'searchs' => [
-            'status',
-        ],
+        'searchs' => [],
         'columns' => [
             'returned_product_id',
             'component_id',
             'status',
+            'cause',
         ],
         'relation_searchs' => [
             'component' => [
