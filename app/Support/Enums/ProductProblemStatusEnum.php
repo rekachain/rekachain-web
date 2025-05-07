@@ -12,4 +12,5 @@ enum ProductProblemStatusEnum: string {
     case PROGRESS = 'progress';
     case CHANGED = 'changed';
     case DRAFT = 'draft';
+    case RE_SET = 're-set'; // setting
 }

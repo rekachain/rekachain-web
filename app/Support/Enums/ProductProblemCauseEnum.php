@@ -10,4 +10,5 @@ enum ProductProblemCauseEnum: string {
 
     case WORKMAN_SHIP = 'workman_ship';
     case QUALITY = 'quality';
+    case OPERATIONAL = 'operational';
 }
