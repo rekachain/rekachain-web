@@ -6,16 +6,13 @@ use App\Models\Component;
 use App\Models\Panel;
 use App\Models\ProductProblem;
 use App\Models\ReturnedProduct;
-use App\Models\User;
 use App\Support\Enums\ProductProblemCauseEnum;
 use App\Support\Enums\ProductProblemStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use DB;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ReturnedProductProblemSheetImport implements ToCollection {
     public function collection(Collection $rows) {
@@ -23,16 +20,18 @@ class ReturnedProductProblemSheetImport implements ToCollection {
         $carNumbers = [];
         DB::beginTransaction();
         try {
-            $rows->skip(1)->each(function ($row) use ($headers, &$carNumbers) {
-                $timestamp = $row[$headers->search('Timestamp')];
-                logger($timestamp);
+            $rows->skip(1)->take($rows->count() - 1)->each(function ($row) use ($headers, &$carNumbers) {
+                if (empty($row[$headers->search('Timestamp')])) {
+                    return;
+                }
+                $timestamp = Date::excelToTimestamp($row[$headers->search('Timestamp')]);
                 $tsName = $headers->search('Train Set');
                 $changeComponent = $row[$headers->search('Pergantian Komponen')];
                 $fixedComponent = $row[$headers->search('Perbaikan Koneksi')];
                 $settingComponent = $row[$headers->search('Setting')];
-                $problemComponent = Component::firstOrCreate([
+                $problemComponent = ($changeComponent ?? $fixedComponent ?? $settingComponent) ? Component::firstOrCreate([
                     'name' => $changeComponent ?? $fixedComponent ?? $settingComponent,
-                ]);
+                ]) : null;
                 if ($changeComponent != null || $changeComponent != '') {
                     $problemStatus = ProductProblemStatusEnum::CHANGED->value;
                 } elseif ($fixedComponent != null || $fixedComponent != '') {
@@ -56,31 +55,40 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                 }
                 $carriageNumberHead = $headers->search('Nomor Kereta');
                 $carriageNumberValue = trim($row[$carriageNumberHead]);
+                $carriageNumberValue = str_replace(["\r\n", "\r", "\n"], ',', $carriageNumberValue);
+                
                 collect(explode(',', $carriageNumberValue))
                     ->each(function ($carNumber) use ($timestamp, $tsName, $finding, $qty, $problemComponent, $problemStatus, $problemCause, $returStatus, &$carNumbers) {
+                    if ($carNumber == null || $carNumber == '') return;
+                    
+                    $carNumber = strtoupper($carNumber);
+                    
                     switch (true) {
-                        case strpos(strtoupper($carNumber), 'K1') !== false:
+                        case strpos($carNumber, 'K1') !== false:
                             $carType = 'K1';
                             break;
-                        case strpos(strtoupper($carNumber), 'K3') !== false:
+                        case strpos($carNumber, 'K3') !== false:
                             $carType = 'K3';
                             break;
-                        case strpos(strtoupper($carNumber), 'M') !== false:
+                        case strpos($carNumber, 'M') !== false:
                             $carType = 'M';
                             break;
-                        case strpos(strtoupper($carNumber), 'P') !== false:
+                        case strpos($carNumber, 'P') !== false:
                             $carType = 'P';
                             break;
                         default:
                             $carType = 'C';
                             break;
                     }
-                    $serialNumber = str_replace($carType,'', $carNumber);
-                    logger($serialNumber);
-                    if (!isset($carNumbers[strtoupper($carNumber)])) {
+                    $serialNumber = str_replace($carType, '', $carNumber);
+                    if (!isset($carNumbers[$carNumber])) {
                         $carNumbers[$carNumber] = 1;
                         $returnedProduct = ReturnedProduct::create([
-                            'product_returnable_id' => $problemComponent->id,
+                            'product_returnable_id' => ($problemComponent != null) 
+                                ? $problemComponent->id 
+                                : Panel::firstOrCreate([
+                                    'name' => 'Grup Retur ' . $carNumber,
+                                ]),
                             'product_returnable_type' => Component::class,
                             'qty' => $qty,
                             'serial_number' => $serialNumber,
@@ -90,64 +98,50 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                             'created_at' => $timestamp,
                             'updated_at' => $timestamp,
                         ]);
+                        $returnedProduct->returned_product_notes()->create([
+                            'user_id' => auth()->id(),
+                            'note' => $finding,
+                            'applied_status' => $returnedProduct->status,
+                            'created_at' => $timestamp,
+                            'updated_at' => $timestamp,
+                        ]);
                     } else {
                         $product = Panel::firstOrCreate([
                             'name' => 'Grup Retur ' . $carNumber,
                         ]);
-                        $returnedProduct = ReturnedProduct::whereSerialNumber($serialNumber)->update([
+                        $returnedProduct = ReturnedProduct::whereSerialNumber($serialNumber)->get()->last();
+                        $returnedProduct->update([
                             'product_returnable_id' => $product->id,
                             'product_returnable_type' => Panel::class,
+                            'qty' => 1,
                             'updated_at' => $timestamp,
                         ]);
                         $carNumbers[$carNumber]++;
                     }
-                    logger($returnedProduct);
                     
                     $productProblem = ProductProblem::create([
                         'returned_product_id' => $returnedProduct->id,
                         'component_id' => $problemComponent->id,
+                        'qty' => $qty,
                         'cause' => $problemCause,
                         'status' => $problemStatus,
-                    ]);
-                    $returnedProduct->returned_product_notes()->create([
-                        'user_id' => auth()->id(),
-                        'note' => $finding,
-                        'applied_status' => $returnedProduct->status,
+                        'created_at' => $timestamp,
+                        'updated_at' => $timestamp,
                     ]);
                     $productProblem->product_problem_notes()->create([
                         'user_id' => auth()->id(),
                         'note' => $finding,
                         'applied_status' => $productProblem->status,
+                        'created_at' => $timestamp,
+                        'updated_at' => $timestamp,
                     ]);
-                    logger('asd');
-                    logger()->info($returnedProduct);
                 });
-                // DB::commit();
             });
+            DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
         }
-        logger()->info('asd',$carNumbers);
-        // $product = $row['product_type'] == 'Panel' ? Panel::firstOrCreate([
-        //     'name' => $row['product_name'],
-        // ]) : Component::firstOrCreate([
-        //     'name' => $row['product_name'],
-        // ]);
-
-        // $returnedProduct = ReturnedProduct::create([
-        //     'product_returnable_id' => $product->id,
-        //     'product_returnable_type' => $row['product_type'] == 'Panel' ? Panel::class : Component::class,
-        //     'buyer_id' => User::firstOrCreate([
-        //         'name' => $row['customer_optional'],
-        //     ], ['password' => Hash::make('password')])->id,
-        //     'serial_number' => $row['serial_number'],
-        // ]);
-
-        // $returnedProduct->returned_product_notes()->create([
-        //     'user_id' => auth()->id(),
-        //     'note' => $row['note'],
-        // ]);
 
         return $carNumbers;
     }
