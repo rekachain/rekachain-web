@@ -44,6 +44,12 @@
             "command": "php artisan migrate:fresh --seed"
         },
         {
+            "label": "Laravel Migrate - Refresh with Step",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan migrate:refresh --step=${input:step}"
+        },
+        {
             "label": "Laravel Migrate - Rollback",
             "problemMatcher": [],
             "type": "shell",
@@ -208,6 +214,11 @@
                 "tests\\Unit\\VerifyStandardProjectStructureTest.php",
                 "tests\\Unit\\VerifyLocalizationImplementation.php"
             ]
+        },
+        {
+            "id": "step",
+            "type": "promptString",
+            "description": "Enter the step",
         }
     ]
 }
