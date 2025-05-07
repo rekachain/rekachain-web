@@ -16,6 +16,8 @@ class ReturnedProductNote extends Model {
         'note',
         'status',
         'user_id',
+        'created_at',
+        'updated_at',
     ];
     protected $filterable = [
         'searchs' => [

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('product_problems', function (Blueprint $table) {
             $table->enum('cause', ProductProblemCauseEnum::toArray())->after('component_id')->default(ProductProblemCauseEnum::QUALITY)->nullable();
             $table->enum('status', ProductProblemStatusEnum::toArray())->default(ProductProblemStatusEnum::DRAFT)->change();
+            $table->integer('qty')->after('component_id')->nullable()->default(1);
         });
     }
 
@@ -26,6 +27,7 @@ return new class extends Migration
     {
         Schema::table('product_problems', function (Blueprint $table) {
             $table->dropColumn('cause');
+            $table->dropColumn('qty');
         });
     }
 };

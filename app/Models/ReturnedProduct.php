@@ -25,6 +25,8 @@ class ReturnedProduct extends Model {
         'carriage_type',
         'status',
         'image_path',
+        'created_at',
+        'updated_at',
     ];
     protected $filterable = [
         'searchs' => [

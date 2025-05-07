@@ -16,9 +16,12 @@ class ProductProblem extends Model {
     protected $fillable = [
         'returned_product_id',
         'component_id',
+        'qty',
         'cause',
         'status',
         'image_path',
+        'created_at',
+        'updated_at',
     ];
     protected $casts = [
         'status' => ProductProblemStatusEnum::class,
