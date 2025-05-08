@@ -70,11 +70,17 @@ import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieCh
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import Filters from './Partials/Filters';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
+import Checkbox from '@/Components/Checkbox';
+import InputLabel from '@/Components/InputLabel';
+import WorkstationProgressStatusBarChart from './Partials/WorkstationProgressStatusBarChart';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
 
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
+        Record<string, string>
+    >({});
+    const [localizedWorkstationStatuses, setWorkstationStatuses] = useState<
         Record<string, string>
     >({});
     const [openTrainset, setOpenTrainset] = useState(false);
@@ -152,26 +158,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                 ),
             ),
         });
-    const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
-        useState<AttachmentStatusBarChartInterface>({
-            // data: data.attachment_status_of_workstation.map(
-            //         ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-            //             workstation_name,
-            //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-            //         }),
-            //     ),
-            config: Object.fromEntries(
-                Object.entries(attachmentStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
-                ),
-            ),
-        });
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
-    const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState(
-        {},
-    );
-    const [maxWorkstationStatusValue, setMaxWorkstationStatusValue] = useState(10);
 
     useEffect(() => {
         console.log('useMerged', useMerged, 'useRaw', useRaw);
@@ -180,22 +168,10 @@ export default function Dashboard({ auth, data }: PageProps) {
 
     useEffect(() => {
         setAttachmentStatusOfTrainsetFilter({ column_filters: { id: trainsetFilters?.id } });
-        setAttachmentStatusOfWorkstationFilter({
-            relation_column_filters: { trainset: { id: trainsetFilters?.id } },
-        });
     }, [trainsetFilters]);
     useEffect(() => {
         syncAttachmentStatusData();
-    }, [attachmentStatusOfTrainsetFilter, attachmentStatusOfWorkstationFilter]);
-    useEffect(() => {
-        let max = 0;
-        attachmentStatusOfWorkstationGraph.data?.forEach((trainset) => {
-            Object.values(trainset).forEach((count) => {
-                if (count > max) max = count + 1;
-            });
-        });
-        setMaxWorkstationStatusValue(max);
-    }, [attachmentStatusOfWorkstationGraph]);
+    }, [attachmentStatusOfTrainsetFilter]);
 
     const syncAttachmentStatusData = async () => {
         const res = await window.axios.get(
@@ -203,10 +179,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                 use_merged: useMerged,
                 use_raw: useRaw,
                 attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
-                attachment_status_of_workstation_filter: attachmentStatusOfWorkstationFilter,
             }),
         );
-        console.log('res', res.data);
         setAttachmentStatusOfTrainsetGraph({
             data: useRaw
                 ? res.data.attachment_status_of_trainset
@@ -225,62 +199,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                 ),
             ),
         });
-        setAttachmentStatusOfWorkstationGraph({
-            data: useRaw
-                ? res.data.attachment_status_of_workstation
-                : res.data.attachment_status_of_workstation.map(
-                      ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
-                          workstation_name,
-                          ...progress.reduce(
-                              (acc, { status, count }) => ({ ...acc, [status]: count }),
-                              {},
-                          ),
-                      }),
-                  ),
-            config: Object.fromEntries(
-                Object.entries(attachmentStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
-                ),
-            ),
-        });
-    };
-
-    const toPercent = (decimal: number, fixed = 0) => {
-        return `${(decimal * 100).toFixed(fixed)}%`;
-    };
-    const getPercent = (value: number, total: number) => {
-        const ratio = total > 0 ? value / total : 0;
-        return toPercent(ratio, 2);
-    };
-
-    const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
-        const total = payload.reduce((result: number, entry: any) => result + entry.value, 0);
-        return (
-            <div className='grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl'>
-                <p className=''>{`${label} (Total: ${total})`}</p>
-                <ul className='list'>
-                    {payload.map((entry: any, index: number) => (
-                        <li
-                            key={`item-${index}`}
-                            className='flex items-center justify-between gap-1.5'
-                        >
-                            <div className='flex items-center gap-1.5'>
-                                <div
-                                    style={{
-                                        backgroundColor: entry.color,
-                                    }}
-                                    className='h-2 w-2 shrink-0 rounded-[2px]'
-                                />
-                                <span className='text-foreground'>
-                                    {attachmentStatusConfig[entry.dataKey].label}
-                                </span>
-                            </div>
-                            <span className='text-foreground'>{`${entry.value} (${getPercent(entry.value, total)})`}</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        );
     };
 
     const fetchTrainsetFilters = useCallback(async () => {
@@ -294,16 +212,13 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, []);
 
     const { t, setLocale } = useLaravelReactI18n();
-            
-    useEffect(() => {
-        fetchEnumLabels('ReturnedProductStatusEnum')
-            .then(setLocalizedReturnedProductStatuses)
-            .catch((error) => console.error('Failed to fetch localized statuses:', error));
-    }, []);
 
     useEffect(() => {
-        fetchEnumLabels('ReturnedProductStatusEnum')
-            .then(setLocalizedReturnedProductStatuses)
+        fetchEnumLabels(['ReturnedProductStatusEnum', 'PanelAttachmentStatusEnum'])
+            .then((response) => {
+                setLocalizedReturnedProductStatuses(response.ReturnedProductStatusEnum);
+                setWorkstationStatuses(response.PanelAttachmentStatusEnum);
+            })
             .catch((error) => console.error('Failed to fetch localized statuses:', error));
     }, [setLocale]);
 
@@ -336,18 +251,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                         {/* <ChartContainer config={chartConfig} className="h-[200px] w-full pr-10">
                                 <BarChart accessibilityLayer data={data['ts']}> */}
                         {/* <h2 className="text-xl my-2">Proyek 612</h2> */}
-                        {/* <div className="flex items-center px-1 gap-3 text-xs ">
-                            <Checkbox
-                                id="useMerged"
-                                onChange={e => setUseMerged(e.target.checked)}
-                                checked={useMerged}
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-5 ">
-                    <div className="bg-white dark:bg-transparent overflow-hidden shadow-sm sm:rounded-lg ">
-                        {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
-                        {/* <div className="">
-                            <h1 className="text-3xl font-bold mt-2">Dashboard</h1>
-                            <h2 className="text-xl my-2">Proyek 612</h2>
+                        <div className="">
                             <div className="flex items-center px-1 gap-3">
                                 <Checkbox
                                     id="useMerged"
@@ -358,23 +262,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
                                 <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
                             </div>
-                            <GenericDataSelector
-                                // TODO: redesain dis shts🗿
-                                id="trainset_id"
-                                fetchData={fetchTrainsetFilters}
-                                setSelectedData={id => setTrainsetFilters({ id: id })}
-                                selectedDataId={trainsetFilters?.id ?? null}
-                                placeholder={'Choose'}
-                                renderItem={item =>
-                                    `${item.name} ${item.status != TrainsetStatusEnum.PROGRESS ? `- ${item.status}` : ''}`
-                                }
-                                buttonClassName="mt-1"
-                                nullable
-                            />
-                            <InputLabel htmlFor="useMerged" value="Use Merged Status" />
-                            <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
-                            <InputLabel htmlFor="useRaw" value="Use Raw SQL (for development)" />
-                        </div> */}
+                        </div>
                         {/* </ChartContainer> */}
                         {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && (
                             <>
@@ -652,46 +540,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             {t('pages.dashboard.index.all_workstations')}
                         </h2>
                         <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
-                        <ChartContainer
-                            config={attachmentStatusOfWorkstationGraph.config}
-                            className='mt-5 h-[300px] w-full'
-                        >
-                            <BarChart
-                                stackOffset='expand'
-                                layout='vertical'
-                                data={attachmentStatusOfWorkstationGraph.data}
-                                accessibilityLayer
-                            >
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    type='number'
-                                    tickFormatter={(value) => toPercent(value, 0)}
-                                />
-                                <YAxis
-                                    width={150}
-                                    type='category'
-                                    tickMargin={10}
-                                    tickLine={false}
-                                    dataKey='workstation_name'
-                                    className=''
-                                    axisLine={false}
-                                    // tickFormatter={value => value.slice(0, 6)}
-                                />
-                                <ChartTooltip content={renderWorkstationProgressTooltipContent} />
-                                <ChartLegend content={<ChartLegendContent />} />
-                                {Object.keys(attachmentStatusOfWorkstationGraph.config).map(
-                                    (dataKey) => (
-                                        <Bar
-                                            type='monotone'
-                                            stackId='1'
-                                            key={`workstationPanelStatus-${dataKey}-key`}
-                                            fill={`var(--color-${dataKey})`}
-                                            dataKey={dataKey}
-                                        />
-                                    ),
-                                )}
-                            </BarChart>
-                        </ChartContainer>
+                        <WorkstationProgressStatusBarChart localizedStatuses={localizedWorkstationStatuses} useMerged={useMerged} />
                     </div>
                 </div>
             </div>
