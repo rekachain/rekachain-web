@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DashboardResource;
 use App\Services\DashboardService;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
@@ -22,7 +23,9 @@ class DashboardController extends Controller {
         $intent = $request->get('intent');
         $data = $this->dashboardService->showGraph($request->query());
         if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+            $request->merge(['intent' => IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value]);
             $data['returned_product_status'] = $this->dashboardService->showReturnedProductStatusSum($request->query());
+            $data['returned_product_progress_time_diff'] = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
         }
         // $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query());
         if ($this->ajax()) {
@@ -32,6 +35,8 @@ class DashboardController extends Controller {
                     return $this->dashboardService->downloadApkFile();
                 case IntentEnum::DOWNLOAD_MANUAL_BOOK_FILE->value:
                     return $this->dashboardService->downloadManualBookFile();
+                case IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value:
+                    return DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
             }
             $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
             $data['attachment_status_of_workstation'] = $request->get('use_raw') ? $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query()) : $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
@@ -80,7 +85,9 @@ class DashboardController extends Controller {
         // array_push($data, $project);
         $data['projectDetail'] = $project;
         if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+            $request->merge(['intent' => IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value]);
             $data['returned_product_status'] = $this->dashboardService->showReturnedProductStatusSum($request->query());
+            $data['returned_product_progress_time_diff'] = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
         }
         $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
         $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());

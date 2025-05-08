@@ -367,4 +367,6 @@ enum IntentEnum: string {
     case WEB_PRODUCT_RESTOCK_INITIATE_PROJECT = 'web.product.restock.initiate.project';
 
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
+
+    case WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE = 'web.dashboard.get.returned.product.time.difference';
 }

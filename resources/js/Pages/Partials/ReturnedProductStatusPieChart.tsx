@@ -1,5 +1,4 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { ROUTES } from '@/Support/Constants/routes';
 import { ReturnedProductStatusPieChartInterface } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
@@ -149,13 +148,12 @@ export default function ({
                 />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Pie data={returnedProductStatusPieChart.data} dataKey="value">
-                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey) => {
-                        return (
+                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey) => (
                         <Cell
                             key={`returnedProductStatus-${dataKey}-key`}
                             fill={`var(--color-${dataKey})`}
                         />
-                    )})}
+                    ))}
                 </Pie>
             </PieChart>
         </ChartContainer>

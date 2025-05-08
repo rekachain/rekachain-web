@@ -2842,4 +2842,18 @@ return [
             ],
         ],
     ],
+    'partials' => [
+        'returned_product_time_diff_chart' => [
+            'headers' => [
+                'year_month' => 'Waktu Retur',
+                'avg_duration' => 'Avg. Lama Pengerjaan',
+                'total_returned' => 'Total Barang',
+            ],
+            'fields' => [
+                'day' => 'Hari',
+                'hour' => 'Jam',
+                'minute' => 'Menit',
+            ],
+        ]
+    ]
 ];

@@ -99,6 +99,20 @@ const intents = {
     API_SERIAL_PANEL_UPDATE_ASSIGN_WORKER_PANEL: 'api.serial.panel.update.assign.worker.panel',
     API_SERIAL_PANEL_UPDATE_PANEL_MANUFACTURE_STATUS:
         'api.serial.panel.update.panel.manufacture.status',
+    API_RETURNED_PRODUCT_GET_ALL_RETURNED_PRODUCTS:
+        'api.returned.product.get.all.returned.products',
+    API_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_DETAILS:
+        'api.returned.product.get.returned.product.details',
+    API_RETURNED_PRODUCT_GET_ATTACHMENT_SERIAL_NUMBER_DETAILS_WITH_QR:
+        'api.returned.product.get.attachment.serial.number.details.with.qr',
+    API_RETURNED_PRODUCT_GET_PRODUCT_PROBLEMS: 'api.returned.product.get.product.problems',
+    API_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE:
+        'api.returned.product.add.returned.product.with.note',
+    API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM: 'api.returned.product.create.product.problem',
+    API_RETURNED_PRODUCT_UPDATE_RETURNED_PRODUCT_WITH_NOTE:
+        'api.returned.product.update.returned.product.with.note',
+    API_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE:
+        'api.product.problem.update.product.problem.with.note',
     WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS: 'web.project.get.all.trainset.components',
     WEB_PROJECT_GET_ALL_TRAINSET_COMPONENTS_WITH_QTY:
         'web.project.get.all.trainset.components.with.qty',
@@ -250,6 +264,8 @@ const intents = {
         'web.product.problem.update.product.problem.with.note',
     WEB_PRODUCT_RESTOCK_INITIATE_PROJECT: 'web.product.restock.initiate.project',
     WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
+    WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE:
+        'web.dashboard.get.returned.product.time.difference',
 };
 
 export const IntentEnum = intents;

@@ -2842,4 +2842,18 @@ return [
             ],
         ],
     ],
+    'partials' => [
+        'returned_product_time_diff_chart' => [
+            'headers' => [
+                'year_month' => 'Year Month',
+                'avg_duration' => 'Avg. Time Execution',
+                'total_returned' => 'Total Return',
+            ],
+            'fields' => [
+                'day' => 'Days',
+                'hour' => 'Hours',
+                'minute' => 'Minutes',
+            ],
+        ]
+    ]
 ];

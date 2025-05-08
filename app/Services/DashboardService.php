@@ -15,6 +15,8 @@ use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -407,5 +409,47 @@ class DashboardService {
         }
 
         return $returnedProductsSummary;
+    }
+
+    public function getReturnedproductProgressTimeDiff(array $request) : LengthAwarePaginator {
+        $rawData = ReturnedProduct::selectRaw("
+                YEAR(created_at) as year,
+                MONTH(created_at) as month,
+                AVG(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as avg_seconds,
+                SUM(qty) as total_returned
+            ")
+            ->groupByRaw("YEAR(created_at), MONTH(created_at)")
+            ->orderByRaw("YEAR(created_at) DESC, MONTH(created_at) DESC")
+            ->get();
+
+        // Transform with localization
+        $transformed = $rawData->map(function ($item) {
+            $date = Carbon::create($item->year, $item->month, 1);
+            $avg = (int) $item->avg_seconds;
+
+            $days = floor($avg / 86400);
+            $hours = floor(($avg % 86400) / 3600);
+            $minutes = floor(($avg % 3600) / 60);
+
+            return (object) [
+                'year_month' => $date->locale(app()->getLocale())->translatedFormat('Y F'),
+                'avg_duration' => "{$days} " . __('pages.partials.returned_product_time_diff_chart.fields.day') . ' ' .
+                                "{$hours} " . __('pages.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
+                                "{$minutes} " . __('pages.partials.returned_product_time_diff_chart.fields.minute'),
+                'total_returned' => $item->total_returned,
+            ];
+        });
+
+        $perPage = request()->get('perPage', 4);
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $paginated = new LengthAwarePaginator(
+            $transformed->forPage($page, $perPage)->values(),
+            $transformed->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return $paginated;
     }
 }
