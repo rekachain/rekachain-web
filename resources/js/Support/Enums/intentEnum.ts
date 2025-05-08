@@ -266,6 +266,7 @@ const intents = {
     WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
     WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE:
         'web.dashboard.get.returned.product.time.difference',
+    WEB_DASHBOARD_GET_WORKSTATION_STATUS: 'web.dashboard.get.workstation.status',
 };
 
 export const IntentEnum = intents;

@@ -37,9 +37,11 @@ class DashboardController extends Controller {
                     return $this->dashboardService->downloadManualBookFile();
                 case IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value:
                     return DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
+                case IntentEnum::WEB_DASHBOARD_GET_WORKSTATION_STATUS->value:
+                    return $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
             }
             $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
-            $data['attachment_status_of_workstation'] = $request->get('use_raw') ? $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query()) : $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
+            // $data['attachment_status_of_workstation'] = $request->get('use_raw') ? $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query()) : $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
 
             return $data;
         }

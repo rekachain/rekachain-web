@@ -2,7 +2,6 @@ import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTool
 import { ROUTES } from '@/Support/Constants/routes';
 import { ReturnedProductStatusPieChartInterface } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
-import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
@@ -46,14 +45,6 @@ export default function ({
             data: returnedProductStatusData || [],
             config: returnedProductStatusConfig
     })
-
-    const { data, setData } = useForm<{
-        file: File | null;
-        buyer_id: number | null;
-    }>({
-        file: null,
-        buyer_id: null,
-    });
 
     const syncReturnedProductStatusChart = () => {
         setReturnedProductStatusPieChart({
@@ -108,10 +99,6 @@ export default function ({
         syncReturnedProductStatusChart();
     }, [returnedProductStatusConfig]);
 
-    useEffect(() => {
-        console.log(returnedProductStatusConfig['requested']);
-    }, []);
-
     return (
         <ChartContainer
             config={returnedProductStatusPieChart.config}
@@ -123,7 +110,6 @@ export default function ({
                         <ChartTooltipContent
                             // hideIndicator={true}
                             formatter={(value, name) => {
-                                console.log(value, name);
                                 const total = returnedProductStatusPieChart.data.reduce((result, entry) => result + entry.value, 0);
                                 const percent = ((Number(value) / total) * 100).toFixed(2);
                                     return (
