@@ -22,19 +22,19 @@ export default function ({
     const [returnedProductStatusConfig, setReturnedProductStatusConfig] = useState<ChartConfig>({
         requested: {
             label: localizedStatuses.requested || 'Diminta',
-            color: 'hsl(var(--chart-1))',
+            color: 'hsl(var(--chart-4))',
         },
         draft: {
             label: localizedStatuses.draft || 'Draf',
-            color: 'hsl(var(--chart-2))',
+            color: 'hsl(var(--chart-3))',
         },
         progress: {
             label: localizedStatuses.progress || 'Dalam Proses',
-            color: 'hsl(var(--chart-3))',
+            color: 'hsl(var(--chart-2))',
         },
         done: {
             label: localizedStatuses.done || 'Selesai',
-            color: 'hsl(var(--chart-4))',
+            color: 'hsl(var(--chart-1))',
         },
         scrapped: {
             label: localizedStatuses.scrapped || 'Discrap',
@@ -83,24 +83,24 @@ export default function ({
     useEffect(() => {
         setReturnedProductStatusConfig({
             requested: {
-                label: localizedStatuses.requested || 'Diminta',
-                color: 'hsl(var(--chart-1))',
+                label: localizedStatuses.requested,
+                color: returnedProductStatusConfig.requested.color,
             },
             draft: {
-                label: localizedStatuses.draft || 'Draf',
-                color: 'hsl(var(--chart-2))',
+                label: localizedStatuses.draft,
+                color: returnedProductStatusConfig.draft.color,
             },
             progress: {
-                label: localizedStatuses.progress || 'Dalam Proses',
-                color: 'hsl(var(--chart-3))',
+                label: localizedStatuses.progress,
+                color: returnedProductStatusConfig.progress.color,
             },
             done: {
-                label: localizedStatuses.done || 'Selesai',
-                color: 'hsl(var(--chart-4))',
+                label: localizedStatuses.done,
+                color: returnedProductStatusConfig.done.color,
             },
             scrapped: {
-                label: localizedStatuses.scrapped || 'Discrap',
-                color: 'hsl(var(--chart-5))',
+                label: localizedStatuses.scrapped,
+                color: returnedProductStatusConfig.scrapped.color,
             },
         });
     }, [localizedStatuses]);
@@ -108,6 +108,10 @@ export default function ({
     useEffect(() => {
         syncReturnedProductStatusChart();
     }, [returnedProductStatusConfig]);
+
+    useEffect(() => {
+        console.log(returnedProductStatusConfig['requested']);
+    }, []);
 
     return (
         <ChartContainer
@@ -120,6 +124,7 @@ export default function ({
                         <ChartTooltipContent
                             // hideIndicator={true}
                             formatter={(value, name) => {
+                                console.log(value, name);
                                 const total = returnedProductStatusPieChart.data.reduce((result, entry) => result + entry.value, 0);
                                 const percent = ((Number(value) / total) * 100).toFixed(2);
                                     return (
@@ -128,13 +133,13 @@ export default function ({
                                                 className="shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg] h-2.5 w-2.5" 
                                                 style={
                                                     { 
-                                                        '--color-bg': returnedProductStatusConfig[name].color, 
-                                                        '--color-border': returnedProductStatusConfig[name].color 
+                                                        '--color-bg': returnedProductStatusPieChart.config[name].color, 
+                                                        '--color-border': returnedProductStatusPieChart.config[name].color 
                                                     } as React.CSSProperties}>
                                                 
                                             </div>
                                             <span className="">
-                                                {`${returnedProductStatusConfig[name].label}: ${value} (${percent}%)`}
+                                                {`${returnedProductStatusPieChart.config[name].label}: ${value} (${percent}%)`}
                                             </span>
                                         </>
                                     );
@@ -144,12 +149,13 @@ export default function ({
                 />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Pie data={returnedProductStatusPieChart.data} dataKey="value">
-                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey, index) => (
+                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey) => {
+                        return (
                         <Cell
-                            key={`returnedProductStatus-${index}-key`}
+                            key={`returnedProductStatus-${dataKey}-key`}
                             fill={`var(--color-${dataKey})`}
                         />
-                    ))}
+                    )})}
                 </Pie>
             </PieChart>
         </ChartContainer>
