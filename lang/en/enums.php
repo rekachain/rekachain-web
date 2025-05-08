@@ -28,6 +28,13 @@ return [
         'send' => 'Sender',
         'receive' => 'Receiver',
     ],
+    'App\Support\Enums\PanelAttachmentStatusEnum' => [
+        'material_in_transit' => 'Material In Transit',
+        'material_accepted' => 'Material Accepted',
+        'in_progress' => 'In Progress',
+        'pending' => 'Pending',
+        'done' => 'Done',
+    ],
     'App\Support\Enums\PanelAttachmentHandlerHandlesEnum' => [
         'prepare' => 'Prepare',
         'send' => 'Sender',

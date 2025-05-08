@@ -28,6 +28,13 @@ return [
         'send' => 'Pengirim',
         'receive' => 'Penerima',
     ],
+    'App\Support\Enums\PanelAttachmentStatusEnum' => [
+        'material_in_transit' => 'Material Dikirm',
+        'material_accepted' => 'Material Diterima',
+        'in_progress' => 'Di Proses',
+        'pending' => 'Di Tunda',
+        'done' => 'Selesai',
+    ],
     'App\Support\Enums\PanelAttachmentHandlerHandlesEnum' => [
         'prepare' => 'Perencana',
         'send' => 'Pengirim',
