@@ -9,7 +9,7 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { PageProps } from '../Types';
 
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -65,27 +65,14 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import { useCallback, useEffect, useState } from 'react';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { AttachmentStatusBarChartInterface, AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, ReturnedProductStatusPieChartInterface } from '@/Support/Interfaces/Others';
+import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
-import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
-import GenericDataSelector from '@/Components/GenericDataSelector';
-import { withLoading } from '@/Utils/withLoading';
-interface AttachmentStatusOfTrainsetResource {
-    trainset_name: string;
-    progress: { status: string; count: number }[];
-}
-interface AttachmentStatusOfWorkstationResource {
-    workstation_name: string;
-    progress: { status: string; count: number }[];
-}
-interface AttachmentStatusBarGraph {
-    data?: AttachmentStatusOfTrainsetResource[];
-    config: ChartConfig;
-}
-interface ReturnedProductStatusPieChart {
-    data: { name: string; value: number }[];
-    config: ChartConfig;
-}
+
 export default function Dashboard({ auth, data }: PageProps) {
+    const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
+        Record<string, string>
+    >({});
     const [open, setOpen] = useState(false);
     const [yearFilterOpen, setYearFilterOpen] = useState(false);
     const [monthFilterOpen, setMonthFilterOpen] = useState(false);
@@ -107,8 +94,10 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [openTrainset, setOpenTrainset] = useState(false);
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
-    const [yearFilterValue, setYearFilterValue] = useState('');
-    const [monthFilterValue, setMonthFilterValue] = useState(0);
+    const [dateFilterValue, setDateFilterValue] = useState({
+        year: '',
+        month: 0,
+    });
     const [valueTrainset, setValueTrainset] = useState('');
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
@@ -162,7 +151,7 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(false);
     const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] =
-        useState<AttachmentStatusBarGraph>({
+        useState<AttachmentStatusBarChartInterface>({
             // data: useRaw
             //     ? data.attachment_status_of_trainset
             //     : data.attachment_status_of_trainset.map(
@@ -178,7 +167,7 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     const [attachmentStatusOfWorkstationGraph, setAttachmentStatusOfWorkstationGraph] =
-        useState<AttachmentStatusBarGraph>({
+        useState<AttachmentStatusBarChartInterface>({
             // data: data.attachment_status_of_workstation.map(
             //         ({ workstation_name, progress }: AttachmentStatusOfWorkstationResource) => ({
             //             workstation_name,
@@ -191,44 +180,6 @@ export default function Dashboard({ auth, data }: PageProps) {
                 ),
             ),
         });
-
-    const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
-        Record<string, string>
-    >({});
-    
-    useEffect(() => {
-        fetchEnumLabels('ReturnedProductStatusEnum')
-            .then((statuses) => {
-                setLocalizedReturnedProductStatuses(statuses);
-            })
-            .catch((error) => console.error('Failed to fetch localized statuses:', error));
-    }, []);
-    const [returnedProductStatusPieChart, setReturnedProductStatusPieChart] =
-        useState<ReturnedProductStatusPieChart>({
-            data: data.returned_product_status || [],
-            config: {
-                requested: {
-                    label: localizedReturnedProductStatuses.requested || 'Diminta',
-                    color: 'hsl(var(--chart-1))',
-                },
-                draft: {
-                    label: localizedReturnedProductStatuses.draft || 'Draf',
-                    color: 'hsl(var(--chart-2))',
-                },
-                progress: {
-                    label: localizedReturnedProductStatuses.progress || 'Progres',
-                    color: 'hsl(var(--chart-3))',
-                },
-                done: {
-                    label: localizedReturnedProductStatuses.done || 'Selesai',
-                    color: 'hsl(var(--chart-4))',
-                },
-                scrapped: {
-                    label: localizedReturnedProductStatuses.scrapped || 'Discrap',
-                    color: 'hsl(var(--chart-5))',
-                },
-            }
-    })
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
     const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
     const [attachmentStatusOfWorkstationFilter, setAttachmentStatusOfWorkstationFilter] = useState(
@@ -259,11 +210,6 @@ export default function Dashboard({ auth, data }: PageProps) {
         });
         setMaxWorkstationStatusValue(max);
     }, [attachmentStatusOfWorkstationGraph]);
-
-    useEffect(() => {
-        syncAttachmentStatusData();
-        syncReturnedProductStatusChart();
-    }, [localizedReturnedProductStatuses]);
 
     const syncAttachmentStatusData = async () => {
         const res = await window.axios.get(
@@ -312,53 +258,6 @@ export default function Dashboard({ auth, data }: PageProps) {
             ),
         });
     };
-
-    const [returnedProductStatusConfig, setReturnedProductStatusConfig] = useState<ChartConfig>({
-        requested: {
-            label: localizedReturnedProductStatuses.requested || 'Diminta',
-            color: 'hsl(var(--chart-1))',
-        },
-        draft: {
-            label: localizedReturnedProductStatuses.draft || 'Draf',
-            color: 'hsl(var(--chart-2))',
-        },
-        progress: {
-            label: localizedReturnedProductStatuses.progress || 'Dalam Proses',
-            color: 'hsl(var(--chart-3))',
-        },
-        done: {
-            label: localizedReturnedProductStatuses.done || 'Selesai',
-            color: 'hsl(var(--chart-4))',
-        },
-        scrapped: {
-            label: localizedReturnedProductStatuses.scrapped || 'Discrap',
-            color: 'hsl(var(--chart-5))',
-        },
-    });
-
-    const syncReturnedProductStatusChart = () => {
-        setReturnedProductStatusPieChart({
-            data: data.returned_product_status || [],
-            config: returnedProductStatusConfig,
-        });
-    }
-
-    const syncReturnedProductStatusData =  withLoading( async() => {
-        const res = await window.axios.get(
-            route(`${ROUTES.DASHBOARD}`, {
-                year: yearFilterValue,
-                month: monthFilterValue,
-            })
-        )
-        setReturnedProductStatusPieChart({
-            data: res.data.returned_product_status,
-            config: returnedProductStatusConfig,
-        });
-    })
-
-    useEffect(() => {
-        syncReturnedProductStatusData();
-    }, [yearFilterValue, monthFilterValue]);
 
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
@@ -409,8 +308,15 @@ export default function Dashboard({ auth, data }: PageProps) {
     }, []);
 
     const { t, setLocale } = useLaravelReactI18n();
+            
+    useEffect(() => {
+        fetchEnumLabels('ReturnedProductStatusEnum')
+            .then(setLocalizedReturnedProductStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    }, []);
 
     useEffect(() => {
+        console.log('locale');
         fetchEnumLabels('ReturnedProductStatusEnum')
             .then(setLocalizedReturnedProductStatuses)
             .catch((error) => console.error('Failed to fetch localized statuses:', error));
@@ -511,8 +417,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                     className='w-25 justify-between md:w-40'
                                                     aria-expanded={yearFilterOpen}
                                                 >
-                                                    {yearFilterValue
-                                                        ? yearFilterValue
+                                                    {dateFilterValue.year
+                                                        ? dateFilterValue.year
                                                         : "Filter Tahun"}
                                                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                                 </Button>
@@ -524,11 +430,13 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                             {"Year Not Found"}
                                                         </CommandEmpty>
                                                         <CommandGroup>
-                                                            {yearFilterValue && (
+                                                            {dateFilterValue.year && (
                                                                 <CommandItem onSelect={() => {
-                                                                    setYearFilterValue('');
+                                                                    setDateFilterValue({
+                                                                        year: '',
+                                                                        month: 0
+                                                                    });
                                                                     setYearFilterOpen(false);
-                                                                    setMonthFilterValue(0);
                                                                 }}>
                                                                     {t('components.generic_data_selector.actions.clear_selection')}
                                                                 </CommandItem>
@@ -537,11 +445,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 <CommandItem
                                                                     value={yearItem.toString()}
                                                                     onSelect={(currentValue) => {
-                                                                        setYearFilterValue(
-                                                                            currentValue === yearFilterValue
+                                                                        setDateFilterValue({
+                                                                            year: currentValue === dateFilterValue.year
                                                                                 ? ''
                                                                                 : currentValue.toString(),
-                                                                        );
+                                                                            month: dateFilterValue.month
+                                                                        });
                                                                         setYearFilterOpen(false);
                                                                     }}
                                                                     key={yearItem}
@@ -549,7 +458,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     <Check
                                                                         className={cn(
                                                                             'mr-2 h-4 w-4',
-                                                                            yearFilterValue === yearItem.toString()
+                                                                            dateFilterValue.year === yearItem.toString()
                                                                                 ? 'opacity-100'
                                                                                 : 'opacity-0',
                                                                         )}
@@ -577,7 +486,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                             }
                                             nullable
                                         /> */}
-                                        {yearFilterValue && (
+                                        {dateFilterValue.year && (
                                             <Popover open={monthFilterOpen} onOpenChange={setMonthFilterOpen}>
                                                 <PopoverTrigger asChild>
                                                     <Button
@@ -586,8 +495,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                         className='w-25 justify-between md:w-40'
                                                         aria-expanded={monthFilterOpen}
                                                     >
-                                                        {monthFilterValue
-                                                            ? months.find(month => month.value === monthFilterValue)?.label
+                                                        {dateFilterValue.month
+                                                            ? months.find(month => month.value === dateFilterValue.month)?.label
                                                             : "Filter Bulan"}
                                                         <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                                                     </Button>
@@ -599,9 +508,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                 {"Month Not Found"}
                                                             </CommandEmpty>
                                                             <CommandGroup>
-                                                                {monthFilterValue !== 0 && (
+                                                                {dateFilterValue.month !== 0 && (
                                                                     <CommandItem onSelect={() => {
-                                                                        setMonthFilterValue(0)
+                                                                        setDateFilterValue({
+                                                                            year: dateFilterValue.year,
+                                                                            month: 0,
+                                                                        })
                                                                         setMonthFilterOpen(false)
                                                                     }}>
                                                                         {t('components.generic_data_selector.actions.clear_selection')}
@@ -611,7 +523,10 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                     <CommandItem
                                                                         value={monthItem.label}
                                                                         onSelect={() => {
-                                                                            setMonthFilterValue(monthItem.value);
+                                                                            setDateFilterValue({
+                                                                                year: dateFilterValue.year,
+                                                                                month: monthItem.value,
+                                                                            });
                                                                             setMonthFilterOpen(false);
                                                                         }}
                                                                         key={monthItem.label}
@@ -619,7 +534,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                                                         <Check
                                                                             className={cn(
                                                                                 'mr-2 h-4 w-4',
-                                                                                monthFilterValue === monthItem.value
+                                                                                dateFilterValue.month === monthItem.value
                                                                                     ? 'opacity-100'
                                                                                     : 'opacity-0',
                                                                             )}
@@ -687,49 +602,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <h2 className='my-1 text-xl font-bold'>
                                     Returned Product
                                 </h2>
-                                <ChartContainer
-                                    config={returnedProductStatusPieChart.config}
-                                    className='mt-5 h-[300px] w-full'
-                                >
-                                    <PieChart>
-                                        <ChartTooltip
-                                            content={
-                                                <ChartTooltipContent
-                                                    // hideIndicator={true}
-                                                    formatter={(value, name) => {
-                                                        const total = returnedProductStatusPieChart.data.reduce((result, entry) => result + entry.value, 0);
-                                                        const percent = ((Number(value) / total) * 100).toFixed(2);
-                                                            return (
-                                                                <>
-                                                                    <div 
-                                                                        className="shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg] h-2.5 w-2.5" 
-                                                                        style={
-                                                                            { 
-                                                                                '--color-bg': returnedProductStatusConfig[name].color, 
-                                                                                '--color-border': returnedProductStatusConfig[name].color 
-                                                                            } as React.CSSProperties}>
-                                                                        
-                                                                    </div>
-                                                                    <span className="">
-                                                                        {`${returnedProductStatusConfig[name].label}: ${value} (${percent}%)`}
-                                                                    </span>
-                                                                </>
-                                                            );
-                                                    }}
-                                                />
-                                            }
-                                        />
-                                        <ChartLegend content={<ChartLegendContent />} />
-                                        <Pie data={returnedProductStatusPieChart.data} dataKey="value">
-                                            {Object.keys(returnedProductStatusPieChart.config).map((dataKey, index) => (
-                                                <Cell
-                                                    key={`returnedProductStatus-${index}-key`}
-                                                    fill={`var(--color-${dataKey})`}
-                                                />
-                                            ))}
-                                        </Pie>
-                                    </PieChart>
-                                </ChartContainer>
+                                <ReturnedProductStatusPieChart returnedProductStatusData={data['returned_product_status']} localizedStatuses={localizedReturnedProductStatuses} dateFilter={dateFilterValue} />
                             </>
                         )}
                         <div className='my-4 flex items-center justify-between'>

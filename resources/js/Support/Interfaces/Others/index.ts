@@ -3,3 +3,5 @@ export * from './PaginateMetaLink';
 export * from './PaginateResponse';
 export * from './PreviewGenerateAttachmentRawMaterialResource';
 export * from './ServiceFilterOptions';
+export * from './Dashboard/Dashboard';
+
