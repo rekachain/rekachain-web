@@ -2632,16 +2632,21 @@ return [
             'partials' => [
                 'add_request' => [
                     'title' => 'Make Request',
+                    'description' => 'Make a request or complain to return a product.',
                     'fields' => [
                         'name' => 'Name',
                         'description' => 'Description',
                         'type' => 'Type',
+                        'project' => 'Project',
+                        'project_placeholder' => 'Select Project',
                         'component' => 'Component',
                         'component_placeholder' => 'Select Component',
                         'panel' => 'Panel',
                         'panel_placeholder' => 'Select Panel',
                         'qty' => 'Quantity',
                         'serial_number' => 'Serial Number',
+                        'type_selection' => 'Add By Order',
+                        'qty_serial_number' => 'Add By Serial Number',
                     ],
                     'buttons' => [
                         'submit' => 'Send Request',

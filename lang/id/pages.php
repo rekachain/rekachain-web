@@ -2632,16 +2632,21 @@ return [
             'partials' => [
                 'add_request' => [
                     'title' => 'Buat Permintaan',
+                    'description' => 'Buat permintaan atau keluhan untuk retur produk.',
                     'fields' => [
                         'name' => 'Nama',
                         'description' => 'Deskripsi',
                         'type' => 'Tipe',
+                        'project' => 'Proyek',
+                        'project_placeholder' => 'Pilih Proyek',
                         'component' => 'Komponen',
                         'component_placeholder' => 'Pilih Komponen',
                         'panel' => 'Panel',
                         'panel_placeholder' => 'Pilih Panel',
                         'qty' => 'Jumlah',
                         'serial_number' => 'Nomor Seri',
+                        'type_selection' => 'Tambah Berdasarkan Pesanan',
+                        'qty_serial_number' => 'Tambah Berdasarkan Nomor Seri',
                     ],
                     'buttons' => [
                         'submit' => 'Kirim Permintaan',
