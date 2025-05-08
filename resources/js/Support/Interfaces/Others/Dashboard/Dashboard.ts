@@ -8,6 +8,12 @@ interface AttachmentStatusOfWorkstationResource {
     workstation_name: string;
     progress: { status: string; count: number }[];
 }
+interface ReturnedProductTimeDiffResource {
+    year_month: string;
+    avg_duration: string;
+    total_returned: number;
+}
+
 interface AttachmentStatusBarChartInterface {
     data?: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
@@ -20,6 +26,7 @@ interface ReturnedProductStatusPieChartInterface {
 export type {
     AttachmentStatusOfTrainsetResource,
     AttachmentStatusOfWorkstationResource,
+    ReturnedProductTimeDiffResource,
     AttachmentStatusBarChartInterface,
     ReturnedProductStatusPieChartInterface,
 }

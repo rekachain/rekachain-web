@@ -62,15 +62,18 @@ const trainset = [
 import { trainsetService } from '@/Services/trainsetService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { useLocalStorage } from '@uidotdev/usehooks';
-import { useCallback, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { AttachmentStatusBarChartInterface, AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, ReturnedProductStatusPieChartInterface } from '@/Support/Interfaces/Others';
+import { AttachmentStatusBarChartInterface, AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductStatusPieChartInterface, ReturnedProductTimeDiffResource } from '@/Support/Interfaces/Others';
 import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import Filters from './Partials/Filters';
+import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 
 export default function Dashboard({ auth, data }: PageProps) {
+    const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
+
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
         Record<string, string>
     >({});
@@ -378,7 +381,12 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 <h2 className='my-1 text-xl font-bold'>
                                     Returned Product
                                 </h2>
-                                <ReturnedProductStatusPieChart returnedProductStatusData={data['returned_product_status']} localizedStatuses={localizedReturnedProductStatuses} dateFilter={dateFilterValue} />
+                                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                                    <ReturnedProductStatusPieChart returnedProductStatusData={data['returned_product_status']} localizedStatuses={localizedReturnedProductStatuses} dateFilter={dateFilterValue} />
+                                    <Suspense fallback={<StaticLoadingOverlay />}>
+                                        <ReturnedProductTimeDiffChart timeDiffResponse={data['returned_product_progress_time_diff'] as PaginateResponse<ReturnedProductTimeDiffResource>} />
+                                    </Suspense>
+                                </div>
                             </>
                         )}
                         <div className='my-4 flex items-center justify-between'>
