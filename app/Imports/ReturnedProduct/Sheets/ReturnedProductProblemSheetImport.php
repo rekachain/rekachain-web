@@ -25,6 +25,7 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                     return;
                 }
                 $timestamp = Date::excelToTimestamp($row[$headers->search('Timestamp')]);
+                $date = date('Y-m-d', $timestamp);
                 $tsName = $headers->search('Train Set');
                 $changeComponent = $row[$headers->search('Pergantian Komponen')];
                 $fixedComponent = $row[$headers->search('Perbaikan Koneksi')];
@@ -58,7 +59,7 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                 $carriageNumberValue = str_replace(["\r\n", "\r", "\n"], ',', $carriageNumberValue);
                 
                 collect(explode(',', $carriageNumberValue))
-                    ->each(function ($carNumber) use ($timestamp, $tsName, $finding, $qty, $problemComponent, $problemStatus, $problemCause, $returStatus, &$carNumbers) {
+                    ->each(function ($carNumber) use ($timestamp, $date, $tsName, $finding, $qty, $problemComponent, $problemStatus, $problemCause, $returStatus, &$carNumbers) {
                     if ($carNumber == null || $carNumber == '') return;
                     
                     $carNumber = strtoupper($carNumber);
@@ -80,9 +81,8 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                             $carType = 'C';
                             break;
                     }
-                    $serialNumber = str_replace($carType, '', $carNumber);
-                    if (!isset($carNumbers[$carNumber])) {
-                        $carNumbers[$carNumber] = 1;
+                    if (!isset($carNumbers[$carNumber."_".$date])) {
+                        $carNumbers[$carNumber."_".$date] = 1;
                         $returnedProduct = ReturnedProduct::create([
                             'product_returnable_id' => ($problemComponent != null) 
                                 ? $problemComponent->id 
@@ -91,12 +91,12 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                                 ]),
                             'product_returnable_type' => Component::class,
                             'qty' => $qty,
-                            'serial_number' => $serialNumber,
+                            'serial_number' => $carNumber,
                             'trainset_name' => $tsName,
                             'carriage_type' => $carType,
                             'status' => $returStatus,
                             'created_at' => $timestamp,
-                            'updated_at' => $timestamp,
+                            'updated_at' => ($problemComponent != null) ? $timestamp + (rand(4, 9) * 60) : $timestamp,
                         ]);
                         $returnedProduct->returned_product_notes()->create([
                             'user_id' => auth()->id(),
@@ -109,14 +109,16 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                         $product = Panel::firstOrCreate([
                             'name' => 'Grup Retur ' . $carNumber,
                         ]);
-                        $returnedProduct = ReturnedProduct::whereSerialNumber($serialNumber)->get()->last();
+                        $returnedProduct = ReturnedProduct::whereSerialNumber($carNumber)->get()->last();
+                        $productProblemCount = $returnedProduct->product_problems()->count();
                         $returnedProduct->update([
                             'product_returnable_id' => $product->id,
                             'product_returnable_type' => Panel::class,
                             'qty' => 1,
-                            'updated_at' => $timestamp,
+                            'updated_at' => $timestamp + ($productProblemCount * 10 * 60),
                         ]);
-                        $carNumbers[$carNumber]++;
+
+                        $carNumbers[$carNumber."_".$date]++;
                     }
                     
                     $productProblem = ProductProblem::create([
@@ -126,7 +128,7 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                         'cause' => $problemCause,
                         'status' => $problemStatus,
                         'created_at' => $timestamp,
-                        'updated_at' => $timestamp,
+                        'updated_at' => $timestamp + (5 * 60),
                     ]);
                     $productProblem->product_problem_notes()->create([
                         'user_id' => auth()->id(),
