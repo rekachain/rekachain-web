@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('project_name')->after('serial_number')->nullable();
             $table->string('trainset_name')->after('serial_number')->nullable();
             $table->string('carriage_type')->after('serial_number')->nullable();
+            $table->string('serial_number')->nullable()->change();
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->dropColumn('project_name');
             $table->dropColumn('trainset_name');
             $table->dropColumn('carriage_type');
+            $table->bigInteger('serial_number')->nullable()->change();
         });
     }
 };

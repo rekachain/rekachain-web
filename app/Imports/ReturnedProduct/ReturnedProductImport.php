@@ -12,7 +12,6 @@ class ReturnedProductImport implements WithMultipleSheets {
     public function __construct(private ?ReturnedProduct $returnedProduct = null) {}
 
     public function sheets(): array {
-        logger()->info("asdal");
         $isDefault = true;
         try {
             $sheets = $this->returnedProduct ? [
