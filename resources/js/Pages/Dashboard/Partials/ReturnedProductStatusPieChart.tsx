@@ -1,5 +1,6 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ReturnedProductStatusPieChartInterface, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -56,12 +57,13 @@ export default function ({
     const syncReturnedProductStatusData =  withLoading( async() => {
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
+                intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY,
                 year: filters?.returned_product.year,
                 month: filters?.returned_product.month,
             })
         )
         setReturnedProductStatusPieChart({
-            data: res.data.returned_product_status,
+            data: res.data,
             config: returnedProductStatusConfig,
         });
     })
@@ -134,7 +136,7 @@ export default function ({
                 />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Pie data={returnedProductStatusPieChart.data} dataKey="value">
-                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey) => (
+                    {Object.keys(returnedProductStatusPieChart.config).map(dataKey => (
                         <Cell
                             key={`returnedProductStatus-${dataKey}-key`}
                             fill={`var(--color-${dataKey})`}

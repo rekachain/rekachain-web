@@ -12,6 +12,7 @@ interface ReturnedProductTimeDiffResource {
     year_month: string;
     avg_duration: string;
     total_returned: number;
+    total_problem: number;
 }
 
 interface AttachmentStatusBarChartInterface {

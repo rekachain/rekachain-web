@@ -161,7 +161,7 @@ export default function Dashboard({ auth, data }: PageProps) {
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
             <div
-                className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5`}
+                className={`max-w-7xl mx-auto px-3 sm:px-6 lg:px-5`}
             >
                 <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                     {/* <div className="p-6 text-gray-900 dark:text-gray-100">You're logged in bro !</div> */}
@@ -175,7 +175,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                         : `${t('pages.dashboard.index.project')} ${data['project']}`}
                                 </h2>
                             </div>
-                            <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                            <div className="flex gap-2">
                                 <Filters data={data} filters={filters} setFilters={setFilters}/>
                             </div>
                         </div>

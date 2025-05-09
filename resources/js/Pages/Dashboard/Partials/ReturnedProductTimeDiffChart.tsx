@@ -48,13 +48,16 @@ export default function ({
                     <TableHeader>
                         <TableRow>
                             <TableHead>
-                                {t('pages.partials.returned_product_time_diff_chart.headers.year_month')}
+                                {t('pages.dashboard.partials.returned_product_time_diff_chart.headers.year_month')}
                             </TableHead>
                             <TableHead>
-                                {t('pages.partials.returned_product_time_diff_chart.headers.avg_duration')}
+                                {t('pages.dashboard.partials.returned_product_time_diff_chart.headers.avg_duration')}
                             </TableHead>
                             <TableHead>
-                                {t('pages.partials.returned_product_time_diff_chart.headers.total_returned')}
+                                {t('pages.dashboard.partials.returned_product_time_diff_chart.headers.total_returned')}
+                            </TableHead>
+                            <TableHead>
+                                {t('pages.dashboard.partials.returned_product_time_diff_chart.headers.total_problem')}
                             </TableHead>
                         </TableRow>
                     </TableHeader>
@@ -64,6 +67,7 @@ export default function ({
                                 <TableCell>{data.year_month}</TableCell>
                                 <TableCell>{data.avg_duration}</TableCell>
                                 <TableCell>{data.total_returned}</TableCell>
+                                <TableCell>{data.total_problem}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
