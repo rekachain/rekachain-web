@@ -1,6 +1,6 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
-import { ReturnedProductStatusPieChartInterface } from '@/Support/Interfaces/Others';
+import { ReturnedProductStatusPieChartInterface, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -9,11 +9,11 @@ import { Cell, Pie, PieChart } from 'recharts';
 export default function ({
     returnedProductStatusData,
     localizedStatuses,
-    dateFilter
+    filters
 }: {
     returnedProductStatusData: any
     localizedStatuses: Record<string, string>
-    dateFilter?: any
+    filters?: ServiceFilterOptions
 }) {
     const { t } = useLaravelReactI18n();
     
@@ -56,8 +56,8 @@ export default function ({
     const syncReturnedProductStatusData =  withLoading( async() => {
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
-                year: dateFilter.year,
-                month: dateFilter.month,
+                year: filters?.returned_product.year,
+                month: filters?.returned_product.month,
             })
         )
         setReturnedProductStatusPieChart({
@@ -68,7 +68,7 @@ export default function ({
 
     useEffect(() => {
         syncReturnedProductStatusData();
-    }, [dateFilter.year, dateFilter.month]);
+    }, [filters?.returned_product.year, filters?.returned_product.month]);
 
     useEffect(() => {
         setReturnedProductStatusConfig({

@@ -43,21 +43,6 @@ const project = [
         link: '/dashboard/2',
     },
 ];
-const trainset = [
-    {
-        value: 'TS 11',
-        link: '/dashboard/1/1',
-    },
-    {
-        value: 'TS 12',
-        link: '/dashboard/1/2',
-    },
-    {
-        value: 'TS 13',
-
-        link: '/dashboard/1/3',
-    },
-];
 
 import { trainsetService } from '@/Services/trainsetService';
 import { ROUTES } from '@/Support/Constants/routes';
@@ -83,6 +68,17 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [localizedWorkstationStatuses, setWorkstationStatuses] = useState<
         Record<string, string>
     >({});
+
+    const [filters, setFilters] = useState<ServiceFilterOptions>({
+        returned_product: {
+            year: '',
+            month: 0,
+        },
+        trainset: {
+            id: null,
+        },
+        useMerged: true,
+    })
     const [openTrainset, setOpenTrainset] = useState(false);
     // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
@@ -92,8 +88,6 @@ export default function Dashboard({ auth, data }: PageProps) {
     });
     const [valueTrainset, setValueTrainset] = useState('');
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
-
-    // console.log(data);
 
     const [attachmentStatusConfig, setAttachmentStatusConfig] = useState<ChartConfig>({
         done: {
@@ -225,9 +219,6 @@ export default function Dashboard({ auth, data }: PageProps) {
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
-
-            {/* <div className="py-12"> */}
-            {/* <p>{value}</p> */}
             <div
                 className={`${sidebarCollapse == true ? 'max-w-7xl' : 'max-w-5xl'} mx-auto px-3 sm:px-6 lg:px-5`}
             >
@@ -244,7 +235,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                 </h2>
                             </div>
                             <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
-                                <Filters data={data} dateFilterValue={dateFilterValue} setDateFilterValue={setDateFilterValue}/>
+                                <Filters data={data} filters={filters} setFilters={setFilters}/>
                             </div>
                         </div>
 
@@ -255,8 +246,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                             <div className="flex items-center px-1 gap-3">
                                 <Checkbox
                                     id="useMerged"
-                                    onChange={e => setUseMerged(e.target.checked)}
-                                    checked={useMerged}
+                                    onChange={e => setFilters({ ...filters, useMerged: e.target.checked })}
+                                    checked={filters.useMerged}
                                 />
                                 <InputLabel htmlFor="useMerged" value="Use Merged Status" />
                                 <Checkbox id="useRaw" onChange={e => setUseRaw(e.target.checked)} checked={useRaw} />
@@ -270,7 +261,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     Returned Product
                                 </h2>
                                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                                    <ReturnedProductStatusPieChart returnedProductStatusData={data['returned_product_status']} localizedStatuses={localizedReturnedProductStatuses} dateFilter={dateFilterValue} />
+                                    <ReturnedProductStatusPieChart returnedProductStatusData={data['returned_product_status']} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />
                                     <Suspense fallback={<StaticLoadingOverlay />}>
                                         <ReturnedProductTimeDiffChart timeDiffResponse={data['returned_product_progress_time_diff'] as PaginateResponse<ReturnedProductTimeDiffResource>} />
                                     </Suspense>
@@ -540,7 +531,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             {t('pages.dashboard.index.all_workstations')}
                         </h2>
                         <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
-                        <WorkstationProgressStatusBarChart localizedStatuses={localizedWorkstationStatuses} useMerged={useMerged} />
+                        <WorkstationProgressStatusBarChart localizedStatuses={localizedWorkstationStatuses} filters={filters} />
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { AttachmentStatusBarChartInterface, AttachmentStatusOfWorkstationResource } from '@/Support/Interfaces/Others';
+import { AttachmentStatusBarChartInterface, AttachmentStatusOfWorkstationResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -9,14 +9,10 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 export default function ({
     localizedStatuses,
-    dateFilter,
-    trainsetFilter,
-    useMerged
+    filters,
 }: {
     localizedStatuses: Record<string, string>
-    dateFilter?: any
-    trainsetFilter?: any
-    useMerged?: boolean
+    filters?: ServiceFilterOptions
 }) {
     const { t } = useLaravelReactI18n();
     const [workstationStatusFilter, setWorkstationStatusFilter] = useState(
@@ -51,7 +47,7 @@ export default function ({
             // data: returnedProductStatusData || [],
             config: Object.fromEntries(
                 Object.entries(workstationProgressStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                    filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
                 ),
             ),
     })
@@ -97,7 +93,7 @@ export default function ({
     const syncStatusChart = async () => {
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
-                use_merged: useMerged,
+                use_merged: filters?.useMerged,
                 intent: IntentEnum.WEB_DASHBOARD_GET_WORKSTATION_STATUS,
             }),
         );
@@ -113,7 +109,7 @@ export default function ({
             ),
             config: Object.fromEntries(
                 Object.entries(workstationProgressStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                    filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
                 ),
             ),
         });
@@ -146,13 +142,13 @@ export default function ({
 
     useEffect(() => {
         syncStatusChart();
-    }, [useMerged, workstationStatusFilter, workstationProgressStatusConfig]);
+    }, [filters?.useMerged, workstationStatusFilter, workstationProgressStatusConfig]);
 
     useEffect(() => {
         setWorkstationStatusFilter({
-            relation_column_filters: { trainset: { id: trainsetFilter?.id } },
+            relation_column_filters: { trainset: { id: filters?.trainset?.id } },
         });
-    }, [trainsetFilter]);
+    }, [filters?.trainset?.id]);
 
     return (
         <ChartContainer

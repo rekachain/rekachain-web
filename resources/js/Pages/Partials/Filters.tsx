@@ -13,16 +13,12 @@ import { memo, useState } from 'react';
 
 const Filters = ({
     data,
-    dateFilterValue,
-    setDateFilterValue,
     setFilters,
     filters,
 }: {
     data: any;
-    dateFilterValue?: any;
-    setDateFilterValue: (any: any) => void;
-    filters?: ServiceFilterOptions;
-    setFilters?: (filters: ServiceFilterOptions) => void;
+    filters: ServiceFilterOptions;
+    setFilters: (filters: ServiceFilterOptions) => void;
 }) => {
     const { t } = useLaravelReactI18n();
     const [open, setOpen] = useState(false);
@@ -140,8 +136,8 @@ const Filters = ({
                             className='w-25 justify-between md:w-40'
                             aria-expanded={yearFilterOpen}
                         >
-                            {dateFilterValue.year
-                                ? dateFilterValue.year
+                            {filters.returned_product.year
+                                ? filters.returned_product.year
                                 : "Filter Tahun"}
                             <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                         </Button>
@@ -153,12 +149,16 @@ const Filters = ({
                                     {"Year Not Found"}
                                 </CommandEmpty>
                                 <CommandGroup>
-                                    {dateFilterValue.year && (
+                                    {filters.returned_product.year && (
                                         <CommandItem onSelect={() => {
-                                            setDateFilterValue({
-                                                year: '',
-                                                month: 0
-                                            });
+                                            setFilters({
+                                                ...filters,
+                                                returned_product: {
+                                                    ...filters.returned_product,
+                                                    year: '',
+                                                    month: 0
+                                                }
+                                            })
                                             setYearFilterOpen(false);
                                         }}>
                                             {t('components.generic_data_selector.actions.clear_selection')}
@@ -168,12 +168,16 @@ const Filters = ({
                                         <CommandItem
                                             value={yearItem.toString()}
                                             onSelect={(currentValue) => {
-                                                setDateFilterValue({
-                                                    year: currentValue === dateFilterValue.year
-                                                        ? ''
-                                                        : currentValue.toString(),
-                                                    month: dateFilterValue.month
-                                                });
+                                                setFilters({
+                                                    ...filters,
+                                                    returned_product: {
+                                                        ...filters.returned_product,
+                                                        year: currentValue === filters.returned_product.year
+                                                            ? ''
+                                                            : currentValue.toString(),
+                                                        month: filters.returned_product.month
+                                                    }
+                                                })
                                                 setYearFilterOpen(false);
                                             }}
                                             key={yearItem}
@@ -181,7 +185,7 @@ const Filters = ({
                                             <Check
                                                 className={cn(
                                                     'mr-2 h-4 w-4',
-                                                    dateFilterValue.year === yearItem.toString()
+                                                    filters.returned_product.year === yearItem.toString()
                                                         ? 'opacity-100'
                                                         : 'opacity-0',
                                                 )}
@@ -194,7 +198,7 @@ const Filters = ({
                         </Command>
                     </PopoverContent>
                 </Popover>
-                {dateFilterValue.year && (
+                {filters.returned_product.year && (
                     <Popover open={monthFilterOpen} onOpenChange={setMonthFilterOpen}>
                         <PopoverTrigger asChild>
                             <Button
@@ -203,8 +207,8 @@ const Filters = ({
                                 className='w-25 justify-between md:w-40'
                                 aria-expanded={monthFilterOpen}
                             >
-                                {dateFilterValue.month
-                                    ? months.find(month => month.value === dateFilterValue.month)?.label
+                                {filters.returned_product.month
+                                    ? months.find(month => month.value === filters.returned_product.month)?.label
                                     : "Filter Bulan"}
                                 <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                             </Button>
@@ -216,11 +220,15 @@ const Filters = ({
                                         {"Month Not Found"}
                                     </CommandEmpty>
                                     <CommandGroup>
-                                        {dateFilterValue.month !== 0 && (
+                                        {filters.returned_product.month !== 0 && (
                                             <CommandItem onSelect={() => {
-                                                setDateFilterValue({
-                                                    year: dateFilterValue.year,
-                                                    month: 0,
+                                                setFilters({
+                                                    ...filters,
+                                                    returned_product: {
+                                                        ...filters.returned_product,
+                                                        year: filters.returned_product.year,
+                                                        month: 0,
+                                                    }
                                                 })
                                                 setMonthFilterOpen(false)
                                             }}>
@@ -231,10 +239,14 @@ const Filters = ({
                                             <CommandItem
                                                 value={monthItem.label}
                                                 onSelect={() => {
-                                                    setDateFilterValue({
-                                                        year: dateFilterValue.year,
-                                                        month: monthItem.value,
-                                                    });
+                                                    setFilters({
+                                                        ...filters,
+                                                        returned_product: {
+                                                            ...filters.returned_product,
+                                                            year: filters.returned_product.year,
+                                                            month: monthItem.value,
+                                                        }
+                                                    })
                                                     setMonthFilterOpen(false);
                                                 }}
                                                 key={monthItem.label}
@@ -242,7 +254,7 @@ const Filters = ({
                                                 <Check
                                                     className={cn(
                                                         'mr-2 h-4 w-4',
-                                                        dateFilterValue.month === monthItem.value
+                                                        filters.returned_product.month === monthItem.value
                                                             ? 'opacity-100'
                                                             : 'opacity-0',
                                                     )}
