@@ -267,6 +267,7 @@ const intents = {
     WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE:
         'web.dashboard.get.returned.product.time.difference',
     WEB_DASHBOARD_GET_WORKSTATION_STATUS: 'web.dashboard.get.workstation.status',
+    WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS: 'web.dashboard.get.trainset.attachment.status',
 };
 
 export const IntentEnum = intents;
