@@ -50,7 +50,7 @@ import { useLocalStorage } from '@uidotdev/usehooks';
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { AttachmentStatusBarChartInterface, AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductStatusPieChartInterface, ReturnedProductTimeDiffResource } from '@/Support/Interfaces/Others';
+import { AttachmentStatusBarChartInterface, AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductStatusPieChartInterface, ReturnedProductTimeDiffResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import Filters from './Partials/Filters';
@@ -58,6 +58,7 @@ import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import Checkbox from '@/Components/Checkbox';
 import InputLabel from '@/Components/InputLabel';
 import WorkstationProgressStatusBarChart from './Partials/WorkstationProgressStatusBarChart';
+import TrainsetProgressStatusBarChart from './Partials/TrainsetProgressStatusBarChart';
 
 export default function Dashboard({ auth, data }: PageProps) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
@@ -65,7 +66,10 @@ export default function Dashboard({ auth, data }: PageProps) {
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
         Record<string, string>
     >({});
-    const [localizedWorkstationStatuses, setWorkstationStatuses] = useState<
+    const [localizedWorkstationStatuses, setLocalizedWorkstationStatuses] = useState<
+        Record<string, string>
+    >({});
+    const [localizedTrainsetStatuses, setLocalizedTrainsetStatuses] = useState<
         Record<string, string>
     >({});
 
@@ -80,12 +84,6 @@ export default function Dashboard({ auth, data }: PageProps) {
         useMerged: true,
     })
     const [openTrainset, setOpenTrainset] = useState(false);
-    // const [value, setValue] = useState('');
-    const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
-    const [dateFilterValue, setDateFilterValue] = useState({
-        year: '',
-        month: 0,
-    });
     const [valueTrainset, setValueTrainset] = useState('');
     const [sidebarCollapse, setSidebarCollapse] = useLocalStorage('sidebarCollapse');
 
@@ -134,66 +132,8 @@ export default function Dashboard({ auth, data }: PageProps) {
         },
     } satisfies ChartConfig;
 
-    const [useMerged, setUseMerged] = useState(true);
     const [useRaw, setUseRaw] = useState(false);
-    const [attachmentStatusOfTrainsetGraph, setAttachmentStatusOfTrainsetGraph] =
-        useState<AttachmentStatusBarChartInterface>({
-            // data: useRaw
-            //     ? data.attachment_status_of_trainset
-            //     : data.attachment_status_of_trainset.map(
-            //         ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-            //             trainset_name,
-            //             ...progress.reduce((acc, { status, count }) => ({ ...acc, [status]: count }), {}),
-            //         }),
-            //     ),
-            config: Object.fromEntries(
-                Object.entries(attachmentStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
-                ),
-            ),
-        });
     const [trainsetFilters, setTrainsetFilters] = useState<{ id: any } | null>({ id: {} });
-    const [attachmentStatusOfTrainsetFilter, setAttachmentStatusOfTrainsetFilter] = useState({});
-
-    useEffect(() => {
-        console.log('useMerged', useMerged, 'useRaw', useRaw);
-        syncAttachmentStatusData();
-    }, [useMerged, useRaw]);
-
-    useEffect(() => {
-        setAttachmentStatusOfTrainsetFilter({ column_filters: { id: trainsetFilters?.id } });
-    }, [trainsetFilters]);
-    useEffect(() => {
-        syncAttachmentStatusData();
-    }, [attachmentStatusOfTrainsetFilter]);
-
-    const syncAttachmentStatusData = async () => {
-        const res = await window.axios.get(
-            route(`${ROUTES.DASHBOARD}`, {
-                use_merged: useMerged,
-                use_raw: useRaw,
-                attachment_status_of_trainset_filter: attachmentStatusOfTrainsetFilter,
-            }),
-        );
-        setAttachmentStatusOfTrainsetGraph({
-            data: useRaw
-                ? res.data.attachment_status_of_trainset
-                : res.data.attachment_status_of_trainset.map(
-                      ({ trainset_name, progress }: AttachmentStatusOfTrainsetResource) => ({
-                          trainset_name,
-                          ...progress.reduce(
-                              (acc, { status, count }) => ({ ...acc, [status]: count }),
-                              {},
-                          ),
-                      }),
-                  ),
-            config: Object.fromEntries(
-                Object.entries(attachmentStatusConfig).filter(([key]) =>
-                    useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
-                ),
-            ),
-        });
-    };
 
     const fetchTrainsetFilters = useCallback(async () => {
         return await trainsetService
@@ -211,7 +151,8 @@ export default function Dashboard({ auth, data }: PageProps) {
         fetchEnumLabels(['ReturnedProductStatusEnum', 'PanelAttachmentStatusEnum'])
             .then((response) => {
                 setLocalizedReturnedProductStatuses(response.ReturnedProductStatusEnum);
-                setWorkstationStatuses(response.PanelAttachmentStatusEnum);
+                setLocalizedWorkstationStatuses(response.PanelAttachmentStatusEnum);
+                setLocalizedTrainsetStatuses(response.PanelAttachmentStatusEnum);
             })
             .catch((error) => console.error('Failed to fetch localized statuses:', error));
     }, [setLocale]);
@@ -355,7 +296,7 @@ export default function Dashboard({ auth, data }: PageProps) {
                             </div>
                         </div>
 
-                        <ChartContainer config={chartConfigTrainset} className='h-[300px] w-full'>
+                        {/* <ChartContainer config={chartConfigTrainset} className='h-[300px] w-full'>
                             <BarChart data={data['ts']} className='h-1/4' accessibilityLayer>
                                 <CartesianGrid vertical={false} />
                                 <XAxis
@@ -387,40 +328,8 @@ export default function Dashboard({ auth, data }: PageProps) {
                                     dataKey='material_accepted'
                                 />
                             </BarChart>
-                        </ChartContainer>
-                        {/* <ChartContainer
-                            config={attachmentStatusOfTrainsetGraph.config}
-                            className="h-[200px] w-full mt-5 pr-2"
-                        >
-                            <BarChart accessibilityLayer data={attachmentStatusOfTrainsetGraph.data}>
-                                <CartesianGrid vertical={false} />
-                                <XAxis
-                                    dataKey="trainset_name"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                    tickFormatter={value => value.slice(0, 6)}
-                                /> */}
-                        {/* {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
-                                      <YAxis key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} />
-                                    ))} */}
-                        {/* <ChartTooltip content={<ChartTooltipContent />} />
-                                <ChartLegend content={<ChartLegendContent />} />
-                                {Object.keys(attachmentStatusOfTrainsetGraph.config).map(dataKey => (
-                                    <Bar
-                                        key={`trainsetPanelStatus-${dataKey}-key`}
-                                        dataKey={dataKey}
-                                        fill={`var(--color-${dataKey})`}
-                                        radius={[5, 5, 0, 0]}
-                                    />
-                                ))}
-                            </BarChart>
-                            
-                    </div>
-                    <h2 className="text-xl my-1 font-bold">Progress Tiap Workstation</h2>
-                    <div className="flex max-w-full mt-2">
-                        {/* <div className="w-1/2"> */}
-                        {/* <h3 className="text-base">Workstation Sukosari, Candisewu</h3> */}
+                        </ChartContainer> */}
+                        <TrainsetProgressStatusBarChart localizedStatuses={localizedTrainsetStatuses} filters={filters} />
                         <div className='mt-2 max-w-full md:flex'>
                             <div className='px-5 md:w-1/2'>
                                 <h2 className='my-1 text-xl font-bold'>
