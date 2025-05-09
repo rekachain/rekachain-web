@@ -264,6 +264,8 @@ const intents = {
         'web.product.problem.update.product.problem.with.note',
     WEB_PRODUCT_RESTOCK_INITIATE_PROJECT: 'web.product.restock.initiate.project',
     WEB_USER_CREATE_BUYER: 'web.user.create.buyer',
+    WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY:
+        'web.dashboard.get.returned.product.status.summary',
     WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE:
         'web.dashboard.get.returned.product.time.difference',
     WEB_DASHBOARD_GET_WORKSTATION_STATUS: 'web.dashboard.get.workstation.status',

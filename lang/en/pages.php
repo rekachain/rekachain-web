@@ -54,6 +54,21 @@ return [
             'panel_progress_trainset' => 'Panel Trainset Progresses ',
             'panel_progress_trainset_sub' => 'Panel Trainset Progresses at ',
         ],
+        'partials' => [
+            'returned_product_time_diff_chart' => [
+                'headers' => [
+                    'year_month' => 'Year Month',
+                    'avg_duration' => 'Avg. Time Execution',
+                    'total_returned' => 'Total Return',
+                    'total_problem' => 'Total Problem',
+                ],
+                'fields' => [
+                    'day' => 'Days',
+                    'hour' => 'Hours',
+                    'minute' => 'Minutes',
+                ],
+            ]
+        ]
     ],
     'dashboard_trainset' => [
         'index' => [
@@ -2847,18 +2862,4 @@ return [
             ],
         ],
     ],
-    'partials' => [
-        'returned_product_time_diff_chart' => [
-            'headers' => [
-                'year_month' => 'Year Month',
-                'avg_duration' => 'Avg. Time Execution',
-                'total_returned' => 'Total Return',
-            ],
-            'fields' => [
-                'day' => 'Days',
-                'hour' => 'Hours',
-                'minute' => 'Minutes',
-            ],
-        ]
-    ]
 ];

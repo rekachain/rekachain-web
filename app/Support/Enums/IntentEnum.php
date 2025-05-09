@@ -368,6 +368,7 @@ enum IntentEnum: string {
 
     case WEB_USER_CREATE_BUYER = 'web.user.create.buyer';
 
+    case WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY = 'web.dashboard.get.returned.product.status.summary';
     case WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE = 'web.dashboard.get.returned.product.time.difference';
     case WEB_DASHBOARD_GET_WORKSTATION_STATUS = 'web.dashboard.get.workstation.status';
     case WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS = 'web.dashboard.get.trainset.attachment.status';

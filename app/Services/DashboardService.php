@@ -413,13 +413,15 @@ class DashboardService {
 
     public function getReturnedproductProgressTimeDiff(array $request) : LengthAwarePaginator {
         $rawData = ReturnedProduct::selectRaw("
-                YEAR(created_at) as year,
-                MONTH(created_at) as month,
-                AVG(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as avg_seconds,
-                SUM(qty) as total_returned
+                YEAR(returned_products.created_at) as year,
+                MONTH(returned_products.created_at) as month,
+                AVG(TIMESTAMPDIFF(SECOND, returned_products.created_at, returned_products.updated_at)) as avg_seconds,
+                COUNT(DISTINCT returned_products.id) as total_returned,
+                SUM(product_problems.qty) as total_problem
             ")
-            ->groupByRaw("YEAR(created_at), MONTH(created_at)")
-            ->orderByRaw("YEAR(created_at) DESC, MONTH(created_at) DESC")
+            ->leftJoin("product_problems", "returned_products.id", "=", "product_problems.returned_product_id")
+            ->groupByRaw("YEAR(returned_products.created_at), MONTH(returned_products.created_at)")
+            ->orderByRaw("YEAR(returned_products.created_at) DESC, MONTH(returned_products.created_at) DESC")
             ->get();
 
         // Transform with localization
@@ -433,10 +435,11 @@ class DashboardService {
 
             return (object) [
                 'year_month' => $date->locale(app()->getLocale())->translatedFormat('Y F'),
-                'avg_duration' => "{$days} " . __('pages.partials.returned_product_time_diff_chart.fields.day') . ' ' .
-                                "{$hours} " . __('pages.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
-                                "{$minutes} " . __('pages.partials.returned_product_time_diff_chart.fields.minute'),
+                'avg_duration' => "{$days} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.day') . ' ' .
+                                "{$hours} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
+                                "{$minutes} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.minute'),
                 'total_returned' => $item->total_returned,
+                'total_problem' => $item->total_problem
             ];
         });
 

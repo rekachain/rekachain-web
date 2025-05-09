@@ -14,7 +14,8 @@ class DashboardResource extends JsonResource {
                 return [
                     'year_month' => $this->year_month,
                     'avg_duration' => $this->avg_duration,
-                    'total_returned' => $this->total_returned
+                    'total_returned' => $this->total_returned,
+                    'total_problem' => $this->total_problem
                 ];
             default:
                 return [];

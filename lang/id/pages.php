@@ -54,6 +54,21 @@ return [
             'panel_progress_trainset' => 'Progress Panel Trainset ',
             'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
         ],
+        'partials' => [
+            'returned_product_time_diff_chart' => [
+                'headers' => [
+                    'year_month' => 'Waktu Retur',
+                    'avg_duration' => 'Avg. Lama Pengerjaan',
+                    'total_returned' => 'Total Barang',
+                    'total_problem' => 'Total Masalah',
+                ],
+                'fields' => [
+                    'day' => 'Hari',
+                    'hour' => 'Jam',
+                    'minute' => 'Menit',
+                ],
+            ]
+        ]
     ],
     'dashboard_trainset' => [
         'index' => [
@@ -2847,18 +2862,4 @@ return [
             ],
         ],
     ],
-    'partials' => [
-        'returned_product_time_diff_chart' => [
-            'headers' => [
-                'year_month' => 'Waktu Retur',
-                'avg_duration' => 'Avg. Lama Pengerjaan',
-                'total_returned' => 'Total Barang',
-            ],
-            'fields' => [
-                'day' => 'Hari',
-                'hour' => 'Jam',
-                'minute' => 'Menit',
-            ],
-        ]
-    ]
 ];
