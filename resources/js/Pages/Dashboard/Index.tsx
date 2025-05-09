@@ -10,7 +10,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { PageProps } from '../Types';
+import { PageProps } from '@/Types';
 
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 

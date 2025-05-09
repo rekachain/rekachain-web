@@ -55,7 +55,7 @@ class DashboardController extends Controller {
         $data['projectDetail'] = $project;
         $data['ts'] = $ts;
         // dump($data);
-        return Inertia::render('Dashboard', ['data' => $data]);
+        return Inertia::render('Dashboard/Index', ['data' => $data]);
     }
 
     public function show(string $id, Request $request) {
