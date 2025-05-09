@@ -9,9 +9,11 @@ import { useEffect, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 export default function ({
+    data,
     localizedStatuses,
     filters,
 }: {
+    data: AttachmentStatusOfTrainsetResource[]
     localizedStatuses: Record<string, string>
     filters?: ServiceFilterOptions
 }) {
@@ -45,7 +47,7 @@ export default function ({
 
     const [trainsetProgressStatusChart, setTrainsetProgressStatusChart] =
         useState<AttachmentStatusBarChartInterface>({
-            // data: returnedProductStatusData || [],
+            data: data,
             config: Object.fromEntries(
                 Object.entries(trainsetProgressStatusConfig).filter(([key]) =>
                     filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,

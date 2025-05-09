@@ -19,6 +19,10 @@ interface AttachmentStatusBarChartInterface {
     data?: AttachmentStatusOfTrainsetResource[];
     config: ChartConfig;
 }
+interface WorkstationStatusBarChartInterface {
+    data?: AttachmentStatusOfWorkstationResource[];
+    config: ChartConfig;
+}
 interface ReturnedProductStatusPieChartInterface {
     data: { name: string; value: number }[];
     config: ChartConfig;
@@ -29,5 +33,6 @@ export type {
     AttachmentStatusOfWorkstationResource,
     ReturnedProductTimeDiffResource,
     AttachmentStatusBarChartInterface,
+    WorkstationStatusBarChartInterface,
     ReturnedProductStatusPieChartInterface,
 }

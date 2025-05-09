@@ -8,9 +8,9 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 
 export default function ({
-    timeDiffResponse,
+    data,
 }: {
-    timeDiffResponse: PaginateResponse<ReturnedProductTimeDiffResource>;
+    data: PaginateResponse<ReturnedProductTimeDiffResource>;
 }) {
     const { t, setLocale } = useLaravelReactI18n();
 
@@ -19,7 +19,7 @@ export default function ({
         perPage: 4,
     });
 
-    const [progressResponse, setProgressResponse] = useState<PaginateResponse<ReturnedProductTimeDiffResource>>(timeDiffResponse);
+    const [progressResponse, setProgressResponse] = useState<PaginateResponse<ReturnedProductTimeDiffResource>>(data);
 
     const handlePageChange = (page: number) => {
         console.log('page', page);

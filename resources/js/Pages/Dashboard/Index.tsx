@@ -5,8 +5,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { PaginateResponse, ReturnedProductTimeDiffResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
+import { AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductTimeDiffResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import Filters from './Partials/Filters';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
@@ -16,8 +15,17 @@ import WorkstationProgressStatusBarChart from './Partials/WorkstationProgressSta
 import TrainsetProgressStatusBarChart from './Partials/TrainsetProgressStatusBarChart';
 import PanelProgressStatusBarChart from './Partials/PanelProgressStatusBarChart';
 import WorkshopProgressStatusBarChart from './Partials/WorkshopProgressStatusBarChart';
+import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
 
-export default function Dashboard({ data }: PageProps) {
+export default function Dashboard({ 
+    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff
+}: {
+    data: PageProps
+    trainsetStatusProgress: AttachmentStatusOfTrainsetResource[]
+    workstationStatusProgress: AttachmentStatusOfWorkstationResource[]
+    returnedProductStatus: { name: string; value: number }[] | null
+    returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
+}) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
 
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
@@ -84,15 +92,15 @@ export default function Dashboard({ data }: PageProps) {
                                 <InputLabel htmlFor="useMerged" value="Use Merged Status" />
                             </div>
                         </div>
-                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && (
+                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeDiff && returnedProductStatus && (
                             <>
                                 <h2 className='my-1 text-xl font-bold'>
                                     Returned Product
                                 </h2>
                                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                                    <ReturnedProductStatusPieChart returnedProductStatusData={data['returned_product_status']} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />
+                                    <ReturnedProductStatusPieChart data={returnedProductStatus} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />
                                     <Suspense fallback={<StaticLoadingOverlay />}>
-                                        <ReturnedProductTimeDiffChart timeDiffResponse={data['returned_product_progress_time_diff'] as PaginateResponse<ReturnedProductTimeDiffResource>} />
+                                        <ReturnedProductTimeDiffChart data={returnedProductTimeDiff} />
                                     </Suspense>
                                 </div>
                             </>
@@ -103,7 +111,7 @@ export default function Dashboard({ data }: PageProps) {
                             </h2>
                             
                         </div>
-                        <TrainsetProgressStatusBarChart localizedStatuses={localizedTrainsetStatuses} filters={filters} />
+                        <TrainsetProgressStatusBarChart data={trainsetStatusProgress} localizedStatuses={localizedTrainsetStatuses} filters={filters} />
                         <h2 className='my-1 text-xl font-bold'>
                             {t('pages.dashboard.index.progress_workshops')}
                         </h2>
@@ -122,7 +130,7 @@ export default function Dashboard({ data }: PageProps) {
                             {t('pages.dashboard.index.all_workstations')}
                         </h2>
                         <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
-                        <WorkstationProgressStatusBarChart localizedStatuses={localizedWorkstationStatuses} filters={filters} />
+                        <WorkstationProgressStatusBarChart data={workstationStatusProgress} localizedStatuses={localizedWorkstationStatuses} filters={filters} />
                     </div>
                 </div>
             </div>

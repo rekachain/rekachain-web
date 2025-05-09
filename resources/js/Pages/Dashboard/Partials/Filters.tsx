@@ -1,15 +1,18 @@
+import GenericDataSelector from '@/Components/GenericDataSelector';
 import GenericFilters from '@/Components/GenericFilters';
 import { Button } from '@/Components/UI/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { cn } from '@/Lib/Utils';
+import { projectService } from '@/Services/projectService';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { Link } from '@inertiajs/react';
+import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { Link, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { memo, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 
 const Filters = ({
     data,
@@ -59,6 +62,10 @@ const Filters = ({
             link: '/dashboard/2',
         },
     ];
+    
+    const fetchProjects = useCallback(async (filters: ServiceFilterOptions) => {
+        return await projectService.getAll(filters).then((response) => response.data);
+    }, []);
 
     return (
         <>
@@ -125,6 +132,21 @@ const Filters = ({
                 </Command>
             </PopoverContent>
         </Popover>
+        {/* <GenericDataSelector
+            setSelectedData={(id) =>
+                console.log(id)
+            }
+            renderItem={(item: ProjectResource) =>
+                `${item.name}`
+            }
+            popoverContentClassName='w-[400px] p-0'
+            placeholder={t(
+                'pages.returned_product.requested_return.partials.add_request.fields.project_placeholder',
+            )}
+            nullable
+            id='project_selector'
+            fetchData={fetchProjects}
+        /> */}
         <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
             <PopoverTrigger
                 className={`${data['project'] == null ? 'hidden' : ' '}`}

@@ -58,8 +58,8 @@ return [
             'returned_product_time_diff_chart' => [
                 'headers' => [
                     'year_month' => 'Waktu Retur',
-                    'avg_duration' => 'Avg. Lama Pengerjaan',
-                    'total_returned' => 'Total Barang',
+                    'avg_duration' => 'Rata-Rata Lama Pengerjaan',
+                    'total_returned' => 'Total Retur',
                     'total_problem' => 'Total Masalah',
                 ],
                 'fields' => [

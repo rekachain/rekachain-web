@@ -8,11 +8,11 @@ import { useEffect, useState } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
 
 export default function ({
-    returnedProductStatusData,
+    data,
     localizedStatuses,
     filters
 }: {
-    returnedProductStatusData: any
+    data: { name: string; value: number }[]
     localizedStatuses: Record<string, string>
     filters?: ServiceFilterOptions
 }) {
@@ -43,13 +43,13 @@ export default function ({
 
     const [returnedProductStatusPieChart, setReturnedProductStatusPieChart] =
         useState<ReturnedProductStatusPieChartInterface>({
-            data: returnedProductStatusData || [],
+            data: data,
             config: returnedProductStatusConfig
     })
 
     const syncReturnedProductStatusChart = () => {
         setReturnedProductStatusPieChart({
-            data: returnedProductStatusData || [],
+            data: data,
             config: returnedProductStatusConfig,
         });
     }

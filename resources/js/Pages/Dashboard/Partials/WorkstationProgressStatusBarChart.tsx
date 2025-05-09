@@ -1,16 +1,18 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { AttachmentStatusBarChartInterface, AttachmentStatusOfWorkstationResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { AttachmentStatusBarChartInterface, AttachmentStatusOfWorkstationResource, ServiceFilterOptions, WorkstationStatusBarChartInterface } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 export default function ({
+    data,
     localizedStatuses,
     filters,
 }: {
+    data: AttachmentStatusOfWorkstationResource[]
     localizedStatuses: Record<string, string>
     filters?: ServiceFilterOptions
 }) {
@@ -43,8 +45,8 @@ export default function ({
     });
 
     const [workstationProgressStatusChart, setWorkstationProgressStatusChart] =
-        useState<AttachmentStatusBarChartInterface>({
-            // data: returnedProductStatusData || [],
+        useState<WorkstationStatusBarChartInterface>({
+            data: data,
             config: Object.fromEntries(
                 Object.entries(workstationProgressStatusConfig).filter(([key]) =>
                     filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
