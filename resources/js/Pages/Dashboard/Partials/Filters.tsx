@@ -40,7 +40,6 @@ const Filters = ({
         { value: 12, label: 'Desember' },
     ];
     const [openTrainset, setOpenTrainset] = useState(false);
-    // const [value, setValue] = useState('');
     const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
     const [valueTrainset, setValueTrainset] = useState('');
     const project = [
@@ -126,6 +125,85 @@ const Filters = ({
                 </Command>
             </PopoverContent>
         </Popover>
+        <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
+            <PopoverTrigger
+                className={`${data['project'] == null ? 'hidden' : ' '}`}
+                asChild
+            >
+                <Button
+                    variant='outline'
+                    role='combobox'
+                    className='w-25 justify-between md:w-40'
+                    aria-expanded={openTrainset}
+                >
+                    {valueTrainset
+                        ? project.find(
+                                (projectItem) =>
+                                    projectItem.value === valueTrainset,
+                            )?.label
+                        : `${t('pages.dashboard.index.select_trainset')}`}
+                    <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className='w-[200px] p-0'>
+                <Command>
+                    <CommandInput
+                        placeholder={`${t('pages.dashboard.index.find_trainset')}`}
+                    />
+                    <CommandList>
+                        <CommandEmpty>
+                            Trainset tidak ditemukan.
+                        </CommandEmpty>
+                        <CommandGroup>
+                            {// @ts-ignore
+                            data['tsList']?.map((projectItem) => (
+                                <Link
+                                    key={projectItem.id}
+                                    href={`/dashboard/${data['projectId']}/${projectItem.id}`}
+                                >
+                                    <CommandItem
+                                        value={projectItem.name}
+                                        onSelect={(currentValue) => {
+                                            setValueTrainset(
+                                                currentValue ===
+                                                    valueTrainset
+                                                    ? ''
+                                                    : currentValue,
+                                            );
+                                            setOpenTrainset(false);
+                                        }}
+                                        key={projectItem.id}
+                                    >
+                                        <Check
+                                            className={cn(
+                                                'mr-2 h-4 w-4',
+                                                valueTrainset ===
+                                                    projectItem.name
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0',
+                                            )}
+                                        />
+                                        {projectItem.name}
+                                    </CommandItem>
+                                </Link>
+                            ))}
+                        </CommandGroup>
+                    </CommandList>
+                </Command>
+            </PopoverContent>
+        </Popover>
+        {/* <button className={buttonVariants()}>Detail Trainset</button>
+        <GenericDataSelector
+            // TODO: redesain dis shts🗿
+            id="trainset_id"
+            fetchData={fetchTrainsetFilters}
+            setSelectedData={id => setTrainsetFilters({ id: id })}
+            selectedDataId={trainsetFilters?.id ?? null}
+            placeholder={'Choose'}
+            renderItem={item => `${item.name}`}
+            buttonClassName="mt-1"
+            nullable
+        /> */}
         {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && (
             <>
                 <Popover open={yearFilterOpen} onOpenChange={setYearFilterOpen}>

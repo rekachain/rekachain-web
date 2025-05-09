@@ -126,6 +126,7 @@ export default function ({
         <ChartContainer config={trainsetProgressStatusChart.config} className="h-[300px] w-full pr-10">
             <BarChart accessibilityLayer data={trainsetProgressStatusChart.data}>
                 <CartesianGrid vertical={false} />
+                <YAxis type="number" dataKey="done" tickLine={false} tickMargin={10} axisLine={false} />
                 <XAxis
                     dataKey="trainset_name"
                     tickLine={false}
