@@ -54,7 +54,7 @@ class ApiScanFaceController extends Controller
         $userNip = $request->nip;
 
         // Path absolut ke volume shared Docker
-        $baseSharedPath = '/shared-storage/dataset_faces/' . $userNip;
+        $baseSharedPath = 'dataset_faces/' . $userNip;
 
         if (file_exists($baseSharedPath)) {
             return response()->json([

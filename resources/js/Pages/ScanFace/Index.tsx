@@ -1,12 +1,11 @@
 // resources/js/Pages/ScanFace/Index.tsx
-import { useLaravelReactI18n } from 'laravel-react-i18n'; // Untuk i18n jika diperlukan
-import React, { useState } from 'react';
-import { format, parseISO } from 'date-fns';
 import dayjs from 'dayjs';
+import isoWeek from 'dayjs/plugin/isoWeek';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import weekday from 'dayjs/plugin/weekday';
-import isoWeek from 'dayjs/plugin/isoWeek';
+import { useLaravelReactI18n } from 'laravel-react-i18n'; // Untuk i18n jika diperlukan
+import React, { useState } from 'react';
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -50,7 +49,7 @@ const Index: React.FC<Props> = ({ data }) => {
 
     const now = dayjs();
 
-    const filteredData = data.filter(scan => {
+    const filteredData = data.filter((scan) => {
         const created = dayjs(scan.created_at);
         if (filter === 'day') {
             return created.isSame(now, 'day');
@@ -66,29 +65,31 @@ const Index: React.FC<Props> = ({ data }) => {
 
     return (
         <div className='p-4'>
-            <h1 className='mb-4 text-xl font-bold text-center'>Data Hasil Recognition Wajah Karyawan</h1>
+            <h1 className='mb-4 text-center text-xl font-bold'>
+                Data Hasil Recognition Wajah Karyawan
+            </h1>
 
-            <div className="mb-4 flex gap-2 justify-center">
+            <div className='mb-4 flex justify-center gap-2'>
                 <button
-                    className={`px-3 py-1 rounded ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                    className={`rounded px-3 py-1 ${filter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
                     onClick={() => setFilter('all')}
                 >
                     Semua
                 </button>
                 <button
-                    className={`px-3 py-1 rounded ${filter === 'day' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                    className={`rounded px-3 py-1 ${filter === 'day' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
                     onClick={() => setFilter('day')}
                 >
                     Hari Ini
                 </button>
                 <button
-                    className={`px-3 py-1 rounded ${filter === 'week' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                    className={`rounded px-3 py-1 ${filter === 'week' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
                     onClick={() => setFilter('week')}
                 >
                     Minggu Ini
                 </button>
                 <button
-                    className={`px-3 py-1 rounded ${filter === 'month' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+                    className={`rounded px-3 py-1 ${filter === 'month' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
                     onClick={() => setFilter('month')}
                 >
                     Bulan Ini
@@ -127,7 +128,9 @@ const Index: React.FC<Props> = ({ data }) => {
                             <td className='px-4 py-2'>{scan.panel}</td>
                             <td className='px-4 py-2'>{scan.user.step.name}</td>
                             <td className='px-4 py-2'>{scan.status}</td>
-                            <td className='px-4 py-2'>{dayjs(scan.created_at).format('DD-MM-YYYY HH:mm:ss')}</td>
+                            <td className='px-4 py-2'>
+                                {dayjs(scan.created_at).format('DD-MM-YYYY HH:mm:ss')}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
