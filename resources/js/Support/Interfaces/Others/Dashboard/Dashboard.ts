@@ -14,6 +14,13 @@ interface ReturnedProductTimeDiffResource {
     total_returned: number;
     total_problem: number;
 }
+interface ReturnedProductTimeMinMaxResource {
+    year_month: string;
+    min_duration: number;
+    min_duration_formatted: string;
+    max_duration: number;
+    max_duration_formatted: string;
+}
 
 interface AttachmentStatusBarChartInterface {
     data?: AttachmentStatusOfTrainsetResource[];
@@ -27,12 +34,18 @@ interface ReturnedProductStatusPieChartInterface {
     data: { name: string; value: number }[];
     config: ChartConfig;
 }
+interface ReturnedProductTimeLineChartInterface {
+    data: ReturnedProductTimeMinMaxResource[];
+    config: ChartConfig;
+}
 
 export type {
     AttachmentStatusOfTrainsetResource,
     AttachmentStatusOfWorkstationResource,
     ReturnedProductTimeDiffResource,
+    ReturnedProductTimeMinMaxResource,
     AttachmentStatusBarChartInterface,
     WorkstationStatusBarChartInterface,
     ReturnedProductStatusPieChartInterface,
+    ReturnedProductTimeLineChartInterface
 }

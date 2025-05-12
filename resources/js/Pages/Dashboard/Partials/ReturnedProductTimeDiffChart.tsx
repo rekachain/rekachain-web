@@ -14,23 +14,25 @@ export default function ({
 }) {
     const { t, setLocale } = useLaravelReactI18n();
 
-    const [filters, setFilters] = useState<ServiceFilterOptions>({
+    const [timeDiffFilters, setTimeDiffFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 4,
     });
+    const [currentTimeDiffFilter, setCurrentTimeDiffFilter] = useState(timeDiffFilters);
 
     const [progressResponse, setProgressResponse] = useState<PaginateResponse<ReturnedProductTimeDiffResource>>(data);
 
     const handlePageChange = (page: number) => {
-        console.log('page', page);
-        setFilters({ ...filters, page });
+        setTimeDiffFilters({ ...timeDiffFilters, page });
     };
     
     const syncDatas = withLoading(async () => {
+        if (data === progressResponse && currentTimeDiffFilter === timeDiffFilters) return;
+        setCurrentTimeDiffFilter(timeDiffFilters);
         await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
                 intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE,
-                ...filters,
+                ...timeDiffFilters,
             })
         ).then((res) => {
             setProgressResponse(res.data);
@@ -39,7 +41,7 @@ export default function ({
 
     useEffect(() => {
         syncDatas();
-    }, [filters, setLocale]);
+    }, [timeDiffFilters, setLocale]);
 
     return (
         <div className='mt-5 w-full'>

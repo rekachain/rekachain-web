@@ -17,6 +17,7 @@ export default function ({
     filters?: ServiceFilterOptions
 }) {
     const { t } = useLaravelReactI18n();
+    const [currentFilter, setCurrentFilter] = useState(filters);
     
     const [returnedProductStatusConfig, setReturnedProductStatusConfig] = useState<ChartConfig>({
         requested: {
@@ -55,6 +56,8 @@ export default function ({
     }
 
     const syncReturnedProductStatusData =  withLoading( async() => {
+        if (data === returnedProductStatusPieChart.data && returnedProductStatusPieChart.config.requested.label === localizedStatuses.requested && currentFilter === filters) return;
+        setCurrentFilter(filters);
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
                 intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY,

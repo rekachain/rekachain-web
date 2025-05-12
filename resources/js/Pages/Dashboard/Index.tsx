@@ -5,7 +5,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductTimeDiffResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductTimeDiffResource, ReturnedProductTimeMinMaxResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import Filters from './Partials/Filters';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
@@ -16,15 +16,18 @@ import TrainsetProgressStatusBarChart from './Partials/TrainsetProgressStatusBar
 import PanelProgressStatusBarChart from './Partials/PanelProgressStatusBarChart';
 import WorkshopProgressStatusBarChart from './Partials/WorkshopProgressStatusBarChart';
 import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
+import ReturnedProductTimeMinMaxLineChart from './Partials/ReturnedProductTimeMinMaxLineChart';
+import { withLoading } from '@/Utils/withLoading';
 
 export default function Dashboard({ 
-    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff
+    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax
 }: {
     data: PageProps
     trainsetStatusProgress: AttachmentStatusOfTrainsetResource[]
     workstationStatusProgress: AttachmentStatusOfWorkstationResource[]
     returnedProductStatus: { name: string; value: number }[] | null
     returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
+    returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null
 }) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
 
@@ -39,26 +42,37 @@ export default function Dashboard({
     >({});
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
+        project_id: null,
+        trainset_id: null,
         returned_product: {
             year: '',
             month: 0,
-        },
-        trainset: {
-            id: null,
         },
         useMerged: true,
     });
 
     const { t, setLocale } = useLaravelReactI18n();
 
+    const [lastSyncLocalizedEnumsTime, setLastSyncLocalizedEnumsTime] = useState<number | null>(null);
+
+    const syncLocalizedEnums = withLoading(
+        async () => {
+            const now = Date.now();
+            if (lastSyncLocalizedEnumsTime === null || now - lastSyncLocalizedEnumsTime > 5000) {
+                setLastSyncLocalizedEnumsTime(now);
+                await fetchEnumLabels(['ReturnedProductStatusEnum', 'PanelAttachmentStatusEnum'])
+                    .then((response) => {
+                        setLocalizedReturnedProductStatuses(response.ReturnedProductStatusEnum);
+                        setLocalizedWorkstationStatuses(response.PanelAttachmentStatusEnum);
+                        setLocalizedTrainsetStatuses(response.PanelAttachmentStatusEnum);
+                    })
+                    .catch((error) => console.error('Failed to fetch localized statuses:', error));
+            }
+        }
+    );
+
     useEffect(() => {
-        fetchEnumLabels(['ReturnedProductStatusEnum', 'PanelAttachmentStatusEnum'])
-            .then((response) => {
-                setLocalizedReturnedProductStatuses(response.ReturnedProductStatusEnum);
-                setLocalizedWorkstationStatuses(response.PanelAttachmentStatusEnum);
-                setLocalizedTrainsetStatuses(response.PanelAttachmentStatusEnum);
-            })
-            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+        syncLocalizedEnums();
     }, [setLocale]);
 
     return (
@@ -71,7 +85,7 @@ export default function Dashboard({
                     <div className=''>
                         <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
                         <div className='flex w-full items-center justify-between'>
-                            <div className="">
+                            <div className="flex">
                                 <h2 className='my-2 text-xl'>
                                     {data['project'] == null
                                         ? t('pages.dashboard.index.all_project')
@@ -82,17 +96,7 @@ export default function Dashboard({
                                 <Filters data={data} filters={filters} setFilters={setFilters}/>
                             </div>
                         </div>
-                        <div className="">
-                            <div className="flex items-center px-1 gap-3">
-                                <Checkbox
-                                    id="useMerged"
-                                    onChange={e => setFilters({ ...filters, useMerged: e.target.checked })}
-                                    checked={filters.useMerged}
-                                />
-                                <InputLabel htmlFor="useMerged" value="Use Merged Status" />
-                            </div>
-                        </div>
-                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeDiff && returnedProductStatus && (
+                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeDiff && returnedProductTimeMinMax && returnedProductStatus && (
                             <>
                                 <h2 className='my-1 text-xl font-bold'>
                                     Returned Product
@@ -103,13 +107,13 @@ export default function Dashboard({
                                         <ReturnedProductTimeDiffChart data={returnedProductTimeDiff} />
                                     </Suspense>
                                 </div>
+                                <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
                             </>
                         )}
                         <div className='my-4 flex items-center justify-between'>
                             <h2 className='text-lg'>
                                 {t('pages.dashboard.index.all_trainset_status')}
                             </h2>
-                            
                         </div>
                         <TrainsetProgressStatusBarChart data={trainsetStatusProgress} localizedStatuses={localizedTrainsetStatuses} filters={filters} />
                         <h2 className='my-1 text-xl font-bold'>
@@ -124,7 +128,6 @@ export default function Dashboard({
                         <h3 className='text-base'>
                             {t('pages.dashboard.index.panels_title')}
                         </h3>
-
                         <PanelProgressStatusBarChart data={data['panel']} />
                         <h2 className='my-1 text-xl font-bold'>
                             {t('pages.dashboard.index.all_workstations')}

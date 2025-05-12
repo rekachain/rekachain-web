@@ -55,6 +55,11 @@ return [
             'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
         ],
         'partials' => [
+            'filters' => [
+                'project_placeholder' => 'Pilih Proyek',
+                'trainset_placeholder' => 'Pilih Trainset',
+                'use_merged' => 'Gabungan',
+            ],
             'returned_product_time_diff_chart' => [
                 'headers' => [
                     'year_month' => 'Waktu Retur',
@@ -66,6 +71,22 @@ return [
                     'day' => 'Hari',
                     'hour' => 'Jam',
                     'minute' => 'Menit',
+                ],
+            ],
+            'returned_product_progress_time_min_max_chart' => [
+                'label' => [
+                    'min_duration' => 'Min. Waktu Pengerjaan',
+                    'max_duration' => 'Max. Waktu Pengerjaan',
+                ],
+                'axis' => [
+                    'day' => ':count h',
+                    'hour' => ':count j',
+                    'minute' => ':count m',
+                ],
+                'tooltip' => [
+                    'title' => 'Waktu Pengerjaan',
+                    'min_duration' => 'Min. ',
+                    'max_duration' => 'Max. ',
                 ],
             ]
         ]

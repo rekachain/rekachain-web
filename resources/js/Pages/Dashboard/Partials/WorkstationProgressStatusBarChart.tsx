@@ -14,9 +14,10 @@ export default function ({
 }: {
     data: AttachmentStatusOfWorkstationResource[]
     localizedStatuses: Record<string, string>
-    filters?: ServiceFilterOptions
+    filters: ServiceFilterOptions
 }) {
     const { t } = useLaravelReactI18n();
+    const [currentFilter, setCurrentFilter] = useState(filters);
     const [workstationStatusFilter, setWorkstationStatusFilter] = useState(
         {},
     );
@@ -92,7 +93,9 @@ export default function ({
         );
     };
 
-    const syncStatusChart = async () => {
+    const syncStatusChart = withLoading(async () => {
+        if (data === workstationProgressStatusChart.data && workstationProgressStatusChart.config.done.label === localizedStatuses.done && currentFilter === filters) return;
+        setCurrentFilter(filters);
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
                 use_merged: filters?.useMerged,
@@ -115,7 +118,7 @@ export default function ({
                 ),
             ),
         });
-    }
+    })
 
     useEffect(() => {
         setWorkstationProgressStatusConfig({
@@ -144,13 +147,13 @@ export default function ({
 
     useEffect(() => {
         syncStatusChart();
-    }, [filters?.useMerged, workstationStatusFilter, workstationProgressStatusConfig]);
+    }, [filters.useMerged, workstationStatusFilter, workstationProgressStatusConfig]);
 
     useEffect(() => {
         setWorkstationStatusFilter({
-            relation_column_filters: { trainset: { id: filters?.trainset?.id } },
+            relation_column_filters: { trainset: { id: filters.trainset_id } },
         });
-    }, [filters?.trainset?.id]);
+    }, [filters.trainset_id]);
 
     return (
         <ChartContainer

@@ -55,6 +55,11 @@ return [
             'panel_progress_trainset_sub' => 'Panel Trainset Progresses at ',
         ],
         'partials' => [
+            'filters' => [
+                'project_placeholder' => 'Select Project',
+                'trainset_placeholder' => 'Select Trainset',
+                'use_merged' => 'Merged',
+            ],
             'returned_product_time_diff_chart' => [
                 'headers' => [
                     'year_month' => 'Year Month',
@@ -66,6 +71,22 @@ return [
                     'day' => 'Days',
                     'hour' => 'Hours',
                     'minute' => 'Minutes',
+                ],
+            ],
+            'returned_product_progress_time_min_max_chart' => [
+                'label' => [
+                    'min_duration' => 'Min. Time Execution',
+                    'max_duration' => 'Max. Time Execution',
+                ],
+                'axis' => [
+                    'day' => ':count d',
+                    'hour' => ':count h',
+                    'minute' => ':count m',
+                ],
+                'tooltip' => [
+                    'title' => 'Time Execution',
+                    'min_duration' => 'Min. ',
+                    'max_duration' => 'Max. ',
                 ],
             ]
         ]

@@ -268,6 +268,8 @@ const intents = {
         'web.dashboard.get.returned.product.status.summary',
     WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE:
         'web.dashboard.get.returned.product.time.difference',
+    WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX:
+        'web.dashboard.get.returned.product.time.min.max',
     WEB_DASHBOARD_GET_WORKSTATION_STATUS: 'web.dashboard.get.workstation.status',
     WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS: 'web.dashboard.get.trainset.attachment.status',
 };

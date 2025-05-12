@@ -15,12 +15,15 @@ export default function ({
 }: {
     data: AttachmentStatusOfTrainsetResource[]
     localizedStatuses: Record<string, string>
-    filters?: ServiceFilterOptions
+    filters: ServiceFilterOptions
 }) {
     const { t } = useLaravelReactI18n();
-    const [trainsetStatusFilter, setTrainsetStatusFilter] = useState(
-        {},
-    );
+    const [currentFilters, setCurrentFilters] = useState(filters);
+    const [trainsetStatusFilter, setTrainsetStatusFilter] = useState({
+        column_filters: {
+            project_id: filters.project_id || 1
+        }
+    });
     
     const [trainsetProgressStatusConfig, setTrainsetProgressStatusConfig] = useState<ChartConfig>({
         done: {
@@ -55,15 +58,9 @@ export default function ({
             ),
     })
 
-    const toPercent = (decimal: number, fixed = 0) => {
-        return `${(decimal * 100).toFixed(fixed)}%`;
-    };
-    const getPercent = (value: number, total: number) => {
-        const ratio = total > 0 ? value / total : 0;
-        return toPercent(ratio, 2);
-    };
-
-    const syncStatusChart = async () => {
+    const syncStatusChart = withLoading(async () => {
+        if (data === trainsetProgressStatusChart.data && trainsetProgressStatusChart.config.done.label === localizedStatuses.done && currentFilters === filters) return;
+        setCurrentFilters(filters);
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
                 use_merged: filters?.useMerged,
@@ -87,7 +84,7 @@ export default function ({
                 ),
             ),
         });
-    }
+    })
 
     useEffect(() => {
         setTrainsetProgressStatusConfig({
@@ -116,13 +113,17 @@ export default function ({
 
     useEffect(() => {
         syncStatusChart();
-    }, [filters?.useMerged, trainsetStatusFilter, trainsetProgressStatusConfig]);
+    }, [filters.useMerged, trainsetStatusFilter, trainsetProgressStatusConfig]);
 
     useEffect(() => {
         setTrainsetStatusFilter({
-            relation_column_filters: { trainset: { id: filters?.trainset?.id } },
+            column_filters: { project_id: filters.project_id || 1 },
         });
-    }, [filters?.trainset?.id]);
+    }, [filters.trainset_id, filters.project_id]);
+
+    if (!trainsetProgressStatusChart.data!.length) {
+        return <div className="h-[300px] w-full flex justify-center items-center">Data Kosong</div>
+    }
 
     return (
         <ChartContainer config={trainsetProgressStatusChart.config} className="h-[300px] w-full pr-10">

@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\PanelAttachment;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
+use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
 use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
 use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
@@ -33,7 +35,7 @@ class DashboardService {
     ) {}
 
     public function showGraph(array $data = []) {
-        $project = $this->projectService->find(['id' => '1'])->first();
+        $project = $this->projectService->find(['id' => $data['project_id'] ?? 1])->first();
         // $workshop = $this->workshopService->getAll();
         $panel = $this->panelService->getAll();
 
@@ -74,18 +76,16 @@ class DashboardService {
 
         // other programming shihst
 
-        $ts = PanelAttachment::selectRaw(
-            'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done,
-             SUM(CASE WHEN panel_attachments.status = "in_progress" THEN 1 ELSE 0 END) as in_progress'
-        )
-            ->addSelect('trainsets.name')
-            ->join('carriage_panels', 'panel_attachments.carriage_panel_id', '=', 'carriage_panels.id')
-            ->join('carriage_trainset', 'carriage_panels.carriage_trainset_id', '=', 'carriage_trainset.id')
-            ->join('trainsets', 'carriage_trainset.trainset_id', '=', 'trainsets.id')
-            ->groupBy('trainsets.name')
-            ->get();
-
-        $ws = DB::select('SELECT  SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, workshops.name FROM `panel_attachments` inner join workstations on source_workstation_id = workstations.id inner join workshops on workstations.workshop_id = workshops.id where workshops.id <4 GROUP by workshops.name');
+        
+        $ws = PanelAttachment::selectRaw("
+            workshops.name,
+            SUM(CASE WHEN panel_attachments.status = 'done' THEN 1 ELSE 0 END) as done,
+            SUM(CASE WHEN panel_attachments.status = 'in_progress' THEN 1 ELSE 0 END) as in_progress
+            ")
+            ->join('workstations', 'panel_attachments.source_workstation_id', '=', 'workstations.id')
+            ->join('workshops', 'workstations.workshop_id', '=', 'workshops.id')
+            // ->where('workshops.id', '<', 4)
+            ->groupBy('workshops.name');
 
         // $ws = PanelAttachment::selectRaw(
         //     'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done,
@@ -98,25 +98,19 @@ class DashboardService {
         // ->limit(10)
         // ->get();
 
-        $panel = PanelAttachment::selectRaw(
-            'SUM(CASE WHEN panel_attachments.status = "done" THEN 1 ELSE 0 END) as done,
-             SUM(CASE WHEN panel_attachments.status = "in_progress" THEN 1 ELSE 0 END) as in_progress'
-        )
-            ->addSelect('panels.name')
+        $panel = PanelAttachment::selectRaw("
+            panels.name,
+            SUM(CASE WHEN panel_attachments.status = 'done' THEN 1 ELSE 0 END) as done,
+            SUM(CASE WHEN panel_attachments.status = 'in_progress' THEN 1 ELSE 0 END) as in_progress
+            ")
             ->join('carriage_panels', 'panel_attachments.carriage_panel_id', '=', 'carriage_panels.id')
             ->join('panels', 'carriage_panels.panel_id', '=', 'panels.id')
             ->groupBy('panels.name')
-            ->orderBy('panels.name', 'ASC')
-            ->get();
-
-        // $data = DB::select(
-        //     'SELECT SUM(case when panel_attachments.status = "done" then 1 else 0 end) as done, SUM(case when panel_attachments.status = "in_progress" then 1 else 0 end) as in_progress, trainsets.name FROM `panel_attachments` INNER JOIN `carriage_panels` ON `panel_attachments`.carriage_panel_id = `carriage_panels`.id INNER JOIN `carriage_trainset` ON `carriage_panels`.carriage_trainset_id = `carriage_trainset`.id INNER JOIN `trainsets` ON `carriage_trainset`.trainset_id = `trainsets`.id  GROUP BY trainsets.name;'
-        // );
-
+            ->orderBy('panels.name', 'ASC');
+        
         $data = [
-            'ts' => $ts,
-            'ws' => $ws,
-            'panel' => $panel,
+            'ws' => $ws->get(),
+            'panel' => $panel->get(),
         ];
 
         // dump($data);
@@ -132,60 +126,10 @@ class DashboardService {
     ];
 
     public function showAttachmentStatusOfTrainset(array $data = []) {
-        $project = $this->projectRepository->useFilters($data)->find($data['project_id'] ?? 1);
-        $trainsetId = $data['attachment_status_of_trainset_filter']['column_filters']['id'] ?? null;
-        $returnMerged = $data['use_merged'] ?? false;
-        $useRaw = $data['use_raw'] ?? false;
-
-        if ($useRaw) {
-            $rawTrainsetAttachmentStatusExpression = $returnMerged
-                ? 'trainsets.name AS trainset_name,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_pending'][1]->value . '" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_in_progress'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_done'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
-                : 'trainsets.name AS trainset_name,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_pending'][1]->value . '" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_in_progress'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_material_in_transit'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_material_accepted'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
-                    CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_done'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
-            $trainsetAttachments = $project->trainset_attachments()->whereHas('trainset', fn ($query) => $query->where('status', 'progress'));
-            $progressTrainset = is_null($trainsetId) ? $trainsetAttachments : $trainsetAttachments->where('trainset_id', $trainsetId);
-            $progressTrainset = $progressTrainset->selectRaw($rawTrainsetAttachmentStatusExpression)->groupBy('trainset_name', 'project_id')->get();
-            $rawPanelAttachmentStatusExpression = $returnMerged
-                ? 'trainsets.name AS trainset_name,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_pending'][0]->value . '" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                    CAST(SUM(CASE WHEN panel_attachments.status IN ("' . $this->statusMapping['status_in_progress'][0]->value . '", "' . $this->statusMapping['status_material_in_transit'][0]->value . '", "' . $this->statusMapping['status_material_accepted'][0]->value . '") THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_done'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
-                : 'trainsets.name AS trainset_name,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_pending'][0]->value . '" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_in_progress'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_material_in_transit'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_material_accepted'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
-                    CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_done'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
-            $panelAttachments = $project->panel_attachments()->whereHas('carriage_panel.carriage_trainset.trainset', fn ($query) => $query->where('status', 'progress'));
-            $progressPanel = is_null($trainsetId) ? $panelAttachments : $panelAttachments->whereHas('carriage_panel.carriage_trainset', fn ($query) => $query->where('trainset_id', $trainsetId));
-            $progressPanel = $progressPanel->selectRaw($rawPanelAttachmentStatusExpression)->groupBy('trainset_name', 'project_id')->get();
-            $progress = $progressTrainset->push(...$progressPanel)
-                ->groupBy('trainset_name')->map(function ($group) {
-                    return [
-                        'trainset_name' => $group->first()['trainset_name'],
-                        'pending' => $group->sum('pending'),
-                        'in_progress' => $group->sum('in_progress'),
-                        'material_in_transit' => $group->sum('material_in_transit') ?? 0,
-                        'material_accepted' => $group->sum('material_accepted') ?? 0,
-                        'done' => $group->sum('done'),
-                    ];
-                })->values();
-
-            return $progress->toArray();
-        }
         $data['attachment_status_of_trainset_filter'] = array_merge_recursive(
             $data['attachment_status_of_trainset_filter'] ?? [],
-            ['relation_column_filters' => ['project' => ['id' => $data['project_id'] ?? 1]]],
-            ['column_filters' => ['status' => ['progress', 'done']]]
+            ['column_filters' => ['status' => [TrainsetStatusEnum::PROGRESS->value, TrainsetStatusEnum::DONE->value]]]
         );
-        // $data['attachment_status_of_trainset_filter']['column_filters'] = ['id' => $data['id'] ?? 2];
         $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
         $progressOfTrainset = $trainsets->get()->map(function ($trainset) use ($data) {
             $trainsetProgress = $this->calculateProgress($trainset->trainset_attachments, $data, 1);
@@ -207,7 +151,8 @@ class DashboardService {
 
         return $attachments->filter(fn ($attachment) => !array_key_exists('status', $data) || ($attachment->status?->value ?? $this->statusMapping['status_pending'][$key]) === $data['status'])
             ->groupBy(fn ($attachment) => $attachment->status)
-            ->map(fn ($attachment) => (!$useMerged) ? ['status' => $attachment->first()->status ?? $this->statusMapping['status_pending'][$key], 'count' => $attachment->count()]
+            ->map(fn ($attachment) => (!$useMerged) 
+                ? ['status' => $attachment->first()->status ?? $this->statusMapping['status_pending'][$key], 'count' => $attachment->count()]
                 : ['status' => match ($attachment->first()->status) {
                     $this->statusMapping['status_in_progress'][$key] => $this->statusMapping['status_in_progress'][$key],
                     $this->statusMapping['status_material_in_transit'][$key] => $this->statusMapping['status_in_progress'][$key],
@@ -217,75 +162,6 @@ class DashboardService {
                 }, 'count' => $attachment->count()]
             )
             ->values();
-    }
-
-    public function showAttachmentStatusOfWorkstationRaw(array $data) {
-        $returnMerged = $data['use_merged'] ?? false;
-        $data['attachment_status_of_workstation_filter'] = array_merge_recursive(
-            $data['attachment_status_of_workstation_filter'] ?? [], [
-                'relation_column_filters' => [
-                    'trainset' => [
-                        'status' => ['progress', 'done'],
-                        'project_id' => $data['project_id'] ?? 1,
-                    ],
-                ],
-            ]);
-        $rawTrainsetAttachmentStatusExpression = $returnMerged
-            ? 'workstations.name as workstation_name,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_pending'][1]->value . '" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_in_progress'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_done'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
-            : 'workstations.name as workstation_name,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_pending'][1]->value . '" OR trainset_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_in_progress'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_material_in_transit'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_material_accepted'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
-                CAST(SUM(CASE WHEN trainset_attachments.status = "' . $this->statusMapping['status_done'][1]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
-        $rawPanelAttachmentStatusExpression = $returnMerged
-            ? 'workstations.name as workstation_name,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_pending'][0]->value . '" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                CAST(SUM(CASE WHEN panel_attachments.status IN ("' . $this->statusMapping['status_in_progress'][0]->value . '", "' . $this->statusMapping['status_material_in_transit'][0]->value . '", "' . $this->statusMapping['status_material_accepted'][0]->value . '") THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_done'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done'
-            : 'workstations.name as workstation_name,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_pending'][0]->value . '" OR panel_attachments.status IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS pending,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_in_progress'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS in_progress,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_material_in_transit'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_in_transit,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_material_accepted'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS material_accepted,
-                CAST(SUM(CASE WHEN panel_attachments.status = "' . $this->statusMapping['status_done'][0]->value . '" THEN 1 ELSE 0 END) AS UNSIGNED) AS done';
-
-        $workstationTrainsetProgress = $this->trainsetAttachmentRepository
-            ->useFilters($data['attachment_status_of_workstation_filter'])
-            // ->with('destination_workstation')
-            ->join('workstations', 'trainset_attachments.destination_workstation_id', '=', 'workstations.id')
-            ->selectRaw($rawTrainsetAttachmentStatusExpression)
-            // ->where('trainset_attachments.status', 'progress')
-            ->groupBy('workstation_name')
-            ->get();
-        $workstationPanelProgress = $this->panelAttachmentRepository
-            ->useFilters($data['attachment_status_of_workstation_filter'])
-            // ->with('destination_workstation')
-            ->join('workstations', 'panel_attachments.destination_workstation_id', '=', 'workstations.id')
-            ->selectRaw($rawPanelAttachmentStatusExpression)
-            // ->where('panel_attachments.status', 'progress')
-            // ->whereHas('carriage_panels.carriage_trainset.trainsets', fn($query) => $query->where('project_id', $projectId))
-            ->groupBy('workstation_name')
-            ->get();
-        $progress = $workstationPanelProgress->isNotEmpty() ? $workstationTrainsetProgress->push(...$workstationPanelProgress) : $workstationTrainsetProgress;
-
-        $progressOfWorkstation = $progress
-            ->groupBy('workstation_name')
-            ->map(fn ($attachment) => [
-                'workstation_name' => $attachment->first()->workstation_name,
-                'pending' => $attachment->sum('pending'),
-                'in_progress' => $attachment->sum('in_progress'),
-                'material_in_transit' => $attachment->sum('material_in_transit'),
-                'material_accepted' => $attachment->sum('material_accepted'),
-                'done' => $attachment->sum('done'),
-            ])
-            ->sortBy('workstation_name')
-            ->values();
-
-        return $progressOfWorkstation->toArray();
     }
 
     public function showAttachmentStatusOfWorkstation(array $data) {
@@ -434,7 +310,8 @@ class DashboardService {
             $minutes = floor(($avg % 3600) / 60);
 
             return (object) [
-                'year_month' => $date->locale(app()->getLocale())->translatedFormat('Y F'),
+                'intent' => IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value,
+                'year_month' => $date->locale(app()->getLocale())->translatedFormat('F Y'),
                 'avg_duration' => "{$days} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.day') . ' ' .
                                 "{$hours} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
                                 "{$minutes} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.minute'),
@@ -443,7 +320,7 @@ class DashboardService {
             ];
         });
 
-        $perPage = request()->get('perPage', 4);
+        $perPage = $request['perPage'] ?? 4;
         $page = LengthAwarePaginator::resolveCurrentPage();
         $paginated = new LengthAwarePaginator(
             $transformed->forPage($page, $perPage)->values(),
@@ -454,5 +331,46 @@ class DashboardService {
         );
 
         return $paginated;
+    }
+
+    public function getReturnedproductProgressTimeMinMax(array $request) {
+        $rawData = ReturnedProduct::selectRaw("
+                YEAR(created_at) as year,
+                MONTH(created_at) as month,
+                MIN(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as min_duration,
+                MAX(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as max_duration
+            ")
+            ->groupByRaw("YEAR(created_at), MONTH(created_at)")
+            // ->orderByRaw("YEAR(created_at) DESC, MONTH(created_at) DESC")
+            ->get();
+
+        // Transform with localization
+        $transformed = $rawData->map(function ($item) {
+            $date = Carbon::create($item->year, $item->month, 1);
+            $min = (int) $item->min_duration;
+            $max = (int) $item->max_duration;
+
+            $min_days = floor($min / 86400);
+            $max_days = floor($max / 86400);
+            $min_hours = floor(($min % 86400) / 3600);
+            $max_hours = floor(($max % 86400) / 3600);
+            $min_minutes = floor(($min % 3600) / 60);
+            $max_minutes = floor(($max % 3600) / 60);
+
+            return (object) [
+                'intent' => IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX->value,
+                'year_month' => $date->locale(app()->getLocale())->translatedFormat('F Y'),
+                'min_duration' => $item->min_duration,
+                'min_duration_formatted' => "{$min_days} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.day') . ' ' .
+                                "{$min_hours} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
+                                "{$min_minutes} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.minute'),
+                'max_duration' => $item->max_duration,
+                'max_duration_formatted' => "{$max_days} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.day') . ' ' .
+                                "{$max_hours} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
+                                "{$max_minutes} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.minute'),
+            ];
+        });
+
+        return $transformed;
     }
 }
