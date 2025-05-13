@@ -265,6 +265,7 @@ class DashboardService {
 
     public function showReturnedProductStatusSum(array $request = []): array {
         $filters = $request;
+        $useMerged = $request['use_merged'] ?? true;
         if (isset($request['year'])) {
             $filters['column_filters'] = [
                 'created_at' => [
@@ -281,22 +282,29 @@ class DashboardService {
                 ];
             }
         }
-        $returnedProducts = $this->returnedProductService->getAll($filters)->groupBy('status')->map(function ($item) {
-            return [
-                'status' => $item->first()->status->value,
-                'total_qty' => $item->sum('qty'),
+        $returnedProducts = $this->returnedProductService->getAll($filters)->groupBy('status')->map(function ($item) use ($useMerged) {
+            return !$useMerged ? [
+                'name' => $item->first()->status->value,
+                'value' => $item->sum('qty'),
+            ] : [
+                'name' => match ($item->first()->status) {
+                    ReturnedProductStatusEnum::DONE => ReturnedProductStatusEnum::DONE->value,
+                    ReturnedProductStatusEnum::SCRAPPED => ReturnedProductStatusEnum::DONE->value,
+                    ReturnedProductStatusEnum::PROGRESS => ReturnedProductStatusEnum::PROGRESS->value,
+                    default => ReturnedProductStatusEnum::DRAFT->value
+                },
+                'value' => $item->sum('qty'),
             ];
         });
         
-        $returnedProductsSummary = [];
-        foreach (ReturnedProductStatusEnum::cases() as $status) {
-            $returnedProductsSummary[] = [
-                'name' => $status->value,
-                'value' => (int) ($returnedProducts->where('status', $status->value)->first()['total_qty'] ?? 0),
+        $returnedProductsSummary = $returnedProducts->groupBy('name')->map(function ($returnedProduct) {
+            return [
+                'name' => $returnedProduct->first()['name'],
+                'value' => $returnedProduct->sum('value'),
             ];
-        }
+        });
 
-        return $returnedProductsSummary;
+        return $returnedProductsSummary->sortBy('name')->values()->toArray();
     }
 
     public function getReturnedproductProgressTimeDiff(array $request) : LengthAwarePaginator {

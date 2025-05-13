@@ -14,27 +14,28 @@ export default function ({
 }: {
     data: { name: string; value: number }[]
     localizedStatuses: Record<string, string>
-    filters?: ServiceFilterOptions
+    filters: ServiceFilterOptions
 }) {
     const { t } = useLaravelReactI18n();
     const [currentFilter, setCurrentFilter] = useState(filters);
-    
+
+        
     const [returnedProductStatusConfig, setReturnedProductStatusConfig] = useState<ChartConfig>({
-        requested: {
-            label: localizedStatuses.requested || 'Diminta',
-            color: 'hsl(var(--chart-4))',
-        },
-        draft: {
-            label: localizedStatuses.draft || 'Draf',
-            color: 'hsl(var(--chart-3))',
+        done: {
+            label: localizedStatuses.done || 'Selesai',
+            color: 'hsl(var(--chart-1))',
         },
         progress: {
             label: localizedStatuses.progress || 'Dalam Proses',
             color: 'hsl(var(--chart-2))',
         },
-        done: {
-            label: localizedStatuses.done || 'Selesai',
-            color: 'hsl(var(--chart-1))',
+        draft: {
+            label: localizedStatuses.draft || 'Draf',
+            color: 'hsl(var(--chart-3))',
+        },
+        requested: {
+            label: localizedStatuses.requested || 'Diminta',
+            color: 'hsl(var(--chart-4))',
         },
         scrapped: {
             label: localizedStatuses.scrapped || 'Discrap',
@@ -45,29 +46,33 @@ export default function ({
     const [returnedProductStatusPieChart, setReturnedProductStatusPieChart] =
         useState<ReturnedProductStatusPieChartInterface>({
             data: data,
-            config: returnedProductStatusConfig
+            config: Object.fromEntries(
+                Object.entries(returnedProductStatusConfig).filter(([key]) =>
+                    filters.useMerged ? !['requested', 'scrapped'].includes(key) : true,
+                ),
+            ),
     })
 
-    const syncReturnedProductStatusChart = () => {
-        setReturnedProductStatusPieChart({
-            data: data,
-            config: returnedProductStatusConfig,
-        });
-    }
-
     const syncReturnedProductStatusData =  withLoading( async() => {
-        if (data === returnedProductStatusPieChart.data && returnedProductStatusPieChart.config.requested.label === localizedStatuses.requested && currentFilter === filters) return;
+        console.log('syncReturnedProductStatusData',currentFilter, filters);
+        if (data === returnedProductStatusPieChart.data && returnedProductStatusPieChart.config.done.label === localizedStatuses.done && currentFilter === filters) return;
+        console.log('tembuscot');
         setCurrentFilter(filters);
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
+                use_merged: filters.useMerged,
                 intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY,
-                year: filters?.returned_product.year,
-                month: filters?.returned_product.month,
+                year: filters.returned_product?.year,
+                month: filters.returned_product?.month,
             })
         )
         setReturnedProductStatusPieChart({
             data: res.data,
-            config: returnedProductStatusConfig,
+            config: Object.fromEntries(
+                Object.entries(returnedProductStatusConfig).filter(([key]) =>
+                    filters.useMerged ? !['requested', 'scrapped'].includes(key) : true,
+                ),
+            ),
         });
     })
 
@@ -78,37 +83,9 @@ export default function ({
     }
 
     useEffect(() => {
+        console.log('returnedProductStatusPieChart');
         syncReturnedProductStatusData();
-    }, [filters?.returned_product.year, filters?.returned_product.month]);
-
-    useEffect(() => {
-        setReturnedProductStatusConfig({
-            requested: {
-                label: localizedStatuses.requested,
-                color: returnedProductStatusConfig.requested.color,
-            },
-            draft: {
-                label: localizedStatuses.draft,
-                color: returnedProductStatusConfig.draft.color,
-            },
-            progress: {
-                label: localizedStatuses.progress,
-                color: returnedProductStatusConfig.progress.color,
-            },
-            done: {
-                label: localizedStatuses.done,
-                color: returnedProductStatusConfig.done.color,
-            },
-            scrapped: {
-                label: localizedStatuses.scrapped,
-                color: returnedProductStatusConfig.scrapped.color,
-            },
-        });
-    }, [localizedStatuses]);
-
-    useEffect(() => {
-        syncReturnedProductStatusChart();
-    }, [returnedProductStatusConfig]);
+    }, [filters.useMerged, filters.returned_product.year, filters.returned_product.month, localizedStatuses]);
 
     return (
         <ChartContainer
@@ -163,10 +140,10 @@ export default function ({
                     formatter={renderLegendContentFormat}
                 />
                 <Pie data={returnedProductStatusPieChart.data} dataKey='value'>
-                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey) => (
+                    {returnedProductStatusPieChart.data.map((entry, index) => (
                         <Cell
-                            key={`returnedProductStatus-${dataKey}-key`}
-                            fill={`var(--color-${dataKey})`}
+                            key={`returnedProductStatus-${entry.name}-key`}
+                            fill={`var(--color-${entry.name})`}
                         />
                     ))}
                 </Pie>
