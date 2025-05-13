@@ -89,6 +89,12 @@ export default function ({
             </div>
         );
     };
+
+    const renderLegendContentFormat = (value: string, entry: any, index: number) => {
+        return (
+            <span className='text-foreground'>{lineChart.config[value].label}</span>
+        )
+    }
     const formatDuration = (seconds: number) => {
         const days = Math.floor(seconds / 86400);
         const hrs = Math.floor((seconds % 86400) / 3600);
@@ -115,14 +121,25 @@ export default function ({
                 data={lineChart.data}
             >
                 <YAxis 
-                    width={100} 
+                    // width={100} 
                     domain={[0, 'dataMax']} 
                     tickFormatter={formatDuration}
                 />
                 <XAxis dataKey='year_month' angle={-45} textAnchor='end' height={110}/>
                 <CartesianGrid />
                 <ChartTooltip content={renderWorkstationProgressTooltipContent} />
-                <ChartLegend content={<ChartLegendContent />} />
+                <ChartLegend 
+                    // content={<ChartLegendContent />} 
+                    wrapperStyle={{
+                        top: 0,
+                        right: 0,
+                        // transform: 'translate(0, -50%)',
+                        lineHeight: '24px',
+                    }}
+                    layout='vertical'
+                    verticalAlign='middle'
+                    formatter={renderLegendContentFormat}
+                />
                 <Line key={'returned_progress_line_min'} type='monotone' dataKey={'min_duration'} stroke={'var(--color-min_duration)'} />
                 <Line key={'returned_progress_line_max'} type='monotone' dataKey={'max_duration'} stroke={'var(--color-max_duration)'} />
             </LineChart>

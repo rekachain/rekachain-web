@@ -337,7 +337,7 @@ class DashboardService {
                 MAX(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as max_duration
             ")
             ->groupByRaw("YEAR(created_at), MONTH(created_at)")
-            // ->orderByRaw("YEAR(created_at) DESC, MONTH(created_at) DESC")
+            ->orderByRaw("YEAR(created_at) ASC, MONTH(created_at) ASC")
             ->get();
 
         // Transform with localization

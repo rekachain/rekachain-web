@@ -101,6 +101,12 @@ export default function ({
         );
     };
 
+    const renderLegendContentFormat = (value: string, entry: any, index: number) => {
+        return (
+            <span className='text-foreground'>{replacementStockChart.config[value].label}</span>
+        )
+    }
+
 
     useEffect(() => {
         syncStockChart();
@@ -128,7 +134,11 @@ export default function ({
                 />
                 {/* <ChartTooltip content={<ChartTooltipContent />} /> */}
                 <ChartTooltip content={renderChartTooltipContent} />
-                <ChartLegend content={<ChartLegendContent />} />
+                <ChartLegend 
+                    verticalAlign='top'
+                    height={25}
+                    formatter={renderLegendContentFormat} 
+                />
                 <Bar
                     type='monotone'
                     stackId='1'

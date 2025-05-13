@@ -71,6 +71,12 @@ export default function ({
         });
     })
 
+    const renderLegendContentFormat = (value: string, entry: any, index: number) => {
+        return (
+            <span className='text-foreground'>{returnedProductStatusPieChart.config[value].label}</span>
+        )
+    }
+
     useEffect(() => {
         syncReturnedProductStatusData();
     }, [filters?.returned_product.year, filters?.returned_product.month]);
@@ -115,31 +121,49 @@ export default function ({
                         <ChartTooltipContent
                             // hideIndicator={true}
                             formatter={(value, name) => {
-                                const total = returnedProductStatusPieChart.data.reduce((result, entry) => result + entry.value, 0);
+                                const total = returnedProductStatusPieChart.data.reduce(
+                                    (result, entry) => result + entry.value,
+                                    0,
+                                );
                                 const percent = ((Number(value) / total) * 100).toFixed(2);
-                                    return (
-                                        <>
-                                            <div 
-                                                className="shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg] h-2.5 w-2.5" 
-                                                style={
-                                                    { 
-                                                        '--color-bg': returnedProductStatusPieChart.config[name].color, 
-                                                        '--color-border': returnedProductStatusPieChart.config[name].color 
-                                                    } as React.CSSProperties}>
-                                                
-                                            </div>
-                                            <span className="">
-                                                {`${returnedProductStatusPieChart.config[name].label}: ${value} (${percent}%)`}
-                                            </span>
-                                        </>
-                                    );
+                                return (
+                                    <>
+                                        <div
+                                            className='h-2.5 w-2.5 shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]'
+                                            style={
+                                                {
+                                                    '--color-bg':
+                                                        returnedProductStatusPieChart.config[name]
+                                                            .color,
+                                                    '--color-border':
+                                                        returnedProductStatusPieChart.config[name]
+                                                            .color,
+                                                } as React.CSSProperties
+                                            }
+                                        ></div>
+                                        <span className=''>
+                                            {`${returnedProductStatusPieChart.config[name].label}: ${value} (${percent}%)`}
+                                        </span>
+                                    </>
+                                );
                             }}
                         />
                     }
                 />
-                <ChartLegend content={<ChartLegendContent />} />
-                <Pie data={returnedProductStatusPieChart.data} dataKey="value">
-                    {Object.keys(returnedProductStatusPieChart.config).map(dataKey => (
+                <ChartLegend
+                    // content={<ChartLegendContent />}
+                    wrapperStyle={{
+                        top: '50%',
+                        left: '10%',
+                        transform: 'translate(0, -50%)',
+                        lineHeight: '24px',
+                    }}
+                    layout='vertical'
+                    verticalAlign='middle'
+                    formatter={renderLegendContentFormat}
+                />
+                <Pie data={returnedProductStatusPieChart.data} dataKey='value'>
+                    {Object.keys(returnedProductStatusPieChart.config).map((dataKey) => (
                         <Cell
                             key={`returnedProductStatus-${dataKey}-key`}
                             fill={`var(--color-${dataKey})`}
