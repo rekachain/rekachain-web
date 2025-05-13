@@ -12,6 +12,7 @@ use App\Support\Enums\TrainsetStatusEnum;
 use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
@@ -28,6 +29,7 @@ class DashboardService {
         protected TrainsetServiceInterface $trainsetService,
         protected WorkshopServiceInterface $workshopService,
         protected PanelServiceInterface $panelService,
+        protected ReturnedProductServiceInterface $returnedProductService,
     ) {}
 
     public function showGraph(array $data = []) {
@@ -262,21 +264,35 @@ class DashboardService {
     }
 
     public function showReturnedProductStatusSum(array $request = []): array {
-        $query = ReturnedProduct::groupBy('status')->select('status', DB::raw('sum(qty) as qty'));
-        
+        $filters = $request;
         if (isset($request['year'])) {
-            $query->whereYear('created_at', $request['year']);
+            $filters['column_filters'] = [
+                'created_at' => [
+                    'from' => $request['year'] . '-01-01',
+                    'to' => $request['year'] . '-12-31',
+                ]
+            ];
             if (isset($request['month']) && ($request['month'] !== '0')) {
-                $query->whereMonth('created_at', $request['month']);
+                $filters['column_filters'] = [
+                    'created_at' => [
+                        'from' => $request['year'] . '-' . $request['month'] . '-01',
+                        'to' => $request['year'] . '-' . $request['month'] . '-31',
+                    ]
+                ];
             }
         }
-        $returnedProducts = $query->get();
-
+        $returnedProducts = $this->returnedProductService->getAll($filters)->groupBy('status')->map(function ($item) {
+            return [
+                'status' => $item->first()->status->value,
+                'total_qty' => $item->sum('qty'),
+            ];
+        });
+        
         $returnedProductsSummary = [];
         foreach (ReturnedProductStatusEnum::cases() as $status) {
             $returnedProductsSummary[] = [
                 'name' => $status->value,
-                'value' => (int) ($returnedProducts->where('status', $status)->first()?->qty ?? 0),
+                'value' => (int) ($returnedProducts->where('status', $status->value)->first()['total_qty'] ?? 0),
             ];
         }
 

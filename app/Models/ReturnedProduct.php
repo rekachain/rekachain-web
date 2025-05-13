@@ -39,6 +39,7 @@ class ReturnedProduct extends Model {
             'product_returnable_type',
             'buyer_id',
             'status',
+            'created_at',
         ],
         'relation_searchs' => [
             'buyer' => [
