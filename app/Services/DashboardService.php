@@ -27,7 +27,7 @@ class DashboardService {
         protected ProjectServiceInterface $projectService,
         protected TrainsetServiceInterface $trainsetService,
         protected WorkshopServiceInterface $workshopService,
-        protected PanelServiceInterface $panelService
+        protected PanelServiceInterface $panelService,
     ) {}
 
     public function showGraph(array $data = []) {

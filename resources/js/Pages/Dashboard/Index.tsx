@@ -18,9 +18,11 @@ import WorkshopProgressStatusBarChart from './Partials/WorkshopProgressStatusBar
 import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
 import ReturnedProductTimeMinMaxLineChart from './Partials/ReturnedProductTimeMinMaxLineChart';
 import { withLoading } from '@/Utils/withLoading';
+import { ReplacementStockResource } from '@/Support/Interfaces/Resources';
+import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
 
 export default function Dashboard({ 
-    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax
+    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks
 }: {
     data: PageProps
     trainsetStatusProgress: AttachmentStatusOfTrainsetResource[]
@@ -28,6 +30,7 @@ export default function Dashboard({
     returnedProductStatus: { name: string; value: number }[] | null
     returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
     returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null
+    replacementStocks: ReplacementStockResource[]
 }) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
 
@@ -108,6 +111,7 @@ export default function Dashboard({
                                     </Suspense>
                                 </div>
                                 <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
+                                <ReplacementStockThresholdStackBarChart data={replacementStocks} filters={filters} />
                             </>
                         )}
                         <div className='my-4 flex items-center justify-between'>

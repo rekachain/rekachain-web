@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DashboardResource;
+use App\Http\Resources\ReplacementStockResource;
 use App\Services\DashboardService;
+use App\Services\ReplacementStockService;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
@@ -15,6 +17,7 @@ use Inertia\Inertia;
 class DashboardController extends Controller {
     public function __construct(
         protected DashboardService $dashboardService,
+        protected ReplacementStockService $replacementStockService,
         protected ProjectServiceInterface $projectService,
     ) {}
 
@@ -37,6 +40,8 @@ class DashboardController extends Controller {
                     return $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
                 case IntentEnum::WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS->value:
                     return $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
+                case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK->value:
+                    return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
             }
 
             $data = $this->dashboardService->showGraph($request->query());
@@ -47,6 +52,7 @@ class DashboardController extends Controller {
             $returned_product_status = $this->dashboardService->showReturnedProductStatusSum($request->query());
             $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
             $returned_product_progress_time_min_max = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
+            $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
         }
 
         $project = DB::select('SELECT * FROM `projects` ');
@@ -64,6 +70,7 @@ class DashboardController extends Controller {
             'returnedProductStatus' => $returned_product_status,
             'returnedProductTimeDiff' => $returned_product_progress_time_diff,
             'returnedProductTimeMinMax' => $returned_product_progress_time_min_max,
+            'replacementStocks' => $replacement_stocks
         ]);
     }
 

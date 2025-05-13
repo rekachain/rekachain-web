@@ -88,7 +88,16 @@ return [
                     'min_duration' => 'Min. ',
                     'max_duration' => 'Max. ',
                 ],
-            ]
+            ],
+            'replacement_stock_threshold_stack_bar_chart' => [
+                'label' => [
+                    'qty' => 'Quantity',
+                    'threshold' => 'Threshold',
+                ],
+                'tooltip' => [
+                    'need_restock' => 'Need Restock',
+                ],
+            ],
         ]
     ],
     'dashboard_trainset' => [
