@@ -16,6 +16,7 @@ export default function ({
 }) {
     const { t, setLocale, currentLocale } = useLaravelReactI18n();
     const [currentFilters, setCurrentFilters] = useState(filters);
+    const [currentChartLocale, setCurrentChartLocale] = useState(currentLocale());
 
     const [lineChart, setLineChart] = useState<ReturnedProductTimeLineChartInterface>({
             data: data,
@@ -32,7 +33,8 @@ export default function ({
     });
     
     const syncDatas = withLoading(async () => {
-        if (data === lineChart.data && currentFilters === filters) return;
+        if (data === lineChart.data && currentFilters === filters && currentChartLocale === currentLocale()) return;
+        setCurrentChartLocale(currentLocale());
         setCurrentFilters(filters);
         await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {

@@ -9,13 +9,11 @@ use App\Support\Enums\PanelAttachmentStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
-use App\Support\Interfaces\Repositories\PanelAttachmentRepositoryInterface;
-use App\Support\Interfaces\Repositories\ProjectRepositoryInterface;
-use App\Support\Interfaces\Repositories\TrainsetAttachmentRepositoryInterface;
-use App\Support\Interfaces\Repositories\TrainsetRepositoryInterface;
-use App\Support\Interfaces\Repositories\WorkstationRepositoryInterface;
+use App\Support\Interfaces\Services\PanelAttachmentServiceInterface;
 use App\Support\Interfaces\Services\PanelServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
+use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
@@ -24,13 +22,11 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardService {
     public function __construct(
-        protected PanelAttachmentRepositoryInterface $panelAttachmentRepository,
-        protected TrainsetAttachmentRepositoryInterface $trainsetAttachmentRepository,
+        protected PanelAttachmentServiceInterface $panelAttachmentService,
+        protected TrainsetAttachmentServiceInterface $trainsetAttachmentService,
         protected ProjectServiceInterface $projectService,
-        protected ProjectRepositoryInterface $projectRepository,
-        protected TrainsetRepositoryInterface $trainsetRepository,
+        protected TrainsetServiceInterface $trainsetService,
         protected WorkshopServiceInterface $workshopService,
-        protected WorkstationRepositoryInterface $workstationRepository,
         protected PanelServiceInterface $panelService
     ) {}
 
@@ -130,8 +126,8 @@ class DashboardService {
             $data['attachment_status_of_trainset_filter'] ?? [],
             ['column_filters' => ['status' => [TrainsetStatusEnum::PROGRESS->value, TrainsetStatusEnum::DONE->value]]]
         );
-        $trainsets = $this->trainsetRepository->useFilters($data['attachment_status_of_trainset_filter']);
-        $progressOfTrainset = $trainsets->get()->map(function ($trainset) use ($data) {
+        $trainsets = $this->trainsetService->getAll($data['attachment_status_of_trainset_filter']);
+        $progressOfTrainset = $trainsets->map(function ($trainset) use ($data) {
             $trainsetProgress = $this->calculateProgress($trainset->trainset_attachments, $data, 1);
             $panelProgress = $this->calculateProgress($trainset->panel_attachments, $data, 0);
             $progress = $panelProgress->isNotEmpty() ? $trainsetProgress->merge($panelProgress) : $trainsetProgress;
@@ -174,15 +170,15 @@ class DashboardService {
                     ],
                 ],
             ]);
-        $trainsetAttachments = $this->trainsetAttachmentRepository
-            ->useFilters($data['attachment_status_of_workstation_filter'])->get();
+        $trainsetAttachments = $this->trainsetAttachmentService
+            ->getAll($data['attachment_status_of_workstation_filter']);
         $workstationTrainsetProgress = $trainsetAttachments->groupBy('destination_workstation_id')->map(fn ($attachments) => [
             'workstation_name' => $attachments->first()->destination_workstation->name . ' ' . $attachments->first()->destination_workstation->location . ' ' . $attachments->first()->destination_workstation->workshop->name,
             'progress' => $this->calculateProgress($attachments, $data, 1),
         ]);
 
-        $panelAttachments = $this->panelAttachmentRepository
-            ->useFilters($data['attachment_status_of_workstation_filter'])->get();
+        $panelAttachments = $this->panelAttachmentService
+            ->getAll($data['attachment_status_of_workstation_filter']);
         $workstationPanelProgress = $panelAttachments->groupBy('destination_workstation_id')->map(fn ($attachments) => [
             'workstation_name' => $attachments->first()->destination_workstation->name . ' ' . $attachments->first()->destination_workstation->location . ' ' . $attachments->first()->destination_workstation->workshop->name,
             'progress' => $this->calculateProgress($attachments, $data, 0),
