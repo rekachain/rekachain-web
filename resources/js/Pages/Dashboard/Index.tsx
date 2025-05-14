@@ -18,11 +18,11 @@ import WorkshopProgressStatusBarChart from './Partials/WorkshopProgressStatusBar
 import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
 import ReturnedProductTimeMinMaxLineChart from './Partials/ReturnedProductTimeMinMaxLineChart';
 import { withLoading } from '@/Utils/withLoading';
-import { ReplacementStockResource } from '@/Support/Interfaces/Resources';
+import { ProductProblemResource, ReplacementStockResource } from '@/Support/Interfaces/Resources';
 import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
 
 export default function Dashboard({ 
-    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks
+    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks, productProblems
 }: {
     data: PageProps
     trainsetStatusProgress: AttachmentStatusOfTrainsetResource[]
@@ -31,8 +31,10 @@ export default function Dashboard({
     returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
     returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null
     replacementStocks: ReplacementStockResource[]
+    productProblems: PaginateResponse<ProductProblemResource> | null
 }) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
+    const ProductProblemDataView = lazy(() => import('./Partials/ProductProblemDataView'));
 
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
         Record<string, string>
@@ -99,7 +101,7 @@ export default function Dashboard({
                                 <Filters data={data} filters={filters} setFilters={setFilters}/>
                             </div>
                         </div>
-                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeDiff && returnedProductTimeMinMax && returnedProductStatus && (
+                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeDiff && returnedProductTimeMinMax && returnedProductStatus && productProblems && (
                             <>
                                 <h2 className='my-1 text-xl font-bold'>
                                     Returned Product
@@ -112,6 +114,9 @@ export default function Dashboard({
                                 </div>
                                 <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
                                 <ReplacementStockThresholdStackBarChart data={replacementStocks} filters={filters} />
+                                {/* <Suspense fallback={<StaticLoadingOverlay />}>
+                                    <ProductProblemDataView data={productProblems} />
+                                </Suspense> */}
                             </>
                         )}
                         <div className='my-4 flex items-center justify-between'>

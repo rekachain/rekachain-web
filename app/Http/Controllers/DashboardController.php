@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DashboardResource;
+use App\Http\Resources\ProductProblemResource;
 use App\Http\Resources\ReplacementStockResource;
 use App\Services\DashboardService;
-use App\Services\ReplacementStockService;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
 use App\Support\Enums\RoleEnum;
+use App\Support\Interfaces\Services\ProductProblemServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\ReplacementStockServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -17,7 +19,8 @@ use Inertia\Inertia;
 class DashboardController extends Controller {
     public function __construct(
         protected DashboardService $dashboardService,
-        protected ReplacementStockService $replacementStockService,
+        protected ReplacementStockServiceInterface $replacementStockService,
+        protected ProductProblemServiceInterface $productProblemService,
         protected ProjectServiceInterface $projectService,
     ) {}
 
@@ -42,6 +45,8 @@ class DashboardController extends Controller {
                     return $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
                 case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK->value:
                     return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+                case IntentEnum::WEB_DASHBOARD_GET_PRODUCT_PROBLEM->value:
+                    return ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query()));
             }
 
             $data = $this->dashboardService->showGraph($request->query());
@@ -53,6 +58,7 @@ class DashboardController extends Controller {
             $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
             $returned_product_progress_time_min_max = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
             $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+            $product_problems = ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query()));
         }
 
         $project = DB::select('SELECT * FROM `projects` ');
@@ -70,7 +76,8 @@ class DashboardController extends Controller {
             'returnedProductStatus' => $returned_product_status,
             'returnedProductTimeDiff' => $returned_product_progress_time_diff,
             'returnedProductTimeMinMax' => $returned_product_progress_time_min_max,
-            'replacementStocks' => $replacement_stocks
+            'replacementStocks' => $replacement_stocks,
+            'productProblems' => $product_problems,
         ]);
     }
 

@@ -271,6 +271,7 @@ const intents = {
     WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX:
         'web.dashboard.get.returned.product.time.min.max',
     WEB_DASHBOARD_GET_REPLACEMENT_STOCK: 'web.dashboard.get.replacement.stock',
+    WEB_DASHBOARD_GET_PRODUCT_PROBLEM: 'web.dashboard.get.product.problem',
     WEB_DASHBOARD_GET_WORKSTATION_STATUS: 'web.dashboard.get.workstation.status',
     WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS: 'web.dashboard.get.trainset.attachment.status',
 };
