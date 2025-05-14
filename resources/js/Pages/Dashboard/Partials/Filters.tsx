@@ -1,5 +1,7 @@
+import Checkbox from '@/Components/Checkbox';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import GenericFilters from '@/Components/GenericFilters';
+import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
@@ -69,7 +71,15 @@ const Filters = ({
 
     return (
         <>
-        <Popover open={open} onOpenChange={setOpen}>
+        <div className="flex items-center gap-3 mr-2">
+            <Checkbox
+                id="useMerged"
+                onChange={e => setFilters({ ...filters, useMerged: e.target.checked })}
+                checked={filters.useMerged}
+            />
+            <InputLabel htmlFor="useMerged" value={t('pages.dashboard.partials.filters.use_merged')} />
+        </div>
+        {/* <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger className=' ' asChild>
                 <Button
                     variant='outline'
@@ -81,7 +91,7 @@ const Filters = ({
                         ? project.find(
                             (projectItem) => projectItem.value === value,
                         )?.label
-                        : t('pages.dashboard.index.select_project')}
+                        : t('pages.dashboard.partials.filters.project_placeholder')}
                     <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
             </PopoverTrigger>
@@ -131,22 +141,27 @@ const Filters = ({
                     </CommandList>
                 </Command>
             </PopoverContent>
-        </Popover>
-        {/* <GenericDataSelector
+        </Popover> */}
+        <GenericDataSelector
+            buttonClassName='w-25 justify-between md:w-40'
             setSelectedData={(id) =>
-                console.log(id)
+                setFilters({
+                    ...filters,
+                    project_id: id,
+                })
             }
+            selectedDataId={filters.project_id || null}
             renderItem={(item: ProjectResource) =>
                 `${item.name}`
             }
-            popoverContentClassName='w-[400px] p-0'
+            popoverContentClassName='w-full p-0'
             placeholder={t(
-                'pages.returned_product.requested_return.partials.add_request.fields.project_placeholder',
+                'pages.dashboard.partials.filters.project_placeholder',
             )}
             nullable
             id='project_selector'
             fetchData={fetchProjects}
-        /> */}
+        />
         <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
             <PopoverTrigger
                 className={`${data['project'] == null ? 'hidden' : ' '}`}
