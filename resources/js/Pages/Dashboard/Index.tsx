@@ -20,6 +20,7 @@ import ReturnedProductTimeMinMaxLineChart from './Partials/ReturnedProductTimeMi
 import { withLoading } from '@/Utils/withLoading';
 import { ProductProblemResource, ReplacementStockResource } from '@/Support/Interfaces/Resources';
 import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
+import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
 
 export default function Dashboard({ 
     data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks, productProblems
@@ -31,7 +32,8 @@ export default function Dashboard({
     returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
     returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null
     replacementStocks: ReplacementStockResource[]
-    productProblems: PaginateResponse<ProductProblemResource> | null
+    // productProblems: PaginateResponse<ProductProblemResource> | null
+    productProblems: PaginateResponse<ComponentProgressResource> | null
 }) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
     const ProductProblemDataView = lazy(() => import('./Partials/ProductProblemDataView'));
@@ -119,30 +121,34 @@ export default function Dashboard({
                                 </Suspense> */}
                             </>
                         )}
-                        <div className='my-4 flex items-center justify-between'>
-                            <h2 className='text-lg'>
-                                {t('pages.dashboard.index.all_trainset_status')}
-                            </h2>
-                        </div>
-                        <TrainsetProgressStatusBarChart data={trainsetStatusProgress} localizedStatuses={localizedTrainsetStatuses} filters={filters} />
-                        <h2 className='my-1 text-xl font-bold'>
-                            {t('pages.dashboard.index.progress_workshops')}
-                        </h2>
-                        <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
-                        <WorkshopProgressStatusBarChart data={data['ws']} />
-
-                        <h2 className='my-1 text-xl font-bold'>
-                            {t('pages.dashboard.index.progress_panels')}
-                        </h2>
-                        <h3 className='text-base'>
-                            {t('pages.dashboard.index.panels_title')}
-                        </h3>
-                        <PanelProgressStatusBarChart data={data['panel']} />
-                        <h2 className='my-1 text-xl font-bold'>
-                            {t('pages.dashboard.index.all_workstations')}
-                        </h2>
-                        <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
-                        <WorkstationProgressStatusBarChart data={workstationStatusProgress} localizedStatuses={localizedWorkstationStatuses} filters={filters} />
+                        {checkPermission([PERMISSION_ENUM.DASHBOARD_READ]) && (
+                            <>
+                                <div className='my-4 flex items-center justify-between'>
+                                    <h2 className='text-lg'>
+                                        {t('pages.dashboard.index.all_trainset_status')}
+                                    </h2>
+                                </div>
+                                <TrainsetProgressStatusBarChart data={trainsetStatusProgress} localizedStatuses={localizedTrainsetStatuses} filters={filters} />
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.progress_workshops')}
+                                </h2>
+                                <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
+                                <WorkshopProgressStatusBarChart data={data['ws']} />
+        
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.progress_panels')}
+                                </h2>
+                                <h3 className='text-base'>
+                                    {t('pages.dashboard.index.panels_title')}
+                                </h3>
+                                <PanelProgressStatusBarChart data={data['panel']} />
+                                <h2 className='my-1 text-xl font-bold'>
+                                    {t('pages.dashboard.index.all_workstations')}
+                                </h2>
+                                <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
+                                <WorkstationProgressStatusBarChart data={workstationStatusProgress} localizedStatuses={localizedWorkstationStatuses} filters={filters} />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

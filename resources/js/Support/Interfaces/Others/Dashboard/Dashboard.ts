@@ -21,6 +21,12 @@ interface ReturnedProductTimeMinMaxResource {
     max_duration: number;
     max_duration_formatted: string;
 }
+interface ComponentProblemResource {
+    component_name: string;
+    notes: string;
+    date_range: string;
+    total_problem: number;
+}
 
 interface AttachmentStatusBarChartInterface {
     data?: AttachmentStatusOfTrainsetResource[];
@@ -44,6 +50,8 @@ export type {
     AttachmentStatusOfWorkstationResource,
     ReturnedProductTimeDiffResource,
     ReturnedProductTimeMinMaxResource,
+    ComponentProblemResource,
+    
     AttachmentStatusBarChartInterface,
     WorkstationStatusBarChartInterface,
     ReturnedProductStatusPieChartInterface,

@@ -25,6 +25,13 @@ class DashboardResource extends JsonResource {
                     'max_duration' => $this->max_duration??0,
                     'max_duration_formatted' => $this->max_duration_formatted??'',
                 ];
+            case IntentEnum::WEB_DASHBOARD_GET_PRODUCT_PROBLEM->value:
+                return [
+                    'component_name' => $this->component_name ?? '',
+                    'notes' => $this->notes ?? '',
+                    'date_range' => $this->date_range ?? '',
+                    'total_problem' => $this->total_problem ?? 0,
+                ];
             default:
                 return [];
         }

@@ -2,7 +2,7 @@ import GenericPagination from '@/Components/GenericPagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { ComponentProblemResource, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ProductProblemResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -11,18 +11,18 @@ import { useEffect, useState } from 'react';
 export default function ({
     data,
 }: {
-    data: PaginateResponse<ProductProblemResource>;
+    data: PaginateResponse<ComponentProblemResource>;
 }) {
     const { t, setLocale } = useLaravelReactI18n();
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
-        orderBy: 'component_id',
+        // orderBy: 'component_id',
     });
     const [currentFilter, setCurrentFilter] = useState(filters);
 
-    const [progressResponse, setProgressResponse] = useState<PaginateResponse<ProductProblemResource>>();
+    const [progressResponse, setProgressResponse] = useState<PaginateResponse<ComponentProblemResource>>();
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -56,23 +56,23 @@ export default function ({
                                 {t('component_name')}
                             </TableHead>
                             <TableHead>
-                                {t('status')}
+                                {t('date_range')}
                             </TableHead>
                             <TableHead>
                                 {t('notes')}
                             </TableHead>
                             <TableHead>
-                                {t('created_at')}
+                                {t('total_problem')}
                             </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {progressResponse.data.map((data) => (
-                            <TableRow key={data.id}>
-                                <TableCell>{data.component?.name}</TableCell>
-                                <TableCell>{data.localized_status}</TableCell>
-                                <TableCell>{data.product_problem_notes?.map((note) => note.note).join('\n')}</TableCell>
-                                <TableCell>{data.created_at}</TableCell>
+                        {progressResponse.data.map((data, index) => (
+                            <TableRow key={`${index}_${data.component_name}`}>
+                                <TableCell>{data.component_name}</TableCell>
+                                <TableCell>{data.date_range}</TableCell>
+                                <TableCell>{data.notes}</TableCell>
+                                <TableCell>{data.total_problem}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

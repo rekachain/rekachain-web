@@ -58,4 +58,12 @@ class Component extends Model {
     public function canBeDeleted(): bool {
         return $this->carriage_panel_components()->count() === 0;
     }
+
+    public function product_problems(): HasMany {
+        return $this->hasMany(ProductProblem::class);
+    }
+
+    public function hasProductProblem(): bool {
+        return $this->product_problems()->count() > 0;
+    }
 }

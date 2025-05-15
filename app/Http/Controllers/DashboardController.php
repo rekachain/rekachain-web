@@ -46,19 +46,21 @@ class DashboardController extends Controller {
                 case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK->value:
                     return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
                 case IntentEnum::WEB_DASHBOARD_GET_PRODUCT_PROBLEM->value:
-                    return ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query()));
+                    // return ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query()));
+                    return DashboardResource::collection($this->dashboardService->getComponentProblems($request->query()));
             }
 
             $data = $this->dashboardService->showGraph($request->query());
             return $data;
         }
         $data = $this->dashboardService->showGraph($request->query());
-        if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+        if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::WORKER_AFTERSALES], true)) {
             $returned_product_status = $this->dashboardService->showReturnedProductStatusSum($request->query());
             $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
             $returned_product_progress_time_min_max = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
             $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
-            $product_problems = ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query()));
+            // $product_problems = ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query(), $request->get('perPage', 5)));
+            $product_problems = DashboardResource::collection($this->dashboardService->getComponentProblems($request->query()));
         }
 
         $project = DB::select('SELECT * FROM `projects` ');
