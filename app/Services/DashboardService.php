@@ -393,6 +393,47 @@ class DashboardService {
         return $transformed;
     }
 
+    public function getVendorProblemComponents(array $request): LengthAwarePaginator {
+        $components = $this->componentService->with(['product_problems'])->getAll($request);
+
+        // Transform with localization
+        $transformed = $components->filter(function ($item) {
+            return $item->hasProductProblem();
+        })->map(function ($item) {
+            return (object) [
+                'component_name' => $item->name,
+                'vendor_name' => $item->vendor_name,
+                'vendor_qty' => $item->vendor_qty,
+                'total_problem' => $item->product_problems()->count()
+            ];
+        });
+
+        $vendorProblem = $transformed->groupBy('vendor_name')->map(function ($item) {
+            $totalSent = $item->sum('vendor_qty');
+            $totalProblem = $item->sum('total_problem');
+            return (object) [
+                'intent' => IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value,
+                'vendor_name' => $item->first()->vendor_name,
+                'total_component' => $item->count(),
+                'total_sent' => $totalSent,
+                'total_problem' => $totalProblem,
+                'problem_percent' => $totalProblem * 100 / $totalSent
+            ];
+        })->sortByDesc('problem_percent');
+
+        $perPage = $request['perPage'] ?? 4;
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $paginated = new LengthAwarePaginator(
+            $vendorProblem->forPage($page, $perPage)->values(),
+            $vendorProblem->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return $paginated;
+    }
+
     public function getComponentProblems(array $request) : LengthAwarePaginator {
         $components = $this->componentService->with(['product_problems', 'product_problems.product_problem_notes'])->getAll($request);
 
@@ -400,7 +441,6 @@ class DashboardService {
         $transformed = $components->filter(function ($item) {
             return $item->hasProductProblem();
         })->map(function ($item) {
-            logger($item);
             $productProblemDateFrom = $item->product_problems()->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
             $productProblemDateTo = $item->product_problems()->orderByDesc('created_at')->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
             $dateRange = $productProblemDateFrom == $productProblemDateTo ? $productProblemDateFrom : $productProblemDateFrom . ' - ' . $productProblemDateTo;

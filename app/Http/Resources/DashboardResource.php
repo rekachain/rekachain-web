@@ -32,6 +32,14 @@ class DashboardResource extends JsonResource {
                     'date_range' => $this->date_range ?? '',
                     'total_problem' => $this->total_problem ?? 0,
                 ];
+            case IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value:
+                return [
+                    'vendor_name' => $this->vendor_name,
+                    'total_component' => $this->total_component,
+                    'total_sent' => $this->total_sent,
+                    'total_problem' => $this->total_problem,
+                    'problem_percent' => number_format($this->problem_percent, 2),
+                ];
             default:
                 return [];
         }

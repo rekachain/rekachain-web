@@ -46,8 +46,9 @@ class DashboardController extends Controller {
                 case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK->value:
                     return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
                 case IntentEnum::WEB_DASHBOARD_GET_PRODUCT_PROBLEM->value:
-                    // return ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query()));
                     return DashboardResource::collection($this->dashboardService->getComponentProblems($request->query()));
+                case IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value:
+                    return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
             }
 
             $data = $this->dashboardService->showGraph($request->query());
@@ -59,8 +60,8 @@ class DashboardController extends Controller {
             $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
             $returned_product_progress_time_min_max = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
             $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
-            // $product_problems = ProductProblemResource::collection($this->productProblemService->with(['component','product_problem_notes'])->getAllPaginated($request->query(), $request->get('perPage', 5)));
             $product_problems = DashboardResource::collection($this->dashboardService->getComponentProblems($request->query()));
+            $vendor_problems = DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
         }
 
         $project = DB::select('SELECT * FROM `projects` ');
@@ -80,6 +81,7 @@ class DashboardController extends Controller {
             'returnedProductTimeMinMax' => $returned_product_progress_time_min_max,
             'replacementStocks' => $replacement_stocks,
             'productProblems' => $product_problems,
+            'vendorProblems' => $vendor_problems,
         ]);
     }
 

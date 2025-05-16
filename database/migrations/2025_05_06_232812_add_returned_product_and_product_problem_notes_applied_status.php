@@ -44,10 +44,14 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('returned_product_notes', function (Blueprint $table) {
-            $table->dropColumn('applied_status');
+            if (Schema::hasColumn('returned_product_notes', 'applied_status')) {
+                $table->dropColumn('applied_status');
+            }
         });
         Schema::table('product_problem_notes', function (Blueprint $table) {
-            $table->dropColumn('applied_status');
+            if (Schema::hasColumn('product_problem_notes', 'applied_status')) {
+                $table->dropColumn('applied_status');
+            }
         });
     }
 };

@@ -2,7 +2,7 @@ import GenericPagination from '@/Components/GenericPagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { ComponentProblemResource, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { VendorProblemResource, PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -10,18 +10,18 @@ import { useEffect, useState } from 'react';
 export default function ({
     data,
 }: {
-    data: PaginateResponse<ComponentProblemResource>;
+    data: PaginateResponse<VendorProblemResource>;
 }) {
     const { t, setLocale } = useLaravelReactI18n();
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
-        perPage: 10,
+        perPage: 4,
         // orderBy: 'component_id',
     });
     const [currentFilter, setCurrentFilter] = useState(filters);
 
-    const [progressResponse, setProgressResponse] = useState<PaginateResponse<ComponentProblemResource>>();
+    const [progressResponse, setProgressResponse] = useState<PaginateResponse<VendorProblemResource>>();
 
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
@@ -32,7 +32,7 @@ export default function ({
         setCurrentFilter(filters);
         await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
-                intent: IntentEnum.WEB_DASHBOARD_GET_PRODUCT_PROBLEM,
+                intent: IntentEnum.WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS,
                 ...filters,
             })
         ).then((res) => {
@@ -52,13 +52,10 @@ export default function ({
                     <TableHeader>
                         <TableRow>
                             <TableHead>
-                                {t('component_name')}
+                                {t('vendor_name')}
                             </TableHead>
                             <TableHead>
-                                {t('date_range')}
-                            </TableHead>
-                            <TableHead>
-                                {t('notes')}
+                                {t('total_sent')}
                             </TableHead>
                             <TableHead>
                                 {t('total_problem')}
@@ -67,17 +64,16 @@ export default function ({
                     </TableHeader>
                     <TableBody>
                         {progressResponse.data.map((data, index) => (
-                            <TableRow key={`${index}_${data.component_name}`}>
-                                <TableCell>{data.component_name}</TableCell>
-                                <TableCell>{data.date_range}</TableCell>
-                                <TableCell>{data.notes}</TableCell>
-                                <TableCell>{data.total_problem}</TableCell>
+                            <TableRow key={`${index}_${data.vendor_name}`}>
+                                <TableCell className='max-w-[150px]'>{data.vendor_name}</TableCell>
+                                <TableCell>{data.total_sent}</TableCell>
+                                <TableCell>{data.total_problem} ({data.problem_percent}%)</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             )}
-            <GenericPagination meta={progressResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination meta={progressResponse?.meta} handleChangePage={handlePageChange} isCompact/>
         </div>
     );
 }

@@ -5,12 +5,10 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense, useEffect, useState } from 'react';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, PaginateResponse, ReturnedProductTimeDiffResource, ReturnedProductTimeMinMaxResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import { AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, ComponentProblemResource, PaginateResponse, ReturnedProductTimeDiffResource, ReturnedProductTimeMinMaxResource, ServiceFilterOptions, VendorProblemResource } from '@/Support/Interfaces/Others';
 import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import Filters from './Partials/Filters';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
 import WorkstationProgressStatusBarChart from './Partials/WorkstationProgressStatusBarChart';
 import TrainsetProgressStatusBarChart from './Partials/TrainsetProgressStatusBarChart';
 import PanelProgressStatusBarChart from './Partials/PanelProgressStatusBarChart';
@@ -23,7 +21,7 @@ import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockT
 import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
 
 export default function Dashboard({ 
-    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks, productProblems
+    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks, productProblems, vendorProblems
 }: {
     data: PageProps
     trainsetStatusProgress: AttachmentStatusOfTrainsetResource[]
@@ -32,10 +30,11 @@ export default function Dashboard({
     returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
     returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null
     replacementStocks: ReplacementStockResource[]
-    // productProblems: PaginateResponse<ProductProblemResource> | null
-    productProblems: PaginateResponse<ComponentProgressResource> | null
+    productProblems: PaginateResponse<ComponentProblemResource> | null
+    vendorProblems: PaginateResponse<VendorProblemResource> | null
 }) {
     const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
+    const VendorProblemDataView = lazy(() => import('./Partials/VendorProblemDataView'));
     const ProductProblemDataView = lazy(() => import('./Partials/ProductProblemDataView'));
 
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
@@ -103,7 +102,7 @@ export default function Dashboard({
                                 <Filters data={data} filters={filters} setFilters={setFilters}/>
                             </div>
                         </div>
-                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeDiff && returnedProductTimeMinMax && returnedProductStatus && productProblems && (
+                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeMinMax && returnedProductStatus && vendorProblems && (
                             <>
                                 <h2 className='my-1 text-xl font-bold'>
                                     Returned Product
@@ -111,10 +110,19 @@ export default function Dashboard({
                                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                                     <ReturnedProductStatusPieChart data={returnedProductStatus} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />
                                     <Suspense fallback={<StaticLoadingOverlay />}>
-                                        <ReturnedProductTimeDiffChart data={returnedProductTimeDiff} />
+                                        <ReturnedProductTimeDiffChart data={returnedProductTimeDiff!} />
                                     </Suspense>
                                 </div>
-                                <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
+                                <div className="flex gap-3">
+                                    <div className="flex-1/3">
+                                        <Suspense fallback={<StaticLoadingOverlay />}>
+                                            <VendorProblemDataView data={vendorProblems} />
+                                        </Suspense>
+                                    </div>
+                                    <div className="flex-2/3">
+                                        <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
+                                    </div>
+                                </div>
                                 <ReplacementStockThresholdStackBarChart data={replacementStocks} filters={filters} />
                                 {/* <Suspense fallback={<StaticLoadingOverlay />}>
                                     <ProductProblemDataView data={productProblems} />

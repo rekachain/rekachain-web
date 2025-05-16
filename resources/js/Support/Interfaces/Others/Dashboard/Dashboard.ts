@@ -27,6 +27,13 @@ interface ComponentProblemResource {
     date_range: string;
     total_problem: number;
 }
+interface VendorProblemResource {
+    vendor_name: string;
+    total_component: number;
+    total_sent: number;
+    total_problem: number;
+    problem_percent: string;
+}
 
 interface AttachmentStatusBarChartInterface {
     data?: AttachmentStatusOfTrainsetResource[];
@@ -51,6 +58,7 @@ export type {
     ReturnedProductTimeDiffResource,
     ReturnedProductTimeMinMaxResource,
     ComponentProblemResource,
+    VendorProblemResource,
     
     AttachmentStatusBarChartInterface,
     WorkstationStatusBarChartInterface,

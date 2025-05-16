@@ -25,9 +25,15 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('returned_products', function (Blueprint $table) {
-            $table->dropColumn('project_name');
-            $table->dropColumn('trainset_name');
-            $table->dropColumn('carriage_type');
+            if (Schema::hasColumn('returned_products', 'project_name')) {
+                $table->dropColumn('project_name');
+            }
+            if (Schema::hasColumn('returned_products', 'trainset_name')) {
+                $table->dropColumn('trainset_name');
+            }
+            if (Schema::hasColumn('returned_products', 'carriage_type')) {
+                $table->dropColumn('carriage_type');
+            }
             $table->bigInteger('serial_number')->nullable()->change();
         });
     }

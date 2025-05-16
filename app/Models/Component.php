@@ -15,8 +15,10 @@ class Component extends Model {
 
     protected $fillable = [
         'name',
-        'progress_id',
         'description',
+        'progress_id',
+        'vendor_name',
+        'vendor_qty',
     ];
     protected $filterable = [
         'searchs' => [
