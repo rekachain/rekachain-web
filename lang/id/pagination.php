@@ -21,4 +21,6 @@ return [
 
     'previous_label' => 'Sebelumnya',
     'next_label' => 'Selanjutnya',
+
+    'current_page_of_total_pages' => 'Halaman :current_page dari :total_pages',
 ];

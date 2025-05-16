@@ -75,7 +75,7 @@ export default function ({
                     </TableBody>
                 </Table>
             )}
-            <GenericPagination meta={progressResponse?.meta} handleChangePage={handlePageChange} />
+            <GenericPagination meta={progressResponse?.meta} handleChangePage={handlePageChange} isCompact/>
         </div>
     );
 }
