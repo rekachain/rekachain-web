@@ -113,13 +113,13 @@ export default function Dashboard({
                                         <ReturnedProductTimeDiffChart data={returnedProductTimeDiff!} />
                                     </Suspense>
                                 </div>
-                                <div className="flex gap-3">
-                                    <div className="flex-1/3">
+                                <div className="flex gap-2">
+                                    <div className="flex w-1/3">
                                         <Suspense fallback={<StaticLoadingOverlay />}>
                                             <VendorProblemDataView data={vendorProblems} />
                                         </Suspense>
                                     </div>
-                                    <div className="flex-2/3">
+                                    <div className="flex w-2/3">
                                         <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
                                     </div>
                                 </div>

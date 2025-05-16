@@ -98,6 +98,13 @@ return [
                     'need_restock' => 'Perlu Restok',
                 ],
             ],
+            'vendor_problem_data_view' => [
+                'headers' => [
+                    'vendor_name' => 'Vendor',
+                    'total_sent' => 'Mengirim',
+                    'total_problem' => 'Total Masalah',
+                ],
+            ]
         ]
     ],
     'dashboard_trainset' => [

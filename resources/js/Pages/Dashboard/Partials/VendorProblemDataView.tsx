@@ -52,13 +52,13 @@ export default function ({
                     <TableHeader>
                         <TableRow>
                             <TableHead>
-                                {t('vendor_name')}
+                                {t('pages.dashboard.partials.vendor_problem_data_view.headers.vendor_name')}
                             </TableHead>
                             <TableHead>
-                                {t('total_sent')}
+                                {t('pages.dashboard.partials.vendor_problem_data_view.headers.total_sent')}
                             </TableHead>
                             <TableHead>
-                                {t('total_problem')}
+                                {t('pages.dashboard.partials.vendor_problem_data_view.headers.total_problem')}
                             </TableHead>
                         </TableRow>
                     </TableHeader>

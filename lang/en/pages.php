@@ -98,6 +98,13 @@ return [
                     'need_restock' => 'Need Restock',
                 ],
             ],
+            'vendor_problem_data_view' => [
+                'headers' => [
+                    'vendor_name' => 'Vendor',
+                    'total_sent' => 'Sends',
+                    'total_problem' => 'Total Problem',
+                ],
+            ],
         ]
     ],
     'dashboard_trainset' => [
