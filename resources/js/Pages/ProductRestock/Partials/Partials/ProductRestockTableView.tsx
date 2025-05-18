@@ -116,30 +116,25 @@ export default function ProductRestockTableView({
                             <TableCell>{productRestock.localized_status}</TableCell>
 
                             <TableCell>
-                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && (
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_READ) && productRestock.project_url && (
                                     <Button
                                         variant={'link'}
                                         onClick={() =>
-                                            router.visit(
-                                                route(
-                                                    `${ROUTES.PRODUCT_RESTOCKS}.show`,
-                                                    productRestock.id,
-                                                ),
-                                            )
+                                            router.visit(productRestock.project_url ?? '#')
                                         }
                                         disabled={isSelecting}
                                     >
                                         {t('action.show')}
                                     </Button>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                {/* {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
                                     <UpdateProductRestockStatus
                                         productRestock={productRestock}
                                         localizedStatuses={localizedStatuses}
                                         handleSyncProductRestock={handleSyncProductRestock}
                                     />
-                                )}
-                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
+                                )} */}
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && productRestock.status === ProductRestockStatusEnum.REQUESTED && (
                                     <Button
                                         variant='link'
                                         onClick={() =>
