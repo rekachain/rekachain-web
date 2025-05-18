@@ -29,8 +29,12 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $data = $this->handleImageUpload($data);
 
         if (!isset($data['product_returnable_id']) && isset($data['serial_panel_id']) && $data['serial_panel_id'] !== null) {
-            $data['product_returnable_id'] = $this->serialPanelService()->findOrFail($data['serial_panel_id'])->panel_attachment->carriage_panel->panel_id;
+            $serialPanel = $this->serialPanelService()->findOrFail($data['serial_panel_id']);
+            $data['product_returnable_id'] = $serialPanel->panel_attachment->carriage_panel->panel_id;
             $data['product_returnable_type'] = Panel::class;
+            $data['project_name'] = $serialPanel->project->name;
+            $data['trainset_name'] = $serialPanel->trainset->name;
+            $data['carriage_type'] = $serialPanel->carriage->type;
         }
 
         $returnedProduct = parent::create($data);

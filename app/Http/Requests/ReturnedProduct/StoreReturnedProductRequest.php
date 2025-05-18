@@ -32,6 +32,9 @@ class StoreReturnedProductRequest extends FormRequest {
                     'qty' => 'nullable|integer|min:1', // if serial panel then only one?
                     'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
                     'serial_number' => 'required_without:product_returnable_type|integer',
+                    'project_name' => 'nullable|string',
+                    'trainset_name' => 'nullable|string',
+                    'carriage_type' => 'nullable|string',
                     'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
                     'image_path' => 'required|image|mimes:jpeg,png,jpg',
                     'note' => 'required|string',
@@ -51,6 +54,9 @@ class StoreReturnedProductRequest extends FormRequest {
                     'qty' => 'nullable|integer|min:1', // if serial panel then only one?
                     'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
                     'serial_number' => 'required_without:product_returnable_type|integer',
+                    'project_name' => 'nullable|string',
+                    'trainset_name' => 'nullable|string',
+                    'carriage_type' => 'nullable|string',
                     'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
                     'image_path' => 'required|image|mimes:jpeg,png,jpg',
                     'note' => 'required|string',
@@ -71,6 +77,9 @@ class StoreReturnedProductRequest extends FormRequest {
             'qty' => 'nullable|integer|min:1', // if serial panel then only one?
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'required_without:product_returnable_type|integer',
+            'project_name' => 'nullable|string',
+            'trainset_name' => 'nullable|string',
+            'carriage_type' => 'nullable|string',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
             'image_path' => 'required|image|mimes:jpeg,png,jpg',
         ];

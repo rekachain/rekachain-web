@@ -12,6 +12,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class ReturnedProductResource extends JsonResource {
     public function toArray(Request $request): array {
         $intent = $request->get('intent');
+        $projectSub = $this->project_name ? $this->project_name . ' - ' : null;
+        $projectSub = $this->trainset_name ? $projectSub . $this->trainset_name . ' - ' : $projectSub;
+        $projectSub = $this->carriage_type ? $projectSub . $this->carriage_type : $projectSub;
 
         switch ($intent) {
             case IntentEnum::WEB_RETURNED_PRODUCT_GET_PRODUCT_PROBLEM_COMPONENTS->value:
@@ -51,7 +54,7 @@ class ReturnedProductResource extends JsonResource {
             'qty' => $this->qty,
             'serial_panel_id' => $this->serial_panel_id,
             'serial_panel' => $this->whenLoaded('serial_panel'),
-            'project_sub' => $this->whenLoaded('serial_panel', function () {
+            'project_sub' => $projectSub ?? $this->whenLoaded('serial_panel', function () {
                 return $this->serial_panel->project->name . ' - ' . $this->serial_panel->trainset->name . ' - ' . $this->serial_panel->carriage->type;
             }),
             'serial_number' => $this->serial_number,

@@ -44,6 +44,9 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'qty' => 'nullable|integer|min:1', // if serial panel then only one?
                     'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
                     'serial_number' => 'nullable|integer',
+                    'project_name' => 'nullable|string',
+                    'trainset_name' => 'nullable|string',
+                    'carriage_type' => 'nullable|string',
                     'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
                     'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
                     'note' => 'required|string',
@@ -77,6 +80,9 @@ class UpdateReturnedProductRequest extends FormRequest {
             'qty' => 'nullable|integer|min:1',
             'serial_panel_id' => 'nullable|integer|exists:serial_panels,id',
             'serial_number' => 'nullable|integer',
+            'project_name' => 'nullable|string',
+            'trainset_name' => 'nullable|string',
+            'carriage_type' => 'nullable|string',
             'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
         ];
