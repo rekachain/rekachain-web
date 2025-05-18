@@ -215,7 +215,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             >
                                                 <div>
                                                     <p className='text-sm font-bold'>
-                                                        {note.updated_at} - {note.user?.name || ''}
+                                                        {note.updated_at} - {note.user?.name || ''} ({note.localized_applied_status})
                                                     </p>
                                                     <p>{note.note}</p>
                                                 </div>
