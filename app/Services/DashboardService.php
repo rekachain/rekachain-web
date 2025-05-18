@@ -6,6 +6,7 @@ use App\Models\PanelAttachment;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PanelAttachmentStatusEnum;
+use App\Support\Enums\ProductProblemCauseEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Enums\TrainsetAttachmentStatusEnum;
 use App\Support\Enums\TrainsetStatusEnum;
@@ -400,12 +401,15 @@ class DashboardService {
         $transformed = $components->filter(function ($item) {
             return $item->hasProductProblem();
         })->map(function ($item) {
+            $qualityProblems = $item->product_problems()->where('cause', ProductProblemCauseEnum::QUALITY);
             return (object) [
                 'component_name' => $item->name,
                 'vendor_name' => $item->vendor_name,
                 'vendor_qty' => $item->vendor_qty,
-                'total_problem' => $item->product_problems()->count()
+                'total_problem' => $qualityProblems->count()
             ];
+        })->filter(function ($item) {
+            return $item->total_problem > 0;
         });
 
         $vendorProblem = $transformed->groupBy('vendor_name')->map(function ($item) {
