@@ -164,7 +164,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     'pages.returned_product.show.labels.serial_number',
                                                 )}
                                             </p>
-                                            <p>{data.serial_number || '-'}</p>
+                                            <p>{data.serial_number || '-'} {data.project_sub ? `(${data.project_sub})` : ''}</p>
                                         </div>
                                         <div className=''>
                                             <p className='font-bold'>

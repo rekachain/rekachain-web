@@ -26,7 +26,7 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                 }
                 $timestamp = Date::excelToTimestamp($row[$headers->search('Timestamp')]);
                 $date = date('Y-m-d', $timestamp);
-                $tsName = $headers->search('Train Set');
+                $tsName = $row[$headers->search('Train Set')];
                 $changeComponent = $row[$headers->search('Pergantian Komponen')];
                 $fixedComponent = $row[$headers->search('Perbaikan Koneksi')];
                 $settingComponent = $row[$headers->search('Setting')];
