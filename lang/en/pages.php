@@ -2485,6 +2485,7 @@ return [
                 'component_name' => 'Component Name',
                 'description' => 'Description',
                 'note' => 'Note',
+                'cause' => 'Cause',
                 'status' => 'Status',
             ],
             'product_problems' => [
@@ -2605,6 +2606,7 @@ return [
                     'title' => 'Update Status',
                     'description' => 'Update the status of the selected Product Progress.',
                     'select_placeholder' => 'Select Status',
+                    'cause_placeholder' => 'Select Cause',
                 ],
                 'messages' => [
                     'updated' => 'Product status updated successfully!',

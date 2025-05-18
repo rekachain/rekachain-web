@@ -66,11 +66,20 @@ export default function ({ data }: { data: ReturnedProductResource }) {
     const [localizedProductProblemStatuses, setProductProblemLocalizedStatuses] = useState<
         Record<string, string>
     >({});
+    const [localizedProductProblemCauses, setProductProblemLocalizedCauses] = useState<Record<string, string>>({});
+
+    const syncLocalizedEnums = withLoading(async () => {
+        await fetchEnumLabels(['ProductProblemStatusEnum', 'ProductProblemCauseEnum'])
+            .then((res) => {
+                setProductProblemLocalizedStatuses(res.ProductProblemStatusEnum);
+                setProductProblemLocalizedCauses(res.ProductProblemCauseEnum);
+            })
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    });
 
     useEffect(() => {
-        fetchEnumLabels('ProductProblemStatusEnum')
-            .then(setProductProblemLocalizedStatuses)
-            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+        syncLocalizedEnums();
+        handleSyncReturnedProduct();
     }, [setLocale]);
 
     useEffect(() => {
@@ -269,6 +278,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         setComponentResource={setComponentResource}
                                         returnedProduct={data}
                                         localizedStatuses={localizedProductProblemStatuses}
+                                        localizedCauses={localizedProductProblemCauses}
                                         handleSyncReturnedProduct={handleSyncReturnedProduct}
                                         componentResource={componentResource}
                                     />
@@ -302,7 +312,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                         <div className='hidden md:block'>
                             <Table wrapperClassName='block max-h-96'>
                                 <TableCaption>
-                                    {(data.product_problems?.length ?? 0) > 0
+                                    {(productProblemData?.length ?? 0) > 0
                                         ? 'List Product Problems'
                                         : 'Tidak ada data. Silahkan tambahkan data.'}
                                 </TableCaption>
@@ -320,6 +330,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                         </TableHead>
                                         <TableHead>
                                             {t('pages.returned_product.show.table_headers.note')}
+                                        </TableHead>
+                                        <TableHead>
+                                            {t('pages.returned_product.show.table_headers.cause')}
                                         </TableHead>
                                         <TableHead>
                                             {t('pages.returned_product.show.table_headers.status')}
@@ -340,6 +353,7 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                 {productProblem.latest_product_problem_note?.note ??
                                                     '-'}
                                             </TableCell>
+                                            <TableCell>{productProblem.localized_cause}</TableCell>
                                             <TableCell>{productProblem.localized_status}</TableCell>
                                             <TableCell>
                                                 {/* {checkPermission(PERMISSION_ENUM.PRODUCT_PROBLEM_READ) && (
@@ -357,6 +371,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                         productProblem={productProblem}
                                                         localizedStatuses={
                                                             localizedProductProblemStatuses
+                                                        }
+                                                        localizedCauses={
+                                                            localizedProductProblemCauses
                                                         }
                                                         handleSyncReturnedProduct={
                                                             handleSyncReturnedProduct

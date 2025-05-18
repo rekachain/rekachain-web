@@ -5,6 +5,7 @@ namespace App\Http\Requests\ReturnedProduct;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Support\Enums\IntentEnum;
+use App\Support\Enums\ProductProblemCauseEnum;
 use App\Support\Enums\ProductProblemStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,6 +19,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'component_id' => 'nullable|integer|exists:components,id',
                     'new_component_name' => 'required_without:component_id|string',
                     'new_component_description' => 'required_without:component_id|string',
+                    'cause' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|in:' . implode(',', ProductProblemCauseEnum::toArray()),
                     'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
                     'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
                     'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',
@@ -25,6 +27,7 @@ class UpdateReturnedProductRequest extends FormRequest {
             case IntentEnum::API_RETURNED_PRODUCT_CREATE_PRODUCT_PROBLEM->value:
                 return [
                     'component_id' => 'required|integer|exists:components,id',
+                    'cause' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|in:' . implode(',', ProductProblemCauseEnum::toArray()),
                     'status' => 'required|in:' . implode(',', ProductProblemStatusEnum::toArray()),
                     'image_path' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|image|mimes:jpeg,png,jpg',
                     'note' => 'required_unless:status,' . ProductProblemStatusEnum::DRAFT->value . '|string',

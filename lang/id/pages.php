@@ -2484,7 +2484,8 @@ return [
             'table_headers' => [
                 'component_name' => 'Nama Komponen',
                 'description' => 'Deskripsi',
-                'note' => 'Note',
+                'note' => 'Catatan',
+                'cause' => 'Penyebab',
                 'status' => 'Status',
             ],
             'product_problems' => [
@@ -2605,6 +2606,7 @@ return [
                     'title' => 'Perbarui Status',
                     'description' => 'Perbarui status dari Progress Produk yang dipilih.',
                     'select_placeholder' => 'Pilih Status',
+                    'cause_placeholder' => 'Pilih Penyebab',
                 ],
                 'messages' => [
                     'updated' => 'Status Produk berhasil diperbarui!',

@@ -35,10 +35,14 @@ export default function ({
         Record<string, string>
     >({});
 
-    useEffect(() => {
-        fetchEnumLabels('ProductRestockStatusEnum')
+    const syncLocalizedEnums = withLoading(async () => {
+        await fetchEnumLabels('ProductRestockStatusEnum')
             .then(setProductRestockLocalizedStatuses)
             .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    });
+
+    useEffect(() => {
+        syncLocalizedEnums();
         syncProductRestocks();
     }, [setLocale]);
 

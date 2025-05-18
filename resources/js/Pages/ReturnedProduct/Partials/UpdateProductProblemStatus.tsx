@@ -20,6 +20,7 @@ import { Textarea } from '@/Components/UI/textarea';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { productProblemService } from '@/Services/productProblemService';
+import { ProductProblemCauseEnum } from '@/Support/Enums/productProblemCauseEnum';
 import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { ProductProblemResource } from '@/Support/Interfaces/Resources';
 import { useForm } from '@inertiajs/react';
@@ -29,10 +30,12 @@ import { FilePond } from 'react-filepond';
 
 export default function ({
     localizedStatuses,
+    localizedCauses,
     productProblem,
     handleSyncReturnedProduct,
 }: {
     localizedStatuses: Record<string, string>;
+    localizedCauses: Record<string, string>;
     productProblem: ProductProblemResource;
     handleSyncReturnedProduct: () => Promise<void>;
 }) {
@@ -40,6 +43,7 @@ export default function ({
     const { loading } = useLoading();
     const [isDialogOpen, setIsDialogOpen] = useState(false); // Manage dialog state
     const { data, setData, progress } = useForm({
+        cause: productProblem.cause,
         status: productProblem.status,
         note: productProblem.latest_product_problem_note?.note ?? null,
         image_path: [] as any[],
@@ -80,6 +84,7 @@ export default function ({
         try {
             await productProblemService.updateWithNote(
                 productProblem.id,
+                data.cause,
                 data.status,
                 validImages,
                 data.note,
@@ -116,7 +121,35 @@ export default function ({
                 </DialogHeader>
                 <div className='flex flex-col gap-4'>
                     <div className='flex flex-col gap-2'>
+                        <InputLabel value={'Penyebab'} htmlFor='cause' />
                         <Select
+                            name='cause'
+                            value={data.cause}
+                            onValueChange={(value) =>
+                                setData('cause', value as ProductProblemCauseEnum)
+                            }
+                        >
+                            <SelectTrigger>
+                                <SelectValue>
+                                    {localizedCauses[data.cause] ||
+                                        t(
+                                            'pages.returned_product.partials.update_product_problem_status.dialog.cause_placeholder',
+                                        )}
+                                </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {Object.entries(localizedCauses).map(([key, label]) => (
+                                        <SelectItem value={key} key={key}>
+                                            {label}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                        <InputLabel value={'Status'} htmlFor='status' className='mt-4' />
+                        <Select
+                            name='status'
                             value={data.status}
                             onValueChange={(value) =>
                                 setData('status', value as ProductProblemStatusEnum)

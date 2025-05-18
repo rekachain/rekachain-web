@@ -25,6 +25,7 @@ import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import { componentService } from '@/Services/componentService';
 import { returnedProductService } from '@/Services/returnedProductService';
+import { ProductProblemCauseEnum } from '@/Support/Enums/productProblemCauseEnum';
 import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
@@ -39,12 +40,14 @@ import { FilePond } from 'react-filepond';
 
 const AddProductProblem = ({
     localizedStatuses,
+    localizedCauses,
     componentResource,
     setComponentResource,
     returnedProduct,
     handleSyncReturnedProduct,
 }: {
     localizedStatuses: Record<string, string>;
+    localizedCauses: Record<string, string>;
     componentResource: PaginateResponse<ComponentResource>;
     setComponentResource: (componentResponse: PaginateResponse<ComponentResource>) => void;
     returnedProduct: ReturnedProductResource;
@@ -58,6 +61,7 @@ const AddProductProblem = ({
         component_id: null as number | null,
         new_component_name: '',
         new_component_description: '',
+        cause: ProductProblemCauseEnum.QUALITY,
         status: ProductProblemStatusEnum.DRAFT,
         image_path: [],
         note: '',
@@ -119,6 +123,7 @@ const AddProductProblem = ({
             data.component_id,
             data.new_component_name,
             data.new_component_description,
+            data.cause,
             data.status,
             data.image_path,
             data.note,
@@ -234,6 +239,33 @@ const AddProductProblem = ({
                                 </Select>
                                 {data.status !== ProductProblemStatusEnum.DRAFT && (
                                     <>
+                                        <div className='mt-4 space-y-2 rounded bg-background-2'>     
+                                            <Select
+                                                value={data.cause}
+                                                onValueChange={(value) =>
+                                                    setData('cause', value as ProductProblemCauseEnum)
+                                                }
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue>
+                                                        {localizedCauses[
+                                                            data.cause || ProductProblemStatusEnum.DRAFT
+                                                        ] || 'Pilih Penyebab'}
+                                                    </SelectValue>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        {Object.entries(localizedCauses).map(
+                                                            ([cause, label]) => (
+                                                                <SelectItem value={cause} key={cause}>
+                                                                    {label}
+                                                                </SelectItem>
+                                                            ),
+                                                        )}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
                                         <div className='mt-4 space-y-2 rounded bg-background-2'>
                                             <InputLabel
                                                 value={t(

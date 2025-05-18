@@ -52,6 +52,12 @@ return [
         'progress' => 'In Progress',
         'changed' => 'Changed',
         'draft' => 'Draft',
+        're-set' => 'Re-setting',
+    ],
+    'App\Support\Enums\ProductProblemCauseEnum' => [
+        'workman_ship' => 'Workman Ship',
+        'quality' => 'Quality',
+        'operational' => 'Operational',
     ],
     'App\Support\Enums\ProductRestockStatusEnum' => [
         'requested' => 'Requested',

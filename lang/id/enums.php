@@ -52,6 +52,12 @@ return [
         'progress' => 'Dalam Proses',
         'changed' => 'Diganti',
         'draft' => 'Draf',
+        're-set' => 'Diatur Ulang',
+    ],
+    'App\Support\Enums\ProductProblemCauseEnum' => [
+        'workman_ship' => 'Pengerjaan',
+        'quality' => 'Kualitas',
+        'operational' => 'Operasional',
     ],
     'App\Support\Enums\ProductRestockStatusEnum' => [
         'requested' => 'Diminta',
