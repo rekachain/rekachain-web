@@ -14,7 +14,7 @@ class ReturnedProductNote extends Model {
     protected $fillable = [
         'returned_product_id',
         'note',
-        'status',
+        'applied_status',
         'user_id',
         'created_at',
         'updated_at',
@@ -34,7 +34,7 @@ class ReturnedProductNote extends Model {
         ],
     ];
     protected $casts = [
-        'status' => ReturnedProductStatusEnum::class,
+        'applied_status' => ReturnedProductStatusEnum::class,
     ];
 
     public function returned_product(): BelongsTo {

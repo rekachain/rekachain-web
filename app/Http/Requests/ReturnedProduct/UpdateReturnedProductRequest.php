@@ -46,7 +46,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                     'serial_number' => 'nullable|integer',
                     'status' => 'nullable|in:' . implode(',', ReturnedProductStatusEnum::toArray()),
                     'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
-                    'note' => 'nullable|string',
+                    'note' => 'required|string',
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM->value:
                 return [

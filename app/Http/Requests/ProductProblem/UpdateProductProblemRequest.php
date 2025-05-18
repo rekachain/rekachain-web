@@ -17,7 +17,7 @@ class UpdateProductProblemRequest extends FormRequest {
                     'component_id' => 'nullable|exists:components,id',
                     'status' => 'nullable|in:' . implode(',', ProductProblemStatusEnum::toArray()),
                     'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
-                    'note' => 'nullable|string',
+                    'note' => 'required|string',
                 ];
             case IntentEnum::API_PRODUCT_PROBLEM_UPDATE_PRODUCT_PROBLEM_WITH_NOTE->value:
                 return [
@@ -25,7 +25,7 @@ class UpdateProductProblemRequest extends FormRequest {
                     'component_id' => 'nullable|exists:components,id',
                     'status' => 'nullable|in:' . implode(',', ProductProblemStatusEnum::toArray()),
                     'image_path' => 'nullable|image|mimes:jpeg,png,jpg',
-                    'note' => 'nullable|string',
+                    'note' => 'required|string',
                 ];
         }
 

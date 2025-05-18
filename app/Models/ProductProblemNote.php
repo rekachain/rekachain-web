@@ -14,7 +14,7 @@ class ProductProblemNote extends Model {
     protected $fillable = [
         'product_problem_id',
         'note',
-        'status',
+        'applied_status',
         'user_id',
         'created_at',
         'updated_at',
@@ -34,7 +34,7 @@ class ProductProblemNote extends Model {
         ],
     ];
     protected $casts = [
-        'status' => ProductProblemStatusEnum::class,
+        'applied_status' => ProductProblemStatusEnum::class,
     ];
 
     public function product_problem(): BelongsTo {
