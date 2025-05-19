@@ -64,7 +64,7 @@ class UpdateReturnedProductRequest extends FormRequest {
                 ];
             case IntentEnum::WEB_RETURNED_PRODUCT_UPDATE_REPLACEMENT_STOCK_FOR_SCRAP->value:
                 return [
-                    'component_ids' => 'required|array|exists:replacement_stocks,component_id',
+                    'component_ids' => 'required|array|exists:components,id',
                     'req_production' => 'nullable|boolean',
                 ];
         }

@@ -122,6 +122,18 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $replacementStocks = $this->replacementStockService()->find([
             'component_id', 'in', $data['component_ids'],
         ]);
+        $diff = array_diff($data['component_ids'], $replacementStocks->pluck('component_id')->toArray());
+        if (count($diff) > 0) {
+            foreach ($diff as $componentId) {
+                $this->replacementStockService()->create([
+                    'component_id' => $componentId,
+                    'qty' => 0,
+                ]);
+            }
+        }
+        $replacementStocks = $this->replacementStockService()->find([
+            'component_id', 'in', $data['component_ids'],
+        ]);
         $replacementStocks->each(function (ReplacementStock $stock, int $key) use ($returnedProduct, $replacementStocks, $isIncrement) {
             $this->replacementStockService()->update($stock, [
                 'qty' => $isIncrement ? $replacementStocks[$key]->qty + 1 : $replacementStocks[$key]->qty - 1,
