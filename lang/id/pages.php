@@ -54,6 +54,9 @@ return [
             'panel_progress_trainset' => 'Progress Panel Trainset ',
             'panel_progress_trainset_sub' => 'Progress Panel pada Trainset ',
         ],
+        'product_problem_analysis' => [
+            'title' => 'Analisis Masalah Produk',
+        ],
         'partials' => [
             'filters' => [
                 'project_placeholder' => 'Pilih Proyek',
@@ -104,7 +107,16 @@ return [
                     'total_sent' => 'Mengirim',
                     'total_problem' => 'Total Masalah',
                 ],
-            ]
+            ],
+            'product_problem_analysis_data_view' => [
+                'headers' => [
+                    'component_name' => 'Nama Produk',
+                    'date_range' => 'Periode',
+                    'summary' => 'Ringkasan Masalah',
+                    'cause' => 'Kemungkinan Penyebab',
+                    'solution' => 'Rekomendasi Solusi',
+                ],
+            ],
         ]
     ],
     'dashboard_trainset' => [

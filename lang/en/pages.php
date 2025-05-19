@@ -54,6 +54,9 @@ return [
             'panel_progress_trainset' => 'Panel Trainset Progresses ',
             'panel_progress_trainset_sub' => 'Panel Trainset Progresses at ',
         ],
+        'product_problem_analysis' => [
+            'title' => 'Product Problem Analysis',
+        ],
         'partials' => [
             'filters' => [
                 'project_placeholder' => 'Select Project',
@@ -105,7 +108,16 @@ return [
                     'total_problem' => 'Total Problem',
                 ],
             ],
-        ]
+            'product_problem_analysis_data_view' => [
+                'headers' => [
+                    'component_name' => 'Product Name',
+                    'date_range' => 'Date Range',
+                    'summary' => 'Problem Summary',
+                    'cause' => 'Possible Cause',
+                    'solution' => 'Recommended Solution',
+                ],
+            ]
+        ],
     ],
     'dashboard_trainset' => [
         'index' => [

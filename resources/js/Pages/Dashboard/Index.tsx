@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/Types';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense, useEffect, useState } from 'react';
@@ -19,7 +19,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { ProductProblemResource, ReplacementStockResource } from '@/Support/Interfaces/Resources';
 import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
 import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
-import { Button } from '@/Components/UI/button';
+import { Button, buttonVariants } from '@/Components/UI/button';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 
@@ -121,7 +121,12 @@ export default function Dashboard({
                                     <h2 className='text-xl font-bold flex'>
                                         Returned Product
                                     </h2>
-                                    <Button onClick={dispatchProductProblemAnalytics} variant={'outline'}>Analyze Problem</Button> 
+                                    <Link
+                                        href={route(`${ROUTES.DASHBOARD}.product-problems`)}
+                                        className={buttonVariants({ variant: 'outline' })}
+                                    >
+                                        Show Problem Analysis
+                                    </Link>
                                 </div>
                                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                                     <ReturnedProductStatusPieChart data={returnedProductStatus} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />

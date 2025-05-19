@@ -8,7 +8,7 @@ class ProductProblemAnalysisResource extends JsonResource {
     public function toArray($request): array {
         return [
             'id' => $this->id,
-            'componenr_name' => $this->component_name,
+            'component_name' => $this->component_name,
             'date_range' => $this->date_range,
             'summary' => $this->summary,
             'cause' => $this->cause,

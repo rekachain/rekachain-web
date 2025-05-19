@@ -19,6 +19,7 @@ use App\Http\Controllers\PanelController;
 use App\Http\Controllers\PanelMaterialController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PresetTrainsetController;
+use App\Http\Controllers\ProductProblemAnalysisController;
 use App\Http\Controllers\ProductProblemController;
 use App\Http\Controllers\ProductProblemNoteController;
 use App\Http\Controllers\ProductRestockController;
@@ -73,6 +74,8 @@ Route::middleware('auth')->group(function () {
     // Route::resource('/test',TestController::class);
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/product-problems', [ProductProblemAnalysisController::class, 'index'])->name('dashboard.product-problems');
+    Route::get('product-problem-analyses', [ProductProblemAnalysisController::class, 'index'])->name('product-problem-analyses.index');
     Route::get('dashboard/{project}', [DashboardController::class, 'show']);
     Route::get('dashboard/{project}/{trainset}', [DashboardController::class, 'trainset'])->name('dashboard.trainset');
     Route::post('dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
