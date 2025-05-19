@@ -41,7 +41,7 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                     $problemStatus = ProductProblemStatusEnum::RE_SET->value;
                 } else {
                     $problemStatus = ProductProblemStatusEnum::DRAFT->value;
-                };
+                }
                 $returStatus = ($row[$headers->search('Status')] == 'Closed') ? ReturnedProductStatusEnum::DONE->value : ReturnedProductStatusEnum::DRAFT->value;
                 $finding = $row[$headers->search('Temuan')];
                 $qty = $row[$headers->search('Jumlah')];
@@ -57,87 +57,89 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                 $carriageNumberHead = $headers->search('Nomor Kereta');
                 $carriageNumberValue = trim($row[$carriageNumberHead]);
                 $carriageNumberValue = str_replace(["\r\n", "\r", "\n"], ',', $carriageNumberValue);
-                
+
                 collect(explode(',', $carriageNumberValue))
                     ->each(function ($carNumber) use ($timestamp, $date, $tsName, $finding, $qty, $problemComponent, $problemStatus, $problemCause, $returStatus, &$carNumbers) {
-                    if ($carNumber == null || $carNumber == '') return;
-                    
-                    $carNumber = strtoupper($carNumber);
-                    
-                    switch (true) {
-                        case strpos($carNumber, 'K1') !== false:
-                            $carType = 'K1';
-                            break;
-                        case strpos($carNumber, 'K3') !== false:
-                            $carType = 'K3';
-                            break;
-                        case strpos($carNumber, 'M') !== false:
-                            $carType = 'M';
-                            break;
-                        case strpos($carNumber, 'P') !== false:
-                            $carType = 'P';
-                            break;
-                        default:
-                            $carType = 'C';
-                            break;
-                    }
-                    if (!isset($carNumbers[$carNumber."_".$date])) {
-                        $carNumbers[$carNumber."_".$date] = 1;
-                        $returnedProduct = ReturnedProduct::create([
-                            'product_returnable_id' => ($problemComponent != null) 
-                                ? $problemComponent->id 
-                                : Panel::firstOrCreate([
-                                    'name' => 'Grup Retur ' . $carNumber,
-                                ]),
-                            'product_returnable_type' => Component::class,
+                        if ($carNumber == null || $carNumber == '') {
+                            return;
+                        }
+
+                        $carNumber = strtoupper($carNumber);
+
+                        switch (true) {
+                            case strpos($carNumber, 'K1') !== false:
+                                $carType = 'K1';
+                                break;
+                            case strpos($carNumber, 'K3') !== false:
+                                $carType = 'K3';
+                                break;
+                            case strpos($carNumber, 'M') !== false:
+                                $carType = 'M';
+                                break;
+                            case strpos($carNumber, 'P') !== false:
+                                $carType = 'P';
+                                break;
+                            default:
+                                $carType = 'C';
+                                break;
+                        }
+                        if (!isset($carNumbers[$carNumber . '_' . $date])) {
+                            $carNumbers[$carNumber . '_' . $date] = 1;
+                            $returnedProduct = ReturnedProduct::create([
+                                'product_returnable_id' => ($problemComponent != null)
+                                    ? $problemComponent->id
+                                    : Panel::firstOrCreate([
+                                        'name' => 'Grup Retur ' . $carNumber,
+                                    ]),
+                                'product_returnable_type' => Component::class,
+                                'qty' => $qty,
+                                'serial_number' => $carNumber,
+                                'trainset_name' => $tsName,
+                                'carriage_type' => $carType,
+                                'status' => $returStatus,
+                                'created_at' => $timestamp,
+                                'updated_at' => ($problemComponent != null) ? $timestamp + (rand(4, 9) * 60) : $timestamp,
+                            ]);
+                            $returnedProduct->returned_product_notes()->create([
+                                'user_id' => auth()->id(),
+                                'note' => $finding,
+                                'applied_status' => $returnedProduct->status,
+                                'created_at' => $timestamp,
+                                'updated_at' => $timestamp,
+                            ]);
+                        } else {
+                            $product = Panel::firstOrCreate([
+                                'name' => 'Grup Retur ' . $carNumber,
+                            ]);
+                            $returnedProduct = ReturnedProduct::whereSerialNumber($carNumber)->get()->last();
+                            $productProblemCount = $returnedProduct->product_problems()->count();
+                            $returnedProduct->update([
+                                'product_returnable_id' => $product->id,
+                                'product_returnable_type' => Panel::class,
+                                'qty' => 1,
+                                'updated_at' => $timestamp + ($productProblemCount * 10 * 60),
+                            ]);
+
+                            $carNumbers[$carNumber . '_' . $date]++;
+                        }
+
+                        $productProblem = ProductProblem::create([
+                            'returned_product_id' => $returnedProduct->id,
+                            'component_id' => $problemComponent->id,
                             'qty' => $qty,
-                            'serial_number' => $carNumber,
-                            'trainset_name' => $tsName,
-                            'carriage_type' => $carType,
-                            'status' => $returStatus,
+                            'cause' => $problemCause,
+                            'status' => $problemStatus,
                             'created_at' => $timestamp,
-                            'updated_at' => ($problemComponent != null) ? $timestamp + (rand(4, 9) * 60) : $timestamp,
+                            'updated_at' => $timestamp + (5 * 60),
                         ]);
-                        $returnedProduct->returned_product_notes()->create([
+                        $productProblem->product_problem_notes()->create([
                             'user_id' => auth()->id(),
                             'note' => $finding,
-                            'applied_status' => $returnedProduct->status,
+                            'applied_status' => $productProblem->status,
                             'created_at' => $timestamp,
                             'updated_at' => $timestamp,
                         ]);
-                    } else {
-                        $product = Panel::firstOrCreate([
-                            'name' => 'Grup Retur ' . $carNumber,
-                        ]);
-                        $returnedProduct = ReturnedProduct::whereSerialNumber($carNumber)->get()->last();
-                        $productProblemCount = $returnedProduct->product_problems()->count();
-                        $returnedProduct->update([
-                            'product_returnable_id' => $product->id,
-                            'product_returnable_type' => Panel::class,
-                            'qty' => 1,
-                            'updated_at' => $timestamp + ($productProblemCount * 10 * 60),
-                        ]);
-
-                        $carNumbers[$carNumber."_".$date]++;
-                    }
-                    
-                    $productProblem = ProductProblem::create([
-                        'returned_product_id' => $returnedProduct->id,
-                        'component_id' => $problemComponent->id,
-                        'qty' => $qty,
-                        'cause' => $problemCause,
-                        'status' => $problemStatus,
-                        'created_at' => $timestamp,
-                        'updated_at' => $timestamp + (5 * 60),
-                    ]);
-                    $productProblem->product_problem_notes()->create([
-                        'user_id' => auth()->id(),
-                        'note' => $finding,
-                        'applied_status' => $productProblem->status,
-                        'created_at' => $timestamp,
-                        'updated_at' => $timestamp,
-                    ]);
-                });
+                    });
             });
             DB::commit();
         } catch (\Throwable $th) {

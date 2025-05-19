@@ -13,16 +13,14 @@ import { lazy, Suspense } from 'react';
 export default function (data: PaginateResponse<ProductProblemAnalysisResource>) {
     const { t } = useLaravelReactI18n();
     const ProductProblemAnalysis = lazy(() => import('./Partials/ProductProblemAnalysisDataView'));
-    const dispatchProductProblemAnalytics = withLoading(
-        async () => {
-            await window.axios.get(
-                route(`${ROUTES.DASHBOARD}`, {
-                    intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
-                    // ...filters,
-                })
-            )
-        }
-    );
+    const dispatchProductProblemAnalytics = withLoading(async () => {
+        await window.axios.get(
+            route(`${ROUTES.DASHBOARD}`, {
+                intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
+                // ...filters,
+            }),
+        );
+    });
     return (
         <>
             <Head title={t('pages.dashboard.product_problem_analysis.title')} />
@@ -32,12 +30,12 @@ export default function (data: PaginateResponse<ProductProblemAnalysisResource>)
                         <h1 className='text-page-header my-4'>
                             {t('pages.dashboard.product_problem_analysis.title')}
                         </h1>
-                        <Button onClick={dispatchProductProblemAnalytics} variant={'outline'}>Analyze Problem</Button> 
+                        <Button variant={'outline'} onClick={dispatchProductProblemAnalytics}>
+                            Analyze Problem
+                        </Button>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <ProductProblemAnalysis
-                            data={data}
-                        />
+                        <ProductProblemAnalysis data={data} />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

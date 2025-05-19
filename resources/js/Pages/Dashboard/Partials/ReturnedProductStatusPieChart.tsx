@@ -1,7 +1,16 @@
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartLegend,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { ReturnedProductStatusPieChartInterface, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import {
+    ReturnedProductStatusPieChartInterface,
+    ServiceFilterOptions,
+} from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -10,16 +19,15 @@ import { Cell, Pie, PieChart } from 'recharts';
 export default function ({
     data,
     localizedStatuses,
-    filters
+    filters,
 }: {
-    data: { name: string; value: number }[]
-    localizedStatuses: Record<string, string>
-    filters: ServiceFilterOptions
+    data: { name: string; value: number }[];
+    localizedStatuses: Record<string, string>;
+    filters: ServiceFilterOptions;
 }) {
     const { t } = useLaravelReactI18n();
     const [currentFilter, setCurrentFilter] = useState(filters);
 
-        
     const [returnedProductStatusConfig, setReturnedProductStatusConfig] = useState<ChartConfig>({
         done: {
             label: localizedStatuses.done || 'Selesai',
@@ -51,11 +59,16 @@ export default function ({
                     filters.useMerged ? !['requested', 'scrapped'].includes(key) : true,
                 ),
             ),
-    })
+        });
 
-    const syncReturnedProductStatusData =  withLoading( async() => {
-        console.log('syncReturnedProductStatusData',currentFilter, filters);
-        if (data === returnedProductStatusPieChart.data && returnedProductStatusPieChart.config.done.label === localizedStatuses.done && currentFilter === filters) return;
+    const syncReturnedProductStatusData = withLoading(async () => {
+        console.log('syncReturnedProductStatusData', currentFilter, filters);
+        if (
+            data === returnedProductStatusPieChart.data &&
+            returnedProductStatusPieChart.config.done.label === localizedStatuses.done &&
+            currentFilter === filters
+        )
+            return;
         console.log('tembuscot');
         setCurrentFilter(filters);
         const res = await window.axios.get(
@@ -64,8 +77,8 @@ export default function ({
                 intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY,
                 year: filters.returned_product?.year,
                 month: filters.returned_product?.month,
-            })
-        )
+            }),
+        );
         setReturnedProductStatusPieChart({
             data: res.data,
             config: Object.fromEntries(
@@ -74,18 +87,25 @@ export default function ({
                 ),
             ),
         });
-    })
+    });
 
     const renderLegendContentFormat = (value: string, entry: any, index: number) => {
         return (
-            <span className='text-foreground'>{returnedProductStatusPieChart.config[value].label}</span>
-        )
-    }
+            <span className='text-foreground'>
+                {returnedProductStatusPieChart.config[value].label}
+            </span>
+        );
+    };
 
     useEffect(() => {
         console.log('returnedProductStatusPieChart');
         syncReturnedProductStatusData();
-    }, [filters.useMerged, filters.returned_product.year, filters.returned_product.month, localizedStatuses]);
+    }, [
+        filters.useMerged,
+        filters.returned_product.year,
+        filters.returned_product.month,
+        localizedStatuses,
+    ]);
 
     return (
         <ChartContainer
@@ -106,7 +126,6 @@ export default function ({
                                 return (
                                     <>
                                         <div
-                                            className='h-2.5 w-2.5 shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]'
                                             style={
                                                 {
                                                     '--color-bg':
@@ -117,6 +136,7 @@ export default function ({
                                                             .color,
                                                 } as React.CSSProperties
                                             }
+                                            className='h-2.5 w-2.5 shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]'
                                         ></div>
                                         <span className=''>
                                             {`${returnedProductStatusPieChart.config[name].label}: ${value} (${percent}%)`}
@@ -135,11 +155,11 @@ export default function ({
                         transform: 'translate(0, -50%)',
                         lineHeight: '24px',
                     }}
-                    layout='vertical'
                     verticalAlign='middle'
+                    layout='vertical'
                     formatter={renderLegendContentFormat}
                 />
-                <Pie data={returnedProductStatusPieChart.data} dataKey='value'>
+                <Pie dataKey='value' data={returnedProductStatusPieChart.data}>
                     {returnedProductStatusPieChart.data.map((entry, index) => (
                         <Cell
                             key={`returnedProductStatus-${entry.name}-key`}

@@ -1,4 +1,4 @@
-import { ProductProblemStatusEnum } from "@/Support/Enums/productProblemStatusEnum";
+import { ProductProblemStatusEnum } from '@/Support/Enums/productProblemStatusEnum';
 
 export interface ProductProblemNote {
     id: number;

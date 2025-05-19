@@ -116,7 +116,7 @@ return [
                     'cause' => 'Possible Cause',
                     'solution' => 'Recommended Solution',
                 ],
-            ]
+            ],
         ],
     ],
     'dashboard_trainset' => [

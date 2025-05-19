@@ -1,5 +1,11 @@
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/Components/UI/accordion';
 import { Button, buttonVariants } from '@/Components/UI/button';
 import {
     Dialog,
@@ -26,12 +32,6 @@ import { withLoading } from '@/Utils/withLoading';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, memo, useCallback, useEffect } from 'react';
-import {
-    Accordion,
-    AccordionItem,
-    AccordionTrigger,
-    AccordionContent,
-} from '@/Components/UI/accordion';
 
 const AddRequest = () => {
     const { t } = useLaravelReactI18n();
@@ -76,7 +76,7 @@ const AddRequest = () => {
         filters.column_filters = {
             ...filters.column_filters,
             buyer_id: auth.user.id,
-        }
+        };
         return await projectService.getAll(filters).then((response) => response.data);
     }, []);
 
@@ -107,118 +107,130 @@ const AddRequest = () => {
                                 'pages.returned_product.requested_return.partials.add_request.title',
                             )}
                         </DialogTitle>
-                        <DialogDescription>{t('pages.returned_product.requested_return.partials.add_request.description')}</DialogDescription>
+                        <DialogDescription>
+                            {t(
+                                'pages.returned_product.requested_return.partials.add_request.description',
+                            )}
+                        </DialogDescription>
                         <form
                             onSubmit={submit}
                             id='returned-product-form'
                             encType='multipart/form-data'
                             className='hidden'
+                        ></form>
+                        <Accordion
+                            type='single'
+                            defaultValue={auth.user.has_project ? 'item-1' : 'item-2'}
+                            collapsible
+                            className='mt-4'
                         >
-                        </form>
-                        <Accordion type='single' collapsible className='mt-4' defaultValue={auth.user.has_project ? 'item-1' : 'item-2'}>
-                            {auth.user.has_project && (<>
-                                {/* Component or Panel Selection */}
-                                <AccordionItem value='item-1'>
-                                    <AccordionTrigger>
-                                        {t(
-                                            'pages.returned_product.requested_return.partials.add_request.fields.type_selection',
-                                        )}
-                                    </AccordionTrigger>
-                                    <AccordionContent>
-                                        <GenericDataSelector
-                                            setSelectedData={(id) =>
-                                                console.log(id)
-                                            }
-                                            // selectedDataId={
-                                            //     data.product_returnable_id ?? undefined
-                                            // }
-                                            renderItem={(item: ProjectResource) =>
-                                                `${item.name}`
-                                            }
-                                            popoverContentClassName='w-[400px] p-0'
-                                            placeholder={t(
-                                                'pages.returned_product.requested_return.partials.add_request.fields.project_placeholder',
+                            {auth.user.has_project && (
+                                <>
+                                    {/* Component or Panel Selection */}
+                                    <AccordionItem value='item-1'>
+                                        <AccordionTrigger>
+                                            {t(
+                                                'pages.returned_product.requested_return.partials.add_request.fields.type_selection',
                                             )}
-                                            nullable
-                                            id='component_product_returnable_id'
-                                            fetchData={fetchProjects}
-                                            buttonClassName='mt-1'
-                                        />
-                                        <RadioGroup
-                                            className='mt-4'
-                                            onValueChange={(v) =>
-                                                setData('product_returnable_type', v)
-                                            }
-                                            defaultValue={data.product_returnable_type}
-                                        >
-                                            <div
-                                                key={'component_type'}
-                                                className='flex items-center space-x-2'
-                                            >
-                                                <RadioGroupItem
-                                                    value={'component'}
-                                                    id={`type.component`}
-                                                />
-                                                <Label htmlFor={`type.component`}>
-                                                    {t(
-                                                        'pages.returned_product.requested_return.partials.add_request.fields.component',
-                                                    )}
-                                                </Label>
-                                            </div>
-                                            <div
-                                                key={'panel_type'}
-                                                className='flex items-center space-x-2'
-                                            >
-                                                <RadioGroupItem value={'panel'} id={`type.panel`} />
-                                                <Label htmlFor={`type.panel`}>
-                                                    {t(
-                                                        'pages.returned_product.requested_return.partials.add_request.fields.panel',
-                                                    )}
-                                                </Label>
-                                            </div>
-                                        </RadioGroup>
-                                        {data.product_returnable_type === 'component' ? (
+                                        </AccordionTrigger>
+                                        <AccordionContent>
                                             <GenericDataSelector
-                                                setSelectedData={(id) =>
-                                                    setData('product_returnable_id', id)
-                                                }
-                                                selectedDataId={
-                                                    data.product_returnable_id ?? undefined
-                                                }
-                                                renderItem={(item: ComponentResource) =>
+                                                setSelectedData={(id) => console.log(id)}
+                                                // selectedDataId={
+                                                //     data.product_returnable_id ?? undefined
+                                                // }
+                                                renderItem={(item: ProjectResource) =>
                                                     `${item.name}`
                                                 }
                                                 popoverContentClassName='w-[400px] p-0'
                                                 placeholder={t(
-                                                    'pages.returned_product.requested_return.partials.add_request.fields.component_placeholder',
+                                                    'pages.returned_product.requested_return.partials.add_request.fields.project_placeholder',
                                                 )}
                                                 nullable
                                                 id='component_product_returnable_id'
-                                                fetchData={fetchComponents}
-                                                buttonClassName='mt-4'
+                                                fetchData={fetchProjects}
+                                                buttonClassName='mt-1'
                                             />
-                                        ) : (
-                                            <GenericDataSelector
-                                                setSelectedData={(id) =>
-                                                    setData('product_returnable_id', id)
+                                            <RadioGroup
+                                                onValueChange={(v) =>
+                                                    setData('product_returnable_type', v)
                                                 }
-                                                selectedDataId={
-                                                    data.product_returnable_id ?? undefined
-                                                }
-                                                renderItem={(item: PanelResource) => `${item.name}`}
-                                                popoverContentClassName='w-[400px] p-0'
-                                                placeholder={t(
-                                                    'pages.returned_product.requested_return.partials.add_request.fields.panel_placeholder',
-                                                )}
-                                                nullable
-                                                id='panel_product_returnable_id'
-                                                fetchData={fetchPanels}
-                                                buttonClassName='mt-4'
-                                            />
-                                        )}
-                                    </AccordionContent>
-                                </AccordionItem>
-                            </>
+                                                defaultValue={data.product_returnable_type}
+                                                className='mt-4'
+                                            >
+                                                <div
+                                                    key={'component_type'}
+                                                    className='flex items-center space-x-2'
+                                                >
+                                                    <RadioGroupItem
+                                                        value={'component'}
+                                                        id={`type.component`}
+                                                    />
+                                                    <Label htmlFor={`type.component`}>
+                                                        {t(
+                                                            'pages.returned_product.requested_return.partials.add_request.fields.component',
+                                                        )}
+                                                    </Label>
+                                                </div>
+                                                <div
+                                                    key={'panel_type'}
+                                                    className='flex items-center space-x-2'
+                                                >
+                                                    <RadioGroupItem
+                                                        value={'panel'}
+                                                        id={`type.panel`}
+                                                    />
+                                                    <Label htmlFor={`type.panel`}>
+                                                        {t(
+                                                            'pages.returned_product.requested_return.partials.add_request.fields.panel',
+                                                        )}
+                                                    </Label>
+                                                </div>
+                                            </RadioGroup>
+                                            {data.product_returnable_type === 'component' ? (
+                                                <GenericDataSelector
+                                                    setSelectedData={(id) =>
+                                                        setData('product_returnable_id', id)
+                                                    }
+                                                    selectedDataId={
+                                                        data.product_returnable_id ?? undefined
+                                                    }
+                                                    renderItem={(item: ComponentResource) =>
+                                                        `${item.name}`
+                                                    }
+                                                    popoverContentClassName='w-[400px] p-0'
+                                                    placeholder={t(
+                                                        'pages.returned_product.requested_return.partials.add_request.fields.component_placeholder',
+                                                    )}
+                                                    nullable
+                                                    id='component_product_returnable_id'
+                                                    fetchData={fetchComponents}
+                                                    buttonClassName='mt-4'
+                                                />
+                                            ) : (
+                                                <GenericDataSelector
+                                                    setSelectedData={(id) =>
+                                                        setData('product_returnable_id', id)
+                                                    }
+                                                    selectedDataId={
+                                                        data.product_returnable_id ?? undefined
+                                                    }
+                                                    renderItem={(item: PanelResource) =>
+                                                        `${item.name}`
+                                                    }
+                                                    popoverContentClassName='w-[400px] p-0'
+                                                    placeholder={t(
+                                                        'pages.returned_product.requested_return.partials.add_request.fields.panel_placeholder',
+                                                    )}
+                                                    nullable
+                                                    id='panel_product_returnable_id'
+                                                    fetchData={fetchPanels}
+                                                    buttonClassName='mt-4'
+                                                />
+                                            )}
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </>
                             )}
 
                             {/* Quantity and Serial Number */}
@@ -239,9 +251,7 @@ const AddRequest = () => {
                                         <Input
                                             value={data.qty}
                                             type='number'
-                                            onChange={(e) =>
-                                                setData('qty', +e.target.value)
-                                            }
+                                            onChange={(e) => setData('qty', +e.target.value)}
                                             name='qty'
                                             id='qty'
                                             className='mt-1'

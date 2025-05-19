@@ -1,4 +1,11 @@
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/Components/UI/chart';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
@@ -7,9 +14,9 @@ export default function ({
     localizedStatuses,
     filters,
 }: {
-    data: any
-    localizedStatuses?: Record<string, string>
-    filters?: ServiceFilterOptions
+    data: any;
+    localizedStatuses?: Record<string, string>;
+    filters?: ServiceFilterOptions;
 }) {
     const chartConfigTrainset = {
         done: {

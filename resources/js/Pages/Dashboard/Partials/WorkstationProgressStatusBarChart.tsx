@@ -1,7 +1,17 @@
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+} from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { AttachmentStatusBarChartInterface, AttachmentStatusOfWorkstationResource, ServiceFilterOptions, WorkstationStatusBarChartInterface } from '@/Support/Interfaces/Others';
+import {
+    AttachmentStatusOfWorkstationResource,
+    ServiceFilterOptions,
+    WorkstationStatusBarChartInterface,
+} from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -12,48 +22,49 @@ export default function ({
     localizedStatuses,
     filters,
 }: {
-    data: AttachmentStatusOfWorkstationResource[]
-    localizedStatuses: Record<string, string>
-    filters: ServiceFilterOptions
+    data: AttachmentStatusOfWorkstationResource[];
+    localizedStatuses: Record<string, string>;
+    filters: ServiceFilterOptions;
 }) {
     const { t } = useLaravelReactI18n();
     const [currentFilter, setCurrentFilter] = useState(filters);
-    const [workstationStatusFilter, setWorkstationStatusFilter] = useState(
-        {},
-    );
-    
-    const [workstationProgressStatusConfig, setWorkstationProgressStatusConfig] = useState<ChartConfig>({
-        done: {
-            label: localizedStatuses.done || 'Selesai',
-            color: 'hsl(var(--chart-1))',
-        },
-        in_progress: {
-            label: localizedStatuses.in_progress || 'Progress',
-            color: 'hsl(var(--chart-2))',
-        },
-        pending: {
-            label: localizedStatuses.pending || 'Pending',
-            color: 'hsl(var(--chart-3))',
-        },
-        material_in_transit: {
-            label: localizedStatuses.material_in_transit || 'Material In Transit',
-            color: 'hsl(var(--chart-4))',
-        },
-        material_accepted: {
-            label: localizedStatuses.material_accepted || 'Material Accepted',
-            color: 'hsl(var(--chart-5))',
-        },
-    });
+    const [workstationStatusFilter, setWorkstationStatusFilter] = useState({});
+
+    const [workstationProgressStatusConfig, setWorkstationProgressStatusConfig] =
+        useState<ChartConfig>({
+            done: {
+                label: localizedStatuses.done || 'Selesai',
+                color: 'hsl(var(--chart-1))',
+            },
+            in_progress: {
+                label: localizedStatuses.in_progress || 'Progress',
+                color: 'hsl(var(--chart-2))',
+            },
+            pending: {
+                label: localizedStatuses.pending || 'Pending',
+                color: 'hsl(var(--chart-3))',
+            },
+            material_in_transit: {
+                label: localizedStatuses.material_in_transit || 'Material In Transit',
+                color: 'hsl(var(--chart-4))',
+            },
+            material_accepted: {
+                label: localizedStatuses.material_accepted || 'Material Accepted',
+                color: 'hsl(var(--chart-5))',
+            },
+        });
 
     const [workstationProgressStatusChart, setWorkstationProgressStatusChart] =
         useState<WorkstationStatusBarChartInterface>({
             data: data,
             config: Object.fromEntries(
                 Object.entries(workstationProgressStatusConfig).filter(([key]) =>
-                    filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                    filters?.useMerged
+                        ? !['material_in_transit', 'material_accepted'].includes(key)
+                        : true,
                 ),
             ),
-    })
+        });
 
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
@@ -94,7 +105,12 @@ export default function ({
     };
 
     const syncStatusChart = withLoading(async () => {
-        if (data === workstationProgressStatusChart.data && workstationProgressStatusChart.config.done.label === localizedStatuses.done && currentFilter === filters) return;
+        if (
+            data === workstationProgressStatusChart.data &&
+            workstationProgressStatusChart.config.done.label === localizedStatuses.done &&
+            currentFilter === filters
+        )
+            return;
         setCurrentFilter(filters);
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
@@ -114,11 +130,13 @@ export default function ({
             ),
             config: Object.fromEntries(
                 Object.entries(workstationProgressStatusConfig).filter(([key]) =>
-                    filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                    filters?.useMerged
+                        ? !['material_in_transit', 'material_accepted'].includes(key)
+                        : true,
                 ),
             ),
         });
-    })
+    });
 
     useEffect(() => {
         setWorkstationProgressStatusConfig({
@@ -167,10 +185,7 @@ export default function ({
                 accessibilityLayer
             >
                 <CartesianGrid vertical={false} />
-                <XAxis
-                    type='number'
-                    tickFormatter={(value) => toPercent(value, 0)}
-                />
+                <XAxis type='number' tickFormatter={(value) => toPercent(value, 0)} />
                 <YAxis
                     width={150}
                     type='category'
@@ -183,17 +198,15 @@ export default function ({
                 />
                 <ChartTooltip content={renderWorkstationProgressTooltipContent} />
                 <ChartLegend content={<ChartLegendContent />} />
-                {Object.keys(workstationProgressStatusChart.config).map(
-                    (dataKey) => (
-                        <Bar
-                            type='monotone'
-                            stackId='1'
-                            key={`workstationPanelStatus-${dataKey}-key`}
-                            fill={`var(--color-${dataKey})`}
-                            dataKey={dataKey}
-                        />
-                    ),
-                )}
+                {Object.keys(workstationProgressStatusChart.config).map((dataKey) => (
+                    <Bar
+                        type='monotone'
+                        stackId='1'
+                        key={`workstationPanelStatus-${dataKey}-key`}
+                        fill={`var(--color-${dataKey})`}
+                        dataKey={dataKey}
+                    />
+                ))}
             </BarChart>
         </ChartContainer>
     );

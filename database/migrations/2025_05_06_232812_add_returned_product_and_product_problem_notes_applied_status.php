@@ -8,13 +8,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::table('returned_product_notes', function (Blueprint $table) {
             $table->enum('applied_status', ReturnedProductStatusEnum::toArray())->after('note');
         });
@@ -41,8 +39,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::table('returned_product_notes', function (Blueprint $table) {
             if (Schema::hasColumn('returned_product_notes', 'applied_status')) {
                 $table->dropColumn('applied_status');

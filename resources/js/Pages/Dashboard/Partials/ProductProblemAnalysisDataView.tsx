@@ -1,5 +1,12 @@
 import GenericPagination from '@/Components/GenericPagination';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/UI/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/Components/UI/table';
 import { productProblemAnalysisService } from '@/Services/productProblemAnalysisService';
 import { PaginateResponse, ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ProductProblemAnalysisResource } from '@/Support/Interfaces/Resources';
@@ -7,11 +14,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 
-export default function ({
-    data,
-}: {
-    data: PaginateResponse<ProductProblemAnalysisResource>;
-}) {
+export default function ({ data }: { data: PaginateResponse<ProductProblemAnalysisResource> }) {
     const { t } = useLaravelReactI18n();
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -19,12 +22,13 @@ export default function ({
         perPage: 10,
     });
 
-    const [problemAnalysisResponse, setProblemAnalysisResponse] = useState<PaginateResponse<ProductProblemAnalysisResource>>();
-    
+    const [problemAnalysisResponse, setProblemAnalysisResponse] =
+        useState<PaginateResponse<ProductProblemAnalysisResource>>();
+
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
-    
+
     const syncDatas = withLoading(async () => {
         await productProblemAnalysisService.getAll(filters).then(setProblemAnalysisResponse);
     });
@@ -40,19 +44,29 @@ export default function ({
                     <TableHeader>
                         <TableRow>
                             <TableHead>
-                                {t('pages.dashboard.partials.product_problem_analysis_data_view.headers.date_range')}
+                                {t(
+                                    'pages.dashboard.partials.product_problem_analysis_data_view.headers.date_range',
+                                )}
                             </TableHead>
                             <TableHead>
-                                {t('pages.dashboard.partials.product_problem_analysis_data_view.headers.component_name')}
+                                {t(
+                                    'pages.dashboard.partials.product_problem_analysis_data_view.headers.component_name',
+                                )}
                             </TableHead>
                             <TableHead>
-                                {t('pages.dashboard.partials.product_problem_analysis_data_view.headers.summary')}
+                                {t(
+                                    'pages.dashboard.partials.product_problem_analysis_data_view.headers.summary',
+                                )}
                             </TableHead>
                             <TableHead>
-                                {t('pages.dashboard.partials.product_problem_analysis_data_view.headers.cause')}
+                                {t(
+                                    'pages.dashboard.partials.product_problem_analysis_data_view.headers.cause',
+                                )}
                             </TableHead>
                             <TableHead>
-                                {t('pages.dashboard.partials.product_problem_analysis_data_view.headers.solution')}
+                                {t(
+                                    'pages.dashboard.partials.product_problem_analysis_data_view.headers.solution',
+                                )}
                             </TableHead>
                         </TableRow>
                     </TableHeader>
@@ -69,7 +83,10 @@ export default function ({
                     </TableBody>
                 </Table>
             )}
-            <GenericPagination meta={problemAnalysisResponse?.meta} handleChangePage={handlePageChange}/>
+            <GenericPagination
+                meta={problemAnalysisResponse?.meta}
+                handleChangePage={handlePageChange}
+            />
         </div>
     );
 }

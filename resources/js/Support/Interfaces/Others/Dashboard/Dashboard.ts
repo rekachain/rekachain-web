@@ -1,4 +1,4 @@
-import { ChartConfig } from "@/Components/UI/chart";
+import { ChartConfig } from '@/Components/UI/chart';
 
 interface AttachmentStatusOfTrainsetResource {
     trainset_name: string;
@@ -53,15 +53,14 @@ interface ReturnedProductTimeLineChartInterface {
 }
 
 export type {
+    AttachmentStatusBarChartInterface,
     AttachmentStatusOfTrainsetResource,
     AttachmentStatusOfWorkstationResource,
-    ReturnedProductTimeDiffResource,
-    ReturnedProductTimeMinMaxResource,
     ComponentProblemResource,
-    VendorProblemResource,
-    
-    AttachmentStatusBarChartInterface,
-    WorkstationStatusBarChartInterface,
     ReturnedProductStatusPieChartInterface,
-    ReturnedProductTimeLineChartInterface
-}
+    ReturnedProductTimeDiffResource,
+    ReturnedProductTimeLineChartInterface,
+    ReturnedProductTimeMinMaxResource,
+    VendorProblemResource,
+    WorkstationStatusBarChartInterface,
+};

@@ -66,7 +66,9 @@ export default function ({ data }: { data: ReturnedProductResource }) {
     const [localizedProductProblemStatuses, setProductProblemLocalizedStatuses] = useState<
         Record<string, string>
     >({});
-    const [localizedProductProblemCauses, setProductProblemLocalizedCauses] = useState<Record<string, string>>({});
+    const [localizedProductProblemCauses, setProductProblemLocalizedCauses] = useState<
+        Record<string, string>
+    >({});
 
     const syncLocalizedEnums = withLoading(async () => {
         await fetchEnumLabels(['ProductProblemStatusEnum', 'ProductProblemCauseEnum'])
@@ -164,7 +166,10 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                                     'pages.returned_product.show.labels.serial_number',
                                                 )}
                                             </p>
-                                            <p>{data.serial_number || '-'} {data.project_sub ? `(${data.project_sub})` : ''}</p>
+                                            <p>
+                                                {data.serial_number || '-'}{' '}
+                                                {data.project_sub ? `(${data.project_sub})` : ''}
+                                            </p>
                                         </div>
                                         <div className=''>
                                             <p className='font-bold'>
@@ -215,7 +220,8 @@ export default function ({ data }: { data: ReturnedProductResource }) {
                                             >
                                                 <div>
                                                     <p className='text-sm font-bold'>
-                                                        {note.updated_at} - {note.user?.name || ''} ({note.localized_applied_status})
+                                                        {note.updated_at} - {note.user?.name || ''}{' '}
+                                                        ({note.localized_applied_status})
                                                     </p>
                                                     <p>{note.note}</p>
                                                 </div>

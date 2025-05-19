@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DashboardResource;
-use App\Http\Resources\ProductProblemResource;
 use App\Http\Resources\ReplacementStockResource;
 use App\Services\DashboardService;
 use App\Support\Enums\IntentEnum;
@@ -51,11 +50,13 @@ class DashboardController extends Controller {
                     return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
                 case IntentEnum::WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS->value:
                     $this->dashboardService->getComponentProblemAnalytics($request->query());
+
                     return true;
 
             }
 
             $data = $this->dashboardService->showGraph($request->query());
+
             return $data;
         }
         $data = $this->dashboardService->showGraph($request->query());
@@ -76,6 +77,7 @@ class DashboardController extends Controller {
         $data['ts'] = $ts;
         $attachment_status_of_trainset = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
         $attachment_status_of_workstation = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
+
         return Inertia::render('Dashboard/Index', [
             'data' => $data,
             'trainsetStatusProgress' => $attachment_status_of_trainset,
@@ -131,7 +133,7 @@ class DashboardController extends Controller {
         }
 
         return Inertia::render('Dashboard/Index', [
-            'data' => $data, 
+            'data' => $data,
             // 'trainsetStatusProgress' => $attachment_status_of_trainset,
             // 'workstationStatusProgress' => $attachment_status_of_workstation,
             // 'returnedProductTimeDiff' => $returned_product_progress_time_diff ?? [],

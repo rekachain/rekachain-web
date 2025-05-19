@@ -22,7 +22,6 @@ use App\Support\Interfaces\Services\WorkshopServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class DashboardService {
     public function __construct(
@@ -106,7 +105,7 @@ class DashboardService {
             ->join('panels', 'carriage_panels.panel_id', '=', 'panels.id')
             ->groupBy('panels.name')
             ->orderBy('panels.name', 'ASC');
-        
+
         $data = [
             'ws' => $ws->get(),
             'panel' => $panel->get(),
@@ -150,7 +149,7 @@ class DashboardService {
 
         return $attachments->filter(fn ($attachment) => !array_key_exists('status', $data) || ($attachment->status?->value ?? $this->statusMapping['status_pending'][$key]) === $data['status'])
             ->groupBy(fn ($attachment) => $attachment->status)
-            ->map(fn ($attachment) => (!$useMerged) 
+            ->map(fn ($attachment) => (!$useMerged)
                 ? ['status' => $attachment->first()->status ?? $this->statusMapping['status_pending'][$key], 'count' => $attachment->count()]
                 : ['status' => match ($attachment->first()->status) {
                     $this->statusMapping['status_in_progress'][$key] => $this->statusMapping['status_in_progress'][$key],
@@ -272,14 +271,14 @@ class DashboardService {
                 'created_at' => [
                     'from' => $request['year'] . '-01-01',
                     'to' => $request['year'] . '-12-31',
-                ]
+                ],
             ];
             if (isset($request['month']) && ($request['month'] !== '0')) {
                 $filters['column_filters'] = [
                     'created_at' => [
                         'from' => $request['year'] . '-' . $request['month'] . '-01',
                         'to' => $request['year'] . '-' . $request['month'] . '-31',
-                    ]
+                    ],
                 ];
             }
         }
@@ -297,7 +296,7 @@ class DashboardService {
                 'value' => $item->sum('qty'),
             ];
         });
-        
+
         $returnedProductsSummary = $returnedProducts->groupBy('name')->map(function ($returnedProduct) {
             return [
                 'name' => $returnedProduct->first()['name'],
@@ -308,17 +307,17 @@ class DashboardService {
         return $returnedProductsSummary->sortBy('name')->values()->toArray();
     }
 
-    public function getReturnedproductProgressTimeDiff(array $request) : LengthAwarePaginator {
-        $rawData = ReturnedProduct::selectRaw("
+    public function getReturnedproductProgressTimeDiff(array $request): LengthAwarePaginator {
+        $rawData = ReturnedProduct::selectRaw('
                 YEAR(returned_products.created_at) as year,
                 MONTH(returned_products.created_at) as month,
                 AVG(TIMESTAMPDIFF(SECOND, returned_products.created_at, returned_products.updated_at)) as avg_seconds,
                 COUNT(DISTINCT returned_products.id) as total_returned,
                 SUM(product_problems.qty) as total_problem
-            ")
-            ->leftJoin("product_problems", "returned_products.id", "=", "product_problems.returned_product_id")
-            ->groupByRaw("YEAR(returned_products.created_at), MONTH(returned_products.created_at)")
-            ->orderByRaw("YEAR(returned_products.created_at) DESC, MONTH(returned_products.created_at) DESC")
+            ')
+            ->leftJoin('product_problems', 'returned_products.id', '=', 'product_problems.returned_product_id')
+            ->groupByRaw('YEAR(returned_products.created_at), MONTH(returned_products.created_at)')
+            ->orderByRaw('YEAR(returned_products.created_at) DESC, MONTH(returned_products.created_at) DESC')
             ->get();
 
         // Transform with localization
@@ -337,7 +336,7 @@ class DashboardService {
                                 "{$hours} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.hour') . ' ' .
                                 "{$minutes} " . __('pages.dashboard.partials.returned_product_time_diff_chart.fields.minute'),
                 'total_returned' => $item->total_returned,
-                'total_problem' => $item->total_problem
+                'total_problem' => $item->total_problem,
             ];
         });
 
@@ -355,14 +354,14 @@ class DashboardService {
     }
 
     public function getReturnedproductProgressTimeMinMax(array $request) {
-        $rawData = ReturnedProduct::selectRaw("
+        $rawData = ReturnedProduct::selectRaw('
                 YEAR(created_at) as year,
                 MONTH(created_at) as month,
                 MIN(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as min_duration,
                 MAX(TIMESTAMPDIFF(SECOND, created_at, updated_at)) as max_duration
-            ")
-            ->groupByRaw("YEAR(created_at), MONTH(created_at)")
-            ->orderByRaw("YEAR(created_at) ASC, MONTH(created_at) ASC")
+            ')
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->orderByRaw('YEAR(created_at) ASC, MONTH(created_at) ASC')
             ->get();
 
         // Transform with localization
@@ -403,11 +402,12 @@ class DashboardService {
             return $item->hasProductProblem();
         })->map(function ($item) {
             $qualityProblems = $item->product_problems()->where('cause', ProductProblemCauseEnum::QUALITY);
+
             return (object) [
                 'component_name' => $item->name,
                 'vendor_name' => $item->vendor_name,
                 'vendor_qty' => $item->vendor_qty,
-                'total_problem' => $qualityProblems->count()
+                'total_problem' => $qualityProblems->count(),
             ];
         })->filter(function ($item) {
             return $item->total_problem > 0;
@@ -416,13 +416,14 @@ class DashboardService {
         $vendorProblem = $transformed->groupBy('vendor_name')->map(function ($item) {
             $totalSent = $item->sum('vendor_qty');
             $totalProblem = $item->sum('total_problem');
+
             return (object) [
                 'intent' => IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value,
                 'vendor_name' => $item->first()->vendor_name,
                 'total_component' => $item->count(),
                 'total_sent' => $totalSent,
                 'total_problem' => $totalProblem,
-                'problem_percent' => $totalProblem * 100 / $totalSent
+                'problem_percent' => $totalProblem * 100 / $totalSent,
             ];
         })->sortByDesc('problem_percent');
 
@@ -439,7 +440,7 @@ class DashboardService {
         return $paginated;
     }
 
-    public function getComponentProblems(array $request) : LengthAwarePaginator {
+    public function getComponentProblems(array $request): LengthAwarePaginator {
         $components = $this->componentService->with(['product_problems', 'product_problems.product_problem_notes'])->getAll($request);
 
         // Transform with localization
@@ -459,7 +460,7 @@ class DashboardService {
                     });
                 })->unique()->values()->implode(', '),
                 'date_range' => $dateRange,
-                'total_problem' => $item->product_problems()->count()
+                'total_problem' => $item->product_problems()->count(),
             ];
         });
 
@@ -501,7 +502,7 @@ class DashboardService {
                 'date_range' => $dateRange,
                 'total_sent' => $item->vendor_qty,
                 'total_problem' => $totalProblem,
-                'problem_percent' => $totalProblem * 100 / $item->vendor_qty
+                'problem_percent' => $totalProblem * 100 / $item->vendor_qty,
             ];
         });
         ProductProblemAnalysis::dispatch($transformed->toArray());

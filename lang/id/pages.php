@@ -117,7 +117,7 @@ return [
                     'solution' => 'Rekomendasi Solusi',
                 ],
             ],
-        ]
+        ],
     ],
     'dashboard_trainset' => [
         'index' => [

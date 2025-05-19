@@ -239,17 +239,21 @@ const AddProductProblem = ({
                                 </Select>
                                 {data.status !== ProductProblemStatusEnum.DRAFT && (
                                     <>
-                                        <div className='mt-4 space-y-2 rounded bg-background-2'>     
+                                        <div className='mt-4 space-y-2 rounded bg-background-2'>
                                             <Select
                                                 value={data.cause}
                                                 onValueChange={(value) =>
-                                                    setData('cause', value as ProductProblemCauseEnum)
+                                                    setData(
+                                                        'cause',
+                                                        value as ProductProblemCauseEnum,
+                                                    )
                                                 }
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue>
                                                         {localizedCauses[
-                                                            data.cause || ProductProblemStatusEnum.DRAFT
+                                                            data.cause ||
+                                                                ProductProblemStatusEnum.DRAFT
                                                         ] || 'Pilih Penyebab'}
                                                     </SelectValue>
                                                 </SelectTrigger>
@@ -257,7 +261,10 @@ const AddProductProblem = ({
                                                     <SelectGroup>
                                                         {Object.entries(localizedCauses).map(
                                                             ([cause, label]) => (
-                                                                <SelectItem value={cause} key={cause}>
+                                                                <SelectItem
+                                                                    value={cause}
+                                                                    key={cause}
+                                                                >
                                                                     {label}
                                                                 </SelectItem>
                                                             ),

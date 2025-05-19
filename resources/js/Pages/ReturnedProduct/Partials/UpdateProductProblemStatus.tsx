@@ -123,11 +123,11 @@ export default function ({
                     <div className='flex flex-col gap-2'>
                         <InputLabel value={'Penyebab'} htmlFor='cause' />
                         <Select
-                            name='cause'
                             value={data.cause}
                             onValueChange={(value) =>
                                 setData('cause', value as ProductProblemCauseEnum)
                             }
+                            name='cause'
                         >
                             <SelectTrigger>
                                 <SelectValue>
@@ -149,11 +149,11 @@ export default function ({
                         </Select>
                         <InputLabel value={'Status'} htmlFor='status' className='mt-4' />
                         <Select
-                            name='status'
                             value={data.status}
                             onValueChange={(value) =>
                                 setData('status', value as ProductProblemStatusEnum)
                             }
+                            name='status'
                         >
                             <SelectTrigger>
                                 <SelectValue>

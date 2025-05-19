@@ -1,4 +1,6 @@
-export async function fetchEnumLabels(enumNames: string | string[]): Promise<Record<string, string> | any> {
+export async function fetchEnumLabels(
+    enumNames: string | string[],
+): Promise<Record<string, string> | any> {
     let response: Response;
     if (Array.isArray(enumNames)) {
         const params = enumNames.map((enumName) => `enums[]=${enumName}`).join('&');
@@ -15,7 +17,9 @@ export async function fetchEnumLabels(enumNames: string | string[]): Promise<Rec
         });
     }
     if (!response.ok) {
-        throw new Error(`Failed to fetch labels for enum: ${enumNames} (${response.status} ${response.statusText})`);
+        throw new Error(
+            `Failed to fetch labels for enum: ${enumNames} (${response.status} ${response.statusText})`,
+        );
     }
     return response.json();
 }

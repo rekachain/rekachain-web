@@ -5,18 +5,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::table('components', function (Blueprint $table) {
-            if (! Schema::hasColumn('components', 'vendor_name')) {
+            if (!Schema::hasColumn('components', 'vendor_name')) {
                 $table->string('vendor_name')->nullable();
             }
-            if (! Schema::hasColumn('components', 'vendor_qty')) {
+            if (!Schema::hasColumn('components', 'vendor_qty')) {
                 $table->integer('vendor_qty')->nullable();
             }
         });
@@ -38,8 +36,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::table('components', function (Blueprint $table) {
             if (Schema::hasColumn('components', 'vendor_name')) {
                 $table->dropColumn('vendor_name');

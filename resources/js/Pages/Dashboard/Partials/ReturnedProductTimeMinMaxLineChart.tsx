@@ -1,7 +1,11 @@
-import { ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip } from '@/Components/UI/chart';
+import { ChartContainer, ChartLegend, ChartTooltip } from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { ReturnedProductTimeMinMaxResource, ReturnedProductTimeLineChartInterface, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import {
+    ReturnedProductTimeLineChartInterface,
+    ReturnedProductTimeMinMaxResource,
+    ServiceFilterOptions,
+} from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -19,43 +23,58 @@ export default function ({
     const [currentChartLocale, setCurrentChartLocale] = useState(currentLocale());
 
     const [lineChart, setLineChart] = useState<ReturnedProductTimeLineChartInterface>({
-            data: data,
-            config: {
-                min_duration: {
-                    label: t('pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.min_duration'),
-                    color: 'hsl(var(--chart-1))',
-                },
-                max_duration: {
-                    label: t('pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.max_duration'),
-                    color: 'hsl(var(--chart-2))',
-                },
-            }
+        data: data,
+        config: {
+            min_duration: {
+                label: t(
+                    'pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.min_duration',
+                ),
+                color: 'hsl(var(--chart-1))',
+            },
+            max_duration: {
+                label: t(
+                    'pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.max_duration',
+                ),
+                color: 'hsl(var(--chart-2))',
+            },
+        },
     });
-    
+
     const syncDatas = withLoading(async () => {
-        if (data === lineChart.data && currentFilters === filters && currentChartLocale === currentLocale()) return;
+        if (
+            data === lineChart.data &&
+            currentFilters === filters &&
+            currentChartLocale === currentLocale()
+        )
+            return;
         setCurrentChartLocale(currentLocale());
         setCurrentFilters(filters);
-        await window.axios.get(
-            route(`${ROUTES.DASHBOARD}`, {
-                intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX,
-                ...filters,
-            })
-        ).then((res) => {
-            setLineChart({
-                data: res.data, 
-                config: {
-                    min_duration: {
-                        label: t('pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.min_duration'),
-                        color: lineChart.config.min_duration.color,
+        await window.axios
+            .get(
+                route(`${ROUTES.DASHBOARD}`, {
+                    intent: IntentEnum.WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX,
+                    ...filters,
+                }),
+            )
+            .then((res) => {
+                setLineChart({
+                    data: res.data,
+                    config: {
+                        min_duration: {
+                            label: t(
+                                'pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.min_duration',
+                            ),
+                            color: lineChart.config.min_duration.color,
+                        },
+                        max_duration: {
+                            label: t(
+                                'pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.max_duration',
+                            ),
+                            color: lineChart.config.max_duration.color,
+                        },
                     },
-                    max_duration: {
-                        label: t('pages.dashboard.partials.returned_product_progress_time_min_max_chart.label.max_duration'),
-                        color: lineChart.config.max_duration.color,
-                    },
-                }
+                });
             });
-        });
     });
 
     const renderWorkstationProgressTooltipContent = ({ payload, label }: any) => {
@@ -91,10 +110,8 @@ export default function ({
     };
 
     const renderLegendContentFormat = (value: string, entry: any, index: number) => {
-        return (
-            <span className='text-foreground'>{lineChart.config[value].label}</span>
-        )
-    }
+        return <span className='text-foreground'>{lineChart.config[value].label}</span>;
+    };
     const formatDuration = (seconds: number) => {
         const days = Math.floor(seconds / 86400);
         const hrs = Math.floor((seconds % 86400) / 3600);
@@ -113,35 +130,40 @@ export default function ({
     }, [setLocale]);
 
     return (
-        <ChartContainer
-            config={lineChart.config}
-            className='mt-5 h-[400px] w-full'
-        >
-            <LineChart
-                data={lineChart.data}
-            >
-                <YAxis 
-                    // width={100} 
-                    domain={[0, 'dataMax']} 
+        <ChartContainer config={lineChart.config} className='mt-5 h-[400px] w-full'>
+            <LineChart data={lineChart.data}>
+                <YAxis
                     tickFormatter={formatDuration}
+                    // width={100}
+                    domain={[0, 'dataMax']}
                 />
-                <XAxis dataKey='year_month' angle={-45} textAnchor='end' height={110}/>
+                <XAxis textAnchor='end' height={110} dataKey='year_month' angle={-45} />
                 <CartesianGrid />
                 <ChartTooltip content={renderWorkstationProgressTooltipContent} />
-                <ChartLegend 
-                    // content={<ChartLegendContent />} 
+                <ChartLegend
+                    // content={<ChartLegendContent />}
                     wrapperStyle={{
                         top: 0,
                         right: 0,
                         // transform: 'translate(0, -50%)',
                         lineHeight: '24px',
                     }}
-                    layout='vertical'
                     verticalAlign='middle'
+                    layout='vertical'
                     formatter={renderLegendContentFormat}
                 />
-                <Line key={'returned_progress_line_min'} type='monotone' dataKey={'min_duration'} stroke={'var(--color-min_duration)'} />
-                <Line key={'returned_progress_line_max'} type='monotone' dataKey={'max_duration'} stroke={'var(--color-max_duration)'} />
+                <Line
+                    type='monotone'
+                    stroke={'var(--color-min_duration)'}
+                    key={'returned_progress_line_min'}
+                    dataKey={'min_duration'}
+                />
+                <Line
+                    type='monotone'
+                    stroke={'var(--color-max_duration)'}
+                    key={'returned_progress_line_max'}
+                    dataKey={'max_duration'}
+                />
             </LineChart>
         </ChartContainer>
     );

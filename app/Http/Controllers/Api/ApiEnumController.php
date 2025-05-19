@@ -21,23 +21,25 @@ class ApiEnumController extends Controller {
                 }
                 if (count($localizedEnums) > 0) {
                     return response()->json($localizedEnums);
-                } else {
-                    return response()->json(['error' => 'No enums localized'], 400);
                 }
-            } else {
-                return response()->json(['error' => 'No enums provided'], 400);
+
+                return response()->json(['error' => 'No enums localized'], 400);
+
             }
-        } else {
-            // Build the fully qualified class name
-            $enumClass = "App\\Support\\Enums\\{$enumName}";
-    
-            // Check if the class exists and is an enum
-            if (!class_exists($enumClass) || !method_exists($enumClass, 'getLocalizedLabels')) {
-                return response()->json(['error' => 'Enum ' . $enumClass . ' not found or not supported'], 404);
-            }
-    
-            // Return the localized labels
-            return response()->json($enumClass::getLocalizedLabels());
+
+            return response()->json(['error' => 'No enums provided'], 400);
+
         }
+        // Build the fully qualified class name
+        $enumClass = "App\\Support\\Enums\\{$enumName}";
+
+        // Check if the class exists and is an enum
+        if (!class_exists($enumClass) || !method_exists($enumClass, 'getLocalizedLabels')) {
+            return response()->json(['error' => 'Enum ' . $enumClass . ' not found or not supported'], 404);
+        }
+
+        // Return the localized labels
+        return response()->json($enumClass::getLocalizedLabels());
+
     }
 }

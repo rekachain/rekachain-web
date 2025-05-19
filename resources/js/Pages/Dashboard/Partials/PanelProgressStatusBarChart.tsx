@@ -1,4 +1,11 @@
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/Components/UI/chart';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
@@ -7,9 +14,9 @@ export default function ({
     localizedStatuses,
     filters,
 }: {
-    data: any
-    localizedStatuses?: Record<string, string>
-    filters?: ServiceFilterOptions
+    data: any;
+    localizedStatuses?: Record<string, string>;
+    filters?: ServiceFilterOptions;
 }) {
     const chartConfigTrainset = {
         done: {
@@ -54,31 +61,15 @@ export default function ({
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
-                <Bar
-                    radius={4}
-                    fill='var(--color-in_progress)'
-                    dataKey='in_progress'
-                />
-                <Bar 
-                    radius={4} 
-                    fill='var(--color-done)' 
-                    dataKey='done' 
-                />
+                <Bar radius={4} fill='var(--color-in_progress)' dataKey='in_progress' />
+                <Bar radius={4} fill='var(--color-done)' dataKey='done' />
                 <Bar
                     radius={4}
                     fill='var(--color-material_in_transit)'
                     dataKey='material_in_transit'
                 />
-                <Bar
-                    radius={4}
-                    fill='var(--color-pending)'
-                    dataKey='pending'
-                />
-                <Bar
-                    radius={4}
-                    fill='var(--color-material_accepted)'
-                    dataKey='material_accepted'
-                />
+                <Bar radius={4} fill='var(--color-pending)' dataKey='pending' />
+                <Bar radius={4} fill='var(--color-material_accepted)' dataKey='material_accepted' />
             </BarChart>
         </ChartContainer>
     );

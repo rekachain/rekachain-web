@@ -1,8 +1,18 @@
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
-import { ScrollArea } from '@/Components/UI/scroll-area';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { AttachmentStatusBarChartInterface, AttachmentStatusOfTrainsetResource, ServiceFilterOptions } from '@/Support/Interfaces/Others';
+import {
+    AttachmentStatusBarChartInterface,
+    AttachmentStatusOfTrainsetResource,
+    ServiceFilterOptions,
+} from '@/Support/Interfaces/Others';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
@@ -13,18 +23,18 @@ export default function ({
     localizedStatuses,
     filters,
 }: {
-    data: AttachmentStatusOfTrainsetResource[]
-    localizedStatuses: Record<string, string>
-    filters: ServiceFilterOptions
+    data: AttachmentStatusOfTrainsetResource[];
+    localizedStatuses: Record<string, string>;
+    filters: ServiceFilterOptions;
 }) {
     const { t } = useLaravelReactI18n();
     const [currentFilters, setCurrentFilters] = useState(filters);
     const [trainsetStatusFilter, setTrainsetStatusFilter] = useState({
         column_filters: {
-            project_id: filters.project_id || 1
-        }
+            project_id: filters.project_id || 1,
+        },
     });
-    
+
     const [trainsetProgressStatusConfig, setTrainsetProgressStatusConfig] = useState<ChartConfig>({
         done: {
             label: localizedStatuses.done || 'Selesai',
@@ -53,13 +63,20 @@ export default function ({
             data: data,
             config: Object.fromEntries(
                 Object.entries(trainsetProgressStatusConfig).filter(([key]) =>
-                    filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                    filters?.useMerged
+                        ? !['material_in_transit', 'material_accepted'].includes(key)
+                        : true,
                 ),
             ),
-    })
+        });
 
     const syncStatusChart = withLoading(async () => {
-        if (data === trainsetProgressStatusChart.data && trainsetProgressStatusChart.config.done.label === localizedStatuses.done && currentFilters === filters) return;
+        if (
+            data === trainsetProgressStatusChart.data &&
+            trainsetProgressStatusChart.config.done.label === localizedStatuses.done &&
+            currentFilters === filters
+        )
+            return;
         setCurrentFilters(filters);
         const res = await window.axios.get(
             route(`${ROUTES.DASHBOARD}`, {
@@ -80,11 +97,13 @@ export default function ({
             ),
             config: Object.fromEntries(
                 Object.entries(trainsetProgressStatusConfig).filter(([key]) =>
-                    filters?.useMerged ? !['material_in_transit', 'material_accepted'].includes(key) : true,
+                    filters?.useMerged
+                        ? !['material_in_transit', 'material_accepted'].includes(key)
+                        : true,
                 ),
             ),
         });
-    })
+    });
 
     useEffect(() => {
         setTrainsetProgressStatusConfig({
@@ -122,25 +141,38 @@ export default function ({
     }, [filters.trainset_id, filters.project_id]);
 
     if (!trainsetProgressStatusChart.data!.length) {
-        return <div className="h-[300px] w-full flex justify-center items-center">Data Kosong</div>
+        return <div className='flex h-[300px] w-full items-center justify-center'>Data Kosong</div>;
     }
 
     return (
-        <ChartContainer config={trainsetProgressStatusChart.config} className="h-[300px] w-full pr-10">
-            <BarChart accessibilityLayer data={trainsetProgressStatusChart.data}>
+        <ChartContainer
+            config={trainsetProgressStatusChart.config}
+            className='h-[300px] w-full pr-10'
+        >
+            <BarChart data={trainsetProgressStatusChart.data} accessibilityLayer>
                 <CartesianGrid vertical={false} />
-                <YAxis type="number" dataKey="done" tickLine={false} tickMargin={10} axisLine={false} />
-                <XAxis
-                    dataKey="trainset_name"
-                    tickLine={false}
+                <YAxis
+                    type='number'
                     tickMargin={10}
+                    tickLine={false}
+                    dataKey='done'
                     axisLine={false}
-                    tickFormatter={value => value.slice(0, 6)}
+                />
+                <XAxis
+                    tickMargin={10}
+                    tickLine={false}
+                    tickFormatter={(value) => value.slice(0, 6)}
+                    dataKey='trainset_name'
+                    axisLine={false}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <ChartLegend content={<ChartLegendContent />} />
-                {Object.keys(trainsetProgressStatusChart.config).map(dataKey => (
-                    <Bar key={`trainsetPanelStatus-${dataKey}-key`} dataKey={dataKey} fill={`var(--color-${dataKey})`} />
+                {Object.keys(trainsetProgressStatusChart.config).map((dataKey) => (
+                    <Bar
+                        key={`trainsetPanelStatus-${dataKey}-key`}
+                        fill={`var(--color-${dataKey})`}
+                        dataKey={dataKey}
+                    />
                 ))}
             </BarChart>
         </ChartContainer>

@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductProblemAnalysis\StoreProductProblemAnalysisRequest;
-use App\Http\Requests\ProductProblemAnalysis\UpdateProductProblemAnalysisRequest;
 use App\Http\Resources\ProductProblemAnalysisResource;
-use App\Models\ProductProblemAnalysis;
 use App\Support\Interfaces\Services\ProductProblemAnalysisServiceInterface;
 use Illuminate\Http\Request;
 

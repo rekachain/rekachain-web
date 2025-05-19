@@ -4,13 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::table('returned_products', function (Blueprint $table) {
             $table->string('project_name')->after('serial_number')->nullable();
             $table->string('trainset_name')->after('serial_number')->nullable();
@@ -22,8 +20,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::table('returned_products', function (Blueprint $table) {
             if (Schema::hasColumn('returned_products', 'project_name')) {
                 $table->dropColumn('project_name');

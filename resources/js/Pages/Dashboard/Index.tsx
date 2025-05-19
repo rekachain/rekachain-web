@@ -1,42 +1,60 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-import { PageProps } from '@/Types';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { lazy, Suspense, useEffect, useState } from 'react';
-import { checkPermission } from '@/Helpers/permissionHelper';
-import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
-import { AttachmentStatusOfTrainsetResource, AttachmentStatusOfWorkstationResource, ComponentProblemResource, PaginateResponse, ReturnedProductTimeDiffResource, ReturnedProductTimeMinMaxResource, ServiceFilterOptions, VendorProblemResource } from '@/Support/Interfaces/Others';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
-import Filters from './Partials/Filters';
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
-import WorkstationProgressStatusBarChart from './Partials/WorkstationProgressStatusBarChart';
-import TrainsetProgressStatusBarChart from './Partials/TrainsetProgressStatusBarChart';
-import PanelProgressStatusBarChart from './Partials/PanelProgressStatusBarChart';
-import WorkshopProgressStatusBarChart from './Partials/WorkshopProgressStatusBarChart';
-import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
-import ReturnedProductTimeMinMaxLineChart from './Partials/ReturnedProductTimeMinMaxLineChart';
-import { withLoading } from '@/Utils/withLoading';
-import { ProductProblemResource, ReplacementStockResource } from '@/Support/Interfaces/Resources';
-import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
-import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
-import { Button, buttonVariants } from '@/Components/UI/button';
+import { buttonVariants } from '@/Components/UI/button';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
+import { checkPermission } from '@/Helpers/permissionHelper';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
+import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import {
+    AttachmentStatusOfTrainsetResource,
+    AttachmentStatusOfWorkstationResource,
+    ComponentProblemResource,
+    PaginateResponse,
+    ReturnedProductTimeDiffResource,
+    ReturnedProductTimeMinMaxResource,
+    ServiceFilterOptions,
+    VendorProblemResource,
+} from '@/Support/Interfaces/Others';
+import { ReplacementStockResource } from '@/Support/Interfaces/Resources';
+import { PageProps } from '@/Types';
+import { withLoading } from '@/Utils/withLoading';
+import { Head, Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { lazy, Suspense, useEffect, useState } from 'react';
+import Filters from './Partials/Filters';
+import PanelProgressStatusBarChart from './Partials/PanelProgressStatusBarChart';
+import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
+import ReturnedProductStatusPieChart from './Partials/ReturnedProductStatusPieChart';
+import ReturnedProductTimeMinMaxLineChart from './Partials/ReturnedProductTimeMinMaxLineChart';
+import TrainsetProgressStatusBarChart from './Partials/TrainsetProgressStatusBarChart';
+import WorkshopProgressStatusBarChart from './Partials/WorkshopProgressStatusBarChart';
+import WorkstationProgressStatusBarChart from './Partials/WorkstationProgressStatusBarChart';
 
-export default function Dashboard({ 
-    data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks, productProblems, vendorProblems
+export default function Dashboard({
+    data,
+    trainsetStatusProgress,
+    workstationStatusProgress,
+    returnedProductStatus,
+    returnedProductTimeDiff,
+    returnedProductTimeMinMax,
+    replacementStocks,
+    productProblems,
+    vendorProblems,
 }: {
-    data: PageProps
-    trainsetStatusProgress: AttachmentStatusOfTrainsetResource[]
-    workstationStatusProgress: AttachmentStatusOfWorkstationResource[]
-    returnedProductStatus: { name: string; value: number }[] | null
-    returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null
-    returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null
-    replacementStocks: ReplacementStockResource[]
-    productProblems: PaginateResponse<ComponentProblemResource> | null
-    vendorProblems: PaginateResponse<VendorProblemResource> | null
+    data: PageProps;
+    trainsetStatusProgress: AttachmentStatusOfTrainsetResource[];
+    workstationStatusProgress: AttachmentStatusOfWorkstationResource[];
+    returnedProductStatus: { name: string; value: number }[] | null;
+    returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null;
+    returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null;
+    replacementStocks: ReplacementStockResource[];
+    productProblems: PaginateResponse<ComponentProblemResource> | null;
+    vendorProblems: PaginateResponse<VendorProblemResource> | null;
 }) {
-    const ReturnedProductTimeDiffChart = lazy(() => import('./Partials/ReturnedProductTimeDiffChart'));
+    const ReturnedProductTimeDiffChart = lazy(
+        () => import('./Partials/ReturnedProductTimeDiffChart'),
+    );
     const VendorProblemDataView = lazy(() => import('./Partials/VendorProblemDataView'));
     const ProductProblemDataView = lazy(() => import('./Partials/ProductProblemDataView'));
 
@@ -62,33 +80,31 @@ export default function Dashboard({
 
     const { t, setLocale } = useLaravelReactI18n();
 
-    const [lastSyncLocalizedEnumsTime, setLastSyncLocalizedEnumsTime] = useState<number | null>(null);
+    const [lastSyncLocalizedEnumsTime, setLastSyncLocalizedEnumsTime] = useState<number | null>(
+        null,
+    );
 
-    const syncLocalizedEnums = withLoading(
-        async () => {
-            const now = Date.now();
-            if (lastSyncLocalizedEnumsTime === null || now - lastSyncLocalizedEnumsTime > 5000) {
-                setLastSyncLocalizedEnumsTime(now);
-                await fetchEnumLabels(['ReturnedProductStatusEnum', 'PanelAttachmentStatusEnum'])
-                    .then((response) => {
-                        setLocalizedReturnedProductStatuses(response.ReturnedProductStatusEnum);
-                        setLocalizedWorkstationStatuses(response.PanelAttachmentStatusEnum);
-                        setLocalizedTrainsetStatuses(response.PanelAttachmentStatusEnum);
-                    })
-                    .catch((error) => console.error('Failed to fetch localized statuses:', error));
-            }
-        }
-    );
-    const dispatchProductProblemAnalytics = withLoading(
-        async () => {
-            await window.axios.get(
-                route(`${ROUTES.DASHBOARD}`, {
-                    intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
-                    ...filters,
+    const syncLocalizedEnums = withLoading(async () => {
+        const now = Date.now();
+        if (lastSyncLocalizedEnumsTime === null || now - lastSyncLocalizedEnumsTime > 5000) {
+            setLastSyncLocalizedEnumsTime(now);
+            await fetchEnumLabels(['ReturnedProductStatusEnum', 'PanelAttachmentStatusEnum'])
+                .then((response) => {
+                    setLocalizedReturnedProductStatuses(response.ReturnedProductStatusEnum);
+                    setLocalizedWorkstationStatuses(response.PanelAttachmentStatusEnum);
+                    setLocalizedTrainsetStatuses(response.PanelAttachmentStatusEnum);
                 })
-            )
+                .catch((error) => console.error('Failed to fetch localized statuses:', error));
         }
-    );
+    });
+    const dispatchProductProblemAnalytics = withLoading(async () => {
+        await window.axios.get(
+            route(`${ROUTES.DASHBOARD}`, {
+                intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
+                ...filters,
+            }),
+        );
+    });
 
     useEffect(() => {
         syncLocalizedEnums();
@@ -97,59 +113,70 @@ export default function Dashboard({
     return (
         <AuthenticatedLayout>
             <Head title={t('pages.dashboard.index.title')} />
-            <div
-                className={`max-w-7xl mx-auto px-3 sm:px-6 lg:px-5`}
-            >
+            <div className={`mx-auto max-w-7xl px-3 sm:px-6 lg:px-5`}>
                 <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                     <div className=''>
                         <h1 className='mt-2 text-3xl font-bold'>Dashboard</h1>
                         <div className='flex w-full items-center justify-between'>
-                            <div className="flex">
+                            <div className='flex'>
                                 <h2 className='my-2 text-xl'>
                                     {data['project'] == null
                                         ? t('pages.dashboard.index.all_project')
                                         : `${t('pages.dashboard.index.project')} ${data['project']}`}
                                 </h2>
                             </div>
-                            <div className="flex gap-2">
-                                <Filters data={data} filters={filters} setFilters={setFilters}/>
+                            <div className='flex gap-2'>
+                                <Filters setFilters={setFilters} filters={filters} data={data} />
                             </div>
                         </div>
-                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeMinMax && returnedProductStatus && vendorProblems && (
-                            <>
-                                <div className="my-1 flex items-center justify-between">
-                                    <h2 className='text-xl font-bold flex'>
-                                        Returned Product
-                                    </h2>
-                                    <Link
-                                        href={route(`${ROUTES.DASHBOARD}.product-problems`)}
-                                        className={buttonVariants({ variant: 'outline' })}
-                                    >
-                                        Show Problem Analysis
-                                    </Link>
-                                </div>
-                                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                                    <ReturnedProductStatusPieChart data={returnedProductStatus} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />
-                                    <Suspense fallback={<StaticLoadingOverlay />}>
-                                        <ReturnedProductTimeDiffChart data={returnedProductTimeDiff!} />
-                                    </Suspense>
-                                </div>
-                                <div className="flex gap-2">
-                                    <div className="flex w-1/3">
+                        {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) &&
+                            returnedProductTimeMinMax &&
+                            returnedProductStatus &&
+                            vendorProblems && (
+                                <>
+                                    <div className='my-1 flex items-center justify-between'>
+                                        <h2 className='flex text-xl font-bold'>Returned Product</h2>
+                                        <Link
+                                            href={route(`${ROUTES.DASHBOARD}.product-problems`)}
+                                            className={buttonVariants({ variant: 'outline' })}
+                                        >
+                                            Show Problem Analysis
+                                        </Link>
+                                    </div>
+                                    <div className='grid grid-cols-1 gap-2 md:grid-cols-2'>
+                                        <ReturnedProductStatusPieChart
+                                            localizedStatuses={localizedReturnedProductStatuses}
+                                            filters={filters}
+                                            data={returnedProductStatus}
+                                        />
                                         <Suspense fallback={<StaticLoadingOverlay />}>
-                                            <VendorProblemDataView data={vendorProblems} />
+                                            <ReturnedProductTimeDiffChart
+                                                data={returnedProductTimeDiff!}
+                                            />
                                         </Suspense>
                                     </div>
-                                    <div className="flex w-2/3">
-                                        <ReturnedProductTimeMinMaxLineChart data={returnedProductTimeMinMax} filters={filters} />
+                                    <div className='flex gap-2'>
+                                        <div className='flex w-1/3'>
+                                            <Suspense fallback={<StaticLoadingOverlay />}>
+                                                <VendorProblemDataView data={vendorProblems} />
+                                            </Suspense>
+                                        </div>
+                                        <div className='flex w-2/3'>
+                                            <ReturnedProductTimeMinMaxLineChart
+                                                filters={filters}
+                                                data={returnedProductTimeMinMax}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <ReplacementStockThresholdStackBarChart data={replacementStocks} filters={filters} />
-                                {/* <Suspense fallback={<StaticLoadingOverlay />}>
+                                    <ReplacementStockThresholdStackBarChart
+                                        filters={filters}
+                                        data={replacementStocks}
+                                    />
+                                    {/* <Suspense fallback={<StaticLoadingOverlay />}>
                                     <ProductProblemDataView data={productProblems!} /> #TODO: now i want you to give me how to make ollama run in my nginx server 
                                 </Suspense> */}
-                            </>
-                        )}
+                                </>
+                            )}
                         {checkPermission([PERMISSION_ENUM.DASHBOARD_READ]) && (
                             <>
                                 <div className='my-4 flex items-center justify-between'>
@@ -157,13 +184,17 @@ export default function Dashboard({
                                         {t('pages.dashboard.index.all_trainset_status')}
                                     </h2>
                                 </div>
-                                <TrainsetProgressStatusBarChart data={trainsetStatusProgress} localizedStatuses={localizedTrainsetStatuses} filters={filters} />
+                                <TrainsetProgressStatusBarChart
+                                    localizedStatuses={localizedTrainsetStatuses}
+                                    filters={filters}
+                                    data={trainsetStatusProgress}
+                                />
                                 <h2 className='my-1 text-xl font-bold'>
                                     {t('pages.dashboard.index.progress_workshops')}
                                 </h2>
                                 <h3 className='text-base'>Workshop Sukosari, Candisewu</h3>
                                 <WorkshopProgressStatusBarChart data={data['ws']} />
-        
+
                                 <h2 className='my-1 text-xl font-bold'>
                                     {t('pages.dashboard.index.progress_panels')}
                                 </h2>
@@ -174,8 +205,14 @@ export default function Dashboard({
                                 <h2 className='my-1 text-xl font-bold'>
                                     {t('pages.dashboard.index.all_workstations')}
                                 </h2>
-                                <h3 className='text-base'>{t('pages.dashboard.index.workstations_sub')}</h3>
-                                <WorkstationProgressStatusBarChart data={workstationStatusProgress} localizedStatuses={localizedWorkstationStatuses} filters={filters} />
+                                <h3 className='text-base'>
+                                    {t('pages.dashboard.index.workstations_sub')}
+                                </h3>
+                                <WorkstationProgressStatusBarChart
+                                    localizedStatuses={localizedWorkstationStatuses}
+                                    filters={filters}
+                                    data={workstationStatusProgress}
+                                />
                             </>
                         )}
                     </div>

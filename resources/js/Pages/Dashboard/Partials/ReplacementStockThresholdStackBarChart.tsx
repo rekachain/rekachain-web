@@ -1,4 +1,4 @@
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/Components/UI/chart';
+import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from '@/Components/UI/chart';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
@@ -12,34 +12,45 @@ export default function ({
     data,
     filters,
 }: {
-    data: ReplacementStockResource[]
-    filters: ServiceFilterOptions
+    data: ReplacementStockResource[];
+    filters: ServiceFilterOptions;
 }) {
     const { t, currentLocale } = useLaravelReactI18n();
     const [currentFilter, setCurrentFilter] = useState(filters);
     const [currentChartLocale, setCurrentChartLocale] = useState(currentLocale());
 
-    const [replacementStockChart, setReplacementStockChart] =
-        useState<{ data: ReplacementStockResource[]; config: ChartConfig }>({
-            data: data,
-            config: {
-                qty: {
-                    label: t('pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.qty'),
-                    color: 'hsl(var(--chart-1))',
-                },
-                threshold: {
-                    label: t('pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.threshold'),
-                    color: 'hsl(var(--chart-2))',
-                },
-                warning: {
-                    label: 'Warning',
-                    color: 'hsl(var(--chart-3))',
-                }
-            }
+    const [replacementStockChart, setReplacementStockChart] = useState<{
+        data: ReplacementStockResource[];
+        config: ChartConfig;
+    }>({
+        data: data,
+        config: {
+            qty: {
+                label: t(
+                    'pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.qty',
+                ),
+                color: 'hsl(var(--chart-1))',
+            },
+            threshold: {
+                label: t(
+                    'pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.threshold',
+                ),
+                color: 'hsl(var(--chart-2))',
+            },
+            warning: {
+                label: 'Warning',
+                color: 'hsl(var(--chart-3))',
+            },
+        },
     });
 
     const syncStockChart = withLoading(async () => {
-        if (data === replacementStockChart.data && currentFilter === filters && currentChartLocale === currentLocale()) return;
+        if (
+            data === replacementStockChart.data &&
+            currentFilter === filters &&
+            currentChartLocale === currentLocale()
+        )
+            return;
         setCurrentFilter(filters);
         setCurrentChartLocale(currentLocale());
         const res = await window.axios.get(
@@ -51,20 +62,24 @@ export default function ({
             data: res.data,
             config: {
                 qty: {
-                    label: t('pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.qty'),
+                    label: t(
+                        'pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.qty',
+                    ),
                     color: replacementStockChart.config.qty.color,
                 },
                 threshold: {
-                    label: t('pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.threshold'),
+                    label: t(
+                        'pages.dashboard.partials.replacement_stock_threshold_stack_bar_chart.label.threshold',
+                    ),
                     color: replacementStockChart.config.threshold.color,
                 },
                 warning: {
                     label: replacementStockChart.config.warning.label,
                     color: replacementStockChart.config.warning.color,
-                }
-            }
+                },
+            },
         });
-    })
+    });
 
     const toPercent = (decimal: number, fixed = 0) => {
         return `${(decimal * 100).toFixed(fixed)}%`;
@@ -85,7 +100,10 @@ export default function ({
                             <div className='flex items-center gap-1.5'>
                                 <div
                                     style={{
-                                        backgroundColor: (index == 1 && threshold > qty) ? replacementStockChart.config.warning.color : entry.color,
+                                        backgroundColor:
+                                            index == 1 && threshold > qty
+                                                ? replacementStockChart.config.warning.color
+                                                : entry.color,
                                     }}
                                     className='h-2 w-2 shrink-0 rounded-[2px]'
                                 />
@@ -102,11 +120,8 @@ export default function ({
     };
 
     const renderLegendContentFormat = (value: string, entry: any, index: number) => {
-        return (
-            <span className='text-foreground'>{replacementStockChart.config[value].label}</span>
-        )
-    }
-
+        return <span className='text-foreground'>{replacementStockChart.config[value].label}</span>;
+    };
 
     useEffect(() => {
         syncStockChart();
@@ -123,21 +138,21 @@ export default function ({
                 <CartesianGrid vertical={false} />
                 <YAxis type='number' tickFormatter={(value) => toPercent(value, 0)} />
                 <XAxis
-                    height={150}
                     type='category'
                     tickMargin={10}
                     tickLine={false}
-                    dataKey='component.name'
-                    angle={-55}
                     textAnchor='end'
+                    height={150}
+                    dataKey='component.name'
                     axisLine={false}
+                    angle={-55}
                 />
                 {/* <ChartTooltip content={<ChartTooltipContent />} /> */}
                 <ChartTooltip content={renderChartTooltipContent} />
-                <ChartLegend 
+                <ChartLegend
                     verticalAlign='top'
                     height={25}
-                    formatter={renderLegendContentFormat} 
+                    formatter={renderLegendContentFormat}
                 />
                 <Bar
                     type='monotone'
@@ -153,9 +168,16 @@ export default function ({
                     fill={`var(--color-threshold)`}
                     dataKey={'threshold'}
                 >
-                    {replacementStockChart.data.map((entry, index) => 
-                        <Cell key={`cell-${index}`} fill={entry.threshold > entry.qty ? 'var(--color-warning)' : 'var(--color-threshold)'} />
-                    )}
+                    {replacementStockChart.data.map((entry, index) => (
+                        <Cell
+                            key={`cell-${index}`}
+                            fill={
+                                entry.threshold > entry.qty
+                                    ? 'var(--color-warning)'
+                                    : 'var(--color-threshold)'
+                            }
+                        />
+                    ))}
                 </Bar>
             </BarChart>
         </ChartContainer>
