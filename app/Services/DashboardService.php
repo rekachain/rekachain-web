@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\Dashboard\ProductProblemAnalysis;
 use App\Models\PanelAttachment;
 use App\Models\ReturnedProduct;
 use App\Support\Enums\IntentEnum;
@@ -473,5 +474,36 @@ class DashboardService {
         );
 
         return $paginated;
+    }
+
+    public function getComponentProblemAnalytics(array $data) {
+        $components = $this->componentService->with(['product_problems', 'product_problems.product_problem_notes'])->getAll($data);
+
+        // Transform with localization
+        $transformed = $components->filter(function ($item) {
+            return $item->hasProductProblem();
+        })->map(function ($item) {
+            $productProblemDateFrom = $item->product_problems()->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
+            $productProblemDateTo = $item->product_problems()->orderByDesc('created_at')->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
+            $dateRange = $productProblemDateFrom == $productProblemDateTo ? $productProblemDateFrom : $productProblemDateFrom . ' - ' . $productProblemDateTo;
+            $totalProblem = $item->product_problems()->count();
+
+            return (object) [
+                // 'intent' => IntentEnum::WEB_DASHBOARD_GET_PRODUCT_PROBLEM->value,
+                'component_name' => $item->name,
+                'component_description' => $item->description ?? '',
+                'vendor_name' => $item->vendor_name,
+                'notes' => $item->product_problems->flatMap(function ($problem) {
+                    return $problem->product_problem_notes->map(function ($note) {
+                        return $note->note;
+                    });
+                })->unique()->values()->implode(', '),
+                'date_range' => $dateRange,
+                'total_sent' => $item->vendor_qty,
+                'total_problem' => $totalProblem,
+                'problem_percent' => $totalProblem * 100 / $item->vendor_qty
+            ];
+        });
+        ProductProblemAnalysis::dispatch($transformed->toArray());
     }
 }

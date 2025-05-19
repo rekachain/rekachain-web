@@ -188,4 +188,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'ollama_api_url' => env('OLLAMA_API_URL'),
+    'ollama_username' => env('OLLAMA_USERNAME'),
+    'ollama_password' => env('OLLAMA_PASSWORD'),
 ];
