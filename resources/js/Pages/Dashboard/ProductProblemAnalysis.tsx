@@ -10,7 +10,7 @@ import { Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { lazy, Suspense } from 'react';
 
-export default function (data: PaginateResponse<ProductProblemAnalysisResource>) {
+export default function () {
     const { t } = useLaravelReactI18n();
     const ProductProblemAnalysis = lazy(() => import('./Partials/ProductProblemAnalysisDataView'));
     const dispatchProductProblemAnalytics = withLoading(async () => {
@@ -35,7 +35,7 @@ export default function (data: PaginateResponse<ProductProblemAnalysisResource>)
                         </Button>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>
-                        <ProductProblemAnalysis data={data} />
+                        <ProductProblemAnalysis />
                     </Suspense>
                 </div>
             </AuthenticatedLayout>

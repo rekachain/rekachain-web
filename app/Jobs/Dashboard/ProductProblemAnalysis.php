@@ -40,34 +40,44 @@ class ProductProblemAnalysis implements ShouldQueue {
                 "\nNama Vendor: " . $value->vendor_name .
                 "\nPersentase Masalah: " . number_format($value->problem_percent, 2) . '% dari ' . $value->total_sent . ' barang' .
                 "\nTemuan Masalah: " . $value->notes;
-            // logger()->info('Prompt:', ['prompt' => $promptIdentity . $productPrompt]);
-            $response = Http::withBasicAuth(
-                config('app.ollama_username'),
-                config('app.ollama_password')
-            )
-                ->timeout(60)->post(config('app.ollama_api_url'), [
-                'model' => 'mistral',
-                'prompt' => $promptIdentity . $productPrompt,
-                'stream' => false,
-            ]);
 
-            if ($response->failed()) {
-                throw new \Exception('Failed to connect to Ollama: ' . $response->body());
+            $success = false;
+            $attempt = 1;
+            while (!$success) {
+                $response = Http::withToken(
+                    config('services.groq.key'),
+                )
+                    ->timeout(60)->post(config('services.groq.url'), [
+                    'model' => config('services.groq.model'),
+                    'messages' => [[
+                        'role' => 'user',
+                        'content' => $promptIdentity . $productPrompt,
+                    ],],
+                ]);
+
+                if ($response->failed()) {
+                    $attempt++;
+                    if ($attempt > 3) {
+                        throw new \Exception('Failed to connect: ' . $response->body());
+                    }
+                    sleep(60); // Wait for a minute before retrying
+                } else {
+                    $success = true;
+                    $text = $response->json('choices.0.message.content');
+                    $summary = Str::of($text)->after('#summary:')->before('#cause:')->trim();
+                    $cause = Str::of($text)->after('#cause:')->before('#solution:')->trim();
+                    $solution = Str::of($text)->after('#solution:')->trim();
+
+                    \App\Models\ProductProblemAnalysis::updateOrCreate([
+                        'component_name' => $value->component_name,
+                        'date_range' => $value->date_range,
+                    ], [
+                        'summary' => $summary ?? 'N/A',
+                        'cause' => $cause ?? 'N/A',
+                        'solution' => $solution ?? 'N/A',
+                    ]);
+                }
             }
-
-            $text = $response->json('response');
-            $summary = Str::of($text)->after('#summary:')->before('#cause:')->trim();
-            $cause = Str::of($text)->after('#cause:')->before('#solution:')->trim();
-            $solution = Str::of($text)->after('#solution:')->trim();
-
-            \App\Models\ProductProblemAnalysis::updateOrCreate([
-                'component_name' => $value->component_name,
-                'date_range' => $value->date_range,
-            ], [
-                'summary' => $summary ?? 'N/A',
-                'cause' => $cause ?? 'N/A',
-                'solution' => $solution ?? 'N/A',
-            ]);
         }
         $end = microtime(true);
         logger()->info('Time:', ['time' => $end - $start]);
