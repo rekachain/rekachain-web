@@ -116,6 +116,7 @@ return [
                     'cause' => 'Kemungkinan Penyebab',
                     'solution' => 'Rekomendasi Solusi',
                 ],
+                'no_data' => 'Tidak Ada Data',
             ],
         ],
     ],

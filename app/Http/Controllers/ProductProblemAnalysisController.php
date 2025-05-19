@@ -10,13 +10,11 @@ class ProductProblemAnalysisController extends Controller {
     public function __construct(protected ProductProblemAnalysisServiceInterface $productProblemAnalysisService) {}
 
     public function index(Request $request) {
-        $perPage = $request->get('perPage', 10);
-        $data = ProductProblemAnalysisResource::collection($this->productProblemAnalysisService->getAllPaginated($request->query(), $perPage));
-
         if ($this->ajax()) {
-            return $data;
+            $perPage = $request->get('perPage', 10);
+            return ProductProblemAnalysisResource::collection($this->productProblemAnalysisService->getAllPaginated($request->query(), $perPage));
         }
 
-        return inertia('Dashboard/ProductProblemAnalysis', compact('data'));
+        return inertia('Dashboard/ProductProblemAnalysis');
     }
 }

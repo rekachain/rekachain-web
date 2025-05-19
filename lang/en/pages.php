@@ -116,6 +116,7 @@ return [
                     'cause' => 'Possible Cause',
                     'solution' => 'Recommended Solution',
                 ],
+                'no_data' => 'No Data',
             ],
         ],
     ],

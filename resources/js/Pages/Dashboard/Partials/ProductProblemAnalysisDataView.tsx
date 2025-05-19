@@ -14,7 +14,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 
-export default function ({ data }: { data: PaginateResponse<ProductProblemAnalysisResource> }) {
+export default function () {
     const { t } = useLaravelReactI18n();
 
     const [filters, setFilters] = useState<ServiceFilterOptions>({
@@ -71,7 +71,15 @@ export default function ({ data }: { data: PaginateResponse<ProductProblemAnalys
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {problemAnalysisResponse.data.map((data) => (
+                        {problemAnalysisResponse.data.length === 0 && (
+                            <TableRow>
+                                <TableCell colSpan={5} className='text-center'>
+                                    {t(
+                                        'pages.dashboard.partials.product_problem_analysis_data_view.no_data',
+                                    )}
+                                </TableCell>
+                            </TableRow>
+                        ) || problemAnalysisResponse.data.map((data) => (
                             <TableRow key={data.id}>
                                 <TableCell>{data.date_range}</TableCell>
                                 <TableCell>{data.component_name}</TableCell>

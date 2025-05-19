@@ -4,12 +4,10 @@ import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ROUTES } from '@/Support/Constants/routes';
-import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import {
     AttachmentStatusOfTrainsetResource,
     AttachmentStatusOfWorkstationResource,
-    ComponentProblemResource,
     PaginateResponse,
     ReturnedProductTimeDiffResource,
     ReturnedProductTimeMinMaxResource,
@@ -39,7 +37,6 @@ export default function Dashboard({
     returnedProductTimeDiff,
     returnedProductTimeMinMax,
     replacementStocks,
-    productProblems,
     vendorProblems,
 }: {
     data: PageProps;
@@ -49,14 +46,12 @@ export default function Dashboard({
     returnedProductTimeDiff: PaginateResponse<ReturnedProductTimeDiffResource> | null;
     returnedProductTimeMinMax: ReturnedProductTimeMinMaxResource[] | null;
     replacementStocks: ReplacementStockResource[];
-    productProblems: PaginateResponse<ComponentProblemResource> | null;
     vendorProblems: PaginateResponse<VendorProblemResource> | null;
 }) {
     const ReturnedProductTimeDiffChart = lazy(
         () => import('./Partials/ReturnedProductTimeDiffChart'),
     );
     const VendorProblemDataView = lazy(() => import('./Partials/VendorProblemDataView'));
-    const ProductProblemDataView = lazy(() => import('./Partials/ProductProblemDataView'));
 
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
         Record<string, string>
@@ -97,14 +92,6 @@ export default function Dashboard({
                 .catch((error) => console.error('Failed to fetch localized statuses:', error));
         }
     });
-    const dispatchProductProblemAnalytics = withLoading(async () => {
-        await window.axios.get(
-            route(`${ROUTES.DASHBOARD}`, {
-                intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
-                ...filters,
-            }),
-        );
-    });
 
     useEffect(() => {
         syncLocalizedEnums();
@@ -134,7 +121,7 @@ export default function Dashboard({
                             returnedProductStatus &&
                             vendorProblems && (
                                 <>
-                                    <div className='my-1 flex items-center justify-between'>
+                                    <div className='my-1 flex items-center gap-2'>
                                         <h2 className='flex text-xl font-bold'>Returned Product</h2>
                                         <Link
                                             href={route(`${ROUTES.DASHBOARD}.product-problems`)}
@@ -172,9 +159,6 @@ export default function Dashboard({
                                         filters={filters}
                                         data={replacementStocks}
                                     />
-                                    {/* <Suspense fallback={<StaticLoadingOverlay />}>
-                                    <ProductProblemDataView data={productProblems!} /> #TODO: now i want you to give me how to make ollama run in my nginx server 
-                                </Suspense> */}
                                 </>
                             )}
                         {checkPermission([PERMISSION_ENUM.DASHBOARD_READ]) && (
