@@ -49,6 +49,10 @@ class DashboardController extends Controller {
                     return DashboardResource::collection($this->dashboardService->getComponentProblems($request->query()));
                 case IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value:
                     return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
+                case IntentEnum::WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS->value:
+                    $this->dashboardService->getComponentProblemAnalytics($request->query());
+                    return true;
+
             }
 
             $data = $this->dashboardService->showGraph($request->query());

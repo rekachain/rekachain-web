@@ -374,6 +374,7 @@ enum IntentEnum: string {
     case WEB_DASHBOARD_GET_REPLACEMENT_STOCK = 'web.dashboard.get.replacement.stock';
     case WEB_DASHBOARD_GET_PRODUCT_PROBLEM = 'web.dashboard.get.product.problem';
     case WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS = 'web.dashboard.get.vendor.problem.components';
+    case WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS = 'web.dashboard.dispatch.product.problem.analysis';
     case WEB_DASHBOARD_GET_WORKSTATION_STATUS = 'web.dashboard.get.workstation.status';
     case WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS = 'web.dashboard.get.trainset.attachment.status';
 }

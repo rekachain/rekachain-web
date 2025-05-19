@@ -19,6 +19,9 @@ import { withLoading } from '@/Utils/withLoading';
 import { ProductProblemResource, ReplacementStockResource } from '@/Support/Interfaces/Resources';
 import ReplacementStockThresholdStackBarChart from './Partials/ReplacementStockThresholdStackBarChart';
 import { ComponentProgressResource } from '@/Support/Interfaces/Others/ComponentProgressResource';
+import { Button } from '@/Components/UI/button';
+import { ROUTES } from '@/Support/Constants/routes';
+import { IntentEnum } from '@/Support/Enums/intentEnum';
 
 export default function Dashboard({ 
     data, trainsetStatusProgress, workstationStatusProgress, returnedProductStatus, returnedProductTimeDiff, returnedProductTimeMinMax, replacementStocks, productProblems, vendorProblems
@@ -76,6 +79,16 @@ export default function Dashboard({
             }
         }
     );
+    const dispatchProductProblemAnalytics = withLoading(
+        async () => {
+            await window.axios.get(
+                route(`${ROUTES.DASHBOARD}`, {
+                    intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
+                    ...filters,
+                })
+            )
+        }
+    );
 
     useEffect(() => {
         syncLocalizedEnums();
@@ -104,9 +117,12 @@ export default function Dashboard({
                         </div>
                         {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && returnedProductTimeMinMax && returnedProductStatus && vendorProblems && (
                             <>
-                                <h2 className='my-1 text-xl font-bold'>
-                                    Returned Product
-                                </h2>
+                                <div className="my-1 flex items-center justify-between">
+                                    <h2 className='text-xl font-bold flex'>
+                                        Returned Product
+                                    </h2>
+                                    <Button onClick={dispatchProductProblemAnalytics} variant={'outline'}>Analyze Problem</Button> 
+                                </div>
                                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                                     <ReturnedProductStatusPieChart data={returnedProductStatus} localizedStatuses={localizedReturnedProductStatuses} filters={filters} />
                                     <Suspense fallback={<StaticLoadingOverlay />}>
@@ -125,7 +141,7 @@ export default function Dashboard({
                                 </div>
                                 <ReplacementStockThresholdStackBarChart data={replacementStocks} filters={filters} />
                                 {/* <Suspense fallback={<StaticLoadingOverlay />}>
-                                    <ProductProblemDataView data={productProblems} />
+                                    <ProductProblemDataView data={productProblems!} /> #TODO: now i want you to give me how to make ollama run in my nginx server 
                                 </Suspense> */}
                             </>
                         )}
