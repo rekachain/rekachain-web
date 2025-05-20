@@ -36,7 +36,7 @@ export default function () {
                             {t('pages.dashboard.product_problem_analysis.title')}
                         </h1>
                         <Button variant={'outline'} onClick={dispatchProductProblemAnalytics}>
-                            Analyze Problem
+                            {t('pages.dashboard.product_problem_analysis.buttons.dispatch')}
                         </Button>
                     </div>
                     <Suspense fallback={<StaticLoadingOverlay />}>

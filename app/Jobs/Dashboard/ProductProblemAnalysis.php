@@ -23,7 +23,6 @@ class ProductProblemAnalysis implements ShouldQueue, ShouldBeUnique {
 
     public function uniqueId(): string {
         $key = md5(json_encode($this->data));
-        logger()->info("Generated unique job ID: $key");
         return $key;
     }
 

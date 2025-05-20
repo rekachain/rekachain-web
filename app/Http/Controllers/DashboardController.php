@@ -48,7 +48,7 @@ class DashboardController extends Controller {
                 case IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value:
                     return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
                 case IntentEnum::WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS->value:
-                    $this->dashboardService->getComponentProblemAnalytics($request->query());
+                    return $this->dashboardService->getComponentProblemAnalytics($request->query());
                     // try {
                     //     $this->dashboardService->getComponentProblemAnalytics($request->query());
                     //     return response()->json(['message' => 'Analysis is dispatched.'], 200);

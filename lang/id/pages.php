@@ -56,6 +56,9 @@ return [
         ],
         'product_problem_analysis' => [
             'title' => 'Analisis Masalah Produk',
+            'buttons' => [
+                'dispatch' => 'Analisa Masalah',
+            ]
         ],
         'partials' => [
             'filters' => [

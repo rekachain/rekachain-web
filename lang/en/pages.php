@@ -56,6 +56,9 @@ return [
         ],
         'product_problem_analysis' => [
             'title' => 'Product Problem Analysis',
+            'buttons' => [
+                'dispatch' => 'Analyze Problems',
+            ],
         ],
         'partials' => [
             'filters' => [

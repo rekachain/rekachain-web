@@ -19,10 +19,10 @@ use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class DashboardService {
     public function __construct(
@@ -479,6 +479,10 @@ class DashboardService {
     }
 
     public function getComponentProblemAnalytics(array $data) {
+        $job = DB::table('jobs')->where('payload', 'like', '%ProductProblemAnalysis%')->first();
+        if ($job) {
+            return response()->json(['message' => 'Analysis is already in progress.'], 429);
+        }
         $components = $this->componentService->with(['product_problems', 'product_problems.product_problem_notes'])->getAll($data);
 
         // Transform with localization
@@ -506,12 +510,7 @@ class DashboardService {
                 'problem_percent' => $totalProblem * 100 / $item->vendor_qty,
             ];
         });
-        try {
-            ProductProblemAnalysis::dispatch($transformed->toArray());
-            return response()->json(['message' => 'Analysis is dispatched.'], 200);
-        } catch (ShouldBeUnique $e) {
-            logger($e);
-            return response()->json(['message' => 'Analysis is already in progress.'], 429);
-        }
+        ProductProblemAnalysis::dispatch($transformed->toArray());
+        return response()->json(['message' => 'Analysis is dispatched.'], 200);
     }
 }
