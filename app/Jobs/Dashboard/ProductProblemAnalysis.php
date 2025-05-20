@@ -3,6 +3,7 @@
 namespace App\Jobs\Dashboard;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -10,13 +11,21 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-class ProductProblemAnalysis implements ShouldQueue {
+class ProductProblemAnalysis implements ShouldQueue, ShouldBeUnique {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public $uniqueFor = 600; // 10 minutes
 
     /**
      * Create a new job instance.
      */
     public function __construct(protected array $data) {}
+
+    public function uniqueId(): string {
+        $key = md5(json_encode($this->data));
+        logger()->info("Generated unique job ID: $key");
+        return $key;
+    }
 
     /**
      * Execute the job.
@@ -24,6 +33,12 @@ class ProductProblemAnalysis implements ShouldQueue {
     public function handle(): void {
         $start = microtime(true);
         foreach ($this->data as $value) {
+            $productProblemAnalysis = \App\Models\ProductProblemAnalysis::where('component_name', $value->component_name)
+                ->where('date_range', $value->date_range)
+                ->first();
+            if ($productProblemAnalysis) {
+                continue;
+            }
             $promptIdentity = "Jawab dengan bahasa Indonesia!.
                 Anda adalah asisten diagnostik kendaraan kereta api. 
                 Tugas Anda: Mengidentifikasi akar penyebab masalah dan merekomendasikan solusi sesuai dengan format berikut. 

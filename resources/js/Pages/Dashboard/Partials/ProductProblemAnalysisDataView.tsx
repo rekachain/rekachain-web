@@ -20,6 +20,8 @@ export default function () {
     const [filters, setFilters] = useState<ServiceFilterOptions>({
         page: 1,
         perPage: 10,
+        orderBy: 'created_at',
+        orderDirection: 'desc',
     });
 
     const [problemAnalysisResponse, setProblemAnalysisResponse] =

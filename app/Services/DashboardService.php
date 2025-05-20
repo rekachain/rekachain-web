@@ -19,6 +19,7 @@ use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Support\Interfaces\Services\TrainsetAttachmentServiceInterface;
 use App\Support\Interfaces\Services\TrainsetServiceInterface;
 use App\Support\Interfaces\Services\WorkshopServiceInterface;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -484,8 +485,8 @@ class DashboardService {
         $transformed = $components->filter(function ($item) {
             return $item->hasProductProblem();
         })->map(function ($item) {
-            $productProblemDateFrom = $item->product_problems()->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
-            $productProblemDateTo = $item->product_problems()->orderByDesc('created_at')->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
+            $productProblemDateFrom = $item->product_problems()->first()->created_at->locale(app()->getLocale())->translatedFormat('d F Y');
+            $productProblemDateTo = $item->product_problems()->orderByDesc('created_at')->first()->created_at->locale(app()->getLocale())->translatedFormat('d F Y');
             $dateRange = $productProblemDateFrom == $productProblemDateTo ? $productProblemDateFrom : $productProblemDateFrom . ' - ' . $productProblemDateTo;
             $totalProblem = $item->product_problems()->count();
 
@@ -505,6 +506,12 @@ class DashboardService {
                 'problem_percent' => $totalProblem * 100 / $item->vendor_qty,
             ];
         });
-        ProductProblemAnalysis::dispatch($transformed->toArray());
+        try {
+            ProductProblemAnalysis::dispatch($transformed->toArray());
+            return response()->json(['message' => 'Analysis is dispatched.'], 200);
+        } catch (ShouldBeUnique $e) {
+            logger($e);
+            return response()->json(['message' => 'Analysis is already in progress.'], 429);
+        }
     }
 }

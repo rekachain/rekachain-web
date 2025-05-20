@@ -11,6 +11,7 @@ use App\Support\Enums\RoleEnum;
 use App\Support\Interfaces\Services\ProductProblemServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
 use App\Support\Interfaces\Services\ReplacementStockServiceInterface;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -48,9 +49,12 @@ class DashboardController extends Controller {
                     return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
                 case IntentEnum::WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS->value:
                     $this->dashboardService->getComponentProblemAnalytics($request->query());
-
-                    return true;
-
+                    // try {
+                    //     $this->dashboardService->getComponentProblemAnalytics($request->query());
+                    //     return response()->json(['message' => 'Analysis is dispatched.'], 200);
+                    // } catch (ShouldBeUnique $e) {
+                    //     return response()->json(['message' => 'Analysis is already in progress.'], 429);
+                    // }
             }
 
             $data = $this->dashboardService->showGraph($request->query());

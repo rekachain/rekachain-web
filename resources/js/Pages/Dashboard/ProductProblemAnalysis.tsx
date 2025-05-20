@@ -1,10 +1,9 @@
 import StaticLoadingOverlay from '@/Components/StaticLoadingOverlay';
 import { Button } from '@/Components/UI/button';
+import { useErrorToast, useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
-import { PaginateResponse } from '@/Support/Interfaces/Others';
-import { ProductProblemAnalysisResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { Head } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -19,7 +18,13 @@ export default function () {
                 intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
                 // ...filters,
             }),
-        );
+        ).then((response) => {
+            if (response.status === 200) {
+                void useSuccessToast(response.data.message);
+            } else {
+                void useErrorToast(response.data.message);
+            }
+        });
     });
     return (
         <>
