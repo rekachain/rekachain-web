@@ -6,33 +6,32 @@ import {
     Command,
     CommandEmpty,
     CommandGroup,
-    CommandInput,
     CommandItem,
     CommandList,
 } from '@/Components/UI/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/Components/UI/popover';
+import { Switch } from '@/Components/UI/switch';
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { cn } from '@/Lib/Utils';
 import { projectService } from '@/Services/projectService';
+import { trainsetService } from '@/Services/trainsetService';
+import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { ProjectResource } from '@/Support/Interfaces/Resources';
-import { Link } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { memo, useCallback, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
 const Filters = ({
-    data,
     setFilters,
     filters,
 }: {
-    data: any;
     filters: ServiceFilterOptions;
     setFilters: (filters: ServiceFilterOptions) => void;
 }) => {
     const { t } = useLaravelReactI18n();
-    const [open, setOpen] = useState(false);
     const [yearFilterOpen, setYearFilterOpen] = useState(false);
     const [monthFilterOpen, setMonthFilterOpen] = useState(false);
     const years = [2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
@@ -50,192 +49,83 @@ const Filters = ({
         { value: 11, label: 'November' },
         { value: 12, label: 'Desember' },
     ];
-    const [openTrainset, setOpenTrainset] = useState(false);
-    const [value, setValue] = useState(data['project'] !== null ? data['project'] : '');
-    const [valueTrainset, setValueTrainset] = useState('');
-    const project = [
-        {
-            value: 'Semua Proyek',
-            label: 'Semua Proyek',
-            link: '/dashboard',
-        },
-        {
-            value: '612',
-            label: '612',
-            link: '/dashboard/1',
-        },
-        {
-            value: 'KRL KCI',
-            label: 'KRL KCI',
-            link: '/dashboard/2',
-        },
-    ];
 
     const fetchProjects = useCallback(async (filters: ServiceFilterOptions) => {
         return await projectService.getAll(filters).then((response) => response.data);
     }, []);
 
+    const [trainsetFilters, setTrainsetFilters] = useState<ServiceFilterOptions>({
+        search: '',
+        column_filters: {
+            project_id: filters.project_id ?? 1,
+        }
+    })
+    const fetchTrainsets = useCallback(async (filters: ServiceFilterOptions) => {
+        console.log(filters);
+        return await trainsetService.getAll(filters).then((response) => response.data);
+    }, []);
+
+    useEffect(() => {
+        setTrainsetFilters({
+            ...trainsetFilters,
+            column_filters: {
+                project_id: filters.project_id ?? 1,
+            }
+        });
+    }, [filters.project_id]);
+
     return (
         <>
             <div className='mr-2 flex items-center gap-3'>
-                <Checkbox
-                    onChange={(e) => setFilters({ ...filters, useMerged: e.target.checked })}
+                <Switch
+                    onCheckedChange={(checked) => setFilters({ ...filters, useMerged: !checked })}
                     id='useMerged'
-                    checked={filters.useMerged}
+                    checked={!filters.useMerged}
                 />
                 <InputLabel
                     value={t('pages.dashboard.partials.filters.use_merged')}
                     htmlFor='useMerged'
                 />
             </div>
-            {/* <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger className=' ' asChild>
-                <Button
-                    variant='outline'
-                    role='combobox'
-                    className='w-25 justify-between md:w-40'
-                    aria-expanded={open}
-                >
-                    {value
-                        ? project.find(
-                            (projectItem) => projectItem.value === value,
-                        )?.label
-                        : t('pages.dashboard.partials.filters.project_placeholder')}
-                    <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className='w-[200px] p-0'>
-                <Command>
-                    <CommandInput
-                        placeholder={t('pages.dashboard.index.find_project')}
+            {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
+                <>
+                <GenericDataSelector
+                    setSelectedData={(id) =>
+                        setFilters({
+                            ...filters,
+                            project_id: id,
+                        })
+                    }
+                    selectedDataId={filters.project_id || null}
+                    renderItem={(item: ProjectResource) => `${item.name}`}
+                    popoverContentClassName='w-full p-0'
+                    placeholder={t('pages.dashboard.partials.filters.project_placeholder')}
+                    nullable
+                    id='project_selector'
+                    fetchData={fetchProjects}
+                    buttonClassName='w-25 justify-between md:w-40'
+                />
+                {filters.project_id && (
+                    <GenericDataSelector
+                        id="trainset_selector"
+                        fetchData={(filters) => fetchTrainsets({...trainsetFilters, ...filters})}
+                        setSelectedData={(id) => {
+                            setFilters({
+                                ...filters,
+                                trainset_id: id,
+                            });
+                            router.visit(route(`${ROUTES.DASHBOARD}.trainset`, [filters.project_id, id]));
+                        }}
+                        selectedDataId={filters.trainset_id || null}
+                        placeholder={t('pages.dashboard.partials.filters.trainset_placeholder')}
+                        renderItem={item => `${item.name}`}
+                        buttonClassName="w-25 justify-between md:w-40"
+                        nullable
                     />
-                    <CommandList>
-                        <CommandEmpty>
-                            {t('pages.dashboard.index.project_not_found')}
-                        </CommandEmpty>
-                        <CommandGroup>
-                            {
-                                // @ts-ignore
-                                data['projectDetail'].map((projectItem) => (
-                                    <Link
-                                        key={projectItem.id}
-                                        href={`/dashboard/${projectItem.id}`}
-                                    >
-                                        <CommandItem
-                                            value={`/dashboard/${projectItem.name}`}
-                                            onSelect={(currentValue) => {
-                                                setValue(
-                                                    currentValue === value
-                                                        ? ''
-                                                        : currentValue,
-                                                );
-                                                setOpen(false);
-                                            }}
-                                            key={projectItem.value}
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    'mr-2 h-4 w-4',
-                                                    value === projectItem.name
-                                                        ? 'opacity-100'
-                                                        : 'opacity-0',
-                                                )}
-                                            />
-                                            {projectItem.name}
-                                        </CommandItem>
-                                    </Link>
-                                ))
-                            }
-                        </CommandGroup>
-                    </CommandList>
-                </Command>
-            </PopoverContent>
-        </Popover> */}
-            <GenericDataSelector
-                setSelectedData={(id) =>
-                    setFilters({
-                        ...filters,
-                        project_id: id,
-                    })
-                }
-                selectedDataId={filters.project_id || null}
-                renderItem={(item: ProjectResource) => `${item.name}`}
-                popoverContentClassName='w-full p-0'
-                placeholder={t('pages.dashboard.partials.filters.project_placeholder')}
-                nullable
-                id='project_selector'
-                fetchData={fetchProjects}
-                buttonClassName='w-25 justify-between md:w-40'
-            />
-            <Popover open={openTrainset} onOpenChange={setOpenTrainset}>
-                <PopoverTrigger className={`${data['project'] == null ? 'hidden' : ' '}`} asChild>
-                    <Button
-                        variant='outline'
-                        role='combobox'
-                        className='w-25 justify-between md:w-40'
-                        aria-expanded={openTrainset}
-                    >
-                        {valueTrainset
-                            ? project.find((projectItem) => projectItem.value === valueTrainset)
-                                  ?.label
-                            : `${t('pages.dashboard.index.select_trainset')}`}
-                        <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className='w-[200px] p-0'>
-                    <Command>
-                        <CommandInput placeholder={`${t('pages.dashboard.index.find_trainset')}`} />
-                        <CommandList>
-                            <CommandEmpty>Trainset tidak ditemukan.</CommandEmpty>
-                            <CommandGroup>
-                                {// @ts-ignore
-                                data['tsList']?.map((projectItem) => (
-                                    <Link
-                                        key={projectItem.id}
-                                        href={`/dashboard/${data['projectId']}/${projectItem.id}`}
-                                    >
-                                        <CommandItem
-                                            value={projectItem.name}
-                                            onSelect={(currentValue) => {
-                                                setValueTrainset(
-                                                    currentValue === valueTrainset
-                                                        ? ''
-                                                        : currentValue,
-                                                );
-                                                setOpenTrainset(false);
-                                            }}
-                                            key={projectItem.id}
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    'mr-2 h-4 w-4',
-                                                    valueTrainset === projectItem.name
-                                                        ? 'opacity-100'
-                                                        : 'opacity-0',
-                                                )}
-                                            />
-                                            {projectItem.name}
-                                        </CommandItem>
-                                    </Link>
-                                ))}
-                            </CommandGroup>
-                        </CommandList>
-                    </Command>
-                </PopoverContent>
-            </Popover>
-            {/* <button className={buttonVariants()}>Detail Trainset</button>
-        <GenericDataSelector
-            // TODO: redesain dis shts🗿
-            id="trainset_id"
-            fetchData={fetchTrainsetFilters}
-            setSelectedData={id => setTrainsetFilters({ id: id })}
-            selectedDataId={trainsetFilters?.id ?? null}
-            placeholder={'Choose'}
-            renderItem={item => `${item.name}`}
-            buttonClassName="mt-1"
-            nullable
-        /> */}
-            {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) && (
+                )}
+                </>
+            )}
+            {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_READ]) && (
                 <>
                     <Popover open={yearFilterOpen} onOpenChange={setYearFilterOpen}>
                         <PopoverTrigger asChild>

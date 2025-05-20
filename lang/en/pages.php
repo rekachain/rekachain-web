@@ -64,7 +64,7 @@ return [
             'filters' => [
                 'project_placeholder' => 'Select Project',
                 'trainset_placeholder' => 'Select Trainset',
-                'use_merged' => 'Merged',
+                'use_merged' => 'Detailed Mode',
             ],
             'returned_product_time_diff_chart' => [
                 'headers' => [

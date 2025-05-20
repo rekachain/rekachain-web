@@ -64,7 +64,7 @@ return [
             'filters' => [
                 'project_placeholder' => 'Pilih Proyek',
                 'trainset_placeholder' => 'Pilih Trainset',
-                'use_merged' => 'Gabungan',
+                'use_merged' => 'Mode Detail',
             ],
             'returned_product_time_diff_chart' => [
                 'headers' => [

@@ -113,7 +113,7 @@ export default function Dashboard({
                                 </h2>
                             </div>
                             <div className='flex gap-2'>
-                                <Filters setFilters={setFilters} filters={filters} data={data} />
+                                <Filters setFilters={setFilters} filters={filters} />
                             </div>
                         </div>
                         {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_CREATE]) &&
