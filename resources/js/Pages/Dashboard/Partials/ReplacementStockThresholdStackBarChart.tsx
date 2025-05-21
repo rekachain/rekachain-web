@@ -128,7 +128,7 @@ export default function ({
     }, [currentLocale]);
 
     return (
-        <ChartContainer config={replacementStockChart.config} className='mt-5 h-[400px] w-full'>
+        <ChartContainer config={replacementStockChart.config} className='mt-1 h-[400px] w-full'>
             <BarChart
                 stackOffset='expand'
                 // layout='vertical'

@@ -40,7 +40,7 @@ export default function () {
     }, [filters]);
 
     return (
-        <div className='mt-5 w-full'>
+        <div className='mt-1 w-full'>
             {problemAnalysisResponse && (
                 <Table>
                     <TableHeader>

@@ -56,7 +56,7 @@ export default function ({ data }: { data: PaginateResponse<VendorProblemResourc
     }, [filters, setLocale]);
 
     return (
-        <div className='mt-5 w-full'>
+        <div className='mt-1 w-full'>
             {progressResponse && (
                 <Table>
                     <TableHeader>

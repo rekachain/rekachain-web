@@ -130,7 +130,7 @@ export default function ({
     }, [setLocale]);
 
     return (
-        <ChartContainer config={lineChart.config} className='mt-5 h-[400px] w-full'>
+        <ChartContainer config={lineChart.config} className='mt-1 h-[400px] w-full'>
             <LineChart data={lineChart.data}>
                 <YAxis
                     tickFormatter={formatDuration}

@@ -110,7 +110,7 @@ export default function ({
     return (
         <ChartContainer
             config={returnedProductStatusPieChart.config}
-            className='mt-5 h-[300px] w-full'
+            className='mt-1 h-[300px] w-full'
         >
             <PieChart>
                 <ChartTooltip

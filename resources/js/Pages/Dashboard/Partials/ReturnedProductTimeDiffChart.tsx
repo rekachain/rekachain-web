@@ -54,7 +54,7 @@ export default function ({ data }: { data: PaginateResponse<ReturnedProductTimeD
     }, [timeDiffFilters, setLocale]);
 
     return (
-        <div className='mt-5 w-full'>
+        <div className='mt-1 w-full'>
             {progressResponse && (
                 <Table>
                     <TableHeader>
