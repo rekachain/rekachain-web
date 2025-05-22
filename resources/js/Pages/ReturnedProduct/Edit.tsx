@@ -29,6 +29,8 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
 import { FilePond } from 'react-filepond';
 import BuyerForm from './Partials/BuyerForm';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 
 export default function ({ returnedProduct }: { returnedProduct: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
@@ -42,6 +44,7 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
         serial_number: returnedProduct.serial_number as number | null,
         buyer_id: returnedProduct.buyer_id as number | null,
         image_path: [] as any[],
+        status: returnedProduct.status as string,
     });
 
     useEffect(() => {
@@ -93,6 +96,7 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
             formData.append('serial_number', data.serial_number?.toString() || '');
         formData.append('buyer_id', data.buyer_id?.toString() || '');
         validImages.length > 0 && formData.append('image_path', validImages[0]);
+        formData.append('status', data.status);
 
         await returnedProductService.update(returnedProduct.id, formData);
         router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id));
@@ -231,6 +235,38 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                             filePosterMaxHeight={400}
                         />
                     </div>
+                    <div className='mt-4'>
+                        <InputLabel value={t('pages.product_restock.partials.partials.filters.status.title')} htmlFor='status' />
+                        <Select
+                            onValueChange={(value) =>
+                                setData('status', value as ReturnedProductStatusEnum)
+                            }
+                            value={data.status as string}
+                        >
+                            <SelectTrigger className='w-full'>
+                                <SelectValue
+                                    placeholder={t(
+                                        'pages.product_restock.partials.partials.filters.status.title',
+                                    )}
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>
+                                        {t('pages.product_restock.partials.partials.filters.status.title')}
+                                    </SelectLabel>
+                                    {Object.entries(ReturnedProductStatusEnum)
+                                        .filter(([key, status]) => returnedProduct.status !== ReturnedProductStatusEnum.REQUESTED ? ![ReturnedProductStatusEnum.REQUESTED].includes(status) : true)
+                                        .map(([key, status]) => (
+                                            <SelectItem value={status} key={key}>
+                                                {t(`enums.App\\Support\\Enums\\ReturnedProductStatusEnum.${status}`)}
+                                            </SelectItem>
+                                        ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    
 
                     <Accordion
                         type='single'
