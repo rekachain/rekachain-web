@@ -10,6 +10,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ReturnedProductCardView from './Partials/ReturnedProductCardView';
 import ReturnedProductTableView from './Partials/ReturnedProductTableView';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 export default function () {
     const { t, setLocale } = useLaravelReactI18n();
@@ -22,12 +23,23 @@ export default function () {
         orderBy: 'created_at',
     });
 
+    const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
+        Record<string, string>
+    >({});
+    
+    const syncLocalizedEnums = withLoading(async () => {
+        await fetchEnumLabels('ReturnedProductStatusEnum')
+            .then(setLocalizedReturnedProductStatuses)
+            .catch((error) => console.error('Failed to fetch localized statuses:', error));
+    });
+
     const syncReturnedProducts = withLoading(async () => {
         const res = await returnedProductService.getAll(filters);
         setReturnedProductResponse(res);
     });
 
     useEffect(() => {
+        syncLocalizedEnums();
         void syncReturnedProducts();
     }, [filters, setLocale]);
 
@@ -47,7 +59,7 @@ export default function () {
         <div className='space-y-4'>
             {returnedProductResponse && (
                 <>
-                    <Filters setFilters={setFilters} filters={filters} />
+                    <Filters setFilters={setFilters} filters={filters} localizedReturnedProductStatuses={localizedReturnedProductStatuses} />
                     <div className='hidden md:block'>
                         <ReturnedProductTableView
                             returnedProductResponse={returnedProductResponse}
