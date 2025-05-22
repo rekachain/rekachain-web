@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ReturnedProductResource;
 use App\Imports\ReturnedProduct\ReturnedProductImport;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\ProductRestockStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
@@ -44,6 +46,17 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
     public function update($keyOrModel, array $data): ?Model {
         $data = $this->handleImageUpload($data);
+
+        if (isset($data['status']) && $data['status'] == ReturnedProductStatusEnum::SCRAPPED->value && $keyOrModel->product_returnable_type === Panel::class) {
+            $returnedProductComponents = ReturnedProductResource::make($keyOrModel)->toArray(request()->merge(['intent' => IntentEnum::WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS->value]));
+            $returnedProductComponentIds = array_column($returnedProductComponents, 'id');
+            $problemComponentIds = $keyOrModel->product_problems()->pluck('component_id')->toArray();
+            $scrappedComponentIds = array_diff($returnedProductComponentIds, $problemComponentIds);
+
+            $this->updateReplacementStocks($keyOrModel, [
+                'component_ids' => $scrappedComponentIds,
+            ], true);
+        }
 
         return parent::update($keyOrModel, $data);
     }
