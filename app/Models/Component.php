@@ -38,8 +38,8 @@ class Component extends Model {
         return $this->hasMany(CarriagePanelComponent::class);
     }
 
-    public function trainset_attachments(): HasOneDeep {
-        return $this->hasOneDeep(TrainsetAttachment::class, [
+    public function trainset_attachments(): HasManyDeep {
+        return $this->hasManyDeep(TrainsetAttachment::class, [
             CarriagePanelComponent::class,
             TrainsetAttachmentComponent::class,
         ], [
