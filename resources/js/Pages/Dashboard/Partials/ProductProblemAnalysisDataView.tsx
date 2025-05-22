@@ -13,6 +13,7 @@ import { ProductProblemAnalysisResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
+import ProductProblemAnalysisFilters from './Partials/ProductProblemAnalysisFilters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -41,6 +42,7 @@ export default function () {
 
     return (
         <div className='mt-1 w-full'>
+            <ProductProblemAnalysisFilters setFilters={setFilters} filters={filters}/>
             {problemAnalysisResponse && (
                 <Table>
                     <TableHeader>
