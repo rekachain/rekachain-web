@@ -70,6 +70,18 @@ return [
             ]
         ],
         'partials' => [
+            'partials' => [
+                'product_problem_analysis_detail_dialog' => [
+                    'title' => 'Detail Analisis Masalah Produk',
+                    'subtitle' => 'Detail analisis masalah produk :component_name untuk periode :date_range.',
+                    'labels' => [
+                        'findings' => 'Temuan:',
+                        'summary' => 'Ringkasan Masalah:',
+                        'cause' => 'Kemungkinan Penyebab:',
+                        'solution' => 'Rekomendasi Solusi:',
+                    ],
+                ],
+            ],
             'filters' => [
                 'project_placeholder' => 'Pilih Proyek',
                 'trainset_placeholder' => 'Pilih Trainset',

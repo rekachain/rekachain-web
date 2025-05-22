@@ -14,6 +14,7 @@ import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ProductProblemAnalysisFilters from './Partials/ProductProblemAnalysisFilters';
+import ProductProblemAnalysisDetailDialog from './Partials/ProductProblemAnalysisDetailDialog';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -28,12 +29,22 @@ export default function () {
     const [problemAnalysisResponse, setProblemAnalysisResponse] =
         useState<PaginateResponse<ProductProblemAnalysisResource>>();
 
+    const [detailData, setDetailData] = useState();
+    const [isDetailDialogOpen, setIsDetailDialogOpen] = useState(false);
+
     const handlePageChange = (page: number) => {
         setFilters({ ...filters, page });
     };
 
     const syncDatas = withLoading(async () => {
         await productProblemAnalysisService.getAll(filters).then(setProblemAnalysisResponse);
+    });
+
+    const getDetails = withLoading(async (id: number) => {
+        await productProblemAnalysisService.get(id).then((data) => {
+            setDetailData(data as any);
+            setIsDetailDialogOpen(true);
+        });
     });
 
     useEffect(() => {
@@ -84,17 +95,26 @@ export default function () {
                                 </TableCell>
                             </TableRow>
                         ) || problemAnalysisResponse.data.map((data) => (
-                            <TableRow key={data.id}>
+                            <TableRow key={data.id} onClick={() => getDetails(data.id)}>
                                 <TableCell>{data.date_range}</TableCell>
                                 <TableCell>{data.component_name}</TableCell>
                                 <TableCell>{data.summary}</TableCell>
-                                <TableCell>{data.cause}</TableCell>
-                                <TableCell>{data.solution}</TableCell>
+                                <TableCell>
+                                    {data.cause.length > 255 ? `${data.cause.substring(0, 252)}...` : data.cause}
+                                </TableCell>
+                                <TableCell>
+                                    {data.solution.length > 255 ? `${data.solution.substring(0, 252)}...` : data.solution}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             )}
+            <ProductProblemAnalysisDetailDialog
+                data={detailData}
+                isDetailDialogOpen={isDetailDialogOpen}
+                setIsDetailDialogOpen={setIsDetailDialogOpen}
+            />
             <GenericPagination
                 meta={problemAnalysisResponse?.meta}
                 handleChangePage={handlePageChange}

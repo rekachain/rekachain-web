@@ -118,6 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('product-problem-notes', ProductProblemNoteController::class);
     Route::resource('replacement-stocks', ReplacementStockController::class);
     Route::resource('product-restocks', ProductRestockController::class);
+    Route::resource('product-problem-analyses', ProductProblemAnalysisController::class);
 
     Route::get('/search', [ApiSearchController::class, 'search']);
 

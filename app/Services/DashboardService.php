@@ -441,43 +441,6 @@ class DashboardService {
         return $paginated;
     }
 
-    public function getComponentProblems(array $request): LengthAwarePaginator {
-        $components = $this->componentService->with(['product_problems', 'product_problems.product_problem_notes'])->getAll($request);
-
-        // Transform with localization
-        $transformed = $components->filter(function ($item) {
-            return $item->hasProductProblem();
-        })->map(function ($item) {
-            $productProblemDateFrom = $item->product_problems()->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
-            $productProblemDateTo = $item->product_problems()->orderByDesc('created_at')->first()->created_at->locale(app()->getLocale())->translatedFormat('D F Y');
-            $dateRange = $productProblemDateFrom == $productProblemDateTo ? $productProblemDateFrom : $productProblemDateFrom . ' - ' . $productProblemDateTo;
-
-            return (object) [
-                'intent' => IntentEnum::WEB_DASHBOARD_GET_PRODUCT_PROBLEM->value,
-                'component_name' => $item->name,
-                'notes' => $item->product_problems->flatMap(function ($problem) {
-                    return $problem->product_problem_notes->map(function ($note) {
-                        return $note->note;
-                    });
-                })->unique()->values()->implode(', '),
-                'date_range' => $dateRange,
-                'total_problem' => $item->product_problems()->count(),
-            ];
-        });
-
-        $perPage = $request['perPage'] ?? 4;
-        $page = LengthAwarePaginator::resolveCurrentPage();
-        $paginated = new LengthAwarePaginator(
-            $transformed->forPage($page, $perPage)->values(),
-            $transformed->count(),
-            $perPage,
-            $page,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
-
-        return $paginated;
-    }
-
     public function getComponentProblemAnalytics(array $data) {
         $job = DB::table('jobs')->where('payload', 'like', '%ProductProblemAnalysis%')->first();
         if ($job) {

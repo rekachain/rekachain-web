@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductProblemAnalysisResource;
+use App\Models\ProductProblemAnalysis;
 use App\Support\Interfaces\Services\ProductProblemAnalysisServiceInterface;
 use Illuminate\Http\Request;
 
@@ -16,5 +17,11 @@ class ProductProblemAnalysisController extends Controller {
         }
 
         return inertia('Dashboard/ProductProblemAnalysis');
+    }
+
+    public function show(ProductProblemAnalysis $productProblemAnalysis) {
+        if ($this->ajax()) {
+            return $this->productProblemAnalysisService->getAnalysisDetails($productProblemAnalysis);
+        }
     }
 }

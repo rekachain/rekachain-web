@@ -70,6 +70,18 @@ return [
             ],
         ],
         'partials' => [
+            'partials' => [
+                'product_problem_analysis_detail_dialog' => [
+                    'title' => 'Product Problem Analysis Detail',
+                    'subtitle' => 'Product :component_name problem analysis detail for period :date_range.',
+                    'labels' => [
+                        'findings' => 'Findings:',
+                        'summary' => 'Problem Summary:',
+                        'cause' => 'Possible Cause:',
+                        'solution' => 'Recommended Solution:',
+                    ],
+                ],
+            ],
             'filters' => [
                 'project_placeholder' => 'Select Project',
                 'trainset_placeholder' => 'Select Trainset',
