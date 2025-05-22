@@ -78,6 +78,10 @@ class ReturnedProductController extends Controller {
     }
 
     public function edit(ReturnedProduct $returnedProduct) {
+        if ($returnedProduct->status !== ReturnedProductStatusEnum::DRAFT && $returnedProduct->status !== ReturnedProductStatusEnum::PROGRESS && $returnedProduct->status !== ReturnedProductStatusEnum::REQUESTED) {
+            abort(403, 'Product cannot be edited.');
+            // return redirect()->route('returned-products.show', $returnedProduct)->with('error', 'Product cannot be edited.');
+        }
         $returnedProduct = ReturnedProductResource::make($returnedProduct->load(['product_returnable', 'buyer']));
 
         return inertia('ReturnedProduct/Edit', compact('returnedProduct'));

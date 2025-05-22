@@ -10,6 +10,7 @@ import {
 import { checkPermission } from '@/Helpers/permissionHelper';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { PaginateResponse } from '@/Support/Interfaces/Others';
 import { ReturnedProductResource } from '@/Support/Interfaces/Resources';
 import { Link } from '@inertiajs/react';
@@ -95,7 +96,8 @@ export default function ReturnedProductTableView({
                                         {t('action.show')}
                                     </Link>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) && (
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_UPDATE) &&
+                                [ReturnedProductStatusEnum.DRAFT, ReturnedProductStatusEnum.PROGRESS].includes(returnedProduct.status) && (
                                     <Link
                                         href={route(
                                             `${ROUTES.RETURNED_PRODUCTS}.edit`,
@@ -106,7 +108,8 @@ export default function ReturnedProductTableView({
                                         {t('action.edit')}
                                     </Link>
                                 )}
-                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && (
+                                {checkPermission(PERMISSION_ENUM.RETURNED_PRODUCT_DELETE) && 
+                                [ReturnedProductStatusEnum.DRAFT].includes(returnedProduct.status) && (
                                     <Button
                                         variant='link'
                                         onClick={() =>
