@@ -17,6 +17,21 @@ class StoreReturnedProductRequest extends FormRequest {
                 return [
                     'import_file' => 'required|file|mimes:xlsx,xls|max:2048',
                 ];
+            case IntentEnum::WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST->value:
+                return [
+                    'product_returnable_type' => 'required_with:product_returnable_id|nullable|string|in:' . implode(',', [
+                        Panel::class,
+                        Component::class,
+                    ]),
+                    'product_returnable_id' => [
+                        'required_with:product_returnable_type',
+                        'nullable',
+                        'integer',
+                        $this->product_returnable_type ? 'exists:' . (new $this->product_returnable_type)->getTable() . ',id' : '',
+                    ],
+                    'qty' => 'nullable|integer|min:1',
+                    'serial_number' => 'required_without:product_returnable_type|nullable|integer',
+                ];
             case IntentEnum::WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE->value:
                 return [
                     'product_returnable_type' => 'required_with:product_returnable_id|string|in:' . implode(',', [

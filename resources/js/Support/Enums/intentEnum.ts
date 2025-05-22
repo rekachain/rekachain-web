@@ -134,6 +134,8 @@ const intents = {
     WEB_PROJECT_SAVE_TRAINSET_PRESET: 'web.project.save.trainset.preset',
     WEB_PROJECT_IMPORT_PROJECT_TEMPLATE: 'web.project.import.project.template',
     WEB_PROJECT_UPDATE_INITIAL_DATE: 'web.project.update.initial.date',
+    WEB_PROJECT_GET_COMPONENTS: 'web.project.get.components',
+    WEB_PROJECT_GET_PANELS: 'web.project.get.panels',
     WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET: 'web.trainset.delete.carriage.trainset',
     WEB_TRAINSET_ADD_CARRIAGE_TRAINSET: 'web.trainset.add.carriage.trainset',
     WEB_TRAINSET_GET_ALL_COMPONENTS: 'web.trainset.get.all.components',
@@ -244,6 +246,8 @@ const intents = {
     WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM: 'web.returned.product.add.product.problem',
     WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE:
         'web.returned.product.add.returned.product.with.note',
+    WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST:
+        'web.returned.product.add.returned.product.request',
     WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM:
         'web.returned.product.import.returned.product.and.product.problem',
     WEB_RETURNED_PRODUCT_IMPORT_PRODUCT_PROBLEM: 'web.returned.product.import.product.problem',

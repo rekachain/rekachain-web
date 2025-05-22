@@ -109,6 +109,14 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         return true;
     }
 
+    public function createReturnedProductRequest(array $data): ?Model {
+        $data['status'] = ReturnedProductStatusEnum::REQUESTED->value;
+        $data['buyer_id'] = auth()->id();
+        $returnedProduct = $this->create($data);
+
+        return $returnedProduct;
+    }
+
     public function createWithReturnedProductNote(array $data): ?Model {
         $returnedProduct = $this->create($data);
         $returnedProduct->returned_product_notes()->create([

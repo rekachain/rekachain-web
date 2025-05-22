@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
@@ -31,6 +32,11 @@ class Component extends Model {
         ],
         'relations' => [
             'trainset_attachments',
+        ],
+        'relation_columns' => [
+            'projects' => [
+                'id',
+            ],
         ],
     ];
 
@@ -67,5 +73,26 @@ class Component extends Model {
 
     public function hasProductProblem(): bool {
         return $this->product_problems()->count() > 0;
+    }
+
+    public function projects() : HasManyDeep {
+        return $this->hasManyDeep(Project::class, [
+            CarriagePanelComponent::class,
+            CarriagePanel::class,
+            CarriageTrainset::class,
+            Trainset::class,
+        ], [
+            'component_id',
+            'id',
+            'id',
+            'id',
+            'id',
+        ], [
+            'id',
+            'carriage_panel_id',
+            'carriage_trainset_id',
+            'trainset_id',
+            'project_id',
+        ]);
     }
 }

@@ -190,6 +190,10 @@ enum IntentEnum: string {
 
     case WEB_PROJECT_UPDATE_INITIAL_DATE = 'web.project.update.initial.date';
 
+    case WEB_PROJECT_GET_COMPONENTS = 'web.project.get.components';
+
+    case WEB_PROJECT_GET_PANELS = 'web.project.get.panels';
+
     case WEB_TRAINSET_DELETE_CARRIAGE_TRAINSET = 'web.trainset.delete.carriage.trainset';
 
     case WEB_TRAINSET_ADD_CARRIAGE_TRAINSET = 'web.trainset.add.carriage.trainset';
@@ -343,6 +347,8 @@ enum IntentEnum: string {
     case WEB_RETURNED_PRODUCT_ADD_PRODUCT_PROBLEM = 'web.returned.product.add.product.problem';
 
     case WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_WITH_NOTE = 'web.returned.product.add.returned.product.with.note';
+
+    case WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST = 'web.returned.product.add.returned.product.request';
 
     case WEB_RETURNED_PRODUCT_IMPORT_RETURNED_PRODUCT_AND_PRODUCT_PROBLEM = 'web.returned.product.import.returned.product.and.product.problem';
 
