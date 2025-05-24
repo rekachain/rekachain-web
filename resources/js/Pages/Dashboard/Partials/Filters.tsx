@@ -17,7 +17,7 @@ import { trainsetService } from '@/Services/trainsetService';
 import { ROUTES } from '@/Support/Constants/routes';
 import { PERMISSION_ENUM } from '@/Support/Enums/permissionEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
-import { ProjectResource } from '@/Support/Interfaces/Resources';
+import { ProjectResource, TrainsetResource } from '@/Support/Interfaces/Resources';
 import { router } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
@@ -116,7 +116,7 @@ const Filters = ({
                                 );
                             }}
                             selectedDataId={filters.trainset_id || null}
-                            renderItem={(item) => `${item.name}`}
+                            renderItem={(item: TrainsetResource) => `${item.name}`}
                             placeholder={t('pages.dashboard.partials.filters.trainset_placeholder')}
                             nullable
                             id='trainset_selector'
