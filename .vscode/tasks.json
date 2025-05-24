@@ -90,7 +90,7 @@
             "label": "Laravel Queue",
             "problemMatcher": [],
             "type": "shell",
-            "command": "php artisan queue:listen --memory=512",
+            "command": "php artisan queue:listen --memory=512 --timeout=3600",
             "presentation": {
                 "group": "RUNAPP",
             }
@@ -103,7 +103,7 @@
             "presentation": {
                 "group": "RUNAPPSHARED",
             },
-            "args": ["artisan", "queue:listen", "--host=0.0.0.0"]
+            "args": ["artisan", "queue:listen", "--host=0.0.0.0" , "--memory=512", "--timeout=3600"]
         },
         {
             "label": "Laravel NPM Run Dev",
