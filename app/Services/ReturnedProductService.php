@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Http\Resources\ReturnedProductResource;
-use App\Imports\ReturnedProduct\ReturnedProductImport;
 use App\Jobs\ReturnedProduct\ReturnedProductImportJob;
 use App\Models\Component;
 use App\Models\Panel;
@@ -18,7 +17,6 @@ use App\Traits\Services\HandlesImages;
 use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
     use HandlesImages;

@@ -13,24 +13,22 @@ use Illuminate\Queue\SerializesModels;
 use Maatwebsite\Excel\Exceptions\SheetNotFoundException;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ReturnedProductImportJob implements ShouldQueue
-{
+class ReturnedProductImportJob implements ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
     public function __construct(
-        private string $filePath, 
-        protected string $userId, 
+        private string $filePath,
+        protected string $userId,
         private ?ReturnedProduct $returnedProduct = null
     ) {}
 
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
+    public function handle(): void {
         try {
             Excel::import(new ReturnedProductImport($this->userId, $this->returnedProduct), $this->filePath);
         } catch (SheetNotFoundException $e) {

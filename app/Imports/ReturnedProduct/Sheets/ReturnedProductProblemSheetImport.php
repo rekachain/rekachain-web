@@ -15,7 +15,8 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class ReturnedProductProblemSheetImport implements ToCollection {
-    public function __construct(protected String $userId) {}
+    public function __construct(protected string $userId) {}
+
     public function collection(Collection $rows) {
         $headers = $rows[0];
         $carNumbers = [];
@@ -30,8 +31,10 @@ class ReturnedProductProblemSheetImport implements ToCollection {
                     if ($emptyCount > 5) {
                         logger('Too many empty rows, stopping import.');
                         DB::commit();
+
                         return false;
                     }
+
                     return;
                 }
                 $timestamp = Date::excelToTimestamp($row[$headers->search('Timestamp')]);

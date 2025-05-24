@@ -12,7 +12,8 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ReturnedProductSheetImport implements ToModel, WithHeadingRow {
-    public function __construct(protected String $userId) {}
+    public function __construct(protected string $userId) {}
+
     public function model(array $row) {
         $product = $row['product_type'] == 'Panel' ? Panel::firstOrCreate([
             'name' => $row['product_name'],
