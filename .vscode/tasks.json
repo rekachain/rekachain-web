@@ -90,7 +90,7 @@
             "label": "Laravel Queue",
             "problemMatcher": [],
             "type": "shell",
-            "command": "php artisan queue:work",
+            "command": "php artisan queue:work --memory=512",
             "presentation": {
                 "group": "RUNAPP",
             }
