@@ -53,7 +53,9 @@ class ProductProblemAnalysis implements ShouldBeUnique, ShouldQueue {
                 Berikut adalah input-nya:\n";
 
             $productPrompt = 'Nama Produk: ' . $value->component_name;
-            if (!empty($value->component_description)) $productPrompt .= "\nDeskripsi Produk: " . $value->component_description;
+            if (!empty($value->component_description)) {
+                $productPrompt .= "\nDeskripsi Produk: " . $value->component_description;
+            }
             if (!empty($value->vendor_name)) {
                 $productPrompt .= "\nNama Vendor: " . $value->vendor_name;
                 $productPrompt .= "\nPersentase Masalah: " . number_format($value->problem_percent, 2) . '% dari ' . $value->total_sent . ' barang';
