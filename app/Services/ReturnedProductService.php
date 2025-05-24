@@ -2,19 +2,21 @@
 
 namespace App\Services;
 
-use App\Imports\ReturnedProduct\ReturnedProductImport;
+use App\Http\Resources\ReturnedProductResource;
+use App\Jobs\ReturnedProduct\ReturnedProductImportJob;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Models\ReplacementStock;
 use App\Models\ReturnedProduct;
+use App\Support\Enums\IntentEnum;
 use App\Support\Enums\ProductRestockStatusEnum;
 use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Traits\Services\HandlesImages;
+use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
     use HandlesImages;
@@ -29,8 +31,12 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $data = $this->handleImageUpload($data);
 
         if (!isset($data['product_returnable_id']) && isset($data['serial_panel_id']) && $data['serial_panel_id'] !== null) {
-            $data['product_returnable_id'] = $this->serialPanelService()->findOrFail($data['serial_panel_id'])->panel_attachment->carriage_panel->panel_id;
+            $serialPanel = $this->serialPanelService()->findOrFail($data['serial_panel_id']);
+            $data['product_returnable_id'] = $serialPanel->panel_attachment->carriage_panel->panel_id;
             $data['product_returnable_type'] = Panel::class;
+            $data['project_name'] = $serialPanel->project->name;
+            $data['trainset_name'] = $serialPanel->trainset->name;
+            $data['carriage_type'] = $serialPanel->carriage->type;
         }
 
         $returnedProduct = parent::create($data);
@@ -40,6 +46,17 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
 
     public function update($keyOrModel, array $data): ?Model {
         $data = $this->handleImageUpload($data);
+
+        if (isset($data['status']) && $data['status'] == ReturnedProductStatusEnum::SCRAPPED->value && $keyOrModel->product_returnable_type === Panel::class) {
+            $returnedProductComponents = ReturnedProductResource::make($keyOrModel)->toArray(request()->merge(['intent' => IntentEnum::WEB_RETURNED_PRODUCT_GET_RETURNED_PRODUCT_COMPONENTS->value]));
+            $returnedProductComponentIds = array_column($returnedProductComponents, 'id');
+            $problemComponentIds = $keyOrModel->product_problems()->pluck('component_id')->toArray();
+            $scrappedComponentIds = array_diff($returnedProductComponentIds, $problemComponentIds);
+
+            $this->updateReplacementStocks($keyOrModel, [
+                'component_ids' => $scrappedComponentIds,
+            ], true);
+        }
 
         return parent::update($keyOrModel, $data);
     }
@@ -73,22 +90,47 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
             $productProblem->product_problem_notes()->create([
                 'user_id' => auth()->id(),
                 'note' => $data['note'],
+                'applied_status' => $data['status'],
             ]);
         }
 
         return true;
     }
 
+    private function handleImportFile(UploadedFile $file): string {
+        $tempDirectory = storage_path('app/temp/laravel-excel-import');
+        if (File::exists($tempDirectory)) {
+            File::cleanDirectory($tempDirectory);
+        } else {
+            File::makeDirectory($tempDirectory, 0755, true); // Create if it doesn't exist
+        }
+        $tempFilePath = $file->store('temp/laravel-excel-import');
+
+        return $tempFilePath;
+    }
+
     public function importData(UploadedFile $file): bool {
-        Excel::import(new ReturnedProductImport, $file);
+        $userId = auth()->id();
+        $filePath = $this->handleImportFile($file);
+        ReturnedProductImportJob::dispatch($filePath, $userId);
 
         return true;
     }
 
     public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool {
-        Excel::import(new ReturnedProductImport($returnedProduct), $file);
+        $userId = auth()->id();
+        $filePath = $this->handleImportFile($file);
+        ReturnedProductImportJob::dispatch($filePath, $userId, $returnedProduct);
 
         return true;
+    }
+
+    public function createReturnedProductRequest(array $data): ?Model {
+        $data['status'] = ReturnedProductStatusEnum::REQUESTED->value;
+        $data['buyer_id'] = auth()->id();
+        $returnedProduct = $this->create($data);
+
+        return $returnedProduct;
     }
 
     public function createWithReturnedProductNote(array $data): ?Model {
@@ -96,6 +138,7 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $returnedProduct->returned_product_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],
+            'applied_status' => $data['status'],
         ]);
 
         return $returnedProduct;
@@ -106,12 +149,25 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         $returnedProduct->returned_product_notes()->create([
             'user_id' => auth()->id(),
             'note' => $data['note'],
+            'applied_status' => $data['status'] ?? $returnedProduct->status,
         ]);
 
         return $returnedProduct;
     }
 
     public function updateReplacementStocks(ReturnedProduct $returnedProduct, array $data, bool $isIncrement = false): bool {
+        $replacementStocks = $this->replacementStockService()->find([
+            'component_id', 'in', $data['component_ids'],
+        ]);
+        $diff = array_diff($data['component_ids'], $replacementStocks->pluck('component_id')->toArray());
+        if (count($diff) > 0) {
+            foreach ($diff as $componentId) {
+                $this->replacementStockService()->create([
+                    'component_id' => $componentId,
+                    'qty' => 0,
+                ]);
+            }
+        }
         $replacementStocks = $this->replacementStockService()->find([
             'component_id', 'in', $data['component_ids'],
         ]);

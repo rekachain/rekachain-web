@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DashboardResource;
+use App\Http\Resources\ReplacementStockResource;
 use App\Services\DashboardService;
 use App\Support\Enums\IntentEnum;
 use App\Support\Enums\PermissionEnum;
+use App\Support\Enums\RoleEnum;
+use App\Support\Interfaces\Services\ProductProblemServiceInterface;
 use App\Support\Interfaces\Services\ProjectServiceInterface;
+use App\Support\Interfaces\Services\ReplacementStockServiceInterface;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -13,27 +19,55 @@ use Inertia\Inertia;
 class DashboardController extends Controller {
     public function __construct(
         protected DashboardService $dashboardService,
+        protected ReplacementStockServiceInterface $replacementStockService,
+        protected ProductProblemServiceInterface $productProblemService,
         protected ProjectServiceInterface $projectService,
     ) {}
 
     public function index(Request $request) {
-        checkPermissions(PermissionEnum::DASHBOARD_READ);
+        // checkPermissions(PermissionEnum::DASHBOARD_READ);
         $intent = $request->get('intent');
-        $data = $this->dashboardService->showGraph($request->query());
-        // $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query());
         if ($this->ajax()) {
-
             switch ($intent) {
                 case IntentEnum::DOWNLOAD_APK_FILE->value:
                     return $this->dashboardService->downloadApkFile();
                 case IntentEnum::DOWNLOAD_MANUAL_BOOK_FILE->value:
                     return $this->dashboardService->downloadManualBookFile();
+                case IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_STATUS_SUMMARY->value:
+                    return $this->dashboardService->showReturnedProductStatusSum($request->query());
+                case IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value:
+                    return DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
+                case IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_MIN_MAX->value:
+                    return DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
+                case IntentEnum::WEB_DASHBOARD_GET_WORKSTATION_STATUS->value:
+                    return $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
+                case IntentEnum::WEB_DASHBOARD_GET_TRAINSET_ATTACHMENT_STATUS->value:
+                    return $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
+                case IntentEnum::WEB_DASHBOARD_GET_REPLACEMENT_STOCK->value:
+                    return ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+                case IntentEnum::WEB_DASHBOARD_GET_VENDOR_PROBLEM_COMPONENTS->value:
+                    return DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
+                case IntentEnum::WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS->value:
+                    return $this->dashboardService->getComponentProblemAnalytics($request->query());
+                    // try {
+                    //     $this->dashboardService->getComponentProblemAnalytics($request->query());
+                    //     return response()->json(['message' => 'Analysis is dispatched.'], 200);
+                    // } catch (ShouldBeUnique $e) {
+                    //     return response()->json(['message' => 'Analysis is already in progress.'], 429);
+                    // }
             }
 
-            $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
-            $data['attachment_status_of_workstation'] = $request->get('use_raw') ? $this->dashboardService->showAttachmentStatusOfWorkstationRaw($request->query()) : $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
+            $data = $this->dashboardService->showGraph($request->query());
 
             return $data;
+        }
+        $data = $this->dashboardService->showGraph($request->query());
+        if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES, RoleEnum::WORKER_AFTERSALES], true)) {
+            $returned_product_status = $this->dashboardService->showReturnedProductStatusSum($request->query());
+            $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
+            $returned_product_progress_time_min_max = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeMinMax($request->query()));
+            $replacement_stocks = ReplacementStockResource::collection($this->replacementStockService->with(['component'])->getAll($request->query()));
+            $vendor_problems = DashboardResource::collection($this->dashboardService->getVendorProblemComponents($request->query()));
         }
 
         $project = DB::select('SELECT * FROM `projects` ');
@@ -42,9 +76,19 @@ class DashboardController extends Controller {
         // array_push($data, $project);
         $data['projectDetail'] = $project;
         $data['ts'] = $ts;
+        $attachment_status_of_trainset = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
+        $attachment_status_of_workstation = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
 
-        // dump($data);
-        return Inertia::render('Dashboard', ['data' => $data]);
+        return Inertia::render('Dashboard/Index', [
+            'data' => $data,
+            'trainsetStatusProgress' => $attachment_status_of_trainset,
+            'workstationStatusProgress' => $attachment_status_of_workstation,
+            'returnedProductStatus' => $returned_product_status,
+            'returnedProductTimeDiff' => $returned_product_progress_time_diff,
+            'returnedProductTimeMinMax' => $returned_product_progress_time_min_max,
+            'replacementStocks' => $replacement_stocks,
+            'vendorProblems' => $vendor_problems,
+        ]);
     }
 
     public function show(string $id, Request $request) {
@@ -77,16 +121,23 @@ class DashboardController extends Controller {
         $project = DB::select('SELECT * FROM `projects` ');
         // array_push($data, $project);
         $data['projectDetail'] = $project;
-        $data['attachment_status_of_trainset'] = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
-        $data['attachment_status_of_workstation'] = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
+        if (checkRoles([RoleEnum::SUPERVISOR_AFTERSALES, RoleEnum::MANAGER_AFTERSALES], true)) {
+            $request->merge(['intent' => IntentEnum::WEB_DASHBOARD_GET_RETURNED_PRODUCT_TIME_DIFFERENCE->value]);
+            $data['returned_product_status'] = $this->dashboardService->showReturnedProductStatusSum($request->query());
+            $returned_product_progress_time_diff = DashboardResource::collection($this->dashboardService->getReturnedproductProgressTimeDiff($request->query()));
+        }
+        $attachment_status_of_trainset = $this->dashboardService->showAttachmentStatusOfTrainset($request->query());
+        $attachment_status_of_workstation = $this->dashboardService->showAttachmentStatusOfWorkstation($request->query());
         if ($this->ajax()) {
             return $data;
         }
 
-        // dump($tsList);
-        // return $dataDb;
-        // return "alo";
-        return Inertia::render('Dashboard', ['data' => $data]);
+        return Inertia::render('Dashboard/Index', [
+            'data' => $data,
+            // 'trainsetStatusProgress' => $attachment_status_of_trainset,
+            // 'workstationStatusProgress' => $attachment_status_of_workstation,
+            // 'returnedProductTimeDiff' => $returned_product_progress_time_diff ?? [],
+        ]);
     }
 
     public function trainset(string $project, string $trainset) {

@@ -65,4 +65,5 @@ export const ROUTES = {
     PRODUCT_PROBLEM_NOTES: 'product-problem-notes',
     REPLACEMENT_STOCKS: 'replacement-stocks',
     PRODUCT_RESTOCKS: 'product-restocks',
+    PRODUCT_PROBLEM_ANALYSES: 'product-problem-analyses',
 };

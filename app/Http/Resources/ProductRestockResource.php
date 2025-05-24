@@ -15,6 +15,7 @@ class ProductRestockResource extends JsonResource {
             'product_restockable' => $this->whenLoaded('product_restockable'),
             'project_id' => $this->project_id,
             'project' => ProjectResource::make($this->whenLoaded('project')),
+            'project_url' => $this->projectDetailUrl(),
             'status' => $this->status,
             'localized_status' => $this->status->getLabel(),
             'created_at' => $this->created_at->toDateTimeString(),

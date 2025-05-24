@@ -10,6 +10,15 @@ import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -17,6 +26,7 @@ import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
@@ -42,6 +52,7 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
         serial_number: returnedProduct.serial_number as number | null,
         buyer_id: returnedProduct.buyer_id as number | null,
         image_path: [] as any[],
+        status: returnedProduct.status as string,
     });
 
     useEffect(() => {
@@ -93,6 +104,7 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
             formData.append('serial_number', data.serial_number?.toString() || '');
         formData.append('buyer_id', data.buyer_id?.toString() || '');
         validImages.length > 0 && formData.append('image_path', validImages[0]);
+        formData.append('status', data.status);
 
         await returnedProductService.update(returnedProduct.id, formData);
         router.visit(route(`${ROUTES.RETURNED_PRODUCTS}.show`, returnedProduct.id));
@@ -230,6 +242,53 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                             files={data.image_path}
                             filePosterMaxHeight={400}
                         />
+                    </div>
+                    <div className='mt-4'>
+                        <InputLabel
+                            value={t(
+                                'pages.product_restock.partials.partials.filters.status.title',
+                            )}
+                            htmlFor='status'
+                        />
+                        <Select
+                            value={data.status as string}
+                            onValueChange={(value) =>
+                                setData('status', value as ReturnedProductStatusEnum)
+                            }
+                        >
+                            <SelectTrigger className='w-full'>
+                                <SelectValue
+                                    placeholder={t(
+                                        'pages.product_restock.partials.partials.filters.status.title',
+                                    )}
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>
+                                        {t(
+                                            'pages.product_restock.partials.partials.filters.status.title',
+                                        )}
+                                    </SelectLabel>
+                                    {Object.entries(ReturnedProductStatusEnum)
+                                        .filter(([key, status]) =>
+                                            returnedProduct.status !==
+                                            ReturnedProductStatusEnum.REQUESTED
+                                                ? ![ReturnedProductStatusEnum.REQUESTED].includes(
+                                                      status,
+                                                  )
+                                                : true,
+                                        )
+                                        .map(([key, status]) => (
+                                            <SelectItem value={status} key={key}>
+                                                {t(
+                                                    `enums.App\\Support\\Enums\\ReturnedProductStatusEnum.${status}`,
+                                                )}
+                                            </SelectItem>
+                                        ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <Accordion

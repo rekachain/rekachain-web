@@ -12,6 +12,8 @@ class ReturnedProductNoteResource extends JsonResource {
             'returned_product_id' => $this->returned_product_id,
             'returned_product' => $this->whenLoaded('returned_product'),
             'note' => $this->note,
+            'applied_status' => $this->applied_status,
+            'localized_applied_status' => $this->applied_status->getLabel(),
             'user_id' => $this->user_id,
             'user' => UserResource::make($this->whenLoaded('user')),
             'user_name' => $this->user->name,

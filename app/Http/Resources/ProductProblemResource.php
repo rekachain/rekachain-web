@@ -12,6 +12,8 @@ class ProductProblemResource extends JsonResource {
             'returned_product' => $this->whenLoaded('returned_product'),
             'component_id' => $this->component_id,
             'component' => $this->whenLoaded('component'),
+            'cause' => $this->cause,
+            'localized_cause' => $this->cause->getLabel(),
             'status' => $this->status,
             'localized_status' => $this->status->getLabel(),
             'image_path' => $this->image_path,

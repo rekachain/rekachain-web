@@ -44,6 +44,12 @@
             "command": "php artisan migrate:fresh --seed"
         },
         {
+            "label": "Laravel Migrate - Refresh with Step",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan migrate:refresh --step=${input:step}"
+        },
+        {
             "label": "Laravel Migrate - Rollback",
             "problemMatcher": [],
             "type": "shell",
@@ -79,6 +85,25 @@
                 "group": "RUNAPPSHARED"
             },
             "args": ["artisan", "serve", "--host=0.0.0.0"]
+        },
+        {
+            "label": "Laravel Queue",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php artisan queue:work --memory=512",
+            "presentation": {
+                "group": "RUNAPP",
+            }
+        },
+        {
+            "label": "Laravel Queue - Shared",
+            "problemMatcher": [],
+            "type": "shell",
+            "command": "php",
+            "presentation": {
+                "group": "RUNAPPSHARED",
+            },
+            "args": ["artisan", "queue:work", "--host=0.0.0.0"]
         },
         {
             "label": "Laravel NPM Run Dev",
@@ -129,6 +154,7 @@
             "type": "shell",
             "dependsOn": [
                 "Laravel Serve",
+                "Laravel Queue",
                 "Laravel NPM Run Dev"
                 // "Laravel Websocket"
             ]
@@ -137,7 +163,7 @@
             "label": "App-Shared",
             "problemMatcher": [],
             "type": "shell",
-            "dependsOn": ["Laravel Serve - Shared", "Laravel NPM Run Dev - Shared"]
+            "dependsOn": ["Laravel Serve - Shared", "Laravel Queue - Shared", "Laravel NPM Run Dev - Shared"]
         },
         {
             "label": "NPM Run Build",
@@ -208,6 +234,11 @@
                 "tests\\Unit\\VerifyStandardProjectStructureTest.php",
                 "tests\\Unit\\VerifyLocalizationImplementation.php"
             ]
+        },
+        {
+            "id": "step",
+            "type": "promptString",
+            "description": "Enter the step",
         }
     ]
 }

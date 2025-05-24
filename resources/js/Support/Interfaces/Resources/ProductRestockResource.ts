@@ -11,5 +11,6 @@ export interface ProductRestockResource extends Resource, ProductRestock {
     returned_product?: ReturnedProductResource;
     product_restockable?: ComponentResource | PanelResource;
     project?: ProjectResource;
+    project_url?: string;
     localized_status: string;
 }

@@ -1,3 +1,4 @@
+export * from './Dashboard/Dashboard';
 export * from './PaginateMeta';
 export * from './PaginateMetaLink';
 export * from './PaginateResponse';

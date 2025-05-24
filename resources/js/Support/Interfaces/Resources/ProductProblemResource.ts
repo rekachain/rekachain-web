@@ -9,6 +9,7 @@ import {
 export interface ProductProblemResource extends Resource, ProductProblem {
     returned_product?: ReturnedProductResource;
     component?: ComponentResource;
+    localized_cause: string;
     localized_status: string;
     image: string;
     product_problem_notes?: ProductProblemNoteResource[];

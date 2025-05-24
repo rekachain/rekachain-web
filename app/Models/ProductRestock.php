@@ -48,4 +48,12 @@ class ProductRestock extends Model {
     public function project(): BelongsTo {
         return $this->belongsTo(Project::class);
     }
+
+    public function projectDetailUrl(): ?string {
+        if (!$this->project_id) {
+            return null;
+        }
+
+        return route('projects.trainsets.carriage-trainsets.index', ['project' => $this->project_id, 'trainset' => $this->project->trainsets()->first()->id]);
+    }
 }

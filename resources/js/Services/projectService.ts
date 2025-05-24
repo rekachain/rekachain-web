@@ -60,7 +60,7 @@ export const projectService = {
         });
         return response.data;
     },
-    getComponents: async (
+    getQtyComponents: async (
         projectId: number,
         filters: ServiceFilterOptions = {},
         config: AxiosRequestConfig = {},
@@ -110,7 +110,7 @@ export const projectService = {
         );
         return response.data;
     },
-    getPanels: async (
+    getQtyPanels: async (
         projectId: number,
         filters: ServiceFilterOptions = {},
         config: AxiosRequestConfig = {},
