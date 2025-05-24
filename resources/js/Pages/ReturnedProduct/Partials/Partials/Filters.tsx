@@ -1,5 +1,13 @@
 import GenericFilters from '@/Components/GenericFilters';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/Components/UI/select';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import { useLaravelReactI18n } from 'laravel-react-i18n';

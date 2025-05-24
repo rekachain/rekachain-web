@@ -1,4 +1,3 @@
-import Checkbox from '@/Components/Checkbox';
 import GenericDataSelector from '@/Components/GenericDataSelector';
 import InputLabel from '@/Components/InputLabel';
 import { Button } from '@/Components/UI/button';
@@ -58,8 +57,8 @@ const Filters = ({
         search: '',
         column_filters: {
             project_id: filters.project_id ?? 1,
-        }
-    })
+        },
+    });
     const fetchTrainsets = useCallback(async (filters: ServiceFilterOptions) => {
         console.log(filters);
         return await trainsetService.getAll(filters).then((response) => response.data);
@@ -70,7 +69,7 @@ const Filters = ({
             ...trainsetFilters,
             column_filters: {
                 project_id: filters.project_id ?? 1,
-            }
+            },
         });
     }, [filters.project_id]);
 
@@ -89,40 +88,44 @@ const Filters = ({
             </div>
             {checkPermission(PERMISSION_ENUM.PROJECT_READ) && (
                 <>
-                <GenericDataSelector
-                    setSelectedData={(id) =>
-                        setFilters({
-                            ...filters,
-                            project_id: id,
-                        })
-                    }
-                    selectedDataId={filters.project_id || null}
-                    renderItem={(item: ProjectResource) => `${item.name}`}
-                    popoverContentClassName='w-full p-0'
-                    placeholder={t('pages.dashboard.partials.filters.project_placeholder')}
-                    nullable
-                    id='project_selector'
-                    fetchData={fetchProjects}
-                    buttonClassName='w-25 justify-between md:w-40'
-                />
-                {filters.project_id && (
                     <GenericDataSelector
-                        id="trainset_selector"
-                        fetchData={(filters) => fetchTrainsets({...trainsetFilters, ...filters})}
-                        setSelectedData={(id) => {
+                        setSelectedData={(id) =>
                             setFilters({
                                 ...filters,
-                                trainset_id: id,
-                            });
-                            router.visit(route(`${ROUTES.DASHBOARD}.trainset`, [filters.project_id, id]));
-                        }}
-                        selectedDataId={filters.trainset_id || null}
-                        placeholder={t('pages.dashboard.partials.filters.trainset_placeholder')}
-                        renderItem={item => `${item.name}`}
-                        buttonClassName="w-25 justify-between md:w-40"
+                                project_id: id,
+                            })
+                        }
+                        selectedDataId={filters.project_id || null}
+                        renderItem={(item: ProjectResource) => `${item.name}`}
+                        popoverContentClassName='w-full p-0'
+                        placeholder={t('pages.dashboard.partials.filters.project_placeholder')}
                         nullable
+                        id='project_selector'
+                        fetchData={fetchProjects}
+                        buttonClassName='w-25 justify-between md:w-40'
                     />
-                )}
+                    {filters.project_id && (
+                        <GenericDataSelector
+                            setSelectedData={(id) => {
+                                setFilters({
+                                    ...filters,
+                                    trainset_id: id,
+                                });
+                                router.visit(
+                                    route(`${ROUTES.DASHBOARD}.trainset`, [filters.project_id, id]),
+                                );
+                            }}
+                            selectedDataId={filters.trainset_id || null}
+                            renderItem={(item) => `${item.name}`}
+                            placeholder={t('pages.dashboard.partials.filters.trainset_placeholder')}
+                            nullable
+                            id='trainset_selector'
+                            fetchData={(filters) =>
+                                fetchTrainsets({ ...trainsetFilters, ...filters })
+                            }
+                            buttonClassName='w-25 justify-between md:w-40'
+                        />
+                    )}
                 </>
             )}
             {checkPermission([PERMISSION_ENUM.RETURNED_PRODUCT_READ]) && (

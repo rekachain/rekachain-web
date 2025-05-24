@@ -13,6 +13,7 @@ class ProductProblemAnalysisController extends Controller {
     public function index(Request $request) {
         if ($this->ajax()) {
             $perPage = $request->get('perPage', 10);
+
             return ProductProblemAnalysisResource::collection($this->productProblemAnalysisService->getAllPaginated($request->query(), $perPage));
         }
 

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
-use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Component extends Model {
@@ -75,7 +74,7 @@ class Component extends Model {
         return $this->product_problems()->count() > 0;
     }
 
-    public function projects() : HasManyDeep {
+    public function projects(): HasManyDeep {
         return $this->hasManyDeep(Project::class, [
             CarriagePanelComponent::class,
             CarriagePanel::class,

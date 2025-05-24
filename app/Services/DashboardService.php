@@ -474,6 +474,7 @@ class DashboardService {
             ];
         });
         ProductProblemAnalysis::dispatch($transformed->toArray());
+
         return response()->json(['message' => 'Analysis is dispatched.'], 200);
     }
 }

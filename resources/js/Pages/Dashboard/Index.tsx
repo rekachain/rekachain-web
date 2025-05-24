@@ -103,7 +103,9 @@ export default function Dashboard({
             <div className={`mx-auto max-w-7xl px-3 sm:px-6 lg:px-5`}>
                 <div className='overflow-hidden bg-white shadow-sm dark:bg-transparent sm:rounded-lg'>
                     <div className=''>
-                        <h1 className='mt-2 text-3xl font-bold'>{t('pages.dashboard.index.title')}</h1>
+                        <h1 className='mt-2 text-3xl font-bold'>
+                            {t('pages.dashboard.index.title')}
+                        </h1>
                         <div className='flex w-full items-center justify-between'>
                             <div className='flex'>
                                 <h2 className='my-2 text-xl'>
@@ -122,7 +124,9 @@ export default function Dashboard({
                             vendorProblems && (
                                 <>
                                     <div className='my-1 flex items-center gap-2'>
-                                        <h2 className='flex text-xl font-bold'>{t('pages.dashboard.index.returned_product')}</h2>
+                                        <h2 className='flex text-xl font-bold'>
+                                            {t('pages.dashboard.index.returned_product')}
+                                        </h2>
                                         <Link
                                             href={route(`${ROUTES.DASHBOARD}.product-problems`)}
                                             className={buttonVariants({ variant: 'outline' })}
@@ -132,7 +136,7 @@ export default function Dashboard({
                                     </div>
                                     <div className='grid grid-cols-1 gap-2 md:grid-cols-2'>
                                         <div className='flex flex-col gap-1'>
-                                            <h3 className='mt-5 text-sm font-bold text-center'>
+                                            <h3 className='mt-5 text-center text-sm font-bold'>
                                                 {t('pages.dashboard.index.returned_product_status')}
                                             </h3>
                                             <ReturnedProductStatusPieChart
@@ -143,7 +147,9 @@ export default function Dashboard({
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <h3 className='mt-5 text-sm font-bold'>
-                                                {t('pages.dashboard.index.returned_product_time_difference')}
+                                                {t(
+                                                    'pages.dashboard.index.returned_product_time_difference',
+                                                )}
                                             </h3>
                                             <Suspense fallback={<StaticLoadingOverlay />}>
                                                 <ReturnedProductTimeDiffChart
@@ -162,8 +168,10 @@ export default function Dashboard({
                                             </Suspense>
                                         </div>
                                         <div className='w-2/3'>
-                                            <h3 className='mt-5 text-sm font-bold text-center'>
-                                                {t('pages.dashboard.index.returned_product_time_min_max')}
+                                            <h3 className='mt-5 text-center text-sm font-bold'>
+                                                {t(
+                                                    'pages.dashboard.index.returned_product_time_min_max',
+                                                )}
                                             </h3>
                                             <ReturnedProductTimeMinMaxLineChart
                                                 filters={filters}

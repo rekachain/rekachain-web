@@ -67,7 +67,7 @@ return [
             'title' => 'Analisis Masalah Produk',
             'buttons' => [
                 'dispatch' => 'Analisa Masalah',
-            ]
+            ],
         ],
         'partials' => [
             'partials' => [

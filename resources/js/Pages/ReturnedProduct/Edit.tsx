@@ -10,6 +10,15 @@ import { Button } from '@/Components/UI/button';
 import { Input } from '@/Components/UI/input';
 import { Label } from '@/Components/UI/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/UI/radio-group';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '@/Components/UI/select';
 import { useLoading } from '@/Contexts/LoadingContext';
 import { useSuccessToast } from '@/Hooks/useToast';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -17,6 +26,7 @@ import { componentService } from '@/Services/componentService';
 import { panelService } from '@/Services/panelService';
 import { returnedProductService } from '@/Services/returnedProductService';
 import { ROUTES } from '@/Support/Constants/routes';
+import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others';
 import {
     ComponentResource,
@@ -29,8 +39,6 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FormEventHandler, useCallback, useEffect } from 'react';
 import { FilePond } from 'react-filepond';
 import BuyerForm from './Partials/BuyerForm';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/Components/UI/select';
-import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 
 export default function ({ returnedProduct }: { returnedProduct: ReturnedProductResource }) {
     const { t } = useLaravelReactI18n();
@@ -236,12 +244,17 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                         />
                     </div>
                     <div className='mt-4'>
-                        <InputLabel value={t('pages.product_restock.partials.partials.filters.status.title')} htmlFor='status' />
+                        <InputLabel
+                            value={t(
+                                'pages.product_restock.partials.partials.filters.status.title',
+                            )}
+                            htmlFor='status'
+                        />
                         <Select
+                            value={data.status as string}
                             onValueChange={(value) =>
                                 setData('status', value as ReturnedProductStatusEnum)
                             }
-                            value={data.status as string}
                         >
                             <SelectTrigger className='w-full'>
                                 <SelectValue
@@ -253,20 +266,30 @@ export default function ({ returnedProduct }: { returnedProduct: ReturnedProduct
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>
-                                        {t('pages.product_restock.partials.partials.filters.status.title')}
+                                        {t(
+                                            'pages.product_restock.partials.partials.filters.status.title',
+                                        )}
                                     </SelectLabel>
                                     {Object.entries(ReturnedProductStatusEnum)
-                                        .filter(([key, status]) => returnedProduct.status !== ReturnedProductStatusEnum.REQUESTED ? ![ReturnedProductStatusEnum.REQUESTED].includes(status) : true)
+                                        .filter(([key, status]) =>
+                                            returnedProduct.status !==
+                                            ReturnedProductStatusEnum.REQUESTED
+                                                ? ![ReturnedProductStatusEnum.REQUESTED].includes(
+                                                      status,
+                                                  )
+                                                : true,
+                                        )
                                         .map(([key, status]) => (
                                             <SelectItem value={status} key={key}>
-                                                {t(`enums.App\\Support\\Enums\\ReturnedProductStatusEnum.${status}`)}
+                                                {t(
+                                                    `enums.App\\Support\\Enums\\ReturnedProductStatusEnum.${status}`,
+                                                )}
                                             </SelectItem>
                                         ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
                     </div>
-                    
 
                     <Accordion
                         type='single'

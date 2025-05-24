@@ -13,8 +13,8 @@ import { ProductProblemAnalysisResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
-import ProductProblemAnalysisFilters from './Partials/ProductProblemAnalysisFilters';
 import ProductProblemAnalysisDetailDialog from './Partials/ProductProblemAnalysisDetailDialog';
+import ProductProblemAnalysisFilters from './Partials/ProductProblemAnalysisFilters';
 
 export default function () {
     const { t } = useLaravelReactI18n();
@@ -53,7 +53,7 @@ export default function () {
 
     return (
         <div className='mt-1 w-full'>
-            <ProductProblemAnalysisFilters setFilters={setFilters} filters={filters}/>
+            <ProductProblemAnalysisFilters setFilters={setFilters} filters={filters} />
             {problemAnalysisResponse && (
                 <Table>
                     <TableHeader>
@@ -86,7 +86,7 @@ export default function () {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {problemAnalysisResponse.data.length === 0 && (
+                        {(problemAnalysisResponse.data.length === 0 && (
                             <TableRow>
                                 <TableCell colSpan={5} className='text-center'>
                                     {t(
@@ -94,26 +94,31 @@ export default function () {
                                     )}
                                 </TableCell>
                             </TableRow>
-                        ) || problemAnalysisResponse.data.map((data) => (
-                            <TableRow key={data.id} onClick={() => getDetails(data.id)}>
-                                <TableCell>{data.date_range}</TableCell>
-                                <TableCell>{data.component_name}</TableCell>
-                                <TableCell>{data.summary}</TableCell>
-                                <TableCell>
-                                    {data.cause.length > 255 ? `${data.cause.substring(0, 252)}...` : data.cause}
-                                </TableCell>
-                                <TableCell>
-                                    {data.solution.length > 255 ? `${data.solution.substring(0, 252)}...` : data.solution}
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        )) ||
+                            problemAnalysisResponse.data.map((data) => (
+                                <TableRow onClick={() => getDetails(data.id)} key={data.id}>
+                                    <TableCell>{data.date_range}</TableCell>
+                                    <TableCell>{data.component_name}</TableCell>
+                                    <TableCell>{data.summary}</TableCell>
+                                    <TableCell>
+                                        {data.cause.length > 255
+                                            ? `${data.cause.substring(0, 252)}...`
+                                            : data.cause}
+                                    </TableCell>
+                                    <TableCell>
+                                        {data.solution.length > 255
+                                            ? `${data.solution.substring(0, 252)}...`
+                                            : data.solution}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             )}
             <ProductProblemAnalysisDetailDialog
-                data={detailData}
-                isDetailDialogOpen={isDetailDialogOpen}
                 setIsDetailDialogOpen={setIsDetailDialogOpen}
+                isDetailDialogOpen={isDetailDialogOpen}
+                data={detailData}
             />
             <GenericPagination
                 meta={problemAnalysisResponse?.meta}

@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-class ProductProblemAnalysis implements ShouldQueue, ShouldBeUnique {
+class ProductProblemAnalysis implements ShouldBeUnique, ShouldQueue {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $uniqueFor = 600; // 10 minutes
@@ -23,6 +23,7 @@ class ProductProblemAnalysis implements ShouldQueue, ShouldBeUnique {
 
     public function uniqueId(): string {
         $key = md5(json_encode($this->data));
+
         return $key;
     }
 
@@ -62,12 +63,12 @@ class ProductProblemAnalysis implements ShouldQueue, ShouldBeUnique {
                     config('services.groq.key'),
                 )
                     ->timeout(60)->post(config('services.groq.url'), [
-                    'model' => config('services.groq.model'),
-                    'messages' => [[
-                        'role' => 'user',
-                        'content' => $promptIdentity . $productPrompt,
-                    ],],
-                ]);
+                        'model' => config('services.groq.model'),
+                        'messages' => [[
+                            'role' => 'user',
+                            'content' => $promptIdentity . $productPrompt,
+                        ], ],
+                    ]);
 
                 if ($response->failed()) {
                     $attempt++;

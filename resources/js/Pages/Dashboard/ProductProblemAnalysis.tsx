@@ -13,18 +13,20 @@ export default function () {
     const { t } = useLaravelReactI18n();
     const ProductProblemAnalysis = lazy(() => import('./Partials/ProductProblemAnalysisDataView'));
     const dispatchProductProblemAnalytics = withLoading(async () => {
-        await window.axios.get(
-            route(`${ROUTES.DASHBOARD}`, {
-                intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
-                // ...filters,
-            }),
-        ).then((response) => {
-            if (response.status === 200) {
-                void useSuccessToast(response.data.message);
-            } else {
-                void useErrorToast(response.data.message);
-            }
-        });
+        await window.axios
+            .get(
+                route(`${ROUTES.DASHBOARD}`, {
+                    intent: IntentEnum.WEB_DASHBOARD_DISPATCH_PRODUCT_PROBLEM_ANALYSIS,
+                    // ...filters,
+                }),
+            )
+            .then((response) => {
+                if (response.status === 200) {
+                    void useSuccessToast(response.data.message);
+                } else {
+                    void useErrorToast(response.data.message);
+                }
+            });
     });
     return (
         <>

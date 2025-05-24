@@ -1,4 +1,5 @@
 import GenericPagination from '@/Components/GenericPagination';
+import { fetchEnumLabels } from '@/Helpers/enumHelper';
 import { useSuccessToast } from '@/Hooks/useToast';
 import Filters from '@/Pages/ReturnedProduct/Partials/Partials/Filters';
 import { returnedProductService } from '@/Services/returnedProductService';
@@ -10,7 +11,6 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useEffect, useState } from 'react';
 import ReturnedProductCardView from './Partials/ReturnedProductCardView';
 import ReturnedProductTableView from './Partials/ReturnedProductTableView';
-import { fetchEnumLabels } from '@/Helpers/enumHelper';
 
 export default function () {
     const { t, setLocale } = useLaravelReactI18n();
@@ -26,7 +26,7 @@ export default function () {
     const [localizedReturnedProductStatuses, setLocalizedReturnedProductStatuses] = useState<
         Record<string, string>
     >({});
-    
+
     const syncLocalizedEnums = withLoading(async () => {
         await fetchEnumLabels('ReturnedProductStatusEnum')
             .then(setLocalizedReturnedProductStatuses)
@@ -59,7 +59,11 @@ export default function () {
         <div className='space-y-4'>
             {returnedProductResponse && (
                 <>
-                    <Filters setFilters={setFilters} filters={filters} localizedReturnedProductStatuses={localizedReturnedProductStatuses} />
+                    <Filters
+                        setFilters={setFilters}
+                        localizedReturnedProductStatuses={localizedReturnedProductStatuses}
+                        filters={filters}
+                    />
                     <div className='hidden md:block'>
                         <ReturnedProductTableView
                             returnedProductResponse={returnedProductResponse}

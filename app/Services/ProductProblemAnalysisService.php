@@ -23,6 +23,7 @@ class ProductProblemAnalysisService extends BaseCrudService implements ProductPr
                 });
             })->unique()->values(),
         ];
+
         return collect($productProblemAnalysis->toArray())
             ->merge(['product_problem' => $problem]);
     }

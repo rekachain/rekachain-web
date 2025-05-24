@@ -16,7 +16,6 @@ class ProductProblemAnalysis extends Model {
         'cause',
         'solution',
     ];
-
     protected $filterable = [
         'searchs' => [
             'component_name',

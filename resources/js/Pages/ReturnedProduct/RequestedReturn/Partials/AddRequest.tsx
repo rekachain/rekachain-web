@@ -29,7 +29,7 @@ import { ROUTES } from '@/Support/Constants/routes';
 import { IntentEnum } from '@/Support/Enums/intentEnum';
 import { ReturnedProductStatusEnum } from '@/Support/Enums/returnedProductStatusEnum';
 import { ServiceFilterOptions } from '@/Support/Interfaces/Others/ServiceFilterOptions';
-import { ComponentResource, PanelResource, ProjectComponentResource, ProjectPanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
+import { ComponentResource, PanelResource, ProjectResource } from '@/Support/Interfaces/Resources';
 import { withLoading } from '@/Utils/withLoading';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -65,10 +65,13 @@ const AddRequest = () => {
                 ? 'App\\Models\\Component'
                 : 'App\\Models\\Panel';
 
-        await returnedProductService.create({
-            ...data,
-            product_returnable_type: data.serial_number == null ? productReturnableType : null,
-        }, {'intent': IntentEnum.WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST});
+        await returnedProductService.create(
+            {
+                ...data,
+                product_returnable_type: data.serial_number == null ? productReturnableType : null,
+            },
+            { intent: IntentEnum.WEB_RETURNED_PRODUCT_ADD_RETURNED_PRODUCT_REQUEST },
+        );
         router.visit(route(`${ROUTES.REQUESTED_RETURNS}.index`));
         void useSuccessToast(
             t('pages.returned_product.requested_return.partials.add_request.messages.created'),
@@ -83,31 +86,37 @@ const AddRequest = () => {
         return await projectService.getAll(filters).then((response) => response.data);
     }, []);
 
-    const fetchComponents = useCallback(async (filters: ServiceFilterOptions) => {
-        if (!selectedProject) return [];
-        filters = {
-            ...filters,
-            relation_column_filters: {
-                projects: {
-                    id: selectedProject,
+    const fetchComponents = useCallback(
+        async (filters: ServiceFilterOptions) => {
+            if (!selectedProject) return [];
+            filters = {
+                ...filters,
+                relation_column_filters: {
+                    projects: {
+                        id: selectedProject,
+                    },
                 },
-            },
-        }
-        return await componentService.getAll(filters).then((response) => response.data);
-    }, [selectedProject]);
+            };
+            return await componentService.getAll(filters).then((response) => response.data);
+        },
+        [selectedProject],
+    );
 
-    const fetchPanels = useCallback(async (filters: ServiceFilterOptions) => {
-        if (!selectedProject) return [];
-        filters = {
-            ...filters,
-            relation_column_filters: {
-                projects: {
-                    id: selectedProject,
+    const fetchPanels = useCallback(
+        async (filters: ServiceFilterOptions) => {
+            if (!selectedProject) return [];
+            filters = {
+                ...filters,
+                relation_column_filters: {
+                    projects: {
+                        id: selectedProject,
+                    },
                 },
-            },
-        }
-        return panelService.getAll(filters).then((response) => response.data);
-    }, [selectedProject]);
+            };
+            return panelService.getAll(filters).then((response) => response.data);
+        },
+        [selectedProject],
+    );
 
     useEffect(() => setData('product_returnable_id', null), [data.product_returnable_type]);
 
@@ -157,9 +166,7 @@ const AddRequest = () => {
                                         <AccordionContent>
                                             <GenericDataSelector
                                                 setSelectedData={setSelectedProject}
-                                                selectedDataId={
-                                                    selectedProject ?? undefined
-                                                }
+                                                selectedDataId={selectedProject ?? undefined}
                                                 renderItem={(item: ProjectResource) =>
                                                     `${item.name}`
                                                 }
@@ -211,13 +218,15 @@ const AddRequest = () => {
                                                             </Label>
                                                         </div>
                                                     </RadioGroup>
-                                                    {data.product_returnable_type === 'component' ? (
+                                                    {data.product_returnable_type ===
+                                                    'component' ? (
                                                         <GenericDataSelector
                                                             setSelectedData={(id) =>
                                                                 setData('product_returnable_id', id)
                                                             }
                                                             selectedDataId={
-                                                                data.product_returnable_id ?? undefined
+                                                                data.product_returnable_id ??
+                                                                undefined
                                                             }
                                                             renderItem={(item: ComponentResource) =>
                                                                 `${item.name}`
@@ -237,7 +246,8 @@ const AddRequest = () => {
                                                                 setData('product_returnable_id', id)
                                                             }
                                                             selectedDataId={
-                                                                data.product_returnable_id ?? undefined
+                                                                data.product_returnable_id ??
+                                                                undefined
                                                             }
                                                             renderItem={(item: PanelResource) =>
                                                                 `${item.name}`
