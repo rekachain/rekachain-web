@@ -51,10 +51,14 @@ class ProductProblemAnalysis implements ShouldBeUnique, ShouldQueue {
                 #cause: Sambungan longgar, penurunan tegangan di bawah beban, atau sensor torsi rusak. 
                 #solution: Periksa rangkaian kabel di dekat kolom kemudi, uji baterai di bawah beban, dan jalankan pemindaian diagnostik untuk kode kesalahan. 
                 Berikut adalah input-nya:\n";
-            $productPrompt = 'Nama Produk: ' . $value->component_name .
-                "\nNama Vendor: " . $value->vendor_name .
-                "\nPersentase Masalah: " . number_format($value->problem_percent, 2) . '% dari ' . $value->total_sent . ' barang' .
-                "\nTemuan Masalah: " . $value->notes;
+
+            $productPrompt = 'Nama Produk: ' . $value->component_name;
+            if (!empty($value->component_description)) $productPrompt .= "\nDeskripsi Produk: " . $value->component_description;
+            if (!empty($value->vendor_name)) {
+                $productPrompt .= "\nNama Vendor: " . $value->vendor_name;
+                $productPrompt .= "\nPersentase Masalah: " . number_format($value->problem_percent, 2) . '% dari ' . $value->total_sent . ' barang';
+            }
+            $productPrompt .= "\nTemuan Masalah: " . $value->notes;
 
             $success = false;
             $attempt = 1;
