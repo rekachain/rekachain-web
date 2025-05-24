@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ReturnedProductResource;
-use App\Imports\ReturnedProduct\ReturnedProductImport;
+use App\Jobs\ReturnedProduct\ReturnedProductImportJob;
 use App\Models\Component;
 use App\Models\Panel;
 use App\Models\ReplacementStock;
@@ -14,9 +14,9 @@ use App\Support\Enums\ReturnedProductStatusEnum;
 use App\Support\Interfaces\Repositories\ReturnedProductRepositoryInterface;
 use App\Support\Interfaces\Services\ReturnedProductServiceInterface;
 use App\Traits\Services\HandlesImages;
+use File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ReturnedProductService extends BaseCrudService implements ReturnedProductServiceInterface {
     use HandlesImages;
@@ -97,14 +97,30 @@ class ReturnedProductService extends BaseCrudService implements ReturnedProductS
         return true;
     }
 
+    private function handleImportFile(UploadedFile $file): string {
+        $tempDirectory = storage_path('app/temp/laravel-excel-import');
+        if (File::exists($tempDirectory)) {
+            File::cleanDirectory($tempDirectory);
+        } else {
+            File::makeDirectory($tempDirectory, 0755, true); // Create if it doesn't exist
+        }
+        $tempFilePath = $file->store('temp/laravel-excel-import');
+
+        return $tempFilePath;
+    }
+
     public function importData(UploadedFile $file): bool {
-        Excel::import(new ReturnedProductImport, $file);
+        $userId = auth()->id();
+        $filePath = $this->handleImportFile($file);
+        ReturnedProductImportJob::dispatch($filePath, $userId);
 
         return true;
     }
 
     public function importProductProblemData(ReturnedProduct $returnedProduct, UploadedFile $file): bool {
-        Excel::import(new ReturnedProductImport($returnedProduct), $file);
+        $userId = auth()->id();
+        $filePath = $this->handleImportFile($file);
+        ReturnedProductImportJob::dispatch($filePath, $userId, $returnedProduct);
 
         return true;
     }

@@ -203,8 +203,8 @@ class DashboardService {
     }
 
     public function storeApkFile(): bool {
-        $filePath = app_path('Assets/rekachain-mobile.apk');
-        $backupDir = app_path('Assets/Backups/rekachain-mobile');
+        $filePath = storage_path('app/assets/rekachain-mobile.apk');
+        $backupDir = storage_path('app/assets/backups/rekachain-mobile');
         if (request()->hasFile('file_path')) {
             if (file_exists($filePath)) {
                 if (!is_dir($backupDir)) {
@@ -222,8 +222,8 @@ class DashboardService {
     }
 
     public function storeManualBookFile(): bool {
-        $filePath = app_path('Assets/manual-book.pdf');
-        $backupDir = app_path('Assets/Backups/manual-book');
+        $filePath = storage_path('app/assets/manual-book.pdf');
+        $backupDir = storage_path('app/assets/backups/manual-book');
         if (request()->hasFile('file_path')) {
             if (file_exists($filePath)) {
                 if (!is_dir($backupDir)) {
@@ -241,7 +241,7 @@ class DashboardService {
     }
 
     public function downloadApkFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
-        $apkFilePath = app_path('Assets/rekachain-mobile.apk');
+        $apkFilePath = storage_path('app/assets/rekachain-mobile.apk');
         if (!file_exists($apkFilePath)) {
             $apkFilePath = app_path('Assets/rekachain-mobile_v1.apk');
             if (!file_exists($apkFilePath)) {
@@ -253,7 +253,7 @@ class DashboardService {
     }
 
     public function downloadManualBookFile(): \Symfony\Component\HttpFoundation\BinaryFileResponse {
-        $manualBookFilePath = app_path('Assets/manual-book.pdf');
+        $manualBookFilePath = storage_path('app/assets/manual-book.pdf');
         if (!file_exists($manualBookFilePath)) {
             $manualBookFilePath = app_path('Assets/manual-book_v1.pdf');
             if (!file_exists($manualBookFilePath)) {
