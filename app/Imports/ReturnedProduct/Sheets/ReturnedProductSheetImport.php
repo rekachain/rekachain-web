@@ -6,11 +6,13 @@ use App\Models\Component;
 use App\Models\Panel;
 use App\Models\ReturnedProduct;
 use App\Models\User;
+use App\Support\Enums\ReturnedProductStatusEnum;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ReturnedProductSheetImport implements ToModel, WithHeadingRow {
+    public function __construct(protected String $userId) {}
     public function model(array $row) {
         $product = $row['product_type'] == 'Panel' ? Panel::firstOrCreate([
             'name' => $row['product_name'],
@@ -28,7 +30,8 @@ class ReturnedProductSheetImport implements ToModel, WithHeadingRow {
         ]);
 
         $returnedProduct->returned_product_notes()->create([
-            'user_id' => auth()->id(),
+            'user_id' => $this->userId,
+            'status' => ReturnedProductStatusEnum::DRAFT->value,
             'note' => $row['note'],
         ]);
 

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ProductProblemSheetImport implements ToModel, WithHeadingRow {
-    public function __construct(private ?ReturnedProduct $returnedProduct = null) {}
+    public function __construct(protected string $userId, private ?ReturnedProduct $returnedProduct = null) {}
 
     public function model(array $row) {
         $returnedProduct = $this->returnedProduct ?? ReturnedProduct::whereSerialNumber($row['serial_number'])->get()->last();
@@ -26,7 +26,7 @@ class ProductProblemSheetImport implements ToModel, WithHeadingRow {
         ]);
 
         $productProblem->product_problem_notes()->create([
-            'user_id' => auth()->id(),
+            'user_id' => $this->userId,
             'note' => $row['note'],
         ]);
 

@@ -60,6 +60,7 @@ task('deploy', [
     'artisan:view:cache',
     'artisan:config:cache',
     'artisan:migrate',
+    'artisan:queue:restart',
     'deploy:publish',
 ]);
 
